@@ -216,7 +216,7 @@ ClientCodeLoader = function () {
             }
         }
         //@todo path to JS move to Config file
-        FS.writeFileSync(CONST_DIR_ROOT + '/public' + projectPrefix + '/js/MainClientCode.js', mainClientJSCode);
+        FS.writeFileSync(CONST_DIR_ROOT + '/public/js/MainClientCode.js', mainClientJSCode);
     };
 
     /**
@@ -278,7 +278,7 @@ ClientCodeLoader = function () {
 
     var getClientImageCodeSprited = function () {
         var imageCode, path, timePostfix, demension;
-        var spritePath = '../public' + projectPrefix + '/images/sprite.png.json';
+        var spritePath = '../public/images/sprite.png.json';
         if (!reloadClientImageCodeEveryRequest && clientImageCode) {
             return clientImageCode;
         }
@@ -290,7 +290,6 @@ ClientCodeLoader = function () {
             timePostfix = "?t=" + new Date().getTime();
             for (var i in generateImageSpriteResult.coordinates) {
                 path = i.replace('../public', '');
-                path = path.replace(projectPrefix, '');
                 imageCode += "\r\nimagesData['" + path + "']={" + "" +
                     "path:'" + projectPrefix + '/images/sprite.png' + timePostfix + "'," +
                     "w:" + generateImageSpriteResult.coordinates[i].width + "," +
@@ -365,7 +364,7 @@ ClientCodeLoader = function () {
 
         if (generateImageSpriteLoaded) return;
         generateImageSpriteLoaded = true;
-        spritePath = '../public' + projectPrefix + '/images/sprite.png';
+        spritePath = '../public/images/sprite.png';
 
         if (FS.existsSync(spritePath)) {
             FS.unlink(spritePath);

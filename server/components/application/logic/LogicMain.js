@@ -34,17 +34,17 @@ LogicMain = function () {
     this.setWebSocketServerMap = function () {
 
         WebSocketServer.setMap({
-            '/tri-base/service/clientCodeVK': ClientCodeLoader.getClientCodeVK,
-            '/tri-base/service/clientCodeStandalone': ClientCodeLoader.getClientCodeStandalone,
-            '/tri-base/service/reloadClientCode': ClientCodeLoader.reloadClientCode,
-            '/tri-base/service/VKCommentsWidget': ClientCodeLoader.getVKCommentsWidget,
+            '/service/clientCodeVK': ClientCodeLoader.getClientCodeVK,
+            '/service/clientCodeStandalone': ClientCodeLoader.getClientCodeStandalone,
+            '/service/reloadClientCode': ClientCodeLoader.reloadClientCode,
+            '/service/VKCommentsWidget': ClientCodeLoader.getVKCommentsWidget,
 
-            '/tri-base/service/--profiler': LogicSystemRequests.getProfiler,
-            '/tri-base/service/--log': LogicSystemRequests.getLog,
-            '/tri-base/service/--shutdown___': LogicSystemRequests.shutdown,
-            '/tri-base/service/--logsSetDetail': LogicSystemRequests.logsSetDetail,
-            '/tri-base/service/--logsSetNotify': LogicSystemRequests.logsSetNotify,
-            '/tri-base/service/--help': function (callback) {
+            '/service/--profiler': LogicSystemRequests.getProfiler,
+            '/service/--log': LogicSystemRequests.getLog,
+            '/service/--shutdown___': LogicSystemRequests.shutdown,
+            '/service/--logsSetDetail': LogicSystemRequests.logsSetDetail,
+            '/service/--logsSetNotify': LogicSystemRequests.logsSetNotify,
+            '/service/--help': function (callback) {
                 callback("--profiler <br>" +
                     "--log <br>" +
                     "--logsSetDetail<br>" +
