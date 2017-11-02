@@ -60,6 +60,10 @@ GUIDom = function () {
      */
     var dom = null;
 
+    this.animTracks = [];
+    this.animData = [];
+    this.animPlayed = false;
+
     /**
      * Создается элемент браузера
      * Настраиваются минимальные параметры
@@ -433,6 +437,49 @@ GUIDom = function () {
         zIndex: redrawZIndex,
         overflow: redrawOverflow,
         textDecoration: redrawTextDecoration
+    };
+
+    /**
+     * Animate
+     */
+    this.animate = function () {
+        if (!self.animPlayed) {
+            return;
+        }
+        for (var t in self.animTracks) {
+            self.proccessTrack(t);
+        }
+    };
+
+    this.proccessTrack = function (tN) {
+        var frame;
+        frame = self.animTracks[tN][self.animData[tN].frameN];
+        switch (frame.type) {
+            case ElementSprite.ANIM_TYPE_ROTATE:
+                if (frame.currentAngle >= 360) {
+                    frame.currentAngle = 0;
+                }
+                self.transform = 'rotate(' + (frame.currentAngle += frame.angle) + 'deg)';
+                self.redraw();
+                break;
+            case GUI.ANIM_TYPE_GOTO:
+                self.animData[tN].frameN = frame.pos;
+                break;
+            case GUI.ANIM_TYPE_MOVIE:
+                frame.imageN++;
+                if (frame.imageN == frame.images.length) {
+                    frame.imageN = 0;
+                }
+                self.backgroundImage = frame.images[frame.imageN];
+                self.redraw();
+                break;
+            case GUI.ANIM_TYPE_MOVE:
+                self.x += frame.vX;
+                self.y += frame.vY;
+                self.redraw();
+                break;
+        }
+        self.animData[tN].counter++;
     };
 };
 

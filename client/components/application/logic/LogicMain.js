@@ -30,6 +30,9 @@ LogicMain = function () {
 
         /* running */
         webSocketClient.run();
+
+        OnIdle.init(function () {
+        });
     };
 
     /**

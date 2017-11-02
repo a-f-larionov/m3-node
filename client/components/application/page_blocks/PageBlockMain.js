@@ -22,6 +22,37 @@ PageBlockMain = function PageBlockMain() {
      */
     this.init = function () {
         var element;
+        element = GUI.createElement(ElementSprite, {
+            x: 50,
+            y: 50,
+            src: '/images/man-01.png',
+            domInitParams: {
+                animTracks: [
+                    [
+                        {
+                            type: GUI.ANIM_TYPE_MOVIE, images: [
+                            '/images/man_right_1.png',
+                            '/images/man_right_2.png',
+                            '/images/man_right_3.png',
+                            '/images/man_right_4.png',
+                            '/images/man_right_5.png',
+                            '/images/man_right_6.png',
+                            '/images/man_right_7.png',
+                            '/images/man_right_8.png'
+                        ]
+                            , duration: 8
+                        },
+                        {type: GUI.ANIM_TYPE_GOTO, pos: 0}
+                    ],
+                    [
+                        {type: GUI.ANIM_TYPE_MOVE, vX: 3, vY: 0},
+                        {type: GUI.ANIM_TYPE_GOTO, pos: 0}
+                    ]
+                ]
+            }
+        });
+        element.animPlay();
+        self.elements.push(element);
     };
 
     /**

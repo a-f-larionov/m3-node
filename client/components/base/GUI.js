@@ -174,11 +174,38 @@ GUI = function () {
      */
     this.createDom = function (parent, params) {
         var dom;
-        dom = new GUIDom(parent);
+        dom = new GUIDom();
         dom.init(undefined, parent);
         if (params) {
             for (var name in params) {
                 dom[name] = params[name];
+            }
+            if (params['animTracks']) {
+                /* init animations */
+                for (var tN in dom.animTracks) {
+                    for (var fN in dom.animTracks[tN]) {
+                        var frame = dom.animTracks[tN][fN];
+                        switch (frame.type) {
+                            case GUI.ANIM_TYPE_ROTATE:
+                                if (!frame.currentAngle) {
+                                    frame.currentAngle = 0;
+                                }
+                                break;
+                            case GUI.ANIM_TYPE_MOVIE:
+                                if (!frame.imageN) {
+                                    frame.imageN = 0;
+                                    dom.src = frame.images[frame.imageN];
+                                }
+                                break;
+                        }
+                    }
+                    dom.animData[tN] = {
+                        frameN: 0,
+                        counter: 0
+                    };
+                }
+
+                OnIdle.register(dom.animate);
             }
         }
         return dom;
@@ -283,3 +310,9 @@ GUI = function () {
  * @type {GUI}
  */
 GUI = new GUI();
+
+
+GUI.ANIM_TYPE_ROTATE = 1;
+GUI.ANIM_TYPE_MOVE = 2;
+GUI.ANIM_TYPE_GOTO = 3;
+GUI.ANIM_TYPE_MOVIE = 4;
