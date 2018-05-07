@@ -4,6 +4,7 @@
  * @constructor
  */
 GUI = function () {
+    var self = this;
 
     /**
      * Событие нажатия мышы(левой), но не отпускания.
@@ -181,34 +182,42 @@ GUI = function () {
                 dom[name] = params[name];
             }
             if (params['animTracks']) {
-                /* init animations */
-                for (var tN in dom.animTracks) {
-                    for (var fN in dom.animTracks[tN]) {
-                        var frame = dom.animTracks[tN][fN];
-                        switch (frame.type) {
-                            case GUI.ANIM_TYPE_ROTATE:
-                                if (!frame.currentAngle) {
-                                    frame.currentAngle = 0;
-                                }
-                                break;
-                            case GUI.ANIM_TYPE_MOVIE:
-                                if (!frame.imageN) {
-                                    frame.imageN = 0;
-                                    dom.src = frame.images[frame.imageN];
-                                }
-                                break;
-                        }
-                    }
-                    dom.animData[tN] = {
-                        frameN: 0,
-                        counter: 0
-                    };
-                }
-
+                dom.animTracks = params['animTracks'];
+                self.updateAnimTracks(dom);
                 OnIdle.register(dom.animate);
             }
         }
         return dom;
+    };
+
+    this.updateAnimTracks = function (dom) {
+        if (dom.animTracks) {
+            /* init animations */
+            for (var tN in dom.animTracks) {
+                for (var fN in dom.animTracks[tN]) {
+                    var frame = dom.animTracks[tN][fN];
+                    switch (frame.type) {
+                        case GUI.ANIM_TYPE_ROTATE:
+                            if (!frame.currentAngle) {
+                                frame.currentAngle = 0;
+                            }
+                            break;
+                        case GUI.ANIM_TYPE_MOVIE:
+                            if (!frame.imageN) {
+                                frame.imageN = 0;
+                                dom.src = frame.images[frame.imageN];
+                            }
+                            break;
+                    }
+                }
+                dom.animData[tN] = {
+                    frameN: 0,
+                    counter: 0
+                };
+            }
+
+            OnIdle.register(dom.animate);
+        }
     };
 
     /**

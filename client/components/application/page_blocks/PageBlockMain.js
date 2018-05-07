@@ -11,6 +11,8 @@ PageBlockMain = function PageBlockMain() {
      */
     var showed = false;
 
+    var elementDialog = false;
+
     /**
      * Массив всех элементов страницы.
      * @type {Array}
@@ -30,7 +32,8 @@ PageBlockMain = function PageBlockMain() {
                 animTracks: [
                     [
                         {
-                            type: GUI.ANIM_TYPE_MOVIE, images: [
+                            type: GUI.ANIM_TYPE_MOVIE,
+                            images: [
                             '/images/man_right_1.png',
                             '/images/man_right_2.png',
                             '/images/man_right_3.png',
@@ -52,6 +55,24 @@ PageBlockMain = function PageBlockMain() {
             }
         });
         element.animPlay();
+        self.elements.push(element);
+        
+        element = GUI.createElement(ElementButton, {
+            x: 100,
+            y: 100,
+            srcRest: '/images/man_right_1.png',
+            srcHover: '/images/man_right_2.png',
+            srcActive: '/images/man_right_3.png',
+            onClick: function () {
+                self.showDialog();
+            }
+        });
+        self.elements.push(element);
+
+        element = GUI.createElement(ElementDialog, {
+            src: '/images/window.png'
+        });
+        elementDialog = element;
         self.elements.push(element);
     };
 
@@ -94,6 +115,11 @@ PageBlockMain = function PageBlockMain() {
         for (var i in self.elements) {
             self.elements[i].redraw();
         }
+    };
+
+    this.showDialog = function () {
+        Logs.log(Logs.LEVEL_NOTIFY, 'Button clicked!');
+        elementDialog.showDialog();
     };
 };
 
