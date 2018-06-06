@@ -24,6 +24,40 @@ PageBlockMain = function PageBlockMain() {
      */
     this.init = function () {
         var element;
+
+        element = GUI.createDom(undefined, {
+            x: 50,
+            y: 50,
+            backgroundImage: '/images/man-01.png',
+            animTracks: [
+                [
+                    {
+                        type: GUI.ANIM_TYPE_MOVIE,
+                        images: [
+                            '/images/man_right_1.png',
+                            '/images/man_right_2.png',
+                            '/images/man_right_3.png',
+                            '/images/man_right_4.png',
+                            '/images/man_right_5.png',
+                            '/images/man_right_6.png',
+                            '/images/man_right_7.png',
+                            '/images/man_right_8.png'
+                        ]
+                    }
+                ],
+                [
+                    {type: GUI.ANIM_TYPE_MOVE, vX: 3, vY: 0}
+                ],
+                [
+                    {type: GUI.ANIM_TYPE_PAUSE, duration: 100},
+                    {type: GUI.ANIM_TYPE_STOP}
+                ]
+            ]
+        });
+        element.animPlayed = true;
+
+        self.elements.push(element);
+
         element = GUI.createElement(ElementSprite, {
             x: 50,
             y: 50,
@@ -34,15 +68,15 @@ PageBlockMain = function PageBlockMain() {
                         {
                             type: GUI.ANIM_TYPE_MOVIE,
                             images: [
-                            '/images/man_right_1.png',
-                            '/images/man_right_2.png',
-                            '/images/man_right_3.png',
-                            '/images/man_right_4.png',
-                            '/images/man_right_5.png',
-                            '/images/man_right_6.png',
-                            '/images/man_right_7.png',
-                            '/images/man_right_8.png'
-                        ]
+                                '/images/man_right_1.png',
+                                '/images/man_right_2.png',
+                                '/images/man_right_3.png',
+                                '/images/man_right_4.png',
+                                '/images/man_right_5.png',
+                                '/images/man_right_6.png',
+                                '/images/man_right_7.png',
+                                '/images/man_right_8.png'
+                            ]
                             , duration: 8
                         },
                         {type: GUI.ANIM_TYPE_GOTO, pos: 0}
@@ -56,7 +90,7 @@ PageBlockMain = function PageBlockMain() {
         });
         element.animPlay();
         self.elements.push(element);
-        
+
         element = GUI.createElement(ElementButton, {
             x: 100,
             y: 100,
@@ -69,11 +103,24 @@ PageBlockMain = function PageBlockMain() {
         });
         self.elements.push(element);
 
-        element = GUI.createElement(ElementDialog, {
-            src: '/images/window.png'
+        elementDialog = GUI.createElement(ElementDialog, {
+            src: '/images/window.png',
+            width: 342,
+            height: 200
         });
-        elementDialog = element;
-        self.elements.push(element);
+        self.elements.push(elementDialog);
+
+        elementDialog.createElement(ElementButton, {
+            x: 5,
+            y: 5,
+            srcRest: '/images/man_right_1.png',
+            srcHover: '/images/man_right_2.png',
+            srcActive: '/images/man_right_3.png',
+            onClick: function () {
+                elementDialog.closeDialog();
+            }
+        }, self.dom);
+
     };
 
     /**

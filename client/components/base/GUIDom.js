@@ -478,8 +478,18 @@ GUIDom = function () {
                 self.y += frame.vY;
                 self.redraw();
                 break;
+            case GUI.ANIM_TYPE_PAUSE:
+                break;
+            case GUI.ANIM_TYPE_STOP:
+                self.animPlayed = false;
+                break;
         }
         self.animData[tN].counter++;
+        // if counter > duration => frameN++
+        if (frame.duration && self.animData[tN].counter > frame.duration) {
+            self.animData[tN].frameN++;
+            self.animData[tN].counter = 0;
+        }
     };
 };
 

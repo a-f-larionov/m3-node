@@ -1,3 +1,6 @@
+CREATE DATABASE tri-base
+DEFAULT CHARSET=utf8
+
 CREATE TABLE `users` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `socNetUserId` int(11) unsigned NOT NULL,
