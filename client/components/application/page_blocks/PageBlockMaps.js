@@ -193,6 +193,21 @@ PageBlockMaps = function PageBlockMaps() {
             onClick: LogicMap.onArrowNextClick
         });
         self.elements.push(elArrowNext);
+
+        /* Points */
+
+        let pointCoords = DataPoints.getPointsCoords();
+        for (let i in pointCoords) {
+
+            element = GUI.createElement(ElementPoint, {
+                x: pointCoords[i].x,
+                y: pointCoords[i].y,
+                stars: 0,
+                friends: [],
+                colorId: 1
+            });
+            this.elements.push(element);
+        }
     };
 
     /**
@@ -226,20 +241,7 @@ PageBlockMaps = function PageBlockMaps() {
      * Настройка перед отрисовкой.
      */
     this.preset = function () {
-
-
-
-        /*
-         get datamap
-         if(no data) ->
-         - show preloader
-         - load map data
-         - redraw
-         else
-         check elements
-         if(not exits)
-         create it
-         */
+        this.presetPoints();
     };
 
     /**
@@ -267,7 +269,6 @@ PageBlockMaps = function PageBlockMaps() {
             return;
         }
         if (!elMapElements[data.id]) {
-            console.log('create', data.id);
             elMapElements[data.id] = [];
             for (let i in data.elements) {
                 element = GUI.createElement(
@@ -290,12 +291,11 @@ PageBlockMaps = function PageBlockMaps() {
             return;
         }
 
-        console.log('show', data.id);
         for (let i in elMapElements[data.id]) {
             elMapElements[data.id][i].show();
         }
         if (mapIdOld != data.id) {
-            console.log('hide', mapIdOld);
+
             for (let i in elMapElements[mapIdOld]) {
                 elMapElements[mapIdOld][i].hide();
             }
@@ -305,7 +305,6 @@ PageBlockMaps = function PageBlockMaps() {
 
     this.mapElsHide = function () {
         for (let id in elMapElements) {
-            console.log('hide ', id);
             for (let i in elMapElements[id]) {
                 elMapElements[id][i].hide();
             }
@@ -327,7 +326,6 @@ PageBlockMaps = function PageBlockMaps() {
             this.mapElsShow();
         }
 
-        console.log('redraw', data.id);
         for (let i in elMapElements[data.id]) {
             elMapElements[data.id][i].redraw();
         }
@@ -336,6 +334,10 @@ PageBlockMaps = function PageBlockMaps() {
 
     this.loadCurrentMap = function () {
         DataMap.loadMap();
+    };
+
+    this.presetPoints = function () {
+
     };
 };
 
