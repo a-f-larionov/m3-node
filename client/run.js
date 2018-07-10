@@ -11,7 +11,7 @@ window.onload = function () {
 
 
     /* Передаем управление вхдоной точки. */
-    logicMain = new LogicMain();
-    logicMain.main();
+    LogicMain = new LogicMain();
+    LogicMain.main();
 
 };

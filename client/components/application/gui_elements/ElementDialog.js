@@ -11,6 +11,8 @@ ElementDialog = function () {
      */
     var showed = false;
 
+    var dialogShowed = false;
+
     /**
      * Координата X картинки.
      * @type {number}
@@ -76,9 +78,16 @@ ElementDialog = function () {
             animTracks: [
                 [
                     {type: GUI.ANIM_TYPE_MOVE, vX: 0, vY: 15, duration: 30},
-                    {type: GUI.ANIM_TYPE_STOP},
+                    {
+                        type: GUI.ANIM_TYPE_STOP, callback: function () {
+                    }
+                    },
                     {type: GUI.ANIM_TYPE_MOVE, vX: 0, vY: -15, duration: 30},
-                    {type: GUI.ANIM_TYPE_STOP}
+                    {
+                        type: GUI.ANIM_TYPE_STOP, callback: function () {
+                        dialogShowed = false;
+                    }
+                    }
                 ]
             ]
         });
@@ -138,19 +147,18 @@ ElementDialog = function () {
      * Show dialog!
      */
     this.showDialog = function () {
+        if (dialogShowed) return;
+        dialogShowed = true;
         dom.animData[0].frameN = 0;
         dom.animPlayed = true;
-        // switch on animations
-        console.log(dom);
-        //TODO HERE!
     };
 
     this.closeDialog = function () {
-        // coords reset
-        dom.animData[0].frameN = 2;
-        dom.animPlayed = true;
+        // coords resets
         // hide all
         //this.hide();
+        dom.animData[0].frameN = 2;
+        dom.animPlayed = true;
     };
 
     this.createElement = function (element, params) {

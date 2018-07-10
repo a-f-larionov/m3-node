@@ -94,6 +94,7 @@ ElementImage = function () {
      */
     this.redraw = function () {
         if (!showed) return;
+        dom.backgroundImage = self.src;
         dom.redraw();
         if (self.opacity != null) {
             dom.opacity = self.opacity;

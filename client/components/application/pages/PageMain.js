@@ -4,7 +4,7 @@ PageMain = function () {
 
     this.init = function () {
         self.blocks.push(PageBlockBackground);
-        self.blocks.push(PageBlockMain);
+        self.blocks.push(PageBlockMaps);
     };
 };
 

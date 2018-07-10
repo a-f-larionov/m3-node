@@ -71,6 +71,8 @@ ElementSprite = function () {
         dom = GUI.createDom(undefined, self.domInitParams);
         dom.width = self.width;
         dom.height = self.height;
+        dom.x = self.x;
+        dom.y = self.y;
         dom.backgroundImage = self.src;
         self.dom = dom;
     };
@@ -102,8 +104,6 @@ ElementSprite = function () {
         if (self.opacity != null) {
             dom.opacity = self.opacity;
         }
-        dom.x = self.x;
-        dom.y = self.y;
         dom.title = self.title;
         dom.pointer = self.pointer;
         dom.redraw();

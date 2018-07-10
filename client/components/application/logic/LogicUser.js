@@ -42,8 +42,9 @@ LogicUser = function () {
     this.authorizeSuccess = function (userId) {
         authorizedUserId = userId;
         Logs.log("Authorization success. userId:" + userId, Logs.LEVEL_NOTIFY);
-        SAPITimeServer.sendMeTime();
         waitForLoadingUser = [];
+
+        LogicMain.onAuthorizeSuccess();
     };
 
     /**

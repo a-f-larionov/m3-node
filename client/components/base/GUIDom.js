@@ -446,6 +446,9 @@ GUIDom = function () {
         if (!self.animPlayed) {
             return;
         }
+        if (!showed) {
+            return;
+        }
         for (var t in self.animTracks) {
             self.proccessTrack(t);
         }
@@ -481,6 +484,9 @@ GUIDom = function () {
             case GUI.ANIM_TYPE_PAUSE:
                 break;
             case GUI.ANIM_TYPE_STOP:
+                if (frame.callback) {
+                    frame.callback();
+                }
                 self.animPlayed = false;
                 break;
         }

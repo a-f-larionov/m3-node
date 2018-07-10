@@ -180,9 +180,10 @@ ClientCodeLoader = function () {
         Logs.log("Load client code.");
         var code;
         code = "";
-        code += "<!DOCTYPE html>";
+        code += "<!doctype html>";
         code += "<html>";
         code += "<head>";
+        code += "<style type='text/css'>*{padding:0px;margin:0px;}</style>";
         code += "<meta charset='utf-8' />";
         code += "<script>window.PLATFORM_ID = 'STANDALONE';</script>";
         code += "<script src='" + projectPrefix + "/js/MainClientCode.js?t=" + (new Date().getTime()).toString() + "'></script>\r\n";
