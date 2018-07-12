@@ -94,10 +94,10 @@ ElementPoint = function () {
     var mouseStateFocused = false;
 
     /**
-     * Цвет точки, 1 - серый, 2 - красный, 3 - жёлтый
+     * Состояние точки точки, 1 - серый, 2 - красный, 3 - жёлтый
      * @type {number}
      */
-    this.colorId = 1;
+    this.stateId = 1;
 
     this.pointId = null;
 
@@ -143,7 +143,7 @@ ElementPoint = function () {
     this.redraw = function () {
         let src;
         if (!showed) return;
-        switch (this.colorId) {
+        switch (this.stateId) {
             case 1:
                 dom.backgroundImage = this.srcGrey;
                 break;
@@ -207,6 +207,10 @@ ElementPoint = function () {
         mouseStateDown = false;
         mouseStateFocused = false;
         self.redraw();
-        return self.onClick.call(null, mouseEvent, dom);
+        return self.onClick.call(null, mouseEvent, dom, this);
     };
 };
+
+ElementPoint.STATE_CLOSE = 1;
+ElementPoint.STATE_CURRENT = 2;
+ElementPoint.STATE_FINISHED = 3;

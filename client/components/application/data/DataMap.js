@@ -67,7 +67,7 @@ DataMap = function () {
         SAPIMap.sendMeMaps(mapId);
     };
 
-    this.setMaps = function (mapId, mapData) {
+    this.setMapById = function (mapId, mapData) {
         maps[mapId] = mapData;
         PageController.redraw();
     };

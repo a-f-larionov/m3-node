@@ -206,11 +206,12 @@ PageBlockMaps = function PageBlockMaps() {
                 y: pointCoords[i].y,
                 stars: 0,
                 friends: [],
-                colorId: 1,
+                stateId: ElementPoint.STATE_CLOSE,
                 number: pointCoords[i].number,
                 pointId: pointCoords[i].number,
                 width: 70,
-                height: 64
+                height: 64,
+                onClick: LogicMap.onPointClick
             });
             this.elements.push(element);
             pointsEls[pointCoords[i].number] = element;
@@ -272,7 +273,7 @@ PageBlockMaps = function PageBlockMaps() {
         let data, element;
         data = DataMap.getCurent();
         if (!data) {
-            this.loadCurrentMap();
+            DataMap
             return;
         }
         if (!elMapElements[data.id]) {
@@ -294,7 +295,7 @@ PageBlockMaps = function PageBlockMaps() {
         let data;
         data = DataMap.getCurent();
         if (!data) {
-            this.loadCurrentMap();
+            DataMap.loadMap();
             return;
         }
 
@@ -322,7 +323,7 @@ PageBlockMaps = function PageBlockMaps() {
         let data;
         data = DataMap.getCurent();
         if (!data) {
-            this.loadCurrentMap();
+            DataMap.loadMap();
             return;
         }
         data = DataMap.getCurent();
@@ -338,10 +339,6 @@ PageBlockMaps = function PageBlockMaps() {
         }
     };
 
-    this.loadCurrentMap = function () {
-        DataMap.loadMap();
-    };
-
     this.presetPoints = function () {
         let user, pointId;
         user = LogicUser.getCurrentUser();
@@ -350,9 +347,9 @@ PageBlockMaps = function PageBlockMaps() {
             pointId = DataMap.getPointIdFromPointNumber(number);
             pointsEls[number].pointId = pointId;
 
-            if (pointId == user.currentPoint) pointsEls[number].colorId = 2;
-            if (pointId < user.currentPoint) pointsEls[number].colorId = 3;
-            if (pointId > user.currentPoint) pointsEls[number].colorId = 1;
+            if (pointId == user.currentPoint) pointsEls[number].stateId = 2;
+            if (pointId < user.currentPoint) pointsEls[number].stateId = 3;
+            if (pointId > user.currentPoint) pointsEls[number].stateId = 1;
         }
     };
 };

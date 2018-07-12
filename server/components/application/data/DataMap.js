@@ -77,7 +77,7 @@ DataMap = function () {
     this.getMap = function (mapId) {
         //@todo check mapId diapazon
         return maps[mapId];
-    }
+    };
 }
 ;
 

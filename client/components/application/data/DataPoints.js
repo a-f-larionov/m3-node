@@ -19,10 +19,36 @@ DataPoints = function () {
         }
     ];
 
-    this.getPointsCoords = function () {
 
+    var pointsData = [];
+
+    this.getPointsCoords = function () {
         return pointsCoords;
+    };
+
+    this.getById = function (id) {
+        return pointsData[id];
+    };
+
+    this.loadById = function (id) {
+        SAPIMap.sendMePointData(id);
+    };
+
+    this.setPointData = function (id, data) {
+        pointsData[id] = data;
+        PageController.redraw();
     };
 };
 
 DataPoints = new DataPoints;
+
+DataPoints.OBJECT_NONE = 1;
+DataPoints.OBJECT_EMPTY = 2;
+DataPoints.OBJECT_GREEN = 3;
+DataPoints.OBJECT_RED = 4;
+DataPoints.OBJECT_BLUE = 5;
+DataPoints.OBJECT_BLOCK = 6;
+
+
+DataPoints.FIELD_MAX_WIDTH = 5;
+DataPoints.FIELD_MAX_HEIGHT = 5;
