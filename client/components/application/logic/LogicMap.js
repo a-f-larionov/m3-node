@@ -20,8 +20,7 @@ LogicMap = function () {
          */
         if (element.stateId == ElementPoint.STATE_CLOSE) return;
         data = DataPoints.getById(element.pointId);
-        if (!data)return DataPoints.loadById(element.pointId);
-
+        //*todo**/
         PageController.showPage(PageField);
     };
 };

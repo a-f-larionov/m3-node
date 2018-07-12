@@ -150,7 +150,7 @@ PageBlockMaps = function PageBlockMaps() {
             y: 0,
             width: 777,
             height: 500,
-            src: DataMap.getCurent()['src']
+            src: '/images/ratingInfo.png'
         });
         self.elements.push(elMap);
 
@@ -273,7 +273,7 @@ PageBlockMaps = function PageBlockMaps() {
         let data, element;
         data = DataMap.getCurent();
         if (!data) {
-            DataMap
+            DataMap.loadMap();
             return;
         }
         if (!elMapElements[data.id]) {
@@ -326,7 +326,6 @@ PageBlockMaps = function PageBlockMaps() {
             DataMap.loadMap();
             return;
         }
-        data = DataMap.getCurent();
         elMap.src = data.src;
         elMap.redraw();
 

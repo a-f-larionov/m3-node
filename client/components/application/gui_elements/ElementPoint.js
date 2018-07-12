@@ -70,12 +70,6 @@ ElementPoint = function () {
     this.title = null;
 
     /**
-     * Активна ли кнопка.
-     * @type {boolean}
-     */
-    this.enabled = true;
-
-    /**
      * Дом картинки.
      * @type {GUIDom}
      */
@@ -155,13 +149,10 @@ ElementPoint = function () {
                 break;
         }
 
-        if (self.title) dom.title = self.title;
-        if (self.enabled) {
-            dom.pointer = GUI.POINTER_HAND;
-            dom.opacity = 1.0;
-        } else {
+        if (self.stateId == ElementPoint.STATE_CLOSE) {
             dom.pointer = GUI.POINTER_ARROW;
-            dom.opacity = 0.5;
+        } else {
+            dom.pointer = GUI.POINTER_HAND;
         }
         dom.x = self.x;
         dom.y = self.y;
@@ -203,7 +194,7 @@ ElementPoint = function () {
     var onMouseClick = function (mouseEvent, dom) {
         /* Да, тут мы останавливаем дальнейшие течение клика. */
         mouseEvent.stopPropagation();
-        if (!self.enabled) return;
+        if (self.stateId == ElementPoint.STATE_CLOSE)return;
         mouseStateDown = false;
         mouseStateFocused = false;
         self.redraw();

@@ -37,8 +37,19 @@ DataPoints = function () {
 
     this.getPointData = function (id) {
         return pointsData[id];
-    }
+    };
 
+    this.getPointsByMapId = function (mapId) {
+        let firstPointId, lastPointId, points;
+        firstPointId = DataMap.getFirstPointId(mapId);
+        lastPointId = DataMap.getLastPointId(mapId);
+
+        points = [];
+        for (let id = firstPointId; id <= lastPointId; id++) {
+            points.push(this.getPointData(id));
+        }
+        return points;
+    };
 };
 
 DataPoints = new DataPoints;

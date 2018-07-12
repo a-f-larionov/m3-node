@@ -1,12 +1,11 @@
 CAPIMap = function () {
 
-    this.gotMaps = function (ctnx, mapId, map) {
+    this.gotMapsInfo = function (ctnx, mapId, map, points) {
         DataMap.setMapById(mapId, map);
+        for (let i in points) {
+            DataPoints.setPointData(points[i].id, points[i]);
+        }
     };
-
-    this.gotPointData = function(cntx, pointId, data){
-        DataPoints.setPointData(pointId, data);
-    }
 };
 
 CAPIMap = new CAPIMap();

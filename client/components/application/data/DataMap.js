@@ -13,58 +13,15 @@ DataMap = function () {
     var currentMapId = 1;
 
     /**
-     * DataMap
-     * Первый элемент копирует \server\components\application\data\DataMap.js
-     * остальные будут подгружены.
+     * DataMapjs
      * @type {[*]}
      */
-    var maps = {
-        '1': {
-            id: 1,
-            src: '/images/maps/map-001.png',
-            elements: [
-                {
-                    name: 'ElementSprite',
-                    animPlay: true,
-                    params: {
-                        x: 50,
-                        y: 50,
-                        src: '/images/man-01.png',
-                        domInitParams: {
-                            animTracks: [
-                                [
-                                    {
-                                        type: GUI.ANIM_TYPE_MOVIE,
-                                        images: [
-                                            '/images/man_right_1.png',
-                                            '/images/man_right_2.png',
-                                            '/images/man_right_3.png',
-                                            '/images/man_right_4.png',
-                                            '/images/man_right_5.png',
-                                            '/images/man_right_6.png',
-                                            '/images/man_right_7.png',
-                                            '/images/man_right_8.png'
-                                        ]
-                                        , duration: 8
-                                    },
-                                    {type: GUI.ANIM_TYPE_GOTO, pos: 0}
-                                ],
-                                [
-                                    {type: GUI.ANIM_TYPE_MOVE, vX: 3, vY: 0, duration: 200},
-                                    {type: GUI.ANIM_TYPE_MOVE, vX: -3, vY: 0, duration: 200},
-                                    {type: GUI.ANIM_TYPE_GOTO, pos: 0}
-                                ]
-                            ]
-                        }
-                    }
-                }
-            ]
-        }
-    };
+    var maps = {};
+
 
     this.loadMap = function (mapId) {
         if (!mapId) mapId = currentMapId;
-        SAPIMap.sendMeMaps(mapId);
+        SAPIMap.sendMeMapInfo(mapId);
     };
 
     this.setMapById = function (mapId, mapData) {
