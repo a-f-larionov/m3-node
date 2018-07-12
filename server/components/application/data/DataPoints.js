@@ -5,37 +5,103 @@ DataPoints = function () {
     pointsData[1] = {
         id: 1,
         field: [
-            "nnnnn",
-            "neeen",
-            "nrgbn",
-            "neeen",
-            "nnnnn"
+            "bbbbb",
+            "bnnnb",
+            "bRGBb",
+            "bnnnb",
+            "bbbbb"
         ]
     };
 
     pointsData[2] = {
         id: 2,
         field: [
-            "neeen",
-            "neeen",
-            "nrgbn",
-            "neeen",
-            "nnnnn"
+            "bnnnb",
+            "bnnnb",
+            "bRGBb",
+            "bnnnb",
+            "bbbbb"
         ]
     };
 
     pointsData[3] = {
         id: 3,
         field: [
-            "neeen",
-            "neeen",
-            "nrgbn",
-            "neeen",
-            "neeen"
+            "bbbbb",
+            "bnnnb",
+            "bRGBb",
+            "bnnnb",
+            "bnnnb"
         ]
     };
 
-    this.getPointData = function (id) {
+    pointsData[4] = {
+        id: 4,
+        field: [
+            "bbbbb",
+            "bnnnb",
+            "bRGBb",
+            "bnnnb",
+            "Rbbbb"
+        ]
+    };
+
+    pointsData[5] = {
+        id: 5,
+        field: [
+            "bnnnb",
+            "bnnnb",
+            "bRGBb",
+            "bnnnb",
+            "Gbbbb"
+        ]
+    };
+
+    pointsData[6] = {
+        id: 6,
+        field: [
+            "bbbbb",
+            "bnnnb",
+            "bRGBb",
+            "bnnnb",
+            "Bnnnb"
+        ]
+    };
+
+    pointsData[7] = {
+        id: 7,
+        field: [
+            "bbbbb",
+            "bnnnb",
+            "bRGBb",
+            "bnnnb",
+            "Rbbbb"
+        ]
+    };
+
+    pointsData[8] = {
+        id: 8,
+        field: [
+            "bnnnb",
+            "bnnnb",
+            "bRGBb",
+            "bnnnb",
+            "Gbbbb"
+        ]
+    };
+
+    pointsData[9] = {
+        id: 9,
+        field: [
+            "bbbbb",
+            "bnnnb",
+            "bRGBb",
+            "bnnnb",
+            "Bnnnb"
+        ]
+    };
+
+    this.getById = function (id) {
         return pointsData[id];
     };
 
@@ -46,7 +112,7 @@ DataPoints = function () {
 
         points = [];
         for (let id = firstPointId; id <= lastPointId; id++) {
-            points.push(this.getPointData(id));
+            points.push(this.getById(id));
         }
         return points;
     };
@@ -60,8 +126,8 @@ DataPoints = new DataPoints;
  */
 DataPoints.OBJECT_NONE = 1;
 DataPoints.OBJECT_EMPTY = 2;
-DataPoints.OBJECT_GREEN = 3;
-DataPoints.OBJECT_RED = 4;
+DataPoints.OBJECT_RED = 3;
+DataPoints.OBJECT_GREEN = 4;
 DataPoints.OBJECT_BLUE = 5;
 DataPoints.OBJECT_BLOCK = 6;
 

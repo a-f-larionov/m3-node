@@ -11,6 +11,7 @@ PageBlockField = function PageBlockField() {
      */
     var showed = false;
 
+    var elementField = null;
     /**
      * Массив всех элементов страницы.
      * @type {Array}
@@ -26,6 +27,19 @@ PageBlockField = function PageBlockField() {
         element = GUI.createElement(ElementField, {
             x: 250,
             y: 100,
+        });
+        elementField = element;
+        this.elements.push(element);
+
+        element = GUI.createElement(ElementButton, {
+            x: 10,
+            y: 10,
+            srcRest: '/images/field-red.png',
+            srcHover: '/images/field-green.png',
+            srcActive: '/images/field-blue.png',
+            onClick: function () {
+                PageController.showPage(PageMain);
+            }
         });
         this.elements.push(element);
     };
@@ -57,6 +71,12 @@ PageBlockField = function PageBlockField() {
      */
     this.preset = function () {
 
+        let data;
+
+        data = DataPoints.getById(DataPoints.getCurrentPointId());
+        elementField.setField(data.field);
+        console.log(data);
+        // set objects from field data
     };
 
     /**

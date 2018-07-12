@@ -27,6 +27,13 @@ ElementField = function () {
     let domCells = [];
     let domObjects = [];
 
+    let fieldArray = null;
+    let objectImages = {};
+    objectImages[DataPoints.OBJECT_NONE] = '/images/field-none.png';
+    objectImages[DataPoints.OBJECT_RED] = '/images/field-red.png';
+    objectImages[DataPoints.OBJECT_GREEN] = '/images/field-green.png';
+    objectImages[DataPoints.OBJECT_BLUE] = '/images/field-blue.png';
+    objectImages[DataPoints.OBJECT_BLOCK] = '/images/field-block.png';
     /**
      * Создадим дом и настроем его.
      */
@@ -105,7 +112,7 @@ ElementField = function () {
         }
         for (let y = 0; y < DataPoints.FIELD_MAX_HEIGHT; y++) {
             for (let x = 0; x < DataPoints.FIELD_MAX_WIDTH; x++) {
-                domCells[y][x].hide();
+                domObjects[y][x].hide();
             }
         }
     };
@@ -121,10 +128,24 @@ ElementField = function () {
                 domCells[y][x].redraw();
             }
         }
+        console.log('redraw ');
         for (let y = 0; y < DataPoints.FIELD_MAX_HEIGHT; y++) {
             for (let x = 0; x < DataPoints.FIELD_MAX_WIDTH; x++) {
-                domObjects[y][x].show();
+                if (fieldArray) {
+                    domObjects[y][x].backgroundImage = objectImages[fieldArray[y][x]];
+                }
+                domObjects[y][x].redraw();
             }
         }
+    };
+
+    /**
+     * Set the field data.
+     * @param field
+     */
+    this.setField = function (field) {
+        console.log('setField');
+        fieldArray = field;
+        this.redraw();
     };
 };

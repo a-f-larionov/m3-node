@@ -12,15 +12,8 @@ LogicMap = function () {
     };
 
     this.onPointClick = function (event, dom, element) {
-        let data;
-        /**
-         * -проверить активность?
-         * - данные для этой точки:
-         * - открыть игру для данной точки
-         */
         if (element.stateId == ElementPoint.STATE_CLOSE) return;
-        data = DataPoints.getById(element.pointId);
-        //*todo**/
+        DataPoints.setCurrentPointId(element.pointId);
         PageController.showPage(PageField);
     };
 };

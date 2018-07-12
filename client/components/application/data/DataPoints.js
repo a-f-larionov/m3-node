@@ -38,14 +38,24 @@ DataPoints = function () {
         pointsData[id] = data;
         PageController.redraw();
     };
+
+    let currentPointId = null;
+
+    this.setCurrentPointId = function (id) {
+        currentPointId = id;
+    };
+
+    this.getCurrentPointId = function () {
+        return currentPointId;
+    };
 };
 
 DataPoints = new DataPoints;
 
 DataPoints.OBJECT_NONE = 1;
 DataPoints.OBJECT_EMPTY = 2;
-DataPoints.OBJECT_GREEN = 3;
-DataPoints.OBJECT_RED = 4;
+DataPoints.OBJECT_RED = 3;
+DataPoints.OBJECT_GREEN = 4;
 DataPoints.OBJECT_BLUE = 5;
 DataPoints.OBJECT_BLOCK = 6;
 
