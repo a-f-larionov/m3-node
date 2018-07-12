@@ -89,6 +89,18 @@ DataMap = function () {
         }
         currentMapId--;
     };
+
+    this.getFirstPointId = function () {
+        return DataMap.POINTS_PER_MAP * (currentMapId - 1) + 1;
+    };
+
+    this.getLastPointId = function () {
+        return this.getFirstPointId() + DataMap.POINTS_PER_MAP - 1;
+    };
+
+    this.getPointIdFromPointNumber = function (number) {
+        return this.getFirstPointId() + (number - 1);
+    };
 }
 ;
 
@@ -96,3 +108,4 @@ DataMap = new DataMap();
 
 DataMap.MAP_ID_MIN = 1;
 DataMap.MAP_ID_MAX = 3;
+DataMap.POINTS_PER_MAP = 3;

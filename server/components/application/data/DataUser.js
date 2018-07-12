@@ -106,7 +106,8 @@ DataUser = function () {
             socNetTypeId: user.socNetTypeId,
             socNetUserId: user.socNetUserId,
             createTimestamp: user.createTimestamp,
-            lastLoginTimestamp: user.lastLoginTimestamp
+            lastLoginTimestamp: user.lastLoginTimestamp,
+            currentPoint: user.currentPoint
         };
         callback(user);
         DB.update(tableName, data, function (result) {

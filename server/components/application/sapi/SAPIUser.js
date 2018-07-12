@@ -47,6 +47,23 @@ SAPIUser = function () {
         LogicUser.authorizeByStandalone(socNetUserId, authParams, cntx);
     };
 
+    /**
+     * Отправяел информацию о пользователи в текущие соединение.
+     * @param cntx object
+     * @param userId number
+     */
+    this.sendMeUserInfo = function (cntx, userId) {
+        if (!cntx.isAuthorized) {
+            Logs.log("SAPIUser.sendMeUserInfo: must be authorized", Logs.LEVEL_WARNING);
+            return;
+        }
+        if (!userId || typeof userId !== 'number') {
+            Logs.log("SAPIUser.sendMeUserInfo: must have userId", Logs.LEVEL_WARNING, userId);
+            return;
+        }
+        LogicUser.sendUserInfo(userId, cntx.userId);
+    };
+
     var files = [];
 
 };

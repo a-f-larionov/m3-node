@@ -167,7 +167,7 @@ LogicUser = function () {
      * @returns {boolean}
      */
     this.isUserOnline = function (userId) {
-        return userGetConns(userId) ? true : false;
+        return !!userGetConns(userId);
     };
 
     /**
@@ -230,9 +230,8 @@ LogicUser = function () {
      * @param userId {Number} id пользователя.
      */
     var onLogout = function (userId) {
-        var gameIds;
-        Statistic.add(userId, Statistic.ID_LOGOUT);
         Logs.log("User logout. user.id=" + userId, Logs.LEVEL_DETAIL);
+        Statistic.add(userId, Statistic.ID_LOGOUT);
         DataUser.updateLastLogout(userId);
     };
 
@@ -247,6 +246,22 @@ LogicUser = function () {
             onLogout(cntx.userId);
             userDeleteConn(cntx);
         }
+    };
+
+    /**
+     * Отправка информации о пользователе.
+     * @param toUserId {Number} кому отправляем.
+     * @param userId {Number} данные о каком пользователе.
+     */
+    this.sendUserInfo = function (userId, toUserId) {
+        DataUser.getById(userId, function (user) {
+            if (user) {
+                user.online = self.isUserOnline(user.id);
+                CAPIUser.updateUserInfo(toUserId, user);
+            } else {
+                Logs.log("LogicUser.sendUserInfo. User not found: id=" + userId, Logs.LEVEL_WARNING);
+            }
+        });
     };
 };
 

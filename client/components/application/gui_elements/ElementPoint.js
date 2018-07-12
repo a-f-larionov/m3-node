@@ -99,6 +99,10 @@ ElementPoint = function () {
      */
     this.colorId = 1;
 
+    this.pointId = null;
+
+    this.numberId = null;
+
     /**
      * Создадим дом и настроем его.
      */
@@ -137,9 +141,8 @@ ElementPoint = function () {
      * Перерисуем кнопку.
      */
     this.redraw = function () {
-        var src;
+        let src;
         if (!showed) return;
-        console.log(dom);
         switch (this.colorId) {
             case 1:
                 dom.backgroundImage = this.srcGrey;

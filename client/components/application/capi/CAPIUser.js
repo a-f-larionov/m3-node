@@ -9,6 +9,17 @@ CAPIUser = function () {
         LogicUser.authorizeSuccess(userId);
     };
 
+    /**
+     * Обновить данные о пользователи.
+     * @param cntx {Object} контекст соединения.
+     * @param user {Object} юзер инфо.
+     */
+    this.updateUserInfo = function (cntx, user) {
+        user.createTimestamp = LogicTimeClient.convertToClient(user.createTimestamp);
+        user.lastLoginTimestamp = LogicTimeClient.convertToClient(user.lastLoginTimestamp);
+        LogicUser.updateUserInfo(user);
+    };
+
 };
 
 /**

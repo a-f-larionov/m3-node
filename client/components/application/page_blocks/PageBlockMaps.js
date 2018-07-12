@@ -27,6 +27,8 @@ PageBlockMaps = function PageBlockMaps() {
 
     var mapIdOld = 1;
 
+    var pointsEls = [];
+
     /**
      * Массив всех элементов страницы.
      * @type {Array}
@@ -204,9 +206,14 @@ PageBlockMaps = function PageBlockMaps() {
                 y: pointCoords[i].y,
                 stars: 0,
                 friends: [],
-                colorId: 1
+                colorId: 1,
+                number: pointCoords[i].number,
+                pointId: pointCoords[i].number,
+                width: 70,
+                height: 64
             });
             this.elements.push(element);
+            pointsEls[pointCoords[i].number] = element;
         }
     };
 
@@ -329,7 +336,6 @@ PageBlockMaps = function PageBlockMaps() {
         for (let i in elMapElements[data.id]) {
             elMapElements[data.id][i].redraw();
         }
-
     };
 
     this.loadCurrentMap = function () {
@@ -337,7 +343,17 @@ PageBlockMaps = function PageBlockMaps() {
     };
 
     this.presetPoints = function () {
+        let user, pointId;
+        user = LogicUser.getCurrentUser();
+        for (let number = 1; number <= DataMap.POINTS_PER_MAP; number++) {
 
+            pointId = DataMap.getPointIdFromPointNumber(number);
+            pointsEls[number].pointId = pointId;
+
+            if (pointId == user.currentPoint) pointsEls[number].colorId = 2;
+            if (pointId < user.currentPoint) pointsEls[number].colorId = 3;
+            if (pointId > user.currentPoint) pointsEls[number].colorId = 1;
+        }
     };
 };
 

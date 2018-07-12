@@ -11,6 +11,11 @@ DataPoints = function () {
             number: 2,
             x: 86,
             y: 309
+        },
+        {
+            number: 3,
+            x: 76,
+            y: 207
         }
     ];
 
