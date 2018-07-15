@@ -19,9 +19,9 @@ DataPoints = function () {
         score3: 300,
         field: [
             "bbbbb",
-            "bnnnb",
+            "brrrb",
             "bRGBb",
-            "bnnnb",
+            "brrrb",
             "bbbbb"
         ]
     };
@@ -32,10 +32,10 @@ DataPoints = function () {
         score2: 200,
         score3: 300,
         field: [
-            "bnnnb",
-            "bnnnb",
+            "brrrb",
+            "brrrb",
             "bRGBb",
-            "bnnnb",
+            "brrrb",
             "bbbbb"
         ]
     };
@@ -49,7 +49,7 @@ DataPoints = function () {
             "bbbbb",
             "bnnnb",
             "bRGBb",
-            "bnnnb",
+            "brnrb",
             "bnnnb"
         ]
     };
@@ -61,7 +61,7 @@ DataPoints = function () {
         score3: 300,
         field: [
             "bbbbb",
-            "bnnnb",
+            "brrrb",
             "bRGBb",
             "bnnnb",
             "Rbbbb"
@@ -74,8 +74,8 @@ DataPoints = function () {
         score2: 200,
         score3: 300,
         field: [
-            "bnnnb",
-            "bnnnb",
+            "brrrb",
+            "bnrnb",
             "bRGBb",
             "bnnnb",
             "Gbbbb"
@@ -178,7 +178,7 @@ DataPoints = new DataPoints;
  * @type {number}
  */
 DataPoints.OBJECT_NONE = 1;
-DataPoints.OBJECT_EMPTY = 2;
+DataPoints.OBJECT_RANDOM = 2;
 DataPoints.OBJECT_RED = 3;
 DataPoints.OBJECT_GREEN = 4;
 DataPoints.OBJECT_BLUE = 5;

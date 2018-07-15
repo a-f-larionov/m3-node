@@ -79,12 +79,11 @@ DataPoints = function () {
 DataPoints = new DataPoints;
 
 DataPoints.OBJECT_NONE = 1;
-DataPoints.OBJECT_EMPTY = 2;
+DataPoints.OBJECT_RANDOM = 2;
 DataPoints.OBJECT_RED = 3;
 DataPoints.OBJECT_GREEN = 4;
 DataPoints.OBJECT_BLUE = 5;
 DataPoints.OBJECT_BLOCK = 6;
-
 
 DataPoints.FIELD_MAX_WIDTH = 5;
 DataPoints.FIELD_MAX_HEIGHT = 5;

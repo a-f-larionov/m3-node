@@ -72,8 +72,6 @@ ElementField = function () {
             }
         }
 
-        console.log(domCells);
-
         this.redraw();
     };
 
