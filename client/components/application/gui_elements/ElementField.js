@@ -128,7 +128,6 @@ ElementField = function () {
                 domCells[y][x].redraw();
             }
         }
-        console.log('redraw ');
         for (let y = 0; y < DataPoints.FIELD_MAX_HEIGHT; y++) {
             for (let x = 0; x < DataPoints.FIELD_MAX_WIDTH; x++) {
                 if (fieldArray) {
@@ -144,8 +143,35 @@ ElementField = function () {
      * @param field
      */
     this.setField = function (field) {
-        console.log('setField');
         fieldArray = field;
         this.redraw();
+    };
+
+    this.fallField = function () {
+        for (let y = 0; y < DataPoints.FIELD_MAX_HEIGHT; y++) {
+            for (let x = 0; x < DataPoints.FIELD_MAX_WIDTH; x++) {
+                if (fieldArray[y][x] == DataPoints.OBJECT_BLOCK)continue;
+                if (
+                    y < DataPoints.FIELD_MAX_HEIGHT &&
+                    (fieldArray[y][x] == DataPoints.OBJECT_RED ||
+                    fieldArray[y][x] == DataPoints.OBJECT_GREEN ||
+                    fieldArray[y][x] == DataPoints.OBJECT_BLUE)
+                    &&
+                    fieldArray[y + 1][x] == DataPoints.OBJECT_NONE
+                ) {
+                    fieldArray[y + 1][x] = fieldArray[y][x];
+                    fieldArray[y][x] = DataPoints.OBJECT_NONE;
+                }
+            }
+        }
+        this.redraw();
+    };
+
+    this.randomField = function () {
+        for (let y = 0; y < DataPoints.FIELD_MAX_HEIGHT; y++) {
+            for (let x = 0; x < DataPoints.FIELD_MAX_WIDTH; x++) {
+                if (fieldArray[y][x] == DataPoints.OBJECT_BLOCK)continue;
+            }
+        }
     };
 };

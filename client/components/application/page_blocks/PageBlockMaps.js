@@ -204,7 +204,6 @@ PageBlockMaps = function PageBlockMaps() {
             element = GUI.createElement(ElementPoint, {
                 x: pointCoords[i].x,
                 y: pointCoords[i].y,
-                stars: 0,
                 friends: [],
                 stateId: ElementPoint.STATE_CLOSE,
                 number: pointCoords[i].number,
@@ -339,16 +338,31 @@ PageBlockMaps = function PageBlockMaps() {
     };
 
     this.presetPoints = function () {
-        let user, pointId;
+        let user, pointId, point, pointEl, pointUsersInfo, map;
         user = LogicUser.getCurrentUser();
+        map = DataMap.getCurent();
+        if (!map)return;
+        pointUsersInfo = DataPoints.getUsersInfo(map.id, [user.id]);
         for (let number = 1; number <= DataMap.POINTS_PER_MAP; number++) {
 
             pointId = DataMap.getPointIdFromPointNumber(number);
             pointsEls[number].pointId = pointId;
+            point = DataPoints.getById(pointId);
+            if (!point) continue;
+            pointEl = pointsEls[number];
 
-            if (pointId == user.currentPoint) pointsEls[number].stateId = 2;
-            if (pointId < user.currentPoint) pointsEls[number].stateId = 3;
-            if (pointId > user.currentPoint) pointsEls[number].stateId = 1;
+            if (point.id == user.currentPoint) pointEl.stateId = 2;
+            if (point.id < user.currentPoint) pointEl.stateId = 3;
+            if (point.id > user.currentPoint) pointEl.stateId = 1;
+
+            pointEl.score1 = point.score1;
+            pointEl.score2 = point.score2;
+            pointEl.score3 = point.score3;
+
+            if (pointUsersInfo[pointId])
+                pointEl.userScore = pointUsersInfo[pointId][user.id] ? pointUsersInfo[pointId][user.id].score : 0;
+            else
+                pointEl.userScore = 0;
         }
     };
 };

@@ -31,6 +31,7 @@ PageBlockField = function PageBlockField() {
         elementField = element;
         this.elements.push(element);
 
+        // close
         element = GUI.createElement(ElementButton, {
             x: 10,
             y: 10,
@@ -42,6 +43,20 @@ PageBlockField = function PageBlockField() {
             }
         });
         this.elements.push(element);
+
+        // fall
+        element = GUI.createElement(ElementButton, {
+            x: 100,
+            y: 10,
+            srcRest: '/images/field-red.png',
+            srcHover: '/images/field-green.png',
+            srcActive: '/images/field-blue.png',
+            onClick: function () {
+                elementField.fallField();
+            }
+        });
+        this.elements.push(element);
+
     };
 
     /**

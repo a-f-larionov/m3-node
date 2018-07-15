@@ -1,9 +1,22 @@
 DataPoints = function () {
 
+    let tableName = 'users_points';
+
     let pointsData = {};
+
+    let fromDBToData = function (data) {
+        if (!data) return data;
+        if (data.userId) data.userId = parseInt(data.userId);
+        if (data.pointId) data.pointId = parseInt(data.pointId);
+        if (data.score) data.score = parseInt(data.score);
+        return data;
+    };
 
     pointsData[1] = {
         id: 1,
+        score1: 100,
+        score2: 200,
+        score3: 300,
         field: [
             "bbbbb",
             "bnnnb",
@@ -15,6 +28,9 @@ DataPoints = function () {
 
     pointsData[2] = {
         id: 2,
+        score1: 100,
+        score2: 200,
+        score3: 300,
         field: [
             "bnnnb",
             "bnnnb",
@@ -26,6 +42,9 @@ DataPoints = function () {
 
     pointsData[3] = {
         id: 3,
+        score1: 100,
+        score2: 200,
+        score3: 300,
         field: [
             "bbbbb",
             "bnnnb",
@@ -37,6 +56,9 @@ DataPoints = function () {
 
     pointsData[4] = {
         id: 4,
+        score1: 100,
+        score2: 200,
+        score3: 300,
         field: [
             "bbbbb",
             "bnnnb",
@@ -48,6 +70,9 @@ DataPoints = function () {
 
     pointsData[5] = {
         id: 5,
+        score1: 100,
+        score2: 200,
+        score3: 300,
         field: [
             "bnnnb",
             "bnnnb",
@@ -59,6 +84,9 @@ DataPoints = function () {
 
     pointsData[6] = {
         id: 6,
+        score1: 100,
+        score2: 200,
+        score3: 300,
         field: [
             "bbbbb",
             "bnnnb",
@@ -70,6 +98,9 @@ DataPoints = function () {
 
     pointsData[7] = {
         id: 7,
+        score1: 100,
+        score2: 200,
+        score3: 300,
         field: [
             "bbbbb",
             "bnnnb",
@@ -81,6 +112,9 @@ DataPoints = function () {
 
     pointsData[8] = {
         id: 8,
+        score1: 100,
+        score2: 200,
+        score3: 300,
         field: [
             "bnnnb",
             "bnnnb",
@@ -92,6 +126,9 @@ DataPoints = function () {
 
     pointsData[9] = {
         id: 9,
+        score1: 100,
+        score2: 200,
+        score3: 300,
         field: [
             "bbbbb",
             "bnnnb",
@@ -116,6 +153,22 @@ DataPoints = function () {
         }
         return points;
     };
+
+    this.getUsersInfo = function (mapId, userIds, callback) {
+        /**
+         * @TODO  only some points from mapId
+         */
+        DB.queryWhere(tableName, {
+            pointId: [[1, 2, 3, 4, 5, 6], DB.WHERE_IN],
+            userId: [userIds, DB.WHERE_EQUAL],
+        }, function (rows, query) {
+            for (let i in rows) {
+                rows[i] = fromDBToData(rows[i]);
+            }
+            callback(rows || null, query);
+        });
+
+    }
 };
 
 DataPoints = new DataPoints;

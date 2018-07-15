@@ -1,10 +1,17 @@
 CAPIMap = function () {
 
-    this.gotMapsInfo = function (ctnx, mapId, map, points) {
+    this.gotMapsInfo = function (ctnx, mapId, map, points, usersInfo) {
         DataMap.setMapById(mapId, map);
         for (let i in points) {
             points[i].field = convertFieldData(points[i].field);
             DataPoints.setPointData(points[i].id, points[i]);
+        }
+        for (let i in usersInfo) {
+            DataPoints.setUserInfo(
+                parseInt(usersInfo[i].userId),
+                parseInt(usersInfo[i].pointId),
+                parseInt(usersInfo[i].score)
+            );
         }
     };
 

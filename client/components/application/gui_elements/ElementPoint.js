@@ -57,6 +57,9 @@ ElementPoint = function () {
      */
     this.srcYellow = '/images/map-way-point-yellow.png';
 
+    this.srcStarOff = '/images/star-off.png';
+    this.srcStarOn = '/images/star-on.png';
+
     /**
      * Будет вызываться при нажатии на кнопку.
      * @type {function}
@@ -64,16 +67,14 @@ ElementPoint = function () {
     this.onClick = null;
 
     /**
-     * Подсказка кнопки.
-     * @type {String}
-     */
-    this.title = null;
-
-    /**
      * Дом картинки.
      * @type {GUIDom}
      */
     var dom = null;
+
+    let domStar1 = null;
+    let domStar2 = null;
+    let domStar3 = null;
 
     /**
      * Опущена ли мышка.
@@ -110,6 +111,15 @@ ElementPoint = function () {
         GUI.bind(dom, GUI.EVENT_MOUSE_CLICK, onMouseClick, self);
         GUI.bind(dom, GUI.EVENT_MOUSE_OVER, onMouseOver, self);
         GUI.bind(dom, GUI.EVENT_MOUSE_OUT, onMouseOut, self);
+
+        domStar1 = GUI.createDom();
+        domStar1.backgroundImage = self.srcStarOff;
+
+        domStar2 = GUI.createDom();
+        domStar2.backgroundImage = self.srcStarOff;
+
+        domStar3 = GUI.createDom();
+        domStar3.backgroundImage = self.srcStarOff;
     };
 
     /**
@@ -120,6 +130,9 @@ ElementPoint = function () {
         showed = true;
         dom.show();
         self.redraw();
+        domStar1.show();
+        domStar2.show();
+        domStar3.show();
     };
 
     /**
@@ -129,6 +142,9 @@ ElementPoint = function () {
         if (showed == false) return;
         showed = false;
         dom.hide();
+        domStar1.hide();
+        domStar2.hide();
+        domStar3.hide();
     };
 
     /**
@@ -156,7 +172,29 @@ ElementPoint = function () {
         }
         dom.x = self.x;
         dom.y = self.y;
+        let stars = 0;
+        console.log('star', self.score1, self.score2, self.score3, self.userScore);
+        if (self.userScore >= self.score1) stars = 1;
+        if (self.userScore >= self.score2) stars = 2;
+        if (self.userScore >= self.score3) stars = 3;
+
+        domStar1.x = self.x - 30;
+        domStar1.y = self.y - 30;
+        domStar1.backgroundImage = stars >= 1 ? self.srcStarOn : self.srcStarOff;
+
+
+        domStar2.x = self.x;
+        domStar2.y = self.y - 60;
+        domStar2.backgroundImage = stars >= 2 ? self.srcStarOn : self.srcStarOff;
+
+        domStar3.x = self.x + 30;
+        domStar3.y = self.y - 30;
+        domStar3.backgroundImage = stars >= 3 ? self.srcStarOn : self.srcStarOff;
+
         dom.redraw();
+        domStar1.redraw();
+        domStar2.redraw();
+        domStar3.redraw();
     };
 
     /**

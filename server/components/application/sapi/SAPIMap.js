@@ -1,12 +1,20 @@
 SAPIMap = function () {
 
     this.sendMeMapInfo = function (cntx, mapId) {
-        CAPIMap.gotMapsInfo(
-            cntx.userId,
-            mapId,
-            DataMap.getMap(mapId),
-            DataPoints.getPointsByMapId(mapId)
-        );
+        let map, points, usersInfo;
+        map = DataMap.getMap(mapId);
+        points = DataPoints.getPointsByMapId(mapId);
+        DataPoints.getUsersInfo(mapId, [cntx.userId], function (rows, query) {
+            console.log(rows, query);
+            usersInfo = rows;
+            CAPIMap.gotMapsInfo(
+                cntx.userId,
+                mapId,
+                map,
+                points,
+                usersInfo
+            );
+        });
     };
 };
 

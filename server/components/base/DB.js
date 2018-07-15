@@ -74,7 +74,7 @@ DB = function () {
             if (err) {
                 Logs.log("Query error:" + query, Logs.LEVEL_ERROR, err);
             }
-            callback(rows);
+            callback(rows, query);
         });
     };
 

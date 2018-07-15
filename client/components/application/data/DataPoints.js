@@ -1,6 +1,5 @@
 DataPoints = function () {
 
-
     var pointsCoords = [
         {
             number: 1,
@@ -19,8 +18,9 @@ DataPoints = function () {
         }
     ];
 
+    let usersInfo = {};
 
-    var pointsData = [];
+    let pointsData = [];
 
     this.getPointsCoords = function () {
         return pointsCoords;
@@ -47,6 +47,32 @@ DataPoints = function () {
 
     this.getCurrentPointId = function () {
         return currentPointId;
+    };
+
+    this.getUsersInfo = function (mapId, userIds) {
+        let pIdFirst, pIdLast, out;
+        pIdFirst = DataMap.getFirstPointId(mapId);
+        pIdLast = DataMap.getLastPointId(mapId);
+        out = {};
+        for (let pId = pIdFirst; pId <= pIdLast; pId++) {
+            for (let userId in usersInfo[pId]) {
+                if (userIds.indexOf(parseInt(userId)) == -1)continue;
+                if (!out[pId]) out[pId] = {};
+                out[pId][userId] = usersInfo[pId][userId];
+            }
+        }
+        return out;
+    };
+
+    this.setUserInfo = function (userId, pointId, score) {
+        if (!usersInfo[pointId]) {
+            usersInfo[pointId] = {};
+        }
+        usersInfo[pointId][userId] = {
+            userId: userId,
+            pointId: pointId,
+            score: score
+        }
     };
 };
 
