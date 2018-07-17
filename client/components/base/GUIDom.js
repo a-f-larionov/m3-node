@@ -456,6 +456,7 @@ GUIDom = function () {
 
     this.proccessTrack = function (tN) {
         var frame;
+        console.log('frame', self.animTracks[tN][self.animData[tN].frameN]);
         frame = self.animTracks[tN][self.animData[tN].frameN];
         switch (frame.type) {
             case ElementSprite.ANIM_TYPE_ROTATE:
@@ -479,15 +480,16 @@ GUIDom = function () {
             case GUI.ANIM_TYPE_MOVE:
                 self.x += frame.vX;
                 self.y += frame.vY;
+                console.log(self.x, self.y);
                 self.redraw();
                 break;
             case GUI.ANIM_TYPE_PAUSE:
                 break;
             case GUI.ANIM_TYPE_STOP:
+                self.animPlayed = false;
                 if (frame.callback) {
                     frame.callback();
                 }
-                self.animPlayed = false;
                 break;
         }
         self.animData[tN].counter++;
@@ -495,6 +497,13 @@ GUIDom = function () {
         if (frame.duration && self.animData[tN].counter > frame.duration) {
             self.animData[tN].frameN++;
             self.animData[tN].counter = 0;
+            if (self.animTracks[tN][self.animData[tN].frameN] == undefined) {
+                self.animPlayed = false;
+                self.animData[tN].frameN = 0;
+                if (frame.callback) {
+                    frame.callback();
+                }
+            }
         }
     };
 };

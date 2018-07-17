@@ -173,7 +173,7 @@ ElementPoint = function () {
         dom.x = self.x;
         dom.y = self.y;
         let stars = 0;
-        console.log('star', self.score1, self.score2, self.score3, self.userScore);
+
         if (self.userScore >= self.score1) stars = 1;
         if (self.userScore >= self.score2) stars = 2;
         if (self.userScore >= self.score3) stars = 3;

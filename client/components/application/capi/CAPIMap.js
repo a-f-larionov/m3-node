@@ -26,19 +26,12 @@ CAPIMap = function () {
             'b': DataPoints.OBJECT_BLOCK
         };
         fieldResult = {};
-        let randomObjects = [
-            DataPoints.OBJECT_RED,
-            DataPoints.OBJECT_GREEN,
-            DataPoints.OBJECT_BLUE
-        ];
+
         for (let y = 0; y < DataPoints.FIELD_MAX_HEIGHT; y++) {
             fieldResult[y] = [];
             for (let x = 0; x < DataPoints.FIELD_MAX_WIDTH; x++) {
                 source = fieldSource[y][x];
                 result = convertTable[source];
-                if (result == DataPoints.OBJECT_RANDOM) {
-                    result = randomObjects[Math.floor(Math.random() * 3)];
-                }
                 fieldResult[y][x] = result;
             }
         }

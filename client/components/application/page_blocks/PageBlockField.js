@@ -96,8 +96,8 @@ PageBlockField = function PageBlockField() {
     };
 
     this.firstShow = function () {
-
         // run fall down
+        elementField.randomField();
         elementField.fallDown();
     };
 

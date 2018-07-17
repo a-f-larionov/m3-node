@@ -1,5 +1,18 @@
 DataPoints = function () {
 
+    this.OBJECT_NONE = 1;
+    this.OBJECT_RANDOM = 2;
+    this.OBJECT_RED = 3;
+    this.OBJECT_GREEN = 4;
+    this.OBJECT_BLUE = 5;
+    this.OBJECT_BLOCK = 6;
+
+    this.FIELD_MAX_WIDTH = 5;
+    this.FIELD_MAX_HEIGHT = 5;
+
+    this.BLOCK_WIDTH = 50;
+    this.BLOCK_HEIGHT = 50;
+
     var pointsCoords = [
         {
             number: 1,
@@ -77,13 +90,3 @@ DataPoints = function () {
 };
 
 DataPoints = new DataPoints;
-
-DataPoints.OBJECT_NONE = 1;
-DataPoints.OBJECT_RANDOM = 2;
-DataPoints.OBJECT_RED = 3;
-DataPoints.OBJECT_GREEN = 4;
-DataPoints.OBJECT_BLUE = 5;
-DataPoints.OBJECT_BLOCK = 6;
-
-DataPoints.FIELD_MAX_WIDTH = 5;
-DataPoints.FIELD_MAX_HEIGHT = 5;
