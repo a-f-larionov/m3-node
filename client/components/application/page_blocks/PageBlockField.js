@@ -52,11 +52,10 @@ PageBlockField = function PageBlockField() {
             srcHover: '/images/field-green.png',
             srcActive: '/images/field-blue.png',
             onClick: function () {
-                elementField.fallField();
+                elementField.fallDown();
             }
         });
         this.elements.push(element);
-
     };
 
     /**
@@ -68,6 +67,8 @@ PageBlockField = function PageBlockField() {
         for (var i in self.elements) {
             self.elements[i].show();
         }
+        this.loadField();
+        this.firstShow();
     };
 
     /**
@@ -86,12 +87,18 @@ PageBlockField = function PageBlockField() {
      */
     this.preset = function () {
 
-        let data;
+    };
 
+    this.loadField = function () {
+        let data;
         data = DataPoints.getById(DataPoints.getCurrentPointId());
         elementField.setField(data.field);
-        console.log(data);
-        // set objects from field data
+    };
+
+    this.firstShow = function () {
+
+        // run fall down
+        elementField.fallDown();
     };
 
     /**

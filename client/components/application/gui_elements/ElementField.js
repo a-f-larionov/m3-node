@@ -145,7 +145,8 @@ ElementField = function () {
         this.redraw();
     };
 
-    this.fallField = function () {
+    this.fallDown = function () {
+        return;
         for (let y = 0; y < DataPoints.FIELD_MAX_HEIGHT; y++) {
             for (let x = 0; x < DataPoints.FIELD_MAX_WIDTH; x++) {
                 if (fieldArray[y][x] == DataPoints.OBJECT_BLOCK)continue;
