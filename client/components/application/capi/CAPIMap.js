@@ -16,7 +16,7 @@ CAPIMap = function () {
     };
 
     let convertFieldData = function (fieldSource) {
-        let fieldResult, value, source, result;
+        let fieldResult, value, source, result, fieldWidth, fieldHeight;
         let convertTable = {
             'n': DataPoints.OBJECT_NONE,
             'r': DataPoints.OBJECT_RANDOM,
@@ -25,11 +25,13 @@ CAPIMap = function () {
             'B': DataPoints.OBJECT_BLUE,
             'b': DataPoints.OBJECT_BLOCK
         };
-        fieldResult = {};
+        fieldResult = [];
 
-        for (let y = 0; y < DataPoints.FIELD_MAX_HEIGHT; y++) {
+        fieldWidth = fieldSource[0].length;
+        fieldHeight = fieldSource.length;
+        for (let y = 0; y < fieldHeight; y++) {
             fieldResult[y] = [];
-            for (let x = 0; x < DataPoints.FIELD_MAX_WIDTH; x++) {
+            for (let x = 0; x < fieldWidth; x++) {
                 source = fieldSource[y][x];
                 result = convertTable[source];
                 fieldResult[y][x] = result;

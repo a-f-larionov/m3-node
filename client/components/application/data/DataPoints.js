@@ -7,8 +7,8 @@ DataPoints = function () {
     this.OBJECT_BLUE = 5;
     this.OBJECT_BLOCK = 6;
 
-    this.FIELD_MAX_WIDTH = 5;
-    this.FIELD_MAX_HEIGHT = 5;
+    this.FIELD_MAX_WIDTH = 10;
+    this.FIELD_MAX_HEIGHT = 10;
 
     this.BLOCK_WIDTH = 50;
     this.BLOCK_HEIGHT = 50;

@@ -11,6 +11,9 @@ ElementField = function () {
      */
     let showed = false;
 
+    this.centerX = 0;
+    this.centerY = 0;
+
     /**
      * Координата X картинки.
      * @type {number}
@@ -30,7 +33,7 @@ ElementField = function () {
 
     let fieldArray = null;
     let objectImages = {};
-    objectImages[DataPoints.OBJECT_NONE] = '/images/field-none.png';
+    objectImages[DataPoints.OBJECT_NONE] = '/images/field-none-2.png';
     objectImages[DataPoints.OBJECT_RANDOM] = '/images/field-none.png';
     objectImages[DataPoints.OBJECT_RED] = '/images/field-red.png';
     objectImages[DataPoints.OBJECT_GREEN] = '/images/field-green.png';
@@ -49,9 +52,13 @@ ElementField = function () {
         DataPoints.OBJECT_BLUE
     ];
 
-    let animationBlock = false;
-    let animToDownFinished = 0;
-    let animToDown = [];
+    let animBlock = false;
+    let animObjects = [];
+    let animCounter = 0;
+
+    let fieldWidth = 0;
+    let fieldHeight = 0;
+
     /**
      * Создадим дом и настроем его.
      */
@@ -103,6 +110,7 @@ ElementField = function () {
         }
         GUI.popParent();
 
+        OnIdle.register(self.animate);
         this.redraw();
     };
 
@@ -112,16 +120,15 @@ ElementField = function () {
     this.show = function () {
         if (showed == true) return;
         showed = true;
-        /**todo**/
         domBackground.show();
         domObjectsContainer.show();
-        for (let y = 0; y < DataPoints.FIELD_MAX_HEIGHT; y++) {
-            for (let x = 0; x < DataPoints.FIELD_MAX_WIDTH; x++) {
+        for (let y = 0; y < fieldHeight; y++) {
+            for (let x = 0; x < fieldWidth; x++) {
                 domCells[y][x].show();
             }
         }
-        for (let y = -1; y < DataPoints.FIELD_MAX_HEIGHT; y++) {
-            for (let x = 0; x < DataPoints.FIELD_MAX_WIDTH; x++) {
+        for (let y = -1; y < fieldHeight; y++) {
+            for (let x = 0; x < fieldWidth; x++) {
                 domObjects[y][x].show();
             }
         }
@@ -152,19 +159,24 @@ ElementField = function () {
      * Перерисуем картинку.
      */
     this.redraw = function (skipAnimCheck) {
-        console.log('field.redraw');
         if (!showed) return;
-        if (animationBlock && !skipAnimCheck)return;
+        if (animBlock && !skipAnimCheck)return;
+        self.x = self.centerX - DataPoints.BLOCK_WIDTH * Math.floor(fieldWidth / 2);
+        self.y = self.centerY - DataPoints.BLOCK_HEIGHT * Math.floor(fieldHeight / 2);
         domBackground.redraw();
         domObjectsContainer.redraw();
-        for (let y = 0; y < DataPoints.FIELD_MAX_HEIGHT; y++) {
-            for (let x = 0; x < DataPoints.FIELD_MAX_WIDTH; x++) {
+        domObjectsContainer.x = self.x;
+        domObjectsContainer.y = self.y;
+        for (let y = 0; y < fieldHeight; y++) {
+            for (let x = 0; x < fieldWidth; x++) {
+                domCells[y][x].x = self.x + x * DataPoints.BLOCK_WIDTH;
+                domCells[y][x].y = self.y + y * DataPoints.BLOCK_HEIGHT;
                 domCells[y][x].redraw();
             }
         }
         if (fieldArray) {
-            for (let y = -1; y < DataPoints.FIELD_MAX_HEIGHT; y++) {
-                for (let x = 0; x < DataPoints.FIELD_MAX_WIDTH; x++) {
+            for (let y = -1; y < fieldHeight; y++) {
+                for (let x = 0; x < fieldWidth; x++) {
                     domObjects[y][x].backgroundImage = objectImages[fieldArray[y][x]];
                     domObjects[y][x].y = y * DataPoints.BLOCK_HEIGHT;
                     domObjects[y][x].x = x * DataPoints.BLOCK_WIDTH;
@@ -180,14 +192,16 @@ ElementField = function () {
      */
     this.setField = function (field) {
         fieldArray = [];
-        for (let y = 0; y < DataPoints.FIELD_MAX_HEIGHT; y++) {
+        fieldHeight = field.length;
+        fieldWidth = field[0].length;
+        for (let y = 0; y < fieldHeight; y++) {
             fieldArray[y] = [];
-            for (let x = 0; x < DataPoints.FIELD_MAX_WIDTH; x++) {
+            for (let x = 0; x < fieldWidth; x++) {
                 fieldArray[y][x] = field[y][x];
             }
         }
         fieldArray[-1] = [];
-        for (let x = 0; x < DataPoints.FIELD_MAX_WIDTH; x++) {
+        for (let x = 0; x < fieldWidth; x++) {
             fieldArray[-1][x] = DataPoints.OBJECT_GREEN;
         }
 
@@ -196,43 +210,35 @@ ElementField = function () {
 
     this.fallDown = function (nextStep) {
         let anyFound;
-        console.log('field.falldown');
-        if (animationBlock && !nextStep)return;
-        animToDown = [];
-        animToDownFinished = 0;
-        anyFound = false;
         self.redraw(true); // set coords
-        for (let y = DataPoints.FIELD_MAX_HEIGHT - 1; y >= 0; y--) {
-            for (let x = 0; x < DataPoints.FIELD_MAX_WIDTH; x++) {
+        if (animBlock && !nextStep)return;
+        animObjects = [];
+        animCounter = 0;
+        anyFound = false;
+        for (let y = fieldHeight - 1; y >= 0; y--) {
+            for (let x = 0; x < fieldWidth; x++) {
                 if (fieldArray[y][x] == DataPoints.OBJECT_NONE) {
                     if (fallDownObjects.indexOf(fieldArray[y - 1][x]) != -1) {
                         anyFound = true;
                         // exchange
                         fieldArray[y][x] = fieldArray[y - 1][x];
                         fieldArray[y - 1][x] = DataPoints.OBJECT_NONE;
-                        animToDown.push(domObjects[y - 1][x]);
+                        animObjects.push(domObjects[y - 1][x]);
                     }
                 }
             }
         }
         if (anyFound) {
-            for (let i in animToDown) {
-                animToDown[i].animPlayed = true;
-            }
-            console.log('set true anmation');
-            animationBlock = true;
+            animBlock = true;
         } else {
-            console.log('set false anmation');
-            animationBlock = false;
+            animBlock = false;
             this.redraw();
         }
     };
 
     this.randomField = function () {
-        console.log('field.randomField');
-        window.jkl = fieldArray;
-        for (let y = -1; y < DataPoints.FIELD_MAX_HEIGHT; y++) {
-            for (let x = 0; x < DataPoints.FIELD_MAX_WIDTH; x++) {
+        for (let y = -1; y < fieldHeight; y++) {
+            for (let x = 0; x < fieldWidth; x++) {
                 if (fieldArray[y][x] == DataPoints.OBJECT_RANDOM) {
                     fieldArray[y][x] = randomObjects[Math.floor(Math.random() * 3)];
                 }
@@ -241,12 +247,17 @@ ElementField = function () {
         this.redraw();
     };
 
-    this.onAnimFinish = function () {
-        console.log('field.onAnimFinish');
-        animToDownFinished++;
-        if (animToDownFinished == animToDown.length) {
-            console.log('finished all');
+    this.animate = function () {
+        let dom;
+        if (!animBlock)return;
+        animCounter++;
+        for (let i in animObjects) {
+            dom = animObjects[i];
+            dom.y += 15;
+            dom.redraw();
+        }
+        if (animCounter == 3) {
             self.fallDown(true);
         }
-    }
+    };
 };

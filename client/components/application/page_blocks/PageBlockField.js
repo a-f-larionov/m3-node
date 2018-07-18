@@ -25,8 +25,8 @@ PageBlockField = function PageBlockField() {
         let element;
 
         element = GUI.createElement(ElementField, {
-            x: 250,
-            y: 100,
+            centerX: 388,
+            centerY: 250,
         });
         elementField = element;
         this.elements.push(element);
@@ -64,10 +64,10 @@ PageBlockField = function PageBlockField() {
     this.show = function () {
         if (showed === true) return;
         showed = true;
+        this.loadField();
         for (var i in self.elements) {
             self.elements[i].show();
         }
-        this.loadField();
         this.firstShow();
     };
 

@@ -18,11 +18,10 @@ DataPoints = function () {
         score2: 200,
         score3: 300,
         field: [
-            "nbbbb",
-            "nnnnn",
-            "nnnnn",
-            "nnnnn",
-            "nnnnn"
+            "nnnnnn",
+            "nnnnnn",
+            "nnnnnn",
+            "nnnnnn"
         ]
     };
 
@@ -32,11 +31,16 @@ DataPoints = function () {
         score2: 200,
         score3: 300,
         field: [
-            "brrrb",
-            "brrrb",
-            "bRGBb",
-            "brrrb",
-            "bbbbb"
+            "nnnnnnnnnn",
+            "nnnnnnnnnn",
+            "nnnnRnnnnn",
+            "nnnnnnBnnn",
+            "nnnnnnnBnn",
+            "nnnnRnnnnn",
+            "nnnnnnnBnn",
+            "nnnnnnnnnn",
+            "nnnnGnnBnn",
+            "nnnnnnnnnn",
         ]
     };
 
@@ -46,11 +50,16 @@ DataPoints = function () {
         score2: 200,
         score3: 300,
         field: [
-            "bRnBb",
-            "bnGnb",
-            "bnGBb",
-            "bnnnb",
-            "bnnnb"
+            "nnnnnnnnnn",
+            "nnnnnnnnnn",
+            "nnnnnnnnnn",
+            "nnnnnnnnnn",
+            "nnnnnnnnnn",
+            "nnnnnnnnnn",
+            "nnnnnnnnnn",
+            "nnnnnnnnnn",
+            "nnnnnnnnnn",
+            "nnnnnnnnnn",
         ]
     };
 
@@ -60,11 +69,16 @@ DataPoints = function () {
         score2: 200,
         score3: 300,
         field: [
-            "bbbbb",
-            "brrrb",
-            "bRGBb",
-            "bnnnb",
-            "Rbbbb"
+            "nnnnnnnnnn",
+            "nnnnnnnnnn",
+            "nnnnnnnnnn",
+            "nnnnnnnnnn",
+            "nnnnnnnnnn",
+            "nnnnnnnnnn",
+            "nnnnnnnnnn",
+            "nnnnnnnnnn",
+            "nnnnnnnnnn",
+            "nnnnnnnnnn",
         ]
     };
 
@@ -74,11 +88,16 @@ DataPoints = function () {
         score2: 200,
         score3: 300,
         field: [
-            "brrrb",
-            "bnrnb",
-            "bRGBb",
-            "bnnnb",
-            "Gbbbb"
+            "nnnnnnnnnn",
+            "nnnnnnnnnn",
+            "nnnnnnnnnn",
+            "nnnnnnnnnn",
+            "nnnnnnnnnn",
+            "nnnnnnnnnn",
+            "nnnnnnnnnn",
+            "nnnnnnnnnn",
+            "nnnnnnnnnn",
+            "nnnnnnnnnn",
         ]
     };
 
@@ -184,5 +203,5 @@ DataPoints.OBJECT_GREEN = 4;
 DataPoints.OBJECT_BLUE = 5;
 DataPoints.OBJECT_BLOCK = 6;
 
-DataPoints.FIELD_MAX_WIDTH = 5;
-DataPoints.FIELD_MAX_HEIGHT = 5;
+DataPoints.FIELD_MAX_WIDTH = 10;
+DataPoints.FIELD_MAX_HEIGHT = 10;
