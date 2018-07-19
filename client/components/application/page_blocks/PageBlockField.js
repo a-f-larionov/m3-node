@@ -56,6 +56,19 @@ PageBlockField = function PageBlockField() {
             }
         });
         this.elements.push(element);
+
+        // fall
+        element = GUI.createElement(ElementButton, {
+            x: 200,
+            y: 10,
+            srcRest: '/images/field-red.png',
+            srcHover: '/images/field-green.png',
+            srcActive: '/images/field-blue.png',
+            onClick: function () {
+                elementField.findLines();
+            }
+        });
+        this.elements.push(element);
     };
 
     /**

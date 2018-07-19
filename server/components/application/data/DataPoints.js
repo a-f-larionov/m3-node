@@ -18,10 +18,14 @@ DataPoints = function () {
         score2: 200,
         score3: 300,
         field: [
+            "rrrrrr",
+            "rrrrrr",
+            "rrrrrr",
+            "rrrrrr",
             "nnnnnn",
             "nnnnnn",
-            "nnnnnn",
-            "nnRGBn"
+            "nnRGBn",
+            "RRRnnn",
         ]
     };
 
@@ -50,16 +54,14 @@ DataPoints = function () {
         score2: 200,
         score3: 300,
         field: [
-            "nnnnnnnnnn",
-            "nnnnnnnnnn",
-            "nnnnnnnnnn",
-            "nnnnnnnnnn",
-            "nnnnnnnnnn",
-            "nnnnnnnnnn",
-            "nnnnnnnnnn",
-            "nnnnnnnnnn",
-            "nnnnnnnnnn",
-            "nnnnnnnnnn",
+            "Rnnnnnnnnn",
+            "GGnnnnnnnn",
+            "BBBnnnnnnn",
+            "RRRRnnnnnn",
+            "GGGGGnnnnn",
+            "BBBBBBnnnn",
+            "RRRRRRRnnn",
+            "GGGGGGGGnn",
         ]
     };
 
