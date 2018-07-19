@@ -11,6 +11,11 @@ ElementField = function () {
      */
     let showed = false;
 
+    // рамка и все что связано
+    let gemA = null;
+    let gemB = null;
+    let domFrame = null;
+
     this.centerX = 0;
     this.centerY = 0;
 
@@ -52,9 +57,12 @@ ElementField = function () {
         DataPoints.OBJECT_BLUE
     ];
 
+    let animType = null;
     let animBlock = false;
     let animObjects = [];
     let animCounter = 0;
+    let animExchangeHalf = false;
+    let animavx, animavy;
 
     let fieldWidth = 0;
     let fieldHeight = 0;
@@ -96,6 +104,8 @@ ElementField = function () {
             domObjects[y] = [];
             for (let x = 0; x < DataPoints.FIELD_MAX_WIDTH; x++) {
                 dom = GUI.createDom(undefined, {
+                    fieldX: x,
+                    fieldY: y,
                     x: x * DataPoints.BLOCK_WIDTH,
                     y: y * DataPoints.BLOCK_HEIGHT,
                     backgroundImage: '/images/field-none.png',
@@ -105,12 +115,80 @@ ElementField = function () {
                         ]
                     ]
                 });
+                dom.bind(GUI.EVENT_MOUSE_CLICK, function () {
+
+                    if (animBlock)return;
+                    if (randomObjects.indexOf(fieldArray[this.fieldY][this.fieldX]) == -1) {
+                        return;
+                    }
+                    if (!gemA) {
+                        gemA = this;
+                    } else {
+                        //if near
+                        let isNear;
+                        isNear = false;
+                        if (gemA.fieldX == this.fieldX + 1 && gemA.fieldY == this.fieldY + 0) isNear = true;
+                        if (gemA.fieldX == this.fieldX - 1 && gemA.fieldY == this.fieldY + 0) isNear = true;
+                        if (gemA.fieldX == this.fieldX + 0 && gemA.fieldY == this.fieldY + 1) isNear = true;
+                        if (gemA.fieldX == this.fieldX + 0 && gemA.fieldY == this.fieldY - 1) isNear = true;
+
+                        if (isNear) {
+                            domFrame.hide();
+                            gemB = this;
+                            animBlock = true;
+                            let mayExchange = false;
+                            if (gemA.fieldX < gemB.fieldX) {
+                                animType = 2;
+                                animavx = +10;
+                                animavy = 0;
+                            }
+                            if (gemA.fieldX > gemB.fieldX) {
+                                animType = 2;
+                                animavx = -10;
+                                animavy = 0;
+                            }
+                            if (gemA.fieldY < gemB.fieldY) {
+                                animType = 2;
+                                animavx = 0;
+                                animavy = +10;
+                            }
+                            if (gemA.fieldY > gemB.fieldY) {
+                                animType = 2;
+                                animavx = 0;
+                                animavy = -10;
+                            }
+                            if (mayExchange) {
+                                let tmp;
+                                tmp = fieldArray[gemB.fieldY][gemB.fieldX];
+                                fieldArray[gemB.fieldY][gemB.fieldX] =
+                                    fieldArray[gemA.fieldY][gemA.fieldX];
+                                fieldArray[gemA.fieldY][gemA.fieldX] = tmp;
+                                animExchangeHalf = true;
+                            } else {
+                                animExchangeHalf = false;
+                            }
+                            animCounter = 0;
+                        } else {
+                            gemA = this;
+                        }
+                    }
+                    self.redraw();
+                }, dom);
                 domObjects[y][x] = dom;
             }
         }
+        domFrame = GUI.createDom(undefined, {
+            x: self.x,
+            y: self.y,
+            width: DataPoints.BLOCK_WIDTH,
+            height: DataPoints.BLOCK_HEIGHT,
+            backgroundImage: '/images/field-frame.png'
+        });
+
         GUI.popParent();
 
         OnIdle.register(self.animate);
+
         this.redraw();
     };
 
@@ -132,6 +210,8 @@ ElementField = function () {
                 domObjects[y][x].show();
             }
         }
+        domFrame.show();
+        domFrame.redraw();
         self.redraw();
     };
 
@@ -184,6 +264,14 @@ ElementField = function () {
                 }
             }
         }
+        if (gemA) {
+            domFrame.x = gemA.x;
+            domFrame.y = gemA.y;
+            domFrame.show();
+            domFrame.redraw();
+        } else {
+            domFrame.hide();
+        }
     };
 
     /**
@@ -229,8 +317,10 @@ ElementField = function () {
             }
         }
         if (anyFound) {
+            animType = 1;
             animBlock = true;
         } else {
+            animType = 0;
             animBlock = false;
             this.redraw();
         }
@@ -249,15 +339,47 @@ ElementField = function () {
 
     this.animate = function () {
         let dom;
+
         if (!animBlock)return;
-        animCounter++;
-        for (let i in animObjects) {
-            dom = animObjects[i];
-            dom.y += 15;
-            dom.redraw();
-        }
-        if (animCounter == 3) {
-            self.fallDown(true);
+        switch (animType) {
+            case 1:// falldown
+                animCounter++;
+                for (let i in animObjects) {
+                    dom = animObjects[i];
+                    dom.y += 15;
+                    dom.redraw();
+                }
+                if (animCounter == 3) {
+                    self.fallDown(true);
+                }
+                break;
+            case 2: // a <-> b
+
+                animCounter++;
+                if (animCounter <= 5) {
+                    gemA.x += animavx;
+                    gemB.x -= animavx;
+                    gemA.y += animavy;
+                    gemB.y -= animavy;
+                }
+                if (!animExchangeHalf && animCounter > 5) {
+                    gemA.x -= animavx;
+                    gemB.x += animavx;
+                    gemA.y -= animavy;
+                    gemB.y += animavy;
+                }
+                gemA.redraw();
+                gemB.redraw();
+                if ((animExchangeHalf && animCounter == 5)
+                    || animCounter == 10
+                ) {
+                    animBlock = false;
+                    animType = 0;
+                    gemA = null;
+                    gemB = null;
+                    self.redraw();
+                }
+                break;
         }
     };
 };

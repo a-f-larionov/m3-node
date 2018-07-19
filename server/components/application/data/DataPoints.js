@@ -21,7 +21,7 @@ DataPoints = function () {
             "nnnnnn",
             "nnnnnn",
             "nnnnnn",
-            "nnnnnn"
+            "nnRGBn"
         ]
     };
 
