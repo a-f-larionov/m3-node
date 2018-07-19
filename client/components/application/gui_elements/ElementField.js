@@ -100,7 +100,7 @@ ElementField = function () {
          * Create dom Objects
          */
         GUI.pushParent(domObjectsContainer);
-        for (let y = -1; y < DataPoints.FIELD_MAX_HEIGHT; y++) {
+        for (let y = -DataPoints.FIELD_MAX_HEIGHT; y < DataPoints.FIELD_MAX_HEIGHT; y++) {
             domObjects[y] = [];
             for (let x = 0; x < DataPoints.FIELD_MAX_WIDTH; x++) {
                 dom = GUI.createDom(undefined, {
@@ -205,7 +205,7 @@ ElementField = function () {
                 domCells[y][x].show();
             }
         }
-        for (let y = -1; y < fieldHeight; y++) {
+        for (let y = -fieldHeight; y < fieldHeight; y++) {
             for (let x = 0; x < fieldWidth; x++) {
                 domObjects[y][x].show();
             }
@@ -228,7 +228,7 @@ ElementField = function () {
                 domCells[y][x].hide();
             }
         }
-        for (let y = -1; y < DataPoints.FIELD_MAX_HEIGHT; y++) {
+        for (let y = -DataPoints.FIELD_MAX_HEIGHT; y < DataPoints.FIELD_MAX_HEIGHT; y++) {
             for (let x = 0; x < DataPoints.FIELD_MAX_WIDTH; x++) {
                 domObjects[y][x].hide();
             }
@@ -255,7 +255,7 @@ ElementField = function () {
             }
         }
         if (field) {
-            for (let y = -1; y < fieldHeight; y++) {
+            for (let y = -fieldHeight; y < fieldHeight; y++) {
                 for (let x = 0; x < fieldWidth; x++) {
                     domObjects[y][x].backgroundImage = objectImages[field[y][x]];
                     domObjects[y][x].y = y * DataPoints.BLOCK_HEIGHT;
@@ -288,11 +288,12 @@ ElementField = function () {
                 field[y][x] = newField[y][x];
             }
         }
-        field[-1] = [];
-        for (let x = 0; x < fieldWidth; x++) {
-            field[-1][x] = DataPoints.OBJECT_RANDOM;
+        for (let y = -fieldHeight; y < 0; y++) {
+            field[y] = [];
+            for (let x = 0; x < fieldWidth; x++) {
+                field[y][x] = DataPoints.OBJECT_RANDOM;
+            }
         }
-
         this.redraw();
     };
 
@@ -303,7 +304,8 @@ ElementField = function () {
         animObjects = [];
         animCounter = 0;
         anyFound = false;
-        for (let y = fieldHeight - 1; y >= 0; y--) {
+        
+        for (let y = fieldHeight - 1; y > -fieldHeight; y--) {
             for (let x = 0; x < fieldWidth; x++) {
                 if (field[y][x] == DataPoints.OBJECT_NONE) {
                     if (fallDownObjects.indexOf(field[y - 1][x]) != -1) {
@@ -327,8 +329,8 @@ ElementField = function () {
         }
     };
 
-    this.randomField = function () {
-        for (let y = -1; y < fieldHeight; y++) {
+    this.fillRandom = function () {
+        for (let y = -fieldHeight; y < fieldHeight; y++) {
             for (let x = 0; x < fieldWidth; x++) {
                 if (field[y][x] == DataPoints.OBJECT_RANDOM) {
                     field[y][x] = randomObjects[Math.floor(Math.random() * 3)];
