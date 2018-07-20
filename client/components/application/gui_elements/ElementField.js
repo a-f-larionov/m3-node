@@ -136,7 +136,15 @@ ElementField = function () {
                             domFrame.hide();
                             gemB = this;
                             animBlock = true;
-                            let mayExchange = true;
+                            let mayExchange;
+                            let lines;
+                            self.exchangeGems(gemA, gemB);
+                            lines = self.findLines();
+                            mayExchange =
+                                self.lineCrossing(lines, gemA.fieldX, gemA.fieldY)
+                                | self.lineCrossing(lines, gemB.fieldX, gemB.fieldY);
+                            self.exchangeGems(gemA, gemB);
+
                             if (gemA.fieldX < gemB.fieldX) {
                                 animType = 2;
                                 animavx = +5;
@@ -158,11 +166,7 @@ ElementField = function () {
                                 animavy = -5;
                             }
                             if (mayExchange) {
-                                let tmp;
-                                tmp = field[gemB.fieldY][gemB.fieldX];
-                                field[gemB.fieldY][gemB.fieldX] =
-                                    field[gemA.fieldY][gemA.fieldX];
-                                field[gemA.fieldY][gemA.fieldX] = tmp;
+                                self.exchangeGems(gemA, gemB);
                                 animExchangeHalf = true;
                             } else {
                                 animExchangeHalf = false;
@@ -294,6 +298,18 @@ ElementField = function () {
                 field[y][x] = DataPoints.OBJECT_RANDOM;
             }
         }
+        this.fillRandom();
+        this.redraw();
+    };
+
+    this.fillRandom = function () {
+        for (let y = -fieldHeight; y < fieldHeight; y++) {
+            for (let x = 0; x < fieldWidth; x++) {
+                if (field[y][x] == DataPoints.OBJECT_RANDOM) {
+                    field[y][x] = randomObjects[Math.floor(Math.random() * 3)];
+                }
+            }
+        }
         this.redraw();
     };
 
@@ -304,7 +320,7 @@ ElementField = function () {
         animObjects = [];
         animCounter = 0;
         anyFound = false;
-        
+
         for (let y = fieldHeight - 1; y > -fieldHeight; y--) {
             for (let x = 0; x < fieldWidth; x++) {
                 if (field[y][x] == DataPoints.OBJECT_NONE) {
@@ -324,19 +340,24 @@ ElementField = function () {
         } else {
             animType = 0;
             animBlock = false;
-            this.findLines();
+            this.destroyLines();
             this.redraw();
         }
     };
 
-    this.fillRandom = function () {
-        for (let y = -fieldHeight; y < fieldHeight; y++) {
-            for (let x = 0; x < fieldWidth; x++) {
-                if (field[y][x] == DataPoints.OBJECT_RANDOM) {
-                    field[y][x] = randomObjects[Math.floor(Math.random() * 3)];
-                }
+
+    this.destroyLines = function () {
+        let lines;
+        lines = this.findLines();
+        // destory lines
+        let p;
+        for (let i in lines) {
+            for (let c in lines[i].coords) {
+                p = lines[i].coords[c];
+                field[p.y][p.x] = DataPoints.OBJECT_NONE;
             }
         }
+        //@todo animate it
         this.redraw();
     };
 
@@ -356,16 +377,7 @@ ElementField = function () {
                 }
             }
         }
-        console.log('lines', lines);
-        // destory lines
-        let p;
-        for (let i in lines) {
-            for (let c in lines[i].coords) {
-                p = lines[i].coords[c];
-                field[p.y][p.x] = DataPoints.OBJECT_NONE;
-            }
-        }
-        this.redraw();
+        return lines;
     };
 
     this.findLine = function (x, y, orientation) {
@@ -451,10 +463,19 @@ ElementField = function () {
                     gemA = null;
                     gemB = null;
                     self.redraw();
-                    self.findLines();
+                    self.destroyLines();
                 }
                 break;
         }
+    };
+
+
+    this.exchangeGems = function (gemA, gemB) {
+        let tmp;
+        tmp = field[gemB.fieldY][gemB.fieldX];
+        field[gemB.fieldY][gemB.fieldX] =
+            field[gemA.fieldY][gemA.fieldX];
+        field[gemA.fieldY][gemA.fieldX] = tmp;
     };
 
     this.lineCrossing = function (lines, x, y) {

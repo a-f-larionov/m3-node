@@ -65,7 +65,7 @@ PageBlockField = function PageBlockField() {
             srcHover: '/images/field-green.png',
             srcActive: '/images/field-blue.png',
             onClick: function () {
-                elementField.findLines();
+                elementField.destroyLines();
             }
         });
         this.elements.push(element);
