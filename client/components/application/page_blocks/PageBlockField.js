@@ -12,6 +12,10 @@ PageBlockField = function PageBlockField() {
     var showed = false;
 
     var elementField = null;
+
+    let elementScore = null;
+
+    let score;
     /**
      * Массив всех элементов страницы.
      * @type {Array}
@@ -27,6 +31,7 @@ PageBlockField = function PageBlockField() {
         element = GUI.createElement(ElementField, {
             centerX: 388,
             centerY: 250,
+            onDestroyLine: self.onDestroyrField
         });
         elementField = element;
         this.elements.push(element);
@@ -69,6 +74,18 @@ PageBlockField = function PageBlockField() {
             }
         });
         this.elements.push(element);
+
+        elementScore = GUI.createElement(ElementText, {
+            x: 100,
+            y: 100,
+            fontSize: 120,
+            bold: true,
+            alignCenter: true,
+            width: 30
+        });
+
+        elementScore.setText('0');
+        this.elements.push(elementScore);
     };
 
     /**
@@ -104,6 +121,7 @@ PageBlockField = function PageBlockField() {
 
     this.loadField = function () {
         let data;
+        score = 0;
         data = DataPoints.getById(DataPoints.getCurrentPointId());
         elementField.setField(data.field);
     };
@@ -120,9 +138,15 @@ PageBlockField = function PageBlockField() {
     this.redraw = function () {
         if (!showed)return;
         self.preset();
+        elementScore.setText(score);
         for (var i in self.elements) {
             self.elements[i].redraw();
         }
+    };
+
+    this.onDestroyrField = function (line) {
+        score += line.coords.length * 100;
+        self.redraw();
     };
 };
 

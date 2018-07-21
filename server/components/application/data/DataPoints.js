@@ -32,16 +32,9 @@ DataPoints = function () {
         score2: 200,
         score3: 300,
         field: [
-            "nnnnnnnnnn",
-            "nnnnnnnnnn",
-            "nnnnRnnnnn",
-            "nnnnnnBnnn",
-            "nnnnnnnBnn",
-            "nnnnRnnnnn",
-            "nnnnnnnBnn",
-            "nnnnnnnnnn",
-            "nnnnGnnBnn",
-            "nnnnnnnnnn",
+            "nnnnn",
+            "nnnnn",
+            "nnnnn"
         ]
     };
 

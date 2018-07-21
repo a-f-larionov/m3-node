@@ -67,6 +67,8 @@ ElementField = function () {
     let fieldWidth = 0;
     let fieldHeight = 0;
 
+    this.onDestroyLine = null;
+
     /**
      * Создадим дом и настроем его.
      */
@@ -299,6 +301,7 @@ ElementField = function () {
             }
         }
         this.fillRandom();
+        this.fillReserved();
         this.redraw();
     };
 
@@ -308,6 +311,17 @@ ElementField = function () {
                 if (field[y][x] == DataPoints.OBJECT_RANDOM) {
                     field[y][x] = randomObjects[Math.floor(Math.random() * 3)];
                 }
+            }
+        }
+        this.redraw();
+    };
+
+    this.fillReserved = function () {
+        for (let y = -fieldHeight; y < 0; y++) {
+            for (let x = 0; x < fieldWidth; x++) {
+
+                field[y][x] = randomObjects[Math.floor(Math.random() * 3)];
+
             }
         }
         this.redraw();
@@ -340,11 +354,11 @@ ElementField = function () {
         } else {
             animType = 0;
             animBlock = false;
+            this.fillReserved();
             this.destroyLines();
             this.redraw();
         }
     };
-
 
     this.destroyLines = function () {
         let lines;
@@ -356,8 +370,12 @@ ElementField = function () {
                 p = lines[i].coords[c];
                 field[p.y][p.x] = DataPoints.OBJECT_NONE;
             }
+            self.onDestroyLine(lines[i]);
         }
         //@todo animate it
+        setTimeout(function () {
+            self.fallDown();
+        }, 500);
         this.redraw();
     };
 
