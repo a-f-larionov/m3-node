@@ -456,7 +456,6 @@ GUIDom = function () {
 
     this.proccessTrack = function (tN) {
         var frame;
-        console.log('frame', self.animTracks[tN][self.animData[tN].frameN]);
         frame = self.animTracks[tN][self.animData[tN].frameN];
         switch (frame.type) {
             case ElementSprite.ANIM_TYPE_ROTATE:
@@ -480,7 +479,6 @@ GUIDom = function () {
             case GUI.ANIM_TYPE_MOVE:
                 self.x += frame.vX;
                 self.y += frame.vY;
-                console.log(self.x, self.y);
                 self.redraw();
                 break;
             case GUI.ANIM_TYPE_PAUSE:

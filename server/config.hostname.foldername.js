@@ -44,6 +44,7 @@ Config = {
     },
     Project: {
         applicationAreaHeight: 685,
+        applicationAreaWidth: 777,
         maintance: false
     },
     VKCommentWidget: {

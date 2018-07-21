@@ -164,7 +164,13 @@ ClientCodeLoader = function () {
         code += "</HEAD><BODY style='margin:0px;'>\r\n";
         code += getClientImageCode();
         /* application div */
-        code += "<div style='height:" + Config.Project.applicationAreaHeight + "px;position:absolute;top:0px;' id='applicationArea' ></div>\r\n";
+        code += "<div style='" +
+            "height:" + Config.Project.applicationAreaHeight + "px;" +
+            "width:" + Config.Project.applicationAreaWidth + "px;" +
+            "position:absolute;" +
+            "top:10px;' " +
+            "id='applicationArea' ></div>\r\n";
+
         /* comments div */
         code += "<div style='top:" + Config.Project.applicationAreaHeight + "px;position:absolute;'>";
         code += "<iframe src='" + projectPrefix + "/service/VKCommentsWidget' style='border:none; height: " + (Config.VKCommentWidget.height + 44) + "px; width:" + Config.VKCommentWidget.width + ";'></iframe>";
@@ -189,7 +195,11 @@ ClientCodeLoader = function () {
         code += "<script src='" + projectPrefix + "/js/MainClientCode.js?t=" + (new Date().getTime()).toString() + "'></script>\r\n";
         code += "</head>";
         code += "<body>";
-        code += "<div style='height:" + Config.Project.applicationAreaHeight + "px;position:absolute;' id='applicationArea' ></div>\r\n";
+        code += "<div style='" +
+            "height:" + Config.Project.applicationAreaHeight + "px;" +
+            "width:" + Config.Project.applicationAreaWidth + "px;" +
+            "position:absolute;' " +
+            "id='applicationArea' ></div>\r\n";
         code += getClientImageCode();
         code += "</body>";
         code += "</html>";

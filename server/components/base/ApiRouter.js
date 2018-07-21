@@ -230,7 +230,6 @@ ApiRouter = new (function () {
         code2 = code2.substr(0, code2.length - 1);
         code2 += '};\r\n';
         code2 = 'document.addEventListener("DOMContentLoaded", function() {' + code2 + '})';
-        //console.log(code2);
     };
 
     /**

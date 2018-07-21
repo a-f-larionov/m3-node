@@ -1,5 +1,18 @@
 DataPoints = function () {
 
+    this.OBJECT_NONE = 1;
+    this.OBJECT_RANDOM = 2;
+    this.OBJECT_RED = 3;
+    this.OBJECT_GREEN = 4;
+    this.OBJECT_BLUE = 5;
+    this.OBJECT_BLOCK = 6;
+
+    this.FIELD_MAX_WIDTH = 10;
+    this.FIELD_MAX_HEIGHT = 10;
+
+    this.BLOCK_WIDTH = 50;
+    this.BLOCK_HEIGHT = 50;
+
     let tableName = 'users_points';
 
     let pointsData = {};
@@ -23,6 +36,12 @@ DataPoints = function () {
             "nnnnn",
             "nnnnn",
             "nnnnn"
+        ],
+        targets: [
+            {
+                id: this.OBJECT_GREEN,
+                count: 1
+            }
         ]
     };
 
@@ -35,6 +54,16 @@ DataPoints = function () {
             "nnnnn",
             "nnnnn",
             "nnnnn"
+        ],
+        targets: [
+            {
+                id: this.OBJECT_GREEN,
+                count: 1
+            },
+            {
+                id: this.OBJECT_RED,
+                count: 2
+            }
         ]
     };
 
@@ -52,6 +81,12 @@ DataPoints = function () {
             "BBBBBBnnnn",
             "RRRRRRRnnn",
             "GGGGGGGGnn",
+        ],
+        targets: [
+            {
+                id: this.OBJECT_GREEN,
+                count: 1
+            }
         ]
     };
 
@@ -71,6 +106,12 @@ DataPoints = function () {
             "nnnnnnnnnn",
             "nnnnnnnnnn",
             "nnnnnnnnnn",
+        ],
+        targets: [
+            {
+                id: this.OBJECT_GREEN,
+                count: 1
+            }
         ]
     };
 
@@ -90,6 +131,12 @@ DataPoints = function () {
             "nnnnnnnnnn",
             "nnnnnnnnnn",
             "nnnnnnnnnn",
+        ],
+        targets: [
+            {
+                id: this.OBJECT_GREEN,
+                count: 1
+            }
         ]
     };
 
@@ -104,6 +151,12 @@ DataPoints = function () {
             "bRGBb",
             "bnnnb",
             "Bnnnb"
+        ],
+        targets: [
+            {
+                id: this.OBJECT_GREEN,
+                count: 1
+            }
         ]
     };
 
@@ -118,6 +171,12 @@ DataPoints = function () {
             "bRGBb",
             "bnnnb",
             "Rbbbb"
+        ],
+        targets: [
+            {
+                id: this.OBJECT_GREEN,
+                count: 1
+            }
         ]
     };
 
@@ -132,6 +191,12 @@ DataPoints = function () {
             "bRGBb",
             "bnnnb",
             "Gbbbb"
+        ],
+        targets: [
+            {
+                id: this.OBJECT_GREEN,
+                count: 1
+            }
         ]
     };
 
@@ -146,6 +211,12 @@ DataPoints = function () {
             "bRGBb",
             "bnnnb",
             "Bnnnb"
+        ],
+        targets: [
+            {
+                id: this.OBJECT_GREEN,
+                count: 1
+            }
         ]
     };
 
@@ -183,17 +254,3 @@ DataPoints = function () {
 };
 
 DataPoints = new DataPoints;
-
-/**
- * Такие же констаннты должны быть и на клиенте
- * @type {number}
- */
-DataPoints.OBJECT_NONE = 1;
-DataPoints.OBJECT_RANDOM = 2;
-DataPoints.OBJECT_RED = 3;
-DataPoints.OBJECT_GREEN = 4;
-DataPoints.OBJECT_BLUE = 5;
-DataPoints.OBJECT_BLOCK = 6;
-
-DataPoints.FIELD_MAX_WIDTH = 10;
-DataPoints.FIELD_MAX_HEIGHT = 10;

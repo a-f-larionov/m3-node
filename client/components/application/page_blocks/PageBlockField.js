@@ -11,6 +11,8 @@ PageBlockField = function PageBlockField() {
      */
     var showed = false;
 
+    var elementDialog = false;
+
     var elementField = null;
 
     let elementScore = null;
@@ -31,7 +33,7 @@ PageBlockField = function PageBlockField() {
         element = GUI.createElement(ElementField, {
             centerX: 388,
             centerY: 250,
-            onDestroyLine: self.onDestroyrField
+            onDestroyLine: self.onDestroyLine
         });
         elementField = element;
         this.elements.push(element);
@@ -62,7 +64,7 @@ PageBlockField = function PageBlockField() {
         });
         this.elements.push(element);
 
-        // fall
+        // destroy lines
         element = GUI.createElement(ElementButton, {
             x: 200,
             y: 10,
@@ -86,6 +88,24 @@ PageBlockField = function PageBlockField() {
 
         elementScore.setText('0');
         this.elements.push(elementScore);
+
+        elementDialog = GUI.createElement(ElementDialog, {
+            src: '/images/window.png',
+            width: 342,
+            height: 200
+        });
+        self.elements.push(elementDialog);
+
+        elementDialog.createElement(ElementButton, {
+            x: 5,
+            y: 5,
+            srcRest: '/images/man_right_1.png',
+            srcHover: '/images/man_right_2.png',
+            srcActive: '/images/man_right_3.png',
+            onClick: function () {
+                elementDialog.closeDialog();
+            }
+        }, self.dom);
     };
 
     /**
@@ -130,6 +150,7 @@ PageBlockField = function PageBlockField() {
         // run fall down
         elementField.fillRandom();
         elementField.fallDown();
+        elementDialog.showDialog();
     };
 
     /**
@@ -144,7 +165,7 @@ PageBlockField = function PageBlockField() {
         }
     };
 
-    this.onDestroyrField = function (line) {
+    this.onDestroyLine = function (line) {
         score += line.coords.length * 100;
         self.redraw();
     };

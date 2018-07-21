@@ -91,8 +91,7 @@ ElementDialog = function () {
                 ]
             ]
         });
-
-        self.x = (GUI.getCurrentParent().parentElement.clientWidth / 2)
+        self.x = (document.getElementById('applicationArea').clientWidth / 2)
             - self.width / 2;
         self.y = -400;
 
@@ -129,14 +128,13 @@ ElementDialog = function () {
      */
     this.redraw = function () {
         if (!showed) return;
-        dom.redraw();
-        if (self.opacity != null) {
-            dom.opacity = self.opacity;
+        if (!dialogShowed) {
+            dom.x = self.x;
+            dom.y = self.y;
+            dom.title = self.title;
+            dom.pointer = self.pointer;
+            dom.redraw();
         }
-        dom.x = self.x;
-        dom.y = self.y;
-        dom.title = self.title;
-        dom.pointer = self.pointer;
 
         for (var i in self.elements) {
             self.elements[i].redraw();
@@ -156,7 +154,6 @@ ElementDialog = function () {
     this.closeDialog = function () {
         // coords resets
         // hide all
-        //this.hide();
         dom.animData[0].frameN = 2;
         dom.animPlayed = true;
     };
