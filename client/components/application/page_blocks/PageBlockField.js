@@ -144,6 +144,10 @@ PageBlockField = function PageBlockField() {
         data = DataPoints.getById(DataPoints.getCurrentPointId());
         elementDialogGoals.setGoals(data.goals);
         elementDialogGoals.showDialog();
+        setTimeout(function () {
+                elementDialogGoals.closeDialog();
+            }, 2500
+        );
     };
 
     /**
