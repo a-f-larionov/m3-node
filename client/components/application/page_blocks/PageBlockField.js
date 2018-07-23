@@ -17,7 +17,15 @@ PageBlockField = function PageBlockField() {
 
     let elementScore = null;
 
+    let elementTurns = null;
+
+    let gaolsImagesEls = {};
+
+    let goalsCounterEls = {};
+
     let score;
+    let turns;
+    let goals;
     /**
      * Массив всех элементов страницы.
      * @type {Array}
@@ -33,7 +41,8 @@ PageBlockField = function PageBlockField() {
         element = GUI.createElement(ElementField, {
             centerX: 388,
             centerY: 250,
-            onDestroyLine: self.onDestroyLine
+            onDestroyLine: self.onDestroyLine,
+            onTurnUse: self.onTurnUse
         });
         elementField = element;
         this.elements.push(element);
@@ -80,14 +89,34 @@ PageBlockField = function PageBlockField() {
         elementScore = GUI.createElement(ElementText, {
             x: 100,
             y: 100,
-            fontSize: 120,
+            fontSize: 36,
             bold: true,
             alignCenter: true,
             width: 30
         });
 
-        elementScore.setText('0');
+        elementScore.setText('score: ?');
         this.elements.push(elementScore);
+
+        elementTurns = GUI.createElement(ElementText, {
+            x: 300,
+            y: 100,
+            fontSize: 36,
+            bold: true,
+            aligntCenter: true,
+            width: 30
+        });
+
+        elementTurns.setText('turns: ?');
+        this.elements.push(elementTurns);
+
+        element = GUI.createDom(undefined, {
+            x: 600,
+            y: 100,
+            width: 200,
+            height: 100
+        });
+        this.elements.push(element);
 
         elementDialogGoals = GUI.createElement(ElementDialogGoals, {
             src: '/images/window.png',
@@ -130,9 +159,9 @@ PageBlockField = function PageBlockField() {
 
     this.loadField = function () {
         let data;
-        score = 0;
         data = DataPoints.getById(DataPoints.getCurrentPointId());
-        console.log('data', data);
+        score = 0;
+        turns = data.turns;
         elementField.setField(data.field);
     };
 
@@ -146,7 +175,7 @@ PageBlockField = function PageBlockField() {
         elementDialogGoals.showDialog();
         setTimeout(function () {
                 elementDialogGoals.closeDialog();
-            }, 2500
+            }, 1750
         );
     };
 
@@ -156,7 +185,8 @@ PageBlockField = function PageBlockField() {
     this.redraw = function () {
         if (!showed)return;
         self.preset();
-        elementScore.setText(score);
+        elementScore.setText('score: ' + score);
+        elementTurns.setText('turns: ' + turns);
         for (var i in self.elements) {
             self.elements[i].redraw();
         }
@@ -166,6 +196,14 @@ PageBlockField = function PageBlockField() {
         score += line.coords.length * 100;
         self.redraw();
     };
+
+    this.onTurnUse = function () {
+        turns--;
+        if (turns == 0) {
+            //@Todo
+        }
+        self.redraw();
+    }
 };
 
 PageBlockField = new PageBlockField;

@@ -143,27 +143,28 @@ ElementField = function () {
 
                             if (gemA.fieldX < gemB.fieldX) {
                                 animType = 2;
-                                animavx = +5;
+                                animavx = +1;
                                 animavy = 0;
                             }
                             if (gemA.fieldX > gemB.fieldX) {
                                 animType = 2;
-                                animavx = -5;
+                                animavx = -1;
                                 animavy = 0;
                             }
                             if (gemA.fieldY < gemB.fieldY) {
                                 animType = 2;
                                 animavx = 0;
-                                animavy = +5;
+                                animavy = +1;
                             }
                             if (gemA.fieldY > gemB.fieldY) {
                                 animType = 2;
                                 animavx = 0;
-                                animavy = -5;
+                                animavy = -1;
                             }
                             if (mayExchange) {
                                 self.exchangeGems(gemA, gemB);
                                 animExchangeHalf = true;
+                                self.onTurnUse();
                             } else {
                                 animExchangeHalf = false;
                             }
@@ -210,8 +211,6 @@ ElementField = function () {
                 domObjects[y][x].show();
             }
         }
-        domFrame.show();
-        domFrame.redraw();
         self.redraw();
     };
 
@@ -264,7 +263,7 @@ ElementField = function () {
                 }
             }
         }
-        if (gemA) {
+        if (gemA && !animBlock) {
             domFrame.x = gemA.x;
             domFrame.y = gemA.y;
             domFrame.show();
@@ -359,17 +358,22 @@ ElementField = function () {
         lines = this.findLines();
         // destory lines
         let p;
+        let anyDestroy;
+        anyDestroy = false;
         for (let i in lines) {
             for (let c in lines[i].coords) {
                 p = lines[i].coords[c];
                 field[p.y][p.x] = DataPoints.OBJECT_NONE;
             }
+            anyDestroy = true;
             self.onDestroyLine(lines[i]);
         }
         //@todo animate it
-        setTimeout(function () {
-            self.fallDown();
-        }, 500);
+        if (anyDestroy) {
+            setTimeout(function () {
+                self.fallDown();
+            }, 500);
+        }
         this.redraw();
     };
 
@@ -451,24 +455,24 @@ ElementField = function () {
                 }
                 break;
             case 2: // a <-> b
-
+                let step = 5;
                 animCounter++;
-                if (animCounter <= 10) {
-                    gemA.x += animavx;
-                    gemB.x -= animavx;
-                    gemA.y += animavy;
-                    gemB.y -= animavy;
+                if (animCounter <= 50 / step) {
+                    gemA.x += animavx * step;
+                    gemB.x -= animavx * step;
+                    gemA.y += animavy * step;
+                    gemB.y -= animavy * step;
                 }
-                if (!animExchangeHalf && animCounter > 10) {
-                    gemA.x -= animavx;
-                    gemB.x += animavx;
-                    gemA.y -= animavy;
-                    gemB.y += animavy;
+                if (!animExchangeHalf && animCounter > 50 / step) {
+                    gemA.x -= animavx * step;
+                    gemB.x += animavx * step;
+                    gemA.y -= animavy * step;
+                    gemB.y += animavy * step;
                 }
                 gemA.redraw();
                 gemB.redraw();
-                if ((animExchangeHalf && animCounter == 10)
-                    || animCounter == 20
+                if ((animExchangeHalf && animCounter == 50 / step)
+                    || animCounter == 50 / step * 2
                 ) {
                     animBlock = false;
                     animType = 0;
