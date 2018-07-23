@@ -3,15 +3,15 @@
  * @constructor
  */
 ElementDialog = function () {
-    var self = this;
+    let self = this;
 
     /**
      * Показывать ли элемент.
      * @type {boolean}
      */
-    var showed = false;
+    let showed = false;
 
-    var dialogShowed = false;
+    let dialogShowed = false;
 
     /**
      * Координата X картинки.
@@ -71,6 +71,7 @@ ElementDialog = function () {
      * Создадим дом и настроем его.
      */
     this.init = function () {
+        self = this;
         dom = GUI.createDom(undefined, {
             width: self.width,
             height: self.height,
@@ -146,6 +147,7 @@ ElementDialog = function () {
      */
     this.showDialog = function () {
         if (dialogShowed) return;
+        this.show();
         dialogShowed = true;
         dom.animData[0].frameN = 0;
         dom.animPlayed = true;

@@ -13,6 +13,14 @@ DataPoints = function () {
     this.BLOCK_WIDTH = 50;
     this.BLOCK_HEIGHT = 50;
 
+    this.objectImages = {};
+    this.objectImages[this.OBJECT_NONE] = '/images/field-none-2.png';
+    this.objectImages[this.OBJECT_RANDOM] = '/images/field-none.png';
+    this.objectImages[this.OBJECT_RED] = '/images/field-red.png';
+    this.objectImages[this.OBJECT_GREEN] = '/images/field-green.png';
+    this.objectImages[this.OBJECT_BLUE] = '/images/field-blue.png';
+    this.objectImages[this.OBJECT_BLOCK] = '/images/field-block.png';
+
     var pointsCoords = [
         {
             number: 1,

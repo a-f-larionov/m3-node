@@ -37,12 +37,13 @@ DataPoints = function () {
             "nnnnn",
             "nnnnn"
         ],
-        targets: [
+        goals: [
             {
                 id: this.OBJECT_GREEN,
                 count: 1
             }
-        ]
+        ],
+        turns: 5
     };
 
     pointsData[2] = {
@@ -55,7 +56,7 @@ DataPoints = function () {
             "nnnnn",
             "nnnnn"
         ],
-        targets: [
+        goals: [
             {
                 id: this.OBJECT_GREEN,
                 count: 1
@@ -82,7 +83,7 @@ DataPoints = function () {
             "RRRRRRRnnn",
             "GGGGGGGGnn",
         ],
-        targets: [
+        goals: [
             {
                 id: this.OBJECT_GREEN,
                 count: 1
@@ -107,7 +108,7 @@ DataPoints = function () {
             "nnnnnnnnnn",
             "nnnnnnnnnn",
         ],
-        targets: [
+        goals: [
             {
                 id: this.OBJECT_GREEN,
                 count: 1
@@ -132,7 +133,7 @@ DataPoints = function () {
             "nnnnnnnnnn",
             "nnnnnnnnnn",
         ],
-        targets: [
+        goals: [
             {
                 id: this.OBJECT_GREEN,
                 count: 1
@@ -152,7 +153,7 @@ DataPoints = function () {
             "bnnnb",
             "Bnnnb"
         ],
-        targets: [
+        goals: [
             {
                 id: this.OBJECT_GREEN,
                 count: 1
@@ -172,7 +173,7 @@ DataPoints = function () {
             "bnnnb",
             "Rbbbb"
         ],
-        targets: [
+        goals: [
             {
                 id: this.OBJECT_GREEN,
                 count: 1
@@ -192,7 +193,7 @@ DataPoints = function () {
             "bnnnb",
             "Gbbbb"
         ],
-        targets: [
+        goals: [
             {
                 id: this.OBJECT_GREEN,
                 count: 1
@@ -212,7 +213,7 @@ DataPoints = function () {
             "bnnnb",
             "Bnnnb"
         ],
-        targets: [
+        goals: [
             {
                 id: this.OBJECT_GREEN,
                 count: 1

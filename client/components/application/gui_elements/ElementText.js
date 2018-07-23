@@ -131,6 +131,8 @@ ElementText = function () {
     this.redraw = function () {
         if (!showed) return;
         refreshText();
+        dom.x = self.x;
+        dom.y = self.y;
         dom.fontSize = self.fontSize;
         dom.opacity = self.opacity;
         dom.textDecoration = self.textDecoration;

@@ -37,13 +37,7 @@ ElementField = function () {
     let domObjects = [];
 
     let field = null;
-    let objectImages = {};
-    objectImages[DataPoints.OBJECT_NONE] = '/images/field-none-2.png';
-    objectImages[DataPoints.OBJECT_RANDOM] = '/images/field-none.png';
-    objectImages[DataPoints.OBJECT_RED] = '/images/field-red.png';
-    objectImages[DataPoints.OBJECT_GREEN] = '/images/field-green.png';
-    objectImages[DataPoints.OBJECT_BLUE] = '/images/field-blue.png';
-    objectImages[DataPoints.OBJECT_BLOCK] = '/images/field-block.png';
+
 
     let randomObjects = [
         DataPoints.OBJECT_RED,
@@ -263,7 +257,7 @@ ElementField = function () {
         if (field) {
             for (let y = -fieldHeight; y < fieldHeight; y++) {
                 for (let x = 0; x < fieldWidth; x++) {
-                    domObjects[y][x].backgroundImage = objectImages[field[y][x]];
+                    domObjects[y][x].backgroundImage = DataPoints.objectImages[field[y][x]];
                     domObjects[y][x].y = y * DataPoints.BLOCK_HEIGHT;
                     domObjects[y][x].x = x * DataPoints.BLOCK_WIDTH;
                     domObjects[y][x].redraw();
