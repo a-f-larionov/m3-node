@@ -182,9 +182,6 @@ LogicUser = function () {
             userToCntx[user.id] = {
                 conns: {},
                 user: {
-                    isBusy: false,
-                    onGameId: 0,
-                    vsRobot: false,
                     id: user.id
                 },
                 connsCount: 0

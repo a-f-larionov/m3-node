@@ -145,6 +145,13 @@ DataUser = function () {
         DB.query("UPDATE " + tableName + " SET lastLoginTimestamp = " + (new Date().getTime()) + " WHERE id = " + userId, function () {
         });
     };
+
+    this.updateCurrentPoint = function (userId, pointId, callback) {
+        if (cache[userId]) {
+            cache[userId].currentPoint = pointId;
+        }
+        DB.query("UPDATE " + tableName + " SET currentPoint = " + pointId, callback);
+    };
 };
 
 /**

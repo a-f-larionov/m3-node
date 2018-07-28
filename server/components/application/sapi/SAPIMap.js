@@ -16,6 +16,20 @@ SAPIMap = function () {
             );
         });
     };
+
+    this.finishLevel = function (cntx, pointId, score) {
+
+        DataPoints.updateUsersPoints(cntx.userId, pointId, score, function () {
+
+            DataUser.updateCurrentPoint(cntx.userId, pointId + 1, function () {
+
+                DataUser.getById(cntx.userId, function (user) {
+     //@todo , send to all?
+                    CAPIUser.updateUserInfo(cntx.userId, user);
+                });
+            });
+        });
+    };
 };
 
 SAPIMap = new SAPIMap();

@@ -3,23 +3,27 @@
  * @constructor
  */
 PageBlockField = function PageBlockField() {
-    var self = this;
+    let self = this;
 
     /**
      * Показывать ли страницу.
      * @type {boolean}
      */
-    var showed = false;
+    let showed = false;
 
-    var elementDialogGoals = false;
+    let elementDialogGoals = false;
 
-    var elementField = null;
+    let elementDialogGoalsReached = false;
+
+    let elementDialogTurnLoose = false;
+
+    let elementField = null;
 
     let elementScore = null;
 
     let elementTurns = null;
 
-    let gaolsImagesEls = {};
+    let goalsImagesEls = {};
 
     let goalsCounterEls = {};
 
@@ -118,12 +122,37 @@ PageBlockField = function PageBlockField() {
         });
         this.elements.push(element);
 
+        for (let id in DataPoints.objectImages) {
+            element = GUI.createElement(ElementImage, {
+                x: 10 + (id - 1) * DataPoints.BLOCK_WIDTH,
+                y: 400,
+                width: 50,
+                height: 50,
+                src: DataPoints.objectImages[id]
+            });
+            goalsImagesEls[id] = element;
+            element = GUI.createElement(ElementText, {
+                x: 10 + (id - 1) * DataPoints.BLOCK_WIDTH,
+                y: 400 + DataPoints.BLOCK_HEIGHT,
+                width: DataPoints.BLOCK_WIDTH,
+                alignCenter: true
+            });
+            goalsCounterEls[id] = element;
+        }
+
         elementDialogGoals = GUI.createElement(ElementDialogGoals, {
             src: '/images/window.png',
             width: 342,
             height: 200
         });
         self.elements.push(elementDialogGoals);
+
+        elementDialogGoalsReached = GUI.createElement(ElementDialogGoalsReached, {
+            src: '/images/window.png',
+            width: 342,
+            height: 200
+        });
+        self.elements.push(elementDialogGoalsReached);
     };
 
     /**
@@ -148,6 +177,12 @@ PageBlockField = function PageBlockField() {
         for (var i in self.elements) {
             self.elements[i].hide();
         }
+        for (let i in goalsImagesEls) {
+            goalsImagesEls[i].hide();
+        }
+        for (let i in goalsCounterEls) {
+            goalsCounterEls[i].hide();
+        }
     };
 
     /**
@@ -162,7 +197,9 @@ PageBlockField = function PageBlockField() {
         data = DataPoints.getById(DataPoints.getCurrentPointId());
         score = 0;
         turns = data.turns;
+        goals = data.goals;
         elementField.setField(data.field);
+        this.redraw();
     };
 
     this.firstShow = function () {
@@ -190,11 +227,56 @@ PageBlockField = function PageBlockField() {
         for (var i in self.elements) {
             self.elements[i].redraw();
         }
+
+        // goals indicatios
+        for (let i in goalsImagesEls) {
+            goalsImagesEls[i].hide();
+        }
+        for (let i in goalsCounterEls) {
+            goalsCounterEls[i].hide();
+        }
+        let offsetX;
+        offsetX = 0;
+
+        for (let i in goals) {
+
+            goalsImagesEls[goals[i].id].x = 10 + offsetX;
+            goalsImagesEls[goals[i].id].show();
+
+            goalsCounterEls[goals[i].id].x = 10 + offsetX;
+            goalsCounterEls[goals[i].id].setText(goals[i].count);
+            goalsCounterEls[goals[i].id].show();
+
+            offsetX += DataPoints.BLOCK_WIDTH + 5;
+        }
     };
 
     this.onDestroyLine = function (line) {
-        score += line.coords.length * 100;
+        let objId, p;
+        score += line.coords.length * 10;
+        let noMoreGoals;
+
+        noMoreGoals = true;
+        for (let g in goals) {
+            if (goals[g].id == line.gemId) {
+                goals[g].count -= line.coords.length;
+                if (goals[g].count < 0) goals[g].count = 0;
+            }
+            if (goals[g].count > 0) {
+                noMoreGoals = false;
+            }
+        }
         self.redraw();
+        if (noMoreGoals) {
+            setTimeout(self.finishLevel, 1000);
+        }
+    };
+
+    this.finishLevel = function () {
+
+        //check score more?
+        SAPIMap.finishLevel(DataPoints.getCurrentPointId(), score);
+        elementDialogGoalsReached.showDialog();
     };
 
     this.onTurnUse = function () {

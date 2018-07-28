@@ -40,7 +40,7 @@ DataPoints = function () {
         goals: [
             {
                 id: this.OBJECT_GREEN,
-                count: 1
+                count: 10
             }
         ],
         turns: 5
@@ -251,7 +251,16 @@ DataPoints = function () {
             callback(rows || null, query);
         });
 
-    }
+    };
+
+    this.updateUsersPoints = function (userId, pointId, score, callback) {
+        let query;
+        query = "INSERT INTO users_points(userId, pointId, score) " +
+            "VALUES (" + userId + "," + pointId + "," + score + ") " +
+            "ON DUPLICATE KEY " +
+            "UPDATE score = " + score;
+        DB.query(query, callback);
+    };
 };
 
 DataPoints = new DataPoints;
