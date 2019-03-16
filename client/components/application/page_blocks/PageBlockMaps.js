@@ -144,7 +144,6 @@ PageBlockMaps = function PageBlockMaps() {
             }, self.dom);
         }
 
-
         elMap = GUI.createElement(ElementImage, {
             x: 0,
             y: 0,
@@ -177,8 +176,8 @@ PageBlockMaps = function PageBlockMaps() {
          */
 
         elArrowPrev = GUI.createElement(ElementButton, {
-            x: 50,
-            y: 200,
+            x: 10,
+            y: 160,
             srcRest: '/images/map-arrow-left.png',
             srcHover: '/images/map-arrow-left.png',
             srcActive: '/images/map-arrow-left.png',
@@ -187,8 +186,8 @@ PageBlockMaps = function PageBlockMaps() {
         self.elements.push(elArrowPrev);
 
         elArrowNext = GUI.createElement(ElementButton, {
-            x: 777 - 50 - 53,
-            y: 200,
+            x: 714,
+            y: 160,
             srcRest: '/images/map-arrow-right.png',
             srcHover: '/images/map-arrow-right.png',
             srcActive: '/images/map-arrow-right.png',
@@ -208,13 +207,25 @@ PageBlockMaps = function PageBlockMaps() {
                 stateId: ElementPoint.STATE_CLOSE,
                 number: pointCoords[i].number,
                 pointId: pointCoords[i].number,
-                width: 70,
-                height: 64,
+                width: 50,
+                height: 50,
                 onClick: LogicMap.onPointClick
             });
             this.elements.push(element);
             pointsEls[pointCoords[i].number] = element;
         }
+
+        element = GUI.createElement(ElementButton, {
+            x: 175,
+            y: 125,
+            width: 71,
+            height: 62,
+            srcRest: '/images/chest-close.png',
+            srcHover: '/images/chest-open.png',
+            srcActive: '/images/chest-open.png'
+        });
+        self.elements.push(element);
+
     };
 
     /**

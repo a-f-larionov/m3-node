@@ -130,9 +130,9 @@ ElementPoint = function () {
         showed = true;
         dom.show();
         self.redraw();
-        domStar1.show();
-        domStar2.show();
-        domStar3.show();
+        //domStar1.show();
+        //domStar2.show();
+        //domStar3.show();
     };
 
     /**

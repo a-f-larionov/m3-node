@@ -24,18 +24,18 @@ DataPoints = function () {
     var pointsCoords = [
         {
             number: 1,
-            x: 8,
-            y: 402
+            x: 0,
+            y: 240
         },
         {
             number: 2,
-            x: 86,
-            y: 309
+            x: 89,
+            y: 85
         },
         {
             number: 3,
-            x: 76,
-            y: 207
+            x: 277,
+            y: 28
         }
     ];
 
