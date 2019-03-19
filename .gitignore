@@ -7,3 +7,10 @@
 !/server/config.hostname.foldername.js
 /server/ssl/*
 /server/*.log
+
+
+/public/js/MainClientCode.js
+/server/components/generated/*
+/server/node_modules/*
+/server/package-lock.json
+
