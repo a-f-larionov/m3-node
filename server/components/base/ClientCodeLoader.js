@@ -104,6 +104,7 @@ ClientCodeLoader = function () {
         }
         if (reloadClientCodeEveryRequest) {
             loadClientCodeVK();
+            //reloadMainClientCode();
         }
         callback(clientCodeVK);
     };
@@ -122,6 +123,7 @@ ClientCodeLoader = function () {
         }
         if (reloadClientCodeEveryRequest) {
             loadClientCodeStandalone();
+            //reloadMainClientCode();
         }
         callback(clientCodeStandalone);
     };
@@ -152,7 +154,7 @@ ClientCodeLoader = function () {
 
     var loadClientCodeVK = function () {
         var code;
-        Logs.log("Load client code.");
+        Logs.log("Load vk client code.");
         //@todo сделать тут HTML5
         code = "";
         code += "<HTML>\r\n";
@@ -183,7 +185,7 @@ ClientCodeLoader = function () {
      * Загрузка клиенсткого кода для стэндэлон версии.
      */
     var loadClientCodeStandalone = function () {
-        Logs.log("Load client code.");
+        Logs.log("Load standalone client code.");
         var code;
         code = "";
         code += "<!doctype html>";
@@ -228,6 +230,7 @@ ClientCodeLoader = function () {
         }
         //@todo path to JS move to Config file
         FS.writeFileSync(CONST_DIR_ROOT + '/public/js/MainClientCode.js', mainClientJSCode);
+        Logs.log("Main client code writed", Logs.LEVEL_DETAIL);
     };
 
     /**
