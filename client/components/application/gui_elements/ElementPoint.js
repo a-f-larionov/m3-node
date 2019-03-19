@@ -16,19 +16,19 @@ ElementPoint = function () {
     var showed = false;
 
     /**
-     * Координата X кнопки.
+     * Координата X.
      * @type {number}
      */
     this.x = 0;
 
     /**
-     * Координата Y кнопки.
+     * Координата Y.
      * @type {number}
      */
     this.y = 0;
 
     /**
-     * Ширина кнопки.
+     * Ширина.
      * @type {number}
      */
     this.width = 0;
@@ -72,8 +72,20 @@ ElementPoint = function () {
      */
     var dom = null;
 
+    /**
+     * Первая звезда
+     * @type {GUIDom}
+     */
     let domStar1 = null;
+    /**
+     * Вторая звезда
+     * @type {GUIDom}
+     */
     let domStar2 = null;
+    /**
+     * Третья звезда
+     * @type {GUIDom}
+     */
     let domStar3 = null;
 
     /**
@@ -130,9 +142,9 @@ ElementPoint = function () {
         showed = true;
         dom.show();
         self.redraw();
-        //domStar1.show();
-        //domStar2.show();
-        //domStar3.show();
+        domStar1.show();
+        domStar2.show();
+        domStar3.show();
     };
 
     /**
@@ -178,17 +190,17 @@ ElementPoint = function () {
         if (self.userScore >= self.score2) stars = 2;
         if (self.userScore >= self.score3) stars = 3;
 
-        domStar1.x = self.x - 30;
-        domStar1.y = self.y - 30;
+        let offsetStars = (self.width / 2 - 25 / 2);
+        domStar1.x = self.x - 17 + offsetStars;
+        domStar1.y = self.y - 10;
         domStar1.backgroundImage = stars >= 1 ? self.srcStarOn : self.srcStarOff;
 
-
-        domStar2.x = self.x;
-        domStar2.y = self.y - 60;
+        domStar2.x = self.x + offsetStars;
+        domStar2.y = self.y - 22;
         domStar2.backgroundImage = stars >= 2 ? self.srcStarOn : self.srcStarOff;
 
-        domStar3.x = self.x + 30;
-        domStar3.y = self.y - 30;
+        domStar3.x = self.x + 17 + offsetStars;
+        domStar3.y = self.y - 10;
         domStar3.backgroundImage = stars >= 3 ? self.srcStarOn : self.srcStarOff;
 
         dom.redraw();
@@ -232,7 +244,7 @@ ElementPoint = function () {
     var onMouseClick = function (mouseEvent, dom) {
         /* Да, тут мы останавливаем дальнейшие течение клика. */
         mouseEvent.stopPropagation();
-        if (self.stateId == ElementPoint.STATE_CLOSE)return;
+        if (self.stateId == ElementPoint.STATE_CLOSE) return;
         mouseStateDown = false;
         mouseStateFocused = false;
         self.redraw();

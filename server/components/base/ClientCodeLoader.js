@@ -108,7 +108,7 @@ ClientCodeLoader = function () {
         }
         if (reloadClientCodeEveryRequest) {
             loadClientCodeVK();
-            //reloadMainClientCode();
+            reloadMainClientCode();
         }
         callback(clientCodeVK);
     };
@@ -127,7 +127,7 @@ ClientCodeLoader = function () {
         }
         if (reloadClientCodeEveryRequest) {
             loadClientCodeStandalone();
-            //reloadMainClientCode();
+            reloadMainClientCode();
         }
         callback(clientCodeStandalone);
     };

@@ -348,6 +348,9 @@ PageBlockMaps = function PageBlockMaps() {
         }
     };
 
+    /**
+     * Обновление данных перед отрисовкой точек
+     */
     this.presetPoints = function () {
         let user, pointId, point, pointEl, pointUsersInfo, map;
         user = LogicUser.getCurrentUser();

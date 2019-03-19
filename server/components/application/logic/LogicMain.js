@@ -45,7 +45,8 @@ LogicMain = function () {
             '/service/--logsSetDetail': LogicSystemRequests.logsSetDetail,
             '/service/--logsSetNotify': LogicSystemRequests.logsSetNotify,
             '/service/--help': function (callback) {
-                callback("--profiler <br>" +
+                callback("Project.name:" + Config.Project.name + "<br>" +
+                    "--profiler <br>" +
                     "--log <br>" +
                     "--logsSetDetail<br>" +
                     "--logsSetNotify<br>" +

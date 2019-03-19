@@ -70,7 +70,7 @@ LogicUser = function () {
      */
     this.getById = function (id) {
         if (id == 0) {
-            return robotDummy();
+            return getDummy();
         }
         if (users[id]) {
             /* Догрузим данные, это немного костыль... но время деньги :) */

@@ -1,4 +1,4 @@
-// super mega crunch
+// @Todo super mega crunch
 GUI = {};
 
 GUI.ANIM_TYPE_ROTATE = 1;
