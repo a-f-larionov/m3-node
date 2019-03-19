@@ -342,13 +342,13 @@ ClientCodeLoader = function () {
         for (var i in imageFiles) {
             path = imagesPrefix + imageFiles[i].substr(imagesPath.length);
             demension = IMAGE_SIZE(imageFiles[i]);
-            imageCode += "\r\nimagesData['" + path + "']={path:'" + path + timePostfix + "',w:" + demension.width + ",h:" + demension.height + "};";
+            imageCode += "\r\nimagesData['" + path + "']={path:'" + projectPrefix + path + timePostfix + "',w:" + demension.width + ",h:" + demension.height + "};";
         }
         imageCode += "</script>";
         imageCode += "<div style='display:none;'>";
         for (var i in imageFiles) {
             path = imagesPrefix + imageFiles[i].substr(imagesPath.length);
-            imageCode += "\r\n<img src='" + path + timePostfix + "'>";
+            imageCode += "\r\n<img src='" + projectPrefix + path + timePostfix + "'>";
         }
         imageCode += "</div>";
         // cache it
