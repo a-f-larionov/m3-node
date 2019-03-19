@@ -13,4 +13,5 @@
 /server/components/generated/*
 /server/node_modules/*
 /server/package-lock.json
+/server/core/generated.js
 
