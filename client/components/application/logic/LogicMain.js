@@ -27,8 +27,6 @@ LogicMain = function () {
         webSocketClient.onConnect = this.onConnect;
         webSocketClient.onDisconnect = ApiRouter.onDisconnect;
 
-        PageController.showPage(PageMain);
-
         /* running */
         webSocketClient.run();
 
@@ -48,5 +46,6 @@ LogicMain = function () {
     this.onAuthorizeSuccess = function () {
         SAPITimeServer.sendMeTime();
         DataMap.loadMap();
+        PageController.showPage(PageMain);
     };
 };

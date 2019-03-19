@@ -243,7 +243,7 @@ DataPoints = function () {
          */
         DB.queryWhere(tableName, {
             pointId: [[1, 2, 3, 4, 5, 6], DB.WHERE_IN],
-            userId: [userIds, DB.WHERE_EQUAL],
+            userId: [userIds, DB.WHERE_IN],
         }, function (rows, query) {
             for (let i in rows) {
                 rows[i] = fromDBToData(rows[i]);

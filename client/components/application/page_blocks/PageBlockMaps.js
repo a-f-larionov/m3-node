@@ -282,10 +282,7 @@ PageBlockMaps = function PageBlockMaps() {
     this.mapElsCreateIfNotExits = function () {
         let data, element;
         data = DataMap.getCurent();
-        if (!data) {
-            DataMap.loadMap();
-            return;
-        }
+        if (!data) return;
         if (!elMapElements[data.id]) {
             elMapElements[data.id] = [];
             for (let i in data.elements) {
@@ -304,10 +301,7 @@ PageBlockMaps = function PageBlockMaps() {
     this.mapElsShow = function () {
         let data;
         data = DataMap.getCurent();
-        if (!data) {
-            DataMap.loadMap();
-            return;
-        }
+        if (!data) return;
 
         for (let i in elMapElements[data.id]) {
             elMapElements[data.id][i].show();
@@ -332,10 +326,8 @@ PageBlockMaps = function PageBlockMaps() {
     this.mapElsRedraw = function () {
         let data;
         data = DataMap.getCurent();
-        if (!data) {
-            DataMap.loadMap();
-            return;
-        }
+        if (!data) return;
+
         elMap.src = data.src;
         elMap.redraw();
 

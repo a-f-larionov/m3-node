@@ -18,10 +18,14 @@ DataMap = function () {
      */
     var maps = {};
 
+    let mapsLadings = [];
 
     this.loadMap = function (mapId) {
         if (!mapId) mapId = currentMapId;
-        SAPIMap.sendMeMapInfo(mapId);
+        if (!mapsLadings[mapId]) {
+            mapsLadings[mapId] = true;
+            SAPIMap.sendMeMapInfo(mapId);
+        }
     };
 
     this.setMapById = function (mapId, mapData) {
@@ -30,6 +34,9 @@ DataMap = function () {
     };
 
     this.getCurent = function () {
+        if (!maps[currentMapId]) {
+            this.loadMap();
+        }
         return maps[currentMapId];
     };
 
