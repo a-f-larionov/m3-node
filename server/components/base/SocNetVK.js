@@ -3,7 +3,7 @@
  * @constructor
  */
 
-var MD5 = require('MD5');
+var MD5 = require('md5');
 var HTTPS = require('https');
 
 SocNetVK = function () {
