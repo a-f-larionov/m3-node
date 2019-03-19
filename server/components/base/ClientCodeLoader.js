@@ -60,7 +60,7 @@ ClientCodeLoader = function () {
     var projectPrefix = '';
 
     this.init = function (callback) {
-        projectPrefix = Config.Project.name ? '/' + Config.Project.name : '';
+      //  projectPrefix = Config.Project.name ? '/' + Config.Project.name : '';
         reloadClientCodeEveryRequest = Config.WebSocketServer.reloadClientCodeEveryRequest;
         reloadClientImageCodeEveryRequest = Config.WebSocketServer.reloadClientImageCodeEveryRequest;
         clientCodePath = Config.WebSocketServer.clientCodePath;
