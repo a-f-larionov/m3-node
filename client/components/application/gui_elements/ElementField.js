@@ -5,6 +5,8 @@
 ElementField = function () {
     let self = this;
 
+    let lock = true;
+
     /**
      * Показывать ли элемент.
      * @type {boolean}
@@ -113,7 +115,8 @@ ElementField = function () {
                 });
                 dom.bind(GUI.EVENT_MOUSE_CLICK, function () {
 
-                    if (animBlock)return;
+                    if (lock) return;
+                    if (animBlock) return;
                     if (randomObjects.indexOf(field[this.fieldY][this.fieldX]) == -1) {
                         return;
                     }
@@ -239,7 +242,7 @@ ElementField = function () {
      */
     this.redraw = function (skipAnimCheck) {
         if (!showed) return;
-        if (animBlock && !skipAnimCheck)return;
+        if (animBlock && !skipAnimCheck) return;
         self.x = self.centerX - DataPoints.BLOCK_WIDTH * Math.floor(fieldWidth / 2);
         self.y = self.centerY - DataPoints.BLOCK_HEIGHT * Math.floor(fieldHeight / 2);
         domBackground.redraw();
@@ -323,7 +326,7 @@ ElementField = function () {
     this.fallDown = function (nextStep) {
         let anyFound;
         self.redraw(true); // set coords
-        if (animBlock && !nextStep)return;
+        if (animBlock && !nextStep) return;
         animObjects = [];
         animCounter = 0;
         anyFound = false;
@@ -382,7 +385,7 @@ ElementField = function () {
         lines = [];
         for (let y = 0; y < fieldHeight; y++) {
             for (let x = 0; x < fieldWidth; x++) {
-                if (this.lineCrossing(lines, x, y))continue;
+                if (this.lineCrossing(lines, x, y)) continue;
                 line = this.findLine(x, y, 1);
                 if (line) {
                     lines.push(line);
@@ -399,7 +402,7 @@ ElementField = function () {
     this.findLine = function (x, y, orientation) {
         let startId, line;
         startId = field[y][x];
-        if (fallDownObjects.indexOf(startId) == -1)return false;
+        if (fallDownObjects.indexOf(startId) == -1) return false;
 
         line = {
             coords: [],
@@ -407,8 +410,8 @@ ElementField = function () {
         };
         if (orientation == 1) {
             for (let offset = 0; offset < 5; offset++) {
-                if (y >= fieldHeight)continue;
-                if (x + offset >= fieldWidth)continue;
+                if (y >= fieldHeight) continue;
+                if (x + offset >= fieldWidth) continue;
                 if (field[y][x + offset] == startId) {
                     line.coords.push({
                         x: x + offset,
@@ -420,8 +423,8 @@ ElementField = function () {
             }
         } else {
             for (let offset = 0; offset < 5; offset++) {
-                if (y + offset >= fieldHeight)continue;
-                if (x >= fieldWidth)continue;
+                if (y + offset >= fieldHeight) continue;
+                if (x >= fieldWidth) continue;
                 if (field[y + offset][x] == startId) {
                     line.coords.push({
                         x: x,
@@ -441,7 +444,7 @@ ElementField = function () {
     this.animate = function () {
         let dom;
 
-        if (!animBlock)return;
+        if (!animBlock) return;
         switch (animType) {
             case 1:// falldown
                 animCounter++;
@@ -504,5 +507,13 @@ ElementField = function () {
             }
         }
         return false;
+    };
+
+    this.lock = function () {
+        lock = true;
+    };
+
+    this.unlock = function () {
+        lock = false;
     };
 };

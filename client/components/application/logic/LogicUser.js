@@ -123,7 +123,7 @@ LogicUser = function () {
         if (!users[user.id]) {
             users[user.id] = getDummy();
         }
-        for (var field in user) {
+        for (let field in user) {
             users[user.id][field] = user[field];
         }
         PageController.redraw();

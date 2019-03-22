@@ -55,9 +55,9 @@ PageBlockField = function PageBlockField() {
         element = GUI.createElement(ElementButton, {
             x: 10,
             y: 10,
-            srcRest: '/images/field-red.png',
-            srcHover: '/images/field-green.png',
-            srcActive: '/images/field-blue.png',
+            srcRest: '/images/button-close-rest.png',
+            srcHover: '/images/button-close-hover.png',
+            srcActive: '/images/button-close-active.png',
             onClick: function () {
                 PageController.showPage(PageMain);
             }
@@ -91,27 +91,27 @@ PageBlockField = function PageBlockField() {
         this.elements.push(element);
 
         elementScore = GUI.createElement(ElementText, {
-            x: 100,
+            x: 20,
             y: 100,
-            fontSize: 36,
+            fontSize: 42,
             bold: true,
-            alignCenter: true,
-            width: 30
+            alignCenter: false,
+            width: 100
         });
 
         elementScore.setText('score: ?');
         this.elements.push(elementScore);
 
         elementTurns = GUI.createElement(ElementText, {
-            x: 300,
-            y: 100,
-            fontSize: 36,
+            x: 20,
+            y: 150,
+            fontSize: 42,
             bold: true,
-            aligntCenter: true,
-            width: 30
+            alignCenter: false,
+            width: 100
         });
 
-        elementTurns.setText('turns: ?');
+        elementTurns.setText('');
         this.elements.push(elementTurns);
 
         element = GUI.createDom(undefined, {
@@ -125,7 +125,7 @@ PageBlockField = function PageBlockField() {
         for (let id in DataPoints.objectImages) {
             element = GUI.createElement(ElementImage, {
                 x: 10 + (id - 1) * DataPoints.BLOCK_WIDTH,
-                y: 400,
+                y: 200,
                 width: 50,
                 height: 50,
                 src: DataPoints.objectImages[id]
@@ -133,7 +133,7 @@ PageBlockField = function PageBlockField() {
             goalsImagesEls[id] = element;
             element = GUI.createElement(ElementText, {
                 x: 10 + (id - 1) * DataPoints.BLOCK_WIDTH,
-                y: 400 + DataPoints.BLOCK_HEIGHT,
+                y: 200 + DataPoints.BLOCK_HEIGHT,
                 width: DataPoints.BLOCK_WIDTH,
                 alignCenter: true
             });
@@ -197,7 +197,7 @@ PageBlockField = function PageBlockField() {
         data = DataPoints.getById(DataPoints.getCurrentPointId());
         score = 0;
         turns = data.turns;
-        goals = data.goals;
+        goals = DataPoints.copyGoals(data.goals);
         elementField.setField(data.field);
         this.redraw();
     };
@@ -205,6 +205,7 @@ PageBlockField = function PageBlockField() {
     this.firstShow = function () {
         // run fall down
         let data;
+        elementField.unlock();
         elementField.fillRandom();
         elementField.fallDown();
         data = DataPoints.getById(DataPoints.getCurrentPointId());
@@ -220,10 +221,10 @@ PageBlockField = function PageBlockField() {
      *
      */
     this.redraw = function () {
-        if (!showed)return;
+        if (!showed) return;
         self.preset();
-        elementScore.setText('score: ' + score);
-        elementTurns.setText('turns: ' + turns);
+        elementScore.setText('очки: ' + score);
+        elementTurns.setText('ходы: ' + turns);
         for (var i in self.elements) {
             self.elements[i].redraw();
         }
@@ -268,14 +269,30 @@ PageBlockField = function PageBlockField() {
         }
         self.redraw();
         if (noMoreGoals) {
+            elementField.lock();
             setTimeout(self.finishLevel, 1000);
         }
     };
 
     this.finishLevel = function () {
-
-        //check score more?
-        SAPIMap.finishLevel(DataPoints.getCurrentPointId(), score);
+        var pointId, user, lastScore;
+        Logs.log("finishLevel", Logs.LEVEL_DETAIL);
+        user = LogicUser.getCurrentUser();
+        pointId = DataPoints.getCurrentPointId();
+        lastScore = DataPoints.getScore(user.id, pointId);
+        console.log(user, pointId);
+        if (user.currentPoint < pointId + 1) {
+            user.currentPoint = pointId + 1;
+            LogicUser.updateUserInfo(user);
+        }
+        if (score > lastScore) {
+            SAPIMap.finishLevel(pointId, score);
+            DataPoints.setUserInfo(
+                user.id,
+                pointId,
+                score
+            );
+        }
         elementDialogGoalsReached.showDialog();
     };
 

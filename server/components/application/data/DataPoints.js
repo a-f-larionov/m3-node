@@ -15,7 +15,7 @@ DataPoints = function () {
 
     let tableName = 'users_points';
 
-    let pointsData = {};
+    let wayPoints = {};
 
     let fromDBToData = function (data) {
         if (!data) return data;
@@ -25,8 +25,9 @@ DataPoints = function () {
         return data;
     };
 
-    pointsData[1] = {
+    wayPoints[1] = {
         id: 1,
+        turns:30,
         score1: 100,
         score2: 200,
         score3: 300,
@@ -43,11 +44,11 @@ DataPoints = function () {
                 count: 10
             }
         ],
-        turns: 5
     };
 
-    pointsData[2] = {
+    wayPoints[2] = {
         id: 2,
+        turns:30,
         score1: 100,
         score2: 200,
         score3: 300,
@@ -59,17 +60,18 @@ DataPoints = function () {
         goals: [
             {
                 id: this.OBJECT_GREEN,
-                count: 1
+                count: 3
             },
             {
                 id: this.OBJECT_RED,
-                count: 2
+                count: 4
             }
         ]
     };
 
-    pointsData[3] = {
+    wayPoints[3] = {
         id: 3,
+        turns:30,
         score1: 100,
         score2: 200,
         score3: 300,
@@ -86,13 +88,14 @@ DataPoints = function () {
         goals: [
             {
                 id: this.OBJECT_GREEN,
-                count: 1
+                count: 10
             }
         ]
     };
 
-    pointsData[4] = {
+    wayPoints[4] = {
         id: 4,
+        turns:30,
         score1: 100,
         score2: 200,
         score3: 300,
@@ -116,8 +119,9 @@ DataPoints = function () {
         ]
     };
 
-    pointsData[5] = {
+    wayPoints[5] = {
         id: 5,
+        turns:30,
         score1: 100,
         score2: 200,
         score3: 300,
@@ -141,16 +145,17 @@ DataPoints = function () {
         ]
     };
 
-    pointsData[6] = {
+    wayPoints[6] = {
         id: 6,
-        score1: 100,
+        turns:30,
+        score1: 30,
         score2: 200,
         score3: 300,
         field: [
             "bbbbb",
-            "bnnnb",
+            "bnnGb",
             "bRGBb",
-            "bnnnb",
+            "bnBGb",
             "Bnnnb"
         ],
         goals: [
@@ -161,8 +166,9 @@ DataPoints = function () {
         ]
     };
 
-    pointsData[7] = {
+    wayPoints[7] = {
         id: 7,
+        turns:30,
         score1: 100,
         score2: 200,
         score3: 300,
@@ -170,8 +176,8 @@ DataPoints = function () {
             "bbbbb",
             "bnnnb",
             "bRGBb",
-            "bnnnb",
-            "Rbbbb"
+            "bnGnb",
+            "RbbGb"
         ],
         goals: [
             {
@@ -181,8 +187,9 @@ DataPoints = function () {
         ]
     };
 
-    pointsData[8] = {
+    wayPoints[8] = {
         id: 8,
+        turns:30,
         score1: 100,
         score2: 200,
         score3: 300,
@@ -201,8 +208,9 @@ DataPoints = function () {
         ]
     };
 
-    pointsData[9] = {
+    wayPoints[9] = {
         id: 9,
+        turns:30,
         score1: 100,
         score2: 200,
         score3: 300,
@@ -222,7 +230,7 @@ DataPoints = function () {
     };
 
     this.getById = function (id) {
-        return pointsData[id];
+        return wayPoints[id];
     };
 
     this.getPointsByMapId = function (mapId) {

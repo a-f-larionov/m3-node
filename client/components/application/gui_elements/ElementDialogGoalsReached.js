@@ -6,13 +6,12 @@ ElementDialogGoalsReached = function () {
         this.__proto__.init.call(this);
         let element;
 
-        // fall
         element = GUI.createElement(ElementButton, {
                 x: 100,
                 y: 10,
-                srcRest: '/images/field-red.png',
-                srcHover: '/images/field-green.png',
-                srcActive: '/images/field-blue.png',
+                srcRest: '/images/button-close-rest.png',
+                srcHover: '/images/button-close-hover.png',
+                srcActive: '/images/button-close-active.png',
                 onClick: function () {
                     self.closeDialog();
                     PageController.showPage(PageMain);
@@ -30,7 +29,7 @@ ElementDialogGoalsReached = function () {
             alignCenter: true,
             width: 250
         }, this.dom);
-        element.setText("Охитреть!");
+        element.setText("Победа!");
         self.elements.push(element);
     };
 

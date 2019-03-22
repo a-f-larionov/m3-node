@@ -17,17 +17,21 @@ SAPIMap = function () {
         });
     };
 
+    /**
+     * Закончили уровень.
+     * @param cntx
+     * @param pointId
+     * @param score
+     */
     this.finishLevel = function (cntx, pointId, score) {
 
-        DataPoints.updateUsersPoints(cntx.userId, pointId, score, function () {
-
-            DataUser.updateCurrentPoint(cntx.userId, pointId + 1, function () {
-
-                DataUser.getById(cntx.userId, function (user) {
-     //@todo , send to all?
-                    CAPIUser.updateUserInfo(cntx.userId, user);
-                });
-            });
+        DataPoints.updateUsersPoints(cntx.userId, pointId, score);
+        CAPIMap.log(cntx.userId,pointId);
+        CAPIMap.log(cntx.userId,score);
+        DataUser.getById(cntx.userId, function (user) {
+            if (user.currentPoint < pointId + 1) {
+                DataUser.updateCurrentPoint(cntx.userId, pointId + 1);
+            }
         });
     };
 };

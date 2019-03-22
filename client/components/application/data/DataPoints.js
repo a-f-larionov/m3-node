@@ -77,7 +77,7 @@ DataPoints = function () {
         out = {};
         for (let pId = pIdFirst; pId <= pIdLast; pId++) {
             for (let userId in usersInfo[pId]) {
-                if (userIds.indexOf(parseInt(userId)) == -1)continue;
+                if (userIds.indexOf(parseInt(userId)) == -1) continue;
                 if (!out[pId]) out[pId] = {};
                 out[pId][userId] = usersInfo[pId][userId];
             }
@@ -94,6 +94,32 @@ DataPoints = function () {
             pointId: pointId,
             score: score
         }
+    };
+
+    this.getScore = function (userId, pointId) {
+        if (!usersInfo[pointId]) {
+            usersInfo[pointId] = {};
+        }
+        if (!usersInfo[pointId][userId]) {
+            usersInfo[pointId][userId] = {
+                userId: userId,
+                pointId: pointId,
+                score: 0
+            }
+        }
+        return usersInfo[pointId][userId].score;
+    };
+
+    this.copyGoals = function (goals) {
+        let goalsNew;
+        goalsNew = [];
+        for (let i in goals) {
+            goalsNew.push({
+                id: goals[i].id,
+                count: goals[i].count
+            });
+        }
+        return goalsNew;
     };
 };
 

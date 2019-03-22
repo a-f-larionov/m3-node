@@ -7,25 +7,34 @@ ElementDialogGoals = function () {
 
     this.init = function () {
         this.__proto__.init.call(this);
+        GUI.pushParent(self.dom);
+        GUI.createElement(ElementText, {
+            x: 50,
+            y: 30,
+            width: 250,
+            height: 40,
+            text: 'Ваши цели:'
+        }).show();
+
 
         for (let i in DataPoints.objectImages) {
 
             goalsImagesEls[i] =
                 GUI.createElement(ElementImage, {
-                    x: 10 + i * (DataPoints.BLOCK_WIDTH + 5),
-                    y: 10,
+                    x: 200 + i * (DataPoints.BLOCK_WIDTH + 5),
+                    y: 50,
                     src: DataPoints.objectImages[i]
-                }, self.dom)
+                });
 
 
             goalsCounterEls[i] =
                 GUI.createElement(ElementText, {
-                    x: 10 + i * (DataPoints.BLOCK_WIDTH + 5),
-                    y: 10 + DataPoints.BLOCK_HEIGHT + 5,
+                    x: 100 + i * (DataPoints.BLOCK_WIDTH + 5),
+                    y: 50 + DataPoints.BLOCK_HEIGHT + 5,
                     width: DataPoints.BLOCK_WIDTH
-                }, self.dom);
-
+                });
         }
+        GUI.popParent();
     };
 
     this.show = function () {
@@ -50,8 +59,8 @@ ElementDialogGoals = function () {
         offsetX = 0;
         for (let i in goals) {
 
-            goalsImagesEls[goals[i].id].x = 10 + offsetX;
-            goalsCounterEls[goals[i].id].x = 10 + offsetX;
+            goalsImagesEls[goals[i].id].x = 100 + offsetX;
+            goalsCounterEls[goals[i].id].x = 100+ 25 + offsetX;
             goalsCounterEls[goals[i].id].setText(goals[i].count);
             this.elements.push(goalsImagesEls[goals[i].id]);
             this.elements.push(goalsCounterEls[goals[i].id]);

@@ -63,14 +63,15 @@ DataUser = function () {
      */
     this.createFromSocNet = function (socNetTypeId, socNetUserId, callback) {
         /* Предотвращение двойной мгновенной регистрации. */
-        if (waitForCreateBySocNet[socNetUserId])return;
+        if (waitForCreateBySocNet[socNetUserId]) return;
         waitForCreateBySocNet[socNetUserId] = true;
         var user = {
             id: autoIncrementValue++,
             socNetTypeId: parseInt(socNetTypeId),
             socNetUserId: parseInt(socNetUserId),
             createTimestamp: new Date().getTime(),
-            lastLoginTimestamp: new Date().getTime()
+            lastLoginTimestamp: new Date().getTime(),
+            currentPoint: 1
         };
         cache[user.id] = user;
         callback(user);
@@ -139,10 +140,11 @@ DataUser = function () {
             Logs.log("DataUser.udpateLastLogin. Must be userId", Logs.LEVEL_WARNING, userId);
             return;
         }
+        let time = (new Date().getTime());
         if (cache[userId]) {
-            cache[userId] = null;
+            cache[userId].lastLoginTimestamp = time;
         }
-        DB.query("UPDATE " + tableName + " SET lastLoginTimestamp = " + (new Date().getTime()) + " WHERE id = " + userId, function () {
+        DB.query("UPDATE " + tableName + " SET lastLoginTimestamp = " + time + " WHERE id = " + userId, function () {
         });
     };
 
@@ -150,7 +152,7 @@ DataUser = function () {
         if (cache[userId]) {
             cache[userId].currentPoint = pointId;
         }
-        DB.query("UPDATE " + tableName + " SET currentPoint = " + pointId, callback);
+        DB.query("UPDATE " + tableName + " SET currentPoint = " + pointId + " WHERE id = " + userId, callback);
     };
 };
 
