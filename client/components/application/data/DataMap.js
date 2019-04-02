@@ -65,11 +65,49 @@ DataMap = function () {
     this.getPointIdFromPointNumber = function (number) {
         return this.getFirstPointId() + (number - 1);
     };
-}
-;
+
+    this.getFirstChestId = function () {
+        return DataMap.CHESTS_PER_MAP * (currentMapId - 1) + 1;
+    };
+
+    this.getLastChestId = function () {
+        return this.getFirstChestId() + DataMap.CHESTS_PER_MAP - 1;
+    };
+
+    this.getChestIdFromChestNumber = function (number) {
+        return this.getFirstChestId() + (number - 1);
+    };
+
+    this.getStarsByMapId = function (mapId) {
+        let mapStars, user, pointUsersInfo, pointId, point, stars;
+        if (!mapId) mapId = currentMapId;
+        mapStars = 0;
+        user = LogicUser.getCurrentUser();
+        if (!user) return 0;
+        pointUsersInfo = DataPoints.getUsersInfo(mapId, [user.id]);
+        if (!pointUsersInfo) return 0;
+        for (let number = 1; number <= DataMap.POINTS_PER_MAP; number++) {
+
+            pointId = DataMap.getPointIdFromPointNumber(number);
+            point = DataPoints.getById(pointId);
+            if (!point) return 0;
+
+            stars = 0;
+            if (!pointUsersInfo[pointId]) return 0;
+            if (!pointUsersInfo[pointId][user.id]) return 0;
+
+            if (pointUsersInfo[pointId][user.id].score >= point.score1) stars = 1;
+            if (pointUsersInfo[pointId][user.id].score >= point.score2) stars = 2;
+            if (pointUsersInfo[pointId][user.id].score >= point.score3) stars = 3;
+            mapStars += stars;
+        }
+        return mapStars;
+    }
+};
 
 DataMap = new DataMap();
 
 DataMap.MAP_ID_MIN = 1;
 DataMap.MAP_ID_MAX = 3;
 DataMap.POINTS_PER_MAP = 3;
+DataMap.CHESTS_PER_MAP = 2;

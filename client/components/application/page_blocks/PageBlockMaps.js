@@ -1,5 +1,5 @@
 /**
- * Основная страница игры.
+ * Основной блок страницы игры.
  * @constructor
  */
 PageBlockMaps = function PageBlockMaps() {
@@ -28,6 +28,8 @@ PageBlockMaps = function PageBlockMaps() {
     var mapIdOld = 1;
 
     var pointsEls = [];
+
+    var chestsEls = [];
 
     /**
      * Массив всех элементов страницы.
@@ -196,36 +198,36 @@ PageBlockMaps = function PageBlockMaps() {
         self.elements.push(elArrowNext);
 
         /* Points */
-
-        let pointCoords = DataPoints.getPointsCoords();
-        for (let i in pointCoords) {
-
+        DataPoints.getPointsCoords().forEach(function (coord) {
             element = GUI.createElement(ElementPoint, {
-                x: pointCoords[i].x,
-                y: pointCoords[i].y,
+                x: coord.x,
+                y: coord.y,
                 friends: [],
                 stateId: ElementPoint.STATE_CLOSE,
-                number: pointCoords[i].number,
-                pointId: pointCoords[i].number,
+                number: coord.number,
+                pointId: coord.number,
                 width: 50,
                 height: 50,
                 onClick: LogicMap.onPointClick
             });
-            this.elements.push(element);
-            pointsEls[pointCoords[i].number] = element;
-        }
-
-        element = GUI.createElement(ElementButton, {
-            x: 175,
-            y: 125,
-            width: 71,
-            height: 62,
-            srcRest: '/images/chest-close.png',
-            srcHover: '/images/chest-open.png',
-            srcActive: '/images/chest-open.png'
+            self.elements.push(element);
+            pointsEls[coord.number] = element;
         });
-        self.elements.push(element);
 
+        // сундуки
+        DataChests.getCoords().forEach(function (coord) {
+            element = GUI.createElement(ElementChest, {
+                x: coord.x,
+                y: coord.y,
+                width: 71,
+                height: 62,
+                chestId: coord.number,
+                number: coord.number,
+                enabled: true
+            });
+            self.elements.push(element);
+            chestsEls[coord.number] = element;
+        });
     };
 
     /**
@@ -234,9 +236,9 @@ PageBlockMaps = function PageBlockMaps() {
     this.show = function () {
         if (showed === true) return;
         showed = true;
-        for (var i in self.elements) {
-            self.elements[i].show();
-        }
+        self.elements.forEach(function (element) {
+            element.show();
+        });
 
         this.mapElsCreateIfNotExits();
         this.mapElsShow();
@@ -260,17 +262,18 @@ PageBlockMaps = function PageBlockMaps() {
      */
     this.preset = function () {
         this.presetPoints();
+        this.presetChests();
     };
 
     /**
      *
      */
     this.redraw = function () {
-        if (!showed)return;
+        if (!showed) return;
         self.preset();
-        for (var i in self.elements) {
-            self.elements[i].redraw();
-        }
+        self.elements.forEach(function (element) {
+            element.redraw();
+        });
         this.mapElsRedraw();
     };
 
@@ -347,7 +350,7 @@ PageBlockMaps = function PageBlockMaps() {
         let user, pointId, point, pointEl, pointUsersInfo, map;
         user = LogicUser.getCurrentUser();
         map = DataMap.getCurent();
-        if (!map)return;
+        if (!map) return;
         pointUsersInfo = DataPoints.getUsersInfo(map.id, [user.id]);
         for (let number = 1; number <= DataMap.POINTS_PER_MAP; number++) {
 
@@ -355,6 +358,7 @@ PageBlockMaps = function PageBlockMaps() {
             pointsEls[number].pointId = pointId;
             point = DataPoints.getById(pointId);
             if (!point) continue;
+
             pointEl = pointsEls[number];
 
             if (point.id == user.currentPoint) pointEl.stateId = 2;
@@ -369,6 +373,27 @@ PageBlockMaps = function PageBlockMaps() {
                 pointEl.userScore = pointUsersInfo[pointId][user.id] ? pointUsersInfo[pointId][user.id].score : 0;
             else
                 pointEl.userScore = 0;
+        }
+    };
+
+    /**
+     * Обновление данных перед отрисовкой сундуков
+     */
+    this.presetChests = function () {
+        let user, chestId, chest, chestEl, info, map;
+        user = LogicUser.getCurrentUser();
+        map = DataMap.getCurent();
+        if (!map) return;
+        //info = DataChests.getUsersInfo(map.id, [user.id]);
+        for (let number = 1; number <= DataMap.CHESTS_PER_MAP; number++) {
+            chestId = DataMap.getChestIdFromChestNumber(number);
+            chest = DataChests.getById(chestId);
+            if (!chest) continue;
+
+            chestsEls[number].pointId = chestId;
+            chestEl = chestsEls[number];
+            chestEl.goalStars = chest.goalStars;
+            chestEl.stars = DataMap.getStarsByMapId();
         }
     };
 };

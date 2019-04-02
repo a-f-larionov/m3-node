@@ -1,22 +1,21 @@
 CAPIMap = function () {
 
-    this.gotMapsInfo = function (ctnx, mapId, map, points, usersInfo) {
+    this.gotMapsInfo = function (ctnx, mapId, map, points, chests, usersInfo) {
         DataMap.setMapById(mapId, map);
-        for (let i in points) {
-            points[i].field = convertFieldData(points[i].field);
-            DataPoints.setPointData(points[i].id, points[i]);
-        }
-        for (let i in usersInfo) {
-            DataPoints.setUserInfo(
-                parseInt(usersInfo[i].userId),
-                parseInt(usersInfo[i].pointId),
-                parseInt(usersInfo[i].score)
-            );
-        }
+        points.forEach(function (point) {
+            point.field = convertFieldData(point.field);
+            DataPoints.setPointData(point);
+        });
+        chests.forEach(function (chest) {
+            DataChests.setData(chest);
+        });
+        usersInfo.forEach(function (info) {
+            DataPoints.setUserInfo(info.userId, info.pointId, info.score);
+        });
     };
 
     let convertFieldData = function (fieldSource) {
-        let fieldResult, value, source, result, fieldWidth, fieldHeight;
+        let fieldResult, source, result, fieldWidth, fieldHeight;
         let convertTable = {
             'n': DataPoints.OBJECT_NONE,
             'r': DataPoints.OBJECT_RANDOM,

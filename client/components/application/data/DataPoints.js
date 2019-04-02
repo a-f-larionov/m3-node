@@ -55,8 +55,8 @@ DataPoints = function () {
         SAPIMap.sendMePointData(id);
     };
 
-    this.setPointData = function (id, data) {
-        pointsData[id] = data;
+    this.setPointData = function (data) {
+        pointsData[data.id] = data;
         PageController.redraw();
     };
 

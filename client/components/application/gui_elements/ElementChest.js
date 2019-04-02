@@ -1,10 +1,10 @@
 /**
- * Элемент кнопки.
+ * Элемент сундука.
  * @constructor
  * @property x
  * @property y
  */
-ElementPoint = function () {
+ElementChest = function () {
     var self = this;
 
     /**
@@ -31,32 +31,16 @@ ElementPoint = function () {
      */
     this.width = 0;
 
+    this.goalStars = null;
+
     /**
      * Высота кноки.
      * @type {number}
      */
     this.height = 0;
 
-    /**
-     * Ссылка на картинку при наведении фокуса(мыши).
-     * @type {string}
-     */
-    this.srcGrey = '/images/map-way-point-grey.png';
-
-    /**
-     * Ссылка на картинку при активации кнопки(клике).
-     * @type {string}
-     */
-    this.srcRed = '/images/map-way-point-red.png';
-
-    /**
-     * Ссылка на картинку в покое(ожидании/бездействии).
-     * @type {string}
-     */
-    this.srcYellow = '/images/map-way-point-yellow.png';
-
-    this.srcStarOff = '/images/star-off.png';
-    this.srcStarOn = '/images/star-on.png';
+    this.srcChestClose = '/images/chest-close.png';
+    this.srcChestOpen = '/images/chest-open.png';
 
     /**
      * Будет вызываться при нажатии на кнопку.
@@ -71,20 +55,10 @@ ElementPoint = function () {
     var dom = null;
 
     /**
-     * Первая звезда
-     * @type {GUIDom}
+     * Текст показывающий кол-во собранных звёзд на этом сундуке.
+     * @type {null}
      */
-    let domStar1 = null;
-    /**
-     * Вторая звезда
-     * @type {GUIDom}
-     */
-    let domStar2 = null;
-    /**
-     * Третья звезда
-     * @type {GUIDom}
-     */
-    let domStar3 = null;
+    var elText = null;
 
     /**
      * Опущена ли мышка.
@@ -99,35 +73,32 @@ ElementPoint = function () {
     var mouseStateFocused = false;
 
     /**
-     * Состояние точки точки, 1 - серый, 2 - красный, 3 - жёлтый
+     * Состояние сундука: 1 - закрыт, 2 - открыт
      * @type {number}
      */
-    this.stateId = ElementPoint.STATE_CLOSE;
+    this.stateId = 1;
 
-    this.pointId = null;
+    this.chestId = null;
 
     /**
      * Создадим дом и настроем его.
      */
     this.init = function () {
+        elText = GUI.createElement(ElementText, {
+            width: 100,
+            height: 40,
+            text: '0/123'
+        });
+
         dom = GUI.createDom();
         dom.width = self.width;
         dom.height = self.height;
-        dom.backgroundImage = self.srcGrey;
+        dom.backgroundImage = self.srcChestClose;
         dom.pointer = GUI.POINTER_HAND;
         GUI.bind(dom, GUI.EVENT_MOUSE_MOUSE_DOWN, onMouseDown, self);
         GUI.bind(dom, GUI.EVENT_MOUSE_CLICK, onMouseClick, self);
         GUI.bind(dom, GUI.EVENT_MOUSE_OVER, onMouseOver, self);
         GUI.bind(dom, GUI.EVENT_MOUSE_OUT, onMouseOut, self);
-
-        domStar1 = GUI.createDom();
-        domStar1.backgroundImage = self.srcStarOff;
-
-        domStar2 = GUI.createDom();
-        domStar2.backgroundImage = self.srcStarOff;
-
-        domStar3 = GUI.createDom();
-        domStar3.backgroundImage = self.srcStarOff;
     };
 
     /**
@@ -136,11 +107,9 @@ ElementPoint = function () {
     this.show = function () {
         if (showed == true) return;
         showed = true;
-        self.redraw();
         dom.show();
-        domStar1.show();
-        domStar2.show();
-        domStar3.show();
+        elText.show();
+        self.redraw();
     };
 
     /**
@@ -149,60 +118,47 @@ ElementPoint = function () {
     this.hide = function () {
         if (showed == false) return;
         showed = false;
+        elText.hide();
         dom.hide();
-        domStar1.hide();
-        domStar2.hide();
-        domStar3.hide();
     };
 
     /**
      * Перерисуем кнопку.
      */
     this.redraw = function () {
-        let src;
         if (!showed) return;
+
         switch (this.stateId) {
             case 1:
-                dom.backgroundImage = this.srcGrey;
+                if (mouseStateFocused) {
+                    dom.backgroundImage = this.srcChestOpen;
+                } else {
+                    dom.backgroundImage = this.srcChestClose;
+                }
                 break;
             case 2:
-                dom.backgroundImage = this.srcRed;
-                break;
-            case 3:
-                dom.backgroundImage = this.srcYellow;
+                dom.backgroundImage = this.srcChestOpen;
                 break;
         }
 
-        if (self.stateId == ElementPoint.STATE_CLOSE) {
+        if (self.stateId == ElementPoint.STATE_OPEN) {
             dom.pointer = GUI.POINTER_ARROW;
         } else {
             dom.pointer = GUI.POINTER_HAND;
         }
         dom.x = self.x;
         dom.y = self.y;
-        let stars = 0;
 
-        if (self.userScore >= self.score1) stars = 1;
-        if (self.userScore >= self.score2) stars = 2;
-        if (self.userScore >= self.score3) stars = 3;
+        elText.x = self.x + 10;
+        elText.y = self.y + 60;
 
-        let offsetStars = (self.width / 2 - 25 / 2);
-        domStar1.x = self.x - 17 + offsetStars;
-        domStar1.y = self.y - 10;
-        domStar1.backgroundImage = stars >= 1 ? self.srcStarOn : self.srcStarOff;
-
-        domStar2.x = self.x + offsetStars;
-        domStar2.y = self.y - 22;
-        domStar2.backgroundImage = stars >= 2 ? self.srcStarOn : self.srcStarOff;
-
-        domStar3.x = self.x + 17 + offsetStars;
-        domStar3.y = self.y - 10;
-        domStar3.backgroundImage = stars >= 3 ? self.srcStarOn : self.srcStarOff;
-
+        if (self.goalStars) {
+            elText.text = self.stars + '/' + self.goalStars;
+        } else {
+            elText.text = '';
+        }
+        elText.redraw();
         dom.redraw();
-        domStar1.redraw();
-        domStar2.redraw();
-        domStar3.redraw();
     };
 
     /**
@@ -248,6 +204,6 @@ ElementPoint = function () {
     };
 };
 
-ElementPoint.STATE_CLOSE = 1;
-ElementPoint.STATE_CURRENT = 2;
-ElementPoint.STATE_FINISHED = 3;
+ElementChest.STATE_CLOSE = 1;
+ElementChest.STATE_OPEN = 2;
+

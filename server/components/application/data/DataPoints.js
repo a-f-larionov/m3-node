@@ -27,16 +27,16 @@ DataPoints = function () {
 
     wayPoints[1] = {
         id: 1,
-        turns:30,
+        turns:35,
         score1: 100,
         score2: 200,
         score3: 300,
         field: [
-            "nnnnn",
-            "nnnnn",
-            "nnnnn",
-            "nnnnn",
-            "nnnnn"
+            "nnnnnnnnnn",
+            "nnnnnnnnnn",
+            "bbbbbnnnnn",
+            "nnnnnnnnnn",
+            "BBBBBGGGnG"
         ],
         goals: [
             {
@@ -48,7 +48,7 @@ DataPoints = function () {
 
     wayPoints[2] = {
         id: 2,
-        turns:30,
+        turns:36,
         score1: 100,
         score2: 200,
         score3: 300,
@@ -71,7 +71,7 @@ DataPoints = function () {
 
     wayPoints[3] = {
         id: 3,
-        turns:30,
+        turns:307,
         score1: 100,
         score2: 200,
         score3: 300,

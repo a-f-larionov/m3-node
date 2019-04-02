@@ -61,10 +61,7 @@ DataMap = function () {
             },
             '2': {
                 id: 2,
-                src: '/images/maps/map-002.png',
-                //@todo
-                // animated object
-                elements: []
+                src: '/images/maps/map-002.png'
             }
             ,
             '3': {
@@ -72,10 +69,9 @@ DataMap = function () {
                 src: '/images/maps/map-003.png'
             }
         }
-        ;
+    ;
 
     this.getMap = function (mapId) {
-        //@todo check mapId diapazon
         return maps[mapId];
     };
 
@@ -87,6 +83,17 @@ DataMap = function () {
         return this.getFirstPointId(mapId) + DataMap.POINTS_PER_MAP - 1;
     };
 
+    this.getFirstChestId = function (mapId) {
+        return DataMap.CHESTS_PER_MAP * (mapId - 1) + 1;
+    };
+
+    this.getLastChestId = function (mapId) {
+        return this.getFirstChestId(mapId) + DataMap.CHESTS_PER_MAP - 1;
+    };
+
+    this.existsMap = function (mapId) {
+        return !(typeof maps[mapId] == 'undefined');
+    }
 };
 
 
@@ -95,3 +102,4 @@ DataMap = new DataMap();
 DataMap.MAP_ID_MIN = 1;
 DataMap.MAP_ID_MAX = 3;
 DataMap.POINTS_PER_MAP = 3;
+DataMap.CHESTS_PER_MAP = 2;
