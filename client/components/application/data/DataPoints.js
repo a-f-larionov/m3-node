@@ -51,23 +51,23 @@ DataPoints = function () {
         return pointsData[id];
     };
 
-    this.loadById = function (id) {
-        SAPIMap.sendMePointData(id);
-    };
-
     this.setPointData = function (data) {
         pointsData[data.id] = data;
         PageController.redraw();
     };
 
-    let currentPointId = null;
+    /**
+     * В эту игру играют в текущий момент.
+     * @type {null}
+     */
+    let playedId = null;
 
-    this.setCurrentPointId = function (id) {
-        currentPointId = id;
+    this.setPlayedId = function (id) {
+        playedId = id;
     };
 
-    this.getCurrentPointId = function () {
-        return currentPointId;
+    this.getPlayedId = function () {
+        return playedId;
     };
 
     this.getUsersInfo = function (mapId, userIds) {

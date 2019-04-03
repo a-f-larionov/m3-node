@@ -194,7 +194,7 @@ PageBlockField = function PageBlockField() {
 
     this.loadField = function () {
         let data;
-        data = DataPoints.getById(DataPoints.getCurrentPointId());
+        data = DataPoints.getById(DataPoints.getPlayedId());
         score = 0;
         turns = data.turns;
         goals = DataPoints.copyGoals(data.goals);
@@ -208,7 +208,7 @@ PageBlockField = function PageBlockField() {
         elementField.unlock();
         elementField.fillRandom();
         elementField.fallDown();
-        data = DataPoints.getById(DataPoints.getCurrentPointId());
+        data = DataPoints.getById(DataPoints.getPlayedId());
         elementDialogGoals.setGoals(data.goals);
         elementDialogGoals.showDialog();
         setTimeout(function () {
@@ -278,7 +278,7 @@ PageBlockField = function PageBlockField() {
         var pointId, user, lastScore;
         Logs.log("finishLevel", Logs.LEVEL_DETAIL);
         user = LogicUser.getCurrentUser();
-        pointId = DataPoints.getCurrentPointId();
+        pointId = DataPoints.getPlayedId();
         lastScore = DataPoints.getScore(user.id, pointId);
         console.log(user, pointId);
         if (user.currentPoint < pointId + 1) {

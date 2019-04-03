@@ -33,12 +33,12 @@ DataChests = function () {
 
     wayChests[5] = {
         id: 5,
-        goalStars: 3
+        goalStars: 2
     };
 
     wayChests[6] = {
         id: 6,
-        goalStars: 6
+        goalStars: 7
     };
 
 

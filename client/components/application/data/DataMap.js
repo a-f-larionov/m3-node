@@ -81,10 +81,12 @@ DataMap = function () {
     this.getStarsByMapId = function (mapId) {
         let mapStars, user, pointUsersInfo, pointId, point, stars;
         if (!mapId) mapId = currentMapId;
+
         mapStars = 0;
         user = LogicUser.getCurrentUser();
         if (!user) return 0;
         pointUsersInfo = DataPoints.getUsersInfo(mapId, [user.id]);
+
         if (!pointUsersInfo) return 0;
         for (let number = 1; number <= DataMap.POINTS_PER_MAP; number++) {
 
@@ -93,8 +95,8 @@ DataMap = function () {
             if (!point) return 0;
 
             stars = 0;
-            if (!pointUsersInfo[pointId]) return 0;
-            if (!pointUsersInfo[pointId][user.id]) return 0;
+            if (!pointUsersInfo[pointId]) continue;
+            if (!pointUsersInfo[pointId][user.id]) continue;
 
             if (pointUsersInfo[pointId][user.id].score >= point.score1) stars = 1;
             if (pointUsersInfo[pointId][user.id].score >= point.score2) stars = 2;

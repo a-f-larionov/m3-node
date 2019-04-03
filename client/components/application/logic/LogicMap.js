@@ -20,7 +20,7 @@ LogicMap = function () {
      */
     this.onPointClick = function (event, dom, element) {
         if (element.stateId == ElementPoint.STATE_CLOSE) return;
-        DataPoints.setCurrentPointId(element.pointId);
+        DataPoints.setPlayedId(element.pointId);
 
         PageController.showPage(PageField);
     };
