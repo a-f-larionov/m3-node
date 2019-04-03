@@ -279,7 +279,7 @@ PageBlockField = function PageBlockField() {
         Logs.log("finishLevel", Logs.LEVEL_DETAIL);
         user = LogicUser.getCurrentUser();
         pointId = DataPoints.getPlayedId();
-        lastScore = DataPoints.getScore(user.id, pointId);
+        lastScore = DataPoints.getScore(pointId);
         console.log(user, pointId);
         if (user.currentPoint < pointId + 1) {
             user.currentPoint = pointId + 1;
@@ -287,7 +287,7 @@ PageBlockField = function PageBlockField() {
         }
         if (score > lastScore) {
             SAPIMap.finishLevel(pointId, score);
-            DataPoints.setUserInfo(
+            DataPoints.setPointUserScore(
                 user.id,
                 pointId,
                 score

@@ -85,7 +85,7 @@ DataMap = function () {
         mapStars = 0;
         user = LogicUser.getCurrentUser();
         if (!user) return 0;
-        pointUsersInfo = DataPoints.getUsersInfo(mapId, [user.id]);
+        pointUsersInfo = DataPoints.getPointUserScore(mapId, [user.id]);
 
         if (!pointUsersInfo) return 0;
         for (let number = 1; number <= DataMap.POINTS_PER_MAP; number++) {

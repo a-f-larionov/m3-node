@@ -39,7 +39,7 @@ DataPoints = function () {
         }
     ];
 
-    let usersInfo = {};
+    let pointUserScore = {};
 
     let pointsData = [];
 
@@ -70,44 +70,61 @@ DataPoints = function () {
         return playedId;
     };
 
-    this.getUsersInfo = function (mapId, userIds) {
+    this.getPointUserScore = function (mapId, userIds) {
         let pIdFirst, pIdLast, out;
         pIdFirst = DataMap.getFirstPointId(mapId);
         pIdLast = DataMap.getLastPointId(mapId);
         out = {};
         for (let pId = pIdFirst; pId <= pIdLast; pId++) {
-            for (let userId in usersInfo[pId]) {
-                if (userIds.indexOf(parseInt(userId)) == -1) continue;
+            for (let uid in pointUserScore[pId]) {
+                if (userIds.indexOf(parseInt(uid)) == -1) continue;
                 if (!out[pId]) out[pId] = {};
-                out[pId][userId] = usersInfo[pId][userId];
+                out[pId][uid] = pointUserScore[pId][uid];
             }
         }
         return out;
     };
 
-    this.setUserInfo = function (userId, pointId, score) {
-        if (!usersInfo[pointId]) {
-            usersInfo[pointId] = {};
+    this.setPointUserScore = function (userId, pointId, score) {
+        if (!pointUserScore[pointId]) {
+            pointUserScore[pointId] = {};
         }
-        usersInfo[pointId][userId] = {
+        pointUserScore[pointId][userId] = {
             userId: userId,
             pointId: pointId,
             score: score
         }
     };
 
-    this.getScore = function (userId, pointId) {
-        if (!usersInfo[pointId]) {
-            usersInfo[pointId] = {};
+    this.getScore = function (pointId, userId) {
+        if (!userId) userId = LogicUser.getCurrentUser().id;
+        if (!userId) return null;
+        if (!pointUserScore[pointId]) {
+            pointUserScore[pointId] = {};
         }
-        if (!usersInfo[pointId][userId]) {
-            usersInfo[pointId][userId] = {
+        if (!pointUserScore[pointId][userId]) {
+            pointUserScore[pointId][userId] = {
                 userId: userId,
                 pointId: pointId,
                 score: 0
             }
         }
-        return usersInfo[pointId][userId].score;
+        return pointUserScore[pointId][userId].score;
+    };
+
+    this.getStars = function (pointId, userId) {
+        let point, userScore;
+        if (!userId) userId = LogicUser.getCurrentUser().id;
+        if (!userId) return null;
+
+        userScore = DataPoints.getScore(pointId);
+        point = DataPoints.getById(pointId);
+        if (!point || userScore === null) return null;
+
+        if (userScore >= point.score3) return 3;
+        if (userScore >= point.score2) return 2;
+        if (userScore >= point.score1) return 1;
+        return 0;
     };
 
     this.copyGoals = function (goals) {

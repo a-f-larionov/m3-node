@@ -11,7 +11,7 @@ PageBlockMaps = function PageBlockMaps() {
      */
     var showed = false;
 
-    var elementDialog = false;
+    var elementDialogPointInfo = false;
 
     var elPreloader = false;
 
@@ -42,109 +42,6 @@ PageBlockMaps = function PageBlockMaps() {
      */
     this.init = function () {
         var element;
-
-        if (false) {
-            element = GUI.createDom(undefined, {
-                x: 50,
-                y: 50,
-                backgroundImage: '/images/man-01.png',
-                animTracks: [
-                    [
-                        {
-                            type: GUI.ANIM_TYPE_MOVIE,
-                            images: [
-                                '/images/man_right_1.png',
-                                '/images/man_right_2.png',
-                                '/images/man_right_3.png',
-                                '/images/man_right_4.png',
-                                '/images/man_right_5.png',
-                                '/images/man_right_6.png',
-                                '/images/man_right_7.png',
-                                '/images/man_right_8.png'
-                            ]
-                        }
-                    ],
-                    [
-                        {type: GUI.ANIM_TYPE_MOVE, vX: 3, vY: 0, duration: 30},
-                        {type: GUI.ANIM_TYPE_MOVE, vX: -3, vY: 0, duration: 30},
-                        {type: GUI.ANIM_TYPE_GOTO, pos: 0}
-                    ],
-                    /*[
-                     {type: GUI.ANIM_TYPE_PAUSE, duration: 100},
-                     {type: GUI.ANIM_TYPE_STOP}
-                     ]*/
-                ]
-            });
-            element.animPlayed = true;
-
-            self.elements.push(element);
-
-        }
-        if (false) {
-
-            element = GUI.createElement(ElementSprite, {
-                x: 50,
-                y: 50,
-                src: '/images/man-01.png',
-                domInitParams: {
-                    animTracks: [
-                        [
-                            {
-                                type: GUI.ANIM_TYPE_MOVIE,
-                                images: [
-                                    '/images/man_right_1.png',
-                                    '/images/man_right_2.png',
-                                    '/images/man_right_3.png',
-                                    '/images/man_right_4.png',
-                                    '/images/man_right_5.png',
-                                    '/images/man_right_6.png',
-                                    '/images/man_right_7.png',
-                                    '/images/man_right_8.png'
-                                ]
-                                , duration: 8
-                            },
-                            {type: GUI.ANIM_TYPE_GOTO, pos: 0}
-                        ],
-                        [
-                            {type: GUI.ANIM_TYPE_MOVE, vX: 3, vY: 0},
-                            {type: GUI.ANIM_TYPE_GOTO, pos: 0}
-                        ]
-                    ]
-                }
-            });
-            element.animPlay();
-            self.elements.push(element);
-
-            element = GUI.createElement(ElementButton, {
-                x: 100,
-                y: 100,
-                srcRest: '/images/man_right_1.png',
-                srcHover: '/images/man_right_2.png',
-                srcActive: '/images/man_right_3.png',
-                onClick: function () {
-                    self.showDialog();
-                }
-            });
-            self.elements.push(element);
-
-            elementDialog = GUI.createElement(ElementDialog, {
-                src: '/images/window.png',
-                width: 342,
-                height: 200
-            });
-            self.elements.push(elementDialog);
-
-            elementDialog.createElement(ElementButton, {
-                x: 5,
-                y: 5,
-                srcRest: '/images/man_right_1.png',
-                srcHover: '/images/man_right_2.png',
-                srcActive: '/images/man_right_3.png',
-                onClick: function () {
-                    elementDialog.closeDialog();
-                }
-            }, self.dom);
-        }
 
         elMap = GUI.createElement(ElementImage, {
             x: 0,
@@ -208,7 +105,9 @@ PageBlockMaps = function PageBlockMaps() {
                 pointId: coord.number,
                 width: 50,
                 height: 50,
-                onClick: LogicMap.onPointClick
+                onClick: function (event, dom, element) {
+                    elementDialogPointInfo.showDialog(element);
+                }
             });
             self.elements.push(element);
             pointsEls[coord.number] = element;
@@ -228,6 +127,13 @@ PageBlockMaps = function PageBlockMaps() {
             self.elements.push(element);
             chestsEls[coord.number] = element;
         });
+
+        elementDialogPointInfo = GUI.createElement(ElementDialogPointInfo, {
+            src: '/images/window.png',
+            width: 342,
+            height: 200
+        });
+        self.elements.push(elementDialogPointInfo);
     };
 
     /**
@@ -275,11 +181,6 @@ PageBlockMaps = function PageBlockMaps() {
             element.redraw();
         });
         this.mapElsRedraw();
-    };
-
-    this.showDialog = function () {
-        Logs.log(Logs.LEVEL_NOTIFY, 'Button clicked!');
-        elementDialog.showDialog();
     };
 
     this.mapElsCreateIfNotExits = function () {
@@ -347,11 +248,11 @@ PageBlockMaps = function PageBlockMaps() {
      * Обновление данных перед отрисовкой точек
      */
     this.presetPoints = function () {
-        let user, pointId, point, pointEl, pointUsersInfo, map;
+        let user, pointId, point, pointEl, pointInfo, map;
         user = LogicUser.getCurrentUser();
         map = DataMap.getCurent();
         if (!map) return;
-        pointUsersInfo = DataPoints.getUsersInfo(map.id, [user.id]);
+        pointInfo = DataPoints.getPointUserScore(map.id, [user.id]);
         for (let number = 1; number <= DataMap.POINTS_PER_MAP; number++) {
 
             pointId = DataMap.getPointIdFromPointNumber(number);
@@ -369,8 +270,8 @@ PageBlockMaps = function PageBlockMaps() {
             pointEl.score2 = point.score2;
             pointEl.score3 = point.score3;
 
-            if (pointUsersInfo[pointId])
-                pointEl.userScore = pointUsersInfo[pointId][user.id] ? pointUsersInfo[pointId][user.id].score : 0;
+            if (pointInfo[pointId])
+                pointEl.userScore = pointInfo[pointId][user.id] ? pointInfo[pointId][user.id].score : 0;
             else
                 pointEl.userScore = 0;
         }

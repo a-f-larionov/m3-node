@@ -10,7 +10,7 @@ CAPIMap = function () {
             DataChests.setData(chest);
         });
         usersInfo.forEach(function (info) {
-            DataPoints.setUserInfo(info.userId, info.pointId, info.score);
+            DataPoints.setPointUserScore(info.userId, info.pointId, info.score);
         });
     };
 

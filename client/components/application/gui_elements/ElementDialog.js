@@ -9,9 +9,9 @@ ElementDialog = function () {
      * Показывать ли элемент.
      * @type {boolean}
      */
-    let showed = false;
+    this.showed = false;
 
-    let dialogShowed = false;
+    this.dialogShowed = false;
 
     /**
      * Координата X картинки.
@@ -81,13 +81,13 @@ ElementDialog = function () {
                     {type: GUI.ANIM_TYPE_MOVE, vX: 0, vY: 15, duration: 30},
                     {
                         type: GUI.ANIM_TYPE_STOP, callback: function () {
-                    }
+                        }
                     },
                     {type: GUI.ANIM_TYPE_MOVE, vX: 0, vY: -15, duration: 30},
                     {
                         type: GUI.ANIM_TYPE_STOP, callback: function () {
-                        dialogShowed = false;
-                    }
+                            self.dialogShowed = false;
+                        }
                     }
                 ]
             ]
@@ -103,8 +103,8 @@ ElementDialog = function () {
      * Покажем картинку.
      */
     this.show = function () {
-        if (showed == true) return;
-        showed = true;
+        if (self.showed == true) return;
+        self.showed = true;
         dom.show();
         for (var i in self.elements) {
             self.elements[i].show();
@@ -116,8 +116,8 @@ ElementDialog = function () {
      * Спрячем картинку.
      */
     this.hide = function () {
-        if (showed == false) return;
-        showed = false;
+        if (self.showed == false) return;
+        self.showed = false;
         dom.hide();
         for (var i in self.elements) {
             self.elements[i].hide();
@@ -128,8 +128,8 @@ ElementDialog = function () {
      * Перерисуем картинку.
      */
     this.redraw = function () {
-        if (!showed) return;
-        if (!dialogShowed) {
+        if (!self.showed) return;
+        if (!self.dialogShowed) {
             dom.x = self.x;
             dom.y = self.y;
             dom.title = self.title;
@@ -146,9 +146,9 @@ ElementDialog = function () {
      * Show dialog!
      */
     this.showDialog = function () {
-        if (dialogShowed) return;
+        if (self.dialogShowed) return;
         this.show();
-        dialogShowed = true;
+        self.dialogShowed = true;
         dom.animData[0].frameN = 0;
         dom.animPlayed = true;
     };

@@ -258,7 +258,6 @@ DataPoints = function () {
             }
             callback(rows || null, query);
         });
-
     };
 
     this.updateUsersPoints = function (userId, pointId, score, callback) {
