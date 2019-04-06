@@ -2,10 +2,11 @@ DataPoints = function () {
 
     this.OBJECT_NONE = 1;
     this.OBJECT_RANDOM = 2;
-    this.OBJECT_RED = 3;
-    this.OBJECT_GREEN = 4;
-    this.OBJECT_BLUE = 5;
-    this.OBJECT_BLOCK = 6;
+    this.OBJECT_BLOCK = 3;
+
+    this.OBJECT_RED = 101;
+    this.OBJECT_GREEN = 102;
+    this.OBJECT_BLUE = 103;
 
     this.FIELD_MAX_WIDTH = 10;
     this.FIELD_MAX_HEIGHT = 10;
@@ -15,6 +16,11 @@ DataPoints = function () {
 
     let tableName = 'users_points';
 
+    /**
+     * conversions:
+     * @see CAPIMap.convertFieldData
+     * @type {{}}
+     */
     let wayPoints = {};
 
     let fromDBToData = function (data) {
@@ -27,7 +33,7 @@ DataPoints = function () {
 
     wayPoints[1] = {
         id: 1,
-        turns:35,
+        turns:5,
         score1: 100,
         score2: 200,
         score3: 300,
@@ -35,13 +41,13 @@ DataPoints = function () {
             "nnnnnnnnnn",
             "nnnnnnnnnn",
             "bbbbbnnnnn",
-            "nnnnnnnnnn",
-            "BBBBBGGGnG"
+            "rrrrrnnnnn",
+            "nnnnnnnnnn"
         ],
         goals: [
             {
                 id: this.OBJECT_GREEN,
-                count: 10
+                count: 120
             }
         ],
     };

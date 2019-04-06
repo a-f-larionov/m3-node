@@ -41,31 +41,22 @@ PageBlockMaps = function PageBlockMaps() {
      * Создадим тут все элементы страницы.
      */
     this.init = function () {
-        var element;
+        let el;
 
         elMap = GUI.createElement(ElementImage, {
-            x: 0,
-            y: 0,
-            width: 777,
-            height: 500,
+            x: 0, y: 0, width: 777, height: 500,
             src: '/images/ratingInfo.png'
         });
         self.elements.push(elMap);
 
         elMapWay = GUI.createElement(ElementImage, {
-            x: 0,
-            y: 0,
-            width: 777,
-            height: 500,
+            x: 0, y: 0, width: 777, height: 500,
             src: '/images/maps/way-line.png'
         });
         self.elements.push(elMapWay);
 
         elPreloader = GUI.createElement(ElementImage, {
-            x: 0,
-            y: 0,
-            width: 777,
-            height: 500,
+            x: 0, y: 0, width: 777, height: 500,
             src: '/images/map-preloader.png'
         });
 
@@ -75,8 +66,7 @@ PageBlockMaps = function PageBlockMaps() {
          */
 
         elArrowPrev = GUI.createElement(ElementButton, {
-            x: 10,
-            y: 160,
+            x: 10, y: 160,
             srcRest: '/images/map-arrow-left.png',
             srcHover: '/images/map-arrow-left.png',
             srcActive: '/images/map-arrow-left.png',
@@ -85,8 +75,7 @@ PageBlockMaps = function PageBlockMaps() {
         self.elements.push(elArrowPrev);
 
         elArrowNext = GUI.createElement(ElementButton, {
-            x: 714,
-            y: 160,
+            x: 714, y: 160,
             srcRest: '/images/map-arrow-right.png',
             srcHover: '/images/map-arrow-right.png',
             srcActive: '/images/map-arrow-right.png',
@@ -96,7 +85,7 @@ PageBlockMaps = function PageBlockMaps() {
 
         /* Points */
         DataPoints.getPointsCoords().forEach(function (coord) {
-            element = GUI.createElement(ElementPoint, {
+            el = GUI.createElement(ElementPoint, {
                 x: coord.x,
                 y: coord.y,
                 friends: [],
@@ -109,29 +98,26 @@ PageBlockMaps = function PageBlockMaps() {
                     elementDialogPointInfo.showDialog(element);
                 }
             });
-            self.elements.push(element);
-            pointsEls[coord.number] = element;
+            self.elements.push(el);
+            pointsEls[coord.number] = el;
         });
 
         // сундуки
         DataChests.getCoords().forEach(function (coord) {
-            element = GUI.createElement(ElementChest, {
-                x: coord.x,
-                y: coord.y,
-                width: 71,
-                height: 62,
+            el = GUI.createElement(ElementChest, {
+                x: coord.x, y: coord.y,
+                width: 71, height: 62,
                 chestId: coord.number,
                 number: coord.number,
                 enabled: true
             });
-            self.elements.push(element);
-            chestsEls[coord.number] = element;
+            self.elements.push(el);
+            chestsEls[coord.number] = el;
         });
 
         elementDialogPointInfo = GUI.createElement(ElementDialogPointInfo, {
             src: '/images/window.png',
-            width: 342,
-            height: 200
+            width: 342, height: 200
         });
         self.elements.push(elementDialogPointInfo);
     };

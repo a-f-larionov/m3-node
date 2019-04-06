@@ -90,18 +90,6 @@ GUIDom = function () {
         dom.ondragstart = function () {
             return false;
         };
-        /* hidden mode..:begin */
-        //@todo remove hidePictures
-        if (GUIDom.hidePictures) {
-            document.body.style.opacity = 0.01;
-            dom.style.border = '1px dotted grey';
-        }
-        /* Указанная прозрачность картинок. */
-        if (GUIDom.pictureOpacities) {
-            document.body.style.opacity = GUIDom.pictureOpacities;
-            dom.style.border = '2px solid lightgrey';
-        }
-        /* hidden mode..:finish */
         /* Добавим дом к родителю. */
         this.__dom = dom;
         if (parent == undefined) {
@@ -292,32 +280,16 @@ GUIDom = function () {
         }
         url = GUI.getImagePath(self.backgroundImage);
 
-        if (GUIDom.hidePictures) {
-            if (GUIDom.makeTransparent) {
-                dom.style.backgroundImage = 'url(' + url + ')';
-            } else {
-                dom.style.fontSize = '10px';
-                url = url.replace('/images/', '');
-                dom.innerHTML = url.substr(url.indexOf('/') + 1, url.indexOf('.') - url.indexOf('/') - 1);
-            }
-        } else {
-            dom.style.backgroundImage = 'url(' + url + ')';
-
-            dom.style.backgroundPositionX = '-' + GUI.getImageX(self.backgroundImage) + 'px';
-            dom.style.backgroundPositionY = '-' + GUI.getImageY(self.backgroundImage) + 'px';
-            dom.style.backgroundRepeat = 'no-repeat';
-
-        }
+        dom.style.backgroundImage = 'url(' + url + ')';
+        dom.style.backgroundPositionX = '-' + GUI.getImageX(self.backgroundImage) + 'px';
+        dom.style.backgroundPositionY = '-' + GUI.getImageY(self.backgroundImage) + 'px';
+        dom.style.backgroundRepeat = 'no-repeat';
     };
     var redrawBackgroundSize = function () {
         dom.style.backgroundSize = self.backgroundSize + 'px';
     };
     var redrawInnerHTML = function () {
-        if (GUIDom.hidePictures) {
-            dom.innerHTML = self.innerHTML;
-        } else {
-            dom.innerHTML = self.innerHTML;
-        }
+        dom.innerHTML = self.innerHTML;
     };
     var redrawPointer = function () {
         dom.style.cursor = self.pointer;
@@ -505,35 +477,6 @@ GUIDom = function () {
         }
     };
 };
-
-/**
- * Этот код определит нужно ли делать картинки невидимыми.
- * Это нужно для БоссМоуда на саммом деле :)
- * В результате мы установим GUIDom.hidePictures = [true|false].
- */
-(function () {
-    /* Распарсим по быстром url адрес. */
-    var urlParams;
-    (function () {
-        var tmp1, tmp2;
-        urlParams = {};
-        url = window.location.href;
-        tmp1 = url.substr(url.indexOf('?') + 1).split('&');
-        for (var i in tmp1) {
-            tmp = tmp1[i].split('=');
-            urlParams[tmp[0]] = tmp[1];
-        }
-    })();
-    /* Режим скрытых картинок */
-    if (urlParams.hide_pictures && urlParams.hide_pictures == 'true') {
-        GUIDom.hidePictures = true;
-    } else {
-        GUIDom.hidePictures = false;
-    }
-    if (urlParams.picture_opacities) {
-        GUIDom.pictureOpacities = urlParams.picture_opacities;
-    }
-})();
 
 /**
  * Уникальнгый id для каждогого дома, иногда нужна уникальность дома, для таймаутов например.

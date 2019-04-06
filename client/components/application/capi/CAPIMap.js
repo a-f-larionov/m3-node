@@ -19,10 +19,11 @@ CAPIMap = function () {
         let convertTable = {
             'n': DataPoints.OBJECT_NONE,
             'r': DataPoints.OBJECT_RANDOM,
+            'b': DataPoints.OBJECT_BLOCK,
+
             'R': DataPoints.OBJECT_RED,
             'G': DataPoints.OBJECT_GREEN,
-            'B': DataPoints.OBJECT_BLUE,
-            'b': DataPoints.OBJECT_BLOCK
+            'B': DataPoints.OBJECT_BLUE
         };
         fieldResult = [];
 

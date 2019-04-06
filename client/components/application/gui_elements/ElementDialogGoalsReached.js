@@ -7,7 +7,7 @@ ElementDialogGoalsReached = function () {
         let element;
 
         element = GUI.createElement(ElementButton, {
-                x: 100,
+                x: 270,
                 y: 10,
                 srcRest: '/images/button-close-rest.png',
                 srcHover: '/images/button-close-hover.png',
@@ -29,7 +29,7 @@ ElementDialogGoalsReached = function () {
             alignCenter: true,
             width: 250
         }, this.dom);
-        element.setText("Победа!");
+        element.setText("Уровень пройден!");
         self.elements.push(element);
     };
 
@@ -44,7 +44,6 @@ ElementDialogGoalsReached = function () {
     this.redraw = function () {
         this.__proto__.redraw.call(this);
     };
-
 };
 
 
