@@ -333,12 +333,12 @@ ElementField = function () {
 
         for (let y = fieldHeight - 1; y > -fieldHeight; y--) {
             for (let x = 0; x < fieldWidth; x++) {
-                if (field[y][x] == DataPoints.OBJECT_NONE) {
+                if (field[y][x] == DataPoints.OBJECT_EMPTY) {
                     if (fallDownObjects.indexOf(field[y - 1][x]) != -1) {
                         anyFound = true;
                         // exchange
                         field[y][x] = field[y - 1][x];
-                        field[y - 1][x] = DataPoints.OBJECT_NONE;
+                        field[y - 1][x] = DataPoints.OBJECT_EMPTY;
                         animObjects.push(domObjects[y - 1][x]);
                     }
                 }
@@ -366,7 +366,7 @@ ElementField = function () {
         for (let i in lines) {
             for (let c in lines[i].coords) {
                 p = lines[i].coords[c];
-                field[p.y][p.x] = DataPoints.OBJECT_NONE;
+                field[p.y][p.x] = DataPoints.OBJECT_EMPTY;
             }
             anyDestroy = true;
             self.onDestroyLine(lines[i]);

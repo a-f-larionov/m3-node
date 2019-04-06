@@ -17,7 +17,7 @@ CAPIMap = function () {
     let convertFieldData = function (fieldSource) {
         let fieldResult, source, result, fieldWidth, fieldHeight;
         let convertTable = {
-            'n': DataPoints.OBJECT_NONE,
+            'n': DataPoints.OBJECT_EMPTY,
             'r': DataPoints.OBJECT_RANDOM,
             'b': DataPoints.OBJECT_BLOCK,
 

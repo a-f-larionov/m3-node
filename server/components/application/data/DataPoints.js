@@ -1,6 +1,6 @@
 DataPoints = function () {
 
-    this.OBJECT_NONE = 1;
+    this.OBJECT_EMPTY = 1;
     this.OBJECT_RANDOM = 2;
     this.OBJECT_BLOCK = 3;
 
