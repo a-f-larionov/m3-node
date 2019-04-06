@@ -34,6 +34,9 @@ CAPIMap = function () {
             for (let x = 0; x < fieldWidth; x++) {
                 source = fieldSource[y][x];
                 result = convertTable[source];
+                if (result === undefined) {
+                    Logs.alert(Logs.LEVEL_ERROR, 'ERROR: field ceil not found.');
+                }
                 fieldResult[y][x] = result;
             }
         }

@@ -23,7 +23,7 @@ Logs = function () {
 
     this.showCache = function () {
         for (var i in cache) {
-            if (cache[i] == '--dummy--')continue;
+            if (cache[i] == '--dummy--') continue;
         }
     };
 
@@ -40,7 +40,7 @@ Logs = function () {
             level = Logs.LEVEL_DETAIL;
         }
         // если уровень лога ниже уровня срабатывания ничего не делаем.
-        if (level < trigger_level)return;
+        if (level < trigger_level) return;
         // сформируем сообщение лога.
         date = new Date();
         // тут мы получим "01-01-2014 15:55:55"
@@ -122,6 +122,11 @@ Logs = function () {
      * Фатальная ошибка.
      */
     this.LEVEL_FATAL_ERROR = 5;
+
+    this.alert = function (level, message) {
+        if (level < trigger_level) return;
+        alert(message);
+    };
 
     var typeTitles = {};
     /* человеко-читаемые типы логов. */
