@@ -44,13 +44,17 @@ ElementField = function () {
     let randomObjects = [
         DataPoints.OBJECT_RED,
         DataPoints.OBJECT_GREEN,
-        DataPoints.OBJECT_BLUE
+        DataPoints.OBJECT_BLUE,
+        DataPoints.OBJECT_YELLOW,
+        DataPoints.OBJECT_PURPLE,
     ];
 
     let fallDownObjects = [
         DataPoints.OBJECT_RED,
         DataPoints.OBJECT_GREEN,
-        DataPoints.OBJECT_BLUE
+        DataPoints.OBJECT_BLUE,
+        DataPoints.OBJECT_YELLOW,
+        DataPoints.OBJECT_PURPLE,
     ];
 
     let animType = null;
@@ -251,18 +255,28 @@ ElementField = function () {
         domObjectsContainer.y = self.y;
         for (let y = 0; y < fieldHeight; y++) {
             for (let x = 0; x < fieldWidth; x++) {
-                domCells[y][x].x = self.x + x * DataPoints.BLOCK_WIDTH;
-                domCells[y][x].y = self.y + y * DataPoints.BLOCK_HEIGHT;
-                domCells[y][x].redraw();
+                if (field[y][x] === DataPoints.OBJECT_NONE) {
+                    domCells[y][x].hide();
+                } else {
+                    domCells[y][x].x = self.x + x * DataPoints.BLOCK_WIDTH;
+                    domCells[y][x].y = self.y + y * DataPoints.BLOCK_HEIGHT;
+                    domCells[y][x].show();
+                    domCells[y][x].redraw();
+                }
             }
         }
         if (field) {
             for (let y = -fieldHeight; y < fieldHeight; y++) {
                 for (let x = 0; x < fieldWidth; x++) {
-                    domObjects[y][x].backgroundImage = DataPoints.objectImages[field[y][x]];
-                    domObjects[y][x].y = y * DataPoints.BLOCK_HEIGHT;
-                    domObjects[y][x].x = x * DataPoints.BLOCK_WIDTH;
-                    domObjects[y][x].redraw();
+                    if (field[y][x] === DataPoints.OBJECT_NONE) {
+                        domObjects[y][x].hide();
+                    } else {
+                        domObjects[y][x].backgroundImage = DataPoints.objectImages[field[y][x]];
+                        domObjects[y][x].y = y * DataPoints.BLOCK_HEIGHT;
+                        domObjects[y][x].x = x * DataPoints.BLOCK_WIDTH;
+                        domObjects[y][x].show();
+                        domObjects[y][x].redraw();
+                    }
                 }
             }
         }

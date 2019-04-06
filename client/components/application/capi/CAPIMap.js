@@ -17,12 +17,15 @@ CAPIMap = function () {
     let convertFieldData = function (fieldSource) {
         let fieldResult, source, result, fieldWidth, fieldHeight;
         let convertTable = {
+            ' ': DataPoints.OBJECT_NONE,
             '□': DataPoints.OBJECT_EMPTY,
             '?': DataPoints.OBJECT_RANDOM,
             '■': DataPoints.OBJECT_BLOCK,
             'R': DataPoints.OBJECT_RED,
             'G': DataPoints.OBJECT_GREEN,
-            'B': DataPoints.OBJECT_BLUE
+            'B': DataPoints.OBJECT_BLUE,
+            'Y': DataPoints.OBJECT_YELLOW,
+            'P': DataPoints.OBJECT_PURPLE,
         };
         fieldResult = [];
 

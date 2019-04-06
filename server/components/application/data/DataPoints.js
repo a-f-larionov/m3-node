@@ -1,12 +1,15 @@
 DataPoints = function () {
 
-    this.OBJECT_EMPTY = 1;
-    this.OBJECT_RANDOM = 2;
-    this.OBJECT_BLOCK = 3;
+    this.OBJECT_NONE = 1;
+    this.OBJECT_EMPTY = 2;
+    this.OBJECT_RANDOM = 3;
+    this.OBJECT_BLOCK = 4;
 
     this.OBJECT_RED = 101;
     this.OBJECT_GREEN = 102;
     this.OBJECT_BLUE = 103;
+    this.OBJECT_YELLOW = 104;
+    this.OBJECT_PURPLE = 105;
 
     this.FIELD_MAX_WIDTH = 10;
     this.FIELD_MAX_HEIGHT = 10;
@@ -39,13 +42,21 @@ DataPoints = function () {
         score3: 300,
         field: [
             "□□□□□",
-            "□■■■□",
+            " ■■■ ",
             "□???□",
-            "□RGB□",
+            "PRGBY",
         ],
         goals: [
             {
                 id: this.OBJECT_GREEN,
+                count: 120
+            },
+            {
+                id: this.OBJECT_YELLOW,
+                count: 120
+            },
+            {
+                id: this.OBJECT_PURPLE,
                 count: 120
             }
         ],
@@ -58,10 +69,13 @@ DataPoints = function () {
         score2: 200,
         score3: 300,
         field: [
-            "□□□□□",
-            "□□□□□",
-            "□□□□□",
-            "□□□□□",
+            "□□□□□□□□",
+            "□□□□□□□□",
+            "□□□□□□□□",
+            "□□□□□□□□",
+            "□□□□□□□□",
+            "□□□□□□□□",
+            "□□□□□□□□",
         ],
         goals: [
             {

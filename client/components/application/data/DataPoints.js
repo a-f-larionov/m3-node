@@ -1,12 +1,15 @@
 DataPoints = function () {
 
-    this.OBJECT_EMPTY = 1;
-    this.OBJECT_RANDOM = 2;
-    this.OBJECT_BLOCK = 3;
+    this.OBJECT_NONE = 1;
+    this.OBJECT_EMPTY = 2;
+    this.OBJECT_RANDOM = 3;
+    this.OBJECT_BLOCK = 4;
 
     this.OBJECT_RED = 101;
     this.OBJECT_GREEN = 102;
     this.OBJECT_BLUE = 103;
+    this.OBJECT_YELLOW = 104;
+    this.OBJECT_PURPLE = 105;
 
     this.FIELD_MAX_WIDTH = 10;
     this.FIELD_MAX_HEIGHT = 10;
@@ -15,12 +18,15 @@ DataPoints = function () {
     this.BLOCK_HEIGHT = 50;
 
     this.objectImages = {};
+    this.objectImages[this.OBJECT_NONE] = '/images/field-none-2.png';
     this.objectImages[this.OBJECT_EMPTY] = '/images/field-none-2.png';
     this.objectImages[this.OBJECT_RANDOM] = '/images/field-none.png';
+    this.objectImages[this.OBJECT_BLOCK] = '/images/field-block.png';
     this.objectImages[this.OBJECT_RED] = '/images/field-red.png';
     this.objectImages[this.OBJECT_GREEN] = '/images/field-green.png';
     this.objectImages[this.OBJECT_BLUE] = '/images/field-blue.png';
-    this.objectImages[this.OBJECT_BLOCK] = '/images/field-block.png';
+    this.objectImages[this.OBJECT_YELLOW] = '/images/field-yellow.png';
+    this.objectImages[this.OBJECT_PURPLE] = '/images/field-purple.png';
 
     var pointsCoords = [
         {
