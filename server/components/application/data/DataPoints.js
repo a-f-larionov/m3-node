@@ -33,16 +33,15 @@ DataPoints = function () {
 
     wayPoints[1] = {
         id: 1,
-        turns:5,
+        turns: 5,
         score1: 100,
         score2: 200,
         score3: 300,
         field: [
-            "nnnnnnnnnn",
-            "nnnnnnnnnn",
-            "bbbbbnnnnn",
-            "rrrrrnnnnn",
-            "nnnnnnnnnn"
+            "□□□□□",
+            "□■■■□",
+            "□???□",
+            "□RGB□",
         ],
         goals: [
             {
@@ -54,14 +53,15 @@ DataPoints = function () {
 
     wayPoints[2] = {
         id: 2,
-        turns:36,
+        turns: 36,
         score1: 100,
         score2: 200,
         score3: 300,
         field: [
-            "nnnnn",
-            "nnnnn",
-            "nnnnn"
+            "□□□□□",
+            "□□□□□",
+            "□□□□□",
+            "□□□□□",
         ],
         goals: [
             {
@@ -77,19 +77,15 @@ DataPoints = function () {
 
     wayPoints[3] = {
         id: 3,
-        turns:307,
+        turns: 307,
         score1: 100,
         score2: 200,
         score3: 300,
         field: [
-            "Rnnnnnnnnn",
-            "GGnnnnnnnn",
-            "BBBnnnnnnn",
-            "RRRRnnnnnn",
-            "GGGGGnnnnn",
-            "BBBBBBnnnn",
-            "RRRRRRRnnn",
-            "GGGGGGGGnn",
+            "□□□□□",
+            "□□□□□",
+            "□□□□□",
+            "□□□□□",
         ],
         goals: [
             {
@@ -101,21 +97,15 @@ DataPoints = function () {
 
     wayPoints[4] = {
         id: 4,
-        turns:30,
+        turns: 30,
         score1: 100,
         score2: 200,
         score3: 300,
         field: [
-            "nnnnnnnnnn",
-            "nnnnnnnnnn",
-            "nnnnnnnnnn",
-            "nnnnnnnnnn",
-            "nnnnnnnnnn",
-            "nnnnnnnnnn",
-            "nnnnnnnnnn",
-            "nnnnnnnnnn",
-            "nnnnnnnnnn",
-            "nnnnnnnnnn",
+            "□□□□□",
+            "□□□□□",
+            "□□□□□",
+            "□□□□□",
         ],
         goals: [
             {
@@ -127,21 +117,15 @@ DataPoints = function () {
 
     wayPoints[5] = {
         id: 5,
-        turns:30,
+        turns: 30,
         score1: 100,
         score2: 200,
         score3: 300,
         field: [
-            "nnnnnnnnnn",
-            "nnnnnnnnnn",
-            "nnnnnnnnnn",
-            "nnnnnnnnnn",
-            "nnnnnnnnnn",
-            "nnnnnnnnnn",
-            "nnnnnnnnnn",
-            "nnnnnnnnnn",
-            "nnnnnnnnnn",
-            "nnnnnnnnnn",
+            "□□□□□",
+            "□□□□□",
+            "□□□□□",
+            "□□□□□",
         ],
         goals: [
             {
@@ -153,16 +137,15 @@ DataPoints = function () {
 
     wayPoints[6] = {
         id: 6,
-        turns:30,
+        turns: 30,
         score1: 30,
         score2: 200,
         score3: 300,
         field: [
-            "bbbbb",
-            "bnnGb",
-            "bRGBb",
-            "bnBGb",
-            "Bnnnb"
+            "□□□□□",
+            "□□□□□",
+            "□□□□□",
+            "□□□□□",
         ],
         goals: [
             {
@@ -174,16 +157,15 @@ DataPoints = function () {
 
     wayPoints[7] = {
         id: 7,
-        turns:30,
+        turns: 30,
         score1: 100,
         score2: 200,
         score3: 300,
         field: [
-            "bbbbb",
-            "bnnnb",
-            "bRGBb",
-            "bnGnb",
-            "RbbGb"
+            "□□□□□",
+            "□□□□□",
+            "□□□□□",
+            "□□□□□",
         ],
         goals: [
             {
@@ -195,16 +177,15 @@ DataPoints = function () {
 
     wayPoints[8] = {
         id: 8,
-        turns:30,
+        turns: 30,
         score1: 100,
         score2: 200,
         score3: 300,
         field: [
-            "bnnnb",
-            "bnnnb",
-            "bRGBb",
-            "bnnnb",
-            "Gbbbb"
+            "□□□□□",
+            "□□□□□",
+            "□□□□□",
+            "□□□□□",
         ],
         goals: [
             {
@@ -216,16 +197,15 @@ DataPoints = function () {
 
     wayPoints[9] = {
         id: 9,
-        turns:30,
+        turns: 30,
         score1: 100,
         score2: 200,
         score3: 300,
         field: [
-            "bbbbb",
-            "bnnnb",
-            "bRGBb",
-            "bnnnb",
-            "Bnnnb"
+            "□□□□□",
+            "□□□□□",
+            "□□□□□",
+            "□□□□□",
         ],
         goals: [
             {

@@ -17,10 +17,9 @@ CAPIMap = function () {
     let convertFieldData = function (fieldSource) {
         let fieldResult, source, result, fieldWidth, fieldHeight;
         let convertTable = {
-            'n': DataPoints.OBJECT_EMPTY,
-            'r': DataPoints.OBJECT_RANDOM,
-            'b': DataPoints.OBJECT_BLOCK,
-
+            '□': DataPoints.OBJECT_EMPTY,
+            '?': DataPoints.OBJECT_RANDOM,
+            '■': DataPoints.OBJECT_BLOCK,
             'R': DataPoints.OBJECT_RED,
             'G': DataPoints.OBJECT_GREEN,
             'B': DataPoints.OBJECT_BLUE
@@ -34,8 +33,13 @@ CAPIMap = function () {
             for (let x = 0; x < fieldWidth; x++) {
                 source = fieldSource[y][x];
                 result = convertTable[source];
+                if (source === null) {
+                    Logs.log("error no field ceil", Logs.LEVEL_DETAIL, [fieldSource, source]);
+                    Logs.alert(Logs.LEVEL_ERROR, 'ERROR: Одна из линий поля не соответствует длине других линий.');
+                }
                 if (result === undefined) {
-                    Logs.alert(Logs.LEVEL_ERROR, 'ERROR: field ceil not found.');
+                    Logs.log("error no field ceil", Logs.LEVEL_DETAIL, [fieldSource, source]);
+                    Logs.alert(Logs.LEVEL_ERROR, 'ERROR: Нет такой ячейки.');
                 }
                 fieldResult[y][x] = result;
             }
