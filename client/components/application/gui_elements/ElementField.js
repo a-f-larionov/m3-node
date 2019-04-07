@@ -117,71 +117,10 @@ ElementField = function () {
                         ]
                     ]
                 });
-                dom.bind(GUI.EVENT_MOUSE_CLICK, function () {
-
-                    if (lock) return;
-                    if (animBlock) return;
-                    if (randomObjects.indexOf(field[this.fieldY][this.fieldX]) == -1) {
-                        return;
-                    }
-                    if (!gemA) {
-                        gemA = this;
-                    } else {
-                        //if near
-                        let isNear;
-                        isNear = false;
-                        if (gemA.fieldX == this.fieldX + 1 && gemA.fieldY == this.fieldY + 0) isNear = true;
-                        if (gemA.fieldX == this.fieldX - 1 && gemA.fieldY == this.fieldY + 0) isNear = true;
-                        if (gemA.fieldX == this.fieldX + 0 && gemA.fieldY == this.fieldY + 1) isNear = true;
-                        if (gemA.fieldX == this.fieldX + 0 && gemA.fieldY == this.fieldY - 1) isNear = true;
-
-                        if (isNear) {
-                            domFrame.hide();
-                            gemB = this;
-                            animBlock = true;
-                            let mayExchange;
-                            let lines;
-                            self.exchangeGems(gemA, gemB);
-                            lines = self.findLines();
-                            mayExchange =
-                                self.lineCrossing(lines, gemA.fieldX, gemA.fieldY)
-                                | self.lineCrossing(lines, gemB.fieldX, gemB.fieldY);
-                            self.exchangeGems(gemA, gemB);
-
-                            if (gemA.fieldX < gemB.fieldX) {
-                                animType = 2;
-                                animavx = +1;
-                                animavy = 0;
-                            }
-                            if (gemA.fieldX > gemB.fieldX) {
-                                animType = 2;
-                                animavx = -1;
-                                animavy = 0;
-                            }
-                            if (gemA.fieldY < gemB.fieldY) {
-                                animType = 2;
-                                animavx = 0;
-                                animavy = +1;
-                            }
-                            if (gemA.fieldY > gemB.fieldY) {
-                                animType = 2;
-                                animavx = 0;
-                                animavy = -1;
-                            }
-                            if (mayExchange) {
-                                self.exchangeGems(gemA, gemB);
-                                animExchangeHalf = true;
-                                self.onTurnUse();
-                            } else {
-                                animExchangeHalf = false;
-                            }
-                            animCounter = 0;
-                        } else {
-                            gemA = this;
-                        }
-                    }
-                    self.redraw();
-                }, dom);
+                dom.bind(GUI.EVENT_MOUSE_CLICK, onGemClick, dom);
+                dom.bind(GUI.EVENT_MOUSE_MOUSE_DOWN, onGemMouseDown, dom);
+                dom.bind(GUI.EVENT_MOUSE_MOUSE_UP, onGemMouseUp, dom);
+                dom.bind(GUI.EVENT_MOUSE_OVER, onGemMouseOver, dom);
                 domObjects[y][x] = dom;
             }
         }
@@ -198,6 +137,109 @@ ElementField = function () {
         OnIdle.register(self.animate);
 
         this.redraw();
+    };
+
+    let onGemClick = function () {
+        gemAct(this);
+    };
+
+    /**
+     * Обработка дейтсвия с камнем, при клике например
+     * или другом любом действием аналогичным клику.
+     * @param gem
+     */
+    let gemAct = function (gem) {
+
+        if (lock) return;
+        if (animBlock) return;
+        if (randomObjects.indexOf(field[gem.fieldY][gem.fieldX]) === -1) {
+            return;
+        }
+        if (!gemA) {
+            gemA = gem;
+        } else {
+            //if near
+            let isNear;
+            isNear = false;
+            if (gemA.fieldX === gem.fieldX + 1 && gemA.fieldY === gem.fieldY + 0) isNear = true;
+            if (gemA.fieldX === gem.fieldX - 1 && gemA.fieldY === gem.fieldY + 0) isNear = true;
+            if (gemA.fieldX === gem.fieldX + 0 && gemA.fieldY === gem.fieldY + 1) isNear = true;
+            if (gemA.fieldX === gem.fieldX + 0 && gemA.fieldY === gem.fieldY - 1) isNear = true;
+
+            if (isNear) {
+                domFrame.hide();
+                gemB = gem;
+                animBlock = true;
+                let mayExchange;
+                let lines;
+                self.exchangeGems(gemA, gemB);
+                lines = self.findLines();
+                mayExchange =
+                    self.lineCrossing(lines, gemA.fieldX, gemA.fieldY)
+                    | self.lineCrossing(lines, gemB.fieldX, gemB.fieldY);
+                self.exchangeGems(gemA, gemB);
+
+                if (gemA.fieldX < gemB.fieldX) {
+                    animType = 2;
+                    animavx = +1;
+                    animavy = 0;
+                }
+                if (gemA.fieldX > gemB.fieldX) {
+                    animType = 2;
+                    animavx = -1;
+                    animavy = 0;
+                }
+                if (gemA.fieldY < gemB.fieldY) {
+                    animType = 2;
+                    animavx = 0;
+                    animavy = +1;
+                }
+                if (gemA.fieldY > gemB.fieldY) {
+                    animType = 2;
+                    animavx = 0;
+                    animavy = -1;
+                }
+                if (mayExchange) {
+                    self.exchangeGems(gemA, gemB);
+                    animExchangeHalf = true;
+                    self.onTurnUse();
+                } else {
+                    animExchangeHalf = false;
+                }
+                animCounter = 0;
+            } else {
+                gemA = gem;
+            }
+        }
+        self.redraw();
+    };
+
+    let gemMouseDown = null;
+
+    let onGemMouseDown = function () {
+        console.log('d');
+        console.log(this);
+        gemMouseDown = this;
+        // 1 - при mousedown - ждём перехода в соседнию
+        // 2 - если перешли - вызываем onclick дважды
+    };
+
+    let onGemMouseUp = function () {
+        console.log('u');
+        gemMouseDown = null;
+        // 1 - при mousedown - ждём перехода в соседнию
+        // 2 - если перешли - вызываем onclick дважды
+    };
+
+    let onGemMouseOver = function () {
+        if (gemMouseDown) {
+            gemAct(gemMouseDown);
+            gemAct(this);
+            gemMouseDown = null;
+            console.log(1);
+        } else {
+            console.log(2);
+        }
     };
 
     /**
