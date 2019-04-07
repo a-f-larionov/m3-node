@@ -319,7 +319,7 @@ ElementField = function () {
         for (let y = -fieldHeight; y < fieldHeight; y++) {
             for (let x = 0; x < fieldWidth; x++) {
                 if (field[y][x] == DataPoints.OBJECT_RANDOM) {
-                    field[y][x] = randomObjects[Math.floor(Math.random() * 3)];
+                    field[y][x] = randomObjects[Math.floor(Math.random() * randomObjects.length)];
                 }
             }
         }
@@ -330,7 +330,7 @@ ElementField = function () {
         for (let y = -fieldHeight; y < 0; y++) {
             for (let x = 0; x < fieldWidth; x++) {
 
-                field[y][x] = randomObjects[Math.floor(Math.random() * 3)];
+                field[y][x] = randomObjects[Math.floor(Math.random() * randomObjects.length)];
 
             }
         }
