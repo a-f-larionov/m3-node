@@ -119,6 +119,8 @@ ElementField = function () {
                 });
                 dom.bind(GUI.EVENT_MOUSE_CLICK, onGemClick, dom);
                 dom.bind(GUI.EVENT_MOUSE_MOUSE_DOWN, onGemMouseDown, dom);
+                dom.bind(GUI.EVENT_MOUSE_MOUSE_TOUCH_START, onGemTouchStart, dom);
+                dom.bind(GUI.EVENT_MOUSE_MOUSE_TOUCH_END, onGemTouchEnd, dom);
                 dom.bind(GUI.EVENT_MOUSE_MOUSE_UP, onGemMouseUp, dom);
                 dom.bind(GUI.EVENT_MOUSE_OVER, onGemMouseOver, dom);
                 domObjects[y][x] = dom;
@@ -137,6 +139,28 @@ ElementField = function () {
         OnIdle.register(self.animate);
 
         this.redraw();
+    };
+
+    let gemTouched = null;
+
+    let onGemTouchStart = function () {
+        gemTouched = this;
+    };
+
+    let onGemTouchEnd = function (event) {
+        try {
+            event.stopPropagation();
+            let changedTouch = event.changedTouches[0];
+            let elem = document.elementFromPoint(changedTouch.clientX, changedTouch.clientY);
+
+            if (gemTouched) {
+                gemAct(gemTouched);
+                gemAct(elem.__dom);
+                gemTouched = null;
+            }
+        } catch (e) {
+            gemTouched = null;
+        }
     };
 
     let onGemClick = function () {

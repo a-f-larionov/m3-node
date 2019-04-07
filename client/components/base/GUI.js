@@ -12,6 +12,10 @@ GUI = function () {
      */
     this.EVENT_MOUSE_MOUSE_DOWN = 1;
 
+    this.EVENT_MOUSE_MOUSE_TOUCH_START = 100;
+
+    this.EVENT_MOUSE_MOUSE_TOUCH_END = 101;
+
     /**
      * Событияе отпускания нажатой мыши(левой).
      * @type {number}
@@ -67,6 +71,8 @@ GUI = function () {
     this.eventNames[this.EVENT_MOUSE_OUT] = 'mouseout';
     this.eventNames[this.EVENT_KEY_DOWN] = 'keydown';
     this.eventNames[this.EVENT_KEY_UP] = 'keyup';
+    this.eventNames[this.EVENT_MOUSE_MOUSE_TOUCH_START] = 'touchstart';
+    this.eventNames[this.EVENT_MOUSE_MOUSE_TOUCH_END] = 'touchend';
 
     /**
      * Стэк родителей.
