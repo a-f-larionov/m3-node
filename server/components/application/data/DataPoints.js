@@ -74,8 +74,8 @@ DataPoints = function () {
             "□□□□□□□□",
             "□□□□□□□□",
             "□□□□□□□□",
-            "□□□□□□□□",
-            "□□□□□□□□",
+            "GGRGGBBB",
+            "RRGRRBBB",
         ],
         goals: [
             {
