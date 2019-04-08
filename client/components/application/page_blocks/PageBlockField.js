@@ -64,32 +64,6 @@ PageBlockField = function PageBlockField() {
         });
         this.elements.push(element);
 
-        // fall
-        element = GUI.createElement(ElementButton, {
-            x: 100,
-            y: 10,
-            srcRest: '/images/field-red.png',
-            srcHover: '/images/field-green.png',
-            srcActive: '/images/field-blue.png',
-            onClick: function () {
-                elementField.fallDown();
-            }
-        });
-        this.elements.push(element);
-
-        // destroy lines
-        element = GUI.createElement(ElementButton, {
-            x: 200,
-            y: 10,
-            srcRest: '/images/field-red.png',
-            srcHover: '/images/field-green.png',
-            srcActive: '/images/field-blue.png',
-            onClick: function () {
-                elementField.destroyLines();
-            }
-        });
-        this.elements.push(element);
-
         elementScore = GUI.createElement(ElementText, {
             x: 20,
             y: 100,
@@ -198,7 +172,7 @@ PageBlockField = function PageBlockField() {
         score = 0;
         turns = data.turns;
         goals = DataPoints.copyGoals(data.goals);
-        elementField.setField(data.field);
+        elementField.setLayers(data.layers);
         this.redraw();
     };
 
@@ -206,8 +180,8 @@ PageBlockField = function PageBlockField() {
         // run fall down
         let data;
         elementField.unlock();
-        elementField.fillRandom();
-        elementField.fallDown();
+        //elementField.fillRandom();
+        elementField.run();
         data = DataPoints.getById(DataPoints.getPlayedId());
         elementDialogGoals.setGoals(data.goals);
         elementDialogGoals.showDialog();

@@ -2,14 +2,17 @@ DataPoints = function () {
 
     this.OBJECT_NONE = 1;
     this.OBJECT_EMPTY = 2;
-    this.OBJECT_RANDOM = 3;
     this.OBJECT_BLOCK = 4;
 
-    this.OBJECT_RED = 101;
-    this.OBJECT_GREEN = 102;
-    this.OBJECT_BLUE = 103;
-    this.OBJECT_YELLOW = 104;
-    this.OBJECT_PURPLE = 105;
+    this.OBJECT_RANDOM = 101;
+
+    this.OBJECT_RED = 102;
+    this.OBJECT_GREEN = 103;
+    this.OBJECT_BLUE = 104;
+    this.OBJECT_YELLOW = 105;
+    this.OBJECT_PURPLE = 106;
+
+    this.OBJECT_EMITER = 1001;
 
     this.FIELD_MAX_WIDTH = 10;
     this.FIELD_MAX_HEIGHT = 10;
@@ -40,12 +43,32 @@ DataPoints = function () {
         score1: 100,
         score2: 200,
         score3: 300,
-        field: [
-            "□□□□□",
-            " ■■■ ",
-            "□???□",
-            "PRGBY",
-        ],
+        layers: {
+            mask: [
+                "     ",
+                " □□□ ",
+                "□□□□□",
+                "□□□□□",
+                "□□□□□",
+                " □□□ "
+            ],
+            gems: [
+                "RR□□□",
+                "□□R□□",
+                "RGBYP",
+                "?????",
+                "□□□□□",
+                " □□□ ",
+            ],
+            special: [
+                " *** ",
+                "*   *",
+                "     ",
+                "     ",
+                "     ",
+                "     ",
+            ],
+        },
         goals: [
             {
                 id: this.OBJECT_GREEN,
@@ -68,15 +91,36 @@ DataPoints = function () {
         score1: 100,
         score2: 200,
         score3: 300,
-        field: [
-            "□□□□□□□□",
-            "□□□□□□□□",
-            "□□□□□□□□",
-            "□□□□□□□□",
-            "□□□□□□□□",
-            "GGRGGBBB",
-            "RRGRRBBB",
-        ],
+        layers: {
+            mask: [
+                "□□□□□□□□□□",
+                "□□□□□□□□□□",
+                "□□□□□□□□□□",
+                "□□□□□□□□□□",
+                "□□□□□□□□□□",
+                "□□□□□□□□□□",
+                "□□□□□□□□□□",
+                "□□□□□□□□□□",
+            ],
+            gems: [
+                "□□□□□□□□□□",
+                "□□□□□□□□□□",
+                "□□□□□□□□□□",
+                "□□□□□□□□□□",
+                "□□□□□□□□□□",
+                "□□□□□□□□□□",
+                "□□□□□□□□□□",
+                "□□□□□□□□□□",
+            ],
+            special: [
+                "*         ",
+                "  *      *",
+                "   *****  ",
+                "          ",
+                "          ",
+                "          ",
+            ],
+        },
         goals: [
             {
                 id: this.OBJECT_GREEN,
@@ -95,12 +139,32 @@ DataPoints = function () {
         score1: 100,
         score2: 200,
         score3: 300,
-        field: [
-            "□□□□□",
-            "□□□□□",
-            "□□□□□",
-            "□□□□□",
-        ],
+        layers: {
+            mask: [
+                "     ",
+                " □□□ ",
+                "□□□□□",
+                "□□□□□",
+                "□□□□□",
+                " □□□ "
+            ],
+            gems: [
+                "     ",
+                "     ",
+                "RGBYP",
+                "?????",
+                "     ",
+                "     "
+            ],
+            special: [
+                " *** ",
+                "*   *",
+                "     ",
+                "     ",
+                "     ",
+                "     ",
+            ],
+        },
         goals: [
             {
                 id: this.OBJECT_GREEN,
@@ -115,12 +179,36 @@ DataPoints = function () {
         score1: 100,
         score2: 200,
         score3: 300,
-        field: [
-            "□□□□□",
-            "□□□□□",
-            "□□□□□",
-            "□□□□□",
-        ],
+        layers: {
+            mask: [
+                "□□□□□□□□□□",
+                "□□□□□□□□□□",
+                "□□□□□□□□□□",
+                " □□□□□□□□□",
+                " □□□□□□□□□",
+                "□□□□□□□□□□",
+                "□□□□□□□□□□",
+                "□□□□□□□□□□",
+            ],
+            gems: [
+                "□□□□□□□□□□",
+                "□□□□□□□□□□",
+                "□□□□□□□□□□",
+                "□□□□□□□□□□",
+                "□□□□□□□□□□",
+                "□□□□□□□□□□",
+                "□□□□□□□□□□",
+                "□□□□□□□□□□",
+            ],
+            special: [
+                "**********",
+                "          ",
+                "*  *****  ",
+                "          ",
+                "          ",
+                "          ",
+            ],
+        },
         goals: [
             {
                 id: this.OBJECT_GREEN,
@@ -135,12 +223,32 @@ DataPoints = function () {
         score1: 100,
         score2: 200,
         score3: 300,
-        field: [
-            "□□□□□",
-            "□□□□□",
-            "□□□□□",
-            "□□□□□",
-        ],
+        layers: {
+            mask: [
+                "     ",
+                " □□□ ",
+                "□□□□□",
+                "□□□□□",
+                "□□□□□",
+                " □□□ "
+            ],
+            gems: [
+                "     ",
+                "     ",
+                "RGBYP",
+                "?????",
+                "     ",
+                "     "
+            ],
+            special: [
+                " *** ",
+                "*   *",
+                "     ",
+                "     ",
+                "     ",
+                "     ",
+            ],
+        },
         goals: [
             {
                 id: this.OBJECT_GREEN,

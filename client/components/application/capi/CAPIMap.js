@@ -3,7 +3,9 @@ CAPIMap = function () {
     this.gotMapsInfo = function (ctnx, mapId, map, points, chests, usersInfo) {
         DataMap.setMapById(mapId, map);
         points.forEach(function (point) {
-            point.field = convertFieldData(point.field);
+            point.layers.mask = convertLayer(point.layers.mask);
+            point.layers.gems = convertLayer(point.layers.gems);
+            point.layers.special = convertLayer(point.layers.special);
             DataPoints.setPointData(point);
         });
         chests.forEach(function (chest) {
@@ -14,40 +16,34 @@ CAPIMap = function () {
         });
     };
 
-    let convertFieldData = function (fieldSource) {
-        let fieldResult, source, result, fieldWidth, fieldHeight;
-        let convertTable = {
+    let convertLayer = function (layer) {
+        let layerMapping = {
             ' ': DataPoints.OBJECT_NONE,
+            '■': DataPoints.OBJECT_BLOCK,
+            '*': DataPoints.OBJECT_EMITER,
             '□': DataPoints.OBJECT_EMPTY,
             '?': DataPoints.OBJECT_RANDOM,
-            '■': DataPoints.OBJECT_BLOCK,
             'R': DataPoints.OBJECT_RED,
             'G': DataPoints.OBJECT_GREEN,
             'B': DataPoints.OBJECT_BLUE,
             'Y': DataPoints.OBJECT_YELLOW,
             'P': DataPoints.OBJECT_PURPLE,
         };
-        fieldResult = [];
 
-        fieldWidth = fieldSource[0].length;
-        fieldHeight = fieldSource.length;
-        for (let y = 0; y < fieldHeight; y++) {
-            fieldResult[y] = [];
-            for (let x = 0; x < fieldWidth; x++) {
-                source = fieldSource[y][x];
-                result = convertTable[source];
-                if (source === null) {
-                    Logs.log("error no field ceil", Logs.LEVEL_DETAIL, [fieldSource, source]);
-                    Logs.alert(Logs.LEVEL_ERROR, 'ERROR: Одна из линий поля не соответствует длине других линий.');
+        let out;
+
+        out = [];
+        layer.forEach(function (row, y) {
+            out[y] = [];
+            row.split('').forEach(function (ceil, x) {
+                if (!layerMapping[ceil]) {
+                    Logs.log("error", Logs.LEVEL_DETAIL, [layer]);
+                    Logs.alert(Logs.LEVEL_ERROR, 'ERROR: Нет такого символа в мепинге.' + ceil);
                 }
-                if (result === undefined) {
-                    Logs.log("error no field ceil", Logs.LEVEL_DETAIL, [fieldSource, source]);
-                    Logs.alert(Logs.LEVEL_ERROR, 'ERROR: Нет такой ячейки.');
-                }
-                fieldResult[y][x] = result;
-            }
-        }
-        return fieldResult;
+                out[y][x] = layerMapping[ceil];
+            });
+        });
+        return out;
     };
 
     this.log = function (ctnx, message, data) {
