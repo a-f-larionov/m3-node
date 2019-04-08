@@ -382,9 +382,9 @@ ElementField = function () {
     };
 
     this.fillRandom = function () {
-        for (let y = -fieldHeight; y < fieldHeight; y++) {
+        for (let y = 0; y < fieldHeight; y++) {
             for (let x = 0; x < fieldWidth; x++) {
-                if (field[y][x] == DataPoints.OBJECT_RANDOM) {
+                if (field[y][x] === DataPoints.OBJECT_RANDOM) {
                     field[y][x] = randomObjects[Math.floor(Math.random() * randomObjects.length)];
                 }
             }
@@ -403,10 +403,10 @@ ElementField = function () {
         this.redraw();
     };
 
-    this.fallDown = function (nextStep) {
+    this.fallDown = function (nextAnimStep) {
         let anyFound;
         self.redraw(true); // set coords
-        if (animBlock && !nextStep) return;
+        if (animBlock && !nextAnimStep) return;
         animObjects = [];
         animCounter = 0;
         anyFound = false;
