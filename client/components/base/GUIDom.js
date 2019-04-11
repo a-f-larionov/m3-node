@@ -105,7 +105,7 @@ GUIDom = function () {
      * Покажем дом.
      */
     this.show = function () {
-        if (showed == true) {
+        if (showed === true) {
             return;
         }
         showed = true;
@@ -133,7 +133,7 @@ GUIDom = function () {
             return;
         }
         for (var name in props) {
-            if (oldProps[name] != self[name]) {
+            if (oldProps[name] !== self[name]) {
                 props[name].call();
                 oldProps[name] = self[name];
             }
@@ -272,6 +272,7 @@ GUIDom = function () {
     };
     var redrawBackgroundImage = function () {
         var url;
+        url = GUI.getImagePath(self.backgroundImage);
         /* Если размер не задан, пробуем задать его автоматически. */
         if (!self.width && !self.height && GUI.getImagePath(self.backgroundImage)) {
             self.width = GUI.getImageWidth(self.backgroundImage);
@@ -279,11 +280,11 @@ GUIDom = function () {
             props.height.call();
             props.width.call();
         }
-        url = GUI.getImagePath(self.backgroundImage);
 
         dom.style.backgroundImage = 'url(' + url + ')';
         dom.style.backgroundPositionX = '-' + GUI.getImageX(self.backgroundImage) + 'px';
-        dom.style.backgroundPositionY = '-' + GUI.getImageY(self.backgroundImage) + 'px';
+        self.backgroundPositionY = self.backgroundPositionY ? self.backgroundPositionY : 0;
+        dom.style.backgroundPositionY = '-' + (GUI.getImageY(self.backgroundImage) + self.backgroundPositionY) + 'px';
         dom.style.backgroundRepeat = 'no-repeat';
     };
     var redrawBackgroundSize = function () {
@@ -383,6 +384,7 @@ GUIDom = function () {
         y: redrawY,
         width: redrawWidth,
         height: redrawHeight,
+        backgroundPositionY: redrawBackgroundImage,
         backgroundImage: redrawBackgroundImage,
         backgroundSize: redrawBackgroundSize,
         innerHTML: redrawInnerHTML,
@@ -443,7 +445,7 @@ GUIDom = function () {
                 break;
             case GUI.ANIM_TYPE_MOVIE:
                 frame.imageN++;
-                if (frame.imageN == frame.images.length) {
+                if (frame.imageN === frame.images.length) {
                     frame.imageN = 0;
                 }
                 self.backgroundImage = frame.images[frame.imageN];
@@ -468,7 +470,7 @@ GUIDom = function () {
         if (frame.duration && self.animData[tN].counter > frame.duration) {
             self.animData[tN].frameN++;
             self.animData[tN].counter = 0;
-            if (self.animTracks[tN][self.animData[tN].frameN] == undefined) {
+            if (self.animTracks[tN][self.animData[tN].frameN] === undefined) {
                 self.animPlayed = false;
                 self.animData[tN].frameN = 0;
                 if (frame.callback) {

@@ -58,7 +58,7 @@ ElementDialogPointInfo = function () {
 
         // кнопка играть
         GUI.createElement(ElementButton, {
-            x: 50, y: 120, width: 100, height: 40,
+            x: 50, y: 120,
             srcRest: '/images/button-close-rest.png',
             srcHover: '/images/button-close-hover.png',
             srcActive: '/images/button-close-active.png',

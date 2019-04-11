@@ -89,7 +89,7 @@ ElementField = function () {
                 dom = GUI.createDom(undefined, {
                     x: self.x + x * DataPoints.BLOCK_WIDTH,
                     y: self.y + y * DataPoints.BLOCK_HEIGHT,
-                    backgroundImage: '/images/field-cell.png'
+                    backgroundImage: DataPoints.objectImages[DataPoints.OBJECT_CELL]
                 });
                 maskDoms[y][x] = dom;
             }
@@ -113,12 +113,9 @@ ElementField = function () {
                     fieldY: y,
                     x: x * DataPoints.BLOCK_WIDTH,
                     y: y * DataPoints.BLOCK_HEIGHT,
-                    backgroundImage: '/images/field-none.png',
-                    animTracks: [
-                        [
-                            {type: GUI.ANIM_TYPE_MOVE, vX: 0, vY: 2, duration: 23, callback: this.onAnimFinish}
-                        ]
-                    ]
+                    height: 50,
+                    width: 50,
+                    backgroundImage: '/images/field-none.png'
                 });
                 dom.bind(GUI.EVENT_MOUSE_CLICK, onGemClick, dom);
                 dom.bind(GUI.EVENT_MOUSE_MOUSE_DOWN, onGemMouseDown, dom);
@@ -245,15 +242,12 @@ ElementField = function () {
     let gemMouseDown = null;
 
     let onGemMouseDown = function () {
-        console.log('d');
-        console.log(this);
         gemMouseDown = this;
         // 1 - при mousedown - ждём перехода в соседнию
         // 2 - если перешли - вызываем onclick дважды
     };
 
     let onGemMouseUp = function () {
-        console.log('u');
         gemMouseDown = null;
         // 1 - при mousedown - ждём перехода в соседнию
         // 2 - если перешли - вызываем onclick дважды
@@ -264,9 +258,6 @@ ElementField = function () {
             gemAct(gemMouseDown);
             gemAct(this);
             gemMouseDown = null;
-            console.log(1);
-        } else {
-            console.log(2);
         }
     };
 
@@ -314,9 +305,9 @@ ElementField = function () {
     /**
      * Перерисуем картинку.
      */
-    this.redraw = function (skipAnimCheck) {
+    this.redraw = function () {
         if (!showed) return;
-        if (animBlock && !skipAnimCheck) return;
+        if (animBlock) return;
         self.x = self.centerX - DataPoints.BLOCK_WIDTH * Math.floor(fieldWidth / 2);
         self.y = self.centerY - DataPoints.BLOCK_HEIGHT * Math.floor(fieldHeight / 2);
         domGemsContainer.x = self.x;
@@ -326,13 +317,19 @@ ElementField = function () {
         // layer.mask
         layerMask.forEach(function (row, y) {
             row.forEach(function (cell, x) {
-                if (cell === DataPoints.OBJECT_NONE) {
-                    maskDoms[y][x].hide();
-                } else {
-                    maskDoms[y][x].x = self.x + x * DataPoints.BLOCK_WIDTH;
-                    maskDoms[y][x].y = self.y + y * DataPoints.BLOCK_HEIGHT;
-                    maskDoms[y][x].show();
-                    maskDoms[y][x].redraw();
+                switch (cell) {
+                    case DataPoints.OBJECT_EMPTY:
+                        cell = DataPoints.OBJECT_CELL;
+                    default:
+                        maskDoms[y][x].x = self.x + x * DataPoints.BLOCK_WIDTH;
+                        maskDoms[y][x].y = self.y + y * DataPoints.BLOCK_HEIGHT;
+                        maskDoms[y][x].backgroundImage = DataPoints.objectImages[cell];
+                        maskDoms[y][x].show();
+                        maskDoms[y][x].redraw();
+                        break;
+                    case DataPoints.OBJECT_NONE:
+                        maskDoms[y][x].hide();
+                        break;
                 }
             });
         });
@@ -342,11 +339,16 @@ ElementField = function () {
                     if (layerGems[y][x] === DataPoints.OBJECT_NONE) {
                         gemDoms[y][x].hide();
                     } else {
-                        gemDoms[y][x].backgroundImage = DataPoints.objectImages[layerGems[y][x]];
-                        gemDoms[y][x].y = y * DataPoints.BLOCK_HEIGHT;
-                        gemDoms[y][x].x = x * DataPoints.BLOCK_WIDTH;
-                        gemDoms[y][x].show();
-                        gemDoms[y][x].redraw();
+                        if (layerMask[y][x] !== DataPoints.OBJECT_EMPTY) {
+                            gemDoms[y][x].hide();
+                        } else {
+                            gemDoms[y][x].backgroundImage = DataPoints.objectImages[layerGems[y][x]];
+                            gemDoms[y][x].y = y * DataPoints.BLOCK_HEIGHT;
+                            gemDoms[y][x].x = x * DataPoints.BLOCK_WIDTH;
+                            gemDoms[y][x].height = DataPoints.BLOCK_HEIGHT;
+                            gemDoms[y][x].show();
+                            gemDoms[y][x].redraw();
+                        }
                     }
                 }
             }
@@ -416,7 +418,6 @@ ElementField = function () {
     let runNext = 0;
 
     this.run = function () {
-        console.log('run:' + runNext);
         switch (runNext) {
             case 0:
                 runNext = 1;
@@ -434,7 +435,6 @@ ElementField = function () {
     };
 
     this.processSpecialLayer = function () {
-        console.log('special');
         layerSpecial.forEach(function (row, y) {
             row.forEach(function (cell, x) {
                 //if emiter and empty layerGems, set random gem
@@ -442,29 +442,56 @@ ElementField = function () {
                     layerGems[y][x] === DataPoints.OBJECT_EMPTY
                 ) {
                     layerGems[y][x] = self.getRandomGem();
+                    if (layerMask[y][x] === DataPoints.OBJECT_NONE) {
+                        gemDoms[y][x].height = 0;
+                    } else {
+                        gemDoms[y][x].height = DataPoints.BLOCK_HEIGHT;
+                    }
                 }
             });
         });
         this.run();
     };
 
-    this.fallDown = function (nextAnimStep) {
-        console.log('fall down');
-        self.redraw(true); // set coords
-        if (animBlock && !nextAnimStep) return;
+    this.fallDown = function () {
+        if (animBlock) return;
+        self.redraw(); // reset coords and other states
         animObjects = [];
         animCounter = 0;
 
         for (let y = fieldHeight - 1; y > 0; y--) {
             for (let x = 0; x < fieldWidth; x++) {
+                let dom;
+                if (
+                    layerGems[y][x] === DataPoints.OBJECT_EMPTY &&
+                    fallDownObjects.indexOf(layerGems[y - 1][x]) !== -1
+                ) {
+                    dom = gemDoms[y - 1][x];
+                    dom.mode = '';
+                    // if dom now on NONE and below IS NOT NONE, set flag - showUp
+                    // if dom now is NOT NONE and below IS NONE, set flag hideDown
+                    if (layerMask[y - 1][x] === DataPoints.OBJECT_EMPTY &&
+                        layerMask[y][x] !== DataPoints.OBJECT_EMPTY
+                    ) dom.mode = 'tohide';
 
-                if (layerGems[y][x] === DataPoints.OBJECT_EMPTY) {
-                    if (fallDownObjects.indexOf(layerGems[y - 1][x]) !== -1) {
-                        // exchange
-                        layerGems[y][x] = layerGems[y - 1][x];
-                        layerGems[y - 1][x] = DataPoints.OBJECT_EMPTY;
-                        animObjects.push(gemDoms[y - 1][x]);
+                    if (layerMask[y - 1][x] !== DataPoints.OBJECT_EMPTY &&
+                        layerMask[y][x] === DataPoints.OBJECT_EMPTY
+                    ) {
+                        dom.mode = 'toshow';
+                        // вобще тут должен быть y-1, но мы их уже пмоеняли это с учетом что они уже поменялись
+                        dom.backgroundImage = DataPoints.objectImages[layerGems[y - 1][x]];
+                        // переисовка backgroundPositionY это хитрый хак и костыль :)
+                        dom.backgroundPositionY = DataPoints.BLOCK_HEIGHT;
+                        dom.y = (y) * DataPoints.BLOCK_HEIGHT;
+                        dom.x = (x) * DataPoints.BLOCK_WIDTH;
+                        dom.height = 0;
+                        dom.show();
                     }
+                    // exchange
+                    layerGems[y][x] = layerGems[y - 1][x];
+                    layerGems[y - 1][x] = DataPoints.OBJECT_EMPTY;
+
+                    animObjects.push(dom);
                 }
             }
         }
@@ -473,15 +500,11 @@ ElementField = function () {
             animType = 1;
             animBlock = true;
         } else {
-            animType = 0;
-            animBlock = false;
-            this.redraw();
             this.run();
         }
     };
 
     this.destroyLines = function () {
-        console.log('destroy lines');
         let lines;
         lines = this.findLines();
         // destory lines
@@ -567,21 +590,32 @@ ElementField = function () {
 
     this.animate = function () {
         let dom;
-
         if (!animBlock) return;
+
         switch (animType) {
             case 1:// falldown
                 animCounter++;
                 for (let i in animObjects) {
                     dom = animObjects[i];
-                    dom.y += 15;
+                    switch (dom.mode) {
+                        case 'toshow':
+                            dom.height += 15;
+                            dom.backgroundPositionY -= 15;
+                            break;
+                        case 'tohide':
+                            dom.y += 15;
+                            dom.height -= 15;
+                            break;
+                        default:
+                            dom.y += 15;
+                            break;
+                    }
                     dom.redraw();
                 }
-                if (animCounter == 3) {
+                if (animCounter === 3) {
                     animBlock = false;
                     animType = 0;
                     self.run();
-                    //self.fallDown(true);
                 }
                 break;
             case 2: // a <-> b
@@ -627,8 +661,8 @@ ElementField = function () {
     this.lineCrossing = function (lines, x, y) {
         for (let i in lines) {
             for (let n in lines[i].coords) {
-                if (x == lines[i].coords[n].x &&
-                    y == lines[i].coords[n].y) {
+                if (x === lines[i].coords[n].x &&
+                    y === lines[i].coords[n].y) {
                     return true;
                 }
             }

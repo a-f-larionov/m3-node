@@ -22,6 +22,7 @@ CAPIMap = function () {
             '■': DataPoints.OBJECT_BLOCK,
             '*': DataPoints.OBJECT_EMITER,
             '□': DataPoints.OBJECT_EMPTY,
+            'c': DataPoints.OBJECT_CELL,
             '?': DataPoints.OBJECT_RANDOM,
             'R': DataPoints.OBJECT_RED,
             'G': DataPoints.OBJECT_GREEN,

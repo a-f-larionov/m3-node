@@ -1,7 +1,8 @@
 DataPoints = function () {
 
     this.OBJECT_NONE = 1;
-    this.OBJECT_EMPTY = 2;
+    this.OBJECT_CELL = 2;
+    this.OBJECT_EMPTY = 3;
     this.OBJECT_BLOCK = 4;
 
     this.OBJECT_RANDOM = 101;
@@ -14,7 +15,6 @@ DataPoints = function () {
 
     this.OBJECT_EMITER = 1001;
 
-
     this.FIELD_MAX_WIDTH = 10;
     this.FIELD_MAX_HEIGHT = 10;
 
@@ -23,6 +23,7 @@ DataPoints = function () {
 
     this.objectImages = {};
     this.objectImages[this.OBJECT_NONE] = '/images/field-none-2.png';
+    this.objectImages[this.OBJECT_CELL] = '/images/field-cell.png';
     this.objectImages[this.OBJECT_EMPTY] = '/images/field-none-2.png';
     this.objectImages[this.OBJECT_RANDOM] = '/images/field-none.png';
     this.objectImages[this.OBJECT_BLOCK] = '/images/field-block.png';
