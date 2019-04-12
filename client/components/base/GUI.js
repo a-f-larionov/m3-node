@@ -81,6 +81,8 @@ GUI = function () {
      */
     var parentsStack = [];
 
+    this.lockEventsExcept = null;
+
     /**
      * Инициализация.
      * - установим родителя, это будет тело документа.
@@ -317,6 +319,14 @@ GUI = function () {
             }
         }
         return window.imagesData[url];
+    };
+
+    this.lockEvents = function (except) {
+        self.lockEventsExcept = except;
+    };
+
+    this.unlockEvents = function () {
+        self.lockEventsExcept = null;
     };
 };
 

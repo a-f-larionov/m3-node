@@ -249,6 +249,16 @@ GUIDom = function () {
             Logs.log("undefined gui eventId:" + eventId, Logs.LEVEL_FATAL_ERROR);
         }
         dom.addEventListener(eventName, function (event) {
+            if (GUI.lockEventsExcept) {
+                let dom;
+                dom = self.__dom;
+                while (dom) {
+                    if (GUI.lockEventsExcept.__dom === dom) {
+                        return;
+                    }
+                    dom = dom.parentElement;
+                }
+            }
             callback.call(context, event, dom);
         }, false);
     };

@@ -147,6 +147,8 @@ ElementDialog = function () {
      */
     this.showDialog = function () {
         if (self.dialogShowed) return;
+        GUI.lockEvents(self.dom);
+        // lock events
         this.show();
         self.dialogShowed = true;
         dom.animData[0].frameN = 0;
@@ -154,6 +156,8 @@ ElementDialog = function () {
     };
 
     this.closeDialog = function () {
+        GUI.unlockEvents();
+        //unlocal events
         // coords resets
         // hide all
         dom.animData[0].frameN = 2;
