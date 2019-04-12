@@ -20,7 +20,7 @@ CAPIMap = function () {
         let layerMapping = {
             ' ': DataPoints.OBJECT_NONE,
             '■': DataPoints.OBJECT_BLOCK,
-            '*': DataPoints.OBJECT_EMITER,
+            '*': DataPoints.OBJECT_EMITTER,
             '□': DataPoints.OBJECT_EMPTY,
             'c': DataPoints.OBJECT_CELL,
             '?': DataPoints.OBJECT_RANDOM,

@@ -13,7 +13,7 @@ DataPoints = function () {
     this.OBJECT_YELLOW = 105;
     this.OBJECT_PURPLE = 106;
 
-    this.OBJECT_EMITER = 1001;
+    this.OBJECT_EMITTER = 1001;
 
     this.FIELD_MAX_WIDTH = 10;
     this.FIELD_MAX_HEIGHT = 10;
@@ -40,7 +40,7 @@ DataPoints = function () {
 
     wayPoints[1] = {
         id: 1,
-        turns: 5,
+        turns: 1,
         score1: 100,
         score2: 200,
         score3: 300,

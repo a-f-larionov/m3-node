@@ -113,8 +113,8 @@ ElementField = function () {
                     fieldY: y,
                     x: x * DataPoints.BLOCK_WIDTH,
                     y: y * DataPoints.BLOCK_HEIGHT,
-                    height: 50,
-                    width: 50,
+                    height: DataPoints.BLOCK_HEIGHT,
+                    width: DataPoints.BLOCK_WIDTH,
                     backgroundImage: '/images/field-none.png'
                 });
                 dom.bind(GUI.EVENT_MOUSE_CLICK, onGemClick, dom);
@@ -346,6 +346,7 @@ ElementField = function () {
                             gemDoms[y][x].y = y * DataPoints.BLOCK_HEIGHT;
                             gemDoms[y][x].x = x * DataPoints.BLOCK_WIDTH;
                             gemDoms[y][x].height = DataPoints.BLOCK_HEIGHT;
+                            gemDoms[y][x].backgroundPositionY = null;
                             gemDoms[y][x].show();
                             gemDoms[y][x].redraw();
                         }
@@ -437,8 +438,8 @@ ElementField = function () {
     this.processSpecialLayer = function () {
         layerSpecial.forEach(function (row, y) {
             row.forEach(function (cell, x) {
-                //if emiter and empty layerGems, set random gem
-                if (cell === DataPoints.OBJECT_EMITER &&
+                //if emitter and empty layerGems, set random gem
+                if (cell === DataPoints.OBJECT_EMITTER &&
                     layerGems[y][x] === DataPoints.OBJECT_EMPTY
                 ) {
                     layerGems[y][x] = self.getRandomGem();
@@ -463,7 +464,7 @@ ElementField = function () {
             for (let x = 0; x < fieldWidth; x++) {
                 let dom;
                 if (
-                    layerGems[y][x] === DataPoints.OBJECT_EMPTY &&
+                    fallDownObjects.indexOf(layerGems[y][x]) === -1 &&
                     fallDownObjects.indexOf(layerGems[y - 1][x]) !== -1
                 ) {
                     dom = gemDoms[y - 1][x];
@@ -478,13 +479,12 @@ ElementField = function () {
                         layerMask[y][x] === DataPoints.OBJECT_EMPTY
                     ) {
                         dom.mode = 'toshow';
-                        // вобще тут должен быть y-1, но мы их уже пмоеняли это с учетом что они уже поменялись
                         dom.backgroundImage = DataPoints.objectImages[layerGems[y - 1][x]];
                         // переисовка backgroundPositionY это хитрый хак и костыль :)
                         dom.backgroundPositionY = DataPoints.BLOCK_HEIGHT;
-                        dom.y = (y) * DataPoints.BLOCK_HEIGHT;
-                        dom.x = (x) * DataPoints.BLOCK_WIDTH;
                         dom.height = 0;
+                        dom.y = y * DataPoints.BLOCK_HEIGHT;
+                        dom.x = x * DataPoints.BLOCK_WIDTH;
                         dom.show();
                     }
                     // exchange

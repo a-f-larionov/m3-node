@@ -59,6 +59,7 @@ PageBlockField = function PageBlockField() {
             srcHover: '/images/button-close-hover.png',
             srcActive: '/images/button-close-active.png',
             onClick: function () {
+                elementDialogTurnLoose.closeDialog();
                 PageController.showPage(PageMain);
             }
         });
@@ -127,6 +128,12 @@ PageBlockField = function PageBlockField() {
             height: 200
         });
         self.elements.push(elementDialogGoalsReached);
+
+        elementDialogTurnLoose = GUI.createElement(ElementDialogTurnLoose, {
+            src: '/images/window.png',
+            width: 342,
+            height: 200
+        });
     };
 
     /**
@@ -272,8 +279,9 @@ PageBlockField = function PageBlockField() {
 
     this.onTurnUse = function () {
         turns--;
-        if (turns == 0) {
-            //@Todo
+        if (turns === 0) {
+            elementField.lock();
+            elementDialogTurnLoose.showDialog();
         }
         self.redraw();
     }
