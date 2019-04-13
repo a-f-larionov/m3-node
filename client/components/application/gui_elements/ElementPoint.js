@@ -134,7 +134,7 @@ ElementPoint = function () {
      * Покажем кнопку.
      */
     this.show = function () {
-        if (showed == true) return;
+        if (showed) return;
         showed = true;
         self.redraw();
         dom.show();
@@ -147,7 +147,7 @@ ElementPoint = function () {
      * Спрячем кнопку.
      */
     this.hide = function () {
-        if (showed == false) return;
+        if (!showed) return;
         showed = false;
         dom.hide();
         domStar1.hide();
@@ -173,7 +173,7 @@ ElementPoint = function () {
                 break;
         }
 
-        if (self.stateId == ElementPoint.STATE_CLOSE) {
+        if (self.stateId === ElementPoint.STATE_CLOSE) {
             dom.pointer = GUI.POINTER_ARROW;
         } else {
             dom.pointer = GUI.POINTER_HAND;
@@ -240,7 +240,7 @@ ElementPoint = function () {
     var onMouseClick = function (mouseEvent, dom) {
         /* Да, тут мы останавливаем дальнейшие течение клика. */
         mouseEvent.stopPropagation();
-        if (self.stateId == ElementPoint.STATE_CLOSE) return;
+        if (self.stateId === ElementPoint.STATE_CLOSE) return;
         mouseStateDown = false;
         mouseStateFocused = false;
         self.redraw();
