@@ -125,12 +125,13 @@ DataPoints = function () {
         return pointUserScore[pointId][userId].score;
     };
 
-    this.getStars = function (pointId, userId) {
-        let point, userScore;
+    this.countStars = function (pointId, userId, userScore) {
+        let point;
+        if (!pointId) pointId = DataPoints.getPlayedId();
         if (!userId) userId = LogicUser.getCurrentUser().id;
-        if (!userId) return null;
-
-        userScore = DataPoints.getScore(pointId);
+        if (!userId || !pointId) return null;
+        console.log(userScore);
+        if (isNaN(userScore)) userScore = DataPoints.getScore(pointId);
         point = DataPoints.getById(pointId);
         if (!point || userScore === null) return null;
 

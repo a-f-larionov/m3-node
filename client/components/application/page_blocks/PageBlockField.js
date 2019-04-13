@@ -21,6 +21,8 @@ PageBlockField = function PageBlockField() {
 
     let elementScore = null;
 
+    let elementStars = null;
+
     let elementTurns = null;
 
     let goalsImagesEls = {};
@@ -73,9 +75,19 @@ PageBlockField = function PageBlockField() {
             alignCenter: false,
             width: 100
         });
-
         elementScore.setText('score: ?');
         this.elements.push(elementScore);
+
+        elementStars = GUI.createElement(ElementText, {
+            x: 20,
+            y: 120,
+            fontSize: 42,
+            bold: true,
+            alignCenter: false,
+            width: 100
+        });
+        elementStars.setText('stars: ?');
+        this.elements.push(elementStars);
 
         elementTurns = GUI.createElement(ElementText, {
             x: 20,
@@ -205,6 +217,7 @@ PageBlockField = function PageBlockField() {
         if (!showed) return;
         self.preset();
         elementScore.setText('очки: ' + score);
+        elementStars.setText('звёзд: ' + DataPoints.countStars(null, null, score));
         elementTurns.setText('ходы: ' + turns);
         for (var i in self.elements) {
             self.elements[i].redraw();
@@ -261,7 +274,6 @@ PageBlockField = function PageBlockField() {
         user = LogicUser.getCurrentUser();
         pointId = DataPoints.getPlayedId();
         lastScore = DataPoints.getScore(pointId);
-        console.log(user, pointId);
         if (user.currentPoint < pointId + 1) {
             user.currentPoint = pointId + 1;
             LogicUser.updateUserInfo(user);

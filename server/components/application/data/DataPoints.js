@@ -40,7 +40,7 @@ DataPoints = function () {
 
     wayPoints[1] = {
         id: 1,
-        turns: 1,
+        turns: 15,
         score1: 100,
         score2: 200,
         score3: 300,
@@ -73,15 +73,15 @@ DataPoints = function () {
         goals: [
             {
                 id: this.OBJECT_GREEN,
-                count: 120
+                count: 3
             },
             {
                 id: this.OBJECT_YELLOW,
-                count: 120
+                count: 3
             },
             {
                 id: this.OBJECT_PURPLE,
-                count: 120
+                count: 3
             }
         ],
     };
@@ -130,7 +130,7 @@ DataPoints = function () {
         goals: [
             {
                 id: this.OBJECT_GREEN,
-                count: 300
+                count: 10
             },
             {
                 id: this.OBJECT_RED,

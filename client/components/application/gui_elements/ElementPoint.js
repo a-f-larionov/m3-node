@@ -180,11 +180,9 @@ ElementPoint = function () {
         }
         dom.x = self.x;
         dom.y = self.y;
-        let stars = 0;
+        let stars ;
 
-        if (self.userScore >= self.score1) stars = 1;
-        if (self.userScore >= self.score2) stars = 2;
-        if (self.userScore >= self.score3) stars = 3;
+        stars = DataPoints.countStars(self.pointId);
 
         let offsetStars = (self.width / 2 - 25 / 2);
         domStar1.x = self.x - 17 + offsetStars;

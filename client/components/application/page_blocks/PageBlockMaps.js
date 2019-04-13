@@ -27,6 +27,9 @@ PageBlockMaps = function PageBlockMaps() {
 
     var mapIdOld = 1;
 
+    /**
+     * @type ElementPoint[]
+     */
     var pointsEls = [];
 
     var chestsEls = [];
@@ -242,19 +245,16 @@ PageBlockMaps = function PageBlockMaps() {
         for (let number = 1; number <= DataMap.POINTS_PER_MAP; number++) {
 
             pointId = DataMap.getPointIdFromPointNumber(number);
-            pointsEls[number].pointId = pointId;
+            pointEl = pointsEls[number];
+            pointEl.pointId = pointId;
             point = DataPoints.getById(pointId);
             if (!point) continue;
 
             pointEl = pointsEls[number];
 
-            if (point.id == user.currentPoint) pointEl.stateId = 2;
+            if (point.id === user.currentPoint) pointEl.stateId = 2;
             if (point.id < user.currentPoint) pointEl.stateId = 3;
             if (point.id > user.currentPoint) pointEl.stateId = 1;
-
-            pointEl.score1 = point.score1;
-            pointEl.score2 = point.score2;
-            pointEl.score3 = point.score3;
 
             if (pointInfo[pointId])
                 pointEl.userScore = pointInfo[pointId][user.id] ? pointInfo[pointId][user.id].score : 0;
@@ -280,7 +280,7 @@ PageBlockMaps = function PageBlockMaps() {
             chestsEls[number].pointId = chestId;
             chestEl = chestsEls[number];
             chestEl.goalStars = chest.goalStars;
-            chestEl.stars = DataMap.getStarsByMapId();
+            chestEl.stars = DataMap.countStarsByMapId();
         }
     };
 };

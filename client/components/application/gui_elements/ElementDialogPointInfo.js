@@ -101,7 +101,7 @@ ElementDialogPointInfo = function () {
         point = DataPoints.getById(pointId);
         console.log(point);
         elTextPointNumber.text = 'point number:' + pointId;
-        elTextStarsCount.text = 'stars: ' + DataPoints.getStars(point.id);
+        elTextStarsCount.text = 'stars: ' + DataPoints.countStars(point.id);
         elTextScore.text = 'score: ' + DataPoints.getScore(point.id);
 
         elTextPointNumber.redraw();

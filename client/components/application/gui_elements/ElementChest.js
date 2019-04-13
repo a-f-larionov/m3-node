@@ -87,7 +87,7 @@ ElementChest = function () {
         elText = GUI.createElement(ElementText, {
             width: 100,
             height: 40,
-            text: '0/123'
+            text: ''
         });
 
         dom = GUI.createDom();
@@ -105,7 +105,7 @@ ElementChest = function () {
      * Покажем кнопку.
      */
     this.show = function () {
-        if (showed == true) return;
+        if (showed) return;
         showed = true;
         dom.show();
         elText.show();
@@ -116,7 +116,7 @@ ElementChest = function () {
      * Спрячем кнопку.
      */
     this.hide = function () {
-        if (showed == false) return;
+        if (!showed) return;
         showed = false;
         elText.hide();
         dom.hide();
@@ -141,7 +141,7 @@ ElementChest = function () {
                 break;
         }
 
-        if (self.stateId == ElementPoint.STATE_OPEN) {
+        if (self.stateId === ElementChest.STATE_OPEN) {
             dom.pointer = GUI.POINTER_ARROW;
         } else {
             dom.pointer = GUI.POINTER_HAND;
@@ -196,7 +196,7 @@ ElementChest = function () {
     var onMouseClick = function (mouseEvent, dom) {
         /* Да, тут мы останавливаем дальнейшие течение клика. */
         mouseEvent.stopPropagation();
-        if (self.stateId == ElementPoint.STATE_CLOSE) return;
+        if (self.stateId === ElementChest.STATE_CLOSE) return;
         mouseStateDown = false;
         mouseStateFocused = false;
         self.redraw();

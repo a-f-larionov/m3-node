@@ -78,7 +78,7 @@ DataMap = function () {
         return this.getFirstChestId() + (number - 1);
     };
 
-    this.getStarsByMapId = function (mapId) {
+    this.countStarsByMapId = function (mapId) {
         let mapStars, user, pointUsersInfo, pointId, point, stars;
         if (!mapId) mapId = currentMapId;
 
