@@ -130,7 +130,6 @@ DataPoints = function () {
         if (!pointId) pointId = DataPoints.getPlayedId();
         if (!userId) userId = LogicUser.getCurrentUser().id;
         if (!userId || !pointId) return null;
-        console.log(userScore);
         if (isNaN(userScore)) userScore = DataPoints.getScore(pointId);
         point = DataPoints.getById(pointId);
         if (!point || userScore === null) return null;

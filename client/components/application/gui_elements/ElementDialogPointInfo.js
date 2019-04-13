@@ -94,12 +94,10 @@ ElementDialogPointInfo = function () {
     this.redraw = function () {
         let point;
         this.__proto__.redraw.call(this);
-        console.log(1);
 
         if (!this.dialogShowed) return;
 
         point = DataPoints.getById(pointId);
-        console.log(point);
         elTextPointNumber.text = 'point number:' + pointId;
         elTextStarsCount.text = 'stars: ' + DataPoints.countStars(point.id);
         elTextScore.text = 'score: ' + DataPoints.getScore(point.id);

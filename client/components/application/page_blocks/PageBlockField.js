@@ -70,7 +70,6 @@ PageBlockField = function PageBlockField() {
         elementScore = GUI.createElement(ElementText, {
             x: 20,
             y: 100,
-            fontSize: 42,
             bold: true,
             alignCenter: false,
             width: 100
@@ -81,7 +80,6 @@ PageBlockField = function PageBlockField() {
         elementStars = GUI.createElement(ElementText, {
             x: 20,
             y: 120,
-            fontSize: 42,
             bold: true,
             alignCenter: false,
             width: 100
@@ -92,7 +90,6 @@ PageBlockField = function PageBlockField() {
         elementTurns = GUI.createElement(ElementText, {
             x: 20,
             y: 150,
-            fontSize: 42,
             bold: true,
             alignCenter: false,
             width: 100
