@@ -250,14 +250,16 @@ GUIDom = function () {
         }
         dom.addEventListener(eventName, function (event) {
             if (GUI.lockEventsExcept) {
-                let dom;
+                let dom, skip;
                 dom = self.__dom;
+                skip = true;
                 while (dom) {
                     if (GUI.lockEventsExcept.__dom === dom) {
-                        return;
+                        skip = false;
                     }
                     dom = dom.parentElement;
                 }
+                if (skip) return;
             }
             callback.call(context, event, dom);
         }, false);
