@@ -134,6 +134,17 @@ PageBlockMaps = function PageBlockMaps() {
             y: 400
         });
         self.elements.push(elFriendsPanel);
+
+        el = GUI.createElement(ElementButton, {
+            x: 50, y: 430,
+            srcRest: '/images/star-off.png',
+            srcHover: '/images/star-on.png',
+            srcActive: '/images/star-on.png',
+            onClick: function () {
+                SocNet.openInviteFriendDialog();
+            }
+        });
+        self.elements.push(el);
     };
 
     /**
