@@ -92,6 +92,7 @@ ElementText = function () {
         dom.height = this.height;
         dom.color = "rgba(68,62,0,0.7)";
         dom.fontSize = self.fontSize;
+        dom.background = this.background;
         GUI.bind(dom, GUI.EVENT_MOUSE_CLICK, onMouseClick, self);
     };
 

@@ -38,10 +38,14 @@ ElementFriendsPanel = function () {
     let panelDom = null;
 
     /**
-     *
      * @type GUIDom[]
      */
     let cardsDom = [];
+
+    /**
+     * @type GUIDom[]
+     */
+    let cardsText = [];
 
     /**
      * Создадим дом и настроем его.
@@ -50,6 +54,12 @@ ElementFriendsPanel = function () {
         panelDom = GUI.createDom();
         for (let i = 0; i < self.cardsCount; i++) {
             cardsDom.push(GUI.createDom());
+            cardsText.push(GUI.createElement(ElementText,
+                {
+                    width: 100, height: 30, alignCenter: true,
+                    background: '#eee',
+                    opacity:0.75
+                }));
         }
     };
 
@@ -63,6 +73,9 @@ ElementFriendsPanel = function () {
         cardsDom.forEach(function (card) {
             card.show();
         });
+        cardsText.forEach(function (el) {
+            el.show();
+        });
         self.redraw();
     };
 
@@ -75,6 +88,9 @@ ElementFriendsPanel = function () {
         panelDom.hide();
         cardsDom.forEach(function (card) {
             card.hide();
+        });
+        cardsText.forEach(function (el) {
+            el.hide();
         });
     };
 
@@ -110,5 +126,18 @@ ElementFriendsPanel = function () {
             }
             card.redraw();
         });
+
+        cardsText.forEach(function (text, i) {
+            text.x = self.x + i * self.cardWidth;
+            text.y = self.y;
+            if (friends[i]) {
+                text.text = 'ур.:' + friends[i].currentPoint;
+                text.show();
+            } else {
+                text.hide();
+            }
+            text.redraw();
+        });
+
     };
 };
