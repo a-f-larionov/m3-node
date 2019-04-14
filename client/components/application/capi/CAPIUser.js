@@ -20,6 +20,9 @@ CAPIUser = function () {
         LogicUser.updateUserInfo(user);
     };
 
+    this.gotFriendsIds = function (cntx, ids) {
+        LogicUser.setFriendIds(ids);
+    };
 };
 
 /**

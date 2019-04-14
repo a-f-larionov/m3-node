@@ -12,8 +12,7 @@ LogicUser = function () {
      */
     var users = [];
 
-    /** Кол-во онлайн пользователей */
-    var onlineCount = null;
+    let friendIds = [];
 
     /**
      * Авторизация пользователя.
@@ -69,14 +68,7 @@ LogicUser = function () {
      * @returns {null|Object}
      */
     this.getById = function (id) {
-        if (id == 0) {
-            return getDummy();
-        }
         if (users[id]) {
-            /* Догрузим данные, это немного костыль... но время деньги :) */
-            if (!users[id].socNetUserId) {
-                self.loadUserInfoById(id);
-            }
             return users[id];
         } else {
             self.loadUserInfoById(id);
@@ -126,18 +118,20 @@ LogicUser = function () {
         for (let field in user) {
             users[user.id][field] = user[field];
         }
+        SocNet.getUserInfo(user.socNetUserId, function (data) {
+            users[user.id].photo100 = data[0].photo_100;
+            PageController.redraw();
+        });
         PageController.redraw();
     };
 
-    this.loadNameCase = function (user, nom) {
-        VK.api('users.get', {
-            user_ids: user.socNetUserId,
-            name_case: nom
-        }, function (result) {
-            Logs.log("VK.users.get response", Logs.LEVEL_DETAIL, result);
-            users[user.id]['firstName_' + nom] = result.response[0].first_name;
-            users[user.id]['lastName_' + nom] = result.response[0].last_name;
-        });
+    this.setFriendIds = function (ids) {
+        friendIds = ids;
+        PageController.redraw();
+    };
+
+    this.getFriendIds = function () {
+        return friendIds;
     };
 };
 

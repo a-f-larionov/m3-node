@@ -64,8 +64,20 @@ SAPIUser = function () {
         LogicUser.sendUserInfo(userId, cntx.userId);
     };
 
-    var files = [];
-
+    /**
+     * Отправляет внутрение id пользователей по их socNetUserId.
+     * Тип социальной сети определяется по cntx.user
+     * @param cntx
+     * @param userIds
+     */
+    this.sendMeUserIdsBySocNet = function (cntx, userIds) {
+// @Todo validate userIds
+        DataUser.getById(cntx.user.id, function (user) {
+            DataUser.getUserIdsBySocNet(user.socNetTypeId, userIds, function (ids) {
+                CAPIUser.gotFriendsIds(cntx.user.id, ids);
+            });
+        });
+    };
 };
 /**
  * Статичный класс.

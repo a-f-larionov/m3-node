@@ -35,6 +35,30 @@ DataUser = function () {
         });
     };
 
+    /**
+     * Возвращает внутрение id-шники по их id в социальной сети.
+     * Отсортировано по point
+     * @param socNetTypeId
+     * @param socNetUserIds
+     * @param callback
+     */
+    this.getUserIdsBySocNet = function (socNetTypeId, socNetUserIds, callback) {
+        let query;
+        query = "SELECT id FROM " + tableName + " WHERE ";
+        query += " socNetTypeId = " + DB.escape(socNetTypeId);
+        query += " AND socNetUserId IN ( " + DB.escape(socNetUserIds) + " ) ";
+        query += " ORDER BY currentPoint DESC";
+
+        DB.query(query, function (rows) {
+            let ids = [];
+            console.log(rows);
+            rows.forEach(function (row) {
+                ids.push(row.id);
+            });
+            callback(ids);
+        });
+    };
+
     var cache = {};
     /**
      * Вернуть пользователя по id.

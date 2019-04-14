@@ -43,7 +43,7 @@ SocNetVK = function () {
          */
     };
 
-        this.getAuthParams = function () {
+    this.getAuthParams = function () {
         /*	auth_key = md5(app_id+'_'+viewer_id+'_'+app_secret); */
         return {
             authKey: getParams.auth_key,
@@ -69,13 +69,27 @@ SocNetVK = function () {
         VK.callMethod('showInviteBox');
     };
 
+    this.getFriendIds = function (callback) {
+        VK.api('friends.getAppUsers', {}, function (data) {
+            callback(data.response)
+        });
+    };
+
+    this.getUserInfo = function (id, callback) {
+        VK.api('users.get', {
+            user_ids: id,
+            fields: 'photo_100'
+        }, function (data) {
+            callback(data.response);
+        });
+    };
+
     /**
      * Инициализация VK.
      * @see WebSocketServer : var loadClientCode {Function}
      */
     this.init = function () {
-        var onSuccess, onFail, apiVersion;
-        apiVersion = '5.28';
+        var onSuccess, onFail;
         onSuccess = function () {
             Logs.log("VK client API inited.", Logs.LEVEL_NOTIFY);
         };
@@ -83,7 +97,7 @@ SocNetVK = function () {
             alert('Произошла ошибка доступа к вКонтакте, обратитесь к автору приложения.');
             Logs.log("SocNetVK Fail", Logs.LEVEL_FATAL_ERROR);
         };
-        VK.init(onSuccess, onFail, apiVersion);
+        VK.init(onSuccess, onFail, '5.95');
         parseSocNetURL();
     };
 

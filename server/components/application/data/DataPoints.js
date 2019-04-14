@@ -144,7 +144,7 @@ DataPoints = function () {
         turns: 307,
         score1: 100,
         score2: 200,
-        score3: 300,
+        score3: 5000,
         layers: {
             mask: [
                 "     ",
@@ -155,12 +155,12 @@ DataPoints = function () {
                 " □□□ "
             ],
             gems: [
-                "     ",
-                "     ",
-                "RGBYP",
-                "?????",
-                "     ",
-                "     "
+                "□□□□□",
+                "□□□□□",
+                "□□□□□",
+                "□□□□□",
+                "□□□□□",
+                " □□□ "
             ],
             special: [
                 " *** ",

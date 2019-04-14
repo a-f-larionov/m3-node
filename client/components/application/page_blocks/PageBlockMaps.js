@@ -25,6 +25,11 @@ PageBlockMaps = function PageBlockMaps() {
 
     var elMapElements = {};
 
+    /**
+     * @type {ElementFriendsPanel}
+     */
+    var elFriendsPanel = false;
+
     var mapIdOld = 1;
 
     /**
@@ -123,6 +128,12 @@ PageBlockMaps = function PageBlockMaps() {
             width: 342, height: 200
         });
         self.elements.push(elementDialogPointInfo);
+
+        elFriendsPanel = GUI.createElement(ElementFriendsPanel, {
+            x: 100,
+            y: 400
+        });
+        self.elements.push(elFriendsPanel);
     };
 
     /**
@@ -166,6 +177,16 @@ PageBlockMaps = function PageBlockMaps() {
     this.redraw = function () {
         if (!showed) return;
         self.preset();
+        let friendIds = LogicUser.getFriendIds();
+        if (friendIds) {
+            friendIds = friendIds.slice(0, 5);
+            let friends = [];
+            friendIds.forEach(function (id) {
+                let user = LogicUser.getById(id);
+                if (user && user.id) friends.push(user);
+            });
+            elFriendsPanel.setFriends(friends);
+        }
         self.elements.forEach(function (element) {
             element.redraw();
         });
