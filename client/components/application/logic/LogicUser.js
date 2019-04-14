@@ -15,6 +15,12 @@ LogicUser = function () {
     let friendIds = [];
 
     /**
+     * По сути кэш
+     * @type {null}
+     */
+    let friends = [];
+
+    /**
      * Авторизация пользователя.
      */
     this.authorize = function () {
@@ -130,7 +136,15 @@ LogicUser = function () {
         PageController.redraw();
     };
 
-    this.getFriendIds = function () {
+    this.getFriends = function () {
+        if (!friendIds) return friends;
+        if (friends.length === friendIds.length) return friends;
+        friends = [];
+        friendIds = friendIds.slice(0, 5);
+        friendIds.forEach(function (id) {
+            let user = LogicUser.getById(id);
+            if (user && user.id) friends.push(user);
+        });
         return friendIds;
     };
 };

@@ -188,16 +188,7 @@ PageBlockMaps = function PageBlockMaps() {
     this.redraw = function () {
         if (!showed) return;
         self.preset();
-        let friendIds = LogicUser.getFriendIds();
-        if (friendIds) {
-            friendIds = friendIds.slice(0, 5);
-            let friends = [];
-            friendIds.forEach(function (id) {
-                let user = LogicUser.getById(id);
-                if (user && user.id) friends.push(user);
-            });
-            elFriendsPanel.setFriends(friends);
-        }
+        elFriendsPanel.setFriends(LogicUser.getFriends());
         self.elements.forEach(function (element) {
             element.redraw();
         });
