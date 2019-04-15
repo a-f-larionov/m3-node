@@ -138,6 +138,8 @@ LogicUser = function () {
         SocNet.getUserInfo(user.socNetUserId, function (data) {
             users[user.id].photo50 = data[0].photo_50;
             users[user.id].photo100 = data[0].photo_100;
+            users[user.id].firstName = data[0].first_name;
+            users[user.id].lastName= data[0].last_name;
             PageController.redraw();
         });
         PageController.redraw();

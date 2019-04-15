@@ -70,7 +70,7 @@ ElementPoint = function () {
      */
     var dom = null;
 
-    let friends = [];
+    this.friends = [];
 
     /**
      * Первая звезда
@@ -234,7 +234,7 @@ ElementPoint = function () {
         let friendIndex = 0;
         let doms = [domPhoto1, domPhoto2, domPhoto3];
         let user;
-        friends.forEach(function (uid) {
+        self.friends.forEach(function (uid) {
             user = LogicUser.getById(uid);
             if (user && user.photo50 && user.currentPoint === self.pointId) {
                 doms[friendIndex].backgroundImage = user.photo50;
@@ -296,7 +296,7 @@ ElementPoint = function () {
     };
 
     this.setFriends = function (newData) {
-        friends = newData.slice(0, 3);
+        self.friends = newData.slice(0, 3);
     }
 };
 

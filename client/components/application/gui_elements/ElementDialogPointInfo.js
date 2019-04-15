@@ -26,11 +26,14 @@ ElementDialogPointInfo = function () {
      */
     let elTextStarsCount = null;
 
+    let elFriendsText = null;
+
     /**
      * Точка с которой нажали.
      * @type {null}
      */
     let pointId = null;
+    let friends;
 
     this.init = function () {
         this.__proto__.init.call(this);
@@ -56,9 +59,15 @@ ElementDialogPointInfo = function () {
         });
         elTextStarsCount.show();
 
+        elFriendsText = GUI.createElement(ElementText, {
+            x: 50, y: 90, width: 250, height: 40,
+            fontSize: 12, text: ''
+        });
+        elFriendsText.show();
+
         // кнопка играть
         GUI.createElement(ElementButton, {
-            x: 50, y: 120,
+            x: 50, y: 130,
             srcRest: '/images/button-close-rest.png',
             srcHover: '/images/button-close-hover.png',
             srcActive: '/images/button-close-active.png',
@@ -102,14 +111,26 @@ ElementDialogPointInfo = function () {
         elTextStarsCount.text = 'stars: ' + DataPoints.countStars(point.id);
         elTextScore.text = 'score: ' + DataPoints.getScore(point.id);
 
+        let text = '';
+        friends.forEach(function (uid) {
+            let user;
+            user = LogicUser.getById(uid);
+            text += user.firstName + ' ' + user.lastName + ' ';
+            text += DataPoints.getScore(pointId, user.id);
+            text += '<br>';
+        });
+        elFriendsText.text = text;
+
         elTextPointNumber.redraw();
         elTextStarsCount.redraw();
         elTextScore.redraw();
+        elFriendsText.redraw();
     };
 
     this.showDialog = function (element) {
         if (element.stateId === ElementPoint.STATE_CLOSE) return;
         pointId = element.pointId;
+        friends = element.friends;
         this.__proto__.showDialog.call(this);
         self.redraw();
     }
