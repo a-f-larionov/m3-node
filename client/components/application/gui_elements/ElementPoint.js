@@ -174,6 +174,9 @@ ElementPoint = function () {
         domStar1.hide();
         domStar2.hide();
         domStar3.hide();
+        domPhoto1.hide();
+        domPhoto2.hide();
+        domPhoto3.hide();
     };
 
     /**
@@ -220,38 +223,34 @@ ElementPoint = function () {
 
         let offsetPhotos = (self.width / 2 - 25 / 2);
         domPhoto1.x = self.x - 17 + offsetPhotos;
-        domPhoto1.y = self.y + 10;
+        domPhoto1.y = self.y + 10 + 20;
 
         domPhoto2.x = self.x - 22 + offsetPhotos;
-        domPhoto2.y = self.y + 22;
+        domPhoto2.y = self.y + 22 + 20;
 
-        domPhoto2.x = self.x + 17 + offsetPhotos;
-        domPhoto2.y = self.y + 10;
+        domPhoto3.x = self.x + 17 + offsetPhotos;
+        domPhoto3.y = self.y + 10 + 20;
 
         let friendIndex = 0;
         let doms = [domPhoto1, domPhoto2, domPhoto3];
         let user;
-        for (let uid in friends) {
+        friends.forEach(function (uid) {
             user = LogicUser.getById(uid);
-            console.log(user);
-            console.log(self.pointId);
             if (user && user.photo50 && user.currentPoint === self.pointId) {
-                console.log(123, doms);
                 doms[friendIndex].backgroundImage = user.photo50;
                 doms[friendIndex].show();
+                doms[friendIndex].redraw();
             } else {
                 doms[friendIndex].hide();
             }
             friendIndex++;
-        }
+        });
+
         dom.redraw();
 
         domStar1.redraw();
         domStar2.redraw();
         domStar3.redraw();
-        domPhoto1.redraw();
-        domPhoto2.redraw();
-        domPhoto3.redraw();
     };
 
     /**
@@ -297,7 +296,7 @@ ElementPoint = function () {
     };
 
     this.setFriends = function (newData) {
-        friends = newData;
+        friends = newData.slice(0, 3);
     }
 };
 

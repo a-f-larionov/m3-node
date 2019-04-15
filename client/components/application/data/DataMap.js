@@ -19,21 +19,12 @@ DataMap = function () {
     var maps = {};
 
     let mapsLoadings = [];
-    let mapsFriendsLoadings = [];
 
-    this.loadMap = function (mapId) {
+    let loadMap = function (mapId) {
         if (!mapId) mapId = currentMapId;
         if (!mapsLoadings[mapId]) {
             mapsLoadings[mapId] = true;
             SAPIMap.sendMeMapInfo(mapId);
-        }
-    };
-
-    this.loadMapFriends = function(mapId){
-        if (!mapId) mapId = currentMapId;
-        if (!mapsFriendsLoadings[mapId]) {
-            mapsFriendsLoadings[mapId] = true;
-            SAPIMap.sendMeMapFriends(mapId, LogicUser.getFriendIds());
         }
     };
 
@@ -44,9 +35,7 @@ DataMap = function () {
 
     this.getCurent = function () {
         if (!maps[currentMapId]) {
-            this.loadMap();
-        } else if (LogicUser.getFriendIds().length) {
-            this.loadMapFriends();
+            loadMap();
         }
         return maps[currentMapId];
     };

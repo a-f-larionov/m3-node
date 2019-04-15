@@ -265,9 +265,11 @@ PageBlockMaps = function PageBlockMaps() {
         map = DataMap.getCurent();
         if (!map) return;
         userPoint = DataPoints.getPointUserScore(map.id, [user.id]);
-        let friendIds = LogicUser.getFriendIds();
-        if (friendIds.length) {
-            friendsPoints = DataPoints.getPointUserScore(map.id, friendIds);
+
+        let uids, users;
+        uids = LogicUser.getFriendIdsByMapId(DataMap.getCurent().id);
+        if (uids) {
+            users = LogicUser.getList(uids);
         }
         // DataPoints
         for (let number = 1; number <= DataMap.POINTS_PER_MAP; number++) {
@@ -289,11 +291,15 @@ PageBlockMaps = function PageBlockMaps() {
             else
                 pointEl.userScore = 0;
 
-            // тут  нужны друзья именно на этой точке
-            if (friendIds.length && friendsPoints[pointId]) {
-                let pointUids = [];
-                for (let i in friendsPoints[pointId]) pointUids.push(i);
-                pointEl.setFriends(friendsPoints[pointId], LogicUser.getList(pointUids));
+            //@todo and sort by score on this poin!:)
+            if (users) {
+                pointEl.setFriends(
+                    users.filter(function (user) {
+                        return user.currentPoint >= pointId;
+                    }).map(function (user) {
+                        return user.id;
+                    })
+                );
             }
         }
     };

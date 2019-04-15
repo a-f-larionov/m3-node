@@ -14,6 +14,8 @@ LogicUser = function () {
 
     let friendIds = [];
 
+    let friendsByMapId = [];
+
     /**
      * По сути кэш
      * @type {null}
@@ -146,7 +148,16 @@ LogicUser = function () {
         PageController.redraw();
     };
 
+    let friendIdsLoading = false;
+
     this.getFriendIds = function () {
+        if (!friendIds.length && !friendIdsLoading) {
+            //  - запросить друзей у ВК
+            friendIdsLoading = true;
+            SocNet.getFriendIds(function (ids) {
+                SAPIUser.sendMeUserIdsBySocNet(ids);
+            });
+        }
         return friendIds;
     };
 
@@ -161,6 +172,31 @@ LogicUser = function () {
         });
         return friendIds;
     };
+
+    this.setFriendIdsByMapId = function (mapId, uids) {
+        console.log('setFriendIdsByMapId', mapId, uids);
+        friendsByMapId[mapId] = uids
+    };
+
+    let mapsFriendsLoadings = [];
+    let loadMapFriends = function (mapId) {
+        if (!mapId) mapId = currentMapId;
+        console.log('friends-23');
+        if (!LogicUser.getFriendIds().length) return;
+        console.log('friends-22',mapsFriendsLoadings[mapId]);
+        if (!mapsFriendsLoadings[mapId]) {
+            mapsFriendsLoadings[mapId] = true;
+            console.log('friends-5');
+            SAPIMap.sendMeMapFriends(mapId, LogicUser.getFriendIds());
+        }
+    };
+
+    this.getFriendIdsByMapId = function (mapId) {
+        if (!friendsByMapId[mapId]) {
+            loadMapFriends(mapId);
+        }
+        return friendsByMapId[mapId];
+    }
 };
 
 /**

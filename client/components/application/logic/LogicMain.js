@@ -45,13 +45,7 @@ LogicMain = function () {
 
     this.onAuthorizeSuccess = function () {
         SAPITimeServer.sendMeTime();
-        DataMap.loadMap();
-        //  - запросить друзей у ВК
-        SocNet.getFriendIds(function (ids) {
-            SAPIUser.sendMeUserIdsBySocNet(ids);
-        });
-        //  - получив друзей - запросить их id
-        // - получив их id, установить друзей в панель и в точки
+
         PageController.showPage(PageMain);
     };
 };
