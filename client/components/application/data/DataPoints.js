@@ -90,7 +90,7 @@ DataPoints = function () {
         out = {};
         for (let pId = pIdFirst; pId <= pIdLast; pId++) {
             for (let uid in pointUserScore[pId]) {
-                if (userIds.indexOf(parseInt(uid)) == -1) continue;
+                if (userIds.indexOf(parseInt(uid)) === -1) continue;
                 if (!out[pId]) out[pId] = {};
                 out[pId][uid] = pointUserScore[pId][uid];
             }

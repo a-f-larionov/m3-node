@@ -70,6 +70,8 @@ ElementPoint = function () {
      */
     var dom = null;
 
+    let friends = [];
+
     /**
      * Первая звезда
      * @type {GUIDom}
@@ -85,6 +87,21 @@ ElementPoint = function () {
      * @type {GUIDom}
      */
     let domStar3 = null;
+    /**
+     * Фото друга 1
+     * @type {GUIDom}
+     */
+    let domPhoto1 = null;
+    /**
+     * Фото друга 2
+     * @type {GUIDom}
+     */
+    let domPhoto2 = null;
+    /**
+     * Фото друга 3
+     * @type {GUIDom}
+     */
+    let domPhoto3 = null;
 
     /**
      * Опущена ли мышка.
@@ -128,6 +145,10 @@ ElementPoint = function () {
 
         domStar3 = GUI.createDom();
         domStar3.backgroundImage = self.srcStarOff;
+
+        domPhoto1 = GUI.createDom(null, {height: 50, width: 50});
+        domPhoto2 = GUI.createDom(null, {height: 50, width: 50});
+        domPhoto3 = GUI.createDom(null, {height: 50, width: 50});
     };
 
     /**
@@ -180,7 +201,7 @@ ElementPoint = function () {
         }
         dom.x = self.x;
         dom.y = self.y;
-        let stars ;
+        let stars;
 
         stars = DataPoints.countStars(self.pointId);
 
@@ -197,10 +218,40 @@ ElementPoint = function () {
         domStar3.y = self.y - 10;
         domStar3.backgroundImage = stars >= 3 ? self.srcStarOn : self.srcStarOff;
 
+        let offsetPhotos = (self.width / 2 - 25 / 2);
+        domPhoto1.x = self.x - 17 + offsetPhotos;
+        domPhoto1.y = self.y + 10;
+
+        domPhoto2.x = self.x - 22 + offsetPhotos;
+        domPhoto2.y = self.y + 22;
+
+        domPhoto2.x = self.x + 17 + offsetPhotos;
+        domPhoto2.y = self.y + 10;
+
+        let friendIndex = 0;
+        let doms = [domPhoto1, domPhoto2, domPhoto3];
+        let user;
+        for (let uid in friends) {
+            user = LogicUser.getById(uid);
+            console.log(user);
+            console.log(self.pointId);
+            if (user && user.photo50 && user.currentPoint === self.pointId) {
+                console.log(123, doms);
+                doms[friendIndex].backgroundImage = user.photo50;
+                doms[friendIndex].show();
+            } else {
+                doms[friendIndex].hide();
+            }
+            friendIndex++;
+        }
         dom.redraw();
+
         domStar1.redraw();
         domStar2.redraw();
         domStar3.redraw();
+        domPhoto1.redraw();
+        domPhoto2.redraw();
+        domPhoto3.redraw();
     };
 
     /**
@@ -244,6 +295,10 @@ ElementPoint = function () {
         self.redraw();
         return self.onClick.call(null, mouseEvent, dom, this);
     };
+
+    this.setFriends = function (newData) {
+        friends = newData;
+    }
 };
 
 ElementPoint.STATE_CLOSE = 1;

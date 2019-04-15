@@ -78,7 +78,7 @@ SocNetVK = function () {
     this.getUserInfo = function (id, callback) {
         VK.api('users.get', {
             user_ids: id,
-            fields: 'photo_100'
+            fields: 'photo_50,photo_100'
         }, function (data) {
             callback(data.response);
         });

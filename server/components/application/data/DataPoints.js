@@ -362,11 +362,13 @@ DataPoints = function () {
     };
 
     this.getUsersInfo = function (mapId, userIds, callback) {
-        /**
-         * @TODO  only some points from mapId
-         */
+        let firstPointId, lastPointId, pointIds;
+        firstPointId = DataMap.getFirstPointId(mapId);
+        lastPointId = DataMap.getLastPointId(mapId);
+        pointIds = [];
+        for (let i = firstPointId; i <= lastPointId; i++) pointIds.push(i);
         DB.queryWhere(tableName, {
-            pointId: [[1, 2, 3, 4, 5, 6], DB.WHERE_IN],
+            pointId: [pointIds, DB.WHERE_IN],
             userId: [userIds, DB.WHERE_IN],
         }, function (rows, query) {
             for (let i in rows) {

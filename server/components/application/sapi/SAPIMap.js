@@ -22,6 +22,23 @@ SAPIMap = function () {
         });
     };
 
+    this.sendMeMapFriends = function (cntx, mapId, friendIds) {
+        let friends;
+        if (!DataMap.existsMap(mapId)) {
+            Logs.log("no map found:" + mapId, Logs.LEVEL_WARNING, cntx);
+            return;
+        }
+        DataPoints.getUsersInfo(mapId, friendIds, function (rows) {
+            friends = rows;
+            CAPIMap.gotMapFriends(
+                cntx.userId,
+                mapId,
+                friends
+            );
+        });
+    };
+
+
     /**
      * Закончили уровень.
      * @param cntx

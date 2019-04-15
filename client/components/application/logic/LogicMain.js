@@ -47,7 +47,7 @@ LogicMain = function () {
         SAPITimeServer.sendMeTime();
         DataMap.loadMap();
         //  - запросить друзей у ВК
-        SocNetVK.getFriendIds(function (ids) {
+        SocNet.getFriendIds(function (ids) {
             SAPIUser.sendMeUserIdsBySocNet(ids);
         });
         //  - получив друзей - запросить их id

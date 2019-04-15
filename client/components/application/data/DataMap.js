@@ -18,13 +18,22 @@ DataMap = function () {
      */
     var maps = {};
 
-    let mapsLadings = [];
+    let mapsLoadings = [];
+    let mapsFriendsLoadings = [];
 
     this.loadMap = function (mapId) {
         if (!mapId) mapId = currentMapId;
-        if (!mapsLadings[mapId]) {
-            mapsLadings[mapId] = true;
+        if (!mapsLoadings[mapId]) {
+            mapsLoadings[mapId] = true;
             SAPIMap.sendMeMapInfo(mapId);
+        }
+    };
+
+    this.loadMapFriends = function(mapId){
+        if (!mapId) mapId = currentMapId;
+        if (!mapsFriendsLoadings[mapId]) {
+            mapsFriendsLoadings[mapId] = true;
+            SAPIMap.sendMeMapFriends(mapId, LogicUser.getFriendIds());
         }
     };
 
@@ -36,19 +45,21 @@ DataMap = function () {
     this.getCurent = function () {
         if (!maps[currentMapId]) {
             this.loadMap();
+        } else if (LogicUser.getFriendIds().length) {
+            this.loadMapFriends();
         }
         return maps[currentMapId];
     };
 
     this.setNextMap = function () {
-        if (currentMapId == DataMap.MAP_ID_MAX) {
+        if (currentMapId === DataMap.MAP_ID_MAX) {
             return;
         }
         currentMapId++;
     };
 
     this.setPrevMap = function () {
-        if (currentMapId == DataMap.MAP_ID_MIN) {
+        if (currentMapId === DataMap.MAP_ID_MIN) {
             return;
         }
         currentMapId--;

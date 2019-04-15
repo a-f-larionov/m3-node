@@ -83,6 +83,15 @@ LogicUser = function () {
         }
     };
 
+    this.getList = function (ids) {
+        let out;
+        out = [];
+        ids.forEach(function (id) {
+            out.push(self.getById(id));
+        });
+        return out;
+    };
+
     var getDummy = function () {
         return {
             id: null,
@@ -125,6 +134,7 @@ LogicUser = function () {
             users[user.id][field] = user[field];
         }
         SocNet.getUserInfo(user.socNetUserId, function (data) {
+            users[user.id].photo50 = data[0].photo_50;
             users[user.id].photo100 = data[0].photo_100;
             PageController.redraw();
         });
@@ -134,6 +144,10 @@ LogicUser = function () {
     this.setFriendIds = function (ids) {
         friendIds = ids;
         PageController.redraw();
+    };
+
+    this.getFriendIds = function () {
+        return friendIds;
     };
 
     this.getFriends = function () {

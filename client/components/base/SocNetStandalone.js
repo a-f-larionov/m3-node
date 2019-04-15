@@ -36,6 +36,14 @@ SocNetStandalone = function () {
         return socNetUserId;
     };
 
+    this.getFriendIds = function (callback) {
+        //callback();
+    };
+
+    this.getUserInfo = function (callback) {
+        //callback();
+    };
+
     /**
      * Detect is now is a that soc net\platform.
      * @returns {boolean}

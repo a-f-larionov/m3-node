@@ -16,6 +16,12 @@ CAPIMap = function () {
         });
     };
 
+    this.gotMapFriends = function (cntx, mapId, usersInfo) {
+        usersInfo.forEach(function (info) {
+            DataPoints.setPointUserScore(info.userId, info.pointId, info.score);
+        });
+    };
+
     let convertLayer = function (layer) {
         let layerMapping = {
             ' ': DataPoints.OBJECT_NONE,

@@ -260,11 +260,16 @@ PageBlockMaps = function PageBlockMaps() {
      * Обновление данных перед отрисовкой точек
      */
     this.presetPoints = function () {
-        let user, pointId, point, pointEl, pointInfo, map;
+        let user, pointId, point, pointEl, userPoint, map, friendsPoints;
         user = LogicUser.getCurrentUser();
         map = DataMap.getCurent();
         if (!map) return;
-        pointInfo = DataPoints.getPointUserScore(map.id, [user.id]);
+        userPoint = DataPoints.getPointUserScore(map.id, [user.id]);
+        let friendIds = LogicUser.getFriendIds();
+        if (friendIds.length) {
+            friendsPoints = DataPoints.getPointUserScore(map.id, friendIds);
+        }
+        // DataPoints
         for (let number = 1; number <= DataMap.POINTS_PER_MAP; number++) {
 
             pointId = DataMap.getPointIdFromPointNumber(number);
@@ -279,10 +284,17 @@ PageBlockMaps = function PageBlockMaps() {
             if (point.id < user.currentPoint) pointEl.stateId = 3;
             if (point.id > user.currentPoint) pointEl.stateId = 1;
 
-            if (pointInfo[pointId])
-                pointEl.userScore = pointInfo[pointId][user.id] ? pointInfo[pointId][user.id].score : 0;
+            if (userPoint[pointId])
+                pointEl.userScore = userPoint[pointId][user.id] ? userPoint[pointId][user.id].score : 0;
             else
                 pointEl.userScore = 0;
+
+            // тут  нужны друзья именно на этой точке
+            if (friendIds.length && friendsPoints[pointId]) {
+                let pointUids = [];
+                for (let i in friendsPoints[pointId]) pointUids.push(i);
+                pointEl.setFriends(friendsPoints[pointId], LogicUser.getList(pointUids));
+            }
         }
     };
 
@@ -290,11 +302,9 @@ PageBlockMaps = function PageBlockMaps() {
      * Обновление данных перед отрисовкой сундуков
      */
     this.presetChests = function () {
-        let user, chestId, chest, chestEl, info, map;
-        user = LogicUser.getCurrentUser();
+        let user, chestId, chest, chestEl, map;
         map = DataMap.getCurent();
         if (!map) return;
-        //info = DataChests.getUsersInfo(map.id, [user.id]);
         for (let number = 1; number <= DataMap.CHESTS_PER_MAP; number++) {
             chestId = DataMap.getChestIdFromChestNumber(number);
             chest = DataChests.getById(chestId);
