@@ -162,21 +162,17 @@ LogicUser = function () {
         }
         return friendIds;
     };
-    
+
     this.setFriendIdsByMapId = function (mapId, uids) {
-        console.log('setFriendIdsByMapId', mapId, uids);
         friendsByMapId[mapId] = uids
     };
 
     let mapsFriendsLoadings = [];
     let loadMapFriends = function (mapId) {
         if (!mapId) mapId = currentMapId;
-        console.log('friends-23');
         if (!LogicUser.getFriendIds().length) return;
-        console.log('friends-22', mapsFriendsLoadings[mapId]);
         if (!mapsFriendsLoadings[mapId]) {
             mapsFriendsLoadings[mapId] = true;
-            console.log('friends-5');
             SAPIMap.sendMeMapFriends(mapId, LogicUser.getFriendIds());
         }
     };

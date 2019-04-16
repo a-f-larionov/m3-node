@@ -51,7 +51,6 @@ DataUser = function () {
 
         DB.query(query, function (rows) {
             let ids = [];
-            console.log(rows);
             rows.forEach(function (row) {
                 ids.push(row.id);
             });
