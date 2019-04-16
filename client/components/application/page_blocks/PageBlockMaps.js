@@ -151,6 +151,11 @@ PageBlockMaps = function PageBlockMaps() {
         domLoader = GUI.createDom(undefined, {
             x: 0, y: 0, backgroundImage: '/images/map-preloader.png'
         });
+        el = GUI.createElement(ElementHealthsIndicator, {
+            x: 430,
+            y: 10
+        });
+        self.elements.push(el);
     };
 
     /**
@@ -252,6 +257,7 @@ PageBlockMaps = function PageBlockMaps() {
                 elMapElements[id][i].hide();
             }
         }
+        domLoader.hide();
     };
 
     this.mapElsRedraw = function () {
@@ -353,7 +359,7 @@ PageBlockMaps = function PageBlockMaps() {
         if (!mfids) waiting = true;
         if (fids && fids.length !== flist.length) waiting = true;
         if (mfids && mfids.length !== mflist.length) waiting = true;
-        
+
         return waiting;
     }
 };

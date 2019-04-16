@@ -42,19 +42,19 @@ PageBlockField = function PageBlockField() {
      * Создадим тут все элементы страницы.
      */
     this.init = function () {
-        let element;
+        let el;
 
-        element = GUI.createElement(ElementField, {
+        el = GUI.createElement(ElementField, {
             centerX: 388,
             centerY: 250,
             onDestroyLine: self.onDestroyLine,
             onTurnUse: self.onTurnUse
         });
-        elementField = element;
-        this.elements.push(element);
+        elementField = el;
+        this.elements.push(el);
 
         // close
-        element = GUI.createElement(ElementButton, {
+        el = GUI.createElement(ElementButton, {
             x: 10,
             y: 10,
             srcRest: '/images/button-close-rest.png',
@@ -65,7 +65,7 @@ PageBlockField = function PageBlockField() {
                 PageController.showPage(PageMain);
             }
         });
-        this.elements.push(element);
+        this.elements.push(el);
 
         elementScore = GUI.createElement(ElementText, {
             x: 20,
@@ -98,30 +98,36 @@ PageBlockField = function PageBlockField() {
         elementTurns.setText('');
         this.elements.push(elementTurns);
 
-        element = GUI.createDom(undefined, {
+        el = GUI.createDom(undefined, {
             x: 600,
             y: 100,
             width: 200,
             height: 100
         });
-        this.elements.push(element);
+        this.elements.push(el);
+
+        el = GUI.createElement(ElementHealthsIndicator, {
+            x: 430,
+            y: 10
+        });
+        self.elements.push(el);
 
         for (let id in DataPoints.objectImages) {
-            element = GUI.createElement(ElementImage, {
+            el = GUI.createElement(ElementImage, {
                 x: 10 + (id - 1) * DataPoints.BLOCK_WIDTH,
                 y: 200,
                 width: 50,
                 height: 50,
                 src: DataPoints.objectImages[id]
             });
-            goalsImagesEls[id] = element;
-            element = GUI.createElement(ElementText, {
+            goalsImagesEls[id] = el;
+            el = GUI.createElement(ElementText, {
                 x: 10 + (id - 1) * DataPoints.BLOCK_WIDTH,
                 y: 200 + DataPoints.BLOCK_HEIGHT,
                 width: DataPoints.BLOCK_WIDTH,
                 alignCenter: true
             });
-            goalsCounterEls[id] = element;
+            goalsCounterEls[id] = el;
         }
 
         elementDialogGoals = GUI.createElement(ElementDialogGoals, {
