@@ -81,8 +81,10 @@ SAPIUser = function () {
 
     this.onTurnsLoose = function (cntx) {
         DataUser.getById(cntx.user.id, function (user) {
-            DataUser.updateHealths(user.id, user.healths - 1, function () {
-            });
+            if (user.healths > 1) {
+                DataUser.updateHealths(user.id, user.healths - 1, function () {
+                });
+            }
         })
     }
 };

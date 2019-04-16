@@ -28,6 +28,8 @@ ElementDialogPointInfo = function () {
 
     let elFriendsText = null;
 
+    let elButtonPlay = null;
+
     /**
      * Точка с которой нажали.
      * @type {null}
@@ -66,7 +68,7 @@ ElementDialogPointInfo = function () {
         elFriendsText.show();
 
         // кнопка играть
-        GUI.createElement(ElementButton, {
+        elButtonPlay = GUI.createElement(ElementButton, {
             x: 50, y: 130,
             srcRest: '/images/button-close-rest.png',
             srcHover: '/images/button-close-hover.png',
@@ -76,7 +78,8 @@ ElementDialogPointInfo = function () {
                 DataPoints.setPlayedId(pointId);
                 PageController.showPage(PageField);
             }
-        }).show();
+        });
+        elButtonPlay.show();
 
         // кнопка закрыть
         GUI.createElement(ElementButton, {
@@ -101,11 +104,12 @@ ElementDialogPointInfo = function () {
     };
 
     this.redraw = function () {
-        let point;
+        let user, point;
         this.__proto__.redraw.call(this);
 
         if (!this.dialogShowed) return;
 
+        user = LogicUser.getCurrentUser();
         point = DataPoints.getById(pointId);
         elTextPointNumber.text = 'point number:' + pointId;
         elTextStarsCount.text = 'stars: ' + DataPoints.countStars(point.id);
@@ -125,6 +129,11 @@ ElementDialogPointInfo = function () {
         elTextStarsCount.redraw();
         elTextScore.redraw();
         elFriendsText.redraw();
+        if(user.healths==0){
+            elButtonPlay.hide();
+        }else{
+            elButtonPlay.show();
+        }
     };
 
     this.showDialog = function (element) {

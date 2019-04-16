@@ -17,6 +17,8 @@ PageBlockField = function PageBlockField() {
 
     let elementDialogTurnsLoose = false;
 
+    let elementDialogJustQuit = false;
+
     let elementField = null;
 
     let elementScore = null;
@@ -61,8 +63,11 @@ PageBlockField = function PageBlockField() {
             srcHover: '/images/button-close-hover.png',
             srcActive: '/images/button-close-active.png',
             onClick: function () {
-                elementDialogTurnsLoose.reset();
-                PageController.showPage(PageMain);
+                if (turns === 0) {
+                    elementDialogTurnsLoose.reset();
+                }else{
+                    elementDialogJustQuit.showDialog();
+                }
             }
         });
         this.elements.push(el);
@@ -145,6 +150,12 @@ PageBlockField = function PageBlockField() {
         self.elements.push(elementDialogGoalsReached);
 
         elementDialogTurnsLoose = GUI.createElement(ElementDialogTurnLoose, {
+            src: '/images/window.png',
+            width: 342,
+            height: 200
+        });
+
+        elementDialogJustQuit = GUI.createElement(ElementDialogJustQuit, {
             src: '/images/window.png',
             width: 342,
             height: 200
