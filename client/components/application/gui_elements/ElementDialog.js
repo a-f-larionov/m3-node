@@ -44,12 +44,6 @@ ElementDialog = function () {
     this.src = '/path/to/image.png';
 
     /**
-     * Прозрачность картинки.
-     * @type {null}
-     */
-    this.opacity = null;
-
-    /**
      * Дом картинки.
      * @type {GUIDom}
      */
@@ -103,7 +97,7 @@ ElementDialog = function () {
      * Покажем картинку.
      */
     this.show = function () {
-        if (self.showed == true) return;
+        if (self.showed) return;
         self.showed = true;
         dom.show();
         for (var i in self.elements) {
@@ -116,7 +110,7 @@ ElementDialog = function () {
      * Спрячем картинку.
      */
     this.hide = function () {
-        if (self.showed == false) return;
+        if (!self.showed) return;
         self.showed = false;
         dom.hide();
         for (var i in self.elements) {
@@ -157,9 +151,6 @@ ElementDialog = function () {
 
     this.closeDialog = function () {
         GUI.unlockEvents();
-        //unlocal events
-        // coords resets
-        // hide all
         dom.animData[0].frameN = 2;
         dom.animPlayed = true;
     };
@@ -169,4 +160,12 @@ ElementDialog = function () {
             GUI.createElement(element, params, self.dom)
         );
     };
+
+    this.reset = function () {
+        dom.x = self.x;
+        dom.y = self.y;
+        self.dialogShowed = false;
+        dom.animData[0].frameN = 0;
+        GUI.unlockEvents();
+    }
 };

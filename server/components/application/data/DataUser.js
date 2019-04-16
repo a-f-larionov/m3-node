@@ -177,6 +177,13 @@ DataUser = function () {
         }
         DB.query("UPDATE " + tableName + " SET currentPoint = " + pointId + " WHERE id = " + userId, callback);
     };
+
+    this.updateHealths = function (userId, healths, callback) {
+        if (cache[userId]) {
+            cache[userId].healths = healths;
+        }
+        DB.query("UPDATE " + tableName + " SET healths = " + healths + " WHERE id = " + userId, callback);
+    };
 };
 
 /**

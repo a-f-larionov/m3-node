@@ -188,7 +188,12 @@ LogicUser = function () {
             loadMapFriends(mapId);
         }
         return friendsByMapId[mapId];
-    }
+    };
+
+    this.onTurnsLoose = function () {
+        users[authorizedUserId].healths--;
+        SAPIUser.onTurnsLoose();
+    };
 };
 
 /**

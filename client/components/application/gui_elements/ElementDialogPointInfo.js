@@ -72,8 +72,8 @@ ElementDialogPointInfo = function () {
             srcHover: '/images/button-close-hover.png',
             srcActive: '/images/button-close-active.png',
             onClick: function () {
+                self.reset();
                 DataPoints.setPlayedId(pointId);
-                self.closeDialog();
                 PageController.showPage(PageField);
             }
         }).show();

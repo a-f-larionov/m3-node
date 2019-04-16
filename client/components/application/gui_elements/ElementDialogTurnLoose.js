@@ -24,12 +24,12 @@ ElementDialogTurnLoose = function () {
         element = GUI.createElement(ElementText, {
             x: 50,
             y: 100,
-            fontSize: 36,
+            fontSize: 24,
             bold: true,
             alignCenter: true,
             width: 250
         }, this.dom);
-        element.setText("Хода закончились, вы проиграли!");
+        element.setText("Ходы закончились, вы проиграли!<br> -1 жизнь");
         self.elements.push(element);
     };
 

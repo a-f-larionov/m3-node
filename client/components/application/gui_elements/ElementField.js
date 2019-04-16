@@ -509,14 +509,11 @@ ElementField = function () {
         lines = this.findLines();
         // destory lines
         let p;
-        let anyDestroy;
-        anyDestroy = false;
         for (let i in lines) {
             for (let c in lines[i].coords) {
                 p = lines[i].coords[c];
                 layerGems[p.y][p.x] = DataPoints.OBJECT_EMPTY;
             }
-            anyDestroy = true;
             self.onDestroyLine(lines[i]);
         }
         this.redraw();
@@ -590,6 +587,7 @@ ElementField = function () {
 
     this.animate = function () {
         let dom;
+        if(lock)return;
         if (!animBlock) return;
 
         switch (animType) {
