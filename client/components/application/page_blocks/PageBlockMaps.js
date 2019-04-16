@@ -186,9 +186,18 @@ PageBlockMaps = function PageBlockMaps() {
      *
      */
     this.redraw = function () {
+        // нужны :
+        //if(LogicUser.getFriends()
+        // LogicUser.getFriends()
+        // map = DataMap.getCurent();
+        // DataPoints.getPointUserScore(map.id, [user.id]);
+        // uids = LogicUser.getFriendIdsByMapId(DataMap.getCurent().id);
+        // users = LogicUser.getList(uids);
+        //pointId = DataMap.getPointIdFromPointNumber(number);
+        // DataPoints.getById(pointId);
         if (!showed) return;
         self.preset();
-        elFriendsPanel.setFriends(LogicUser.getFriends());
+        elFriendsPanel.setFriends(LogicUser.getList(LogicUser.getFriendIds()));
         self.elements.forEach(function (element) {
             element.redraw();
         });
@@ -240,19 +249,19 @@ PageBlockMaps = function PageBlockMaps() {
     };
 
     this.mapElsRedraw = function () {
-        let data;
-        data = DataMap.getCurent();
-        if (!data) return;
+        let map;
+        map = DataMap.getCurent();
+        if (!map) return;
 
-        elMap.src = data.src;
+        elMap.src = map.src;
         elMap.redraw();
 
-        if (mapIdOld != data.id) {
+        if (mapIdOld != map.id) {
             this.mapElsShow();
         }
 
-        for (let i in elMapElements[data.id]) {
-            elMapElements[data.id][i].redraw();
+        for (let i in elMapElements[map.id]) {
+            elMapElements[map.id][i].redraw();
         }
     };
 

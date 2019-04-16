@@ -139,7 +139,7 @@ LogicUser = function () {
             users[user.id].photo50 = data[0].photo_50;
             users[user.id].photo100 = data[0].photo_100;
             users[user.id].firstName = data[0].first_name;
-            users[user.id].lastName= data[0].last_name;
+            users[user.id].lastName = data[0].last_name;
             PageController.redraw();
         });
         PageController.redraw();
@@ -162,19 +162,7 @@ LogicUser = function () {
         }
         return friendIds;
     };
-
-    this.getFriends = function () {
-        if (!friendIds) return friends;
-        if (friends.length === friendIds.length) return friends;
-        friends = [];
-        friendIds = friendIds.slice(0, 5);
-        friendIds.forEach(function (id) {
-            let user = LogicUser.getById(id);
-            if (user && user.id) friends.push(user);
-        });
-        return friendIds;
-    };
-
+    
     this.setFriendIdsByMapId = function (mapId, uids) {
         console.log('setFriendIdsByMapId', mapId, uids);
         friendsByMapId[mapId] = uids
@@ -185,7 +173,7 @@ LogicUser = function () {
         if (!mapId) mapId = currentMapId;
         console.log('friends-23');
         if (!LogicUser.getFriendIds().length) return;
-        console.log('friends-22',mapsFriendsLoadings[mapId]);
+        console.log('friends-22', mapsFriendsLoadings[mapId]);
         if (!mapsFriendsLoadings[mapId]) {
             mapsFriendsLoadings[mapId] = true;
             console.log('friends-5');
