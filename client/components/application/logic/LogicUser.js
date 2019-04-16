@@ -12,15 +12,9 @@ LogicUser = function () {
      */
     var users = [];
 
-    let friendIds = [];
+    let friendIds = null;
 
     let friendsByMapId = [];
-
-    /**
-     * По сути кэш
-     * @type {null}
-     */
-    let friends = [];
 
     /**
      * Авторизация пользователя.
@@ -88,8 +82,11 @@ LogicUser = function () {
     this.getList = function (ids) {
         let out;
         out = [];
+        if (!ids) return out;
         ids.forEach(function (id) {
-            out.push(self.getById(id));
+            if (self.getById(id).photo50) {
+                out.push(self.getById(id));
+            }
         });
         return out;
     };
@@ -135,42 +132,51 @@ LogicUser = function () {
         for (let field in user) {
             users[user.id][field] = user[field];
         }
-        SocNet.getUserInfo(user.socNetUserId, function (data) {
-            users[user.id].photo50 = data[0].photo_50;
-            users[user.id].photo100 = data[0].photo_100;
-            users[user.id].firstName = data[0].first_name;
-            users[user.id].lastName = data[0].last_name;
-            PageController.redraw();
-        });
+        if (!users[user.id].photo50) {
+            SocNet.getUserInfo(user.socNetUserId, function (data) {
+                users[user.id].photo50 = data[0].photo_50;
+                users[user.id].photo100 = data[0].photo_100;
+                users[user.id].firstName = data[0].first_name;
+                users[user.id].lastName = data[0].last_name;
+                PageController.redraw();
+            });
+        }
         PageController.redraw();
     };
 
+    this.isFriendIdsLoaded = false;
+
     this.setFriendIds = function (ids) {
+        self.isFriendIdsLoaded = true;
         friendIds = ids;
         PageController.redraw();
     };
 
     let friendIdsLoading = false;
 
-    this.getFriendIds = function () {
-        if (!friendIds.length && !friendIdsLoading) {
+    this.getFriendIds = function (limit) {
+        if (!friendIds && !friendIdsLoading) {
             //  - запросить друзей у ВК
             friendIdsLoading = true;
             SocNet.getFriendIds(function (ids) {
                 SAPIUser.sendMeUserIdsBySocNet(ids);
             });
+            return null;
         }
+        if (!friendIds) return null;
+        if (limit) return friendIds.slice(0, limit);
         return friendIds;
     };
 
     this.setFriendIdsByMapId = function (mapId, uids) {
-        friendsByMapId[mapId] = uids
+        friendsByMapId[mapId] = uids;
+        PageController.redraw();
     };
 
     let mapsFriendsLoadings = [];
     let loadMapFriends = function (mapId) {
         if (!mapId) mapId = currentMapId;
-        if (!LogicUser.getFriendIds().length) return;
+        if (!LogicUser.getFriendIds()) return;
         if (!mapsFriendsLoadings[mapId]) {
             mapsFriendsLoadings[mapId] = true;
             SAPIMap.sendMeMapFriends(mapId, LogicUser.getFriendIds());

@@ -32,6 +32,8 @@ PageBlockMaps = function PageBlockMaps() {
 
     var mapIdOld = 1;
 
+    let domLoader = null;
+
     /**
      * @type ElementPoint[]
      */
@@ -145,6 +147,10 @@ PageBlockMaps = function PageBlockMaps() {
             }
         });
         self.elements.push(el);
+
+        domLoader = GUI.createDom(undefined, {
+            x: 0, y: 0, backgroundImage: '/images/map-preloader.png'
+        });
     };
 
     /**
@@ -187,17 +193,17 @@ PageBlockMaps = function PageBlockMaps() {
      */
     this.redraw = function () {
         // нужны :
-        //if(LogicUser.getFriends()
-        // LogicUser.getFriends()
-        // map = DataMap.getCurent();
-        // DataPoints.getPointUserScore(map.id, [user.id]);
-        // uids = LogicUser.getFriendIdsByMapId(DataMap.getCurent().id);
-        // users = LogicUser.getList(uids);
-        //pointId = DataMap.getPointIdFromPointNumber(number);
-        // DataPoints.getById(pointId);
         if (!showed) return;
+
+        if (isWaiting()) {
+            domLoader.show();
+            return;
+        } else {
+            domLoader.hide();
+        }
+
         self.preset();
-        elFriendsPanel.setFriends(LogicUser.getList(LogicUser.getFriendIds()));
+        elFriendsPanel.setFriends(LogicUser.getList(LogicUser.getFriendIds(5)));
         self.elements.forEach(function (element) {
             element.redraw();
         });
@@ -331,6 +337,25 @@ PageBlockMaps = function PageBlockMaps() {
             chestEl.stars = DataMap.countStarsByMapId();
         }
     };
+
+    let isWaiting = function () {
+        let waiting, map, fids, mfids, flist, mflist;
+        waiting = false;
+
+        map = DataMap.getCurent();
+        fids = LogicUser.getFriendIds(5);
+        if (map) mfids = LogicUser.getFriendIdsByMapId(map.id);
+        if (fids) flist = LogicUser.getList(fids);
+        if (mfids) mflist = LogicUser.getList(mfids);
+
+        if (!map) waiting = true;
+        if (!fids) waiting = true;
+        if (!mfids) waiting = true;
+        if (fids && fids.length !== flist.length) waiting = true;
+        if (mfids && mfids.length !== mflist.length) waiting = true;
+        
+        return waiting;
+    }
 };
 
 PageBlockMaps = new PageBlockMaps;

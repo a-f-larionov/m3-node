@@ -1,6 +1,7 @@
 LogicMain = function () {
 
     this.main = function () {
+        //show preloader
         Logs.init(function () {
         });
 

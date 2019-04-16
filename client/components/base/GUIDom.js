@@ -93,7 +93,7 @@ GUIDom = function () {
         /* Добавим дом к родителю. */
         this.__dom = dom;
         dom.__dom = this;
-        if (parent == undefined) {
+        if (!parent) {
             parent = GUI.getCurrentParent();
         } else {
             parent = parent.__dom;
