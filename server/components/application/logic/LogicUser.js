@@ -110,8 +110,8 @@ LogicUser = function () {
         /* тут мы запомним его connectionId раз и на всегда */
         Statistic.add(user.id, Statistic.ID_AUTHORIZE);
         userAddConn(user, cntx);
-        CAPIUser.authorizeSuccess(user.id, user.id);
         DataUser.updateLastLogin(user.id);
+        CAPIUser.authorizeSuccess(user.id, user);
         Profiler.stop(profilerType, prid);
     };
 
@@ -260,6 +260,33 @@ LogicUser = function () {
             }
         });
     };
+
+    this.getMaxHealth = function () {
+        return 5;
+    };
+
+    this.getHealthRecoveryTime = function () {
+        return 60 * 10;
+    };
+
+    this.checkHealth = function (userId) {
+        let recoveryTime, lastUpTime, now, left, healthToUp;
+        DataUser.getById(userId, function (user) {
+            if (user.health < LogicUser.getMaxHealth()) {
+                recoveryTime = LogicUser.getHealthRecoveryTime();
+                lastUpTime = user.healthLastUpTime;
+                now = LogicTimeServer.getCurrentTime();
+                left = recoveryTime - (now - lastUpTime);
+                healthToUp += Math.min(
+                    Math.abs(left / recoveryTime),
+                    (LogicUser.getMaxHealth() - user.health)
+                );
+                DataUser.updateHealth(user.id, user.health += healthToUp, function () {
+
+                });
+            }
+        });
+    }
 };
 
 /**

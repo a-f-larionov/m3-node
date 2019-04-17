@@ -2,7 +2,7 @@
  * Элемент индикатор сердец.
  * @constructor
  */
-ElementHealthsIndicator = function () {
+ElementHealthIndicator = function () {
     var self = this;
 
     /**
@@ -74,10 +74,10 @@ ElementHealthsIndicator = function () {
      */
     this.redraw = function () {
         if (!showed) return;
-        let healths = LogicUser.getCurrentUser().healths;
+        let health = LogicUser.getCurrentUser().health;
         let i = 1;
         doms.forEach(function (dom) {
-            if (i <= healths) dom.show(); else dom.hide();
+            if (i <= health) dom.show(); else dom.hide();
             dom.redraw();
             i++;
         });

@@ -5,8 +5,10 @@ CAPIUser = function () {
      * @param cntx {Object} контекст соединения.
      * @param userId {Number} какой id авторизованного юзера сообщаем.
      */
-    this.authorizeSuccess = function (cntx, userId) {
-        LogicUser.authorizeSuccess(userId);
+    this.authorizeSuccess = function (cntx, user) {
+        //похоже на костыль, ну да ладно, время деньги
+        CAPIUser.updateUserInfo(cntx, user);
+        LogicUser.authorizeSuccess(user.id);
     };
 
     /**
@@ -17,6 +19,7 @@ CAPIUser = function () {
     this.updateUserInfo = function (cntx, user) {
         user.createTimestamp = LogicTimeClient.convertToClient(user.createTimestamp);
         user.lastLoginTimestamp = LogicTimeClient.convertToClient(user.lastLoginTimestamp);
+        user.healthLastUpTime = LogicTimeClient.convertToClient(user.healthLastUpTime);
         LogicUser.updateUserInfo(user);
     };
 

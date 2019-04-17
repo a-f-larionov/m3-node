@@ -21,12 +21,18 @@ PageBlockPanel = function PageBlockPanel() {
         console.log('init-common');
         var el;
         /* Задний фон */
-        el = GUI.createElement(ElementHealthsIndicator, {
+        el = GUI.createElement(ElementHealthIndicator, {
             x: 430,
             y: 10
         });
         self.elements.push(el);
 
+        el = GUI.createElement(ElementHealthTimer, {
+            x: 550, y: 40
+        });
+        self.elements.push(el);
+
+        // button sound
         el = GUI.createElement(ElementButton, {
             x: 650, y: 10,
             srcRest: '/images/star-off.png',

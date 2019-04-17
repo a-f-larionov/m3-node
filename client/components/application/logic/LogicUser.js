@@ -38,13 +38,12 @@ LogicUser = function () {
 
     /**
      * Метод для обработки ответа от сервера об успешной авторизации.
-     * @param userId
+     * @param user
      */
     this.authorizeSuccess = function (userId) {
         authorizedUserId = userId;
         Logs.log("Authorization success. userId:" + userId, Logs.LEVEL_NOTIFY);
         waitForLoadingUser = [];
-
         LogicMain.onAuthorizeSuccess();
     };
 
@@ -191,8 +190,38 @@ LogicUser = function () {
     };
 
     this.onTurnsLoose = function () {
-        users[authorizedUserId].healths--;
+        users[authorizedUserId].health--;
         SAPIUser.onTurnsLoose();
+    };
+
+    this.getHealthTime = function () {
+
+    };
+
+
+    this.getMaxHealth = function () {
+        return 5;
+    };
+
+    this.getHealthRecoveryTime = function () {
+        return 60 * 10;
+    };
+
+    this.checkHealth = function () {
+        let user, recoveryTime, lastUpTime, now, left, healthToUp;
+        user = LogicUser.getCurrentUser();
+        if (user.health < LogicUser.getMaxHealth()) {
+            recoveryTime = LogicUser.getHealthRecoveryTime();
+            lastUpTime = user.healthLastUpTime;
+            now = LogicTimeClient.getTime();
+            left = recoveryTime - (now - lastUpTime);
+            if (left < 0) SAPIUser.checkHealth();
+            healthToUp = Math.min(
+                Math.abs(left / recoveryTime),
+                (LogicUser.getMaxHealth() - user.health)
+            );
+            users[user.id].health += healthToUp;
+        }
     };
 };
 

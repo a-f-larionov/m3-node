@@ -178,11 +178,11 @@ DataUser = function () {
         DB.query("UPDATE " + tableName + " SET currentPoint = " + pointId + " WHERE id = " + userId, callback);
     };
 
-    this.updateHealths = function (userId, healths, callback) {
+    this.updateHealth = function (userId, health, callback) {
         if (cache[userId]) {
-            cache[userId].healths = healths;
+            cache[userId].health = health;
         }
-        DB.query("UPDATE " + tableName + " SET healths = " + healths + " WHERE id = " + userId, callback);
+        DB.query("UPDATE " + tableName + " SET health = " + health + " WHERE id = " + userId, callback);
     };
 };
 

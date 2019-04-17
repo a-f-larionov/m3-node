@@ -7,7 +7,7 @@
  * width : number ширина поля
  * height : number высота поля
  */
-ElementTimer = function () {
+ElementHealthTimer = function () {
     var self = this;
 
     /**
@@ -62,8 +62,21 @@ ElementTimer = function () {
      * Перерисуем.
      */
     this.redraw = function () {
+        let user;
         if (!showed) return;
         elTimer.setText('00:00:00');
+
+        user = LogicUser.getCurrentUser();
+        if (user.health === LogicUser.getMaxHealth()) {
+            elTimer.hide();
+        } else {
+            /**
+             * recovery
+             */
+            recoveryTime = LogicUser.getHealthRecoveryTime();
+            lastUpTime = LogicUser.getCurrentUser().healthLastUpTime ;
+            now = LogicTimeClient.getTime();
+        }
         elTimer.redraw();
     };
 };

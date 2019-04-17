@@ -129,9 +129,9 @@ ElementDialogPointInfo = function () {
         elTextStarsCount.redraw();
         elTextScore.redraw();
         elFriendsText.redraw();
-        if(user.healths==0){
+        if (user.health === 0) {
             elButtonPlay.hide();
-        }else{
+        } else {
             elButtonPlay.show();
         }
     };

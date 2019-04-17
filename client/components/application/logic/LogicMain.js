@@ -46,7 +46,7 @@ LogicMain = function () {
 
     this.onAuthorizeSuccess = function () {
         SAPITimeServer.sendMeTime();
-
+        LogicUser.checkHealth();
         PageController.showPage(PageMain);
     };
 };
