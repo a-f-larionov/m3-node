@@ -208,18 +208,23 @@ LogicUser = function () {
     };
 
     this.checkHealth = function () {
-        let user, recoveryTime, lastUpTime, now, left, healthToUp;
+        let user, recoveryTime, healthStartTime, now, left, healthToUp;
         user = LogicUser.getCurrentUser();
         if (user.health < LogicUser.getMaxHealth()) {
             recoveryTime = LogicUser.getHealthRecoveryTime();
-            lastUpTime = user.healthLastUpTime;
+            healthStartTime = user.healthStartTime;
             now = LogicTimeClient.getTime();
-            left = recoveryTime - (now - lastUpTime);
+            left = recoveryTime - (now - healthStartTime);
             if (left < 0) SAPIUser.checkHealth();
+            console.log('now', now);
+            console.log('left', left);
+            console.log('healthToUp', healthToUp);
             healthToUp = Math.min(
                 Math.abs(left / recoveryTime),
                 (LogicUser.getMaxHealth() - user.health)
             );
+            console.log('healthToUp', healthToUp);
+            console.log('health', users[user.id].health);
             users[user.id].health += healthToUp;
         }
     };

@@ -74,7 +74,7 @@ ElementHealthTimer = function () {
              * recovery
              */
             recoveryTime = LogicUser.getHealthRecoveryTime();
-            lastUpTime = LogicUser.getCurrentUser().healthLastUpTime ;
+            healthStartTime = LogicUser.getCurrentUser().healthStartTime ;
             now = LogicTimeClient.getTime();
         }
         elTimer.redraw();

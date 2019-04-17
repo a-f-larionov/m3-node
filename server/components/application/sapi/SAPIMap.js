@@ -48,8 +48,6 @@ SAPIMap = function () {
     this.finishLevel = function (cntx, pointId, score) {
 
         DataPoints.updateUsersPoints(cntx.userId, pointId, score);
-        CAPIMap.log(cntx.userId, pointId);
-        CAPIMap.log(cntx.userId, score);
         DataUser.getById(cntx.userId, function (user) {
             if (user.currentPoint < pointId + 1) {
                 DataUser.updateCurrentPoint(cntx.userId, pointId + 1);
