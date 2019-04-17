@@ -111,12 +111,6 @@ PageBlockField = function PageBlockField() {
         });
         this.elements.push(el);
 
-        el = GUI.createElement(ElementHealthsIndicator, {
-            x: 430,
-            y: 10
-        });
-        self.elements.push(el);
-
         for (let id in DataPoints.objectImages) {
             el = GUI.createElement(ElementImage, {
                 x: 10 + (id - 1) * DataPoints.BLOCK_WIDTH,

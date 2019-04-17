@@ -1,8 +1,8 @@
 /**
- * Страница бэкграудна.
+ * Блок общих.
  * @constructor
  */
-PageBlockBackground = function PageBlockBackground() {
+PageBlockPanel = function PageBlockPanel() {
     var self = this;
 
     /**
@@ -18,22 +18,29 @@ PageBlockBackground = function PageBlockBackground() {
     this.elements = [];
 
     this.init = function () {
-        var element;
-        console.log('init-back');
+        console.log('init-common');
+        var el;
         /* Задний фон */
-        element = GUI.createElement(ElementImage, {
-            x: 0,
-            y: 0,
-            src: '/images/background.png'
+        el = GUI.createElement(ElementHealthsIndicator, {
+            x: 430,
+            y: 10
         });
-        self.elements.push(element);
+        self.elements.push(el);
+
+        el = GUI.createElement(ElementButton, {
+            x: 650, y: 10,
+            srcRest: '/images/star-off.png',
+            srcHover: '/images/star-on.png',
+            srcActive: '/images/star-on.png',
+        });
+        self.elements.push(el);
     };
 
     /**
      * Покажем все элементы на странице.
      */
     this.show = function () {
-        if (showed === true) return;
+        if (showed) return;
         showed = true;
         self.preset();
         for (var i in self.elements) {
@@ -46,7 +53,7 @@ PageBlockBackground = function PageBlockBackground() {
      * Спрачем все элементы на странице.
      */
     this.hide = function () {
-        if (showed === false) return;
+        if (!showed) return;
         showed = false;
         for (var i in self.elements) {
             self.elements[i].hide();
@@ -72,4 +79,4 @@ PageBlockBackground = function PageBlockBackground() {
     };
 };
 
-PageBlockBackground = new PageBlockBackground();
+PageBlockPanel = new PageBlockPanel();
