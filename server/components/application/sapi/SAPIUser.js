@@ -82,14 +82,22 @@ SAPIUser = function () {
     this.onTurnsLoose = function (cntx) {
         DataUser.getById(cntx.user.id, function (user) {
             if (user.health > 1) {
-                DataUser.updateHealth(user.id, user.health - 1, function () {
-                });
+                user.health--;
+                user.healthStartTime = LogicTimeServer.getCurrentTime();
+                DataUser.updateHealthAndStartTime(
+                    user.id,
+                    user.health,
+                    user.healthStartTime,
+                    function () {
+                        CAPIUser.updateUserInfo(cntx.user.id, user);
+                    }
+                );
             }
         })
     };
 
     this.checkHealth = function (cntx) {
-       LogicUser.checkHealth(cntx.user.id);
+        LogicUser.checkHealth(cntx.user.id);
     }
 };
 /**

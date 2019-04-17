@@ -212,13 +212,12 @@ LogicUser = function () {
         user = LogicUser.getCurrentUser();
         if (user.health < LogicUser.getMaxHealth()) {
             recoveryTime = LogicUser.getHealthRecoveryTime();
-            healthStartTime = user.healthStartTime;
+            healthStartTime = user.healthStartTime / 1000;
             now = LogicTimeClient.getTime();
             left = recoveryTime - (now - healthStartTime);
             if (left < 0) SAPIUser.checkHealth();
             console.log('now', now);
             console.log('left', left);
-            console.log('healthToUp', healthToUp);
             healthToUp = Math.min(
                 Math.abs(left / recoveryTime),
                 (LogicUser.getMaxHealth() - user.health)

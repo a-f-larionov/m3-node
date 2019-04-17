@@ -33,10 +33,12 @@ ElementHealthTimer = function () {
      * Создадим дом и настроем его.
      */
     this.init = function () {
+
         elTimer = GUI.createElement(ElementText, {
             x: this.x, y: this.y,
             width: 100, height: 30
         });
+        OnIdle.register(self.updateTimer);
     };
 
     /**
@@ -66,17 +68,37 @@ ElementHealthTimer = function () {
         if (!showed) return;
         elTimer.setText('00:00:00');
 
+        self.updateTimer();
+
+        elTimer.redraw();
+    };
+
+    this.updateTimer = function () {
+        let recoveryTime, healthStartTime, now, timeOut, user;
+        if (!showed) return;
         user = LogicUser.getCurrentUser();
         if (user.health === LogicUser.getMaxHealth()) {
             elTimer.hide();
         } else {
-            /**
-             * recovery
-             */
             recoveryTime = LogicUser.getHealthRecoveryTime();
-            healthStartTime = LogicUser.getCurrentUser().healthStartTime ;
+            healthStartTime = LogicUser.getCurrentUser().healthStartTime;
             now = LogicTimeClient.getTime();
+            timeOut = recoveryTime - (now - healthStartTime / 1000);
+
+            let toHHMMSS = function (val) {
+                var sec_num = parseInt(val, 10); // don't forget the second param
+                var hours = Math.floor(sec_num / 3600);
+                var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+                var seconds = sec_num - (hours * 3600) - (minutes * 60);
+
+                if (hours < 10) hours = "0" + hours;
+                if (minutes < 10) minutes = "0" + minutes;
+                if (seconds < 10) seconds = "0" + seconds;
+                /*hours+':'+*/
+                return minutes + ':' + seconds;
+            };
+            elTimer.setText(toHHMMSS(timeOut));
+            elTimer.redraw();
         }
-        elTimer.redraw();
-    };
+    }
 };

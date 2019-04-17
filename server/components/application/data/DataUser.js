@@ -182,7 +182,20 @@ DataUser = function () {
         if (cache[userId]) {
             cache[userId].health = health;
         }
-        DB.query("UPDATE " + tableName + " SET health = " + health + " WHERE id = " + userId, callback);
+        DB.query("UPDATE " + tableName +
+            " SET health = " + health +
+            " WHERE id = " + userId, callback);
+    };
+
+    this.updateHealthAndStartTime = function (userId, health, healthStartTime, callback) {
+        if (cache[userId]) {
+            cache[userId].health = health;
+            cache[userId].healthStartTime = healthStartTime;
+        }
+        DB.query("UPDATE " + tableName +
+            " SET health = " + health +
+            " , healthStartTime = " + healthStartTime +
+            " WHERE id = " + userId, callback);
     };
 };
 
