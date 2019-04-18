@@ -266,33 +266,38 @@ LogicUser = function () {
     };
 
     this.getHealthRecoveryTime = function () {
-        return 60 * 10;
+        return 60 * 0.5;
     };
 
     this.checkHealth = function (userId) {
         let recoveryTime, healthStartTime, now, left, healthToUp;
         DataUser.getById(userId, function (user) {
-            CAPIMap.log(userId, user);
             if (user.health < LogicUser.getMaxHealth()) {
                 CAPIMap.log(userId, user);
-                recoveryTime = LogicUser.getHealthRecoveryTime();
+                recoveryTime = LogicUser.getHealthRecoveryTime() * 1000;
                 healthStartTime = user.healthStartTime;
                 now = LogicTimeServer.getCurrentTime();
                 left = recoveryTime - (now - healthStartTime);
+                if (left > 0) return;
                 healthToUp = Math.min(
-                    Math.abs(left / recoveryTime),
+                    Math.floor(Math.abs((now - healthStartTime) / recoveryTime)),
                     (LogicUser.getMaxHealth() - user.health)
                 );
                 user.health += healthToUp;
                 CAPIMap.log(userId, {
                     recoveryTime: recoveryTime,
                     healthStartTime: healthStartTime,
+                    healthToUp: healthToUp,
                     now: now,
                     left: left
                 });
-                DataUser.updateHealth(user.id, user.health, function () {
+                if (user.health < LogicUser.getMaxHealth()) {
+                    user.healthStartTime += recoveryTime * healthToUp;
+                }
+                DataUser.updateHealthAndStartTime(user.id, user.health, user.healthStartTime, function () {
                     CAPIMap.log(userId, 'update health');
                     CAPIUser.updateUserInfo(user.id, user);
+                    CAPIUser.healthChecked(user.id);
                 });
             }
         });

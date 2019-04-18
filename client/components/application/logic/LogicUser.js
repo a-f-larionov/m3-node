@@ -204,8 +204,15 @@ LogicUser = function () {
     };
 
     this.getHealthRecoveryTime = function () {
-        return 60 * 10;
+        // @todo нужны общие настройки
+        return 60 * 0.5;
     };
+
+    this.clearHealthCheckFlag = function () {
+        checkHealthFlag = false;
+    };
+
+    let checkHealthFlag = false;
 
     this.checkHealth = function () {
         let user, recoveryTime, healthStartTime, now, left, healthToUp;
@@ -215,15 +222,14 @@ LogicUser = function () {
             healthStartTime = user.healthStartTime / 1000;
             now = LogicTimeClient.getTime();
             left = recoveryTime - (now - healthStartTime);
-            if (left < 0) SAPIUser.checkHealth();
-            console.log('now', now);
-            console.log('left', left);
+            if (left <= 0 && !checkHealthFlag) {
+                checkHealthFlag = true;
+                SAPIUser.checkHealth();
+            }
             healthToUp = Math.min(
                 Math.abs(left / recoveryTime),
                 (LogicUser.getMaxHealth() - user.health)
             );
-            console.log('healthToUp', healthToUp);
-            console.log('health', users[user.id].health);
             users[user.id].health += healthToUp;
         }
     };

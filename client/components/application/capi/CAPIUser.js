@@ -23,6 +23,10 @@ CAPIUser = function () {
         LogicUser.updateUserInfo(user);
     };
 
+    this.healthChecked = function (cntx) {
+        LogicUser.clearHealthCheckFlag();
+    };
+
     this.gotFriendsIds = function (cntx, ids) {
         LogicUser.setFriendIds(ids);
     };

@@ -85,6 +85,9 @@ ElementHealthTimer = function () {
             now = LogicTimeClient.getTime();
             timeOut = recoveryTime - (now - healthStartTime / 1000);
 
+            if (timeOut <= 0) {
+                LogicUser.checkHealth();
+            }
             let toHHMMSS = function (val) {
                 var sec_num = parseInt(val, 10); // don't forget the second param
                 var hours = Math.floor(sec_num / 3600);
@@ -98,6 +101,7 @@ ElementHealthTimer = function () {
                 return minutes + ':' + seconds;
             };
             elTimer.setText(toHHMMSS(timeOut));
+            elTimer.show();
             elTimer.redraw();
         }
     }

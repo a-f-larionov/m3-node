@@ -80,10 +80,13 @@ SAPIUser = function () {
     };
 
     this.onTurnsLoose = function (cntx) {
+        //@todo check on game?
         DataUser.getById(cntx.user.id, function (user) {
-            if (user.health > 1) {
+            if (user.health > 0) {
                 user.health--;
-                user.healthStartTime = LogicTimeServer.getCurrentTime();
+                if ((user.healthStartTime + LogicUser.getHealthRecoveryTime() * 1000) < LogicTimeServer.getCurrentTime()) {
+                    user.healthStartTime = LogicTimeServer.getCurrentTime();
+                }
                 DataUser.updateHealthAndStartTime(
                     user.id,
                     user.health,
@@ -98,7 +101,11 @@ SAPIUser = function () {
 
     this.checkHealth = function (cntx) {
         LogicUser.checkHealth(cntx.user.id);
-    }
+    };
+
+    this.checkHealthTimer = function (cnxt) {
+        LogicUser.checkHealth(cnxt.user.id);
+    };
 };
 /**
  * Статичный класс.
