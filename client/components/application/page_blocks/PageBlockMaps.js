@@ -52,7 +52,6 @@ PageBlockMaps = function PageBlockMaps() {
      */
     this.init = function () {
         let el;
-        console.log('init-maps');
         elMap = GUI.createElement(ElementImage, {
             x: 0, y: 0, width: 777, height: 500,
             src: '/images/ratingInfo.png'

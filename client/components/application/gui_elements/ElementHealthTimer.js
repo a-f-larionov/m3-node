@@ -77,7 +77,6 @@ ElementHealthTimer = function () {
         let recoveryTime, healthStartTime, now, left, user;
         if (!showed) return;
         user = LogicUser.getCurrentUser();
-        console.log('heaalth' + user.health);
 
         if (user.health === LogicUser.getMaxHealth()) {
             elTimer.hide();

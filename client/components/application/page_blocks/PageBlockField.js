@@ -50,7 +50,7 @@ PageBlockField = function PageBlockField() {
             centerX: 388,
             centerY: 250,
             onDestroyLine: self.onDestroyLine,
-            onTurnUse: self.onTurnUse
+            beforeTurnUse: self.beforeTurnUse
         });
         elementField = el;
         this.elements.push(el);
@@ -65,7 +65,7 @@ PageBlockField = function PageBlockField() {
             onClick: function () {
                 if (turns === 0) {
                     elementDialogTurnsLoose.reset();
-                }else{
+                } else {
                     elementDialogJustQuit.showDialog();
                 }
             }
@@ -254,14 +254,15 @@ PageBlockField = function PageBlockField() {
         }
     };
 
+    let noMoreGoals;
+
     this.onDestroyLine = function (line) {
         let objId, p;
         score += line.coords.length * 10;
-        let noMoreGoals;
 
         noMoreGoals = true;
         for (let g in goals) {
-            if (goals[g].id == line.gemId) {
+            if (goals[g].id === line.gemId) {
                 goals[g].count -= line.coords.length;
                 if (goals[g].count < 0) goals[g].count = 0;
             }
@@ -297,9 +298,10 @@ PageBlockField = function PageBlockField() {
         elementDialogGoalsReached.showDialog();
     };
 
-    this.onTurnUse = function () {
+    this.beforeTurnUse = function () {
         turns--;
-        if (turns === 0) {
+        // and goals
+        if (turns === 0 && !noMoreGoals) {
             elementField.lock();
             elementDialogTurnsLoose.showDialog();
             LogicUser.onTurnsLoose();

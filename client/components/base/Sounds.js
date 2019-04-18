@@ -4,13 +4,26 @@ Sounds = function () {
     var cache = {};
 
     this.enabled = true;
+    this.PATH_CHALK = '/tri-base/sounds/chalk.mp3';
+
+    this.toggle = function () {
+        if (self.enabled)
+            self.off();
+        else self.on();
+    };
+
+    this.isEnabled = function () {
+        return self.enabled;
+    };
 
     this.on = function () {
         self.enabled = true;
+        document.cookie = 'settings_sound=on';
     };
 
     this.off = function () {
         self.enabled = false;
+        document.cookie = 'settings_sound=off';
     };
 
     this.play = function (path, volume) {
@@ -18,7 +31,7 @@ Sounds = function () {
             return;
         }
         if (!cache[path]) {
-            cache[path] = new Audio(path + "?t=" + time());
+            cache[path] = new Audio(path + "?t=" + 1123);
         }
         if (!volume) {
             volume = 1.0;
@@ -26,6 +39,10 @@ Sounds = function () {
         cache[path].volume = volume;
         cache[path].play();
     };
+
+    if (document.cookie.search('settings_sound=off') !== -1) {
+        self.off();
+    }
 };
 
 Sounds = new Sounds;

@@ -13,6 +13,9 @@ ElementField = function () {
      */
     let showed = false;
 
+    this.ANIM_TYPE_FALLDOWN = 1;
+    this.ANIM_TYPE_EXCHANGE = 2;
+
     // рамка и все что связано
     let gemA = null;
     let gemB = null;
@@ -145,6 +148,7 @@ ElementField = function () {
     let gemTouched = null;
 
     let onGemTouchStart = function () {
+        Sounds.play(Sounds.PATH_CHALK);
         gemTouched = this;
     };
 
@@ -205,29 +209,29 @@ ElementField = function () {
                 self.exchangeGems(gemA, gemB);
 
                 if (gemA.fieldX < gemB.fieldX) {
-                    animType = 2;
+                    animType = self.ANIM_TYPE_EXCHANGE;
                     animavx = +1;
                     animavy = 0;
                 }
                 if (gemA.fieldX > gemB.fieldX) {
-                    animType = 2;
+                    animType = self.ANIM_TYPE_EXCHANGE;
                     animavx = -1;
                     animavy = 0;
                 }
                 if (gemA.fieldY < gemB.fieldY) {
-                    animType = 2;
+                    animType = self.ANIM_TYPE_EXCHANGE;
                     animavx = 0;
                     animavy = +1;
                 }
                 if (gemA.fieldY > gemB.fieldY) {
-                    animType = 2;
+                    animType = self.ANIM_TYPE_EXCHANGE;
                     animavx = 0;
                     animavy = -1;
                 }
                 if (mayExchange) {
                     self.exchangeGems(gemA, gemB);
                     animExchangeHalf = true;
-                    self.onTurnUse();
+                    self.beforeTurnUse();
                 } else {
                     animExchangeHalf = false;
                 }
@@ -242,6 +246,7 @@ ElementField = function () {
     let gemMouseDown = null;
 
     let onGemMouseDown = function () {
+        Sounds.play(Sounds.PATH_CHALK);
         gemMouseDown = this;
         // 1 - при mousedown - ждём перехода в соседнию
         // 2 - если перешли - вызываем onclick дважды
@@ -395,25 +400,11 @@ ElementField = function () {
 
         fieldWidth = layers.gems[0].length;
         fieldHeight = layers.gems.length;
-        //this.fillReserved();
         this.redraw();
     };
-
 
     this.getRandomGem = function () {
         return randomGems[Math.floor(Math.random() * randomGems.length)];
-    };
-
-
-    this.fillReserved = function () {
-        for (let y = -fieldHeight; y < 0; y++) {
-            for (let x = 0; x < fieldWidth; x++) {
-
-                layerGems[y][x] = randomGems[Math.floor(Math.random() * randomGems.length)];
-
-            }
-        }
-        this.redraw();
     };
 
     let runNext = 0;
@@ -451,7 +442,7 @@ ElementField = function () {
                 }
             });
         });
-        this.run();
+        self.run();
     };
 
     this.fallDown = function () {
@@ -497,18 +488,19 @@ ElementField = function () {
         }
 
         if (animObjects.length) {
-            animType = 1;
+            animType = self.ANIM_TYPE_FALLDOWN;
             animBlock = true;
         } else {
-            this.run();
+            self.run();
         }
     };
 
     this.destroyLines = function () {
         let lines;
         lines = this.findLines();
-        // destory lines
+        // destroy lines
         let p;
+        if(lines.length)
         for (let i in lines) {
             for (let c in lines[i].coords) {
                 p = lines[i].coords[c];
@@ -587,11 +579,11 @@ ElementField = function () {
 
     this.animate = function () {
         let dom;
-        if(lock)return;
+        if (lock) return;
         if (!animBlock) return;
 
         switch (animType) {
-            case 1:// falldown
+            case self.ANIM_TYPE_FALLDOWN:// falldown
                 animCounter++;
                 for (let i in animObjects) {
                     dom = animObjects[i];
@@ -616,7 +608,7 @@ ElementField = function () {
                     self.run();
                 }
                 break;
-            case 2: // a <-> b
+            case self.ANIM_TYPE_EXCHANGE: // a <-> b
                 let step = 5;
                 animCounter++;
                 if (animCounter <= 50 / step) {
@@ -641,7 +633,7 @@ ElementField = function () {
                     gemA = null;
                     gemB = null;
                     self.redraw();
-                    self.destroyLines();
+                    self.run();
                 }
                 break;
         }

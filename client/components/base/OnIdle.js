@@ -4,7 +4,6 @@ OnIdle = function () {
     this.stack = [];
 
     this.init = function (callbackAfterInit) {
-        console.log('on idle init');
         setTimeout(OnIdle.iterate, 501);
         callbackAfterInit();
     };

@@ -19,7 +19,6 @@ PageBlockBackground = function PageBlockBackground() {
 
     this.init = function () {
         var element;
-        console.log('init-back');
         /* Задний фон */
         element = GUI.createElement(ElementImage, {
             x: 0,

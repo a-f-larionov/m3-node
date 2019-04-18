@@ -17,6 +17,8 @@ PageBlockPanel = function PageBlockPanel() {
      */
     this.elements = [];
 
+    let elSoundsButton = null;
+
     this.init = function () {
         console.log('init-common');
         var el;
@@ -32,14 +34,19 @@ PageBlockPanel = function PageBlockPanel() {
         });
         self.elements.push(el);
 
-        // button sound
-        el = GUI.createElement(ElementButton, {
-            x: 650, y: 10,
+        // sounds button кнопка звука
+        elSoundsButton = GUI.createElement(ElementButton, {
+            x: 700, y: 10,
             srcRest: '/images/star-off.png',
             srcHover: '/images/star-on.png',
             srcActive: '/images/star-on.png',
+            onClick: function () {
+                Sounds.toggle();
+                Sounds.play(Sounds.PATH_CHALK);
+                PageController.redraw();
+            }
         });
-        self.elements.push(el);
+        self.elements.push(elSoundsButton);
     };
 
     /**
@@ -70,7 +77,11 @@ PageBlockPanel = function PageBlockPanel() {
      * Настройка перед отрисовкой.
      */
     this.preset = function () {
-
+        if (Sounds.isEnabled()) {
+            elSoundsButton.srcRest = '/images/star-on.png';
+        } else {
+            elSoundsButton.srcRest = '/images/star-off.png';
+        }
     };
 
     /**
@@ -79,9 +90,9 @@ PageBlockPanel = function PageBlockPanel() {
     this.redraw = function () {
         if (!showed) return;
         self.preset();
-        for (var i in self.elements) {
-            self.elements[i].redraw();
-        }
+        self.elements.forEach(function (el) {
+            el.redraw();
+        });
     };
 };
 

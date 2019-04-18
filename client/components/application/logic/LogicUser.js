@@ -232,7 +232,7 @@ LogicUser = function () {
             }
 
             PageController.redraw();
-            console.log('here', left, checkHealthFlag);
+
             if (left <= 0 && !checkHealthFlag) {
                 checkHealthFlag = true;
                 SAPIUser.checkHealth();
