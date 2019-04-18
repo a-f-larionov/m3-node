@@ -82,10 +82,13 @@ SAPIUser = function () {
     this.onTurnsLoose = function (cntx) {
         //@todo check on game?
         DataUser.getById(cntx.user.id, function (user) {
+            let now, recoveryTime;
             if (user.health > 0) {
+                now = LogicTimeServer.getCurrentTime();
+                recoveryTime = LogicUser.getHealthRecoveryTime();
                 user.health--;
-                if ((user.healthStartTime + LogicUser.getHealthRecoveryTime() * 1000) < LogicTimeServer.getCurrentTime()) {
-                    user.healthStartTime = LogicTimeServer.getCurrentTime();
+                if (now > (user.healthStartTime + recoveryTime)) {
+                    user.healthStartTime = now;
                 }
                 DataUser.updateHealthAndStartTime(
                     user.id,
@@ -101,10 +104,6 @@ SAPIUser = function () {
 
     this.checkHealth = function (cntx) {
         LogicUser.checkHealth(cntx.user.id);
-    };
-
-    this.checkHealthTimer = function (cnxt) {
-        LogicUser.checkHealth(cnxt.user.id);
     };
 };
 /**

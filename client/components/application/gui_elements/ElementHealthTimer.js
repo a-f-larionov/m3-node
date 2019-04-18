@@ -74,20 +74,19 @@ ElementHealthTimer = function () {
     };
 
     this.updateTimer = function () {
-        let recoveryTime, healthStartTime, now, timeOut, user;
+        let recoveryTime, healthStartTime, now, left, user;
         if (!showed) return;
         user = LogicUser.getCurrentUser();
+        console.log('heaalth' + user.health);
+
         if (user.health === LogicUser.getMaxHealth()) {
             elTimer.hide();
         } else {
             recoveryTime = LogicUser.getHealthRecoveryTime();
-            healthStartTime = LogicUser.getCurrentUser().healthStartTime;
+            healthStartTime = LogicUser.getCurrentUser().healthStartTime / 1000;
             now = LogicTimeClient.getTime();
-            timeOut = recoveryTime - (now - healthStartTime / 1000);
+            left = recoveryTime - (now - healthStartTime);
 
-            if (timeOut <= 0) {
-                LogicUser.checkHealth();
-            }
             let toHHMMSS = function (val) {
                 var sec_num = parseInt(val, 10); // don't forget the second param
                 var hours = Math.floor(sec_num / 3600);
@@ -100,9 +99,12 @@ ElementHealthTimer = function () {
                 /*hours+':'+*/
                 return minutes + ':' + seconds;
             };
-            elTimer.setText(toHHMMSS(timeOut));
+            elTimer.setText(toHHMMSS(left));
             elTimer.show();
             elTimer.redraw();
+            if (left <= 0) {
+                LogicUser.checkHealth();
+            }
         }
     }
 };
