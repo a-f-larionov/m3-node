@@ -266,7 +266,7 @@ LogicUser = function () {
     };
 
     this.getHealthRecoveryTime = function () {
-        return 60 * 0.1 * 1000;
+        return 60 * 0.2 * 1000;
     };
 
     this.checkHealth = function (userId) {
@@ -278,7 +278,15 @@ LogicUser = function () {
                 healthStartTime = user.healthStartTime;
                 now = LogicTimeServer.getCurrentTime();
                 left = recoveryTime - (now - healthStartTime);
-                if (left > 0) return;
+                if (left > 0) {
+                    CAPIMap.log('failed some', {user: user, now: now, left: left});
+                    CAPIUser.healthChecked(user.id);
+                    Logs.log("healthCheck time bug:", Logs.LEVEL_WARNING, {user: user, now: now, left: left});
+                    setTimeout(function () {
+                        LogicUser.checkHealth(userId);
+                    }, left);
+                    return;
+                }
 
                 healthToUp = Math.min(
                     Math.floor(Math.abs((now - healthStartTime) / recoveryTime)),

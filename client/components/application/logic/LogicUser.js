@@ -191,13 +191,9 @@ LogicUser = function () {
 
     this.onTurnsLoose = function () {
         users[authorizedUserId].health--;
+        users[authorizedUserId].healthStartTime = LogicTimeClient.getTime() * 1000;
         SAPIUser.onTurnsLoose();
     };
-
-    this.getHealthTime = function () {
-
-    };
-
 
     this.getMaxHealth = function () {
         return 5;
@@ -205,7 +201,7 @@ LogicUser = function () {
 
     this.getHealthRecoveryTime = function () {
         // @todo нужны общие настройки
-        return 60 * 0.1;
+        return 60 * 0.2;
     };
 
     this.clearHealthCheckFlag = function () {
