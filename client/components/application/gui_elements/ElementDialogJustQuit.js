@@ -33,9 +33,9 @@ ElementDialogJustQuit = function () {
         element = GUI.createElement(ElementButton, {
                 x: 50,
                 y: 130,
-                srcRest: '/images/button-close-rest.png',
-                srcHover: '/images/button-close-hover.png',
-                srcActive: '/images/button-close-active.png',
+                srcRest: '/images/button-quit-rest.png',
+                srcHover: '/images/button-quit-hover.png',
+                srcActive: '/images/button-quit-active.png',
                 onClick: function () {
                     LogicUser.onTurnsLoose();
                     self.closeDialog();

@@ -70,9 +70,9 @@ ElementDialogPointInfo = function () {
         // кнопка играть
         elButtonPlay = GUI.createElement(ElementButton, {
             x: 50, y: 130,
-            srcRest: '/images/button-close-rest.png',
-            srcHover: '/images/button-close-hover.png',
-            srcActive: '/images/button-close-active.png',
+            srcRest: '/images/button-play-rest.png',
+            srcHover: '/images/button-play-hover.png',
+            srcActive: '/images/button-play-active.png',
             onClick: function () {
                 self.reset();
                 DataPoints.setPlayedId(pointId);

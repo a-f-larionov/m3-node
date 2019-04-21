@@ -154,6 +154,23 @@ PageBlockField = function PageBlockField() {
             width: 342,
             height: 200
         });
+
+        // stuff hummer
+        el = GUI.createElement(ElementButton, {
+            x: 10,
+            y: 10,
+            srcRest: '/images/button-close-rest.png',
+            srcHover: '/images/button-close-hover.png',
+            srcActive: '/images/button-close-active.png',
+            onClick: function () {
+                if (turns === 0) {
+                    elementDialogTurnsLoose.reset();
+                } else {
+                    elementDialogJustQuit.showDialog();
+                }
+            }
+        });
+        this.elements.push(el);
     };
 
     /**

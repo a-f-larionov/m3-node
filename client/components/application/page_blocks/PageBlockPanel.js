@@ -37,9 +37,9 @@ PageBlockPanel = function PageBlockPanel() {
         // sounds button кнопка звука
         elSoundsButton = GUI.createElement(ElementButton, {
             x: 700, y: 10,
-            srcRest: '/images/star-off.png',
-            srcHover: '/images/star-on.png',
-            srcActive: '/images/star-on.png',
+            srcRest: '/images/button-sound-off.png',
+            srcHover: '/images/button-sound-on.png',
+            srcActive: '/images/button-sound-active.png',
             onClick: function () {
                 Sounds.toggle();
                 Sounds.play(Sounds.PATH_CHALK);
@@ -78,9 +78,11 @@ PageBlockPanel = function PageBlockPanel() {
      */
     this.preset = function () {
         if (Sounds.isEnabled()) {
-            elSoundsButton.srcRest = '/images/star-on.png';
+            elSoundsButton.srcRest = '/images/button-sound-on.png';
+            elSoundsButton.srcHover = '/images/button-sound-off.png';
         } else {
-            elSoundsButton.srcRest = '/images/star-off.png';
+            elSoundsButton.srcRest = '/images/button-sound-off.png';
+            elSoundsButton.srcHover = '/images/button-sound-on.png';
         }
     };
 

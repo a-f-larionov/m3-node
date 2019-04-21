@@ -138,9 +138,9 @@ PageBlockMaps = function PageBlockMaps() {
 
         el = GUI.createElement(ElementButton, {
             x: 50, y: 430,
-            srcRest: '/images/star-off.png',
-            srcHover: '/images/star-on.png',
-            srcActive: '/images/star-on.png',
+            srcRest: '/images/button-friend-add-rest.png',
+            srcHover: '/images/button-friend-add-hover.png',
+            srcActive: '/images/button-friend-add-active.png',
             onClick: function () {
                 SocNet.openInviteFriendDialog();
             }
