@@ -1,7 +1,7 @@
 CAPIStuff = function () {
 
-    this.gotStuff = function (stuff) {
-        console.log('gotstuff', arguments);
+    this.gotStuff = function (cntx, stuff) {
+        LogicStuff.updateStuff(stuff);
     };
 };
 
