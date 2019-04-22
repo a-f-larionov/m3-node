@@ -157,17 +157,37 @@ PageBlockField = function PageBlockField() {
 
         // stuff hummer
         el = GUI.createElement(ElementButton, {
-            x: 10,
-            y: 10,
-            srcRest: '/images/button-close-rest.png',
-            srcHover: '/images/button-close-hover.png',
-            srcActive: '/images/button-close-active.png',
+            x: 680,
+            y: 200,
+            srcRest: '/images/button-hummer-rest.png',
+            srcHover: '/images/button-hummer-hover.png',
+            srcActive: '/images/button-hummer-active.png',
             onClick: function () {
-                if (turns === 0) {
-                    elementDialogTurnsLoose.reset();
-                } else {
-                    elementDialogJustQuit.showDialog();
-                }
+
+            }
+        });
+        this.elements.push(el);
+        // stuff shuffle
+        el = GUI.createElement(ElementButton, {
+            x: 680,
+            y: 300,
+            srcRest: '/images/button-shuffle-rest.png',
+            srcHover: '/images/button-shuffle-hover.png',
+            srcActive: '/images/button-shuffle-active.png',
+            onClick: function () {
+
+            }
+        });
+        this.elements.push(el);
+        // stuff lighting
+        el = GUI.createElement(ElementButton, {
+            x: 680,
+            y: 400,
+            srcRest: '/images/button-lighting-rest.png',
+            srcHover: '/images/button-lighting-hover.png',
+            srcActive: '/images/button-lighting-active.png',
+            onClick: function () {
+
             }
         });
         this.elements.push(el);

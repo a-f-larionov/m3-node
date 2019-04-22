@@ -19,7 +19,8 @@ LogicMain = function () {
         ApiRouter.setMap({
             CAPIUser: CAPIUser,
             CAPITimeServer: CAPITimeServer,
-            CAPIMap: CAPIMap
+            CAPIMap: CAPIMap,
+            CAPIStuff: CAPIStuff
         });
 
         /* Link ApiRouter and WebSocketClient */
@@ -47,6 +48,7 @@ LogicMain = function () {
     this.onAuthorizeSuccess = function () {
         SAPITimeServer.sendMeTime();
         LogicUser.checkHealth();
+        LogicStuff.loadStuff();
         PageController.showPage(PageMain);
     };
 };
