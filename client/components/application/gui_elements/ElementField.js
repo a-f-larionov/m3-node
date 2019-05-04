@@ -159,8 +159,8 @@ ElementField = function () {
             let elem = document.elementFromPoint(changedTouch.clientX, changedTouch.clientY);
 
             if (gemTouched) {
-                gemAct(gemTouched);
-                gemAct(elem.__dom);
+                fieldAct(gemTouched.fieldX, gemTouched.fieldY);
+                fieldAct(elem.__dom.fieldX, elem.__dom.fieldY);
                 gemTouched = null;
             }
         } catch (e) {
@@ -169,9 +169,13 @@ ElementField = function () {
     };
 
     let onGemClick = function () {
+        fieldAct(this.fieldX, this.fieldY);
+    };
 
-        console.log( 'on gem click');
-        gemAct(this);
+    let fieldAct = function (x, y) {
+        console.log(x, y);
+
+        gemAct(gemDoms[y][x]);
     };
 
     /**
@@ -262,8 +266,8 @@ ElementField = function () {
 
     let onGemMouseOver = function () {
         if (gemMouseDown) {
-            gemAct(gemMouseDown);
-            gemAct(this);
+            fieldAct(gemMouseDown.fieldX, gemMouseDown.fieldY);
+            fieldAct(this.fieldX, this.fieldY);
             gemMouseDown = null;
         }
     };
@@ -502,16 +506,15 @@ ElementField = function () {
         lines = this.findLines();
         // destroy lines
         let p;
-        if(lines.length)
-        for (let i in lines) {
-            for (let c in lines[i].coords) {
-                p = lines[i].coords[c];
-                layerGems[p.y][p.x] = DataPoints.OBJECT_EMPTY;
+        if (lines.length)
+            for (let i in lines) {
+                for (let c in lines[i].coords) {
+                    p = lines[i].coords[c];
+                    layerGems[p.y][p.x] = DataPoints.OBJECT_EMPTY;
+                }
+                self.onDestroyLine(lines[i]);
             }
-            self.onDestroyLine(lines[i]);
-        }
         this.redraw();
-        //@todo animate it
 
         setTimeout(function () {
             self.run();
