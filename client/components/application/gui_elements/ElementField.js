@@ -169,6 +169,8 @@ ElementField = function () {
     };
 
     let onGemClick = function () {
+
+        console.log( 'on gem click');
         gemAct(this);
     };
 

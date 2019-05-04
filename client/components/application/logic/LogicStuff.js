@@ -3,6 +3,12 @@ LogicStuff = function () {
 
     let stuff = {};
 
+    this.STUFF_HUMMER = 1;
+    this.STUFF_LIGHTING = 2;
+    this.STUFF_SHUFFLE = 3;
+
+    this.STUFF_GOLD = 100;
+
     this.loadStuff = function () {
         SAPIStuff.sendMeStuff();
     };

@@ -31,6 +31,10 @@ PageBlockField = function PageBlockField() {
 
     let goalsCounterEls = {};
 
+    let stuffMode = null;
+
+    let domStuff = null;
+
     let score;
     let turns;
     let goals;
@@ -159,12 +163,12 @@ PageBlockField = function PageBlockField() {
         el = GUI.createElement(ElementStuffButton, {
             x: 680,
             y: 200,
-            fieldName:'hummerQty',
+            fieldName: 'hummerQty',
             srcRest: '/images/button-hummer-rest.png',
             srcHover: '/images/button-hummer-hover.png',
             srcActive: '/images/button-hummer-active.png',
             onClick: function () {
-
+                self.setStuffMode(LogicStuff.STUFF_HUMMER);
             }
         });
         this.elements.push(el);
@@ -172,12 +176,12 @@ PageBlockField = function PageBlockField() {
         el = GUI.createElement(ElementStuffButton, {
             x: 680,
             y: 300,
-            fieldName:'shuffleQty',
+            fieldName: 'shuffleQty',
             srcRest: '/images/button-shuffle-rest.png',
             srcHover: '/images/button-shuffle-hover.png',
             srcActive: '/images/button-shuffle-active.png',
             onClick: function () {
-
+                self.setStuffMode(LogicStuff.STUFF_SHUFFLE);
             }
         });
         this.elements.push(el);
@@ -185,15 +189,34 @@ PageBlockField = function PageBlockField() {
         el = GUI.createElement(ElementStuffButton, {
             x: 680,
             y: 400,
-            fieldName:'lightingQty',
+            fieldName: 'lightingQty',
             srcRest: '/images/button-lighting-rest.png',
             srcHover: '/images/button-lighting-hover.png',
             srcActive: '/images/button-lighting-active.png',
             onClick: function () {
-
+                self.setStuffMode(LogicStuff.STUFF_LiGHTING);
             }
         });
         this.elements.push(el);
+
+        // dom stuff
+        domStuff = GUI.createDom(null, {
+            x: 190,
+            y: 10,
+        });
+        GUI.bind(domStuff, GUI.EVENT_MOUSE_CLICK, function () {
+            console.log(arguments);
+            // передаем клик дальше, теоретически после анимации
+            window.aaa = arguments;
+            window.domStuff = domStuff;
+            //GUI.emitClick
+        });
+
+        GUI.onMouseMove(function (x, y) {
+            domStuff.x = x - 25;
+            domStuff.y = y - 25;
+            domStuff.redraw();
+        });
     };
 
     /**
@@ -224,6 +247,7 @@ PageBlockField = function PageBlockField() {
         for (let i in goalsCounterEls) {
             goalsCounterEls[i].hide();
         }
+        domStuff.hide();
     };
 
     /**
@@ -292,6 +316,10 @@ PageBlockField = function PageBlockField() {
 
             offsetX += DataPoints.BLOCK_WIDTH + 5;
         }
+        if (stuffMode) {
+            domStuff.show();
+        }
+        domStuff.redraw();
     };
 
     let noMoreGoals;
@@ -347,7 +375,23 @@ PageBlockField = function PageBlockField() {
             LogicUser.onTurnsLoose();
         }
         self.redraw();
-    }
+    };
+
+    this.setStuffMode = function (stuff) {
+        stuffMode = stuff;
+        switch (stuffMode) {
+            case LogicStuff.STUFF_HUMMER:
+                domStuff.backgroundImage = '/images/button-hummer-active.png';
+                break;
+            case LogicStuff.STUFF_LIGHTING:
+                domStuff.backgroundImage = '/images/button-lighting-active.png';
+                break;
+            case LogicStuff.STUFF_SHUFFLE:
+                domStuff.backgroundImage = '/images/button-shuffle-active.png';
+                break;
+        }
+        domStuff.show();
+    };
 };
 
 PageBlockField = new PageBlockField;

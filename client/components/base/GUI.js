@@ -74,6 +74,8 @@ GUI = function () {
     this.eventNames[this.EVENT_MOUSE_MOUSE_TOUCH_START] = 'touchstart';
     this.eventNames[this.EVENT_MOUSE_MOUSE_TOUCH_END] = 'touchend';
 
+    let mouseMoveStack = [];
+
     /**
      * Стэк родителей.
      * На верхуши стэка находиться элемент в который будет добавлены новые элементы.
@@ -109,6 +111,12 @@ GUI = function () {
             'user-select: none;' +
             '}';
         document.getElementsByTagName('head')[0].appendChild(style);
+        document.addEventListener('mousemove', function (event) {
+            console.log(event);
+            mouseMoveStack.forEach(function (callback) {
+                callback.call(null, event.clientX, event.clientY);
+            })
+        });
     };
 
     /**
@@ -327,6 +335,10 @@ GUI = function () {
 
     this.unlockEvents = function () {
         self.lockEventsExcept = null;
+    };
+
+    this.onMouseMove = function (callback) {
+        mouseMoveStack.push(callback);
     };
 };
 
