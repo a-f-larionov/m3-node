@@ -204,12 +204,12 @@ PageBlockField = function PageBlockField() {
             x: 190,
             y: 10,
         });
-        GUI.bind(domStuff, GUI.EVENT_MOUSE_CLICK, function () {
-            console.log(arguments);
+        GUI.bind(domStuff, GUI.EVENT_MOUSE_CLICK, function (event, dom) {
             // передаем клик дальше, теоретически после анимации
-            window.aaa = arguments;
-            window.domStuff = domStuff;
-            //GUI.emitClick
+            domStuff.hide();
+            el = document.elementFromPoint(event.clientX, event.clientY);
+            el.dispatchEvent(new MouseEvent(event.type, event));
+            domStuff.show();
         });
 
         GUI.onMouseMove(function (x, y) {

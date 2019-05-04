@@ -105,7 +105,7 @@ GUIDom = function () {
      * Покажем дом.
      */
     this.show = function () {
-        if (showed === true) {
+        if (showed) {
             return;
         }
         showed = true;
@@ -117,7 +117,7 @@ GUIDom = function () {
      * Спрячем дом.
      */
     this.hide = function () {
-        if (showed == false) {
+        if (!showed) {
             return;
         }
         showed = false;

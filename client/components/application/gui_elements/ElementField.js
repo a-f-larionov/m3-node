@@ -156,7 +156,7 @@ ElementField = function () {
         try {
             event.stopPropagation();
             let changedTouch = event.changedTouches[0];
-            let elem = document.elementFromPoint(changedTouch.clientX, changedTouch.clientY);
+                let elem = document.elementFromPoint(changedTouch.clientX, changedTouch.clientY);
 
             if (gemTouched) {
                 fieldAct(gemTouched.fieldX, gemTouched.fieldY);
@@ -173,8 +173,6 @@ ElementField = function () {
     };
 
     let fieldAct = function (x, y) {
-        console.log(x, y);
-
         gemAct(gemDoms[y][x]);
     };
 
