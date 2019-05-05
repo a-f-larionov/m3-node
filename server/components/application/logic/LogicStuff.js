@@ -20,6 +20,15 @@ LogicStuff = function () {
         });
     };
 
+    this.usedHummer = function (userId) {
+        DataStuff.usedHummer(userId);
+    };
+    this.usedShuffle = function (userId) {
+        DataStuff.usedShuffle(userId);
+    };
+    this.usedLighting = function (userId) {
+        DataStuff.usedLighting(userId);
+    };
 };
 
 

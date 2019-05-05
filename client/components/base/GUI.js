@@ -112,7 +112,6 @@ GUI = function () {
             '}';
         document.getElementsByTagName('head')[0].appendChild(style);
         document.addEventListener('mousemove', function (event) {
-            console.log(event);
             mouseMoveStack.forEach(function (callback) {
                 callback.call(null, event.clientX, event.clientY);
             })

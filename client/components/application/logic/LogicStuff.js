@@ -25,7 +25,19 @@ LogicStuff = function () {
             return stuff[fieldName];
         }
         return stuff;
-    }
+    };
+
+    this.usedHummer = function(){
+        stuff['hummerQty']--;
+    };
+
+    this.usedShuffle = function(){
+        stuff['shuffleQty']--;
+    };
+
+    this.usedLighting= function(){
+        stuff['lightingQty']--;
+    };
 };
 
 /**

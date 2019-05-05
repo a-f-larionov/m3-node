@@ -20,7 +20,6 @@ PageBlockPanel = function PageBlockPanel() {
     let elSoundsButton = null;
 
     this.init = function () {
-        console.log('init-common');
         var el;
         /* Задний фон */
         el = GUI.createElement(ElementHealthIndicator, {

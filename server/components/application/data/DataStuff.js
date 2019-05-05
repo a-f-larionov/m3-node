@@ -32,6 +32,27 @@ DataStuff = function () {
             callback(data);
         });
     };
+
+    this.usedHummer = function (userId) {
+        DB.query("UPDATE " + tableName + "" +
+            " SET hummerQty = hummerQty -1" +
+            " WHERE userId = " + parseInt(userId), function () {
+        });
+    };
+
+    this.usedShuffle = function (userId) {
+        DB.query("UPDATE " + tableName + "" +
+            " SET shuffleQty = shuffleQty -1" +
+            " WHERE userId = " + parseInt(userId), function () {
+        });
+    };
+
+    this.usedLighting = function (userId) {
+        DB.query("UPDATE " + tableName + "" +
+            " SET lightingQty = lightingQty -1" +
+            " WHERE userId = " + parseInt(userId), function () {
+        });
+    };
 };
 
 /**

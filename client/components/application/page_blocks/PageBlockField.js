@@ -54,7 +54,8 @@ PageBlockField = function PageBlockField() {
             centerX: 388,
             centerY: 250,
             onDestroyLine: self.onDestroyLine,
-            beforeTurnUse: self.beforeTurnUse
+            beforeTurnUse: self.beforeTurnUse,
+            afterStuffUse: self.afterStuffUse
         });
         elementField = el;
         this.elements.push(el);
@@ -194,7 +195,7 @@ PageBlockField = function PageBlockField() {
             srcHover: '/images/button-lighting-hover.png',
             srcActive: '/images/button-lighting-active.png',
             onClick: function () {
-                self.setStuffMode(LogicStuff.STUFF_LiGHTING);
+                self.setStuffMode(LogicStuff.STUFF_LIGHTING);
             }
         });
         this.elements.push(el);
@@ -318,8 +319,10 @@ PageBlockField = function PageBlockField() {
         }
         if (stuffMode) {
             domStuff.show();
+            domStuff.redraw();
+        } else {
+            domStuff.hide();
         }
-        domStuff.redraw();
     };
 
     let noMoreGoals;
@@ -377,20 +380,45 @@ PageBlockField = function PageBlockField() {
         self.redraw();
     };
 
-    this.setStuffMode = function (stuff) {
-        stuffMode = stuff;
+    this.afterStuffUse = function () {
+
         switch (stuffMode) {
             case LogicStuff.STUFF_HUMMER:
+                SAPIStuff.usedHummer();
+                LogicStuff.usedHummer();
+                break;
+            case LogicStuff.STUFF_LIGHTING:
+                SAPIStuff.usedLighting();
+                LogicStuff.usedLighting();
+                break;
+            case LogicStuff.STUFF_SHUFFLE:
+                SAPIStuff.usedShuffle();
+                LogicStuff.usedShuffle();
+                break;
+        }
+        stuffMode = null;
+        elementField.setStuffMode(stuffMode);
+        self.redraw();
+    };
+
+    this.setStuffMode = function (mode) {
+        stuffMode = mode;
+        switch (stuffMode) {
+            case LogicStuff.STUFF_HUMMER:
+                if (LogicStuff.getStuff('hummerQty') < 1) return;
                 domStuff.backgroundImage = '/images/button-hummer-active.png';
                 break;
             case LogicStuff.STUFF_LIGHTING:
+                if (LogicStuff.getStuff('lightingQty') < 1) return;
                 domStuff.backgroundImage = '/images/button-lighting-active.png';
                 break;
             case LogicStuff.STUFF_SHUFFLE:
+                if (LogicStuff.getStuff('shuffleQty') < 1) return;
                 domStuff.backgroundImage = '/images/button-shuffle-active.png';
                 break;
         }
-        domStuff.show();
+        elementField.setStuffMode(mode);
+        self.redraw();
     };
 };
 

@@ -15,11 +15,16 @@ ElementField = function () {
 
     this.ANIM_TYPE_FALLDOWN = 1;
     this.ANIM_TYPE_EXCHANGE = 2;
+    this.ANIM_TYPE_HUMMER_DESTROY = 3;
+    this.ANIM_TYPE_LIGHTING_DESTROY = 4;
+    this.ANIM_TYPE_SHUFFLE = 5;
 
     // рамка и все что связано
     let gemA = null;
     let gemB = null;
     let domFrame = null;
+
+    let domStuffMode = null;
 
     this.centerX = 0;
     this.centerY = 0;
@@ -156,7 +161,7 @@ ElementField = function () {
         try {
             event.stopPropagation();
             let changedTouch = event.changedTouches[0];
-                let elem = document.elementFromPoint(changedTouch.clientX, changedTouch.clientY);
+            let elem = document.elementFromPoint(changedTouch.clientX, changedTouch.clientY);
 
             if (gemTouched) {
                 fieldAct(gemTouched.fieldX, gemTouched.fieldY);
@@ -173,7 +178,82 @@ ElementField = function () {
     };
 
     let fieldAct = function (x, y) {
-        gemAct(gemDoms[y][x]);
+        if (lock) return;
+        if (animBlock) return;
+
+        switch (domStuffMode) {
+            case LogicStuff.STUFF_HUMMER:
+                gemHummerAct(gemDoms[y][x]);
+                break;
+            case LogicStuff.STUFF_SHUFFLE:
+                gemShuffleAct(gemDoms[y][x]);
+                break;
+            case LogicStuff.STUFF_LIGHTING:
+                gemLightingAct(gemDoms[y][x]);
+                break;
+        }
+        gemChangeAct(gemDoms[y][x]);
+    };
+
+    let gemHummerAct = function (gem) {
+        if (lock) return;
+        if (animBlock) return;
+        if (randomGems.indexOf(layerGems[gem.fieldY][gem.fieldX]) === -1) {
+            return;
+        }
+        layerGems[gem.fieldY][gem.fieldX] = DataPoints.OBJECT_EMPTY;
+        animBlock = true;
+        animType = self.ANIM_TYPE_HUMMER_DESTROY;
+        animCounter = 0;
+        self.redraw();
+    };
+
+    let gemShuffleAct = function (gem) {
+        if (lock) return;
+        if (animBlock) return;
+
+        let tmp;
+        for (let y = 0; y < fieldHeight; y++) {
+            for (let x = 0; x < fieldWidth; x++) {
+                console.log(y, x);
+                if (randomGems.indexOf(layerGems[gem.fieldY][gem.fieldX]) === -1) {
+                    console.log('skip1');
+                    continue;
+                }
+                y = Math.floor(Math.random() * fieldHeight);
+                x = Math.floor(Math.random() * fieldWidth);
+                if (randomGems.indexOf(layerGems[y][x]) === -1) {
+                    console.log('skip2');
+                    continue;
+                }
+                tmp = layerGems[y][x];
+                layerGems[y][x] = layerGems[gem.fieldY][gem.fieldX];
+                layerGems[gem.fieldY][gem.fieldX] = tmp;
+            }
+        }
+        animBlock = true;
+        animType = self.ANIM_TYPE_SHUFFLE;
+        animCounter = 0;
+        self.redraw();
+    };
+
+    let gemLightingAct = function (gem) {
+        if (lock) return;
+        if (animBlock) return;
+        if (randomGems.indexOf(layerGems[gem.fieldY][gem.fieldX]) === -1) {
+            return;
+        }
+        console.log('lig');
+        for (let x = 0; x < fieldWidth; x++) {
+            if (randomGems.indexOf(layerGems[gem.fieldY][x]) !== -1) {
+                layerGems[gem.fieldY][x] = DataPoints.OBJECT_EMPTY;
+            }
+        }
+        console.log('lig');
+        animBlock = true;
+        animType = self.ANIM_TYPE_LIGHTING_DESTROY;
+        animCounter = 0;
+        self.redraw();
     };
 
     /**
@@ -181,8 +261,7 @@ ElementField = function () {
      * или другом любом действием аналогичным клику.
      * @param gem
      */
-    let gemAct = function (gem) {
-
+    let gemChangeAct = function (gem) {
         if (lock) return;
         if (animBlock) return;
         if (randomGems.indexOf(layerGems[gem.fieldY][gem.fieldX]) === -1) {
@@ -586,7 +665,34 @@ ElementField = function () {
         if (!animBlock) return;
 
         switch (animType) {
-            case self.ANIM_TYPE_FALLDOWN:// falldown
+            case self.ANIM_TYPE_HUMMER_DESTROY:
+                animCounter++;
+                if (animCounter === 5) {
+                    self.afterStuffUse();
+                    animBlock = false;
+                    animType = 0;
+                    self.run();
+                }
+                break;
+            case self.ANIM_TYPE_SHUFFLE:
+                animCounter++;
+                if (animCounter === 5) {
+                    self.afterStuffUse();
+                    animBlock = false;
+                    animType = 0;
+                    self.run();
+                }
+                break;
+            case self.ANIM_TYPE_LIGHTING_DESTROY:
+                animCounter++;
+                if (animCounter === 5) {
+                    self.afterStuffUse();
+                    animBlock = false;
+                    animType = 0;
+                    self.run();
+                }
+                break;
+            case self.ANIM_TYPE_FALLDOWN:
                 animCounter++;
                 for (let i in animObjects) {
                     dom = animObjects[i];
@@ -669,5 +775,9 @@ ElementField = function () {
 
     this.unlock = function () {
         lock = false;
+    };
+
+    this.setStuffMode = function (mode) {
+        domStuffMode = mode;
     };
 };
