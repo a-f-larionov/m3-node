@@ -144,7 +144,7 @@ DataPoints = function () {
         turns: 307,
         score1: 100,
         score2: 200,
-        score3: 5000,
+        score3: 500,
         layers: {
             mask: [
                 "     ",
@@ -223,7 +223,7 @@ DataPoints = function () {
         goals: [
             {
                 id: this.OBJECT_GREEN,
-                count: 1
+                count: 10
             }
         ]
     };

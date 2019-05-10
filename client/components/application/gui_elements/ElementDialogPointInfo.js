@@ -2,6 +2,11 @@ ElementDialogPointInfo = function () {
     let self = this;
     this.__proto__ = new ElementDialog();
 
+    this.width = 342;
+    this.height = 200;
+
+    this.src = '/images/window.png';
+
     /**
      * Точка с которой нажали
      * @type {null}
@@ -137,7 +142,6 @@ ElementDialogPointInfo = function () {
     };
 
     this.showDialog = function (element) {
-        if (element.stateId === ElementPoint.STATE_CLOSE) return;
         pointId = element.pointId;
         friends = element.friends;
         this.__proto__.showDialog.call(this);

@@ -15,6 +15,8 @@ DataChests = function () {
 
     let chests = [];
 
+    let opened = [];
+
     this.getCoords = function () {
         return chestCoords;
     };
@@ -26,6 +28,14 @@ DataChests = function () {
     this.setData = function (data) {
         chests[data.id] = data;
         PageController.redraw();
+    };
+
+    this.setOpened = function (chestId) {
+        opened[chestId] = true;
+    };
+
+    this.isItOpened = function (chestId) {
+        return opened[chestId] === true;
     };
 };
 

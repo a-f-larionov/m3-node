@@ -1,7 +1,7 @@
 SAPIMap = function () {
 
     this.sendMeMapInfo = function (cntx, mapId) {
-        let map, points, chests, usersInfo;
+        let map, points, chests, userPoints, userChests;
         if (!DataMap.existsMap(mapId)) {
             Logs.log("no map found:" + mapId, Logs.LEVEL_WARNING, cntx);
             return;
@@ -10,15 +10,19 @@ SAPIMap = function () {
         points = DataPoints.getPointsByMapId(mapId);
         chests = DataChests.getChestsByMapId(mapId);
         DataPoints.getUsersInfo(mapId, [cntx.userId], function (rows) {
-            usersInfo = rows;
-            CAPIMap.gotMapsInfo(
-                cntx.userId,
-                mapId,
-                map,
-                points,
-                chests,
-                usersInfo
-            );
+            userPoints = rows;
+            DataChests.getUsersInfo(mapId, [cntx.userId], function (rows) {
+                userChests = rows;
+                CAPIMap.gotMapsInfo(
+                    cntx.userId,
+                    mapId,
+                    map,
+                    points,
+                    userPoints,
+                    chests,
+                    userChests
+                );
+            });
         });
     };
 

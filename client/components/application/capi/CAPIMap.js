@@ -1,6 +1,6 @@
 CAPIMap = function () {
 
-    this.gotMapsInfo = function (ctnx, mapId, map, points, chests, usersInfo) {
+    this.gotMapsInfo = function (ctnx, mapId, map, points, userPoints, chests, userChests) {
         DataMap.setMapById(mapId, map);
         points.forEach(function (point) {
             point.layers.mask = convertLayer(point.layers.mask);
@@ -11,8 +11,11 @@ CAPIMap = function () {
         chests.forEach(function (chest) {
             DataChests.setData(chest);
         });
-        usersInfo.forEach(function (info) {
+        userPoints.forEach(function (info) {
             DataPoints.setPointUserScore(info.userId, info.pointId, info.score);
+        });
+        userChests.forEach(function (info) {
+            DataChests.setOpened(info.chestId);
         });
     };
 

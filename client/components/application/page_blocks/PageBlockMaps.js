@@ -11,7 +11,11 @@ PageBlockMaps = function PageBlockMaps() {
      */
     var showed = false;
 
-    var elementDialogPointInfo = false;
+    var dialogPointInfo = false;
+
+    let dialogChestNeedStars;
+
+    let dialogChestYouWin;
 
     var elPreloader = false;
 
@@ -104,7 +108,7 @@ PageBlockMaps = function PageBlockMaps() {
                 width: 50,
                 height: 50,
                 onClick: function (event, dom, element) {
-                    elementDialogPointInfo.showDialog(element);
+                    dialogPointInfo.showDialog(element);
                 }
             });
             self.elements.push(el);
@@ -116,19 +120,50 @@ PageBlockMaps = function PageBlockMaps() {
             el = GUI.createElement(ElementChest, {
                 x: coord.x, y: coord.y,
                 width: 71, height: 62,
-                chestId: coord.number,
                 number: coord.number,
-                enabled: true
+                enabled: true,
+                onClick: function (e, d, el) {
+                    let chestId, isItOpened, chest, goalStars, mapStars;
+                    console.log('click on chest');
+                    chestId = el.chestId;
+                    isItOpened = DataChests.isItOpened(chestId);
+                    chest = DataChests.getById(chestId);
+                    goalStars = chest.goalStars;
+                    mapStars = DataMap.countStarsByMapId();
+                    console.log('map stars: ' + mapStars);
+                    if (isItOpened) {
+                        console.log('уже открыт!');
+                    } else {
+                        if (mapStars < goalStars) {
+                            console.log('need stars');
+                            dialogChestNeedStars.mapStars = mapStars;
+                            dialogChestNeedStars.goalStars = goalStars;
+                            dialogChestNeedStars.showDialog();
+                            // если закрыт и не хватает звёзд - диалог с надписью: что бы открыть сундук , собери еще
+                        } else {
+                            console.log('win stars');
+                            dialogChestYouWin.chestId = chestId;
+                            dialogChestYouWin.showDialog();
+                        }
+                    }
+                    console.log(chestId, chest, goalStars, mapStars);
+                    // если уже открыт - некликабельно! и тольок напдись: открыто!
+
+                    // если закрыт и хватает звёзд - диалог с надписью - ты выиграл!
+                }
             });
             self.elements.push(el);
             chestsEls[coord.number] = el;
         });
 
-        elementDialogPointInfo = GUI.createElement(ElementDialogPointInfo, {
-            src: '/images/window.png',
-            width: 342, height: 200
-        });
-        self.elements.push(elementDialogPointInfo);
+        dialogPointInfo = GUI.createElement(ElementDialogPointInfo, {});
+        self.elements.push(dialogPointInfo);
+
+        dialogChestNeedStars = GUI.createElement(ElementDialogChestNeedStars, {});
+        self.elements.push(dialogChestNeedStars);
+
+        dialogChestYouWin = GUI.createElement(ElementDialogChestYouWin, {});
+        self.elements.push(dialogChestYouWin);
 
         elFriendsPanel = GUI.createElement(ElementFriendsPanel, {
             x: 100,
@@ -323,7 +358,7 @@ PageBlockMaps = function PageBlockMaps() {
      * Обновление данных перед отрисовкой сундуков
      */
     this.presetChests = function () {
-        let user, chestId, chest, chestEl, map;
+        let chestId, chest, chestEl, map;
         map = DataMap.getCurent();
         if (!map) return;
         for (let number = 1; number <= DataMap.CHESTS_PER_MAP; number++) {
@@ -331,8 +366,8 @@ PageBlockMaps = function PageBlockMaps() {
             chest = DataChests.getById(chestId);
             if (!chest) continue;
 
-            chestsEls[number].pointId = chestId;
             chestEl = chestsEls[number];
+            chestEl.chestId = chestId;
             chestEl.goalStars = chest.goalStars;
             chestEl.stars = DataMap.countStarsByMapId();
         }

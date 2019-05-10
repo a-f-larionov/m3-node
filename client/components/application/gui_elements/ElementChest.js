@@ -152,11 +152,18 @@ ElementChest = function () {
         elText.x = self.x + 10;
         elText.y = self.y + 60;
 
+        let isOpened = DataChests.isItOpened(self.chestId);
+
         if (self.goalStars) {
-            elText.text = self.stars + '/' + self.goalStars;
+            if (self.stars > self.goalStars) {
+                elText.text = self.goalStars + '/' + self.goalStars;
+            } else {
+                elText.text = self.stars + '/' + self.goalStars;
+            }
         } else {
             elText.text = '';
         }
+        elText.text += isOpened ? 'opened' : 'closed';
         elText.redraw();
         dom.redraw();
     };
@@ -196,7 +203,7 @@ ElementChest = function () {
     var onMouseClick = function (mouseEvent, dom) {
         /* Да, тут мы останавливаем дальнейшие течение клика. */
         mouseEvent.stopPropagation();
-        if (self.stateId === ElementChest.STATE_CLOSE) return;
+        //if (self.stateId === ElementChest.STATE_CLOSE) return;
         mouseStateDown = false;
         mouseStateFocused = false;
         self.redraw();
