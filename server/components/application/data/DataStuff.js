@@ -53,6 +53,27 @@ DataStuff = function () {
             " WHERE userId = " + parseInt(userId), function () {
         });
     };
+
+    this.giveAHummer = function (userId, count) {
+        DB.query("UPDATE " + tableName + "" +
+            " SET hummerQty = hummerQty + " + parseInt(count) +
+            " WHERE userId = " + parseInt(userId), function () {
+        });
+    };
+
+    this.giveAShuffle = function (userId, count) {
+        DB.query("UPDATE " + tableName + "" +
+            " SET shuffleQty = shuffleQty + " + parseInt(count) +
+            " WHERE userId = " + parseInt(userId), function () {
+        });
+    };
+
+    this.giveALighting = function (userId, count) {
+        DB.query("UPDATE " + tableName + "" +
+            " SET lightingQty = lightingQty + " + parseInt(count) +
+            " WHERE userId = " + parseInt(userId), function () {
+        });
+    };
 };
 
 /**

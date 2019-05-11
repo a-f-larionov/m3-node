@@ -121,10 +121,10 @@ DataChests = function () {
 
     this.updateUsersChests = function (userId, chestId, callback) {
         let query;
-        query = "INSERT INTO users_chests(userId, chestId) " +
-            "VALUES (" + userId + "," + chestId + ") " +
-            "ON DUPLICATE KEY " +
-            "IGNORE ";
+        query = "INSERT IGNORE INTO users_chests (userId, chestId) " +
+            " VALUES (" + userId + "," + chestId + ") ";
+            //"ON DUPLICATE KEY " +
+            //"UPDATE chestId = chestId ";
         DB.query(query, callback);
     };
 };

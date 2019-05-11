@@ -27,16 +27,28 @@ LogicStuff = function () {
         return stuff;
     };
 
-    this.usedHummer = function(){
+    this.usedHummer = function () {
         stuff['hummerQty']--;
     };
 
-    this.usedShuffle = function(){
+    this.usedShuffle = function () {
         stuff['shuffleQty']--;
     };
 
-    this.usedLighting= function(){
+    this.usedLighting = function () {
         stuff['lightingQty']--;
+    };
+
+    this.giveAHummer = function (count) {
+        stuff['hummerQty'] += count;
+    };
+
+    this.giveAShuffle = function (count) {
+        stuff['shuffleQty'] += count;
+    };
+
+    this.giveALighting = function (count) {
+        stuff['lightingQty'] += count;
     };
 };
 

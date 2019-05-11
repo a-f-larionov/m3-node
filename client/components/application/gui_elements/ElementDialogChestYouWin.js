@@ -28,7 +28,7 @@ ElementDialogChestYouWin = function () {
         }).show();
 
         elText = GUI.createElement(ElementText, {
-            x: 40, y: 20, width: 2540, height: 80, text: ''
+            x: 40, y: 20, width: 240, height: 80, text: ''
         });
         elText.show();
 

@@ -135,21 +135,19 @@ PageBlockMaps = function PageBlockMaps() {
                         console.log('уже открыт!');
                     } else {
                         if (mapStars < goalStars) {
-                            console.log('need stars');
                             dialogChestNeedStars.mapStars = mapStars;
                             dialogChestNeedStars.goalStars = goalStars;
                             dialogChestNeedStars.showDialog();
                             // если закрыт и не хватает звёзд - диалог с надписью: что бы открыть сундук , собери еще
                         } else {
-                            console.log('win stars');
+                            SAPIChest.openChest(chestId);
+                            DataChests.setOpened(chestId);
+                            DataPrizes.giveOutPrizes(chest.prizes);
                             dialogChestYouWin.chestId = chestId;
                             dialogChestYouWin.showDialog();
+                            PageController.redraw();
                         }
                     }
-                    console.log(chestId, chest, goalStars, mapStars);
-                    // если уже открыт - некликабельно! и тольок напдись: открыто!
-
-                    // если закрыт и хватает звёзд - диалог с надписью - ты выиграл!
                 }
             });
             self.elements.push(el);

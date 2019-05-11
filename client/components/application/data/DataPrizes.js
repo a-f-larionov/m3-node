@@ -1,4 +1,25 @@
 DataPrizes = function () {
+    let self = this;
+
+    this.giveOutPrizes = function (prizes) {
+        prizes.forEach(function (prize) {
+            self.giveOutPrize(prize);
+        })
+    };
+
+    this.giveOutPrize = function (prize) {
+        switch (prize.id) {
+            case DataPrizes.PRIZE_STUFF_HUMMER:
+                LogicStuff.giveAHummer(prize.count);
+                break;
+            case DataPrizes.PRIZE_STUFF_SHUFFLE:
+                LogicStuff.giveAShuffle(prize.count);
+                break;
+            case DataPrizes.PRIZE_STUFF_LIGHTING:
+                LogicStuff.giveALighting(prize.count);
+                break;
+        }
+    };
 
     this.getImageFor = function (prize) {
         let src;
