@@ -18,12 +18,18 @@ DataPrizes = function () {
             case DataPrizes.PRIZE_STUFF_LIGHTING:
                 LogicStuff.giveALighting(prize.count);
                 break;
+            case DataPrizes.PRIZE_STUFF_GOLD:
+                LogicStuff.giveAGold(prize.count);
+                break;
         }
     };
 
     this.getImageFor = function (prize) {
         let src;
         switch (prize.id) {
+            case DataPrizes.PRIZE_STUFF_GOLD:
+                src = '/images/map-way-point-red.png';
+                break;
             case DataPrizes.PRIZE_STUFF_HUMMER:
                 src = '/images/button-hummer-rest.png';
                 break;
@@ -43,3 +49,5 @@ DataPrizes = new DataPrizes;
 DataPrizes.PRIZE_STUFF_HUMMER = 1;
 DataPrizes.PRIZE_STUFF_SHUFFLE = 2;
 DataPrizes.PRIZE_STUFF_LIGHTING = 3;
+
+DataPrizes.PRIZE_STUFF_GOLD = 100;

@@ -61,6 +61,13 @@ DataStuff = function () {
         });
     };
 
+    this.giveAGold = function (userId, count) {
+        DB.query("UPDATE " + tableName + "" +
+            " SET goldQty = goldQty+ " + parseInt(count) +
+            " WHERE userId = " + parseInt(userId), function () {
+        });
+    };
+
     this.giveAShuffle = function (userId, count) {
         DB.query("UPDATE " + tableName + "" +
             " SET shuffleQty = shuffleQty + " + parseInt(count) +

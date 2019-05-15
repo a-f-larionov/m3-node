@@ -13,6 +13,10 @@ DataChests = function () {
                 {
                     id: DataPrizes.PRIZE_STUFF_HUMMER,
                     count: 5
+                },
+                {
+                    id: DataPrizes.PRIZE_STUFF_GOLD,
+                    count: 5
                 }
             ]
         };
@@ -23,6 +27,10 @@ DataChests = function () {
             prizes: [
                 {
                     id: DataPrizes.PRIZE_STUFF_HUMMER,
+                    count: 5
+                },
+                {
+                    id: DataPrizes.PRIZE_STUFF_GOLD,
                     count: 5
                 }
             ]

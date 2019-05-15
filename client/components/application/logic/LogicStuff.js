@@ -39,6 +39,10 @@ LogicStuff = function () {
         stuff['lightingQty']--;
     };
 
+    this.usedGold = function () {
+        stuff['goldQty']--;
+    };
+
     this.giveAHummer = function (count) {
         stuff['hummerQty'] += count;
     };
@@ -49,6 +53,10 @@ LogicStuff = function () {
 
     this.giveALighting = function (count) {
         stuff['lightingQty'] += count;
+    };
+
+    this.giveAGold = function (count) {
+        stuff['goldQty'] += count;
     };
 };
 

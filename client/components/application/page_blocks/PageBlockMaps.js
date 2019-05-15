@@ -224,7 +224,6 @@ PageBlockMaps = function PageBlockMaps() {
      *
      */
     this.redraw = function () {
-        // нужны :
         if (!showed) return;
 
         if (isWaiting()) {

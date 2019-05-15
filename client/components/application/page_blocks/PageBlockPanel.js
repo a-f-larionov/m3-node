@@ -19,6 +19,8 @@ PageBlockPanel = function PageBlockPanel() {
 
     let elSoundsButton = null;
 
+    let moneyText;
+
     this.init = function () {
         var el;
         /* Задний фон */
@@ -46,6 +48,23 @@ PageBlockPanel = function PageBlockPanel() {
             }
         });
         self.elements.push(elSoundsButton);
+
+        // деньги
+        el = GUI.createElement(ElementButton, {
+            x: 50, y: 10,
+            srcRest: '/images/map-way-point-red.png',
+            srcHover: '/images/map-way-point-yellow.png',
+            srcActive: '/images/map-way-point-red.png',
+            onClick: function () {
+//@todo купить монеты
+            }
+        });
+        self.elements.push(el);
+
+        moneyText = GUI.createElement(ElementText, {
+            x: 100, y: 20, width: '', height: ''
+        });
+        self.elements.push(moneyText);
     };
 
     /**
@@ -82,6 +101,9 @@ PageBlockPanel = function PageBlockPanel() {
         } else {
             elSoundsButton.srcRest = '/images/button-sound-off.png';
             elSoundsButton.srcHover = '/images/button-sound-on.png';
+        }
+        if(LogicStuff.getStuff().goldQty !== undefined) {
+            moneyText.setText(LogicStuff.getStuff('goldQty'))
         }
     };
 
