@@ -28,8 +28,6 @@ DataPayments = function () {
             itemPrice: itemPrice
         };
         DB.insert(tableName, data, function (result) {
-            console.log('here!!!');
-            console.log(result);
             // result = {"fieldCount":0,"affectedRows":1,"insertId":0,"serverStatus":2,"warningCount":0,"message":"","protocol41":true,"changedRows":0}
             data.id = result.insertId;
             fromDBToData(data);

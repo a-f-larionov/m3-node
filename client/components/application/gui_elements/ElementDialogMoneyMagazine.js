@@ -13,7 +13,7 @@ ElementDialogMoneyMagazine = function () {
             srcHover: '/images/money_buy_100_active.png',
             srcActive: '/images/money_buy_100_active.png',
             onClick: function () {
-                SocNet.openOrderDialog(100);
+                SocNet.openOrderDialog(1);
             }
         });
         self.elements.push(el);
@@ -24,7 +24,7 @@ ElementDialogMoneyMagazine = function () {
             srcHover: '/images/money_buy_500_active.png',
             srcActive: '/images/money_buy_500_active.png',
             onClick: function () {
-                SocNet.openOrderDialog(500);
+                SocNet.openOrderDialog(5);
             }
         });
         self.elements.push(el);
@@ -35,7 +35,7 @@ ElementDialogMoneyMagazine = function () {
             srcHover: '/images/money_buy_1000_active.png',
             srcActive: '/images/money_buy_1000_active.png',
             onClick: function () {
-                SocNet.openOrderDialog(1000);
+                SocNet.openOrderDialog(10);
             }
         });
         self.elements.push(el);

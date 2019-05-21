@@ -69,10 +69,10 @@ SocNetVK = function () {
         VK.callMethod('showInviteBox');
     };
 
-    this.openOrderDialog = function () {
+    this.openOrderDialog = function (votes) {
         VK.callMethod('showOrderBox',{
             type: 'votes',
-            votes: 12
+            votes: votes
         });
     };
 

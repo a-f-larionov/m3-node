@@ -1,5 +1,6 @@
 var QUERYSTRING = require('querystring');
 var MD5 = require('md5');
+var FS = require('fs');
 
 LogicPayments = function () {
 
@@ -34,12 +35,14 @@ LogicPayments = function () {
             body += data;
         });
         request.on('end', function () {
-            console.log('body ', body);
+            let params, url;
 
-            let url = request.url;
-            url = url.replace('/service/vk_buy?', '');
-            console.log(url);
-            let params;
+            url = request.url;
+            FS.writeFile(CONST_DIR_SERVER + '/logs/payments.log',
+                LogicTimeServer.getCurrentTime() + " " + request.url + " " + body + "\r\n",
+                {flag: 'a'},
+                function () {
+                });
             params = QUERYSTRING.decode(body);
 
             self.VKProcessBuy(params, function (answer) {
@@ -76,7 +79,7 @@ LogicPayments = function () {
         }
         // проверка сигнатуры
         if (sig !== self.calcVKSign(params)) {
-            // return callback(vkErrorSign);
+            return callback(vkErrorSign);
         }
 
         if (notification_type === 'order_status_change' ||
@@ -87,7 +90,6 @@ LogicPayments = function () {
             }
             return self.doOrderChange(receiver_id, order_id, item_price, callback);
         }
-
     };
 
     this.doOrderChange = function (receiver_id, order_id, item_price, callback) {
@@ -96,9 +98,6 @@ LogicPayments = function () {
             if (!user || !user.id) {
                 return callback(vkErrorCommon);
             }
-            // @todo проверка наличия повторного зарпоса заказа
-            //params.order_id
-            console.log(user);
             // дальше мы проверяем что собсно мы покупаем,
             DataPayments.getByOrderId(order_id, function (order) {
                 if (order) {
