@@ -21,6 +21,8 @@ PageBlockPanel = function PageBlockPanel() {
 
     let moneyText;
 
+    let dialogMoneyMagazine;
+
     this.init = function () {
         var el;
         /* Задний фон */
@@ -49,6 +51,13 @@ PageBlockPanel = function PageBlockPanel() {
         });
         self.elements.push(elSoundsButton);
 
+        dialogMoneyMagazine = GUI.createElement(ElementDialogMoneyMagazine, {
+            src: '/images/window.png',
+            width: 342,
+            height: 200
+        });
+        self.elements.push(dialogMoneyMagazine);
+
         // деньги
         el = GUI.createElement(ElementButton, {
             x: 50, y: 10,
@@ -56,7 +65,7 @@ PageBlockPanel = function PageBlockPanel() {
             srcHover: '/images/map-way-point-yellow.png',
             srcActive: '/images/map-way-point-red.png',
             onClick: function () {
-//@todo купить монеты
+                dialogMoneyMagazine.showDialog();
             }
         });
         self.elements.push(el);
@@ -102,7 +111,7 @@ PageBlockPanel = function PageBlockPanel() {
             elSoundsButton.srcRest = '/images/button-sound-off.png';
             elSoundsButton.srcHover = '/images/button-sound-on.png';
         }
-        if(LogicStuff.getStuff().goldQty !== undefined) {
+        if (LogicStuff.getStuff().goldQty !== undefined) {
             moneyText.setText(LogicStuff.getStuff('goldQty'))
         }
     };

@@ -14,8 +14,10 @@ Config = {
         charset: 'UTF8'
     },
     SocNet: {
-        secretKey: 'vk-application-secret-key',
-        appId: 1/*vk-application-id*/,
+        VK: {
+            secretKey: 'vk-application-secret-key',
+            appId: 1/*vk-application-id*/,
+        }
     },
     ApiRouterMetric: {
         reportTimeout: 1000 * 60 * 60 * 5// five hours

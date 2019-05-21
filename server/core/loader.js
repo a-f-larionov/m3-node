@@ -139,7 +139,7 @@ function Loader() {
          */
         var includeComponent = function (path) {
             path = PATH.resolve(path);
-            log("include component:" + getComponentNameFromPath(path) + '(' + path + ')');
+            log("include component:" + /*getComponentNameFromPath(path) +*/ '(' + path + ')');
             require(path);
             validateComponent(path);
             global[getComponentNameFromPath(path)].__path = path;

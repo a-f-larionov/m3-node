@@ -65,11 +65,11 @@ SocNetVK = function () {
     this.checkAuth = function (socNetUserId, authParams) {
         var generatedAuthKey;
         /*	auth_key = md5(app_id+'_'+viewer_id+'_'+app_secret); */
-        generatedAuthKey = MD5(authParams.appId + '_' + socNetUserId + '_' + Config.SocNet.secretKey);
-        if (generatedAuthKey != authParams.authKey) {
+        generatedAuthKey = MD5(authParams.appId + '_' + socNetUserId + '_' + Config.SocNet.VK.secretKey);
+        if (generatedAuthKey !== authParams.authKey) {
             Logs.log("auth key mismatch, generated:" + generatedAuthKey + " given:" + authParams.authKey);
         }
-        return generatedAuthKey == authParams.authKey;
+        return generatedAuthKey === authParams.authKey;
     };
 
     /**
@@ -84,7 +84,7 @@ SocNetVK = function () {
         url = baseUrl + method + '?';
         if (isSecure) {
             params.access_token = accessToken;
-            params.client_secret = Config.SocNet.secretKey;
+            params.client_secret = Config.SocNet.VK.secretKey;
         }
         for (var i in params) {
             url += '&' + i + '=' + encodeURIComponent(params[i]);
@@ -132,7 +132,7 @@ SocNetVK = function () {
     this.oAuthorization = function (callback) {
         var url, options, req;
 
-        url = "/access_token?client_id=" + Config.SocNet.appId + "&client_secret=" + Config.SocNet.secretKey + "&v=5.28&grant_type=client_credentials";
+        url = "/access_token?client_id=" + Config.SocNet.VK.appId + "&client_secret=" + Config.SocNet.VK.secretKey + "&v=5.28&grant_type=client_credentials";
         host = 'oauth.vk.com';
 
         options = {};

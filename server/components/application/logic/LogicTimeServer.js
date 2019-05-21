@@ -12,7 +12,7 @@ LogicTimeServer = function () {
      */
     this.getCurrentTime = function () {
         return (new Date).getTime();
-    }
+    };
 };
 
 /**

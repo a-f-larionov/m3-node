@@ -29,13 +29,13 @@ WebSocketServer = function () {
      * - проверим настройки: port
      */
     var checkBeforeRun = function () {
-        if (typeof  self.onConnect != 'function') {
+        if (typeof self.onConnect != 'function') {
             Logs.log("onConnect must be function", Logs.LEVEL_FATAL_ERROR, self.onConnect);
         }
-        if (typeof  self.onDisconnect != 'function') {
+        if (typeof self.onDisconnect != 'function') {
             Logs.log("onDisconnect must be function", Logs.LEVEL_FATAL_ERROR, self.onDisconnect);
         }
-        if (typeof  self.onData != 'function') {
+        if (typeof self.onData != 'function') {
             Logs.log("onData must be function", Logs.LEVEL_FATAL_ERROR, self.onData);
         }
         if (typeof port != 'number') {
@@ -146,11 +146,11 @@ WebSocketServer = function () {
         /* Запрашивается клинетский код? */
         for (var path in map) {
             requestUrlParts = URL.parse(request.url, true);
-            if (requestUrlParts.pathname == path) {
+            if (requestUrlParts.pathname === path) {
                 map[path].call(null, function (answer) {
                     response.writeHead(200, {'Content-Type': 'text/html'});
                     response.end(answer);
-                });
+                }, request);
                 return true;
             }
         }

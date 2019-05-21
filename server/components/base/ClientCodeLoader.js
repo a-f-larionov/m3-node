@@ -137,12 +137,12 @@ ClientCodeLoader = function () {
             "<html>" +
             "<head>" +
             "<script type='text/javascript' src='//vk.com/js/api/openapi.js?116'></script>" +
-            "<script>VK.init({apiId: " + Config.SocNet.appId + ", onlyWidgets: true});</script>" +
+            "<script>VK.init({apiId: " + Config.SocNet.VK.appId + ", onlyWidgets: true});</script>" +
             "</head>" +
             "<body style='margin:0px;'>" +
             "<div id='vk_comments'></div>" +
             "<script type='text/javascript'>" +
-            "VK.Widgets.Comments('vk_comments', {limit: 5, height: " + (Config.VKCommentWidget.height).toString() + ", width: " + (Config.VKCommentWidget.width).toString() + ", attach: '*', pageUrl: 'http://vk.com/app" + Config.SocNet.appId + "'});" +
+            "VK.Widgets.Comments('vk_comments', {limit: 5, height: " + (Config.VKCommentWidget.height).toString() + ", width: " + (Config.VKCommentWidget.width).toString() + ", attach: '*', pageUrl: 'http://vk.com/app" + Config.SocNet.VK.appId + "'});" +
             "</script>" +
             "</body>" +
             "</html>";
@@ -227,8 +227,7 @@ ClientCodeLoader = function () {
             var result = UGLIFYJS.minify(mainClientJSCode);
             if (result.code) {
                 mainClientJSCode = result.code;
-            }
-            else {
+            } else {
                 Logs.log("no code minimized", Logs.LEVEL_WARNING);
             }
         }
@@ -362,9 +361,9 @@ ClientCodeLoader = function () {
         dirList = FS.readdirSync(basePath);
         for (var i in dirList) {
             /**@todo .js extenstion must be */
-            if (dirList[i] == '.gitkeep')continue;
-            if (dirList[i] == '.gitignore')continue;
-            if (dirList[i] == 'sprite.png.json')continue;
+            if (dirList[i] == '.gitkeep') continue;
+            if (dirList[i] == '.gitignore') continue;
+            if (dirList[i] == 'sprite.png.json') continue;
             path = basePath + dirList[i];
             if (FS.statSync(path).isDirectory()) {
                 files = files.concat(getFileListRecursive(path + '/'));

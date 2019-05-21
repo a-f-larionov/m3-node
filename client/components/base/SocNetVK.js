@@ -69,6 +69,13 @@ SocNetVK = function () {
         VK.callMethod('showInviteBox');
     };
 
+    this.openOrderDialog = function () {
+        VK.callMethod('showOrderBox',{
+            type: 'votes',
+            votes: 12
+        });
+    };
+
     this.getFriendIds = function (callback) {
         VK.api('friends.getAppUsers', {}, function (data) {
             callback(data.response)
