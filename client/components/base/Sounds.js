@@ -4,7 +4,7 @@ Sounds = function () {
     var cache = {};
 
     this.enabled = true;
-    this.PATH_CHALK = '/tri-base/sounds/chalk.mp3';
+    this.PATH_CHALK = '/sounds/chalk.mp3';
 
     this.toggle = function () {
         if (self.enabled)

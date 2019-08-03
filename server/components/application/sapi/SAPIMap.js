@@ -32,6 +32,10 @@ SAPIMap = function () {
             Logs.log("no map found:" + mapId, Logs.LEVEL_WARNING, cntx);
             return;
         }
+        if(friendIds.length==0){
+            Logs.log("no friends - no data", Logs.LEVEL_DETAIL, cntx);
+            return;
+        }
         DataPoints.getUsersInfo(mapId, friendIds, function (rows) {
             friends = rows;
             CAPIMap.gotMapFriends(

@@ -381,11 +381,15 @@ PageBlockMaps = function PageBlockMaps() {
         if (mfids) mflist = LogicUser.getList(mfids);
 
         if (!map) waiting = true;
-        if (!fids) waiting = true;
-        if (!mfids) waiting = true;
+        //if (!fids) waiting = true;
+        //if (!mfids) waiting = true;
         if (fids && fids.length !== flist.length) waiting = true;
         if (mfids && mfids.length !== mflist.length) waiting = true;
-
+        if (waiting) {
+            Logs.log('PageBlockMaps::Waiting data');
+        }else{
+            Logs.log('PageBlockMaps::No Wating');
+        }
         return waiting;
     }
 };

@@ -1,5 +1,6 @@
-CREATE DATABASE tri-base
-DEFAULT CHARSET=utf8
+CREATE DATABASE tri_base CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+USE tri_base;
 
 CREATE TABLE `users` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -10,7 +11,7 @@ CREATE TABLE `users` (
   `lastLogoutTimestamp` bigint(11) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `socNetUniqueKey` (`socNetUserId`,`socNetTypeId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 CREATE TABLE `profiling` (
@@ -20,4 +21,4 @@ CREATE TABLE `profiling` (
   `sumTime` int(11) NOT NULL,
   `count` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

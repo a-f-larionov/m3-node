@@ -1,25 +1,25 @@
 #!/bin/sh
 ### BEGIN INIT INFO
-# Provides:	xoserver
+# Provides:	tri_base
 # Required-Start: $all
 # Required-Stop: $all
 # Default-Start: 2 3 4 5
 # Default-Stop:  0 1 6
-# Short-Description: Start/stop xoServer.
-# Description: node-framework Server init.
+# Short-Description: Start/stop tri_base.
+# Description: tri_base Server init.
 ### END INIT INFO
 
-DAEMON_PATH="/var/www/node-framework/"
+DAEMON_PATH="/var/www/tri_base/"
 
 DAEMON="./run.sh"
 
 DAEMONOPTS=""
 
-OUTPUT_FILE="/var/www/node-framework/server/last.log"
+OUTPUT_FILE="/var/www/tri_base/server/last.log"
 
-NAME=node-framework
+NAME=tri_base
 
-DESC="node-framework service daemon description"
+DESC="tri_base service daemon description"
 
 PIDFILE=/var/run/$NAME.pid
 

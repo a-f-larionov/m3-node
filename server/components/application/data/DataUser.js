@@ -94,7 +94,8 @@ DataUser = function () {
             socNetUserId: parseInt(socNetUserId),
             createTimestamp: new Date().getTime(),
             lastLoginTimestamp: new Date().getTime(),
-            currentPoint: 1
+            currentPoint: 1,
+            health: LogicUser.getMaxHealth(),
         };
         cache[user.id] = user;
         callback(user);

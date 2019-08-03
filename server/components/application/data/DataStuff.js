@@ -25,7 +25,7 @@ DataStuff = function () {
             hummerQty: 0,
             shuffleQty: 0,
             lightingQty: 0,
-            gold: 0
+            goldQty: 0
         };
         DB.insert(tableName, data, function (result) {
             // result = {"fieldCount":0,"affectedRows":1,"insertId":0,"serverStatus":2,"warningCount":0,"message":"","protocol41":true,"changedRows":0}

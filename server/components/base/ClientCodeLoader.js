@@ -88,7 +88,7 @@ ClientCodeLoader = function () {
         generateImageSprite(function (result) {
             generateImageSpriteResult = result;
             reloadMainClientCode();
-            loadClientCodeVK();
+            generateClientCodeVK();
             loadClientCodeStandalone();
             callback();
         });
@@ -107,7 +107,7 @@ ClientCodeLoader = function () {
             callback(html);
         }
         if (reloadClientCodeEveryRequest) {
-            loadClientCodeVK();
+            generateClientCodeVK();
             reloadMainClientCode();
         }
         callback(clientCodeVK);
@@ -151,14 +151,14 @@ ClientCodeLoader = function () {
 
     this.reloadClientCode = function (callback) {
         reloadMainClientCode();
-        loadClientCodeVK();
+        generateClientCodeVK();
         loadClientCodeStandalone();
         callback('<pre>' + "Reload Client Code executed!" + new Date().getTime() + '</pre>');
     };
 
-    var loadClientCodeVK = function () {
+    var generateClientCodeVK = function () {
         var code;
-        Logs.log("Load vk client code.");
+        Logs.log("Generate vk client code.");
         //@todo сделать тут HTML5
         code = "";
         code += "<HTML>\r\n";

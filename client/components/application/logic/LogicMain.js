@@ -42,10 +42,12 @@ LogicMain = function () {
      */
     this.onConnect = function (connectionId) {
         ApiRouter.onConnect(connectionId);
+        console.log('>>>connect');
         LogicUser.authorize();
     };
 
     this.onAuthorizeSuccess = function () {
+        console.log('>>>auth success');
         SAPITimeServer.sendMeTime();
         LogicUser.checkHealth();
         LogicStuff.loadStuff();

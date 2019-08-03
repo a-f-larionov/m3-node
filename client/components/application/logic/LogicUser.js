@@ -185,6 +185,7 @@ LogicUser = function () {
     this.getFriendIdsByMapId = function (mapId) {
         if (!friendsByMapId[mapId]) {
             loadMapFriends(mapId);
+            return [];
         }
         return friendsByMapId[mapId];
     };
