@@ -34,21 +34,49 @@ DataPoints = function () {
     this.objectImages[this.OBJECT_YELLOW] = '/images/field-yellow.png';
     this.objectImages[this.OBJECT_PURPLE] = '/images/field-purple.png';
 
+    let yA = 190;
+    let yB = 260;
+
     var pointsCoords = [
         {
             number: 1,
-            x: 0,
-            y: 240
+            x: 24,
+            y: yB
         },
         {
             number: 2,
-            x: 89,
-            y: 85
+            x: 106,
+            y: yA,
         },
         {
             number: 3,
-            x: 277,
-            y: 28
+            x: 211,
+            y: yB
+        },
+        {
+            number: 4,
+            x: 304,
+            y: yA,
+        },
+        {
+            number: 5,
+            x: 411,
+            y: yB
+        },
+        {
+            number: 6,
+            x: 504,
+            y: yA,
+        },
+        {
+            number: 7,
+            x: 611,
+            y: yB
+        },
+        {
+            number: 8,
+            x: 704,
+            y: yA,
         }
     ];
 

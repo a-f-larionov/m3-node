@@ -23,9 +23,9 @@ ElementFriendsPanel = function () {
      */
     this.y = 0;
 
-    this.cardWidth = 100;
+    this.cardWidth = 50;
 
-    this.cardHeight = 100;
+    this.cardHeight = 50;
 
     this.cardsCount = 5;
 
@@ -56,7 +56,7 @@ ElementFriendsPanel = function () {
             cardsDom.push(GUI.createDom());
             cardsText.push(GUI.createElement(ElementText,
                 {
-                    width: 100, height: 30, alignCenter: true,
+                    width: self.cardWidth, height: 30/(100/self.cardWidth), alignCenter: true,
                     background: '#eee',
                     opacity:0.75
                 }));
@@ -118,11 +118,11 @@ ElementFriendsPanel = function () {
             card.y = self.y;
             card.height = self.cardHeight;
             card.width = self.cardWidth;
-            if (friends[i] && friends[i].photo100) {
-                card.backgroundImage = friends[i].photo100;
+            if (friends[i] && friends[i].photo50) {
+                card.backgroundImage = friends[i].photo50;
             } else {
                 card.width = 50;
-                card.backgroundImage = '/images/man-01.png';
+                card.backgroundImage = '/images/friend-vacancy.png';
             }
             card.redraw();
         });

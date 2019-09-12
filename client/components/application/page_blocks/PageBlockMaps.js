@@ -80,18 +80,18 @@ PageBlockMaps = function PageBlockMaps() {
 
         elArrowPrev = GUI.createElement(ElementButton, {
             x: 10, y: 160,
-            srcRest: '/images/map-arrow-left.png',
-            srcHover: '/images/map-arrow-left.png',
-            srcActive: '/images/map-arrow-left.png',
+            srcRest: '/images/map-arrow-left-rest.png',
+            srcHover: '/images/map-arrow-left-hover.png',
+            srcActive: '/images/map-arrow-left-active.png',
             onClick: LogicMap.onArrowPrevClick
         });
         self.elements.push(elArrowPrev);
 
         elArrowNext = GUI.createElement(ElementButton, {
             x: 714, y: 160,
-            srcRest: '/images/map-arrow-right.png',
-            srcHover: '/images/map-arrow-right.png',
-            srcActive: '/images/map-arrow-right.png',
+            srcRest: '/images/map-arrow-right-rest.png',
+            srcHover: '/images/map-arrow-right-hover.png',
+            srcActive: '/images/map-arrow-right-active.png',
             onClick: LogicMap.onArrowNextClick
         });
         self.elements.push(elArrowNext);
@@ -150,7 +150,7 @@ PageBlockMaps = function PageBlockMaps() {
                     }
                 }
             });
-            self.elements.push(el);
+            //self.elements.push(el);
             chestsEls[coord.number] = el;
         });
 
@@ -165,12 +165,12 @@ PageBlockMaps = function PageBlockMaps() {
 
         elFriendsPanel = GUI.createElement(ElementFriendsPanel, {
             x: 100,
-            y: 400
+            y: 450 - 25
         });
         self.elements.push(elFriendsPanel);
 
         el = GUI.createElement(ElementButton, {
-            x: 50, y: 430,
+            x: 50, y: 430 + 25,
             srcRest: '/images/button-friend-add-rest.png',
             srcHover: '/images/button-friend-add-hover.png',
             srcActive: '/images/button-friend-add-active.png',

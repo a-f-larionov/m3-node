@@ -61,9 +61,9 @@ PageBlockPanel = function PageBlockPanel() {
         // деньги
         el = GUI.createElement(ElementButton, {
             x: 50, y: 10,
-            srcRest: '/images/map-way-point-red.png',
-            srcHover: '/images/map-way-point-yellow.png',
-            srcActive: '/images/map-way-point-red.png',
+            srcRest: '/images/button-money-rest.png',
+            srcHover: '/images/button-money-hover.png',
+            srcActive: '/images/button-money-active.png',
             onClick: function () {
                 dialogMoneyMagazine.showDialog();
             }
