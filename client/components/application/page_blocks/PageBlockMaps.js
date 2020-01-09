@@ -27,6 +27,8 @@ PageBlockMaps = function PageBlockMaps() {
 
     var elMapWay = false;
 
+    var elOldPaper = false;
+
     var elMapElements = {};
 
     /**
@@ -62,9 +64,15 @@ PageBlockMaps = function PageBlockMaps() {
         });
         self.elements.push(elMap);
 
+        elOldPaper = GUI.createElement(ElementImage, {
+            x: 0, y: 0, width: 777, height: 500,
+            src: '/images/old-paper.png'
+        });
+        self.elements.push(elOldPaper);
+
         elMapWay = GUI.createElement(ElementImage, {
             x: 0, y: 0, width: 777, height: 500,
-            src: '/images/maps/way-line.png'
+            src: '/images/way-line.png'
         });
         self.elements.push(elMapWay);
 
@@ -387,7 +395,7 @@ PageBlockMaps = function PageBlockMaps() {
         if (mfids && mfids.length !== mflist.length) waiting = true;
         if (waiting) {
             Logs.log('PageBlockMaps::Waiting data');
-        }else{
+        } else {
             Logs.log('PageBlockMaps::No Wating');
         }
         return waiting;

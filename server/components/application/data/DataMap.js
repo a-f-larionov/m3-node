@@ -20,7 +20,7 @@ DataMap = function () {
     var maps = {
             '1': {
                 id: 1,
-                src: '/images/maps/map-001.png',
+                src: '/images/map-001.png',
                 elements: [
                     {
                         name: 'ElementSprite',
@@ -61,12 +61,12 @@ DataMap = function () {
             },
             '2': {
                 id: 2,
-                src: '/images/maps/map-002.png'
+                src: '/images/map-002.png'
             }
             ,
             '3': {
                 id: 3,
-                src: '/images/maps/map-003.png'
+                src: '/images/map-003.png'
             }
         }
     ;

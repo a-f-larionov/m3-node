@@ -45,7 +45,7 @@ Config = {
         cacheLimit: 1000
     },
     Project: {
-        applicationAreaHeight: 685,
+        applicationAreaHeight: 500,
         applicationAreaWidth: 777,
         maintance: false
     },

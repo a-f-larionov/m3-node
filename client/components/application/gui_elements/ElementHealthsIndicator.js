@@ -40,7 +40,7 @@ ElementHealthIndicator = function () {
                 y: this.y,
                 width: width,
                 height: height,
-                backgroundImage: '/images/map-way-point-red.png'
+                backgroundImage: '/images/health-heart.png'
             });
             doms.push(dom);
         }

@@ -174,7 +174,7 @@ ClientCodeLoader = function () {
             "height:" + Config.Project.applicationAreaHeight + "px;" +
             "width:" + Config.Project.applicationAreaWidth + "px;" +
             "position:absolute;" +
-            "top:10px;' " +
+            "top:0px;' " +
             "id='applicationArea' ></div>\r\n";
 
         /* comments div */
