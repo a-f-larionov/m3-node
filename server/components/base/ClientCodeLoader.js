@@ -161,8 +161,8 @@ ClientCodeLoader = function () {
         Logs.log("Generate vk client code.");
         //@todo сделать тут HTML5
         code = "";
-        code += "<HTML>\r\n";
-        code += "<HEAD>\r\n";
+        code += "<html>\r\n";
+        code += "<head>\r\n";
         code += "<meta charset='utf-8' />\r\n";
         code += "<script src='//vk.com/js/api/xd_connection.js?2' type='text/javascript'></script>\r\n";
         code += "<script>window.PLATFORM_ID = 'VK';</script>";
