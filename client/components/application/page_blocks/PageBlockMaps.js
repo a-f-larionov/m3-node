@@ -175,7 +175,8 @@ PageBlockMaps = function PageBlockMaps() {
             x: 100,
             y: 450 - 25
         });
-        self.elements.push(elFriendsPanel);
+        //@todo show it
+        //self.elements.push(elFriendsPanel);
 
         el = GUI.createElement(ElementButton, {
             x: 50, y: 430 + 25,

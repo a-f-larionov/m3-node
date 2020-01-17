@@ -109,7 +109,8 @@ DataMap = function () {
 
 DataMap = new DataMap();
 
+/* server see */
 DataMap.MAP_ID_MIN = 1;
 DataMap.MAP_ID_MAX = 3;
-DataMap.POINTS_PER_MAP = 3;
+DataMap.POINTS_PER_MAP = 4;
 DataMap.CHESTS_PER_MAP = 2;

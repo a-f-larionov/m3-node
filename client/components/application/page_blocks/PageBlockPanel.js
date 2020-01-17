@@ -73,7 +73,7 @@ PageBlockPanel = function PageBlockPanel() {
         moneyText = GUI.createElement(ElementText, {
             x: 100, y: 20, width: '', height: ''
         });
-        self.elements.push(moneyText);
+        //self.elements.push(moneyText);
     };
 
     /**

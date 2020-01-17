@@ -34,9 +34,10 @@ WebSocketClient = function () {
     var url;
 
     this.init = function (afterInitCallback) {
-        port = window.document.location.protocol == 'https:' ? 443 : 80;
+        //port = window.document.location.protocol == 'https:' ? 443 : 80;
         protocol = window.document.location.protocol == 'https:' ? 'wss' : 'ws';
         host = Config.WebSocketClient.host;
+        port = Config.WebSocketClient.port;
         url = Config.WebSocketClient.url;
         afterInitCallback();
     };

@@ -40,43 +40,43 @@ DataPoints = function () {
     var pointsCoords = [
         {
             number: 1,
-            x: 24,
-            y: yB
+            x: 41,
+            y: 219
         },
         {
             number: 2,
-            x: 106,
-            y: yA,
+            x: 173,
+            y: 67,
         },
         {
             number: 3,
-            x: 211,
-            y: yB
+            x: 235,
+            y: 398
         },
         {
             number: 4,
-            x: 304,
-            y: yA,
+            x: 345,
+            y: 65,
         },
         {
             number: 5,
-            x: 411,
-            y: yB
+            x: 429,
+            y: 384
         },
         {
             number: 6,
-            x: 504,
-            y: yA,
+            x: 516,
+            y: 66,
         },
         {
             number: 7,
-            x: 611,
-            y: yB
+            x: 599,
+            y: 377
         },
         {
             number: 8,
-            x: 704,
-            y: yA,
+            x: 667,
+            y: 219,
         }
     ];
 

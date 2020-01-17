@@ -164,6 +164,15 @@ ClientCodeLoader = function () {
         code += "<html>\r\n";
         code += "<head>\r\n";
         code += "<meta charset='utf-8' />\r\n";
+
+        code += '';
+
+        let demension = IMAGE_SIZE('../public/images/sprite.png');
+
+        code += "<style> body div { background-size: "
+            + demension.width / 2 + "px "
+            + demension.height / 2 + "px; " +
+            "}</style>";
         code += "<script src='//vk.com/js/api/xd_connection.js?2' type='text/javascript'></script>\r\n";
         code += "<script>window.PLATFORM_ID = 'VK';</script>";
         code += "<script type='text/javascript' src=" + projectPrefix + "/js/MainClientCode.js?t=" + (new Date().getTime()).toString() + "'></script>\r\n";
@@ -294,32 +303,32 @@ ClientCodeLoader = function () {
     };
 
     var getClientImageCodeSprited = function () {
-        var imageCode, path, timePostfix, demension;
-        var spritePath = '../public/images/sprite.png.json';
+        let imageCode, path, timePostfix;
+        let spriteJsonPath = '../public/images/sprite.png.json';
         if (!reloadClientImageCodeEveryRequest && clientImageCode) {
             return clientImageCode;
         }
         if (generateImageSpriteResult === true) {
-            imageCode = FS.readFileSync(spritePath);
+            imageCode = FS.readFileSync(spriteJsonPath);
         } else {
             imageCode = "<script>";
             imageCode += "imagesData = {};";
             timePostfix = "?t=" + new Date().getTime();
-            for (var i in generateImageSpriteResult.coordinates) {
+            for (let i in generateImageSpriteResult.coordinates) {
                 path = i.replace('../public', '');
                 imageCode += "\r\nimagesData['" + path + "']={" + "" +
                     "path:'" + projectPrefix + '/images/sprite.png' + timePostfix + "'," +
-                    "w:" + generateImageSpriteResult.coordinates[i].width + "," +
-                    "h:" + generateImageSpriteResult.coordinates[i].height + "," +
-                    "x:" + generateImageSpriteResult.coordinates[i].x + "," +
-                    "y:" + generateImageSpriteResult.coordinates[i].y + "" +
+                    "w:" + generateImageSpriteResult.coordinates[i].width / 2 + "," +
+                    "h:" + generateImageSpriteResult.coordinates[i].height / 2 + "," +
+                    "x:" + generateImageSpriteResult.coordinates[i].x / 2 + "," +
+                    "y:" + generateImageSpriteResult.coordinates[i].y / 2 + "" +
                     "};";
             }
             imageCode += "</script>";
             imageCode += "<div style='display:none;'>";
-            imageCode += "<img src='" + projectPrefix + "/images/sprite.png" + timePostfix + "'>";
+            imageCode += "<img src='" + projectPrefix + '/images/sprite.png' + timePostfix + "'>";
             imageCode += "</div>";
-            FS.writeFileSync(spritePath, imageCode);
+            FS.writeFileSync(spriteJsonPath, imageCode);
             // cache it
             clientImageCode = imageCode;
         }
@@ -338,14 +347,14 @@ ClientCodeLoader = function () {
         imageCode = "<script>";
         imageCode += "imagesData = {};";
         timePostfix = "?t=" + new Date().getTime();
-        for (var i in imageFiles) {
+        for (let i in imageFiles) {
             path = imagesPrefix + imageFiles[i].substr(imagesPath.length);
             demension = IMAGE_SIZE(imageFiles[i]);
             imageCode += "\r\nimagesData['" + path + "']={path:'" + projectPrefix + path + timePostfix + "',w:" + demension.width + ",h:" + demension.height + "};";
         }
         imageCode += "</script>";
         imageCode += "<div style='display:none;'>";
-        for (var i in imageFiles) {
+        for (let i in imageFiles) {
             path = imagesPrefix + imageFiles[i].substr(imagesPath.length);
             imageCode += "\r\n<img src='" + projectPrefix + path + timePostfix + "'>";
         }

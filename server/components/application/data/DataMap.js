@@ -99,6 +99,7 @@ DataMap = function () {
 
 DataMap = new DataMap();
 
+/* client see */
 DataMap.MAP_ID_MIN = 1;
 DataMap.MAP_ID_MAX = 3;
 DataMap.POINTS_PER_MAP = 8;
