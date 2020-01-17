@@ -294,10 +294,14 @@ GUIDom = function () {
         }
 
         dom.style.backgroundImage = 'url(' + url + ')';
-        dom.style.backgroundPositionX = '-' + GUI.getImageX(self.backgroundImage) + 'px';
         self.backgroundPositionY = self.backgroundPositionY ? self.backgroundPositionY : 0;
+        dom.style.backgroundPositionX = '-' + GUI.getImageX(self.backgroundImage) + 'px';
         dom.style.backgroundPositionY = '-' + (GUI.getImageY(self.backgroundImage) + self.backgroundPositionY) + 'px';
         dom.style.backgroundRepeat = 'no-repeat';
+        if(true) {
+            // double if no sprite...
+            dom.style.backgroundSize = self.width + 'px' + ' ' + self.height + 'px';
+        }
     };
     var redrawBackgroundSize = function () {
         dom.style.backgroundSize = self.backgroundSize + 'px';

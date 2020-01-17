@@ -350,7 +350,11 @@ ClientCodeLoader = function () {
         for (let i in imageFiles) {
             path = imagesPrefix + imageFiles[i].substr(imagesPath.length);
             demension = IMAGE_SIZE(imageFiles[i]);
-            imageCode += "\r\nimagesData['" + path + "']={path:'" + projectPrefix + path + timePostfix + "',w:" + demension.width + ",h:" + demension.height + "};";
+            imageCode += "\r\nimagesData['" + path + "']=" +
+                "{path:'" + projectPrefix + path + timePostfix + "'" +
+                ",w:" + demension.width +
+                ",h:" + demension.height +
+                "};";
         }
         imageCode += "</script>";
         imageCode += "<div style='display:none;'>";

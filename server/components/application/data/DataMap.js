@@ -22,7 +22,7 @@ DataMap = function () {
                 id: 1,
                 src: '/images/map-001.png',
                 elements: [
-                    {
+                    /*{
                         name: 'ElementSprite',
                         animPlay: true,
                         params: {
@@ -56,7 +56,7 @@ DataMap = function () {
                                 ]
                             }
                         }
-                    }
+                    }*/
                 ]
             },
             '2': {
