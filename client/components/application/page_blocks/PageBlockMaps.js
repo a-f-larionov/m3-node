@@ -88,7 +88,7 @@ PageBlockMaps = function PageBlockMaps() {
          */
 
         elArrowPrev = GUI.createElement(ElementButton, {
-            x: 10, y: 160,
+            x: 10, y: 220,
             srcRest: '/images/map-arrow-left-rest.png',
             srcHover: '/images/map-arrow-left-hover.png',
             srcActive: '/images/map-arrow-left-active.png',
@@ -97,7 +97,7 @@ PageBlockMaps = function PageBlockMaps() {
         self.elements.push(elArrowPrev);
 
         elArrowNext = GUI.createElement(ElementButton, {
-            x: 714, y: 160,
+            x: 714, y: 220,
             srcRest: '/images/map-arrow-right-rest.png',
             srcHover: '/images/map-arrow-right-hover.png',
             srcActive: '/images/map-arrow-right-active.png',

@@ -352,8 +352,8 @@ ClientCodeLoader = function () {
             demension = IMAGE_SIZE(imageFiles[i]);
             imageCode += "\r\nimagesData['" + path + "']=" +
                 "{path:'" + projectPrefix + path + timePostfix + "'" +
-                ",w:" + demension.width +
-                ",h:" + demension.height +
+                ",w:" + demension.width / 2 +
+                ",h:" + demension.height / 2 +
                 "};";
         }
         imageCode += "</script>";
