@@ -71,9 +71,22 @@ PageBlockPanel = function PageBlockPanel() {
         self.elements.push(el);
 
         moneyText = GUI.createElement(ElementText, {
-            x: 100, y: 20, width: '', height: ''
+            x: 110, y: 20, width: '', height: '',
+            bold: true
         });
-        //self.elements.push(moneyText);
+        self.elements.push(moneyText);
+
+        // деньги
+        el = GUI.createElement(ElementButton, {
+            x: 165, y: 20,
+            srcRest: '/images/button-add-rest.png',
+            srcHover: '/images/button-add-hover.png',
+            srcActive: '/images/button-add-active.png',
+            onClick: function () {
+                dialogMoneyMagazine.showDialog();
+            }
+        });
+        self.elements.push(el);
     };
 
     /**

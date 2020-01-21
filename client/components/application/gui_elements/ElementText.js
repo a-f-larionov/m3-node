@@ -93,6 +93,8 @@ ElementText = function () {
         dom.color = "rgba(68,62,0,0.7)";
         dom.fontSize = self.fontSize;
         dom.background = this.background;
+        dom.fontFamily = '"Marvin",Tahoma,"Geneva CY",sans-serif';
+        dom.textShadow = 'black';
         GUI.bind(dom, GUI.EVENT_MOUSE_CLICK, onMouseClick, self);
     };
 
@@ -100,7 +102,7 @@ ElementText = function () {
      * Покажем текст.
      */
     this.show = function () {
-        if (showed == true) return;
+        if (showed === true) return;
         showed = true;
         dom.show();
         self.redraw();
