@@ -2,11 +2,6 @@ ElementDialogChestNeedStars = function () {
     let self = this;
     this.__proto__ = new ElementDialog();
 
-    this.width = 342;
-    this.height = 200;
-
-    this.src = '/images/window.png';
-
     let elText;
 
     this.init = function () {

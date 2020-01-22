@@ -29,13 +29,13 @@ ElementDialog = function () {
      * Ширина картинки.
      * @type {number}
      */
-    this.width = 0;
+    this.width = 500;
 
     /**
      * Высота картинки.
      * @type {number}
      */
-    this.height = 0;
+    this.height = 292;
 
     /**
      * Ссылка на картинку.

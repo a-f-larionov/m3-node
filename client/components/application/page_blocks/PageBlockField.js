@@ -134,31 +134,15 @@ PageBlockField = function PageBlockField() {
             goalsCounterEls[id] = el;
         }
 
-        elementDialogGoals = GUI.createElement(ElementDialogGoals, {
-            src: '/images/window.png',
-            width: 342,
-            height: 200
-        });
+        elementDialogGoals = GUI.createElement(ElementDialogGoals, {});
         self.elements.push(elementDialogGoals);
 
-        elementDialogGoalsReached = GUI.createElement(ElementDialogGoalsReached, {
-            src: '/images/window.png',
-            width: 342,
-            height: 200
-        });
+        elementDialogGoalsReached = GUI.createElement(ElementDialogGoalsReached, {});
         self.elements.push(elementDialogGoalsReached);
 
-        elementDialogTurnsLoose = GUI.createElement(ElementDialogTurnLoose, {
-            src: '/images/window.png',
-            width: 342,
-            height: 200
-        });
+        elementDialogTurnsLoose = GUI.createElement(ElementDialogTurnLoose, {});
 
-        elementDialogJustQuit = GUI.createElement(ElementDialogJustQuit, {
-            src: '/images/window.png',
-            width: 342,
-            height: 200
-        });
+        elementDialogJustQuit = GUI.createElement(ElementDialogJustQuit, {});
 
         // stuff hummer
         el = GUI.createElement(ElementStuffButton, {

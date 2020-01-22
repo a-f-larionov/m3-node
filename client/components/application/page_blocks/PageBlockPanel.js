@@ -72,11 +72,7 @@ PageBlockPanel = function PageBlockPanel() {
         });
         self.elements.push(elSoundsButton);
 
-        dialogMoneyMagazine = GUI.createElement(ElementDialogMoneyMagazine, {
-            src: '/images/window.png',
-            width: 342,
-            height: 200
-        });
+        dialogMoneyMagazine = GUI.createElement(ElementDialogMoneyMagazine, {});
         self.elements.push(dialogMoneyMagazine);
 
         // панель денег

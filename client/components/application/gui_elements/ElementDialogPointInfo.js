@@ -2,17 +2,6 @@ ElementDialogPointInfo = function () {
     let self = this;
     this.__proto__ = new ElementDialog();
 
-    this.width = 500;
-    this.height = 292;
-
-    this.src = '/images/window.png';
-
-    /**
-     * Точка с которой нажали
-     * @type {null}
-     */
-    //this.elementPoint = null;
-
     /**
      * Кол-во очков на точке
      * @type {null}
