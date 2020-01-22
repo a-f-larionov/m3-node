@@ -6,12 +6,18 @@ ElementDialogMoneyMagazine = function () {
         let el;
         this.__proto__.init.call(this);
         GUI.pushParent(self.dom);
+        // номер точки
+        el = GUI.createElement(ElementText, {
+            x: 135, y: 11, width: 230, height: 40,
+            text: 'МАГАЗИН'
+        });
+        self.elements.push(el);
 
         el = GUI.createElement(ElementButton, {
-            x: 10, y: 30,
-            srcRest: '/images/money_buy_100_rest.png',
-            srcHover: '/images/money_buy_100_active.png',
-            srcActive: '/images/money_buy_100_active.png',
+            x: 25, y: 80,
+            srcRest: '/images/money_1.png',
+            srcHover: '/images/money_1.png',
+            srcActive: '/images/money_1.png',
             onClick: function () {
                 SocNet.openOrderDialog(1);
             }
@@ -19,10 +25,10 @@ ElementDialogMoneyMagazine = function () {
         self.elements.push(el);
 
         el = GUI.createElement(ElementButton, {
-            x: 10 + 100 * 1, y: 30,
-            srcRest: '/images/money_buy_500_rest.png',
-            srcHover: '/images/money_buy_500_active.png',
-            srcActive: '/images/money_buy_500_active.png',
+            x: 25 + 150 * 1, y: 80,
+            srcRest: '/images/money_2.png',
+            srcHover: '/images/money_2.png',
+            srcActive: '/images/money_2.png',
             onClick: function () {
                 SocNet.openOrderDialog(5);
             }
@@ -30,10 +36,10 @@ ElementDialogMoneyMagazine = function () {
         self.elements.push(el);
 
         el = GUI.createElement(ElementButton, {
-            x: 10 + 100 * 2, y: 30,
-            srcRest: '/images/money_buy_1000_rest.png',
-            srcHover: '/images/money_buy_1000_active.png',
-            srcActive: '/images/money_buy_1000_active.png',
+            x: 25 + 150 * 2, y: 80,
+            srcRest: '/images/money_3.png',
+            srcHover: '/images/money_3.png',
+            srcActive: '/images/money_3.png',
             onClick: function () {
                 SocNet.openOrderDialog(10);
             }
