@@ -36,7 +36,8 @@ ElementHealthTimer = function () {
 
         elTimer = GUI.createElement(ElementText, {
             x: this.x, y: this.y,
-            width: 100, height: 30
+            width: 100, height: 30,
+            alignCenter: true, bold: true
         });
         OnIdle.register(self.updateTimer);
     };

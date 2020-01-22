@@ -7,6 +7,7 @@
  * width : number ширина поля
  * height : number высота поля
  * text : string текст
+ * alignCenter : bool
  */
 ElementText = function () {
     var self = this;
@@ -69,13 +70,13 @@ ElementText = function () {
      * Жирный ли шрифт?
      * @type {boolean}
      */
-    this.bold = false;
+    this.bold = true;
 
     /**
      * Выравнивать по правой стороне.
      * @type {boolean}
      */
-    this.alignCenter = false;
+    this.alignCenter = true;
 
     this.opacity = undefined;
 
@@ -94,7 +95,7 @@ ElementText = function () {
         dom.fontSize = self.fontSize;
         dom.background = this.background;
         dom.fontFamily = '"Marvin",Tahoma,"Geneva CY",sans-serif';
-        dom.textShadow = 'black';
+//        dom.textShadow = '1px 1px black';
         GUI.bind(dom, GUI.EVENT_MOUSE_CLICK, onMouseClick, self);
     };
 

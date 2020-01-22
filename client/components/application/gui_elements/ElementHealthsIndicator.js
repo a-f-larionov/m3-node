@@ -36,7 +36,7 @@ ElementHealthIndicator = function () {
         let dom, width = 50, height = 50;
         for (let i = 0; i < 5; i++) {
             dom = GUI.createDom(null, {
-                x: this.x + i * width,
+                x: this.x + i * (width - 15),
                 y: this.y,
                 width: width,
                 height: height,

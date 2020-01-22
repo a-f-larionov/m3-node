@@ -2,8 +2,8 @@ ElementDialogPointInfo = function () {
     let self = this;
     this.__proto__ = new ElementDialog();
 
-    this.width = 342;
-    this.height = 200;
+    this.width = 500;
+    this.height = 292;
 
     this.src = '/images/window.png';
 
@@ -11,7 +11,7 @@ ElementDialogPointInfo = function () {
      * Точка с которой нажали
      * @type {null}
      */
-    this.elementPoint = null;
+    //this.elementPoint = null;
 
     /**
      * Кол-во очков на точке
@@ -25,11 +25,9 @@ ElementDialogPointInfo = function () {
      */
     let elTextPointNumber = null;
 
-    /**
-     * Текст : кол-во звёзд на точке
-     * @type {null}
-     */
-    let elTextStarsCount = null;
+    let elStarOne = null;
+    let elStarTwo = null;
+    let elStarThree = null;
 
     let elFriendsText = null;
 
@@ -47,27 +45,33 @@ ElementDialogPointInfo = function () {
         GUI.pushParent(self.dom);
         // кол-во очков на точке
         elTextScore = GUI.createElement(ElementText, {
-            x: 50, y: 30, width: 250, height: 40,
+            x: 250, y: 180, width: 250, height: 40,
             text: ''
         });
         elTextScore.show();
 
         // номер точки
         elTextPointNumber = GUI.createElement(ElementText, {
-            x: 50, y: 50, width: 250, height: 40,
+            x: 135, y: 11, width: 230, height: 40,
             text: ''
         });
         elTextPointNumber.show();
         // кол-во звёзд
-        // номер точки
-        elTextStarsCount = GUI.createElement(ElementText, {
-            x: 50, y: 70, width: 250, height: 40,
-            text: ''
+        elStarOne = GUI.createElement(ElementImage, {
+            x: 100, y: 80, src: '/images/star-off-big.png'
         });
-        elTextStarsCount.show();
+        elStarOne.show();
+        elStarTwo = GUI.createElement(ElementImage, {
+            x: 200, y: 80, src: '/images/star-off-big.png'
+        });
+        elStarTwo.show();
+        elStarThree = GUI.createElement(ElementImage, {
+            x: 300, y: 80, src: '/images/star-off-big.png'
+        });
+        elStarThree.show();
 
         elFriendsText = GUI.createElement(ElementText, {
-            x: 50, y: 90, width: 250, height: 40,
+            x: 50, y: 180, width: 250, height: 40,
             fontSize: 12, text: ''
         });
         elFriendsText.show();
@@ -88,7 +92,7 @@ ElementDialogPointInfo = function () {
 
         // кнопка закрыть
         GUI.createElement(ElementButton, {
-            x: 280, y: 10, width: 100, height: 40,
+            x: 447, y: 4,
             srcRest: '/images/button-close-rest.png',
             srcHover: '/images/button-close-hover.png',
             srcActive: '/images/button-close-active.png',
@@ -116,9 +120,9 @@ ElementDialogPointInfo = function () {
 
         user = LogicUser.getCurrentUser();
         point = DataPoints.getById(pointId);
-        elTextPointNumber.text = 'point number:' + pointId;
-        elTextStarsCount.text = 'stars: ' + DataPoints.countStars(point.id);
-        elTextScore.text = 'score: ' + DataPoints.getScore(point.id);
+        elTextPointNumber.text = 'УРОВЕНЬ  ' + pointId;
+        //elTextStarsCount.text = 'ЗВЕЗД: ' + DataPoints.countStars(point.id);
+        elTextScore.text = 'ОЧКОВ: ' + DataPoints.getScore(point.id);
 
         let text = '';
         friends.forEach(function (uid) {
@@ -131,7 +135,22 @@ ElementDialogPointInfo = function () {
         elFriendsText.text = text;
 
         elTextPointNumber.redraw();
-        elTextStarsCount.redraw();
+        //elTextStarsCount.redraw();
+        elStarOne.src = '/images/star-off-big.png';
+        elStarTwo.src = '/images/star-off-big.png';
+        elStarThree.src = '/images/star-off-big.png';
+
+        switch (DataPoints.countStars(point.id)) {
+            case 3:
+                elStarThree.src = '/images/star-on-big.png';
+            case 2:
+                elStarTwo.src = '/images/star-on-big.png';
+            case 1:
+                elStarOne.src = '/images/star-on-big.png';
+        }
+        elStarOne.redraw();
+        elStarTwo.redraw();
+        elStarThree.redraw();
         elTextScore.redraw();
         elFriendsText.redraw();
         if (user.health === 0) {

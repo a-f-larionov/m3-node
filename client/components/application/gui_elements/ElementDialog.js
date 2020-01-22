@@ -41,7 +41,7 @@ ElementDialog = function () {
      * Ссылка на картинку.
      * @type {string}
      */
-    this.src = '/path/to/image.png';
+    this.src = '/images/window.png';
 
     /**
      * Дом картинки.
