@@ -34,7 +34,7 @@ PageBlockMaps = function PageBlockMaps() {
     /**
      * @type {ElementFriendsPanel}
      */
-    var elFriendsPanel = false;
+    let elFriendsPanel;
 
     var mapIdOld = 1;
 

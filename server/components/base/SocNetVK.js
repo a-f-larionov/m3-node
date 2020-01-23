@@ -35,7 +35,7 @@ SocNetVK = function () {
      */
     this.getUserInfo = function (socNetUserId, callback) {
         self.executeMethod('users.get', {user_ids: socNetUserId, fields: 'photo_50,sex', https: 1}, function (source) {
-                var info;
+                let info;
                 info = {};
                 info.firstName = source[0].first_name;
                 info.lastName = source[0].last_name;

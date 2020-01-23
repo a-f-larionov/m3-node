@@ -30,7 +30,7 @@ ElementDialogPointInfo = function () {
 
         // номер точки\заголовок
         elTextPointNumber = GUI.createElement(ElementText, {
-            x: 135, y: 15, width: 230, height: 40,
+            x: 135, y: 12, width: 230, height: 40,
             text: ''
         });
         elTextPointNumber.show();
@@ -65,9 +65,9 @@ ElementDialogPointInfo = function () {
         // кнопка играть
         elButtonPlay = GUI.createElement(ElementButton, {
             x: 225, y: 245,
-            srcRest: '/images/map-arrow-right-active.png',
-            srcHover: '/images/map-arrow-right-active.png',
-            srcActive: '/images/map-arrow-right-active.png',
+            srcRest: '/images/button-red-rest.png',
+            srcHover: '/images/button-red-hover.png',
+            srcActive: '/images/button-red-active.png',
             onClick: function () {
                 self.reset();
                 DataPoints.setPlayedId(pointId);

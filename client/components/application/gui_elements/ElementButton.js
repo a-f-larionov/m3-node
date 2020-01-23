@@ -83,6 +83,8 @@ ElementButton = function () {
      */
     var dom = null;
 
+    let elText = null;
+
     /**
      * Опущена ли мышка.
      * @type {boolean}
@@ -114,7 +116,7 @@ ElementButton = function () {
      * Покажем кнопку.
      */
     this.show = function () {
-        if (showed == true) return;
+        if (showed === true) return;
         showed = true;
         dom.show();
         self.redraw();
@@ -124,7 +126,7 @@ ElementButton = function () {
      * Спрячем кнопку.
      */
     this.hide = function () {
-        if (showed == false) return;
+        if (showed === false) return;
         showed = false;
         dom.hide();
     };
@@ -136,7 +138,7 @@ ElementButton = function () {
         var src;
         if (!showed) return;
         src = self.srcRest;
-        if (mouseStateFocused)src = self.srcHover;
+        if (mouseStateFocused) src = self.srcHover;
         if (mouseStateFocused && mouseStateDown) src = self.srcActive;
         if (!mouseStateFocused && mouseStateDown) src = self.srcRest;
         dom.backgroundImage = src;

@@ -24,8 +24,8 @@ ElementFriendsPanel = function () {
     this.y = 0;
 
     this.cardWidth = 50;
-
     this.cardHeight = 50;
+    this.cardSpace = 10;
 
     this.cardsCount = 5;
 
@@ -51,14 +51,28 @@ ElementFriendsPanel = function () {
      * Создадим дом и настроем его.
      */
     this.init = function () {
+        //panelDOM?
         panelDom = GUI.createDom();
+        panelDom.x = self.x;
+        panelDom.y = self.y;
+        panelDom.height = self.cardHeight;
+        panelDom.width = self.cardWidth * self.cardsCount;
         for (let i = 0; i < self.cardsCount; i++) {
-            cardsDom.push(GUI.createDom());
+            cardsDom.push(GUI.createDom(undefined, {
+                x: self.x + i * (self.cardWidth + self.cardSpace),
+                y: self.y,
+                width: self.cardWidth,
+                height: self.cardHeight,
+                border: '4px solid rgb(68, 62, 0)', borderRadius: '8px'
+            }));
             cardsText.push(GUI.createElement(ElementText,
                 {
-                    width: self.cardWidth, height: 30/(100/self.cardWidth), alignCenter: true,
+                    x: self.x + i * (self.cardWidth + self.cardSpace) + 3,
+                    y: self.y + 50 - 15,
+                    width: self.cardWidth, height: 30 / (100 / self.cardWidth), alignCenter: true,
                     background: '#eee',
-                    opacity:0.75
+                    opacity: 0.7,
+                    fontSize: 12
                 }));
         }
     };
@@ -107,31 +121,20 @@ ElementFriendsPanel = function () {
     this.redraw = function () {
         if (!showed) return;
 
-        panelDom.x = self.x;
-        panelDom.y = self.y;
-        panelDom.height = self.cardHeight;
-        panelDom.width = self.cardWidth * self.cardsCount;
         panelDom.redraw();
 
         cardsDom.forEach(function (card, i) {
-            card.x = self.x + i * self.cardWidth;
-            card.y = self.y;
-            card.height = self.cardHeight;
-            card.width = self.cardWidth;
             if (friends[i] && friends[i].photo50) {
                 card.backgroundImage = friends[i].photo50;
             } else {
-                card.width = 50;
                 card.backgroundImage = '/images/friend-vacancy.png';
             }
             card.redraw();
         });
 
         cardsText.forEach(function (text, i) {
-            text.x = self.x + i * self.cardWidth;
-            text.y = self.y;
             if (friends[i]) {
-                text.text = 'ур.:' + friends[i].currentPoint;
+                text.text = 'ур. ' + friends[i].currentPoint;
                 text.show();
             } else {
                 text.hide();

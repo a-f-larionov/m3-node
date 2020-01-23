@@ -146,9 +146,24 @@ ElementPoint = function () {
         domStar3 = GUI.createDom();
         domStar3.backgroundImage = self.srcStarOff;
 
-        domPhoto1 = GUI.createDom(null, {height: 50, width: 50});
-        domPhoto2 = GUI.createDom(null, {height: 50, width: 50});
-        domPhoto3 = GUI.createDom(null, {height: 50, width: 50});
+        domPhoto1 = GUI.createDom(null, {
+            height: 50,
+            width: 50,
+            border: '3px solid rgba(68, 62, 0, 0.7)',
+            borderRadius: '8px'
+        });
+        domPhoto2 = GUI.createDom(null, {
+            height: 50,
+            width: 50,
+            border: '3px solid rgba(68, 62, 0, 0.7)',
+            borderRadius: '8px'
+        });
+        domPhoto3 = GUI.createDom(null, {
+            height: 50,
+            width: 50,
+            border: '4px solid rgb(68, 62, 0)',
+            borderRadius: '8px'
+        });
     };
 
     /**
