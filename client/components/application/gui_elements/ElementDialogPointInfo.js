@@ -52,13 +52,13 @@ ElementDialogPointInfo = function () {
         for (let i = 0; i < 3; i++) {
             friendsPanel[i] = {
                 elPhotoScore: GUI.createElement(ElementUserScorePhoto, {
-                    x: 75 + 75 * i, y: 155
+                    x: 75 + 75 * i + 15, y: 155
                 }),
             }
         }
 
         elUserPhotoScore = GUI.createElement(ElementUserScorePhoto, {
-            x: 75 + 75 * 3 + 35, y: 155
+            x: 75 + 75 * 3 + 55, y: 155
         });
         elUserPhotoScore.show();
 
