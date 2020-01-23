@@ -12,7 +12,8 @@ ElementDialogChestYouWin = function () {
         GUI.pushParent(self.dom);
         // кнопка закрыть
         GUI.createElement(ElementButton, {
-            x: 280, y: 10, width: 100, height: 40,
+            x: 452, y: 3,
+            width: 100, height: 40,
             srcRest: '/images/button-close-rest.png',
             srcHover: '/images/button-close-hover.png',
             srcActive: '/images/button-close-active.png',

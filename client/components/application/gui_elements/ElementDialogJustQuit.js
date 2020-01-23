@@ -18,8 +18,7 @@ ElementDialogJustQuit = function () {
         self.elements.push(element);
 
         element = GUI.createElement(ElementButton, {
-                x: 270,
-                y: 10,
+                x: 452, y: 3,
                 srcRest: '/images/button-close-rest.png',
                 srcHover: '/images/button-close-hover.png',
                 srcActive: '/images/button-close-active.png',

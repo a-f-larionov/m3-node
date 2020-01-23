@@ -140,6 +140,7 @@ ElementText = function () {
         dom.y = self.y;
         dom.fontSize = self.fontSize;
         dom.opacity = self.opacity;
+        dom.width = self.width;
         dom.textDecoration = self.textDecoration;
         if (self.bold) dom.fontWeight = 'bold'; else dom.fontWeight = 'normal';
         if (self.alignCenter) {

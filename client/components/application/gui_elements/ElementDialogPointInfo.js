@@ -37,34 +37,34 @@ ElementDialogPointInfo = function () {
 
         // кол-во звёзд
         elStarOne = GUI.createElement(ElementImage, {
-            x: 100, y: 50, src: '/images/star-off-big.png'
+            x: 100, y: 40, src: '/images/star-off-big.png'
         });
         elStarOne.show();
         elStarTwo = GUI.createElement(ElementImage, {
-            x: 200, y: 50, src: '/images/star-off-big.png'
+            x: 200, y: 40, src: '/images/star-off-big.png'
         });
         elStarTwo.show();
         elStarThree = GUI.createElement(ElementImage, {
-            x: 300, y: 50, src: '/images/star-off-big.png'
+            x: 300, y: 40, src: '/images/star-off-big.png'
         });
         elStarThree.show();
 
         for (let i = 0; i < 3; i++) {
             friendsPanel[i] = {
                 elPhotoScore: GUI.createElement(ElementUserScorePhoto, {
-                    x: 75 + 75 * i, y: 170
+                    x: 75 + 75 * i, y: 155
                 }),
             }
         }
 
         elUserPhotoScore = GUI.createElement(ElementUserScorePhoto, {
-            x: 75 + 75 * 3 + 35, y: 170
+            x: 75 + 75 * 3 + 35, y: 155
         });
         elUserPhotoScore.show();
 
         // кнопка играть
         elButtonPlay = GUI.createElement(ElementButton, {
-            x: 225, y: 245,
+            x: 178, y: 240,
             srcRest: '/images/button-red-rest.png',
             srcHover: '/images/button-red-hover.png',
             srcActive: '/images/button-red-active.png',
@@ -72,7 +72,8 @@ ElementDialogPointInfo = function () {
                 self.reset();
                 DataPoints.setPlayedId(pointId);
                 PageController.showPage(PageField);
-            }
+            },
+            title: 'ИГРАТЬ'
         });
         elButtonPlay.show();
 

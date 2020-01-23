@@ -63,13 +63,13 @@ ElementButton = function () {
      * Будет вызываться при нажатии на кнопку.
      * @type {function}
      */
-    this.onClick = null;
+    this.onClick;
 
     /**
      * Подсказка кнопки.
      * @type {String}
      */
-    this.title = null;
+    this.title;
 
     /**
      * Активна ли кнопка.
@@ -83,7 +83,7 @@ ElementButton = function () {
      */
     var dom = null;
 
-    let elText = null;
+    let elText;
 
     /**
      * Опущена ли мышка.
@@ -110,6 +110,17 @@ ElementButton = function () {
         GUI.bind(dom, GUI.EVENT_MOUSE_CLICK, onMouseClick, self);
         GUI.bind(dom, GUI.EVENT_MOUSE_OVER, onMouseOver, self);
         GUI.bind(dom, GUI.EVENT_MOUSE_OUT, onMouseOut, self);
+        if (self.title) {
+            GUI.pushParent(dom);
+            elText = GUI.createElement(ElementText, {
+                x: 0, y: 7, height: 25,
+                alignCenter: true,
+                text: self.title,
+                pointer: GUI.POINTER_HAND
+            });
+            elText.show();
+            GUI.popParent();
+        }
     };
 
     /**
@@ -135,14 +146,18 @@ ElementButton = function () {
      * Перерисуем кнопку.
      */
     this.redraw = function () {
-        var src;
+        let src;
         if (!showed) return;
         src = self.srcRest;
         if (mouseStateFocused) src = self.srcHover;
         if (mouseStateFocused && mouseStateDown) src = self.srcActive;
         if (!mouseStateFocused && mouseStateDown) src = self.srcRest;
         dom.backgroundImage = src;
-        if (self.title) dom.title = self.title;
+        if (self.title) {
+            dom.title = self.title;
+            elText.width = GUI.getImageWidth(src);
+            elText.redraw();
+        }
         if (self.enabled) {
             dom.pointer = GUI.POINTER_HAND;
             dom.opacity = 1.0;
