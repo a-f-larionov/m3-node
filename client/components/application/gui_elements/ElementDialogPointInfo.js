@@ -3,12 +3,6 @@ ElementDialogPointInfo = function () {
     this.__proto__ = new ElementDialog();
 
     /**
-     * Кол-во очков на точке
-     * @type {null}
-     */
-    let elTextScore = null;
-
-    /**
      * Номер точки
      * @type {null}
      */
@@ -18,7 +12,8 @@ ElementDialogPointInfo = function () {
     let elStarTwo = null;
     let elStarThree = null;
 
-    let elFriendsText = null;
+    let friendsPanel = [];
+    let elUserPhotoScore = null;
 
     let elButtonPlay = null;
 
@@ -32,45 +27,47 @@ ElementDialogPointInfo = function () {
     this.init = function () {
         this.__proto__.init.call(this);
         GUI.pushParent(self.dom);
-        // кол-во очков на точке
-        elTextScore = GUI.createElement(ElementText, {
-            x: 250, y: 180, width: 250, height: 40,
-            text: ''
-        });
-        elTextScore.show();
 
-        // номер точки
+        // номер точки\заголовок
         elTextPointNumber = GUI.createElement(ElementText, {
-            x: 135, y: 11, width: 230, height: 40,
+            x: 135, y: 15, width: 230, height: 40,
             text: ''
         });
         elTextPointNumber.show();
+
         // кол-во звёзд
         elStarOne = GUI.createElement(ElementImage, {
-            x: 100, y: 80, src: '/images/star-off-big.png'
+            x: 100, y: 50, src: '/images/star-off-big.png'
         });
         elStarOne.show();
         elStarTwo = GUI.createElement(ElementImage, {
-            x: 200, y: 80, src: '/images/star-off-big.png'
+            x: 200, y: 50, src: '/images/star-off-big.png'
         });
         elStarTwo.show();
         elStarThree = GUI.createElement(ElementImage, {
-            x: 300, y: 80, src: '/images/star-off-big.png'
+            x: 300, y: 50, src: '/images/star-off-big.png'
         });
         elStarThree.show();
 
-        elFriendsText = GUI.createElement(ElementText, {
-            x: 50, y: 180, width: 250, height: 40,
-            fontSize: 12, text: ''
+        for (let i = 0; i < 3; i++) {
+            friendsPanel[i] = {
+                elPhotoScore: GUI.createElement(ElementUserScorePhoto, {
+                    x: 75 + 75 * i, y: 170
+                }),
+            }
+        }
+
+        elUserPhotoScore = GUI.createElement(ElementUserScorePhoto, {
+            x: 75 + 75 * 3 + 35, y: 170
         });
-        elFriendsText.show();
+        elUserPhotoScore.show();
 
         // кнопка играть
         elButtonPlay = GUI.createElement(ElementButton, {
-            x: 50, y: 130,
-            srcRest: '/images/button-play-rest.png',
-            srcHover: '/images/button-play-hover.png',
-            srcActive: '/images/button-play-active.png',
+            x: 225, y: 245,
+            srcRest: '/images/map-arrow-right-active.png',
+            srcHover: '/images/map-arrow-right-active.png',
+            srcActive: '/images/map-arrow-right-active.png',
             onClick: function () {
                 self.reset();
                 DataPoints.setPlayedId(pointId);
@@ -81,7 +78,7 @@ ElementDialogPointInfo = function () {
 
         // кнопка закрыть
         GUI.createElement(ElementButton, {
-            x: 447, y: 4,
+            x: 452, y: 3,
             srcRest: '/images/button-close-rest.png',
             srcHover: '/images/button-close-hover.png',
             srcActive: '/images/button-close-active.png',
@@ -102,7 +99,7 @@ ElementDialogPointInfo = function () {
     };
 
     this.redraw = function () {
-        let user, point;
+        let user, point, friend;
         this.__proto__.redraw.call(this);
 
         if (!this.dialogShowed) return;
@@ -110,21 +107,21 @@ ElementDialogPointInfo = function () {
         user = LogicUser.getCurrentUser();
         point = DataPoints.getById(pointId);
         elTextPointNumber.text = 'УРОВЕНЬ  ' + pointId;
-        //elTextStarsCount.text = 'ЗВЕЗД: ' + DataPoints.countStars(point.id);
-        elTextScore.text = 'ОЧКОВ: ' + DataPoints.getScore(point.id);
 
-        let text = '';
-        friends.forEach(function (uid) {
-            let user;
-            user = LogicUser.getById(uid);
-            text += user.firstName + ' ' + user.lastName + ' ';
-            text += DataPoints.getScore(pointId, user.id);
-            text += '<br>';
-        });
-        elFriendsText.text = text;
+        for (let i = 0; i < 3; i++) {
+            if (friends[0] && (friend = LogicUser.getById(friends[0])) && friend.id) {
+                friendsPanel[i].elPhotoScore.user = friend;
+                friendsPanel[i].elPhotoScore.score = DataPoints.getScore(point.id, friend.id);
+                friendsPanel[i].elPhotoScore.show();
+                friendsPanel[i].elPhotoScore.redraw();
+            } else {
+                friendsPanel[i].elPhotoScore.hide();
+            }
+        }
+        elUserPhotoScore.user = LogicUser.getCurrentUser();
+        elUserPhotoScore.score = DataPoints.getScore(point.id);
 
         elTextPointNumber.redraw();
-        //elTextStarsCount.redraw();
         elStarOne.src = '/images/star-off-big.png';
         elStarTwo.src = '/images/star-off-big.png';
         elStarThree.src = '/images/star-off-big.png';
@@ -140,8 +137,8 @@ ElementDialogPointInfo = function () {
         elStarOne.redraw();
         elStarTwo.redraw();
         elStarThree.redraw();
-        elTextScore.redraw();
-        elFriendsText.redraw();
+        elUserPhotoScore.redraw();
+
         if (user.health === 0) {
             elButtonPlay.hide();
         } else {

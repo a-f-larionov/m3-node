@@ -3,48 +3,54 @@ ElementDialogMoneyMagazine = function () {
     this.__proto__ = new ElementDialog();
 
     this.init = function () {
-        let el;
+        let el, offsetX, stepX, offsetY;
         this.__proto__.init.call(this);
+
+        offsetX = 25;
+        offsetY = 80;
+        stepX = 150;
+
         GUI.pushParent(self.dom);
-        // номер точки
+        // заголовок диалога
         el = GUI.createElement(ElementText, {
             x: 135, y: 11, width: 230, height: 40,
             text: 'МАГАЗИН'
         });
         self.elements.push(el);
 
-        el = GUI.createElement(ElementButton, {
-            x: 25, y: 80,
-            srcRest: '/images/money_1.png',
-            srcHover: '/images/money_1.png',
-            srcActive: '/images/money_1.png',
-            onClick: function () {
-                SocNet.openOrderDialog(1);
-            }
-        });
-        self.elements.push(el);
+        for (let i = 0; i < 3; i++) {
+            el = GUI.createElement(ElementButton, {
+                x: offsetX + stepX * i, y: offsetY,
+                srcRest: '/images/money_' + (i + 1) + '.png',
+                srcHover: '/images/money_' + (i + 1) + '.png',
+                srcActive: '/images/money_' + (i + 1) + '.png',
+                onClick: function () {
+                    SocNet.openOrderDialog(Config.Magazine.items[i].votes);
+                }
+            });
+            self.elements.push(el);
 
-        el = GUI.createElement(ElementButton, {
-            x: 25 + 150 * 1, y: 80,
-            srcRest: '/images/money_2.png',
-            srcHover: '/images/money_2.png',
-            srcActive: '/images/money_2.png',
-            onClick: function () {
-                SocNet.openOrderDialog(5);
-            }
-        });
-        self.elements.push(el);
+            self.elements.push(GUI.createElement(ElementButton, {
+                x: offsetX + stepX * i + 45, y: offsetY + 150 - 45,
+                srcRest: '/images/button-add-rest.png',
+                srcHover: '/images/button-add-hover.png',
+                srcActive: '/images/button-add-active.png',
+                onClick: function () {
+                    SocNet.openOrderDialog(Config.Magazine.items[i].votes);
+                }
+            }));
+        }
 
-        el = GUI.createElement(ElementButton, {
-            x: 25 + 150 * 2, y: 80,
-            srcRest: '/images/money_3.png',
-            srcHover: '/images/money_3.png',
-            srcActive: '/images/money_3.png',
+        // кнопка закрыть
+        GUI.createElement(ElementButton, {
+            x: 447, y: 4,
+            srcRest: '/images/button-close-rest.png',
+            srcHover: '/images/button-close-hover.png',
+            srcActive: '/images/button-close-active.png',
             onClick: function () {
-                SocNet.openOrderDialog(10);
+                self.closeDialog();
             }
-        });
-        self.elements.push(el);
+        }).show();
 
         GUI.popParent();
     };

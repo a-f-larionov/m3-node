@@ -117,6 +117,7 @@ PageBlockMaps = function PageBlockMaps() {
                 width: 50,
                 height: 50,
                 onClick: function (event, dom, element) {
+                    console.log(element);
                     dialogPointInfo.showDialog(element);
                 }
             });

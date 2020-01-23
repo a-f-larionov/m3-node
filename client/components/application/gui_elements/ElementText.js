@@ -7,6 +7,7 @@
  * width : number ширина поля
  * height : number высота поля
  * text : string текст
+ * fontSize: string размер шрифта, 21 по умолчанию
  * alignCenter : bool
  */
 ElementText = function () {

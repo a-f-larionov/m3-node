@@ -59,6 +59,8 @@ ElementImage = function () {
 
     this.title = undefined;
 
+    this.photoBorder = false;
+
     /**
      * Создадим дом и настроем его.
      */
@@ -67,6 +69,10 @@ ElementImage = function () {
         dom.width = self.width;
         dom.height = self.height;
         dom.backgroundImage = self.src;
+        if (this.photoBorder) {
+            dom.border = '3px solid rgba(68, 62, 0, 0.7)';
+            dom.borderRadius = '8px';
+        }
         self.dom = dom;
     };
 
@@ -74,7 +80,7 @@ ElementImage = function () {
      * Покажем картинку.
      */
     this.show = function () {
-        if (showed == true) return;
+        if (showed === true) return;
         showed = true;
         dom.show();
         self.redraw();
@@ -84,7 +90,7 @@ ElementImage = function () {
      * Спрячем картинку.
      */
     this.hide = function () {
-        if (showed == false) return;
+        if (showed === false) return;
         showed = false;
         dom.hide();
     };

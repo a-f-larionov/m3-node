@@ -35,13 +35,13 @@ ElementDialog = function () {
      * Высота картинки.
      * @type {number}
      */
-    this.height = 292;
+    this.height = 322;
 
     /**
      * Ссылка на картинку.
      * @type {string}
      */
-    this.src = '/images/window.png';
+    this.src = '/images/window-2.png';
 
     /**
      * Дом картинки.
