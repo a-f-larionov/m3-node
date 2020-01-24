@@ -51,8 +51,7 @@ PageBlockField = function PageBlockField() {
         let el;
 
         el = GUI.createElement(ElementField, {
-            centerX: 388,
-            centerY: 250,
+            centerX: 388, centerY: 250,
             onDestroyLine: self.onDestroyLine,
             beforeTurnUse: self.beforeTurnUse,
             afterStuffUse: self.afterStuffUse
@@ -62,8 +61,7 @@ PageBlockField = function PageBlockField() {
 
         // close
         el = GUI.createElement(ElementButton, {
-            x: 10,
-            y: 10,
+            x: 720, y: 0,
             srcRest: '/images/button-close-rest.png',
             srcHover: '/images/button-close-hover.png',
             srcActive: '/images/button-close-active.png',
@@ -78,8 +76,7 @@ PageBlockField = function PageBlockField() {
         this.elements.push(el);
 
         elementScore = GUI.createElement(ElementText, {
-            x: 20,
-            y: 100,
+            x: 20, y: 100,
             bold: true,
             alignCenter: false,
             width: 100
@@ -88,8 +85,7 @@ PageBlockField = function PageBlockField() {
         this.elements.push(elementScore);
 
         elementStars = GUI.createElement(ElementText, {
-            x: 20,
-            y: 120,
+            x: 20, y: 120,
             bold: true,
             alignCenter: false,
             width: 100
@@ -98,8 +94,7 @@ PageBlockField = function PageBlockField() {
         this.elements.push(elementStars);
 
         elementTurns = GUI.createElement(ElementText, {
-            x: 20,
-            y: 150,
+            x: 20, y: 150,
             bold: true,
             alignCenter: false,
             width: 100
@@ -109,8 +104,7 @@ PageBlockField = function PageBlockField() {
         this.elements.push(elementTurns);
 
         el = GUI.createDom(undefined, {
-            x: 600,
-            y: 100,
+            x: 600, y: 100,
             width: 200,
             height: 100
         });
@@ -120,8 +114,7 @@ PageBlockField = function PageBlockField() {
             el = GUI.createElement(ElementImage, {
                 x: 10 + (id - 1) * DataPoints.BLOCK_WIDTH,
                 y: 200,
-                width: 50,
-                height: 50,
+                width: 50, height: 50,
                 src: DataPoints.objectImages[id]
             });
             goalsImagesEls[id] = el;
@@ -146,8 +139,7 @@ PageBlockField = function PageBlockField() {
 
         // stuff hummer
         el = GUI.createElement(ElementStuffButton, {
-            x: 680,
-            y: 200,
+            x: 680, y: 200,
             fieldName: 'hummerQty',
             srcRest: '/images/button-hummer-rest.png',
             srcHover: '/images/button-hummer-hover.png',
@@ -159,8 +151,7 @@ PageBlockField = function PageBlockField() {
         this.elements.push(el);
         // stuff shuffle
         el = GUI.createElement(ElementStuffButton, {
-            x: 680,
-            y: 300,
+            x: 680, y: 300,
             fieldName: 'shuffleQty',
             srcRest: '/images/button-shuffle-rest.png',
             srcHover: '/images/button-shuffle-hover.png',
@@ -172,8 +163,7 @@ PageBlockField = function PageBlockField() {
         this.elements.push(el);
         // stuff lighting
         el = GUI.createElement(ElementStuffButton, {
-            x: 680,
-            y: 400,
+            x: 680, y: 400,
             fieldName: 'lightingQty',
             srcRest: '/images/button-lighting-rest.png',
             srcHover: '/images/button-lighting-hover.png',
@@ -186,8 +176,7 @@ PageBlockField = function PageBlockField() {
 
         // dom stuff
         domStuff = GUI.createDom(null, {
-            x: 190,
-            y: 10,
+            x: 190, y: 10
         });
         GUI.bind(domStuff, GUI.EVENT_MOUSE_CLICK, function (event, dom) {
             // передаем клик дальше, теоретически после анимации
@@ -211,7 +200,7 @@ PageBlockField = function PageBlockField() {
         if (showed === true) return;
         showed = true;
         this.loadField();
-        for (var i in self.elements) {
+        for (let i in self.elements) {
             self.elements[i].show();
         }
         this.firstShow();
@@ -223,7 +212,7 @@ PageBlockField = function PageBlockField() {
     this.hide = function () {
         if (showed === false) return;
         showed = false;
-        for (var i in self.elements) {
+        for (let i in self.elements) {
             self.elements[i].hide();
         }
         for (let i in goalsImagesEls) {
@@ -233,13 +222,6 @@ PageBlockField = function PageBlockField() {
             goalsCounterEls[i].hide();
         }
         domStuff.hide();
-    };
-
-    /**
-     * Настройка перед отрисовкой.
-     */
-    this.preset = function () {
-
     };
 
     this.loadField = function () {
@@ -272,7 +254,6 @@ PageBlockField = function PageBlockField() {
      */
     this.redraw = function () {
         if (!showed) return;
-        self.preset();
         elementScore.setText('очки: ' + score);
         elementStars.setText('звёзд: ' + DataPoints.countStars(null, null, score));
         elementTurns.setText('ходы: ' + turns);

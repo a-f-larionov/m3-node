@@ -8,13 +8,13 @@
  * height : number высота поля
  */
 ElementHealthTimer = function () {
-    var self = this;
+    let self = this;
 
     /**
      * Показывать ли элемент.
      * @type {boolean}
      */
-    var showed = false;
+    let showed = false;
 
     /**
      * Координата X текста.
@@ -65,7 +65,6 @@ ElementHealthTimer = function () {
      * Перерисуем.
      */
     this.redraw = function () {
-        let user;
         if (!showed) return;
         elTimer.setText('00:00:00');
 

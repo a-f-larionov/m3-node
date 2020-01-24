@@ -6,17 +6,54 @@ ElementDialogJustQuit = function () {
         this.__proto__.init.call(this);
         let element;
 
+        // заголовок
         element = GUI.createElement(ElementText, {
-            x: 50,
-            y: 100,
-            fontSize: 24,
+            x: 150, y: 12, width: 200,
+            //   fontSize: 24,
             bold: true,
             alignCenter: true,
-            width: 250
         }, this.dom);
-        element.setText("Просто выйти из игры?<br> -1 жизнь");
+        element.setText("ВЫЙТИ?");
+        self.elements.push(element);
+        // надпись в центре
+        element = GUI.createElement(ElementText, {
+            x: 127, y: 114, width: 250,
+            //  fontSize: 24,
+            bold: true,
+            alignCenter: true,
+        }, this.dom);
+        element.setText("Потеряешь одну жизнь.");
+        self.elements.push(element);
+        // кнопка выйти
+        element = GUI.createElement(ElementButton, {
+                x: 75, y: 220,
+                srcRest: '/images/button-red-rest.png',
+                srcHover: '/images/button-red-hover.png',
+                srcActive: '/images/button-red-active.png',
+                onClick: function () {
+                    LogicUser.onTurnsLoose();
+                    self.closeDialog();
+                    PageController.showPage(PageMain);
+                },
+                title: 'НА КАРТУ'
+            }, this.dom,
+        );
         self.elements.push(element);
 
+        element = GUI.createElement(ElementButton, {
+                x: 275, y: 220,
+                srcRest: '/images/button-green-rest.png',
+                srcHover: '/images/button-green-hover.png',
+                srcActive: '/images/button-green-active.png',
+                onClick: function () {
+                    self.closeDialog();
+                },
+                title: 'В ИГРУ'
+            }, this.dom
+        );
+        self.elements.push(element);
+
+        // кнопка закрыть
         element = GUI.createElement(ElementButton, {
                 x: 452, y: 3,
                 srcRest: '/images/button-close-rest.png',
@@ -24,21 +61,6 @@ ElementDialogJustQuit = function () {
                 srcActive: '/images/button-close-active.png',
                 onClick: function () {
                     self.closeDialog();
-                }
-            }, this.dom
-        );
-        self.elements.push(element);
-
-        element = GUI.createElement(ElementButton, {
-                x: 50,
-                y: 130,
-                srcRest: '/images/button-quit-rest.png',
-                srcHover: '/images/button-quit-hover.png',
-                srcActive: '/images/button-quit-active.png',
-                onClick: function () {
-                    LogicUser.onTurnsLoose();
-                    self.closeDialog();
-                    PageController.showPage(PageMain);
                 }
             }, this.dom
         );
