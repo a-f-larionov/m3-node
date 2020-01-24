@@ -48,7 +48,7 @@ ElementDialogJustQuit = function () {
                 onClick: function () {
                     self.closeDialog();
                 },
-                title: 'В ИГРУ'
+                title: 'ИГРАТЬ'
             }, this.dom
         );
         self.elements.push(element);

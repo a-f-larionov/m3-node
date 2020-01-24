@@ -8,23 +8,22 @@ ElementDialogGoals = function () {
     this.init = function () {
         this.__proto__.init.call(this);
         GUI.pushParent(self.dom);
+        // заголовок
         GUI.createElement(ElementText, {
-            x: 50,
-            y: 30,
-            width: 250,
-            height: 40,
-            text: 'Ваши цели:'
+            x: 50, y: 30,
+            width: 250, height: 40,
+            text: 'ЦЕЛИ'
         }).show();
 
         for (let i in DataPoints.objectImages) {
-        // список целей - картинки
+            // список целей - картинки
             goalsImagesEls[i] =
                 GUI.createElement(ElementImage, {
                     x: 200 + i * (DataPoints.BLOCK_WIDTH + 5),
                     y: 50,
                     src: DataPoints.objectImages[i]
                 });
-        // список целей - кол-во
+            // список целей - кол-во
             goalsCounterEls[i] =
                 GUI.createElement(ElementText, {
                     x: 100 + i * (DataPoints.BLOCK_WIDTH + 5),

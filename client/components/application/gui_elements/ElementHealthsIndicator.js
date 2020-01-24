@@ -3,13 +3,13 @@
  * @constructor
  */
 ElementHealthIndicator = function () {
-    var self = this;
+    let self = this;
 
     /**
      * Показывать ли элемент.
      * @type {boolean}
      */
-    var showed = false;
+    let showed = false;
 
     /**
      * Координата X картинки.
@@ -32,14 +32,14 @@ ElementHealthIndicator = function () {
      * Создадим дом и настроем его.
      */
     this.init = function () {
-        doms = [];
         let dom, width = 50, height = 50;
+        doms = [];
+        let step = width - 15;
+
         for (let i = 0; i < 5; i++) {
             dom = GUI.createDom(null, {
-                x: this.x + i * (width - 15),
-                y: this.y,
-                width: width,
-                height: height,
+                x: this.x + i * step, y: this.y,
+                width: width, height: height,
                 backgroundImage: '/images/health-heart.png'
             });
             doms.push(dom);
@@ -73,12 +73,18 @@ ElementHealthIndicator = function () {
      * Перерисуем картинку.
      */
     this.redraw = function () {
+        let health, step, i;
         if (!showed) return;
-        let health = LogicUser.getCurrentUser().health;
-        let i = 1;
+        i = 1;
+        health = LogicUser.getCurrentUser().health;
+        step = 50 - 15;
+        if (health === LogicUser.getMaxHealth() - 1) {
+            step -= 10;
+        }
         doms.forEach(function (dom) {
             if (i <= health) dom.show(); else dom.hide();
             dom.redraw();
+            dom.x = self.x + (i - 1) * step;
             i++;
         });
     };

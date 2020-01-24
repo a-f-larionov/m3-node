@@ -28,13 +28,13 @@ ElementHealthTimer = function () {
      */
     this.y = undefined;
 
-    let elTimer;
+    let elText;
     /**
      * Создадим дом и настроем его.
      */
     this.init = function () {
 
-        elTimer = GUI.createElement(ElementText, {
+        elText = GUI.createElement(ElementText, {
             x: this.x, y: this.y,
             width: 100, height: 30,
             alignCenter: true, bold: true
@@ -48,7 +48,7 @@ ElementHealthTimer = function () {
     this.show = function () {
         if (showed) return;
         showed = true;
-        elTimer.show();
+        elText.show();
         self.redraw();
     };
 
@@ -57,7 +57,7 @@ ElementHealthTimer = function () {
      */
     this.hide = function () {
         if (!showed) return;
-        elTimer.hide();
+        elText.hide();
         showed = false;
     };
 
@@ -66,11 +66,11 @@ ElementHealthTimer = function () {
      */
     this.redraw = function () {
         if (!showed) return;
-        elTimer.setText('00:00:00');
+        elText.setText('00:00:00');
 
         self.updateTimer();
 
-        elTimer.redraw();
+        elText.redraw();
     };
 
     this.updateTimer = function () {
@@ -79,7 +79,7 @@ ElementHealthTimer = function () {
         user = LogicUser.getCurrentUser();
 
         if (user.health === LogicUser.getMaxHealth()) {
-            elTimer.hide();
+            elText.hide();
         } else {
             recoveryTime = LogicUser.getHealthRecoveryTime();
             healthStartTime = LogicUser.getCurrentUser().healthStartTime / 1000;
@@ -87,10 +87,10 @@ ElementHealthTimer = function () {
             left = recoveryTime - (now - healthStartTime);
 
             let toHHMMSS = function (val) {
-                var sec_num = parseInt(val, 10); // don't forget the second param
-                var hours = Math.floor(sec_num / 3600);
-                var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
-                var seconds = sec_num - (hours * 3600) - (minutes * 60);
+                let sec_num = parseInt(val, 10); // don't forget the second param
+                let hours = Math.floor(sec_num / 3600);
+                let minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+                let seconds = sec_num - (hours * 3600) - (minutes * 60);
 
                 if (hours < 10) hours = "0" + hours;
                 if (minutes < 10) minutes = "0" + minutes;
@@ -98,9 +98,9 @@ ElementHealthTimer = function () {
                 /*hours+':'+*/
                 return minutes + ':' + seconds;
             };
-            elTimer.setText(toHHMMSS(left));
-            elTimer.show();
-            elTimer.redraw();
+            elText.setText(toHHMMSS(left));
+            elText.show();
+            elText.redraw();
             if (left <= 0) {
                 LogicUser.checkHealth();
             }
