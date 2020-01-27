@@ -62,7 +62,7 @@ PageBlockPanel = function PageBlockPanel() {
         elSoundsButton = GUI.createElement(ElementButton, {
             x: 700, y: 10,
             srcRest: '/images/button-sound-off.png',
-            srcHover: '/images/button-sound-on.png',
+            srcHover: '/images/button-sound-active.png',
             srcActive: '/images/button-sound-active.png',
             onClick: function () {
                 Sounds.toggle();
@@ -143,10 +143,10 @@ PageBlockPanel = function PageBlockPanel() {
     this.preset = function () {
         if (Sounds.isEnabled()) {
             elSoundsButton.srcRest = '/images/button-sound-on.png';
-            elSoundsButton.srcHover = '/images/button-sound-off.png';
+            //elSoundsButton.srcHover = '/images/button-sound-active.png';
         } else {
             elSoundsButton.srcRest = '/images/button-sound-off.png';
-            elSoundsButton.srcHover = '/images/button-sound-on.png';
+            //elSoundsButton.srcHover = '/images/button-sound-active.png';
         }
         if (LogicStuff.getStuff().goldQty !== undefined) {
             moneyText.setText(LogicStuff.getStuff('goldQty'))

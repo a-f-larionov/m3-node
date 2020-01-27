@@ -5,13 +5,13 @@
  * @property y
  */
 ElementPoint = function () {
-    var self = this;
+    let self = this;
 
     /**
      * Показывать ли элемент.
      * @type {boolean}
      */
-    var showed = false;
+    let showed = false;
 
     /**
      * Координата X.
@@ -68,7 +68,7 @@ ElementPoint = function () {
      * Дом картинки.
      * @type {GUIDom}
      */
-    var dom = null;
+    let dom = null;
 
     this.friends = [];
 
@@ -103,17 +103,19 @@ ElementPoint = function () {
      */
     let domPhoto3 = null;
 
+    let elText = null;
+
     /**
      * Опущена ли мышка.
      * @type {boolean}
      */
-    var mouseStateDown = false;
+    let mouseStateDown = false;
 
     /**
      * Мышь в фокусе.
      * @type {boolean}
      */
-    var mouseStateFocused = false;
+    let mouseStateFocused = false;
 
     /**
      * Состояние точки точки, 1 - серый, 2 - красный, 3 - жёлтый
@@ -137,6 +139,12 @@ ElementPoint = function () {
         GUI.bind(dom, GUI.EVENT_MOUSE_OVER, onMouseOver, self);
         GUI.bind(dom, GUI.EVENT_MOUSE_OUT, onMouseOut, self);
 
+        elText = GUI.createElement(ElementText, {
+            width: 25, height: 20,
+            fontSize: 13, bold: true,
+            pointer: GUI.POINTER_HAND
+        }, dom);
+
         domStar1 = GUI.createDom();
         domStar1.backgroundImage = self.srcStarOff;
 
@@ -147,20 +155,17 @@ ElementPoint = function () {
         domStar3.backgroundImage = self.srcStarOff;
 
         domPhoto1 = GUI.createDom(null, {
-            height: 50,
-            width: 50,
-            border: '4px solid rgb(142, 124, 107)',
+            height: 50, width: 50,
+            border: '3px solid #715f4b',
             borderRadius: '8px'
         });
         domPhoto2 = GUI.createDom(null, {
-            height: 50,
-            width: 50,
+            height: 50, width: 50,
             border: '4px solid rgb(142, 124, 107)',
             borderRadius: '8px'
         });
         domPhoto3 = GUI.createDom(null, {
-            height: 50,
-            width: 50,
+            height: 50, width: 50,
             border: '4px solid rgb(142, 124, 107)',
             borderRadius: '8px'
         });
@@ -177,6 +182,7 @@ ElementPoint = function () {
         domStar1.show();
         domStar2.show();
         domStar3.show();
+        elText.show();
     };
 
     /**
@@ -189,6 +195,7 @@ ElementPoint = function () {
         domStar1.hide();
         domStar2.hide();
         domStar3.hide();
+        elText.hide();
         domPhoto1.hide();
         domPhoto2.hide();
         domPhoto3.hide();
@@ -198,7 +205,6 @@ ElementPoint = function () {
      * Перерисуем кнопку.
      */
     this.redraw = function () {
-        let src;
         if (!showed) return;
         switch (this.stateId) {
             case 1:
@@ -236,15 +242,19 @@ ElementPoint = function () {
         domStar3.y = self.y - 10;
         domStar3.backgroundImage = stars >= 3 ? self.srcStarOn : self.srcStarOff;
 
+        elText.x = 12;
+        elText.y = 17;
+        elText.text = self.pointId.toString();
+
         let offsetPhotos = (self.width / 2 - 25 / 2);
         domPhoto1.x = self.x - 17 + offsetPhotos;
-        domPhoto1.y = self.y + 10 + 20;
+        domPhoto1.y = self.y + 10 + 25;
 
         domPhoto2.x = self.x - 22 + offsetPhotos;
-        domPhoto2.y = self.y + 22 + 20;
+        domPhoto2.y = self.y + 22 + 25;
 
         domPhoto3.x = self.x + 17 + offsetPhotos;
-        domPhoto3.y = self.y + 10 + 20;
+        domPhoto3.y = self.y + 10 + 30;
 
         let friendIndex = 0;
         let doms = [domPhoto1, domPhoto2, domPhoto3];
@@ -265,10 +275,10 @@ ElementPoint = function () {
         });
 
         dom.redraw();
-
         domStar1.redraw();
         domStar2.redraw();
         domStar3.redraw();
+        elText.redraw();
     };
 
     /**

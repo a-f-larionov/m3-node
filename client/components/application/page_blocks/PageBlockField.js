@@ -245,7 +245,7 @@ PageBlockField = function PageBlockField() {
         elementDialogGoals.showDialog();
         setTimeout(function () {
                 elementDialogGoals.closeDialog();
-            }, 1750
+            }, 1750 *100
         );
     };
 

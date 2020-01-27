@@ -67,6 +67,19 @@ DataMap = function () {
             '3': {
                 id: 3,
                 src: '/images/map-003.png'
+            },
+            '4': {
+                id: 1,
+                src: '/images/map-001.png',
+            },
+            '5': {
+                id: 2,
+                src: '/images/map-002.png'
+            }
+            ,
+            '6': {
+                id: 3,
+                src: '/images/map-003.png'
             }
         }
     ;

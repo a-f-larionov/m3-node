@@ -11,13 +11,13 @@
  * alignCenter : bool
  */
 ElementText = function () {
-    var self = this;
+    let self = this;
 
     /**
      * Показывать ли элемент.
      * @type {boolean}
      */
-    var showed = false;
+    let showed = false;
 
     /**
      * Координата X текста.

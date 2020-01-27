@@ -10,27 +10,41 @@ ElementDialogGoals = function () {
         GUI.pushParent(self.dom);
         // заголовок
         GUI.createElement(ElementText, {
-            x: 50, y: 30,
-            width: 250, height: 40,
+            x: 150, y: 13,
+            width: 200, height: 40,
             text: 'ЦЕЛИ'
         }).show();
 
+        // список целей
         for (let i in DataPoints.objectImages) {
             // список целей - картинки
             goalsImagesEls[i] =
                 GUI.createElement(ElementImage, {
                     x: 200 + i * (DataPoints.BLOCK_WIDTH + 5),
-                    y: 50,
+                    y: 125,
                     src: DataPoints.objectImages[i]
                 });
             // список целей - кол-во
             goalsCounterEls[i] =
                 GUI.createElement(ElementText, {
                     x: 100 + i * (DataPoints.BLOCK_WIDTH + 5),
-                    y: 50 + DataPoints.BLOCK_HEIGHT + 5,
+                    y: 125 + DataPoints.BLOCK_HEIGHT + 5,
                     width: DataPoints.BLOCK_WIDTH
                 });
         }
+
+        // кнопка закрыть
+        GUI.createElement(ElementButton, {
+                x: 452, y: 3,
+                srcRest: '/images/button-close-rest.png',
+                srcHover: '/images/button-close-hover.png',
+                srcActive: '/images/button-close-active.png',
+                onClick: function () {
+                    self.closeDialog();
+                }
+            }, this.dom
+        ).show();
+
         GUI.popParent();
     };
 
@@ -56,8 +70,8 @@ ElementDialogGoals = function () {
         offsetX = 0;
         for (let i in goals) {
 
-            goalsImagesEls[goals[i].id].x = 100 + offsetX;
-            goalsCounterEls[goals[i].id].x = 100 + 25 + offsetX;
+            goalsImagesEls[goals[i].id].x = 175 + offsetX;
+            goalsCounterEls[goals[i].id].x = 175  + offsetX;
             goalsCounterEls[goals[i].id].setText(goals[i].count);
             this.elements.push(goalsImagesEls[goals[i].id]);
             this.elements.push(goalsCounterEls[goals[i].id]);

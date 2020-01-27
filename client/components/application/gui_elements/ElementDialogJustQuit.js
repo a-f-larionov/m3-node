@@ -40,6 +40,7 @@ ElementDialogJustQuit = function () {
         );
         self.elements.push(element);
 
+        // кнопка вернуться в игру
         element = GUI.createElement(ElementButton, {
                 x: 275, y: 220,
                 srcRest: '/images/button-green-rest.png',

@@ -63,11 +63,11 @@ ElementFriendsPanel = function () {
                 y: self.y,
                 width: self.cardWidth,
                 height: self.cardHeight,
-                border: '4px solid rgb(142, 124, 107)', borderRadius: '8px'
+                border: '3px solid #715f4b', borderRadius: '8px'
             }));
             cardsText.push(GUI.createElement(ElementText,
                 {
-                    x: self.x + i * (self.cardWidth + self.cardSpace) + 3,
+                    x: self.x + i * (self.cardWidth + self.cardSpace) + 4,
                     y: self.y + 50 - 15,
                     width: self.cardWidth, height: 30 / (100 / self.cardWidth), alignCenter: true,
                     background: '#eee',

@@ -37,7 +37,7 @@ DataPoints = function () {
     let yA = 190;
     let yB = 260;
 
-    var pointsCoords = [
+    let pointsCoords = [
         {
             number: 1,
             x: 41,
