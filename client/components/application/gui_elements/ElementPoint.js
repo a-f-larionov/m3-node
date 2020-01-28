@@ -26,18 +26,6 @@ ElementPoint = function () {
     this.y = 0;
 
     /**
-     * Ширина.
-     * @type {number}
-     */
-    this.width = 0;
-
-    /**
-     * Высота кноки.
-     * @type {number}
-     */
-    this.height = 0;
-
-    /**
      * Ссылка на картинку при наведении фокуса(мыши).
      * @type {string}
      */
@@ -125,13 +113,13 @@ ElementPoint = function () {
 
     this.pointId = null;
 
+    this.pointWidth = 50;
+
     /**
      * Создадим дом и настроем его.
      */
     this.init = function () {
         dom = GUI.createDom();
-        dom.width = self.width;
-        dom.height = self.height;
         dom.backgroundImage = self.srcGrey;
         dom.pointer = GUI.POINTER_HAND;
         GUI.bind(dom, GUI.EVENT_MOUSE_MOUSE_DOWN, onMouseDown, self);
@@ -229,7 +217,7 @@ ElementPoint = function () {
 
         stars = DataPoints.countStars(self.pointId);
 
-        let offsetStars = (self.width / 2 - 25 / 2);
+        let offsetStars = (self.pointWidth / 2 - 25 / 2);
         domStar1.x = self.x - 17 + offsetStars;
         domStar1.y = self.y - 10;
         domStar1.backgroundImage = stars >= 1 ? self.srcStarOn : self.srcStarOff;
@@ -246,7 +234,7 @@ ElementPoint = function () {
         elText.y = 17;
         elText.text = self.pointId.toString();
 
-        let offsetPhotos = (self.width / 2 - 25 / 2);
+        let offsetPhotos = (self.pointWidth / 2 - 25 / 2);
         domPhoto1.x = self.x - 17 + offsetPhotos;
         domPhoto1.y = self.y + 10 + 25;
 

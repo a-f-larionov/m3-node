@@ -17,7 +17,7 @@ GUI.ANIM_TYPE_STOP = 60;
  */
 DataMap = function () {
 
-    var maps = {
+    let maps = {
             '1': {
                 id: 1,
                 src: '/images/map-001.png',
@@ -69,18 +69,35 @@ DataMap = function () {
                 src: '/images/map-003.png'
             },
             '4': {
-                id: 1,
+                id: 4,
                 src: '/images/map-001.png',
             },
             '5': {
-                id: 2,
+                id: 5,
                 src: '/images/map-002.png'
             }
             ,
             '6': {
-                id: 3,
+                id: 6,
                 src: '/images/map-003.png'
+            },
+            '7': {
+                id: 7,
+                src: '/images/map-001.png',
+            },
+            '8': {
+                id: 8,
+                src: '/images/map-002.png'
             }
+            ,
+            '9': {
+                id: 9,
+                src: '/images/map-003.png'
+            },
+            '10': {
+                id: 10,
+                src: '/images/map-003.png'
+            },
         }
     ;
 
@@ -114,6 +131,6 @@ DataMap = new DataMap();
 
 /* client see */
 DataMap.MAP_ID_MIN = 1;
-DataMap.MAP_ID_MAX = 3;
+DataMap.MAP_ID_MAX = 10;
 DataMap.POINTS_PER_MAP = 8;
 DataMap.CHESTS_PER_MAP = 2;

@@ -1,6 +1,6 @@
 DataStuff = function () {
 
-    var tableName = 'users_stuff';
+    let tableName = 'users_stuff';
 
     var fromDBToData = function (data) {
         if (!data) return data;

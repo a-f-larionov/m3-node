@@ -108,14 +108,11 @@ PageBlockMaps = function PageBlockMaps() {
         /* Points */
         DataPoints.getPointsCoords().forEach(function (coord) {
             el = GUI.createElement(ElementPoint, {
-                x: coord.x,
-                y: coord.y,
+                x: coord.x, y: coord.y,
                 friends: [],
                 stateId: ElementPoint.STATE_CLOSE,
                 number: coord.number,
                 pointId: coord.number,
-                width: 50,
-                height: 50,
                 onClick: function (event, dom, element) {
                     console.log(element);
                     dialogPointInfo.showDialog(element);
@@ -341,20 +338,21 @@ PageBlockMaps = function PageBlockMaps() {
             pointEl = pointsEls[number];
             pointEl.pointId = pointId;
             point = DataPoints.getById(pointId);
+            console.log(number, point);
             if (!point) continue;
 
             pointEl = pointsEls[number];
 
-            if (point.id === user.currentPoint) pointEl.stateId = 2;
-            if (point.id < user.currentPoint) pointEl.stateId = 3;
-            if (point.id > user.currentPoint) pointEl.stateId = 1;
+            if (point.id === user.currentPoint) pointEl.stateId = ElementPoint.STATE_CURRENT;
+            if (point.id < user.currentPoint) pointEl.stateId = ElementPoint.STATE_FINISHED;
+            if (point.id > user.currentPoint) pointEl.stateId = ElementPoint.STATE_CLOSE;
 
             if (userPoint[pointId])
                 pointEl.userScore = userPoint[pointId][user.id] ? userPoint[pointId][user.id].score : 0;
             else
                 pointEl.userScore = 0;
 
-            //@todo and sort by score on this poin!:)
+            //@todo and sort by score on this point!:)
             if (users) {
                 pointEl.setFriends(
                     users.filter(function (user) {

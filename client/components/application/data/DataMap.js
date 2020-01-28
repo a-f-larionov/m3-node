@@ -10,13 +10,13 @@ GUI.ANIM_TYPE_STOP = 60;
 
 DataMap = function () {
 
-    var currentMapId = 1;
+    let currentMapId = 1;
 
     /**
      * DataMapjs
      * @type {[*]}
      */
-    var maps = {};
+    let maps = {};
 
     let mapsLoadings = [];
 
@@ -111,6 +111,6 @@ DataMap = new DataMap();
 
 /* server see */
 DataMap.MAP_ID_MIN = 1;
-DataMap.MAP_ID_MAX = 3;
-DataMap.POINTS_PER_MAP = 4;
+DataMap.MAP_ID_MAX = 10;
+DataMap.POINTS_PER_MAP = 8;
 DataMap.CHESTS_PER_MAP = 2;

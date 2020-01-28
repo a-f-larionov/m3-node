@@ -1,8 +1,8 @@
 DataUser = function () {
 
-    var tableName = 'users';
+    let tableName = 'users';
 
-    var fromDBToData = function (data) {
+    let fromDBToData = function (data) {
         if (!data) return data;
         if (data.id) data.id = parseInt(data.id);
         if (data.socNetTypeId) data.socNetTypeId = parseInt(data.socNetTypeId);
@@ -10,7 +10,7 @@ DataUser = function () {
         return data;
     };
 
-    var autoIncrementValue = null;
+    let autoIncrementValue = null;
 
     this.init = function (afterInitCallback) {
         DB.query("SELECT `AUTO_INCREMENT` as autoIncrement FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '" + Config.DB.database + "' AND TABLE_NAME   = '" + tableName + "';", function (rows) {
@@ -88,7 +88,7 @@ DataUser = function () {
         /* Предотвращение двойной мгновенной регистрации. */
         if (waitForCreateBySocNet[socNetUserId]) return;
         waitForCreateBySocNet[socNetUserId] = true;
-        var user = {
+        let user = {
             id: autoIncrementValue++,
             socNetTypeId: parseInt(socNetTypeId),
             socNetUserId: parseInt(socNetUserId),
