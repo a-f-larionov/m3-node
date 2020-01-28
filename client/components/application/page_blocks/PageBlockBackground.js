@@ -23,7 +23,7 @@ PageBlockBackground = function PageBlockBackground() {
         element = GUI.createElement(ElementImage, {
             x: 0,
             y: 0,
-            src: '/images/background.png'
+            src: '/images/old-paper.png'
         });
         self.elements.push(element);
     };

@@ -190,6 +190,12 @@ PageBlockMaps = function PageBlockMaps() {
         });
         self.elements.push(el);
 
+        el = GUI.createElement(ElementImage, {
+            x: 650, y: 370,
+            src: '/images/wind-rose.png'
+        });
+        self.elements.push(el);
+
         domLoader = GUI.createDom(undefined, {
             x: 0, y: 0, backgroundImage: '/images/map-preloader.png'
         });

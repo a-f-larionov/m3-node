@@ -189,7 +189,7 @@ GUI = function () {
      * @returns {GUIDom}
      */
     this.createDom = function (parent, params) {
-        var dom;
+        let dom;
         dom = new GUIDom();
         dom.init(undefined, parent);
         if (params) {
@@ -208,9 +208,9 @@ GUI = function () {
     this.updateAnimTracks = function (dom) {
         if (dom.animTracks) {
             /* init animations */
-            for (var tN in dom.animTracks) {
-                for (var fN in dom.animTracks[tN]) {
-                    var frame = dom.animTracks[tN][fN];
+            for (let tN in dom.animTracks) {
+                for (let fN in dom.animTracks[tN]) {
+                    let frame = dom.animTracks[tN][fN];
                     switch (frame.type) {
                         case GUI.ANIM_TYPE_ROTATE:
                             if (!frame.currentAngle) {

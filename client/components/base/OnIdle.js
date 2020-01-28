@@ -17,7 +17,7 @@ OnIdle = function () {
         for (var i in self.stack) {
             self.stack[i]();
         }
-        setTimeout(OnIdle.iterate, 33/3);
+        setTimeout(OnIdle.iterate, 33);
     };
 
 };

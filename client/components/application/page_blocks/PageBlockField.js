@@ -51,7 +51,7 @@ PageBlockField = function PageBlockField() {
         let el;
 
         el = GUI.createElement(ElementField, {
-            centerX: 388, centerY: 250,
+            centerX: 378, centerY: 250,
             onDestroyLine: self.onDestroyLine,
             beforeTurnUse: self.beforeTurnUse,
             afterStuffUse: self.afterStuffUse
@@ -62,9 +62,9 @@ PageBlockField = function PageBlockField() {
         // close
         el = GUI.createElement(ElementButton, {
             x: 720, y: 0,
-            srcRest: '/images/button-close-rest.png',
-            srcHover: '/images/button-close-hover.png',
-            srcActive: '/images/button-close-active.png',
+            srcRest: '/images/button-quit-rest.png',
+            srcHover: '/images/button-quit-hover.png',
+            srcActive: '/images/button-quit-active.png',
             onClick: function () {
                 if (turns === 0) {
                     elementDialogTurnsLoose.reset();
