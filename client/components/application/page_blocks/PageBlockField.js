@@ -27,13 +27,11 @@ PageBlockField = function PageBlockField() {
 
     let elementTurns = null;
 
-    let goalsImagesEls = {};
-
-    let goalsCounterEls = {};
-
     let stuffMode = null;
 
     let domStuff = null;
+
+    let elPanelGoals;
 
     let score;
     let turns;
@@ -50,6 +48,7 @@ PageBlockField = function PageBlockField() {
     this.init = function () {
         let el;
 
+        // игровое поле
         el = GUI.createElement(ElementField, {
             centerX: 378, centerY: 250,
             onDestroyLine: self.onDestroyLine,
@@ -59,7 +58,7 @@ PageBlockField = function PageBlockField() {
         elementField = el;
         this.elements.push(el);
 
-        // close
+        // кнопка выхода
         el = GUI.createElement(ElementButton, {
             x: 720, y: 0,
             srcRest: '/images/button-quit-rest.png',
@@ -75,57 +74,52 @@ PageBlockField = function PageBlockField() {
         });
         this.elements.push(el);
 
+        // очки
         elementScore = GUI.createElement(ElementText, {
-            x: 20, y: 100,
+            x: 20, y: 100, width: 100,
             bold: true,
-            alignCenter: false,
-            width: 100
+            alignCenter: false
         });
-        elementScore.setText('score: ?');
         this.elements.push(elementScore);
 
+        // звезды
         elementStars = GUI.createElement(ElementText, {
             x: 20, y: 120,
             bold: true,
             alignCenter: false,
             width: 100
         });
-        elementStars.setText('stars: ?');
         this.elements.push(elementStars);
 
-        elementTurns = GUI.createElement(ElementText, {
-            x: 20, y: 150,
-            bold: true,
-            alignCenter: false,
-            width: 100
-        });
-
-        elementTurns.setText('');
-        this.elements.push(elementTurns);
-
-        el = GUI.createDom(undefined, {
-            x: 600, y: 100,
-            width: 200,
-            height: 100
+        // панель ходов
+        el = GUI.createElement(ElementImage, {
+            x: 650, y: 80, src: '/images/panel-turns.png'
         });
         this.elements.push(el);
 
-        for (let id in DataPoints.objectImages) {
-            el = GUI.createElement(ElementImage, {
-                x: 10 + (id - 1) * DataPoints.BLOCK_WIDTH,
-                y: 200,
-                width: 50, height: 50,
-                src: DataPoints.objectImages[id]
-            });
-            goalsImagesEls[id] = el;
-            el = GUI.createElement(ElementText, {
-                x: 10 + (id - 1) * DataPoints.BLOCK_WIDTH,
-                y: 200 + DataPoints.BLOCK_HEIGHT,
-                width: DataPoints.BLOCK_WIDTH,
-                alignCenter: true
-            });
-            goalsCounterEls[id] = el;
-        }
+        // текст - ХОДЫ:
+        el = GUI.createElement(ElementText, {
+            x: 663, y: 90, width: 80, text: 'ХОДЫ'
+        });
+        this.elements.push(el);
+
+        // ходы
+        elementTurns = GUI.createElement(ElementText, {
+            x: 663, y: 123, width: 80
+        });
+        this.elements.push(elementTurns);
+        /*
+                el = GUI.createDom(undefined, {
+                    x: 600, y: 100,
+                    width: 200, height: 100
+                });
+                this.elements.push(el);
+                */
+//@todo move it to ElementGoaldsElement
+        elPanelGoals = GUI.createElement(ElementPanelItems, {
+            x: 10, y: 160, title: 'ЦЕЛИ'
+        });
+        self.elements.push(elPanelGoals);
 
         elementDialogGoals = GUI.createElement(ElementDialogGoals, {});
         self.elements.push(elementDialogGoals);
@@ -215,13 +209,8 @@ PageBlockField = function PageBlockField() {
         for (let i in self.elements) {
             self.elements[i].hide();
         }
-        for (let i in goalsImagesEls) {
-            goalsImagesEls[i].hide();
-        }
-        for (let i in goalsCounterEls) {
-            goalsCounterEls[i].hide();
-        }
         domStuff.hide();
+        elPanelGoals.hide();
     };
 
     this.loadField = function () {
@@ -244,8 +233,8 @@ PageBlockField = function PageBlockField() {
         elementDialogGoals.setGoals(data.goals);
         elementDialogGoals.showDialog();
         setTimeout(function () {
-                elementDialogGoals.closeDialog();
-            }, 1750 *100
+            elementDialogGoals.closeDialog();
+        }, 1750 * 100
         );
     };
 
@@ -256,32 +245,13 @@ PageBlockField = function PageBlockField() {
         if (!showed) return;
         elementScore.setText('очки: ' + score);
         elementStars.setText('звёзд: ' + DataPoints.countStars(null, null, score));
-        elementTurns.setText('ходы: ' + turns);
-        for (var i in self.elements) {
+        elementTurns.setText(turns.toString());
+        for (let i in self.elements) {
             self.elements[i].redraw();
         }
+        elPanelGoals.items  = goals;
+        elPanelGoals.redraw();
 
-        // goals indicatios
-        for (let i in goalsImagesEls) {
-            goalsImagesEls[i].hide();
-        }
-        for (let i in goalsCounterEls) {
-            goalsCounterEls[i].hide();
-        }
-        let offsetX;
-        offsetX = 0;
-
-        for (let i in goals) {
-
-            goalsImagesEls[goals[i].id].x = 10 + offsetX;
-            goalsImagesEls[goals[i].id].show();
-
-            goalsCounterEls[goals[i].id].x = 10 + offsetX;
-            goalsCounterEls[goals[i].id].setText(goals[i].count);
-            goalsCounterEls[goals[i].id].show();
-
-            offsetX += DataPoints.BLOCK_WIDTH + 5;
-        }
         if (stuffMode) {
             domStuff.show();
             domStuff.redraw();
@@ -293,7 +263,6 @@ PageBlockField = function PageBlockField() {
     let noMoreGoals;
 
     this.onDestroyLine = function (line) {
-        let objId, p;
         score += line.coords.length * 10;
 
         noMoreGoals = true;
@@ -314,7 +283,7 @@ PageBlockField = function PageBlockField() {
     };
 
     this.finishLevel = function () {
-        var pointId, user, lastScore;
+        let pointId, user, lastScore;
         Logs.log("finishLevel", Logs.LEVEL_DETAIL);
         user = LogicUser.getCurrentUser();
         pointId = DataPoints.getPlayedId();

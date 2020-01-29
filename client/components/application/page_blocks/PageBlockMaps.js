@@ -137,7 +137,6 @@ PageBlockMaps = function PageBlockMaps() {
                     chest = DataChests.getById(chestId);
                     goalStars = chest.goalStars;
                     mapStars = DataMap.countStarsByMapId();
-                    console.log('map stars: ' + mapStars);
                     if (isItOpened) {
                         console.log('уже открыт!');
                     } else {
