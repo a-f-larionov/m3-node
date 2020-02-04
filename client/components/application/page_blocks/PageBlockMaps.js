@@ -9,17 +9,17 @@ PageBlockMaps = function PageBlockMaps() {
      * Показывать ли страницу.
      * @type {boolean}
      */
-    var showed = false;
+    let showed = false;
 
-    var dialogPointInfo = false;
+    let dialogPointInfo = false;
 
     let dialogChestNeedStars;
 
     let dialogChestYouWin;
 
-    var elPreloader = false;
+    let elPreloader = false;
 
-    var elArrowPrev = false;
+    let elArrowPrev = false;
 
     var elArrowNext = false;
 
@@ -114,8 +114,7 @@ PageBlockMaps = function PageBlockMaps() {
                 number: coord.number,
                 pointId: coord.number,
                 onClick: function (event, dom, element) {
-                    console.log(element);
-                    dialogPointInfo.showDialog(element);
+                    dialogPointInfo.showDialog(element.pointId);
                 }
             });
             self.elements.push(el);
@@ -319,17 +318,12 @@ PageBlockMaps = function PageBlockMaps() {
      * Обновление данных перед отрисовкой точек
      */
     this.presetPoints = function () {
-        let user, pointId, point, pointEl, userPoint, map, friendsPoints;
+        let user, pointId, point, pointEl, userPoint, map;
         user = LogicUser.getCurrentUser();
         map = DataMap.getCurent();
         if (!map) return;
         userPoint = DataPoints.getPointUserScore(map.id, [user.id]);
 
-        let uids, users;
-        uids = LogicUser.getFriendIdsByMapId(DataMap.getCurent().id);
-        if (uids) {
-            users = LogicUser.getList(uids);
-        }
         // DataPoints
         for (let number = 1; number <= DataMap.POINTS_PER_MAP; number++) {
 
@@ -337,7 +331,7 @@ PageBlockMaps = function PageBlockMaps() {
             pointEl = pointsEls[number];
             pointEl.pointId = pointId;
             point = DataPoints.getById(pointId);
-            console.log(number, point);
+
             if (!point) continue;
 
             pointEl = pointsEls[number];
@@ -352,14 +346,18 @@ PageBlockMaps = function PageBlockMaps() {
                 pointEl.userScore = 0;
 
             //@todo and sort by score on this point!:)
+            let uids, users, friends;
+            uids = LogicUser.getFriendIdsByMapId(DataMap.getCurent().id);
+            if (uids) {
+                users = LogicUser.getList(uids);
+            }
             if (users) {
-                pointEl.setFriends(
-                    users.filter(function (user) {
-                        return user.currentPoint >= pointId;
-                    }).map(function (user) {
-                        return user.id;
-                    })
-                );
+                friends = users.filter(function (user) {
+                    return user.currentPoint >= pointId;
+                }).map(function (user) {
+                    return user.id;
+                });
+                pointEl.setFriends(friends);
             }
         }
     };

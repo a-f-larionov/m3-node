@@ -1,5 +1,5 @@
 LogicMap = function () {
-    var self = this;
+    let self = this;
 
     this.onArrowPrevClick = function () {
         DataMap.setPrevMap();

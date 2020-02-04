@@ -300,7 +300,7 @@ PageBlockField = function PageBlockField() {
                 score
             );
         }
-        elementDialogGoalsReached.showDialog();
+        elementDialogGoalsReached.showDialog(pointId);
     };
 
     this.beforeTurnUse = function () {

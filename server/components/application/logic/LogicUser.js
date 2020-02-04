@@ -176,7 +176,7 @@ LogicUser = function () {
      * @param user
      * @param cntx
      */
-    var userAddConn = function (user, cntx) {
+    let userAddConn = function (user, cntx) {
         if (!userToCntx[user.id]) {
             Logs.log("CREATE user context. uid:" + user.id + ", cid:" + cntx.connectionId, Logs.LEVEL_DETAIL);
             userToCntx[user.id] = {
@@ -201,7 +201,7 @@ LogicUser = function () {
      * @param userId
      * @returns {*}
      */
-    var userGetConns = function (userId) {
+    let userGetConns = function (userId) {
         return userToCntx[userId] ? userToCntx[userId].conns : null;
     };
 
@@ -210,8 +210,8 @@ LogicUser = function () {
      * Так же удалит контекст пользователя, если в результате удаления не останется ни одного соединения.
      * @param cntx
      */
-    var userDeleteConn = function (cntx) {
-        var userId = cntx.userId;
+    let userDeleteConn = function (cntx) {
+        let userId = cntx.userId;
         Logs.log("DELETE user conn", Logs.LEVEL_DETAIL);
         delete userToCntx[userId].conns[cntx.connectionId];
         userToCntx[userId].connsCount--;

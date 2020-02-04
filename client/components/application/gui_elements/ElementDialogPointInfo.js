@@ -6,7 +6,7 @@ ElementDialogPointInfo = function () {
      * Номер точки
      * @type {null}
      */
-    let elTextPointNumber = null;
+    let elTitle = null;
 
     let elStarOne = null;
     let elStarTwo = null;
@@ -29,11 +29,11 @@ ElementDialogPointInfo = function () {
         GUI.pushParent(self.dom);
 
         // номер точки\заголовок
-        elTextPointNumber = GUI.createElement(ElementText, {
+        elTitle = GUI.createElement(ElementText, {
             x: 135, y: 12, width: 230, height: 40,
             text: ''
         });
-        elTextPointNumber.show();
+        elTitle.show();
 
         // кол-во звёзд
         elStarOne = GUI.createElement(ElementImage, {
@@ -107,8 +107,9 @@ ElementDialogPointInfo = function () {
 
         user = LogicUser.getCurrentUser();
         point = DataPoints.getById(pointId);
-        elTextPointNumber.text = 'УРОВЕНЬ  ' + pointId;
-
+        elTitle.text = 'УРОВЕНЬ  ' + pointId;
+        console.log('p', pointId);
+        console.log('p', point);
         for (let i = 0; i < 3; i++) {
             if (friends[0] && (friend = LogicUser.getById(friends[0])) && friend.id) {
                 friendsPanel[i].elPhotoScore.user = friend;
@@ -122,7 +123,7 @@ ElementDialogPointInfo = function () {
         elUserPhotoScore.user = LogicUser.getCurrentUser();
         elUserPhotoScore.score = DataPoints.getScore(point.id);
 
-        elTextPointNumber.redraw();
+        elTitle.redraw();
         elStarOne.src = '/images/star-off-big.png';
         elStarTwo.src = '/images/star-off-big.png';
         elStarThree.src = '/images/star-off-big.png';
@@ -147,14 +148,13 @@ ElementDialogPointInfo = function () {
         }
     };
 
-    this.showDialog = function (element) {
-        pointId = element.pointId;
-        friends = element.friends;
+    this.showDialog = function (pId) {
+        let mapId;
+        pointId = pId;
+        //@todo mapId from pointId
+        mapId = DataMap.getCurent().id;
+        friends = LogicUser.getFriendIdsByMapIdAndPointId(mapId, pId);
         this.__proto__.showDialog.call(this);
         self.redraw();
     }
 };
-
-
-
-

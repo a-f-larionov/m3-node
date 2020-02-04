@@ -195,13 +195,16 @@ ElementPoint = function () {
     this.redraw = function () {
         if (!showed) return;
         switch (this.stateId) {
-            case 1:
+            case ElementPoint.STATE_CLOSE:
+                dom.pointer = GUI.POINTER_ARROW;
                 dom.backgroundImage = this.srcGrey;
                 break;
-            case 2:
+            case ElementPoint.STATE_CURRENT:
+                dom.pointer = GUI.POINTER_HAND;
                 dom.backgroundImage = this.srcRed;
                 break;
-            case 3:
+            case ElementPoint.STATE_FINISHED:
+                dom.pointer = GUI.POINTER_HAND;
                 dom.backgroundImage = this.srcYellow;
                 break;
         }

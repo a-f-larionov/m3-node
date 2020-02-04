@@ -2,7 +2,7 @@ DataStuff = function () {
 
     let tableName = 'users_stuff';
 
-    var fromDBToData = function (data) {
+    let fromDBToData = function (data) {
         if (!data) return data;
         if (data.userId) data.userId = parseInt(data.userId);
         if (data.hummerQty) data.hummerQty = parseInt(data.hummerQty);

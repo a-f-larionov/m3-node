@@ -190,6 +190,23 @@ LogicUser = function () {
         return friendsByMapId[mapId];
     };
 
+    this.getFriendIdsByMapIdAndPointId = function (mapId, pointId) {
+        let uids, users, friends;
+        friends = [];
+        uids = LogicUser.getFriendIdsByMapId(mapId);
+        if (uids) {
+            users = LogicUser.getList(uids);
+        }
+        if (users) {
+            friends = users.filter(function (user) {
+                return user.currentPoint >= pointId;
+            }).map(function (user) {
+                return user.id;
+            });
+        }
+        return friends;
+    };
+
     this.onTurnsLoose = function () {
         users[authorizedUserId].health--;
         users[authorizedUserId].healthStartTime = LogicTimeClient.getTime() * 1000;
