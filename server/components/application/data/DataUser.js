@@ -100,7 +100,7 @@ DataUser = function () {
         cache[user.id] = user;
         callback(user);
         DB.insert(tableName, user, function (result) {
-            if (result.insertId != user.id) {
+            if (result.insertId !== user.id) {
                 Logs.log("DataUser.createFromSocNet. result.insertId != user.id", Logs.LEVEL_FATAL_ERROR);
             }
             delete waitForCreateBySocNet[socNetUserId];

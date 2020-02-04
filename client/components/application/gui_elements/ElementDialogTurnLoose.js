@@ -2,11 +2,18 @@ ElementDialogTurnLoose = function () {
     let self = this;
     this.__proto__ = new ElementDialog();
 
+    /**
+     * Номер точки
+     * @type {null}
+     */
+    let elTitle;
+
     this.init = function () {
         this.__proto__.init.call(this);
-        let element;
+        GUI.pushParent(self.dom);
+        let el;
 
-        element = GUI.createElement(ElementButton, {
+        el = GUI.createElement(ElementButton, {
                 x: 452, y: 3,
                 srcRest: '/images/button-close-rest.png',
                 srcHover: '/images/button-close-hover.png',
@@ -15,21 +22,26 @@ ElementDialogTurnLoose = function () {
                     self.closeDialog();
                     PageController.showPage(PageMain);
                 }
-            }, this.dom
+            }
         );
 
-        self.elements.push(element);
+        self.elements.push(el);
 
-        element = GUI.createElement(ElementText, {
-            x: 50,
-            y: 100,
-            fontSize: 24,
-            bold: true,
-            alignCenter: true,
-            width: 250
-        }, this.dom);
-        element.setText("Ходы закончились, вы проиграли!<br> -1 жизнь");
-        self.elements.push(element);
+        el = GUI.createElement(ElementText, {
+            x: 50, y: 100, fontSize: 24, bold: true, alignCenter: true,
+            width: 400
+        });
+        el.setText("БОЛЬШЕ ХОДОВ НЕТ!");
+
+        self.elements.push(el);
+
+        // номер точки\заголовок
+        elTitle = GUI.createElement(ElementText, {
+            x: 135, y: 12, width: 230, height: 40, text: 'ПРОИГРЫШ'
+        });
+        elTitle.show();
+
+        GUI.popParent();
     };
 
     this.show = function () {
