@@ -3,13 +3,13 @@
  * @constructor
  */
 PageBlockBackground = function PageBlockBackground() {
-    var self = this;
+    let self = this;
 
     /**
      * Показывать ли страницу.
      * @type {boolean}
      */
-    var showed = false;
+    let showed = false;
 
     /**
      * Массив всех элементов страницы.
@@ -18,7 +18,7 @@ PageBlockBackground = function PageBlockBackground() {
     this.elements = [];
 
     this.init = function () {
-        var element;
+        let element;
         /* Задний фон */
         element = GUI.createElement(ElementImage, {
             x: 0,
@@ -35,7 +35,7 @@ PageBlockBackground = function PageBlockBackground() {
         if (showed === true) return;
         showed = true;
         self.preset();
-        for (var i in self.elements) {
+        for (let i in self.elements) {
             self.elements[i].show();
         }
         self.redraw();
@@ -47,7 +47,7 @@ PageBlockBackground = function PageBlockBackground() {
     this.hide = function () {
         if (showed === false) return;
         showed = false;
-        for (var i in self.elements) {
+        for (let i in self.elements) {
             self.elements[i].hide();
         }
     };
@@ -65,7 +65,7 @@ PageBlockBackground = function PageBlockBackground() {
     this.redraw = function () {
         if (!showed) return;
         self.preset();
-        for (var i in self.elements) {
+        for (let i in self.elements) {
             self.elements[i].redraw();
         }
     };

@@ -3,7 +3,7 @@
  * @constructor
  */
 Profiler = function () {
-    var self = this;
+    let self = this;
 
     this.start = function (id) {
 

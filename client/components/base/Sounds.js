@@ -1,7 +1,7 @@
 Sounds = function () {
-    var self = this;
+    let self = this;
 
-    var cache = {};
+    let cache = {};
 
     this.enabled = true;
     this.PATH_CHALK = '/sounds/chalk.mp3';

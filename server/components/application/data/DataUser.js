@@ -58,7 +58,7 @@ DataUser = function () {
         });
     };
 
-    var cache = {};
+    let cache = {};
     /**
      * Вернуть пользователя по id.
      * @param userId внутрений id пользовтаеля.
@@ -77,7 +77,7 @@ DataUser = function () {
         });
     };
 
-    var waitForCreateBySocNet = [];
+    let waitForCreateBySocNet = [];
     /**
      * Создать пользователя по данным из социальной сети.
      * @param socNetTypeId id социальной сети SocNet.TYPE_*
@@ -124,7 +124,7 @@ DataUser = function () {
      * @param callback {Function}
      */
     this.save = function (user, callback) {
-        var data;
+        let data;
         cache[user.id] = user;
         data = {
             id: user.id,

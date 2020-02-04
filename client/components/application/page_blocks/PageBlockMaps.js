@@ -3,7 +3,7 @@
  * @constructor
  */
 PageBlockMaps = function PageBlockMaps() {
-    var self = this;
+    let self = this;
 
     /**
      * Показывать ли страницу.
@@ -21,31 +21,31 @@ PageBlockMaps = function PageBlockMaps() {
 
     let elArrowPrev = false;
 
-    var elArrowNext = false;
+    let elArrowNext = false;
 
-    var elMap = false;
+    let elMap = false;
 
-    var elMapWay = false;
+    let elMapWay = false;
 
-    var elOldPaper = false;
+    let elOldPaper = false;
 
-    var elMapElements = {};
+    let elMapElements = {};
 
     /**
      * @type {ElementFriendsPanel}
      */
     let elFriendsPanel;
 
-    var mapIdOld = 1;
+    let mapIdOld = 1;
 
     let domLoader = null;
 
     /**
      * @type ElementPoint[]
      */
-    var pointsEls = [];
+    let pointsEls = [];
 
-    var chestsEls = [];
+    let chestsEls = [];
 
     /**
      * Массив всех элементов страницы.
@@ -217,7 +217,7 @@ PageBlockMaps = function PageBlockMaps() {
     this.hide = function () {
         if (showed === false) return;
         showed = false;
-        for (var i in self.elements) {
+        for (let i in self.elements) {
             self.elements[i].hide();
         }
         this.mapElsHide();
@@ -346,18 +346,20 @@ PageBlockMaps = function PageBlockMaps() {
                 pointEl.userScore = 0;
 
             //@todo and sort by score on this point!:)
-            let uids, users, friends;
+            let uids, users, gamers;
             uids = LogicUser.getFriendIdsByMapId(DataMap.getCurent().id);
             if (uids) {
                 users = LogicUser.getList(uids);
             }
             if (users) {
-                friends = users.filter(function (user) {
+                console.log('user', users);
+                gamers = users.filter(function (user) {
                     return user.currentPoint >= pointId;
                 }).map(function (user) {
                     return user.id;
                 });
-                pointEl.setFriends(friends);
+                gamers.push(user.id);
+                pointEl.setGamers(gamers);
             }
         }
     };

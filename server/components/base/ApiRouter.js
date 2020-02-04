@@ -1,6 +1,7 @@
+let FS, PATH;
 if (CONST_IS_SERVER_SIDE) {
-    var FS = require('fs');
-    var PATH = require('path');
+    FS = require('fs');
+    PATH = require('path');
 }
 
 /**
@@ -9,13 +10,13 @@ if (CONST_IS_SERVER_SIDE) {
  * @constructor
  */
 ApiRouter = new (function () {
-    var self = this;
+    let self = this;
 
-    var map;
+    let map;
 
-    var connections = {};
-    var onDisconnectCallbacks = [];
-    var onFailedSendCallbacks = [];
+    let connections = {};
+    let onDisconnectCallbacks = [];
+    let onFailedSendCallbacks = [];
 
     /**
      * Set API Map
@@ -31,7 +32,7 @@ ApiRouter = new (function () {
      * @param id {Number} id соединения.
      */
     this.onData = function (packet, id) {
-        var group, method, args;
+        let group, method, args;
         try {
             packet = JSON.parse(packet);
         } catch (e) {
@@ -82,7 +83,7 @@ ApiRouter = new (function () {
         // добавим к аргументам контекст соединения.
         args.unshift(connections[id]);
         // выполним запрашиваемый метод.
-        var connectionsKey;
+        let connectionsKey;
         connectionsKey = '';
         if (id) connectionsKey = id;
 
@@ -101,14 +102,14 @@ ApiRouter = new (function () {
 
     this.onDisconnect = function (id) {
         Logs.log("connection close: id=" + id, Logs.LEVEL_DETAIL);
-        for (var i in onDisconnectCallbacks) {
+        for (let i in onDisconnectCallbacks) {
             onDisconnectCallbacks[i].call(self, connections[id]);
         }
         delete connections[id];
     };
 
     this.executeRequest = function (group, method, args, cntxList) {
-        var connectionsKey, i;
+        let connectionsKey, i;
         /* Convert object to array. */
         args = Array.prototype.slice.call(args);
 
@@ -121,17 +122,17 @@ ApiRouter = new (function () {
         }
         Logs.log(connectionsKey + " " + "<< " + group + "." + method + ':' + args.join(','), Logs.LEVEL_DETAIL);
 
-        var packet = {
+        let packet = {
             group: group,
             method: method,
             args: args
         };
         packet = JSON.stringify(packet);
-        var cntxListLength = 0;
+        let cntxListLength = 0;
         for (i in cntxList) {
             if (!this.sendData(packet, cntxList[i].connectionId)) {
                 Logs.log("ApiRouter.failedToSend", Logs.LEVEL_WARNING, {packet: packet, cntx: cntxList[i]});
-                for (var j in onFailedSendCallbacks) {
+                for (let j in onFailedSendCallbacks) {
                     onFailedSendCallbacks[j].call(self, cntxList[j]);
                 }
             }
@@ -168,16 +169,16 @@ ApiRouter = new (function () {
      * @returns {string}
      */
     this.getSAPIJSCode = function () {
-        var code, group, method;
+        let code, group, method;
         code = '';
-        var pureData;
+        let pureData;
         pureData = {};
-        if (!map){
+        if (!map) {
             map = getSAPIMap();
         }
         for (group in map) {
             for (method in global[group]) {
-                if (typeof global[group][method] !== 'function')continue;
+                if (typeof global[group][method] !== 'function') continue;
                 if (!pureData[group]) {
                     pureData[group] = {};
                 }
@@ -216,12 +217,12 @@ ApiRouter = new (function () {
     };
 
     this.generateClient = function () {
-        var groupName, map;
+        let groupName, map;
 
         map = getCAPIMap();
         // for client
         // формирование карты для ApiRouter. { CAPI*: CAPI*, ... }
-        var code2 = '';
+        let code2 = '';
         code2 += 'ApiRouter.map = {\r\n';
         for (groupName in map) {
             code2 += '\t' + groupName + ' : ' + groupName + ',\r\n';
@@ -236,15 +237,15 @@ ApiRouter = new (function () {
      * Generate capi map from exist code.
      * @returns {*}
      */
-    var getCAPIMap = function () {
-        var path, list, groupName, methodName, map, tmp;
+    let getCAPIMap = function () {
+        let path, list, groupName, methodName, map, tmp;
         path = CONST_DIR_CLIENT + 'components/application/capi/';
         list = FS.readdirSync(path);
         map = {};
-        for (var i in list) {
+        for (let i in list) {
             /**@todo .js extenstion must be */
-            if (list[i] == '.gitkeep')continue;
-            if (list[i] == '.gitignore')continue;
+            if (list[i] === '.gitkeep') continue;
+            if (list[i] === '.gitignore') continue;
             groupName = getComponentNameFromPath(path + list[i]);
             tmp = null;
             if (global[groupName]) {
@@ -268,15 +269,15 @@ ApiRouter = new (function () {
      * Generate sapi map from exist code.
      * @returns {*}
      */
-    var getSAPIMap = function () {
-        var path, list, groupName, methodName, map;
+    let getSAPIMap = function () {
+        let path, list, groupName, methodName, map;
         path = CONST_DIR_COMPONENTS + '/application/sapi/';
         list = FS.readdirSync(path);
         map = {};
-        for (var i in list) {
+        for (let i in list) {
             /**@todo .js extenstion must be */
-            if (list[i] == '.gitkeep')continue;
-            if (list[i] == '.gitignore')continue;
+            if (list[i] == '.gitkeep') continue;
+            if (list[i] == '.gitignore') continue;
             groupName = getComponentNameFromPath(path + list[i]);
             require(path + list[i]);
             map[groupName] = [];
@@ -289,7 +290,7 @@ ApiRouter = new (function () {
         return map;
     };
 
-    var getComponentNameFromPath = function (path) {
+    let getComponentNameFromPath = function (path) {
         return PATH.basename(path).replace('.js', '');
     };
 
@@ -297,8 +298,8 @@ ApiRouter = new (function () {
      *
      * @param map
      */
-    var generateSAPIMapCode = function (map) {
-        var groupName, code;
+    let generateSAPIMapCode = function (map) {
+        let groupName, code;
         code = '';
         code += ' ApiRouter.setMap({\r\n';
         for (groupName in map) {
@@ -311,18 +312,18 @@ ApiRouter = new (function () {
     /**
      *
      */
-    var generateCAPIComponents = function (map) {
-        var groupName, methodName;
-        var code = '';
+    let generateCAPIComponents = function (map) {
+        let groupName, methodName;
+        let code = '';
         for (groupName in map) {
             /*@todo must .js extension*/
             if (groupName == '.gitkeep') continue;
-            if (groupName == '.gitignore')continue;
+            if (groupName == '.gitignore') continue;
             code = '';
             code += groupName + ' = function(){\r\n\r\n';
             for (methodName in map[groupName]) {
                 code += '\tthis.' + methodName + ' = function(){\r\n\r\n';
-                code += '\t\tvar args, toUserId;\r\n';
+                code += '\t\tlet args, toUserId;\r\n';
                 code += '\t\targs = Array.prototype.slice.call(arguments);\r\n';
                 code += '\t\ttoUserId = args.shift();\r\n';
                 code += '\t\tLogicUser.sendToUser(toUserId, "' + groupName + '", "' + methodName + '", args);\r\n';

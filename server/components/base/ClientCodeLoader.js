@@ -1,67 +1,67 @@
-var FS = require('fs');
-var OS = require('os');
-var PATH = require('path');
-var IMAGE_SIZE = require('image-size');
-var UGLIFYJS = require('uglify-js');
-var SPRITESMITH = require('spritesmith');
+let FS = require('fs');
+let OS = require('os');
+let PATH = require('path');
+let IMAGE_SIZE = require('image-size');
+let UGLIFYJS = require('uglify-js');
+let SPRITESMITH = require('spritesmith');
 
 ClientCodeLoader = function () {
 
-    var self = this;
+    let self = this;
     /**
      * @type {string}
      */
-    var imagesPrefix = '/images/';
+    let imagesPrefix = '/images/';
 
     /**
      * @type {boolean}
      */
-    var reloadClientCodeEveryRequest = null;
+    let reloadClientCodeEveryRequest = null;
 
     /**
      * Перезагружать ли код картинок каждый раз.
      * @type {boolean}
      */
-    var reloadClientImageCodeEveryRequest = null;
+    let reloadClientImageCodeEveryRequest = null;
 
     /**
      * Use Sprite image by SpriteSmith
      * @type {boolean}
      */
-    var useSpritedImage = true;
+    let useSpritedImage = true;
 
     /**
      * Client code VK.
      * @type {string}
      */
-    var clientCodeVK = '';
+    let clientCodeVK = '';
 
     /**
      * Client code Standalone.
      * @type {string}
      */
-    var clientCodeStandalone = '';
+    let clientCodeStandalone = '';
 
     /**
      * Client code for images
      * @type {string}
      */
-    var clientImageCode = '';
+    let clientImageCode = '';
 
-    var imagesPath;
+    let imagesPath;
     /**
      * Инитиализация
      * @type {string}
      */
-    var clientCodePath = null;
+    let clientCodePath = null;
 
-    var generateImageSpriteResult = null;
+    let generateImageSpriteResult = null;
 
     /**
      * Учитвая что SSL Сертификат это тот еще геморой, легче использовать один домен
      * @type {string}
      */
-    var projectPrefix = '';
+    let projectPrefix = '';
 
     this.init = function (callback) {
         projectPrefix = Config.Project.name ? '/' + Config.Project.name : '';
@@ -96,7 +96,7 @@ ClientCodeLoader = function () {
 
     this.getClientCodeVK = function (callback) {
         if (Config.Project.maintance) {
-            var html;
+            let html;
             html = '';
             html += '\<!DOCTYPE html>\
             <html>\
@@ -115,7 +115,7 @@ ClientCodeLoader = function () {
 
     this.getClientCodeStandalone = function (callback) {
         if (Config.Project.maintance) {
-            var html;
+            let html;
             html = '';
             html += '\<!DOCTYPE html>\
             <html>\
@@ -133,7 +133,7 @@ ClientCodeLoader = function () {
     };
 
     this.getVKCommentsWidget = function (callback) {
-        var VKCommentsWidgetCode = "" +
+        let VKCommentsWidgetCode = "" +
             "<html>" +
             "<head>" +
             "<script type='text/javascript' src='//vk.com/js/api/openapi.js?116'></script>" +
@@ -156,8 +156,8 @@ ClientCodeLoader = function () {
         callback('<pre>' + "Reload Client Code executed!" + new Date().getTime() + '</pre>');
     };
 
-    var generateClientCodeVK = function () {
-        var code;
+    let generateClientCodeVK = function () {
+        let code;
         Logs.log("Generate vk client code.");
         //@todo сделать тут HTML5
         code = "";
@@ -197,9 +197,9 @@ ClientCodeLoader = function () {
     /**
      * Загрузка клиенсткого кода для стэндэлон версии.
      */
-    var loadClientCodeStandalone = function () {
+    let loadClientCodeStandalone = function () {
         Logs.log("Load standalone client code.");
-        var code;
+        let code;
         code = "";
         code += "<!doctype html>";
         code += "<html>";
@@ -225,15 +225,15 @@ ClientCodeLoader = function () {
     /**
      * Перезагрузка основного кода клиента.
      */
-    var reloadMainClientCode = function () {
-        var mainClientJSCode;
+    let reloadMainClientCode = function () {
+        let mainClientJSCode;
         mainClientJSCode = getMainClientJSCode();
         //@todo path to JS move to Config file
 
         //@todo LogicClintCodeloader.config?
         if (Config.WebSocketServer.compressJSClientCode) {
             mainClientJSCode = 'function ___(){ ' + mainClientJSCode + ' };___();';
-            var result = UGLIFYJS.minify(mainClientJSCode);
+            let result = UGLIFYJS.minify(mainClientJSCode);
             if (result.code) {
                 mainClientJSCode = result.code;
             } else {
@@ -248,10 +248,10 @@ ClientCodeLoader = function () {
     /**
      * @param files[]
      */
-    var clientCodePrepareCode = function (files) {
-        var path, file_content, name, code;
+    let clientCodePrepareCode = function (files) {
+        let path, file_content, name, code;
         code = '';
-        for (var i in files) {
+        for (let i in files) {
             path = files[i];
             file_content = FS.readFileSync(path);
             if (file_content == 'ClientServerCompliant') {
@@ -270,15 +270,15 @@ ClientCodeLoader = function () {
      * Собирает основной JS код клиента.
      * Этот код одинаков для всех социальных сетей(платформ).
      */
-    var getMainClientJSCode = function () {
-        var jsFiles, hostname, clientConfigPath, code;
+    let getMainClientJSCode = function () {
+        let jsFiles, hostname, clientConfigPath, code;
         jsFiles = [];
         jsFiles = jsFiles.concat(getFileListRecursive(clientCodePath + 'core/'));
         jsFiles = jsFiles.concat(getFileListRecursive(clientCodePath + 'components/'));
         /* Include Config file. */
         hostname = OS.hostname();
-        var parentFolderName = (function () {
-            var cwd;
+        let parentFolderName = (function () {
+            let cwd;
             cwd = process.cwd().split(PATH.sep);
             cwd.pop();
             return cwd.pop();
@@ -294,7 +294,7 @@ ClientCodeLoader = function () {
         return code;
     };
 
-    var getClientImageCode = function () {
+    let getClientImageCode = function () {
         if (useSpritedImage) {
             return getClientImageCodeSprited();
         } else {
@@ -302,7 +302,7 @@ ClientCodeLoader = function () {
         }
     };
 
-    var getClientImageCodeSprited = function () {
+    let getClientImageCodeSprited = function () {
         let imageCode, path, timePostfix;
         let spriteJsonPath = '../public/images/sprite.png.json';
         if (!reloadClientImageCodeEveryRequest && clientImageCode) {
@@ -338,8 +338,8 @@ ClientCodeLoader = function () {
     /**
      * Формирует Js-код картинок.
      */
-    var getClientImageCodeImageList = function () {
-        var imageFiles, imageCode, path, timePostfix, demension;
+    let getClientImageCodeImageList = function () {
+        let imageFiles, imageCode, path, timePostfix, demension;
         if (!reloadClientImageCodeEveryRequest && clientImageCode) {
             return clientImageCode;
         }
@@ -368,11 +368,11 @@ ClientCodeLoader = function () {
         return imageCode;
     };
 
-    var getFileListRecursive = function (basePath) {
-        var dirList, path, files;
+    let getFileListRecursive = function (basePath) {
+        let dirList, path, files;
         files = [];
         dirList = FS.readdirSync(basePath);
-        for (var i in dirList) {
+        for (let i in dirList) {
             /**@todo .js extenstion must be */
             if (dirList[i] == '.gitkeep') continue;
             if (dirList[i] == '.gitignore') continue;
@@ -387,10 +387,10 @@ ClientCodeLoader = function () {
         return files;
     };
 
-    var generateImageSpriteLoaded = false;
+    let generateImageSpriteLoaded = false;
 
-    var generateImageSprite = function (callback) {
-        var sprites, spritePath;
+    let generateImageSprite = function (callback) {
+        let sprites, spritePath;
 
         if (generateImageSpriteLoaded) return;
         generateImageSpriteLoaded = true;
@@ -414,19 +414,19 @@ ClientCodeLoader = function () {
             }
             // coordinates: ['../public/images/buttons/addFriendActive.png': { x: 75, y: 1353, width: 75, height: 80 },
             //'../public/images/buttons/addFriendHover.png': { x: 150, y: 1353, width
-            var fsResult = FS.writeFileSync(spritePath, result.image, 'binary');
+            let fsResult = FS.writeFileSync(spritePath, result.image, 'binary');
             Logs.log("SPRITESMITH Complete", Logs.LEVEL_NOTIFY);
             callback(result);
         });
     };
 
-    var getGUIGeneratedCode = function () {
+    let getGUIGeneratedCode = function () {
 
         /*
          1 - get PageBlock folder files
          2 - for each generate add block code
          */
-        var files, guiCode, pageBlocks, name;
+        let files, guiCode, pageBlocks, name;
         guiCode = '';
         guiCode += 'GUI.init();' + "\r\n";
         pageBlocks = [];

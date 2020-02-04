@@ -4,18 +4,18 @@ LogicTimeClient = function () {
      * Server time
      * @type {number}
      */
-    var serverTime = 0;
+    let serverTime = 0;
     /**
      * Time of receipt
      * @type {number}
      */
-    var gotTime = 0;
+    let gotTime = 0;
 
     /**
      * Server vs client diff time
      * @type {number}
      */
-    var timeDiff = 0;
+    let timeDiff = 0;
 
     this.setServerTime = function (timestamp) {
         serverTime = timestamp;
@@ -33,7 +33,7 @@ LogicTimeClient = function () {
     };
 
     this.convertToClient = function (timestamp) {
-        var newTimestamp;
+        let newTimestamp;
         newTimestamp = timestamp - timeDiff;
         return newTimestamp;
     };

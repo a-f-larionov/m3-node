@@ -1,9 +1,9 @@
 /**
  * Подключаем nodeJS модули.
  */
-var WEBSOCKET = require('websocket');
-var HTTP = require('http');
-var URL = require('url');
+let WEBSOCKET = require('websocket');
+let HTTP = require('http');
+let URL = require('url');
 
 /**
  * Компонент обслуживающий соединения на сервере.
@@ -11,24 +11,24 @@ var URL = require('url');
  * @constructor
  */
 WebSocketServer = function () {
-    var self = this;
+    let self = this;
 
-    var map = {};
+    let map = {};
 
-    var lastConnectionId = null;
+    let lastConnectionId = null;
 
     /**
      * Порт для прослушки.
      * @type {int};
      */
-    var port = null;
+    let port = null;
 
     /**
      * Проверка перед запуском:
      * - проверим установлены ли каллбэки пользовательским кодом;
      * - проверим настройки: port
      */
-    var checkBeforeRun = function () {
+    let checkBeforeRun = function () {
         if (typeof self.onConnect != 'function') {
             Logs.log("onConnect must be function", Logs.LEVEL_FATAL_ERROR, self.onConnect);
         }
@@ -47,7 +47,7 @@ WebSocketServer = function () {
      * Путь откуда загружать картинки.
      * @type {string}
      */
-    var imagesPath = null;
+    let imagesPath = null;
 
     /**
      * Каллбэек будет вызываться при коннекте.
@@ -91,22 +91,22 @@ WebSocketServer = function () {
     /**
      * Последний id соединения.
      */
-    var lastId = 0;
+    let lastId = 0;
 
     /**
      * Стэк соединений.
      */
-    var connectionStack = {};
+    let connectionStack = {};
 
     /**
      * Тут храниться HTTP сервер, nodeJS-модуль
      */
-    var http;
+    let http;
 
     /**
      * Тут храниться WebSocket.server, nodeJS-модуль
      */
-    var server;
+    let server;
 
     /**
      * Загружается клиентский код.
@@ -141,10 +141,10 @@ WebSocketServer = function () {
      * @param response
      * @returns {boolean}
      */
-    var onHTTPRequest = function (request, response) {
-        var path, requestUrlParts;
+    let onHTTPRequest = function (request, response) {
+        let path, requestUrlParts;
         /* Запрашивается клинетский код? */
-        for (var path in map) {
+        for (let path in map) {
             requestUrlParts = URL.parse(request.url, true);
             if (requestUrlParts.pathname === path) {
                 map[path].call(null, function (answer) {
@@ -164,8 +164,8 @@ WebSocketServer = function () {
      * Обработчик запросов от WebSocket-а
      * Собственно это запросы на соединение.
      */
-    var onWebSocketRequest = function (request) {
-        var connection, id;
+    let onWebSocketRequest = function (request) {
+        let connection, id;
         connection = request.accept(null, request.origin);
         id = ++lastId;
         connectionStack[id] = connection;

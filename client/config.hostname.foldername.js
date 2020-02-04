@@ -1,4 +1,4 @@
-var Config = {
+let Config = {
     Logs: {
         triggerLevel: Logs.LEVEL_NOTIFY
     },

@@ -5,13 +5,13 @@
  * @property y
  */
 ElementChest = function () {
-    var self = this;
+    let self = this;
 
     /**
      * Показывать ли элемент.
      * @type {boolean}
      */
-    var showed = false;
+    let showed = false;
 
     /**
      * Координата X.
@@ -52,25 +52,25 @@ ElementChest = function () {
      * Дом картинки.
      * @type {GUIDom}
      */
-    var dom = null;
+    let dom = null;
 
     /**
      * Текст показывающий кол-во собранных звёзд на этом сундуке.
      * @type {null}
      */
-    var elText = null;
+    let elText = null;
 
     /**
      * Опущена ли мышка.
      * @type {boolean}
      */
-    var mouseStateDown = false;
+    let mouseStateDown = false;
 
     /**
      * Мышь в фокусе.
      * @type {boolean}
      */
-    var mouseStateFocused = false;
+    let mouseStateFocused = false;
 
     /**
      * Состояние сундука: 1 - закрыт, 2 - открыт
@@ -171,7 +171,7 @@ ElementChest = function () {
     /**
      * Обработка события фокуса мыши.
      */
-    var onMouseOver = function () {
+    let onMouseOver = function () {
         if (!self.enabled) return;
         mouseStateFocused = true;
         self.redraw();
@@ -180,7 +180,7 @@ ElementChest = function () {
     /**
      * Обработчик события на опускание мыши.
      */
-    var onMouseDown = function () {
+    let onMouseDown = function () {
         if (!self.enabled) return;
         mouseStateDown = true;
         self.redraw();
@@ -189,7 +189,7 @@ ElementChest = function () {
     /**
      * Обработка события выхода фокуса мыши.
      */
-    var onMouseOut = function () {
+    let onMouseOut = function () {
         if (!self.enabled) return;
         mouseStateFocused = false;
         self.redraw();
@@ -200,7 +200,7 @@ ElementChest = function () {
      * @param mouseEvent {MouseEvent}
      * @param dom {Element}
      */
-    var onMouseClick = function (mouseEvent, dom) {
+    let onMouseClick = function (mouseEvent, dom) {
         /* Да, тут мы останавливаем дальнейшие течение клика. */
         mouseEvent.stopPropagation();
         //if (self.stateId === ElementChest.STATE_CLOSE) return;

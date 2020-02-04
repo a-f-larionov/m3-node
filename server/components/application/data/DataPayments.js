@@ -1,8 +1,8 @@
 DataPayments = function () {
 
-    var tableName = 'payments';
+    let tableName = 'payments';
 
-    var fromDBToData = function (data) {
+    let fromDBToData = function (data) {
         if (!data) return data;
         if (data.id) data.id = parseInt(data.id);
         if (data.time) data.time = parseInt(data.time);

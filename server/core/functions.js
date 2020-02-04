@@ -18,8 +18,8 @@ error = function (message) {
 };
 
 /* Sequenced inits */
-var sequencedInitStack = [];
-var sequencedInitBlocked = false;
+let sequencedInitStack = [];
+let sequencedInitBlocked = false;
 
 /**
  * Add to queue and try call next
@@ -30,7 +30,7 @@ sequencedInit = function (initFunction) {
     tryInitNext();
 };
 
-var tryInitNext = function () {
+let tryInitNext = function () {
     if (!sequencedInitStack.length) {
         return;
     }
@@ -46,16 +46,16 @@ var tryInitNext = function () {
 /**
  * Динициализация\остановка системы.
  */
-var deInitCallbacks = [];
+let deInitCallbacks = [];
 addDeInitCallback = function (callback) {
     deInitCallbacks.push(callback);
 };
 
 deInitBeforeShutdown = function (callback) {
-    var count;
+    let count;
     count = 0;
     log("Deinit callbacks is raised.");
-    for (var i in deInitCallbacks) {
+    for (let i in deInitCallbacks) {
         deInitCallbacks[i].call(null, function () {
             count++;
         });
@@ -88,19 +88,19 @@ process.on('uncaughtException', function (err) {
  *  http://www.webtoolkit.info/
  *
  **/
-var STR_PAD_LEFT = 1;
-var STR_PAD_RIGHT = 2;
-var STR_PAD_BOTH = 3;
+let STR_PAD_LEFT = 1;
+let STR_PAD_RIGHT = 2;
+let STR_PAD_BOTH = 3;
 
 str_pad = function (str, len, pad, dir) {
     if (typeof(len) == "undefined") {
-        var len = 0;
+        let len = 0;
     }
     if (typeof(pad) == "undefined") {
-        var pad = ' ';
+        let pad = ' ';
     }
     if (typeof(dir) == "undefined") {
-        var dir = STR_PAD_RIGHT;
+        let dir = STR_PAD_RIGHT;
     }
     if (len + 1 >= str.length) {
 
@@ -110,8 +110,8 @@ str_pad = function (str, len, pad, dir) {
                 break;
 
             case STR_PAD_BOTH:
-                var right = Math.ceil((padlen = len - str.length) / 2);
-                var left = padlen - right;
+                let right = Math.ceil((padlen = len - str.length) / 2);
+                let left = padlen - right;
                 str = Array(left + 1).join(pad) + str + Array(right + 1).join(pad);
                 break;
 

@@ -1,9 +1,9 @@
 //@todo не работает ...
-//var nodemailer = require('nodemailer');
+//let  nodemailer = require('nodemailer');
 LogicUser = function () {
-    var self = this;
-    var userToCntx = {};
-    var userToCntxCount = 0;
+    let self = this;
+    let userToCntx = {};
+    let userToCntxCount = 0;
 
     this.init = function (afterInitCallback) {
         ApiRouter.addOnDisconnectCallback(onDisconnectOrFailedSend);
@@ -19,7 +19,7 @@ LogicUser = function () {
      * @param cntx
      */
     this.authorizeByVK = function (socNetUserId, authParams, cntx) {
-        var socNetTypeId = SocNet.TYPE_VK;
+        let socNetTypeId = SocNet.TYPE_VK;
         socNetUserId = parseInt(socNetUserId);
         if (isNaN(socNetUserId)) {
             Logs.log("LogicUser: cant auth, SocNet.checkAuth failed. (VK), socNetUserId is not a number", Logs.LEVEL_WARNING, {
@@ -28,7 +28,7 @@ LogicUser = function () {
             });
             return;
         }
-        var checkResult = SocNet(socNetTypeId).checkAuth(socNetUserId, authParams);
+        let checkResult = SocNet(socNetTypeId).checkAuth(socNetUserId, authParams);
         if (!checkResult) {
             Logs.log("LogicUser: cant auth, SocNet.checkAuth failed. (VK)", Logs.LEVEL_WARNING, {
                 socNetUserId: socNetUserId,
@@ -37,7 +37,7 @@ LogicUser = function () {
             return;
         }
         if (!checkResult) return;
-        var prid = Profiler.start(Profiler.ID_AUTH_VK);
+        let prid = Profiler.start(Profiler.ID_AUTH_VK);
         /* get from db */
         DataUser.getBySocNet(socNetTypeId, socNetUserId, function (user) {
             authorizeOrCreate(user, socNetTypeId, socNetUserId, cntx, prid, Profiler.ID_AUTH_VK);
@@ -51,7 +51,7 @@ LogicUser = function () {
      * @param cntx {Object}
      */
     this.authorizeByStandalone = function (socNetUserId, authParams, cntx) {
-        var socNetTypeId = SocNet.TYPE_STANDALONE;
+        let socNetTypeId = SocNet.TYPE_STANDALONE;
         socNetUserId = parseInt(socNetUserId);
         if (isNaN(socNetUserId)) {
             Logs.log("LogicUser: cant auth, SocNet.checkAuth failed. (VK), socNetUserId is not a number", Logs.LEVEL_WARNING, {
@@ -60,7 +60,7 @@ LogicUser = function () {
             });
             return;
         }
-        var checkResult = SocNet(socNetTypeId).checkAuth(socNetUserId, authParams);
+        let checkResult = SocNet(socNetTypeId).checkAuth(socNetUserId, authParams);
         if (!checkResult) {
             Logs.log("LogicUser: cant auth, SocNet.checkAuth failed.(Standalone)", Logs.LEVEL_WARNING, {
                 socNetUserId: socNetUserId,
@@ -68,14 +68,14 @@ LogicUser = function () {
             });
         }
         if (!checkResult) return;
-        var prid = Profiler.start(Profiler.ID_AUTH_STANDALONE);
+        let prid = Profiler.start(Profiler.ID_AUTH_STANDALONE);
         /* get from db */
         DataUser.getBySocNet(socNetTypeId, socNetUserId, function (user) {
             authorizeOrCreate(user, socNetTypeId, socNetUserId, cntx, prid, Profiler.ID_AUTH_STANDALONE);
         });
     };
 
-    var authorizeOrCreate = function (user, socNetTypeId, socNetUserId, cntx, prid, profilerType) {
+    let authorizeOrCreate = function (user, socNetTypeId, socNetUserId, cntx, prid, profilerType) {
         /* if not exists create user */
         if (!user) {
             createUser(socNetTypeId, socNetUserId, function (user) {
@@ -92,7 +92,7 @@ LogicUser = function () {
      * @param socNetUserId {Number} id юзера в социальной сети.
      * @param callback {Function} будет вызван после создания пользователя.
      */
-    var createUser = function (socNetTypeId, socNetUserId, callback) {
+    let createUser = function (socNetTypeId, socNetUserId, callback) {
         DataUser.createFromSocNet(socNetTypeId, socNetUserId, function (user) {
             callback(user);
         });
@@ -106,7 +106,7 @@ LogicUser = function () {
      * @param profilerType {int} id профайлера.
      * @todo prid and profilerType conflited by means..
      */
-    var authorizeSendSuccess = function (user, cntx, prid, profilerType) {
+    let authorizeSendSuccess = function (user, cntx, prid, profilerType) {
         /* тут мы запомним его connectionId раз и на всегда */
         Statistic.add(user.id, Statistic.ID_AUTHORIZE);
         userAddConn(user, cntx);
@@ -123,7 +123,7 @@ LogicUser = function () {
      * @param arguments {Array} аргументы апи.
      */
     this.sendToUser = function (userId, group, method, arguments) {
-        var cntxList = userGetConns(userId);
+        let cntxList = userGetConns(userId);
         ApiRouter.executeRequest(group, method, arguments, cntxList);
     };
 
@@ -140,12 +140,12 @@ LogicUser = function () {
      * @param arg8 {*} любой параметр, будет передан в CAPI-функцию 8-ым.
      */
     this.sendToAll = function () {
-        var prid = Profiler.start(Profiler.ID_LOGIC_SEND_TO_ALL);
-        var args = [];
+        let prid = Profiler.start(Profiler.ID_LOGIC_SEND_TO_ALL);
+        let args = [];
         args = Array.prototype.slice.call(arguments);
         capiFunction = args.shift();
         args.unshift(0);
-        for (var userId in userToCntx) {
+        for (let userId in userToCntx) {
             args[0] = userId;
             capiFunction.apply(null, args);
         }
@@ -153,9 +153,9 @@ LogicUser = function () {
     };
 
     this.getOnlineUserIds = function () {
-        var list;
+        let list;
         list = {};
-        for (var userId in userToCntx) {
+        for (let userId in userToCntx) {
             list[userId] = parseInt(userId);
         }
         return list;
@@ -226,7 +226,7 @@ LogicUser = function () {
      * Действия при выходе игрока из игры.
      * @param userId {Number} id пользователя.
      */
-    var onLogout = function (userId) {
+    let onLogout = function (userId) {
         Logs.log("User logout. user.id=" + userId, Logs.LEVEL_DETAIL);
         Statistic.add(userId, Statistic.ID_LOGOUT);
         DataUser.updateLastLogout(userId);
@@ -238,7 +238,7 @@ LogicUser = function () {
      * мы попробуем удалить соединение из контекста пользователя.
      * @param cntx
      */
-    var onDisconnectOrFailedSend = function (cntx) {
+    let onDisconnectOrFailedSend = function (cntx) {
         if (cntx && cntx.userId) {
             onLogout(cntx.userId);
             userDeleteConn(cntx);

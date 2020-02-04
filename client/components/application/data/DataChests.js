@@ -1,6 +1,6 @@
 DataChests = function () {
 
-    var chestCoords = [
+    let chestCoords = [
         {
             number: 1,
             x: 175,

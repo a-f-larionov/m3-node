@@ -5,8 +5,8 @@
 
 SocNet = function () {
 
-    var self = this;
-    var socNetTypeId = null;
+    let self = this;
+    let socNetTypeId = null;
 
     this.init = function (afterInitCallBack) {
 

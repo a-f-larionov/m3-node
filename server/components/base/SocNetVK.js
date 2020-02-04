@@ -3,16 +3,16 @@
  * @constructor
  */
 
-var MD5 = require('md5');
-var HTTPS = require('https');
+let MD5 = require('md5');
+let HTTPS = require('https');
 
 SocNetVK = function () {
 
-    var self = this;
-    var baseHost = 'api.vk.com';
-    var baseUrl = '/method/';
+    let self = this;
+    let baseHost = 'api.vk.com';
+    let baseUrl = '/method/';
 
-    var accessToken = null;
+    let accessToken = null;
 
 
     // -------------- SERVER
@@ -63,7 +63,7 @@ SocNetVK = function () {
      * @returns {boolean} результат аутентификации.
      */
     this.checkAuth = function (socNetUserId, authParams) {
-        var generatedAuthKey;
+        let generatedAuthKey;
         /*	auth_key = md5(app_id+'_'+viewer_id+'_'+app_secret); */
         generatedAuthKey = MD5(authParams.appId + '_' + socNetUserId + '_' + Config.SocNet.VK.secretKey);
         if (generatedAuthKey !== authParams.authKey) {
@@ -79,14 +79,14 @@ SocNetVK = function () {
      * @param callback {Function}
      */
     this.executeMethod = function (method, params, callback, isSecure) {
-        var url, options, req, key, data;
+        let url, options, req, key, data;
         /* https://api.vk.com/method/'''METHOD_NAME'''?'''PARAMETERS'''&access_token='''ACCESS_TOKEN''' */
         url = baseUrl + method + '?';
         if (isSecure) {
             params.access_token = accessToken;
             params.client_secret = Config.SocNet.VK.secretKey;
         }
-        for (var i in params) {
+        for (let i in params) {
             url += '&' + i + '=' + encodeURIComponent(params[i]);
         }
         options = {};
@@ -130,7 +130,7 @@ SocNetVK = function () {
      * @see http://vk.com/dev/oauth_gettoken
      */
     this.oAuthorization = function (callback) {
-        var url, options, req;
+        let url, options, req;
 
         url = "/access_token?client_id=" + Config.SocNet.VK.appId + "&client_secret=" + Config.SocNet.VK.secretKey + "&v=5.28&grant_type=client_credentials";
         host = 'oauth.vk.com';

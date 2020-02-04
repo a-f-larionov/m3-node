@@ -4,7 +4,7 @@
  * @constructor
  */
 GUI = function () {
-    var self = this;
+    let self = this;
 
     /**
      * Событие нажатия мышы(левой), но не отпускания.
@@ -81,7 +81,7 @@ GUI = function () {
      * На верхуши стэка находиться элемент в который будет добавлены новые элементы.
      * @type {Array}
      */
-    var parentsStack = [];
+    let parentsStack = [];
 
     this.lockEventsExcept = null;
 
@@ -91,7 +91,7 @@ GUI = function () {
      */
     this.init = function () {
         parentsStack.push(document.getElementById('applicationArea'));
-        var style = document.createElement('style');
+        let style = document.createElement('style');
         style.type = 'text/css';
         style.innerHTML = '.sepia { ' +
             'filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'old-timey\'><feColorMatrix type=\'matrix\' values=\'0.14 0.45 0.05 0 0 0.12 0.39 0.04 0 0 0.08 0.28 0.03 0 0 0 0 0 1 0\'/></filter></svg>#old-timey");' +
@@ -126,7 +126,7 @@ GUI = function () {
      * @returns {Object}
      */
     this.createElement = function (name, params, parentDom) {
-        var element;
+        let element;
         if (!name) {
             Logs.log("GUI.createElement: не определен элемент:" + name, Logs.LEVEL_FATAL_ERROR);
         }
@@ -143,7 +143,7 @@ GUI = function () {
         if (!element.redraw || typeof element.redraw != 'function') {
             Logs.log("GUI.craeteElement: элемент должен иметь функцию redraw().", Logs.LEVEL_FATAL_ERROR, arguments);
         }
-        for (var i in params) {
+        for (let i in params) {
             element[i] = params[i];
         }
         if (parentDom) {
@@ -193,7 +193,7 @@ GUI = function () {
         dom = new GUIDom();
         dom.init(undefined, parent);
         if (params) {
-            for (var name in params) {
+            for (let name in params) {
                 dom[name] = params[name];
             }
             if (params['animTracks']) {
@@ -241,11 +241,11 @@ GUI = function () {
      * @returns {GUIDom}
      */
     this.createInput = function (parent, params) {
-        var dom;
+        let dom;
         dom = new GUIDom();
         dom.init('input', parent);
         if (params) {
-            for (var name in params) {
+            for (let name in params) {
                 dom[name] = params[name];
             }
         }
@@ -253,11 +253,11 @@ GUI = function () {
     };
 
     this.createCanvas = function (parent, params) {
-        var dom;
+        let dom;
         dom = new GUIDom();
         dom.init('canvas', parent);
         if (params) {
-            for (var name in params) {
+            for (let name in params) {
                 dom[name] = params[name];
             }
         }

@@ -10,7 +10,7 @@ UrlCache = function () {
      * с отложенной догрузкой.
      * @type {Array}
      */
-    var cache = [];
+    let cache = [];
 
     /**
      * Вернуть кэшированные данные по ключу.
@@ -20,7 +20,7 @@ UrlCache = function () {
     this.get = function (key) {
         if (cache[key]) {
             if (cache[key].timestamp < (new Date().getTime())) {
-                var tmp = cache[key].data;
+                let tmp = cache[key].data;
                 delete cache[key];
                 return tmp;
             }

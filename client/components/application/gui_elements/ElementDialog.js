@@ -51,7 +51,7 @@ ElementDialog = function () {
 
     this.pointer = undefined;
 
-    var dom;
+    let dom;
 
     /**
      * Массив всех элементов страницы.
@@ -100,7 +100,7 @@ ElementDialog = function () {
         if (self.showed) return;
         self.showed = true;
         dom.show();
-        for (var i in self.elements) {
+        for (let i in self.elements) {
             self.elements[i].show();
         }
         self.redraw();
@@ -113,7 +113,7 @@ ElementDialog = function () {
         if (!self.showed) return;
         self.showed = false;
         dom.hide();
-        for (var i in self.elements) {
+        for (let i in self.elements) {
             self.elements[i].hide();
         }
     };
@@ -131,7 +131,7 @@ ElementDialog = function () {
             dom.redraw();
         }
 
-        for (var i in self.elements) {
+        for (let i in self.elements) {
             self.elements[i].redraw();
         }
     };

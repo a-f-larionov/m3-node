@@ -3,15 +3,15 @@
  * @constructor
  */
 PageController = function () {
-    var self = this;
+    let self = this;
 
-    var currentPage;
+    let currentPage;
 
     /**
      * All blocks
      * @type {Array}
      */
-    var blocks = [];
+    let blocks = [];
 
     /**
      * Add page blocks to page controller stack.
@@ -45,10 +45,10 @@ PageController = function () {
      */
     this.showBlocks = function (pagesToShow) {
         Logs.log("Pages to show:...", Logs.LEVEL_DETAIL);
-        var toShow;
-        for (var i in blocks) {
+        let toShow;
+        for (let i in blocks) {
             toShow = false;
-            for (var j in pagesToShow) {
+            for (let j in pagesToShow) {
                 if (blocks[i].block === pagesToShow[j]) {
                     toShow = true;
                 }
@@ -73,7 +73,7 @@ PageController = function () {
      * Redraw all page-blocks(include hidden)
      */
     this.redraw = function () {
-        for (var i in blocks) {
+        for (let i in blocks) {
             blocks[i].block.redraw();
         }
     };

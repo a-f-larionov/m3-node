@@ -1,11 +1,11 @@
 Statistic = function () {
-    var self = this;
+    let self = this;
 
-    var cache = [];
+    let cache = [];
 
-    var titles = {};
+    let titles = {};
 
-    var lastId = 0;
+    let lastId = 0;
 
     /**
      * @param userId int
@@ -35,10 +35,10 @@ Statistic = function () {
     };
 
     this.flushCache = function () {
-        var query, row;
+        let query, row;
         if (cache.length) {
             query = "INSERT INTO statistic (`userId`,`timeStamp`,`statisticId`) VALUES ";
-            for (var i in cache) {
+            for (let i in cache) {
                 row = cache[i];
                 query += "(" + row.userId + "," + row.timeStamp + "," + row.statisticId + "),";
             }
@@ -59,17 +59,17 @@ Statistic = function () {
     };
 
     this.getLog = function (callback) {
-        var query;
+        let query;
         query = "SELECT firstName, lastName, userId, statisticId, timeStamp from users inner join statistic on users.id = statistic.userId ORDER BY statistic.id DESC LIMIT 1000";
         // id, userId, timeStamp, statisticId
         DB.query(query, function (rows) {
-            var html, row, title;
+            let html, row, title;
             html = "";
             html += "<html><head><meta charset='utf8' ></head><body>";
             html += "<table>";
-            for (var i in rows) {
+            for (let i in rows) {
                 row = rows[i];
-                var time = new Date(row.timeStamp).getDay() + " " + new Date(row.timeStamp).getHours() + ":" + new Date(row.timeStamp).getMinutes() + ":" + new Date(row.timeStamp).getSeconds();
+                let time = new Date(row.timeStamp).getDay() + " " + new Date(row.timeStamp).getHours() + ":" + new Date(row.timeStamp).getMinutes() + ":" + new Date(row.timeStamp).getSeconds();
                 html += "<tr>";
                 html += "<td>" + row.firstName + " " + row.lastName + "</td>";
                 html += "<td>" + row.userId + "</td>";

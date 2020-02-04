@@ -3,13 +3,13 @@
  * @constructor
  */
 ElementSprite = function () {
-    var self = this;
+    let self = this;
 
     /**
      * Показывать ли элемент.
      * @type {boolean}
      */
-    var showed = false;
+    let showed = false;
 
     /**
      * Координата X картинки.
@@ -55,7 +55,7 @@ ElementSprite = function () {
 
     this.pointer = undefined;
 
-    var dom;
+    let dom;
 
     this.title = undefined;
 

@@ -1,5 +1,5 @@
 OnIdle = function () {
-    var self = this;
+    let self = this;
 
     this.stack = [];
 
@@ -14,7 +14,7 @@ OnIdle = function () {
 
     this.iterate = function () {
 
-        for (var i in self.stack) {
+        for (let i in self.stack) {
             self.stack[i]();
         }
         setTimeout(OnIdle.iterate, 33);

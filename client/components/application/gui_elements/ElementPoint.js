@@ -58,7 +58,7 @@ ElementPoint = function () {
      */
     let dom = null;
 
-    this.friends = [];
+    let gamers = [];
 
     /**
      * Первая звезда
@@ -250,7 +250,7 @@ ElementPoint = function () {
         let friendIndex = 0;
         let doms = [domPhoto1, domPhoto2, domPhoto3];
         let user;
-        self.friends.forEach(function (uid) {
+        gamers.forEach(function (uid) {
             if (!uid) doms[friendIndex].hide();
             else {
                 user = LogicUser.getById(uid);
@@ -275,7 +275,7 @@ ElementPoint = function () {
     /**
      * Обработка события фокуса мыши.
      */
-    var onMouseOver = function () {
+    let onMouseOver = function () {
         if (!self.enabled) return;
         mouseStateFocused = true;
         self.redraw();
@@ -284,7 +284,7 @@ ElementPoint = function () {
     /**
      * Обработчик события на опускание мыши.
      */
-    var onMouseDown = function () {
+    let onMouseDown = function () {
         if (!self.enabled) return;
         mouseStateDown = true;
         self.redraw();
@@ -293,7 +293,7 @@ ElementPoint = function () {
     /**
      * Обработка события выхода фокуса мыши.
      */
-    var onMouseOut = function () {
+    let onMouseOut = function () {
         if (!self.enabled) return;
         mouseStateFocused = false;
         self.redraw();
@@ -304,7 +304,7 @@ ElementPoint = function () {
      * @param mouseEvent {MouseEvent}
      * @param dom {Element}
      */
-    var onMouseClick = function (mouseEvent, dom) {
+    let onMouseClick = function (mouseEvent, dom) {
         /* Да, тут мы останавливаем дальнейшие течение клика. */
         mouseEvent.stopPropagation();
         if (self.stateId === ElementPoint.STATE_CLOSE) return;
@@ -314,11 +314,11 @@ ElementPoint = function () {
         return self.onClick.call(null, mouseEvent, dom, this);
     };
 
-    this.setFriends = function (newData) {
-        self.friends = newData.slice(0, 3);
-        if (self.friends.length < 3) self.friends.push(null);
-        if (self.friends.length < 3) self.friends.push(null);
-        if (self.friends.length < 3) self.friends.push(null);
+    this.setGamers = function (newData) {
+        gamers = newData.slice(0, 3);
+        if (gamers.length < 3) gamers.push(null);
+        if (gamers.length < 3) gamers.push(null);
+        if (gamers.length < 3) gamers.push(null);
     }
 };
 

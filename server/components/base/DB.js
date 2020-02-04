@@ -5,22 +5,22 @@
 /**
  * Подключаем nodeJS модули.
  */
-var MYSQL = require('mysql');
+let MYSQL = require('mysql');
 
 DB = function () {
-    var self = this;
+    let self = this;
 
     /**
      * Cоединение mysql.
      * @type {Connection}
      */
-    var connection = null;
+    let connection = null;
 
     /**
      * Статус соединения.
      * @type {boolean}
      */
-    var isConnected = false;
+    let isConnected = false;
 
     /**
      * Условие: эквивалентен.
@@ -44,7 +44,7 @@ DB = function () {
      * Ппроизведем коннект к БД, согласно конфигурации.
      */
     this.init = function (afterInitCallback) {
-        var connectionData;
+        let connectionData;
         connectionData = {
             host: Config.DB.host,
             user: Config.DB.username,
@@ -85,9 +85,9 @@ DB = function () {
      * @param callback
      */
     this.queryWhere = function (tableName, where, callback) {
-        var query = "", value, valueSource, condition;
+        let query = "", value, valueSource, condition;
         query += "SELECT * FROM " + tableName + " WHERE 1=1 ";
-        for (var name in where) {
+        for (let name in where) {
             valueSource = where[name][0];
             condition = where[name][1] ? where[name][1] : DB.WHERE_EQUAL;
             value = MYSQL.escape(valueSource);
@@ -116,14 +116,14 @@ DB = function () {
      * @param callback {function}.
      */
     this.insert = function (tableName, values, callback, fields, packFunctions, comment) {
-        var query, value, fieldsSQL, valuesSQL;
+        let query, value, fieldsSQL, valuesSQL;
         query = fieldsSQL = valuesSQL = '';
         if (comment) query += "/*" + comment + "*/";
         query += "INSERT INTO " + tableName;
         if (!fields) {
             fields = values;
         }
-        for (var name in fields) {
+        for (let name in fields) {
             value = values[name];
             if (packFunctions && packFunctions[name]) {
                 value = packFunctions[name](value);
@@ -146,13 +146,13 @@ DB = function () {
      * @param packFunctions
      */
     this.update = function (tableName, values, callback, fields, packFunctions) {
-        var query, value, setSQL, valuesSQL;
+        let query, value, setSQL, valuesSQL;
         query = setSQL = valuesSQL = '';
         query += "UPDATE `" + tableName + "` SET ";
         if (!fields) {
             fields = values;
         }
-        for (var name in fields) {
+        for (let name in fields) {
             value = values[name];
             if (packFunctions && packFunctions[name]) {
                 value = packFunctions[name](value);

@@ -36,7 +36,7 @@
  * @property textDecoration {String}
  */
 GUIDom = function () {
-    var self = this;
+    let self = this;
 
     this.__id = ++GUIDom.lastId;
 
@@ -46,19 +46,19 @@ GUIDom = function () {
      * то что не меняется.
      * @type {{}}
      */
-    var oldProps = {};
+    let oldProps = {};
 
     /**
      * Показывтаь ли дом.
      * @type {boolean}
      */
-    var showed = false;
+    let showed = false;
 
     /**
      * Дом браузера.
      * @type {Element}
      */
-    var dom = null;
+    let dom = null;
 
     this.animTracks = [];
     this.animData = [];
@@ -72,7 +72,7 @@ GUIDom = function () {
      */
     this.init = function (tagName, parent) {
         /* Начальное значение старых свойств */
-        for (var i in props) {
+        for (let i in props) {
             oldProps[i] = undefined;
         }
         if (!tagName) {
@@ -132,7 +132,7 @@ GUIDom = function () {
         if (!showed) {
             return;
         }
-        for (var name in props) {
+        for (let name in props) {
             if (oldProps[name] !== self[name]) {
                 props[name].call();
                 oldProps[name] = self[name];
@@ -145,22 +145,22 @@ GUIDom = function () {
      * если null - анимация отключается.
      * @type {null}
      */
-    var animateNowId = null;
+    let animateNowId = null;
 
     /**
      * Аргументы переданные при запуске анимации.
      * @type {Array}
      */
-    var animateArguments = [];
+    let animateArguments = [];
 
     /**
      * тайм-аут для анимации.
      * @type {null}
      */
-    var animateTimeout = null;
+    let animateTimeout = null;
 
-    var ANIMATE_NOW_OPACITY_UP = 1;
-    var ANIMATE_NOW_OPACITY_DOWN = 2;
+    let ANIMATE_NOW_OPACITY_UP = 1;
+    let ANIMATE_NOW_OPACITY_DOWN = 2;
 
     /**
      * Остановить текущую анимацию.
@@ -173,7 +173,7 @@ GUIDom = function () {
      * @param target {Number}
      */
     this.animateOpacity = function (target, from, timeout) {
-        var direction;
+        let direction;
 
         if (from !== undefined) {
             self.opacity = from;
@@ -198,7 +198,7 @@ GUIDom = function () {
         animateNow();
     };
 
-    var animateNow = function () {
+    let animateNow = function () {
         switch (animateNowId) {
             case ANIMATE_NOW_OPACITY_UP:
                 animateOpacityUp.apply(this, animateArguments);
@@ -218,7 +218,7 @@ GUIDom = function () {
         }, animateTimeout);
     };
 
-    var animateOpacityUp = function (target, from, step) {
+    let animateOpacityUp = function (target, from, step) {
         if (self.opacity < target) {
             self.opacity += step;
         } else {
@@ -227,7 +227,7 @@ GUIDom = function () {
         }
     };
 
-    var animateOpacityDown = function (target, from, step) {
+    let animateOpacityDown = function (target, from, step) {
         if (self.opacity > target) {
             self.opacity -= step;
         } else {
@@ -243,7 +243,7 @@ GUIDom = function () {
      * @param context
      */
     this.bind = function (eventId, callback, context) {
-        var eventName;
+        let eventName;
         eventName = GUI.eventNames[eventId];
         if (!eventName) {
             Logs.log("undefined gui eventId:" + eventId, Logs.LEVEL_FATAL_ERROR);
@@ -270,20 +270,20 @@ GUIDom = function () {
     };
 
     /* Далее идут методы перерисовки. */
-    var redrawX = function () {
+    let redrawX = function () {
         dom.style.left = self.x + 'px';
     };
-    var redrawY = function () {
+    let redrawY = function () {
         dom.style.top = self.y + 'px';
     };
-    var redrawWidth = function () {
+    let redrawWidth = function () {
         dom.style.width = self.width + 'px';
     };
-    var redrawHeight = function () {
+    let redrawHeight = function () {
         dom.style.height = self.height + 'px';
     };
-    var redrawBackgroundImage = function () {
-        var url;
+    let redrawBackgroundImage = function () {
+        let url;
         url = GUI.getImagePath(self.backgroundImage);
         /* Если размер не задан, пробуем задать его автоматически. */
         if (!self.width && !self.height && GUI.getImagePath(self.backgroundImage)) {
@@ -303,70 +303,70 @@ GUIDom = function () {
             dom.style.backgroundSize = self.width + 'px' + ' ' + self.height + 'px';
         }
     };
-    var redrawBackgroundSize = function () {
+    let redrawBackgroundSize = function () {
         dom.style.backgroundSize = self.backgroundSize + 'px';
     };
-    var redrawInnerHTML = function () {
+    let redrawInnerHTML = function () {
         dom.innerHTML = self.innerHTML;
     };
-    var redrawPointer = function () {
+    let redrawPointer = function () {
         dom.style.cursor = self.pointer;
     };
-    var redrawOpacity = function () {
+    let redrawOpacity = function () {
         dom.style.opacity = self.opacity;
     };
-    var redrawFontWeight = function () {
+    let redrawFontWeight = function () {
         dom.style.fontWeight = self.fontWeight;
     };
-    var redrawFontSize = function () {
+    let redrawFontSize = function () {
         dom.style.fontSize = self.fontSize;
     };
-    var redrawFontFamily = function () {
+    let redrawFontFamily = function () {
         dom.style.fontFamily = self.fontFamily;
     };
-    var redrawColor = function () {
+    let redrawColor = function () {
         dom.style.color = self.color;
     };
-    var redrawTextShadow = function () {
+    let redrawTextShadow = function () {
         dom.style.textShadow = self.textShadow;
     };
-    var redrawBorderRadius = function () {
+    let redrawBorderRadius = function () {
         dom.style.borderRadius = self.borderRadius;
     };
-    var redrawBorder = function () {
+    let redrawBorder = function () {
         dom.style.border = self.border;
     };
-    var redrawBorderTop = function () {
+    let redrawBorderTop = function () {
         dom.style.borderTop = self.borderTop;
     };
-    var redrawBorderRight = function () {
+    let redrawBorderRight = function () {
         dom.style.borderRight = self.borderRight;
     };
-    var redrawBorderBottom = function () {
+    let redrawBorderBottom = function () {
         dom.style.borderBottom = self.borderBottom;
     };
-    var redrawBorderLeft = function () {
+    let redrawBorderLeft = function () {
         dom.style.borderLeft = self.borderLeft;
     };
-    var redrawPadding = function () {
+    let redrawPadding = function () {
         dom.style.padding = self.padding;
     };
-    var redrawBoxShadow = function () {
+    let redrawBoxShadow = function () {
         dom.style.boxShadow = self.boxShadow;
     };
-    var redrawLineHeight = function () {
+    let redrawLineHeight = function () {
         dom.style.lineHeight = self.lineHeight;
     };
-    var redrawBackground = function () {
+    let redrawBackground = function () {
         dom.style.background = self.background;
     };
-    var redrawTransform = function () {
+    let redrawTransform = function () {
         dom.style.transform = self.transform;
     };
-    var redrawTitle = function () {
+    let redrawTitle = function () {
         dom.setAttribute('title', self.title);
     };
-    var redrawIsItSepia = function () {
+    let redrawIsItSepia = function () {
         /*
          filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'old-timey\'><feColorMatrix type=\'matrix\' values=\'0.14 0.45 0.05 0 0 0.12 0.39 0.04 0 0 0.08 0.28 0.03 0 0 0 0 0 1 0\'/></filter></svg>#old-timey");
          -webkit-filter: sepia(0.5);
@@ -378,16 +378,16 @@ GUIDom = function () {
          */
         dom.className += 'sepia';
     };
-    var redrawAlignText = function () {
+    let redrawAlignText = function () {
         dom.style.textAlign = self.alignText;
     };
-    var redrawZIndex = function () {
+    let redrawZIndex = function () {
         dom.style.zIndex = self.zIndex;
     };
-    var redrawOverflow = function () {
+    let redrawOverflow = function () {
         dom.style.overflow = self.overflow;
     };
-    var redrawTextDecoration = function () {
+    let redrawTextDecoration = function () {
         dom.style.textDecoration = self.textDecoration;
     };
 
@@ -395,7 +395,7 @@ GUIDom = function () {
      * Имена свойств и их методы обработки.
      * @type {{x: Function, y: Function, width: Function, height: Function, backgroundImage: *, innerHTML: Function, pointer: Function, opacity: Function, fontWeight: *, fontSize: *, fontFamily: Function, color: Function, textShadow: Function, borderRadius: Function, border: Function, borderTop: Function, borderRight: Function, borderBottom: Function, borderLeft: Function, padding: Function, boxShadow: Function, lineHeight: Function, background: Function, transform: Function, title: *}}
      */
-    var props = {
+    let props = {
         x: redrawX,
         y: redrawY,
         width: redrawWidth,
@@ -440,13 +440,13 @@ GUIDom = function () {
         if (!showed) {
             return;
         }
-        for (var t in self.animTracks) {
+        for (let t in self.animTracks) {
             self.proccessTrack(t);
         }
     };
 
     this.proccessTrack = function (tN) {
-        var frame;
+        let frame;
         frame = self.animTracks[tN][self.animData[tN].frameN];
         switch (frame.type) {
             case ElementSprite.ANIM_TYPE_ROTATE:

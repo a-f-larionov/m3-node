@@ -1,5 +1,5 @@
 LogicStuff = function () {
-    var self = this;
+    let self = this;
 
     let stuff = {};
 

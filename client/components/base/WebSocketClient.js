@@ -3,35 +3,35 @@
  * @constructor
  */
 WebSocketClient = function () {
-    var self = this;
+    let self = this;
 
     /**
      * Хост сервера.
      * @type {string}
      */
-    var host = null;
+    let host = null;
 
     /**
      * Порт сервера.
      * @type {int}
      */
-    var port = null;
+    let port = null;
 
     /**
      * Протокол соединения.
      * ws|wss
      * @type {string}
      */
-    var protocol = null;
+    let protocol = null;
 
     /**
      * id соединиения.
      * Если вдруг у нас несколько соединений.
      * @type {null}
      */
-    var connectionId = null;
+    let connectionId = null;
 
-    var url;
+    let url;
 
     this.init = function (afterInitCallback) {
         //port = window.document.location.protocol == 'https:' ? 443 : 80;
@@ -65,7 +65,7 @@ WebSocketClient = function () {
         checkBeforeInit();
         init();
     };
-    var checkBeforeInit = function () {
+    let checkBeforeInit = function () {
         if (typeof  self.onConnect != 'function') {
             Logs.log("onConnect must be function", Logs.LEVEL_FATAL_ERROR, self.onConnect);
         }
@@ -82,29 +82,29 @@ WebSocketClient = function () {
      * true - соединение активно
      * false - нет соединения.
      */
-    var isConnected = false;
+    let isConnected = false;
 
     /**
      * Буфер пакетов данных.
      * Впервую очередь все данные попадают сюда, а уже потом отправляются.
      * На случай, если нет соединения сейчас, но оно появиться потом.
      */
-    var packetBuffer = [];
+    let packetBuffer = [];
 
     /**
      * Собственно сокет.
      * @type {null}
      */
-    var socket = null;
+    let socket = null;
 
-    var raiseConnectCount = 0;
+    let raiseConnectCount = 0;
 
     /**
      * Инициалиизация.
      * Создадим объект клиента
      * Установим обработчики.
      */
-    var init = function () {
+    let init = function () {
         Logs.log("WebSocketClient запущен.");
         connect();
     };
@@ -112,8 +112,8 @@ WebSocketClient = function () {
     /**
      * Реализовать коннект.
      */
-    var connect = function () {
-        var uri;
+    let connect = function () {
+        let uri;
         raiseConnectCount++;
         uri = protocol + "://" + host + ":" + port + url ;
         Logs.log("WebSocket URL=`" + uri + "`" + "raiseConnectCount:" + raiseConnectCount, Logs.LEVEL_NOTIFY);
@@ -128,7 +128,7 @@ WebSocketClient = function () {
     /**
      * Обработчик при открытии соединения.
      */
-    var onOpen = function () {
+    let onOpen = function () {
         isConnected = true;
         /* На случай, если буфер не пуст. */
         trySend();
@@ -141,7 +141,7 @@ WebSocketClient = function () {
      * Обработчик при закрытие соединения.
      * @param event
      */
-    var onClose = function (event) {
+    let onClose = function (event) {
         isConnected = false;
         raiseConnectCount--;
         if (event.wasClean) {
@@ -154,7 +154,7 @@ WebSocketClient = function () {
         setTimeout(tryReconnect, 500);
     };
 
-    var tryReconnect = function () {
+    let tryReconnect = function () {
         if (isConnected == false) {
             Logs.log('Try reconnect', Logs.LEVEL_NOTIFY);
             if (raiseConnectCount < 3) {
@@ -167,7 +167,7 @@ WebSocketClient = function () {
      * Обработчик при получении данных(сообщения) от сервера.
      * @param event
      */
-    var onMessage = function (event) {
+    let onMessage = function (event) {
         /* Logs.log("WebSocketClient: Получены данные.", Logs.LEVEL_DETAIL, event.data); */
         self.onData(event.data, connectionId);
     };
@@ -176,7 +176,7 @@ WebSocketClient = function () {
      * Обработчик ошибок вебсокета.
      * @param error
      */
-    var onError = function (error) {
+    let onError = function (error) {
         Logs.log("WebSocketClient: Ошибка ", Logs.LEVEL_NOTIFY, error.timeStamp);
     };
 
@@ -188,8 +188,8 @@ WebSocketClient = function () {
      * Отправляем пакет на сервер.
      * Если в буфере еще есть данные, пробуем их отправить позже.
      */
-    var trySend = function () {
-        var data;
+    let trySend = function () {
+        let data;
         // если буфер пуст - уходим.
         if (!packetBuffer.length) {
             return;

@@ -9,7 +9,7 @@ ElementUserScorePhoto = function () {
      * Показывать ли элемент.
      * @type {boolean}
      */
-    var showed = false;
+    let showed = false;
 
     /**
      * Координата X картинки.

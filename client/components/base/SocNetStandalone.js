@@ -27,7 +27,7 @@ SocNetStandalone = function () {
     };
 
     this.getSocNetUserId = function () {
-        var socNetUserId;
+        let socNetUserId;
         socNetUserId = getQueryVariable('socNetUserId');
         if (!socNetUserId) {
             Logs.log("TODO Me. SocNetStandlaone.getSocNetUesrId and ... guset mode :)", Logs.LEVEL_WARNING);

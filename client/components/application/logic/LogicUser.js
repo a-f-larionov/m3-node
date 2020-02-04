@@ -1,16 +1,16 @@
 LogicUser = function () {
-    var self = this;
+    let self = this;
 
     /**
      * Id пользователя под которым мы сидим.
      */
-    var authorizedUserId = null;
+    let authorizedUserId = null;
 
     /**
      * Тут мы будем хранить данные пользователей.
      * @type {Array}
      */
-    var users = [];
+    let users = [];
 
     let friendIds = null;
 
@@ -20,7 +20,7 @@ LogicUser = function () {
      * Авторизация пользователя.
      */
     this.authorize = function () {
-        var socNetUserId, authParams;
+        let socNetUserId, authParams;
         socNetUserId = SocNet.getSocNetUserId();
         authParams = SocNet.getAuthParams();
         switch (SocNet.getType()) {
@@ -90,7 +90,7 @@ LogicUser = function () {
         return out;
     };
 
-    var getDummy = function () {
+    let getDummy = function () {
         return {
             id: null,
             online: false
@@ -101,7 +101,7 @@ LogicUser = function () {
      * Запомним, чьи загрузки мы уже ждём, что бы не повторять лишних запросов.
      * @type {Array}
      */
-    var waitForLoadingUser = [];
+    let waitForLoadingUser = [];
 
     /**
      * Загрузить данные о пользователе.

@@ -1,5 +1,5 @@
 LogicMain = function () {
-    var self = this;
+    let self = this;
 
     this.preInit = function (afterCallback) {
 

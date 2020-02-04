@@ -12,11 +12,11 @@
  */
 
 /* Include nodeJS modules. */
-var FS = require('fs');
-var PATH = require('path');
-var OS = require('os');
+let FS = require('fs');
+let PATH = require('path');
+let OS = require('os');
 
-var loader = new Loader();
+let loader = new Loader();
 console.log('step 1 - include constants');
 /* step 1 - include constants */
 loader.includeConstants();
@@ -55,9 +55,9 @@ function getComponentNameFromPath(path) {
 
 function Loader() {
 
-    var generatedCode = '';
+    let generatedCode = '';
 
-    var componentsMap = '';
+    let componentsMap = '';
 
     this.includeConstants = function () {
 
@@ -72,19 +72,19 @@ function Loader() {
     };
 
     this.includeConfig = function () {
-        var hostname = OS.hostname();
-        var configPath = './../config.' + hostname + '.' + CONST_PROJECT_FOLDER_NAME + '.js';
+        let hostname = OS.hostname();
+        let configPath = './../config.' + hostname + '.' + CONST_PROJECT_FOLDER_NAME + '.js';
         log("Config file: " + configPath);
         require(configPath);
     };
 
     this.includeComponents = function () {
-        var componentsMap = loader.getComponentsMap();
+        let componentsMap = loader.getComponentsMap();
         loader.includeComponentsByMap(componentsMap);
     };
 
     this.callGenerators = function () {
-        var code;
+        let code;
         code = '';
         for (name in componentsMap) {
             if (global[name].generate) {
@@ -107,16 +107,16 @@ function Loader() {
 
 
     this.getComponentsMap = function () {
-        var map;
+        let map;
         map = [];
         /**
          * Рекурсивное подключение всех файлов.
          * @param path
          */
-        var scanRecursive = function (path) {
-            var list;
+        let scanRecursive = function (path) {
+            let list;
             list = FS.readdirSync(path);
-            for (var i in list) {
+            for (let i in list) {
                 //@TODO *.js extension must be
                 if (list[i] == '.gitkeep')continue;
                 if (list[i] == '.gitignore')continue;
@@ -132,12 +132,12 @@ function Loader() {
     };
 
     this.includeComponentsByMap = function (map) {
-        var name;
+        let name;
         /**
          * Подключение компонента по пути.
          * @param path путь к файлу компонента.
          */
-        var includeComponent = function (path) {
+        let includeComponent = function (path) {
             path = PATH.resolve(path);
             log("include component:" + /*getComponentNameFromPath(path) +*/ '(' + path + ')');
             require(path);
@@ -149,8 +149,8 @@ function Loader() {
          * Проверка компонента.
          * @param path {string} путь к файлу компонента.
          */
-        var validateComponent = function (path) {
-            var name;
+        let validateComponent = function (path) {
+            let name;
             name = getComponentNameFromPath(path);
             if (!global[name]) {
                 error("Файл компонента должен содержать определение компонента." +
@@ -163,24 +163,24 @@ function Loader() {
                     "\r\nкомпонент: " + name);
             }
         };
-        var mapLength = 0, newMapLength = 0;
+        let mapLength = 0, newMapLength = 0;
         for (name in map) {
             mapLength++;
             includeComponent(map[name]);
         }
         // sort by depends
-        var dependsMap = [];
+        let dependsMap = [];
         while (mapLength !== newMapLength) {
             for (name in map) {
 
                 if (dependsMap[name])continue;
 
                 if (global[name].depends) {
-                    var depends, dependsAll, dependsInNewMap;
+                    let depends, dependsAll, dependsInNewMap;
                     depends = global[name].depends;
                     dependsAll = global[name].depends.length;
                     dependsInNewMap = 0;
-                    for (var i in depends) {
+                    for (let i in depends) {
                         if (dependsMap[depends[i]]) {
                             dependsInNewMap++;
                         }
@@ -200,7 +200,7 @@ function Loader() {
     };
 
     this.initComponents = function (callback) {
-        var name;
+        let name;
         log('step 6.1 - call preInit');
         // preinit
         for (name in componentsMap) {

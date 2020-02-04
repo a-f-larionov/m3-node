@@ -1,5 +1,5 @@
 PageMain = function () {
-    var self = this;
+    let self = this;
     this.blocks = [];
 
     this.init = function () {

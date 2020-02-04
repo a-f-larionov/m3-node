@@ -1,6 +1,6 @@
-var QUERYSTRING = require('querystring');
-var MD5 = require('md5');
-var FS = require('fs');
+let QUERYSTRING = require('querystring');
+let MD5 = require('md5');
+let FS = require('fs');
 
 LogicPayments = function () {
 
@@ -29,7 +29,7 @@ LogicPayments = function () {
      * @constructor
      */
     this.VKbuy = function (callback, request) {
-        var body = '';
+        let body = '';
 
         request.on('data', function (data) {
             body += data;

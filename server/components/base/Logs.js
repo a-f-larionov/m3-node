@@ -3,26 +3,26 @@
  * Клиент-серверный компонент!
  */
 Logs = function () {
-    var self = this;
+    let self = this;
 
     /**
      * Уровень срабатывания.
      * @type {number} Logs.LEVEL_*
      */
-    var trigger_level = null;
+    let trigger_level = null;
 
-    var cache = [];
+    let cache = [];
 
     this.init = function (afterInitCallback) {
         trigger_level = Config.Logs.triggerLevel;
-        for (var i = 0; i < 100; i++) {
+        for (let i = 0; i < 100; i++) {
             cache.push('--dummy--');
         }
         afterInitCallback();
     };
 
     this.showCache = function () {
-        for (var i in cache) {
+        for (let i in cache) {
             if (cache[i] == '--dummy--') continue;
         }
     };
@@ -34,7 +34,7 @@ Logs = function () {
      * @param [details] {*} необязательный параметр, детали.
      */
     this.log = function (message, level, details) {
-        var date, dateFormated, logText, levelTitle;
+        let date, dateFormated, logText, levelTitle;
         // если не передан уровень, то считаем его детальным.
         if (!level) {
             level = Logs.LEVEL_DETAIL;
@@ -44,7 +44,7 @@ Logs = function () {
         // сформируем сообщение лога.
         date = new Date();
         // тут мы получим "01-01-2014 15:55:55"
-        var day, month, year, hour, minutes, seconds;
+        let day, month, year, hour, minutes, seconds;
         year = date.getFullYear();
         day = str_pad(date.getDate());
         month = str_pad(date.getMonth() + 1);
@@ -88,7 +88,7 @@ Logs = function () {
      * Тут это специфичная функция, дополнит нулями число спереди до 2ух знаков.
      * @param sourceValue {Mixed}
      */
-    var str_pad = function (sourceValue) {
+    let str_pad = function (sourceValue) {
         return "00000".substr(0, 2 - sourceValue.toString().length) + sourceValue;
     };
 
@@ -128,7 +128,7 @@ Logs = function () {
         alert(message);
     };
 
-    var typeTitles = {};
+    let typeTitles = {};
     /* человеко-читаемые типы логов. */
     typeTitles[this.LEVEL_DETAIL] = 'detail';
     typeTitles[this.LEVEL_NOTIFY] = 'NOTIFY';

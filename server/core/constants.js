@@ -1,7 +1,7 @@
 /* Init constants */
 
-var FS = require('fs');
-var PATH = require('path');
+let FS = require('fs');
+let PATH = require('path');
 
 CONST_PROJECT_FOLDER_NAME = FS.realpathSync('./..').split('/').pop();
 CONST_DIR_ROOT = FS.realpathSync('./..') + PATH.sep;

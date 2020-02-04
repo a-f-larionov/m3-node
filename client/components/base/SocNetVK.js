@@ -5,13 +5,13 @@
 
 SocNetVK = function () {
 
-    var self = this;
-    var getParams = {};
+    let self = this;
+    let getParams = {};
 
     // для вконтакте
 
     // ------------- CLIENT
-    var parseSocNetURL = function () {
+    let parseSocNetURL = function () {
         getParams = {
             viewer_id: getQueryVariable('viewer_id'),
             api_id: getQueryVariable('api_id'),
@@ -93,10 +93,10 @@ SocNetVK = function () {
 
     /**
      * Инициализация VK.
-     * @see WebSocketServer : var loadClientCode {Function}
+     * @see WebSocketServer : let loadClientCode {Function}
      */
     this.init = function () {
-        var onSuccess, onFail;
+        let onSuccess, onFail;
         onSuccess = function () {
             Logs.log("VK client API inited.", Logs.LEVEL_NOTIFY);
         };

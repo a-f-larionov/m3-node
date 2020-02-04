@@ -53,7 +53,7 @@ ElementText = function () {
      * Дом для текста.
      * @type {GUIDom}
      */
-    var dom = null;
+    let dom = null;
 
     /**
      * Указатель мыши при наведении.
@@ -149,11 +149,11 @@ ElementText = function () {
         dom.redraw();
     };
 
-    var refreshText = function () {
-        var textHTML, charCode;
+    let refreshText = function () {
+        let textHTML, charCode;
         textHTML = '';
-        for (var i in self.text) {
-            var symbol = self.text[i];
+        for (let i in self.text) {
+            let symbol = self.text[i];
             charCode = self.text.charCodeAt(i);
             /* feed line symbol: 0xAh, 10d, \n */
             if (charCode == 10) {
@@ -171,7 +171,7 @@ ElementText = function () {
      * @param mouseEvent {MouseEvent}
      * @param dom {Element}
      */
-    var onMouseClick = function (mouseEvent, dom) {
+    let onMouseClick = function (mouseEvent, dom) {
         if (!self.onClick) {
             return;
         }

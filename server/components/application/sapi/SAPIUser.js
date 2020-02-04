@@ -1,8 +1,8 @@
-var FS = require('fs');
+let FS = require('fs');
 
 SAPIUser = function () {
 
-    var auhthorizeValidateParams = function (cntx, socNetUserId, authParams) {
+    let auhthorizeValidateParams = function (cntx, socNetUserId, authParams) {
         if (!socNetUserId) {
             Logs.log("SAPIUser.auhthorizeValidateParams: must have socNetUserId", Logs.LEVEL_WARNING);
             return false;

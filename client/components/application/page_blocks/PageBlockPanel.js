@@ -3,13 +3,13 @@
  * @constructor
  */
 PageBlockPanel = function PageBlockPanel() {
-    var self = this;
+    let self = this;
 
     /**
      * Показывать ли страницу.
      * @type {boolean}
      */
-    var showed = false;
+    let showed = false;
 
     /**
      * Массив всех элементов страницы.
@@ -24,7 +24,7 @@ PageBlockPanel = function PageBlockPanel() {
     let dialogMoneyMagazine;
 
     this.init = function () {
-        var el;
+        let el;
 
         /* жизни - панель*/
         el = GUI.createElement(ElementImage, {
@@ -120,7 +120,7 @@ PageBlockPanel = function PageBlockPanel() {
         if (showed) return;
         showed = true;
         self.preset();
-        for (var i in self.elements) {
+        for (let i in self.elements) {
             self.elements[i].show();
         }
         self.redraw();
@@ -132,7 +132,7 @@ PageBlockPanel = function PageBlockPanel() {
     this.hide = function () {
         if (!showed) return;
         showed = false;
-        for (var i in self.elements) {
+        for (let i in self.elements) {
             self.elements[i].hide();
         }
     };

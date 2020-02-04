@@ -1,6 +1,6 @@
 LogicTimeServer = function () {
 
-    var self = this;
+    let self = this;
 
     this.init = function (afterInitCallback) {
         afterInitCallback();
