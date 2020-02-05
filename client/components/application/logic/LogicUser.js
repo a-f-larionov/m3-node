@@ -14,8 +14,6 @@ LogicUser = function () {
 
     let friendIds = null;
 
-    let friendsByMapId = [];
-
     /**
      * Авторизация пользователя.
      */
@@ -167,44 +165,73 @@ LogicUser = function () {
         return friendIds;
     };
 
-    this.setFriendIdsByMapId = function (mapId, uids) {
-        friendsByMapId[mapId] = uids;
-        PageController.redraw();
+    this.getMapFriendIds = function (mapId) {
+        let points;
+        if (this.getFriendIds()) {
+            points = DataPoints.getPointsByMapId(mapId);
+
+            friendIds.forEach(function (friendId) {
+
+            });
+        }
+        return null;
     };
 
     let mapsFriendsLoadings = [];
-    let loadMapFriends = function (mapId) {
+
+    let loadFriendsScoreByMapId = function (mapId) {
         if (!mapId) mapId = currentMapId;
         if (!LogicUser.getFriendIds()) return;
         if (!mapsFriendsLoadings[mapId]) {
             mapsFriendsLoadings[mapId] = true;
-            SAPIMap.sendMeMapFriends(mapId, LogicUser.getFriendIds());
+            SAPIMap.sendMeUsersScore(mapId, LogicUser.getFriendIds());
         }
     };
 
     this.getFriendIdsByMapId = function (mapId) {
-        if (!friendsByMapId[mapId]) {
-            loadMapFriends(mapId);
+        let lpid, fpid, ids;
+        if (this.getFriendIds()) {
+            fpid = DataMap.getFirstPointId();
+            lpid = DataMap.getLastPointId();
+            ids = this.getList(friendIds)
+                .filter(function (user) {
+                    return user.currentPoint >= fpid && user.currentPoint <= lpid;
+                }).map(function (user) {
+                    return user.id;
+                });
+            //@todo не очень краисо загружать это здесь)
+            loadFriendsScoreByMapId(mapId, ids);
+            return ids;
+        } else {
             return [];
         }
-        return friendsByMapId[mapId];
     };
 
-    this.getFriendIdsByMapIdAndPointId = function (mapId, pointId) {
-        let uids, users, friends;
-        friends = [];
-        uids = LogicUser.getFriendIdsByMapId(mapId);
-        if (uids) {
-            users = LogicUser.getList(uids);
+    /**
+     * Возвращает id игроков-друзей на этой точке
+     *  с очками выше 0
+     * @param mapId
+     * @param pointId
+     * @param widthCurrent
+     * @returns {Array|Uint8Array|BigInt64Array|*[]|Float64Array|Int8Array|Float32Array|Int32Array|Uint32Array|Uint8ClampedArray|BigUint64Array|Int16Array|Uint16Array}
+     */
+    this.getFriendIdsByMapIdAndPointIdWithScore = function (mapId, pointId, widthCurrent) {
+        let ids, users, gamers;
+    //     return [1,2,3];
+        gamers = [];
+        ids = LogicUser.getFriendIdsByMapId(mapId);
+        if (widthCurrent) ids.push(LogicUser.getCurrentUser().id);
+        if (ids) {
+            users = LogicUser.getList(ids);
         }
         if (users) {
-            friends = users.filter(function (user) {
+            gamers = users.filter(function (user) {
                 return user.currentPoint >= pointId;
             }).map(function (user) {
                 return user.id;
             });
         }
-        return friends;
+        return gamers;
     };
 
     this.onTurnsLoose = function () {

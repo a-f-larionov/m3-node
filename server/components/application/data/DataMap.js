@@ -113,6 +113,15 @@ DataMap = function () {
         return this.getFirstPointId(mapId) + DataMap.POINTS_PER_MAP - 1;
     };
 
+    this.getMapPointIds = function (mapId) {
+        let firstPointId, lastPointId, pointIds;
+        firstPointId = DataMap.getFirstPointId(mapId);
+        lastPointId = DataMap.getLastPointId(mapId);
+        pointIds = [];
+        for (let i = firstPointId; i <= lastPointId; i++) pointIds.push(i);
+        return pointIds;
+    };
+
     this.getFirstChestId = function (mapId) {
         return DataMap.CHESTS_PER_MAP * (mapId - 1) + 1;
     };

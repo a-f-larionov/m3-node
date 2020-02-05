@@ -99,7 +99,7 @@ ElementDialogGoalsReached = function () {
     };
 
     this.redraw = function () {
-        let user, point, friend;
+        let user, point, friend, score;
         this.__proto__.redraw.call(this);
 
         if (!this.dialogShowed) return;
@@ -109,11 +109,16 @@ ElementDialogGoalsReached = function () {
         elTitle.text = 'ПРОЙДЕН ' + pointId;
 
         for (let i = 0; i < 3; i++) {
-            if (friends[0] && (friend = LogicUser.getById(friends[0])) && friend.id) {
+            if (friends[i] && (friend = LogicUser.getById(friends[i])) && friend.id) {
+                score = DataPoints.getScore(point.id, friend.id);
                 friendsPanel[i].elPhotoScore.user = friend;
-                friendsPanel[i].elPhotoScore.score = DataPoints.getScore(point.id, friend.id);
-                friendsPanel[i].elPhotoScore.show();
-                friendsPanel[i].elPhotoScore.redraw();
+                friendsPanel[i].elPhotoScore.score = score;
+                if (score) {
+                    friendsPanel[i].elPhotoScore.show();
+                    friendsPanel[i].elPhotoScore.redraw();
+                } else {
+                    friendsPanel[i].elPhotoScore.hide();
+                }
             } else {
                 friendsPanel[i].elPhotoScore.hide();
             }
@@ -151,7 +156,7 @@ ElementDialogGoalsReached = function () {
         pointId = pId;
         //@todo mapId from pointId
         mapId = DataMap.getCurent().id;
-        friends = LogicUser.getFriendIdsByMapIdAndPointId(mapId, pId);
+        friends = LogicUser.getFriendIdsByMapIdAndPointIdWithScore(mapId, pId);
         this.__proto__.showDialog.call(this);
         self.redraw();
     }

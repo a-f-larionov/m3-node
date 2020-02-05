@@ -94,11 +94,14 @@ DataUser = function () {
             socNetUserId: parseInt(socNetUserId),
             createTimestamp: new Date().getTime(),
             lastLoginTimestamp: new Date().getTime(),
+            //@todo is not current, is it next point id
             currentPoint: 1,
             health: LogicUser.getMaxHealth(),
         };
         cache[user.id] = user;
         callback(user);
+        //create user here
+        DataPoints.updateUsersPoints(user.id, 0, 0);
         DB.insert(tableName, user, function (result) {
             if (result.insertId !== user.id) {
                 Logs.log("DataUser.createFromSocNet. result.insertId != user.id", Logs.LEVEL_FATAL_ERROR);

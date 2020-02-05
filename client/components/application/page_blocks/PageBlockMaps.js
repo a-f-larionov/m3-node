@@ -345,22 +345,18 @@ PageBlockMaps = function PageBlockMaps() {
             else
                 pointEl.userScore = 0;
 
-            //@todo and sort by score on this point!:)
-            let uids, users, gamers;
-            uids = LogicUser.getFriendIdsByMapId(DataMap.getCurent().id);
-            if (uids) {
-                users = LogicUser.getList(uids);
-            }
-            if (users) {
-                console.log('user', users);
-                gamers = users.filter(function (user) {
-                    return user.currentPoint >= pointId;
-                }).map(function (user) {
-                    return user.id;
-                });
-                gamers.push(user.id);
-                pointEl.setGamers(gamers);
-            }
+            console.log('set gamers', pointId,
+                LogicUser.getFriendIdsByMapIdAndPointIdWithScore(
+                    DataMap.getCurent().id,
+                    pointId,
+                    true
+                ));
+
+            pointEl.setGamers(
+                LogicUser.getFriendIdsByMapIdAndPointIdWithScore(
+                    DataMap.getCurent().id,
+                    pointId,true)
+            );
         }
     };
 
@@ -405,6 +401,7 @@ PageBlockMaps = function PageBlockMaps() {
         }
         return waiting;
     }
-};
+}
+;
 
 PageBlockMaps = new PageBlockMaps;

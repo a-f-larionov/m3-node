@@ -19,13 +19,10 @@ CAPIMap = function () {
         });
     };
 
-    this.gotMapFriends = function (cntx, mapId, usersInfo) {
-        let ids = [];
+    this.gotUserScores = function (cntx, usersInfo) {
         usersInfo.forEach(function (info) {
-            if (ids.indexOf(info.userId) === -1) ids.push(info.userId);
             DataPoints.setPointUserScore(info.userId, info.pointId, info.score);
         });
-        LogicUser.setFriendIdsByMapId(mapId, ids);
     };
 
     let convertLayer = function (layer) {

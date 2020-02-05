@@ -26,22 +26,21 @@ SAPIMap = function () {
         });
     };
 
-    this.sendMeMapFriends = function (cntx, mapId, friendIds) {
-        let friends;
+    this.sendMeUsersScore = function (cntx, mapId, userIds) {
         if (!DataMap.existsMap(mapId)) {
             Logs.log("no map found:" + mapId, Logs.LEVEL_WARNING, cntx);
             return;
         }
-        if(friendIds.length==0){
+        if (userIds.length === 0) {
             Logs.log("no friends - no data", Logs.LEVEL_DETAIL, cntx);
             return;
         }
-        DataPoints.getUsersInfo(mapId, friendIds, function (rows) {
-            friends = rows;
-            CAPIMap.gotMapFriends(
+        CAPIMap.log(cntx.user.id, 'ad');
+        DataPoints.getUsersInfo(mapId, userIds, function (userPoints) {
+            CAPIMap.log(cntx.user.id, 'ad2s');
+            CAPIMap.gotUserScores(
                 cntx.userId,
-                mapId,
-                friends
+                userPoints
             );
         });
     };
@@ -62,6 +61,7 @@ SAPIMap = function () {
             }
         });
     };
-};
+}
+;
 
 SAPIMap = new SAPIMap();

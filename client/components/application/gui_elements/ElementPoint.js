@@ -143,19 +143,19 @@ ElementPoint = function () {
         domStar3.backgroundImage = self.srcStarOff;
 
         domPhoto1 = GUI.createDom(null, {
-            height: 50, width: 50,
-            border: '3px solid #715f4b',
-            borderRadius: '8px'
+            height: 32, width: 32,
+            border: '2px solid #715f4b',
+            borderRadius: '4px'
         });
         domPhoto2 = GUI.createDom(null, {
-            height: 50, width: 50,
-            border: '4px solid rgb(142, 124, 107)',
-            borderRadius: '8px'
+            height: 32, width: 32,
+            border: '2px solid #715f4b',
+            borderRadius: '4px'
         });
         domPhoto3 = GUI.createDom(null, {
-            height: 50, width: 50,
-            border: '4px solid rgb(142, 124, 107)',
-            borderRadius: '8px'
+            height: 32, width: 32,
+            border: '2px solid #715f4b',
+            borderRadius: '4px'
         });
     };
 
@@ -237,15 +237,16 @@ ElementPoint = function () {
         elText.y = 17;
         elText.text = self.pointId.toString();
 
-        let offsetPhotos = (self.pointWidth / 2 - 25 / 2);
+        let offsetPhotos = (self.pointWidth / 2 - 50 / 2);
+        let offsetPhotosY = self.y > 250 ? -75 : +25;
         domPhoto1.x = self.x - 17 + offsetPhotos;
-        domPhoto1.y = self.y + 10 + 25;
+        domPhoto1.y = self.y + 10 + offsetPhotosY;
 
-        domPhoto2.x = self.x - 22 + offsetPhotos;
-        domPhoto2.y = self.y + 22 + 25;
+        domPhoto2.x = self.x + offsetPhotos;
+        domPhoto2.y = self.y + 22 + offsetPhotosY;
 
         domPhoto3.x = self.x + 17 + offsetPhotos;
-        domPhoto3.y = self.y + 10 + 30;
+        domPhoto3.y = self.y + 10 + offsetPhotosY;
 
         let friendIndex = 0;
         let doms = [domPhoto1, domPhoto2, domPhoto3];
@@ -254,7 +255,9 @@ ElementPoint = function () {
             if (!uid) doms[friendIndex].hide();
             else {
                 user = LogicUser.getById(uid);
-                if (user && user.photo50 && user.currentPoint === self.pointId) {
+                if (user && user.photo50
+                   && user.currentPoint === self.pointId
+                ) {
                     doms[friendIndex].backgroundImage = user.photo50;
                     doms[friendIndex].show();
                     doms[friendIndex].redraw();
@@ -316,9 +319,8 @@ ElementPoint = function () {
 
     this.setGamers = function (newData) {
         gamers = newData.slice(0, 3);
-        if (gamers.length < 3) gamers.push(null);
-        if (gamers.length < 3) gamers.push(null);
-        if (gamers.length < 3) gamers.push(null);
+        while (gamers.length < 3) gamers.push(null);
+        console.log('games', gamers);
     }
 };
 

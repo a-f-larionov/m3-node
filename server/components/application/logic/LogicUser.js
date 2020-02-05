@@ -279,7 +279,6 @@ LogicUser = function () {
                 now = LogicTimeServer.getCurrentTime();
                 left = recoveryTime - (now - healthStartTime);
                 if (left > 0) {
-                    CAPIMap.log('failed some', {user: user, now: now, left: left});
                     CAPIUser.healthChecked(user.id);
                     Logs.log("healthCheck time bug:", Logs.LEVEL_WARNING, {user: user, now: now, left: left});
                     setTimeout(function () {
