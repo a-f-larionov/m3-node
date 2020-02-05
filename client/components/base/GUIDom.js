@@ -76,7 +76,7 @@ GUIDom = function () {
             oldProps[i] = undefined;
         }
         if (!tagName) {
-            tagName = 'div';
+            tagName = 'span';
         }
         /* Создадим дом */
         dom = document.createElement(tagName);
