@@ -11,13 +11,13 @@ PageBlockField = function PageBlockField() {
      */
     let showed = false;
 
-    let elementDialogGoals = false;
+    let dialogGoals = false;
 
-    let elementDialogGoalsReached = false;
+    let dialogGoalsReached = false;
 
-    let elementDialogTurnsLoose = false;
+    let dialogTurnsLoose = false;
 
-    let elementDialogJustQuit = false;
+    let dialogJustQuit = false;
 
     let elementField = null;
 
@@ -68,9 +68,9 @@ PageBlockField = function PageBlockField() {
             srcActive: '/images/button-quit-active.png',
             onClick: function () {
                 if (turns === 0) {
-                    elementDialogTurnsLoose.reset();
+                    dialogTurnsLoose.reset();
                 } else {
-                    elementDialogJustQuit.showDialog();
+                    dialogJustQuit.showDialog();
                 }
             }
         });
@@ -145,15 +145,15 @@ PageBlockField = function PageBlockField() {
         });
         self.elements.push(elPanelGoals);
 
-        elementDialogGoals = GUI.createElement(ElementDialogGoals, {});
-        self.elements.push(elementDialogGoals);
+        dialogGoals = GUI.createElement(ElementDialogGoals, {});
+        self.elements.push(dialogGoals);
 
-        elementDialogGoalsReached = GUI.createElement(ElementDialogGoalsReached, {});
-        self.elements.push(elementDialogGoalsReached);
+        dialogGoalsReached = GUI.createElement(ElementDialogGoalsReached, {});
+        self.elements.push(dialogGoalsReached);
 
-        elementDialogTurnsLoose = GUI.createElement(ElementDialogTurnLoose, {});
+        dialogTurnsLoose = GUI.createElement(ElementDialogTurnLoose, {});
 
-        elementDialogJustQuit = GUI.createElement(ElementDialogJustQuit, {});
+        dialogJustQuit = GUI.createElement(ElementDialogJustQuit, {});
 
         /** stuff hummer */
         el = GUI.createElement(ElementStuffButton, {
@@ -254,10 +254,10 @@ PageBlockField = function PageBlockField() {
         //elementField.fillRandom();
         elementField.run();
         data = DataPoints.getById(DataPoints.getPlayedId());
-        elementDialogGoals.setGoals(data.goals);
-        elementDialogGoals.showDialog();
+        dialogGoals.setGoals(data.goals);
+        dialogGoals.showDialog();
         setTimeout(function () {
-            elementDialogGoals.closeDialog();
+            dialogGoals.closeDialog();
         }, 1750 * 100
         );
     };
@@ -332,7 +332,7 @@ PageBlockField = function PageBlockField() {
                 score
             );
         }
-        elementDialogGoalsReached.showDialog(pointId);
+        dialogGoalsReached.showDialog(pointId);
     };
 
     this.beforeTurnUse = function () {
@@ -340,7 +340,7 @@ PageBlockField = function PageBlockField() {
         // and goals
         if (turns === 0 && !noMoreGoals) {
             elementField.lock();
-            elementDialogTurnsLoose.showDialog();
+            dialogTurnsLoose.showDialog();
             LogicUser.onTurnsLoose();
         }
         self.redraw();
@@ -372,21 +372,22 @@ PageBlockField = function PageBlockField() {
         switch (stuffMode) {
             case LogicStuff.STUFF_HUMMER:
                 if (LogicStuff.getStuff('hummerQty') < 1) {
-                    elementDialogGoals.showDialog();
+                    // show elementDialog
+                    dialogGoals.showDialog();
                     return;
                 }
                 domStuff.backgroundImage = '/images/button-hummer-active.png';
                 break;
             case LogicStuff.STUFF_LIGHTING:
                 if (LogicStuff.getStuff('lightingQty') < 1) {
-                    elementDialogGoals.showDialog();
+                    dialogGoals.showDialog();
                     return;
                 }
                 domStuff.backgroundImage = '/images/button-lighting-active.png';
                 break;
             case LogicStuff.STUFF_SHUFFLE:
                 if (LogicStuff.getStuff('shuffleQty') < 1) {
-                    elementDialogGoals.showDialog();
+                    dialogGoals.showDialog();
                     return;
                 }
                 domStuff.backgroundImage = '/images/button-shuffle-active.png';

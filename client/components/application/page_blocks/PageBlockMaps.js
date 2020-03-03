@@ -106,19 +106,19 @@ PageBlockMaps = function PageBlockMaps() {
         self.elements.push(elArrowNext);
 
         /* Points */
-        DataPoints.getPointsCoords().forEach(function (coord) {
+        DataPoints.getPointsCoords().forEach(function (coords) {
             el = GUI.createElement(ElementPoint, {
-                x: coord.x, y: coord.y,
+                x: coords.x, y: coords.y,
                 friends: [],
                 stateId: ElementPoint.STATE_CLOSE,
-                number: coord.number,
-                pointId: coord.number,
+                number: coords.number,
+                pointId: coords.number,
                 onClick: function (event, dom, element) {
                     dialogPointInfo.showDialog(element.pointId);
                 }
             });
             self.elements.push(el);
-            pointsEls[coord.number] = el;
+            pointsEls[coords.number] = el;
         });
 
         // сундуки
@@ -326,7 +326,8 @@ PageBlockMaps = function PageBlockMaps() {
 
         // DataPoints
         for (let number = 1; number <= DataMap.POINTS_PER_MAP; number++) {
-
+            console.log('s' + DataMap.POINTS_PER_MAP);
+            console.log('s' + number);
             pointId = DataMap.getPointIdFromPointNumber(number);
             pointEl = pointsEls[number];
             pointEl.pointId = pointId;
@@ -355,7 +356,7 @@ PageBlockMaps = function PageBlockMaps() {
             pointEl.setGamers(
                 LogicUser.getFriendIdsByMapIdAndPointIdWithScore(
                     DataMap.getCurent().id,
-                    pointId,true)
+                    pointId, true)
             );
         }
     };
