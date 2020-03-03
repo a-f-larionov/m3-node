@@ -27,15 +27,9 @@ ElementFriendsPanel = function () {
     this.cardHeight = 50;
     this.cardSpace = 10;
 
-    this.cardsCount = 5;
+    this.cardsCount = 6;
 
     let friends = [];
-
-    /**
-     * Дом картинки.
-     * @type {GUIDom}
-     */
-    let panelDom = null;
 
     /**
      * @type GUIDom[]
@@ -51,12 +45,7 @@ ElementFriendsPanel = function () {
      * Создадим дом и настроем его.
      */
     this.init = function () {
-        //panelDOM?
-        panelDom = GUI.createDom();
-        panelDom.x = self.x;
-        panelDom.y = self.y;
-        panelDom.height = self.cardHeight;
-        panelDom.width = self.cardWidth * self.cardsCount;
+
         for (let i = 0; i < self.cardsCount; i++) {
             cardsDom.push(GUI.createDom(undefined, {
                 x: self.x + i * (self.cardWidth + self.cardSpace),
@@ -83,7 +72,6 @@ ElementFriendsPanel = function () {
     this.show = function () {
         if (showed) return;
         showed = true;
-        panelDom.show();
         cardsDom.forEach(function (card) {
             card.show();
         });
@@ -99,7 +87,6 @@ ElementFriendsPanel = function () {
     this.hide = function () {
         if (!showed) return;
         showed = false;
-        panelDom.hide();
         cardsDom.forEach(function (card) {
             card.hide();
         });
@@ -120,8 +107,6 @@ ElementFriendsPanel = function () {
      */
     this.redraw = function () {
         if (!showed) return;
-
-        panelDom.redraw();
 
         cardsDom.forEach(function (card, i) {
             if (friends[i] && friends[i].photo50) {

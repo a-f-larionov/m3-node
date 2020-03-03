@@ -169,13 +169,13 @@ PageBlockMaps = function PageBlockMaps() {
         self.elements.push(dialogChestYouWin);
 
         elFriendsPanel = GUI.createElement(ElementFriendsPanel, {
-            x: 100,
-            y: 450 - 25
+            x: 213,
+            y: 450 - 15
         });
         self.elements.push(elFriendsPanel);
 
         el = GUI.createElement(ElementButton, {
-            x: 50, y: 438,
+            x: 165, y: 438,
             srcRest: '/images/button-add-rest.png',
             srcHover: '/images/button-add-hover.png',
             srcActive: '/images/button-add-active.png',

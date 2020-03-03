@@ -24,31 +24,32 @@ PageBlockPanel = function PageBlockPanel() {
     let dialogMoneyMagazine;
 
     this.init = function () {
-        let el;
+        let el, pHX, pMX;
 
+        pHX = 463-15;
         /* жизни - панель*/
         el = GUI.createElement(ElementImage, {
-            x: 400, y: 0,
+            x: pHX, y: 0,
             src: '/images/panel-hearth.png'
         });
         self.elements.push(el);
 
         /* жизни - сердца */
         el = GUI.createElement(ElementHealthIndicator, {
-            x: 409,
+            x: pHX + 9,
             y: -1
         });
         self.elements.push(el);
 
         /* жизни - таймер */
         el = GUI.createElement(ElementHealthTimer, {
-            x: 511, y: 10
+            x: pHX + 111, y: 10
         });
         self.elements.push(el);
 
         /* жизни - кнопка плюс */
         el = GUI.createElement(ElementButton, {
-            x: 590, y: -2,
+            x: pHX + 190, y: -2,
             srcRest: '/images/button-add-rest.png',
             srcHover: '/images/button-add-hover.png',
             srcActive: '/images/button-add-active.png',
@@ -76,15 +77,16 @@ PageBlockPanel = function PageBlockPanel() {
         self.elements.push(dialogMoneyMagazine);
 
         // панель денег
+        pMX = 110;
         el = GUI.createElement(ElementImage, {
-            x: 40, y: 0,
+            x: pMX, y: 0,
             src: '/images/panel-money.png'
         });
         self.elements.push(el);
 
         // деньги - монета
         el = GUI.createElement(ElementButton, {
-            x: 45, y: -2,
+            x: pMX + 5, y: -2,
             srcRest: '/images/button-money-rest.png',
             srcHover: '/images/button-money-hover.png',
             srcActive: '/images/button-money-active.png',
@@ -95,14 +97,14 @@ PageBlockPanel = function PageBlockPanel() {
         self.elements.push(el);
         // деньги - текст
         moneyText = GUI.createElement(ElementText, {
-            x: 98, y: 9, width: 70,
+            x: pMX + 58, y: 9, width: 70,
             alignCenter: true, bold: true
         });
         self.elements.push(moneyText);
 
         // деньги кнопка плюс
         el = GUI.createElement(ElementButton, {
-            x: 162, y: -2,
+            x: pMX + 122, y: -2,
             srcRest: '/images/button-add-rest.png',
             srcHover: '/images/button-add-hover.png',
             srcActive: '/images/button-add-active.png',

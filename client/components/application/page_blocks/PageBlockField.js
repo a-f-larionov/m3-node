@@ -23,7 +23,9 @@ PageBlockField = function PageBlockField() {
 
     let elementScore = null;
 
-    let elementStars = null;
+    let elementStar1 = null;
+    let elementStar2 = null;
+    let elementStar3 = null;
 
     let elementTurns = null;
 
@@ -46,7 +48,7 @@ PageBlockField = function PageBlockField() {
      * Создадим тут все элементы страницы.
      */
     this.init = function () {
-        let el;
+        let el, oX, oY;
 
         // игровое поле
         el = GUI.createElement(ElementField, {
@@ -74,50 +76,72 @@ PageBlockField = function PageBlockField() {
         });
         this.elements.push(el);
 
-        // очки
-        elementScore = GUI.createElement(ElementText, {
-            x: 20, y: 100, width: 100,
-            bold: true,
-            alignCenter: false
-        });
-        this.elements.push(elementScore);
+        /**
+         * ПАНЕЛЬ ОЧКИ
+         */
+        {
+            /** Панель */
+            oX = 10;
+            oY = 80;
+            el = GUI.createElement(ElementImage, {
+                x: oX, y: oY, src: '/images/panel-score.png'
+            });
+            this.elements.push(el);
+            /** Надпись */
+            el = GUI.createElement(ElementText, {
+                x: oX, y: oY + 8, width: 125, text: 'ОЧКИ', alignCenter: true
+            });
+            this.elements.push(el);
+            /** Текст */
+            elementScore = GUI.createElement(ElementText, {
+                x: oX, y: oY + 40, width: 125, bold: true, alignCenter: true
+            });
+            this.elements.push(elementScore);
+            /** Звезда 1 */
+            elementStar1 = GUI.createDom(undefined, {
+                x: oX + 20, y: oY + 70
+            });
+            this.elements.push(elementStar1);
+            /** Звезда 2 */
+            elementStar2 = GUI.createDom(undefined, {
+                x: oX + 20 + 30, y: oY + 70
+            });
+            this.elements.push(elementStar2);
+            /** Звезда 3 */
+            elementStar3 = GUI.createDom(undefined, {
+                x: oX + 20 + 30 * 2, y: oY + 70
+            });
+            this.elements.push(elementStar3);
+        }
 
-        // звезды
-        elementStars = GUI.createElement(ElementText, {
-            x: 20, y: 120,
-            bold: true,
-            alignCenter: false,
-            width: 100
-        });
-        this.elements.push(elementStars);
+        /**
+         * ПАНЕЛЬ ХОДОВ
+         */
+        {
+            oX = 640;
+            oY = 80;
+            /** Панель */
+            el = GUI.createElement(ElementImage, {
+                x: oX, y: oY, src: '/images/panel-turns.png'
+            });
+            this.elements.push(el);
+            /** Надпись */
+            el = GUI.createElement(ElementText, {
+                x: oX, y: oY + 8, width: 125, text: 'ХОДЫ', alignCenter: true
+            });
+            this.elements.push(el);
+            /** Текст */
+            elementTurns = GUI.createElement(ElementText, {
+                x: oX, y: oY + 40, width: 125, alignCenter: true
+            });
+            this.elements.push(elementTurns);
+        }
 
-        // панель ходов
-        el = GUI.createElement(ElementImage, {
-            x: 650, y: 80, src: '/images/panel-turns.png'
-        });
-        this.elements.push(el);
-
-        // текст - ХОДЫ:
-        el = GUI.createElement(ElementText, {
-            x: 663, y: 90, width: 80, text: 'ХОДЫ'
-        });
-        this.elements.push(el);
-
-        // ходы
-        elementTurns = GUI.createElement(ElementText, {
-            x: 663, y: 123, width: 80
-        });
-        this.elements.push(elementTurns);
-        /*
-                el = GUI.createDom(undefined, {
-                    x: 600, y: 100,
-                    width: 200, height: 100
-                });
-                this.elements.push(el);
-                */
-//@todo move it to ElementGoaldsElement
+        /**
+         * ПАНЕЛЬ ЦЕЛИ
+         */
         elPanelGoals = GUI.createElement(ElementPanelItems, {
-            x: 10, y: 160, title: 'ЦЕЛИ'
+            x: 10, y: 200, title: 'ЦЕЛИ'
         });
         self.elements.push(elPanelGoals);
 
@@ -131,7 +155,7 @@ PageBlockField = function PageBlockField() {
 
         elementDialogJustQuit = GUI.createElement(ElementDialogJustQuit, {});
 
-        // stuff hummer
+        /** stuff hummer */
         el = GUI.createElement(ElementStuffButton, {
             x: 680, y: 200,
             fieldName: 'hummerQty',
@@ -143,7 +167,7 @@ PageBlockField = function PageBlockField() {
             }
         });
         this.elements.push(el);
-        // stuff shuffle
+        /** stuff shuffle */
         el = GUI.createElement(ElementStuffButton, {
             x: 680, y: 300,
             fieldName: 'shuffleQty',
@@ -155,7 +179,7 @@ PageBlockField = function PageBlockField() {
             }
         });
         this.elements.push(el);
-        // stuff lighting
+        /** stuff lighting */
         el = GUI.createElement(ElementStuffButton, {
             x: 680, y: 400,
             fieldName: 'lightingQty',
@@ -243,13 +267,21 @@ PageBlockField = function PageBlockField() {
      */
     this.redraw = function () {
         if (!showed) return;
-        elementScore.setText('очки: ' + score);
-        elementStars.setText('звёзд: ' + DataPoints.countStars(null, null, score));
+        elementScore.setText(score.toString());
+
+        let countStars = DataPoints.countStars(null, null, score);
+        elementStar1.backgroundImage = '/images/star-off-middle.png';
+        elementStar2.backgroundImage = '/images/star-off-middle.png';
+        elementStar3.backgroundImage = '/images/star-off-middle.png';
+        if (countStars >= 1) elementStar1.backgroundImage = '/images/star-on-middle.png';
+        if (countStars >= 2) elementStar2.backgroundImage = '/images/star-on-middle.png';
+        if (countStars >= 3) elementStar3.backgroundImage = '/images/star-on-middle.png';
+
         elementTurns.setText(turns.toString());
         for (let i in self.elements) {
             self.elements[i].redraw();
         }
-        elPanelGoals.items  = goals;
+        elPanelGoals.items = goals;
         elPanelGoals.redraw();
 
         if (stuffMode) {
@@ -339,15 +371,24 @@ PageBlockField = function PageBlockField() {
         stuffMode = mode;
         switch (stuffMode) {
             case LogicStuff.STUFF_HUMMER:
-                if (LogicStuff.getStuff('hummerQty') < 1) return;
+                if (LogicStuff.getStuff('hummerQty') < 1) {
+                    elementDialogGoals.showDialog();
+                    return;
+                }
                 domStuff.backgroundImage = '/images/button-hummer-active.png';
                 break;
             case LogicStuff.STUFF_LIGHTING:
-                if (LogicStuff.getStuff('lightingQty') < 1) return;
+                if (LogicStuff.getStuff('lightingQty') < 1) {
+                    elementDialogGoals.showDialog();
+                    return;
+                }
                 domStuff.backgroundImage = '/images/button-lighting-active.png';
                 break;
             case LogicStuff.STUFF_SHUFFLE:
-                if (LogicStuff.getStuff('shuffleQty') < 1) return;
+                if (LogicStuff.getStuff('shuffleQty') < 1) {
+                    elementDialogGoals.showDialog();
+                    return;
+                }
                 domStuff.backgroundImage = '/images/button-shuffle-active.png';
                 break;
         }
