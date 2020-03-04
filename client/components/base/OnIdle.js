@@ -17,7 +17,7 @@ OnIdle = function () {
         for (let i in self.stack) {
             self.stack[i]();
         }
-        setTimeout(OnIdle.iterate, 33);
+        setTimeout(OnIdle.iterate, Config.OnIdle.animateInterval);
     };
 
 };

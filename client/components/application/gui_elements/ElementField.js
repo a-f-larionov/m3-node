@@ -778,6 +778,8 @@ ElementField = function () {
     };
 
     this.setStuffMode = function (mode) {
+        gemA = null;
         domStuffMode = mode;
+        self.redraw();
     };
 };
