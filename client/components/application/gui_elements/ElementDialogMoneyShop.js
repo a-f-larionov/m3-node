@@ -1,4 +1,4 @@
-ElementDialogMoneyMagazine = function () {
+ElementDialogMoneyShop = function () {
     let self = this;
     this.__proto__ = new ElementDialog();
 
@@ -25,7 +25,8 @@ ElementDialogMoneyMagazine = function () {
                 srcHover: '/images/money_' + (i + 1) + '.png',
                 srcActive: '/images/money_' + (i + 1) + '.png',
                 onClick: function () {
-                    SocNet.openOrderDialog(Config.Magazine.items[i].votes);
+                    SocNet.openOrderDialog(DataShop.gold[i].votes);
+                    self.closeDialog();
                 }
             });
             self.elements.push(el);
@@ -36,7 +37,8 @@ ElementDialogMoneyMagazine = function () {
                 srcHover: '/images/button-add-hover.png',
                 srcActive: '/images/button-add-active.png',
                 onClick: function () {
-                    SocNet.openOrderDialog(Config.Magazine.items[i].votes);
+                    SocNet.openOrderDialog(DataShop.gold[i].votes);
+                    self.closeDialog();
                 }
             }));
         }
@@ -53,18 +55,6 @@ ElementDialogMoneyMagazine = function () {
         }).show();
 
         GUI.popParent();
-    };
-
-    this.show = function () {
-        this.__proto__.show.call(this);
-    };
-
-    this.hide = function () {
-        this.__proto__.hide.call(this);
-    };
-
-    this.redraw = function () {
-        this.__proto__.redraw.call(this);
     };
 };
 

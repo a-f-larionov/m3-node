@@ -13,6 +13,8 @@ PageBlockField = function PageBlockField() {
 
     let dialogGoals = false;
 
+    let dialogBuyStuff = false;
+
     let dialogGoalsReached = false;
 
     let dialogTurnsLoose = false;
@@ -145,15 +147,18 @@ PageBlockField = function PageBlockField() {
         });
         self.elements.push(elPanelGoals);
 
-        dialogGoals = GUI.createElement(ElementDialogGoals, {});
+        dialogGoals = GUI.createElement(ElementDialogGoals);
         self.elements.push(dialogGoals);
 
-        dialogGoalsReached = GUI.createElement(ElementDialogGoalsReached, {});
+        dialogGoalsReached = GUI.createElement(ElementDialogGoalsReached);
         self.elements.push(dialogGoalsReached);
 
-        dialogTurnsLoose = GUI.createElement(ElementDialogTurnLoose, {});
+        dialogTurnsLoose = GUI.createElement(ElementDialogTurnLoose);
 
-        dialogJustQuit = GUI.createElement(ElementDialogJustQuit, {});
+        dialogJustQuit = GUI.createElement(ElementDialogJustQuit);
+
+        dialogBuyStuff = GUI.createElement(ElementDialogBuyStuff);
+        self.elements.push(dialogBuyStuff);
 
         /** stuff hummer */
         el = GUI.createElement(ElementStuffButton, {
@@ -167,6 +172,7 @@ PageBlockField = function PageBlockField() {
             }
         });
         this.elements.push(el);
+
         /** stuff shuffle */
         el = GUI.createElement(ElementStuffButton, {
             x: 680, y: 300,
@@ -368,31 +374,30 @@ PageBlockField = function PageBlockField() {
     };
 
     this.setStuffMode = function (mode) {
-        stuffMode = mode;
-        switch (stuffMode) {
+        switch (mode) {
             case LogicStuff.STUFF_HUMMER:
                 if (LogicStuff.getStuff('hummerQty') < 1) {
-                    // show elementDialog
-                    dialogGoals.showDialog();
+                    dialogBuyStuff.showDialog(mode);
                     return;
                 }
                 domStuff.backgroundImage = '/images/button-hummer-active.png';
                 break;
             case LogicStuff.STUFF_LIGHTING:
                 if (LogicStuff.getStuff('lightingQty') < 1) {
-                    dialogGoals.showDialog();
+                    dialogBuyStuff.showDialog(mode);
                     return;
                 }
                 domStuff.backgroundImage = '/images/button-lighting-active.png';
                 break;
             case LogicStuff.STUFF_SHUFFLE:
                 if (LogicStuff.getStuff('shuffleQty') < 1) {
-                    dialogGoals.showDialog();
+                    dialogBuyStuff.showDialog(mode);
                     return;
                 }
                 domStuff.backgroundImage = '/images/button-shuffle-active.png';
                 break;
         }
+        stuffMode = mode;
         elementField.setStuffMode(mode);
         self.redraw();
     };

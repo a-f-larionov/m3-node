@@ -73,7 +73,7 @@ PageBlockPanel = function PageBlockPanel() {
         });
         self.elements.push(elSoundsButton);
 
-        dialogMoneyMagazine = GUI.createElement(ElementDialogMoneyMagazine, {});
+        dialogMoneyMagazine = GUI.createElement(ElementDialogMoneyShop, {});
         self.elements.push(dialogMoneyMagazine);
 
         // панель денег

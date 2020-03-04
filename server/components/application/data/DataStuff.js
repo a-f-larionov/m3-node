@@ -33,6 +33,13 @@ DataStuff = function () {
         });
     };
 
+    this.usedGold = function (userId, quantity) {
+        DB.query("UPDATE " + tableName + "" +
+            " SET goldQty = goldQty -" + parseInt(quantity).toString() +
+            " WHERE userId = " + parseInt(userId), function () {
+        });
+    };
+
     this.usedHummer = function (userId) {
         DB.query("UPDATE " + tableName + "" +
             " SET hummerQty = hummerQty -1" +
@@ -63,7 +70,7 @@ DataStuff = function () {
 
     this.giveAGold = function (userId, count) {
         DB.query("UPDATE " + tableName + "" +
-            " SET goldQty = goldQty+ " + parseInt(count) +
+            " SET goldQty = goldQty + " + parseInt(count) +
             " WHERE userId = " + parseInt(userId), function () {
         });
     };

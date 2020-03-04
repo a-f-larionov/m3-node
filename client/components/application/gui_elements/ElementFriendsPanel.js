@@ -56,7 +56,7 @@ ElementFriendsPanel = function () {
             }));
             cardsText.push(GUI.createElement(ElementText,
                 {
-                    x: self.x + i * (self.cardWidth + self.cardSpace) + 4,
+                    x: self.x + i * (self.cardWidth + self.cardSpace) + 3,
                     y: self.y + 50 - 15,
                     width: self.cardWidth, height: 30 / (100 / self.cardWidth), alignCenter: true,
                     background: '#eee',

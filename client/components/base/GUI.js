@@ -121,12 +121,15 @@ GUI = function () {
     /**
      * Создаёт элемент
      * @param name {string} имя элемента Element*
-     * @param params {object} параметры присваиваемые при создании элемента.
+     * @param [params] {object} параметры присваиваемые при создании элемента.
      * @param [parentDom] {GUIDom} необязательный параметр, родительский дом, который будет использован в пределах инициализации элемента.
      * @returns {Object}
      */
     this.createElement = function (name, params, parentDom) {
         let element;
+        if (!params) {
+            params = {};
+        }
         if (!name) {
             Logs.log("GUI.createElement: не определен элемент:" + name, Logs.LEVEL_FATAL_ERROR);
         }

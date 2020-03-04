@@ -4,10 +4,15 @@ CAPIStuff = function () {
         LogicStuff.updateStuff(stuff);
     };
 
-    this.incrementGold = function (cntx, gold) {
-        LogicStuff.giveAGold(gold);
+    this.incrementGold = function (cntx, quantity) {
+        LogicStuff.giveAGold(quantity);
         PageController.redraw();
-    }
+    };
+
+    this.decrementGold = function (cntx, quantity) {
+        LogicStuff.usedGold(quantity);
+        PageController.redraw();
+    };
 };
 
 CAPIStuff = new CAPIStuff();

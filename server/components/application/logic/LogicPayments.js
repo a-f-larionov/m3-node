@@ -14,6 +14,14 @@ LogicPayments = function () {
         }
     };
 
+    let vkErrorItemPriceNotFound = {
+        error: {
+            error_code: 1,
+            error_msg: 'нет такого товара',
+            crtitcal: true
+        }
+    };
+
     let vkErrorSign = {
         error: {
             error_code: 10,
@@ -39,7 +47,7 @@ LogicPayments = function () {
 
             url = request.url;
             FS.writeFile(CONST_DIR_SERVER + '/logs/payments.log',
-                LogicTimeServer.getCurrentTime() + " " + request.url + " " + body + "\r\n",
+                LogicTimeServer.getCurrentTime() + " " + url + " " + body + "\r\n",
                 {flag: 'a'},
                 function () {
                 });
@@ -75,10 +83,17 @@ LogicPayments = function () {
 
         // проверка id приложения
         if (app_id !== Config.SocNet.VK.appId) {
+            Logs.log("LogicPayments: Не верный appId", Logs.LEVEL_ERROR, params);
             return callback(vkErrorCommon);
+        }
+        if (!self.existsGoldWithPrice(item_price)) {
+            vkErrorItemPriceNotFound.error_msg = 'Нет товара с ценой: ' + item_price;
+            Logs.log("LogicPayments: Нет товара с ценой", Logs.LEVEL_ERROR, params);
+            return callback(vkErrorItemPriceNotFound);
         }
         // проверка сигнатуры
         if (sig !== self.calcVKSign(params)) {
+            Logs.log("LogicPayments: Не верная сигнатура подписи", Logs.LEVEL_ERROR, params);
             return callback(vkErrorSign);
         }
 
@@ -93,11 +108,14 @@ LogicPayments = function () {
     };
 
     this.doOrderChange = function (receiver_id, order_id, item_price, callback) {
+        let itemGold;
         // проверка наличия пользователя
         DataUser.getBySocNet(SocNet.TYPE_VK, receiver_id, function (user) {
             if (!user || !user.id) {
                 return callback(vkErrorCommon);
             }
+            itemGold = self.getGoldByVotes(item_price);
+
             // дальше мы проверяем что собсно мы покупаем,
             DataPayments.getByOrderId(order_id, function (order) {
                 if (order) {
@@ -108,8 +126,8 @@ LogicPayments = function () {
                     Math.floor(LogicTimeServer.getCurrentTime() / 1000),
                     order_id,
                     item_price, function (newOrder) {
-                        DataStuff.giveAGold(user.id, item_price * 10);
-                        CAPIStuff.incrementGold(user.id, item_price * 10);
+                        DataStuff.giveAGold(user.id, itemGold);
+                        CAPIStuff.incrementGold(user.id, itemGold);
                         return callback(
                             {"response": {"order_id": order_id, "app_order_id": newOrder.id}}
                         );
@@ -134,6 +152,24 @@ LogicPayments = function () {
         console.log(str);
         console.log(MD5(str));
         return MD5(str);
+    };
+
+    this.existsGoldWithPrice = function (itemPrice) {
+        let exists;
+        exists = false;
+        DataShop.gold.forEach(function (item) {
+            if (item.votes === itemPrice) exists = true;
+        });
+        return exists;
+    };
+
+    this.getGoldByVotes = function (itemPrice) {
+        let gold;
+        gold = false;
+        DataShop.gold.forEach(function (item) {
+            if (item.votes === itemPrice) gold = item.quantity;
+        });
+        return gold;
     }
 };
 
