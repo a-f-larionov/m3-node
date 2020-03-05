@@ -13,6 +13,8 @@ ElementPoint = function () {
      */
     let showed = false;
 
+    let photoSize = 24;
+
     /**
      * Координата X.
      * @type {number}
@@ -79,17 +81,17 @@ ElementPoint = function () {
      * Фото друга 1
      * @type {GUIDom}
      */
-    let domPhoto1 = null;
+    let dPhoto1 = null;
     /**
      * Фото друга 2
      * @type {GUIDom}
      */
-    let domPhoto2 = null;
+    let dPhoto2 = null;
     /**
      * Фото друга 3
      * @type {GUIDom}
      */
-    let domPhoto3 = null;
+    let dPhoto3 = null;
 
     let elText = null;
 
@@ -128,7 +130,7 @@ ElementPoint = function () {
         GUI.bind(dom, GUI.EVENT_MOUSE_OUT, onMouseOut, self);
 
         elText = GUI.createElement(ElementText, {
-            width: 25, height: 20,
+            width: 33, height: 20,
             fontSize: 13, bold: true,
             pointer: GUI.POINTER_HAND
         }, dom);
@@ -142,18 +144,18 @@ ElementPoint = function () {
         domStar3 = GUI.createDom();
         domStar3.backgroundImage = self.srcStarOff;
 
-        domPhoto1 = GUI.createDom(null, {
-            height: 24, width: 24,
+        dPhoto1 = GUI.createDom(null, {
+            height: photoSize, width: photoSize,
             border: '1px solid #715f4b',
             borderRadius: '2px'
         });
-        domPhoto2 = GUI.createDom(null, {
-            height: 24, width: 24,
+        dPhoto2 = GUI.createDom(null, {
+            height: photoSize, width: photoSize,
             border: '1px solid #715f4b',
             borderRadius: '2px'
         });
-        domPhoto3 = GUI.createDom(null, {
-            height: 24, width: 24,
+        dPhoto3 = GUI.createDom(null, {
+            height: photoSize, width: photoSize,
             border: '1px solid #715f4b',
             borderRadius: '2px'
         });
@@ -184,9 +186,9 @@ ElementPoint = function () {
         domStar2.hide();
         domStar3.hide();
         elText.hide();
-        domPhoto1.hide();
-        domPhoto2.hide();
-        domPhoto3.hide();
+        dPhoto1.hide();
+        dPhoto2.hide();
+        dPhoto3.hide();
     };
 
     /**
@@ -216,54 +218,75 @@ ElementPoint = function () {
         }
         dom.x = self.x;
         dom.y = self.y;
-        let stars;
 
-        stars = DataPoints.countStars(self.pointId);
-
-        let offsetStars = (self.pointWidth / 2 - 25 / 2);
-        domStar1.x = self.x - 17 + offsetStars;
-        domStar1.y = self.y - 10;
-        domStar1.backgroundImage = stars >= 1 ? self.srcStarOn : self.srcStarOff;
-
-        domStar2.x = self.x + offsetStars;
-        domStar2.y = self.y - 22;
-        domStar2.backgroundImage = stars >= 2 ? self.srcStarOn : self.srcStarOff;
-
-        domStar3.x = self.x + 17 + offsetStars;
-        domStar3.y = self.y - 10;
-        domStar3.backgroundImage = stars >= 3 ? self.srcStarOn : self.srcStarOff;
-
-        elText.x = 12;
-        elText.y = 17;
+        elText.x = 9;
+        elText.y = 16.5;
         elText.text = self.pointId.toString();
 
-        let offsetPhotos = (self.pointWidth / 2 - 50 / 2);
+        redrawStars();
+        redrawPhotos();
+
+        dom.redraw();
+        domStar1.redraw();
+        domStar2.redraw();
+        domStar3.redraw();
+        elText.redraw();
+    };
+
+    let redrawStars = function () {
+        let count, offsetX, offsetY;
+
+        count = DataPoints.countStars(self.pointId);
+
+        offsetX = (self.pointWidth / 2 - 25 / 2);
+        offsetY = 7;
+
+        domStar1.x = self.x - 17 + offsetX;
+        domStar1.y = self.y - offsetY;
+        domStar1.backgroundImage = count >= 1 ? self.srcStarOn : self.srcStarOff;
+
+        domStar2.x = self.x + offsetX;
+        domStar2.y = self.y - offsetY - 11;
+        domStar2.backgroundImage = count >= 2 ? self.srcStarOn : self.srcStarOff;
+
+        domStar3.x = self.x + 17 + offsetX;
+        domStar3.y = self.y - offsetY;
+        domStar3.backgroundImage = count >= 3 ? self.srcStarOn : self.srcStarOff;
+    };
+
+    let redrawPhotos = function () {
+        let offsetX = (self.pointWidth / 2 - photoSize / 2) - 2;
         // half of Y
-        let offsetPhotosY, offsetWaveY ;
-        if (self.y > 250) {
-            offsetPhotosY = -75;
+        let offsetY, offsetCenterY;
+        let friendIndex = 0;
+        let doms = [dPhoto1, dPhoto2, dPhoto3];
+
+        if (self.y > 250
+            || DataMap.getNumberFromPointId(self.pointId) === 1
+            || DataMap.getNumberFromPointId(self.pointId) === 18
+        ) {
+            offsetY = -38;
+            offsetCenterY = 5;
         } else {
-            offsetPhotosY = +25;
+            offsetY = +38;
+            offsetCenterY = -5;
         }
 
-        domPhoto1.x = self.x - 17 + offsetPhotos;
-        domPhoto1.y = self.y + 10 + offsetPhotosY;
+        dPhoto1.x = self.x - 18 + offsetX;
+        dPhoto1.y = self.y + offsetY;
 
-        domPhoto2.x = self.x + offsetPhotos;
-        domPhoto2.y = self.y + 22 + offsetPhotosY;
+        dPhoto2.x = self.x + offsetX;
+        dPhoto2.y = self.y + offsetY - offsetCenterY;
 
-        domPhoto3.x = self.x + 17 + offsetPhotos;
-        domPhoto3.y = self.y + 10 + offsetPhotosY;
+        dPhoto3.x = self.x + 19 + offsetX;
+        dPhoto3.y = self.y + offsetY;
+        console.log(self.pointId, gamers);
+        gamers.forEach(function (user) {
 
-        let friendIndex = 0;
-        let doms = [domPhoto1, domPhoto2, domPhoto3];
-        let user;
-        gamers.forEach(function (uid) {
-            if (!uid) doms[friendIndex].hide();
+            if (!user) doms[friendIndex].hide();
             else {
-                user = LogicUser.getById(uid);
                 if (user && user.photo50
-                    && user.currentPoint === self.pointId
+                    //  && user.currentPoint === self.pointId
                 ) {
                     doms[friendIndex].backgroundImage = user.photo50;
                     doms[friendIndex].show();
@@ -274,17 +297,12 @@ ElementPoint = function () {
             }
             friendIndex++;
         });
-        doms.forEach(function (dom) {
-            dom.backgroundImage = LogicUser.getCurrentUser().photo50;
-            dom.show();
-            dom.redraw();
-        });
-
-        dom.redraw();
-        domStar1.redraw();
-        domStar2.redraw();
-        domStar3.redraw();
-        elText.redraw();
+        //debug
+        // doms.forEach(function (dom) {
+        //     dom.backgroundImage = LogicUser.getCurrentUser().photo50;
+        //     dom.show();
+        //     dom.redraw();
+        // });
     };
 
     /**
@@ -329,10 +347,18 @@ ElementPoint = function () {
         return self.onClick.call(null, mouseEvent, dom, this);
     };
 
+    /**
+     * Игроки на точке это друзья
+     * @param newData
+     */
     this.setGamers = function (newData) {
+        newData = newData.filter(function (user) {
+            return user.currentPoint === self.pointId;
+        });
         gamers = newData.slice(0, 3);
+        // центрируем если игрок только один
+        if (gamers.length === 1) gamers.unshift(null);
         while (gamers.length < 3) gamers.push(null);
-        console.log('games', gamers);
     }
 };
 

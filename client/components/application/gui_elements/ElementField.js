@@ -215,15 +215,12 @@ ElementField = function () {
         let tmp;
         for (let y = 0; y < fieldHeight; y++) {
             for (let x = 0; x < fieldWidth; x++) {
-                console.log(y, x);
                 if (randomGems.indexOf(layerGems[gem.fieldY][gem.fieldX]) === -1) {
-                    console.log('skip1');
                     continue;
                 }
                 y = Math.floor(Math.random() * fieldHeight);
                 x = Math.floor(Math.random() * fieldWidth);
                 if (randomGems.indexOf(layerGems[y][x]) === -1) {
-                    console.log('skip2');
                     continue;
                 }
                 tmp = layerGems[y][x];
@@ -243,13 +240,11 @@ ElementField = function () {
         if (randomGems.indexOf(layerGems[gem.fieldY][gem.fieldX]) === -1) {
             return;
         }
-        console.log('lig');
         for (let x = 0; x < fieldWidth; x++) {
             if (randomGems.indexOf(layerGems[gem.fieldY][x]) !== -1) {
                 layerGems[gem.fieldY][x] = DataPoints.OBJECT_EMPTY;
             }
         }
-        console.log('lig');
         animBlock = true;
         animType = self.ANIM_TYPE_LIGHTING_DESTROY;
         animCounter = 0;

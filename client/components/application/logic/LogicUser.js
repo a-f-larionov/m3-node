@@ -208,27 +208,28 @@ LogicUser = function () {
     };
 
     /**
-     * Возвращает id игроков-друзей на этой точке
-     *  с очками выше 0
+     * Возвращает id игроков-друзей на этой точке.
      * @param mapId
      * @param pointId
-     * @param widthCurrent
+     * @param widthCurrentUser
      * @returns {Array|Uint8Array|BigInt64Array|*[]|Float64Array|Int8Array|Float32Array|Int32Array|Uint32Array|Uint8ClampedArray|BigUint64Array|Int16Array|Uint16Array}
      */
-    this.getFriendIdsByMapIdAndPointIdWithScore = function (mapId, pointId, widthCurrent) {
+    this.getFriendIdsByMapIdAndPointIdWithScore = function (mapId, pointId, widthCurrentUser) {
         let ids, users, gamers;
-    //     return [1,2,3];
+             //return LogicUser.getList([1,2,3]);
         gamers = [];
         ids = LogicUser.getFriendIdsByMapId(mapId);
-        if (widthCurrent) ids.push(LogicUser.getCurrentUser().id);
+        if (widthCurrentUser) ids.push(LogicUser.getCurrentUser().id);
         if (ids) {
             users = LogicUser.getList(ids);
         }
         if (users) {
             gamers = users.filter(function (user) {
                 return user.currentPoint >= pointId;
+            }).sort(function (a, b) {
+                return b.lastLoginTimestamp - a.lastLoginTimestamp;
             }).map(function (user) {
-                return user.id;
+                return user;
             });
         }
         return gamers;

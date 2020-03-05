@@ -110,7 +110,7 @@ ElementDialogPointInfo = function () {
         elTitle.text = 'УРОВЕНЬ  ' + pointId;
 
         for (let i = 0; i < 3; i++) {
-            if (friends[i] && (friend = LogicUser.getById(friends[i])) && friend.id) {
+            if ((friend = friends[i]) && friend.id) {
                 score = DataPoints.getScore(point.id, friend.id);
                 friendsPanel[i].elPhotoScore.user = friend;
                 friendsPanel[i].elPhotoScore.score = score;

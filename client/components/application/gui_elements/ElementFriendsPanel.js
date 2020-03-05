@@ -52,7 +52,10 @@ ElementFriendsPanel = function () {
                 y: self.y,
                 width: self.cardWidth,
                 height: self.cardHeight,
-                border: '3px solid #715f4b', borderRadius: '8px'
+                border: '3px solid #715f4b', borderRadius: '8px',
+                onClick:function(){
+                    alert(1);
+                }
             }));
             cardsText.push(GUI.createElement(ElementText,
                 {

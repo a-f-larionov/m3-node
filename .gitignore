@@ -1,3 +1,5 @@
+*.tmp
+
 .idea/*
 /other/sql_dumps/*
 /hostingData

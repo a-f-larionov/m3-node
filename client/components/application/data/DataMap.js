@@ -1,13 +1,3 @@
-// @Todo super mega crunch
-GUI = {};
-
-GUI.ANIM_TYPE_ROTATE = 10;
-GUI.ANIM_TYPE_MOVE = 20;
-GUI.ANIM_TYPE_GOTO = 30;
-GUI.ANIM_TYPE_MOVIE = 40;
-GUI.ANIM_TYPE_PAUSE = 50;
-GUI.ANIM_TYPE_STOP = 60;
-
 DataMap = function () {
 
     let currentMapId = 1;
@@ -66,6 +56,10 @@ DataMap = function () {
         return this.getFirstPointId() + (number - 1);
     };
 
+    this.getNumberFromPointId = function (pointId) {
+        return pointId - this.getFirstPointId() + 1;
+    };
+
     this.getFirstChestId = function () {
         return DataMap.CHESTS_PER_MAP * (currentMapId - 1) + 1;
     };
@@ -89,7 +83,6 @@ DataMap = function () {
 
         if (!pointUsersInfo) return 0;
         for (let number = 1; number <= DataMap.POINTS_PER_MAP; number++) {
-
             pointId = DataMap.getPointIdFromPointNumber(number);
             point = DataPoints.getById(pointId);
             if (!point) return 0;
@@ -106,6 +99,16 @@ DataMap = function () {
         return mapStars;
     }
 };
+
+// @Todo super mega crunch
+GUI = {};
+
+GUI.ANIM_TYPE_ROTATE = 10;
+GUI.ANIM_TYPE_MOVE = 20;
+GUI.ANIM_TYPE_GOTO = 30;
+GUI.ANIM_TYPE_MOVIE = 40;
+GUI.ANIM_TYPE_PAUSE = 50;
+GUI.ANIM_TYPE_STOP = 60;
 
 DataMap = new DataMap();
 

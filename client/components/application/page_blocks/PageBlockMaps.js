@@ -326,8 +326,6 @@ PageBlockMaps = function PageBlockMaps() {
 
         // DataPoints
         for (let number = 1; number <= DataMap.POINTS_PER_MAP; number++) {
-            console.log('s' + DataMap.POINTS_PER_MAP);
-            console.log('s' + number);
             pointId = DataMap.getPointIdFromPointNumber(number);
             pointEl = pointsEls[number];
             pointEl.pointId = pointId;
@@ -345,13 +343,6 @@ PageBlockMaps = function PageBlockMaps() {
                 pointEl.userScore = userPoint[pointId][user.id] ? userPoint[pointId][user.id].score : 0;
             else
                 pointEl.userScore = 0;
-
-            console.log('set gamers', pointId,
-                LogicUser.getFriendIdsByMapIdAndPointIdWithScore(
-                    DataMap.getCurent().id,
-                    pointId,
-                    true
-                ));
 
             pointEl.setGamers(
                 LogicUser.getFriendIdsByMapIdAndPointIdWithScore(
