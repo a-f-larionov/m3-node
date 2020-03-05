@@ -84,6 +84,7 @@ ElementDialogGoalsReached = function () {
             srcActive: '/images/button-close-active.png',
             onClick: function () {
                 self.closeDialog();
+                PageController.showPage(PageMain);
             }
         }).show();
 

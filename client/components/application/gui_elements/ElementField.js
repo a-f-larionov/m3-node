@@ -493,6 +493,7 @@ ElementField = function () {
     let runNext = 0;
 
     this.run = function () {
+
         switch (runNext) {
             case 0:
                 runNext = 1;
@@ -594,6 +595,7 @@ ElementField = function () {
         this.redraw();
 
         setTimeout(function () {
+            // animate here before run
             self.run();
         }, 1);
     };

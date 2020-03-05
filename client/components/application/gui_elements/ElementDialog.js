@@ -161,11 +161,15 @@ ElementDialog = function () {
         );
     };
 
-    this.reset = function () {
+    this.reset = function (redraw) {
         dom.x = self.x;
         dom.y = self.y;
         self.dialogShowed = false;
         dom.animData[0].frameN = 0;
         GUI.unlockEvents();
+        if (redraw) {
+            //self.redraw();
+            self.hide();
+        }
     }
 };

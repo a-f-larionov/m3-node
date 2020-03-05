@@ -33,60 +33,72 @@ DataStuff = function () {
         });
     };
 
-    this.usedGold = function (userId, quantity) {
+    let incrementStuff = function (fieldName, userId, quantity) {
         DB.query("UPDATE " + tableName + "" +
-            " SET goldQty = goldQty -" + parseInt(quantity).toString() +
-            " WHERE userId = " + parseInt(userId), function () {
+            " SET `" + fieldName + "` = `" + fieldName + "` + " + parseInt(quantity) +
+            " WHERE `userId` = " + parseInt(userId), function () {
         });
     };
 
-    this.usedHummer = function (userId) {
-        DB.query("UPDATE " + tableName + "" +
-            " SET hummerQty = hummerQty -1" +
-            " WHERE userId = " + parseInt(userId), function () {
+    let decrementStuff = function (fieldName, userId, quantity, callback) {
+        DB.beginTransaction(function (connection) {
+
+            DB.query("SELECT `" + fieldName + "`" +
+                " FROM `" + tableName + "`" +
+                " WHERE `userId` = " + parseInt(userId), function (data) {
+
+                if (data[0][fieldName] < quantity) {
+                    Logs.log("No more stuff `" + fieldName + "` !", Logs.LEVEL_WARNING, {
+                        userId: userId,
+                        quantity: quantity,
+                        goldQty: data[0][fieldName]
+                    });
+                    connection.rollback();
+                    callback(false);
+                    return;
+                }
+
+                DB.query("UPDATE `" + tableName + "`" +
+                    " SET `" + fieldName + "` = `" + fieldName + "` -" + parseInt(quantity) +
+                    " WHERE `userId` = " + parseInt(userId), function () {
+                });
+                connection.commit();
+                callback(true);
+            });
         });
     };
 
-    this.usedShuffle = function (userId) {
-        DB.query("UPDATE " + tableName + "" +
-            " SET shuffleQty = shuffleQty -1" +
-            " WHERE userId = " + parseInt(userId), function () {
-        });
+    this.usedGold = function (userId, quantity, callback) {
+        decrementStuff('goldQty', userId, quantity, callback)
     };
 
-    this.usedLighting = function (userId) {
-        DB.query("UPDATE " + tableName + "" +
-            " SET lightingQty = lightingQty -1" +
-            " WHERE userId = " + parseInt(userId), function () {
-        });
+    this.usedHummer = function (userId, callback) {
+        decrementStuff('hummerQty', userId, 1, callback)
     };
 
-    this.giveAHummer = function (userId, count) {
-        DB.query("UPDATE " + tableName + "" +
-            " SET hummerQty = hummerQty + " + parseInt(count) +
-            " WHERE userId = " + parseInt(userId), function () {
-        });
+    this.usedShuffle = function (userId, callback) {
+        decrementStuff('shuffleQty', userId, 1, callback)
     };
 
-    this.giveAGold = function (userId, count) {
-        DB.query("UPDATE " + tableName + "" +
-            " SET goldQty = goldQty + " + parseInt(count) +
-            " WHERE userId = " + parseInt(userId), function () {
-        });
+    this.usedLighting = function (userId, callback) {
+        decrementStuff('lightingQty', userId, 1, callback)
     };
 
-    this.giveAShuffle = function (userId, count) {
-        DB.query("UPDATE " + tableName + "" +
-            " SET shuffleQty = shuffleQty + " + parseInt(count) +
-            " WHERE userId = " + parseInt(userId), function () {
-        });
+
+    this.giveAGold = function (userId, quantity) {
+        incrementStuff('goldQty', userId, quantity);
     };
 
-    this.giveALighting = function (userId, count) {
-        DB.query("UPDATE " + tableName + "" +
-            " SET lightingQty = lightingQty + " + parseInt(count) +
-            " WHERE userId = " + parseInt(userId), function () {
-        });
+    this.giveAHummer = function (userId, quantity) {
+        incrementStuff('hummerQty', userId, quantity);
+    };
+
+    this.giveAShuffle = function (userId, quantity) {
+        incrementStuff('shuffleQty', userId, quantity);
+    };
+
+    this.giveALighting = function (userId, quantity) {
+        incrementStuff('shuffleQty', userId, quantity);
     };
 };
 

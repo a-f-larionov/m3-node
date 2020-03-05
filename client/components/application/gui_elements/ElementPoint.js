@@ -143,19 +143,19 @@ ElementPoint = function () {
         domStar3.backgroundImage = self.srcStarOff;
 
         domPhoto1 = GUI.createDom(null, {
-            height: 32, width: 32,
-            border: '2px solid #715f4b',
-            borderRadius: '4px'
+            height: 24, width: 24,
+            border: '1px solid #715f4b',
+            borderRadius: '2px'
         });
         domPhoto2 = GUI.createDom(null, {
-            height: 32, width: 32,
-            border: '2px solid #715f4b',
-            borderRadius: '4px'
+            height: 24, width: 24,
+            border: '1px solid #715f4b',
+            borderRadius: '2px'
         });
         domPhoto3 = GUI.createDom(null, {
-            height: 32, width: 32,
-            border: '2px solid #715f4b',
-            borderRadius: '4px'
+            height: 24, width: 24,
+            border: '1px solid #715f4b',
+            borderRadius: '2px'
         });
     };
 
@@ -238,7 +238,14 @@ ElementPoint = function () {
         elText.text = self.pointId.toString();
 
         let offsetPhotos = (self.pointWidth / 2 - 50 / 2);
-        let offsetPhotosY = self.y > 250 ? -75 : +25;
+        // half of Y
+        let offsetPhotosY, offsetWaveY ;
+        if (self.y > 250) {
+            offsetPhotosY = -75;
+        } else {
+            offsetPhotosY = +25;
+        }
+
         domPhoto1.x = self.x - 17 + offsetPhotos;
         domPhoto1.y = self.y + 10 + offsetPhotosY;
 
@@ -256,7 +263,7 @@ ElementPoint = function () {
             else {
                 user = LogicUser.getById(uid);
                 if (user && user.photo50
-                   && user.currentPoint === self.pointId
+                    && user.currentPoint === self.pointId
                 ) {
                     doms[friendIndex].backgroundImage = user.photo50;
                     doms[friendIndex].show();
@@ -266,6 +273,11 @@ ElementPoint = function () {
                 }
             }
             friendIndex++;
+        });
+        doms.forEach(function (dom) {
+            dom.backgroundImage = LogicUser.getCurrentUser().photo50;
+            dom.show();
+            dom.redraw();
         });
 
         dom.redraw();

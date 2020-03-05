@@ -21,12 +21,12 @@ PageBlockPanel = function PageBlockPanel() {
 
     let moneyText;
 
-    let dialogMoneyMagazine;
+    let dialogMoneyShop;
 
     this.init = function () {
         let el, pHX, pMX;
 
-        pHX = 463-15;
+        pHX = 463 - 15;
         /* жизни - панель*/
         el = GUI.createElement(ElementImage, {
             x: pHX, y: 0,
@@ -54,7 +54,7 @@ PageBlockPanel = function PageBlockPanel() {
             srcHover: '/images/button-add-hover.png',
             srcActive: '/images/button-add-active.png',
             onClick: function () {
-                dialogMoneyMagazine.showDialog();
+                dialogMoneyShop.showDialog();
             }
         });
         self.elements.push(el);
@@ -73,8 +73,8 @@ PageBlockPanel = function PageBlockPanel() {
         });
         self.elements.push(elSoundsButton);
 
-        dialogMoneyMagazine = GUI.createElement(ElementDialogMoneyShop, {});
-        self.elements.push(dialogMoneyMagazine);
+        dialogMoneyShop = GUI.createElement(ElementDialogMoneyShop, {});
+        self.elements.push(dialogMoneyShop);
 
         // панель денег
         pMX = 110;
@@ -91,7 +91,7 @@ PageBlockPanel = function PageBlockPanel() {
             srcHover: '/images/button-money-hover.png',
             srcActive: '/images/button-money-active.png',
             onClick: function () {
-                dialogMoneyMagazine.showDialog();
+                dialogMoneyShop.showDialog();
             }
         });
         self.elements.push(el);
@@ -109,7 +109,7 @@ PageBlockPanel = function PageBlockPanel() {
             srcHover: '/images/button-add-hover.png',
             srcActive: '/images/button-add-active.png',
             onClick: function () {
-                dialogMoneyMagazine.showDialog();
+                dialogMoneyShop.showDialog();
             }
         });
         self.elements.push(el);
@@ -165,6 +165,10 @@ PageBlockPanel = function PageBlockPanel() {
             el.redraw();
         });
     };
+
+    this.showDialogMoneyShop = function () {
+        dialogMoneyShop.showDialog();
+    }
 };
 
 PageBlockPanel = new PageBlockPanel();

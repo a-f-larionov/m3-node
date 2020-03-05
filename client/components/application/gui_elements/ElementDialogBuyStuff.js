@@ -26,7 +26,7 @@ ElementDialogBuyStuff = function () {
             el = GUI.createElement(ElementButton, {
                 x: offsetX + stepX * i, y: offsetY,
                 onClick: function () {
-                    self.buyStuff();
+                    self.buyStuff(i);
                 }
             });
             items.push(el);
@@ -90,23 +90,36 @@ ElementDialogBuyStuff = function () {
 
     this.buyStuff = function (i) {
 
+        let userGold, quantity, buyFunc, giveFunc;
+        userGold = LogicStuff.getStuff('goldQty');
+
         switch (stuffId) {
             case LogicStuff.STUFF_HUMMER:
-                SAPIStuff.buyHummer(i);
-                LogicStuff.giveAHummer(DataShop.hummers[i].quantity);
+                buyFunc = SAPIStuff.buyHummer;
+                giveFunc = LogicStuff.giveAHummer;
+                shopItem = DataShop.hummers[i];
                 break;
             case LogicStuff.STUFF_SHUFFLE:
-                SAPIStuff.buyShuffle(i);
-                LogicStuff.giveAShuffle(DataShop.hummers[i].quantity);
+                buyFunc = SAPIStuff.buyShuffle;
+                giveFunc = LogicStuff.giveAShuffle;
+                shopItem = DataShop.shuffle[i];
                 break;
             case LogicStuff.STUFF_LIGHTING:
-                SAPIStuff.buyLighting(i);
-                LogicStuff.giveALighting(DataShop.hummers[i].quantity);
+                buyFunc = SAPIStuff.buyLighting;
+                giveFunc = LogicStuff.giveALighting;
+                shopItem = DataShop.lighting[i];
                 break;
         }
-        self.closeDialog();
+
+        if (userGold < shopItem.gold) {
+            PageBlockPanel.showDialogMoneyShop();
+        } else {
+            buyFunc(i);
+            giveFunc(shopItem.quantity);
+            LogicStuff.usedGold(shopItem.gold);
+            self.closeDialog();
+        }
         PageController.redraw();
-        //SocNet.openOrderDialog(Config.Magazine.items[i].votes);
     };
 };
 

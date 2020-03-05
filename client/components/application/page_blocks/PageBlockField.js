@@ -241,6 +241,11 @@ PageBlockField = function PageBlockField() {
         }
         domStuff.hide();
         elPanelGoals.hide();
+        dialogBuyStuff.reset(true);
+        dialogGoals.reset(true);
+        dialogGoalsReached.reset(true);
+        dialogJustQuit.reset(true);
+        dialogTurnsLoose.reset(true);
     };
 
     this.loadField = function () {
