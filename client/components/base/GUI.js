@@ -272,7 +272,7 @@ GUI = function () {
      * @param dom {GUIDom} к кому привязываем событие.
      * @param eventId {int} id события GUIDom.EVENT_*
      * @param callback {function}
-     * @param context {Object}
+     * @param [context] {Object}
      */
     this.bind = function (dom, eventId, callback, context) {
         dom.bind(eventId, callback, context);

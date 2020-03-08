@@ -280,7 +280,7 @@ ElementPoint = function () {
 
         dPhoto3.x = self.x + 19 + offsetX;
         dPhoto3.y = self.y + offsetY;
-        console.log(self.pointId, gamers);
+
         gamers.forEach(function (user) {
 
             if (!user) doms[friendIndex].hide();

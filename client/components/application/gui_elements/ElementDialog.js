@@ -72,12 +72,12 @@ ElementDialog = function () {
             backgroundImage: self.src,
             animTracks: [
                 [
-                    {type: GUI.ANIM_TYPE_MOVE, vX: 0, vY: 15, duration: 30},
+                    {type: GUI.ANIM_TYPE_MOVE, vX: 0, vY: 15, duration: 38},
                     {
                         type: GUI.ANIM_TYPE_STOP, callback: function () {
                         }
                     },
-                    {type: GUI.ANIM_TYPE_MOVE, vX: 0, vY: -15, duration: 30},
+                    {type: GUI.ANIM_TYPE_MOVE, vX: 0, vY: -15, duration: 38},
                     {
                         type: GUI.ANIM_TYPE_STOP, callback: function () {
                             self.dialogShowed = false;
@@ -88,7 +88,7 @@ ElementDialog = function () {
         });
         self.x = (document.getElementById('applicationArea').clientWidth / 2)
             - self.width / 2;
-        self.y = -400;
+        self.y = -500;
 
         self.dom = dom;
     };

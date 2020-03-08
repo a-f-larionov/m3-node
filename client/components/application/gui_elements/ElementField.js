@@ -97,7 +97,8 @@ ElementField = function () {
                 dom = GUI.createDom(undefined, {
                     x: self.x + x * DataPoints.BLOCK_WIDTH,
                     y: self.y + y * DataPoints.BLOCK_HEIGHT,
-                    backgroundImage: DataPoints.objectImages[DataPoints.OBJECT_CELL]
+                    backgroundImage: DataPoints.objectImages[DataPoints.OBJECT_CELL],
+                    opacity: 0.4
                 });
                 maskDoms[y][x] = dom;
             }

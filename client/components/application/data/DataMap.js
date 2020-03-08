@@ -30,6 +30,16 @@ DataMap = function () {
         return maps[currentMapId];
     };
 
+    this.setCurrentMapId = function (id) {
+        if (id >= DataMap.MAP_ID_MAX) {
+            return;
+        }
+        if (id <= DataMap.MAP_ID_MIN) {
+            return;
+        }
+        currentMapId = id;
+    };
+
     this.setNextMap = function () {
         if (currentMapId === DataMap.MAP_ID_MAX) {
             return;
@@ -42,6 +52,10 @@ DataMap = function () {
             return;
         }
         currentMapId--;
+    };
+
+    this.getMapIdFromPointId = function (pointId) {
+        return Math.ceil(LogicUser.getCurrentUser().currentPoint / DataMap.POINTS_PER_MAP);
     };
 
     this.getFirstPointId = function () {

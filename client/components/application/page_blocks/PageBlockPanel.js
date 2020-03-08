@@ -19,35 +19,84 @@ PageBlockPanel = function PageBlockPanel() {
 
     let elSoundsButton = null;
 
+    let elFSButton = null;
+
     let moneyText;
+
+    let isFSMode = false;
 
     let dialogMoneyShop;
 
     this.init = function () {
-        let el, pHX, pMX;
+        let el, pMX, pHX;
 
-        pHX = 463 - 15;
-        /* жизни - панель*/
+        /**
+         * Панель внутрений валюты
+         * @type {number}
+         */
+        pMX = 110;//110 идеальный уентр
+        el = GUI.createElement(ElementImage, {
+            x: pMX, y: 0,
+            src: '/images/panel-money.png'
+        });
+        self.elements.push(el);
+
+        /** деньги - монета */
+        el = GUI.createElement(ElementButton, {
+            x: pMX + 5, y: -2,
+            srcRest: '/images/button-money-rest.png',
+            srcHover: '/images/button-money-hover.png',
+            srcActive: '/images/button-money-active.png',
+            onClick: function () {
+                dialogMoneyShop.showDialog();
+            }
+        });
+        self.elements.push(el);
+        /** деньги - текст */
+        moneyText = GUI.createElement(ElementText, {
+            x: pMX + 58, y: 9, width: 70,
+            alignCenter: true, bold: true
+        });
+        self.elements.push(moneyText);
+
+        /** деньги кнопка плюс */
+        el = GUI.createElement(ElementButton, {
+            x: pMX + 122, y: -2,
+            srcRest: '/images/button-add-rest.png',
+            srcHover: '/images/button-add-hover.png',
+            srcActive: '/images/button-add-active.png',
+            onClick: function () {
+                dialogMoneyShop.showDialog();
+            }
+        });
+        self.elements.push(el);
+
+        /**
+         * Панель жизни
+         * @type {number}
+         */
+        pHX = 463 - 15 - 50; //463 идеальный центр
+        /** жизни - панель */
         el = GUI.createElement(ElementImage, {
             x: pHX, y: 0,
             src: '/images/panel-hearth.png'
         });
         self.elements.push(el);
 
-        /* жизни - сердца */
+        /** жизни - сердца */
         el = GUI.createElement(ElementHealthIndicator, {
             x: pHX + 9,
             y: -1
         });
         self.elements.push(el);
 
-        /* жизни - таймер */
+        /** жизни - таймер */
         el = GUI.createElement(ElementHealthTimer, {
             x: pHX + 111, y: 10
         });
         self.elements.push(el);
 
-        /* жизни - кнопка плюс */
+        /** жизни - кнопка плюс */
         el = GUI.createElement(ElementButton, {
             x: pHX + 190, y: -2,
             srcRest: '/images/button-add-rest.png',
@@ -59,9 +108,9 @@ PageBlockPanel = function PageBlockPanel() {
         });
         self.elements.push(el);
 
-        // sounds button кнопка звука
+        /** кнопка звука **/
         elSoundsButton = GUI.createElement(ElementButton, {
-            x: 700, y: 10,
+            x: 660, y: 10,
             srcRest: '/images/button-sound-off.png',
             srcHover: '/images/button-sound-active.png',
             srcActive: '/images/button-sound-active.png',
@@ -73,46 +122,31 @@ PageBlockPanel = function PageBlockPanel() {
         });
         self.elements.push(elSoundsButton);
 
+        /** кнопка фулскрин **/
+        elFSButton = GUI.createElement(ElementButton, {
+            x: 690, y: 0,
+            srcRest: '/images/button-fullscreen-on-rest.png',
+            srcHover: '/images/button-fullscreen-on-hover.png',
+            srcActive: '/images/button-fullscreen-on-active.png',
+            onClick: onFullScreenButtonClick
+        });
+        self.elements.push(elFSButton);
+
         dialogMoneyShop = GUI.createElement(ElementDialogMoneyShop, {});
         self.elements.push(dialogMoneyShop);
 
-        // панель денег
-        pMX = 110;
-        el = GUI.createElement(ElementImage, {
-            x: pMX, y: 0,
-            src: '/images/panel-money.png'
-        });
-        self.elements.push(el);
+        setBackgroundImage();
 
-        // деньги - монета
-        el = GUI.createElement(ElementButton, {
-            x: pMX + 5, y: -2,
-            srcRest: '/images/button-money-rest.png',
-            srcHover: '/images/button-money-hover.png',
-            srcActive: '/images/button-money-active.png',
-            onClick: function () {
-                dialogMoneyShop.showDialog();
-            }
+        fsBindEvent(function () {
+            console.log('change-fs');
+            console.log(arguments);
+            console.log(isFSMode);
+            //isFSMode = fsIsFullScreen();
+            isFSMode = !isFSMode;
+            console.log(isFSMode);
+            console.log(fsIsFullScreen());
+            updateFS();
         });
-        self.elements.push(el);
-        // деньги - текст
-        moneyText = GUI.createElement(ElementText, {
-            x: pMX + 58, y: 9, width: 70,
-            alignCenter: true, bold: true
-        });
-        self.elements.push(moneyText);
-
-        // деньги кнопка плюс
-        el = GUI.createElement(ElementButton, {
-            x: pMX + 122, y: -2,
-            srcRest: '/images/button-add-rest.png',
-            srcHover: '/images/button-add-hover.png',
-            srcActive: '/images/button-add-active.png',
-            onClick: function () {
-                dialogMoneyShop.showDialog();
-            }
-        });
-        self.elements.push(el);
     };
 
     /**
@@ -145,10 +179,8 @@ PageBlockPanel = function PageBlockPanel() {
     this.preset = function () {
         if (Sounds.isEnabled()) {
             elSoundsButton.srcRest = '/images/button-sound-on.png';
-            //elSoundsButton.srcHover = '/images/button-sound-active.png';
         } else {
             elSoundsButton.srcRest = '/images/button-sound-off.png';
-            //elSoundsButton.srcHover = '/images/button-sound-active.png';
         }
         if (LogicStuff.getStuff().goldQty !== undefined) {
             moneyText.setText(LogicStuff.getStuff('goldQty'))
@@ -168,6 +200,87 @@ PageBlockPanel = function PageBlockPanel() {
 
     this.showDialogMoneyShop = function () {
         dialogMoneyShop.showDialog();
+    };
+
+    let setBackgroundImage = function () {
+        let elBody, backgroundImage;
+        elBody = document.getElementsByTagName('body')[0];
+
+        backgroundImage = "url('" + GUI.getImagePath('/images/old-paper.png') + "')";
+
+        elBody.style.backgroundImage = backgroundImage;
+    };
+
+    let onFullScreenButtonClick = function () {
+        if (isFSMode) {
+            fsExit();
+        } else {
+            fsRequest();
+        }
+        updateFS();
+    };
+
+    let updateFS = function () {
+        let vkWidgets, appArea;
+        vkWidgets = document.getElementById('vk_comments');
+        appArea = document.getElementById('applicationArea');
+
+        if (isFSMode) {
+            elFSButton.srcRest = '/images/button-fullscreen-on-rest.png';
+            elFSButton.srcHover = '/images/button-fullscreen-on-rest.png';
+            elFSButton.srcActive = '/images/button-fullscreen-on-rest.png';
+            vkWidgets.style.display = 'none';
+            appArea.style.left = (screen.availWidth / 2 - parseInt(appArea.style.width) / 2) + 'px';
+            appArea.style.top = (screen.availHeight / 2 - parseInt(appArea.style.height) / 2) + 'px'
+        } else {
+            elFSButton.srcRest = '/images/button-fullscreen-off-rest.png';
+            elFSButton.srcHover = '/images/button-fullscreen-off-rest.png';
+            elFSButton.srcActive = '/images/button-fullscreen-off-rest.png';
+            vkWidgets.style.display = '';
+            appArea.style.left = '';
+            appArea.style.top = '';
+        }
+    };
+
+    let fsRequest = function () {
+        let doc = window.document.body;
+        if (doc.requestFullscreen) {
+            doc.requestFullscreen();
+        } else if (doc.mozRequestFullScreen) {
+            doc.mozRequestFullScreen();
+        } else if (doc.webkitRequestFullScreen) {
+            doc.webkitRequestFullScreen();
+        }
+    };
+
+    let fsExit = function () {
+        if (window.document.exitFullscreen) {
+            window.document.exitFullscreen();
+        } else if (window.document.mozCancelFullScreen) {
+            window.document.mozCancelFullScreen();
+        } else if (window.document.webkitCancelFullScreen) {
+            window.document.webkitCancelFullScreen();
+        }
+    };
+
+    let fsIsFullScreen = function () {
+        //VK method;
+        //function T(){return!!(document.fullscreenElement||document.fullScreenElement||document.msFullscreenElement||document.mozFullScreen||document.webkitIsFullScreen||cur.pvPartScreen)}"
+        return window.innerHeight === screen.height || window.innerWidth === screen.width;
+    };
+
+    let fsBindEvent = function (callback) {
+        /* Standard syntax */
+        document.addEventListener("fullscreenchange", callback);
+
+        /* Firefox */
+        document.addEventListener("mozfullscreenchange", callback);
+
+        /* Chrome, Safari and Opera */
+        document.addEventListener("webkitfullscreenchange", callback);
+
+        /* IE / Edge */
+        document.addEventListener("msfullscreenchange", callback);
     }
 };
 

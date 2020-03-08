@@ -45,18 +45,19 @@ ElementFriendsPanel = function () {
      * Создадим дом и настроем его.
      */
     this.init = function () {
-
         for (let i = 0; i < self.cardsCount; i++) {
-            cardsDom.push(GUI.createDom(undefined, {
+            let dom;
+            dom = GUI.createDom(undefined, {
                 x: self.x + i * (self.cardWidth + self.cardSpace),
                 y: self.y,
                 width: self.cardWidth,
                 height: self.cardHeight,
                 border: '3px solid #715f4b', borderRadius: '8px',
-                onClick:function(){
-                    alert(1);
-                }
-            }));
+            });
+            GUI.bind(dom, GUI.EVENT_MOUSE_CLICK, function () {
+                if (!friends[i]) SocNet.openInviteFriendDialog();
+            });
+            cardsDom.push(dom);
             cardsText.push(GUI.createElement(ElementText,
                 {
                     x: self.x + i * (self.cardWidth + self.cardSpace) + 3,
@@ -114,8 +115,10 @@ ElementFriendsPanel = function () {
         cardsDom.forEach(function (card, i) {
             if (friends[i] && friends[i].photo50) {
                 card.backgroundImage = friends[i].photo50;
+                card.pointer = GUI.POINTER_ARROW;
             } else {
                 card.backgroundImage = '/images/friend-vacancy.png';
+                card.pointer = GUI.POINTER_HAND;
             }
             card.redraw();
         });

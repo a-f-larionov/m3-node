@@ -99,7 +99,7 @@ ClientCodeLoader = function () {
             let html;
             html = '';
             html += '\<!DOCTYPE html>\
-            <html>\
+            <html style="background:black;">\
                 <head><meta charset=utf-8></head>\
             <div style="text-align:center;">Игра на техническом обслуживании, пожалуйста зайдите немного позже.</div>\
             </html>\
@@ -118,7 +118,7 @@ ClientCodeLoader = function () {
             let html;
             html = '';
             html += '\<!DOCTYPE html>\
-            <html>\
+            <html style="background:black;">\
                 <head><meta charset=utf-8></head>\
             <div style="text-align:center;">Игра на техническом обслуживании, пожалуйста зайдите немного позже.</div>\
             </html>\
@@ -161,7 +161,7 @@ ClientCodeLoader = function () {
         Logs.log("Generate vk client code.");
         //@todo сделать тут HTML5
         code = "";
-        code += "<html>\r\n";
+        code += "<html style=\"background:black;\">\r\n";
         code += "<head>\r\n";
         code += "<meta charset='utf-8' />\r\n";
 
@@ -187,7 +187,7 @@ ClientCodeLoader = function () {
             "id='applicationArea' ></div>\r\n";
 
         /* comments div */
-        code += "<div style='top:" + Config.Project.applicationAreaHeight + "px;position:absolute;'>";
+        code += "<div id='vk_comments' style='top:" + Config.Project.applicationAreaHeight + "px;position:absolute;'>";
         code += "<iframe src='" + projectPrefix + "/service/VKCommentsWidget' style='border:none; height: " + (Config.VKCommentWidget.height + 44) + "px; width:" + Config.VKCommentWidget.width + ";'></iframe>";
         code += "</div>\r\n";
         code += "</BODY></HTML>";
@@ -202,7 +202,7 @@ ClientCodeLoader = function () {
         let code;
         code = "";
         code += "<!doctype html>";
-        code += "<html>";
+        code += "<html style=\"background:black;\">";
         code += "<head>";
         code += "<style type='text/css'>*{padding:0px;margin:0px;}</style>";
         code += "<meta charset='utf-8' />";
