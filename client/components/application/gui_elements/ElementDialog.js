@@ -9,7 +9,7 @@ ElementDialog = function () {
      * Показывать ли элемент.
      * @type {boolean}
      */
-    this.showed = false;
+    let showed = false;
 
     this.dialogShowed = false;
 
@@ -79,9 +79,7 @@ ElementDialog = function () {
                     },
                     {type: GUI.ANIM_TYPE_MOVE, vX: 0, vY: -15, duration: 38},
                     {
-                        type: GUI.ANIM_TYPE_STOP, callback: function () {
-                            self.dialogShowed = false;
-                        }
+                        type: GUI.ANIM_TYPE_STOP, callback: onCloseFinished
                     }
                 ]
             ]
@@ -97,8 +95,8 @@ ElementDialog = function () {
      * Покажем картинку.
      */
     this.show = function () {
-        if (self.showed) return;
-        self.showed = true;
+        if (showed) return;
+        showed = true;
         dom.show();
         for (let i in self.elements) {
             self.elements[i].show();
@@ -110,8 +108,8 @@ ElementDialog = function () {
      * Спрячем картинку.
      */
     this.hide = function () {
-        if (!self.showed) return;
-        self.showed = false;
+        if (!showed) return;
+        showed = false;
         dom.hide();
         for (let i in self.elements) {
             self.elements[i].hide();
@@ -122,7 +120,7 @@ ElementDialog = function () {
      * Перерисуем картинку.
      */
     this.redraw = function () {
-        if (!self.showed) return;
+        if (!showed) return;
         if (!self.dialogShowed) {
             dom.x = self.x;
             dom.y = self.y;
@@ -140,19 +138,36 @@ ElementDialog = function () {
      * Show dialog!
      */
     this.showDialog = function () {
+        /**
+         * 1 - добавить в очередь
+         * 2 - показать последний из очереди
+         */
+        ElementDialog.addDialog(this);
+    };
+
+    this.showConcreteDialog = function () {
         if (self.dialogShowed) return;
-        GUI.lockEvents(self.dom);
-        // lock events
-        this.show();
+        self.show();
         self.dialogShowed = true;
         dom.animData[0].frameN = 0;
         dom.animPlayed = true;
+        self.redraw();
     };
 
     this.closeDialog = function () {
-        GUI.unlockEvents();
+        /**
+         * - Запуск прятания диалога
+         */
         dom.animData[0].frameN = 2;
         dom.animPlayed = true;
+    };
+
+    let onCloseFinished = function () {
+        self.dialogShowed = false;
+        /**
+         * Показать диалог из очереди
+         */
+        ElementDialog.removeDialog();
     };
 
     this.createElement = function (element, params) {
@@ -164,12 +179,32 @@ ElementDialog = function () {
     this.reset = function (redraw) {
         dom.x = self.x;
         dom.y = self.y;
-        self.dialogShowed = false;
         dom.animData[0].frameN = 0;
-        GUI.unlockEvents();
+        self.dialogShowed = false;
         if (redraw) {
-            //self.redraw();
+            self.redraw();
             self.hide();
         }
+        ElementDialog.removeDialog();
+    }
+};
+
+ElementDialog.queue = [];
+
+ElementDialog.addDialog = function (dialog) {
+    ElementDialog.queue.push(dialog);
+    ElementDialog.showDialog();
+};
+
+ElementDialog.removeDialog = function () {
+    GUI.unlockEvents();
+    ElementDialog.queue.shift();
+    ElementDialog.showDialog();
+};
+
+ElementDialog.showDialog = function () {
+    if (ElementDialog.queue.length) {
+        ElementDialog.queue[0].showConcreteDialog();
+        GUI.lockEvents(ElementDialog.queue[0].dom);
     }
 };

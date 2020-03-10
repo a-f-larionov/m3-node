@@ -57,7 +57,9 @@ PageBlockField = function PageBlockField() {
             centerX: 378, centerY: 250,
             onDestroyLine: self.onDestroyLine,
             beforeTurnUse: self.beforeTurnUse,
-            afterStuffUse: self.afterStuffUse
+            afterStuffUse: self.afterStuffUse,
+            onFieldSilent: self.onFieldSilent
+
         });
         elementField = el;
         this.elements.push(el);
@@ -148,21 +150,20 @@ PageBlockField = function PageBlockField() {
         self.elements.push(elPanelGoals);
 
         dialogGoals = GUI.createElement(ElementDialogGoals);
-        self.elements.push(dialogGoals);
 
         dialogGoalsReached = GUI.createElement(ElementDialogGoalsReached);
-        self.elements.push(dialogGoalsReached);
+        //self.elements.push(dialogGoalsReached);
 
         dialogTurnsLoose = GUI.createElement(ElementDialogTurnLoose);
 
         dialogJustQuit = GUI.createElement(ElementDialogJustQuit);
 
         dialogBuyStuff = GUI.createElement(ElementDialogBuyStuff);
-        self.elements.push(dialogBuyStuff);
+        //self.elements.push(dialogBuyStuff);
 
         /** stuff hummer */
         el = GUI.createElement(ElementStuffButton, {
-            x: 680, y: 200,
+            x: 650, y: 200,
             fieldName: 'hummerQty',
             srcRest: '/images/button-hummer-rest.png',
             srcHover: '/images/button-hummer-hover.png',
@@ -173,21 +174,9 @@ PageBlockField = function PageBlockField() {
         });
         this.elements.push(el);
 
-        /** stuff shuffle */
-        el = GUI.createElement(ElementStuffButton, {
-            x: 680, y: 300,
-            fieldName: 'shuffleQty',
-            srcRest: '/images/button-shuffle-rest.png',
-            srcHover: '/images/button-shuffle-hover.png',
-            srcActive: '/images/button-shuffle-active.png',
-            onClick: function () {
-                self.setStuffMode(LogicStuff.STUFF_SHUFFLE);
-            }
-        });
-        this.elements.push(el);
         /** stuff lighting */
         el = GUI.createElement(ElementStuffButton, {
-            x: 680, y: 400,
+            x: 650, y: 280,
             fieldName: 'lightingQty',
             srcRest: '/images/button-lighting-rest.png',
             srcHover: '/images/button-lighting-hover.png',
@@ -198,15 +187,35 @@ PageBlockField = function PageBlockField() {
         });
         this.elements.push(el);
 
+        /** stuff shuffle */
+        el = GUI.createElement(ElementStuffButton, {
+            x: 650, y: 360,
+            fieldName: 'shuffleQty',
+            srcRest: '/images/button-shuffle-rest.png',
+            srcHover: '/images/button-shuffle-hover.png',
+            srcActive: '/images/button-shuffle-active.png',
+            onClick: function () {
+                self.setStuffMode(LogicStuff.STUFF_SHUFFLE);
+            }
+        });
+        this.elements.push(el);
+
         // dom stuff
         domStuff = GUI.createDom(null, {
             x: 190, y: 10
         });
+        domStuff.__dom.style.zIndex = 10000;
+
         GUI.bind(domStuff, GUI.EVENT_MOUSE_CLICK, function (event, dom) {
+            let a;
             // передаем клик дальше, теоретически после анимации
             domStuff.hide();
             el = document.elementFromPoint(event.clientX, event.clientY);
-            el.dispatchEvent(new MouseEvent(event.type, event));
+            // признак каменного поля :)
+            console.log(el);
+            if (el.__dom.fieldX && el.__dom.fieldY) {
+                el.dispatchEvent(new MouseEvent(event.type, event));
+            }
             domStuff.show();
         });
 
@@ -241,11 +250,7 @@ PageBlockField = function PageBlockField() {
         }
         domStuff.hide();
         elPanelGoals.hide();
-        dialogBuyStuff.reset(true);
-        dialogGoals.reset(true);
-        dialogGoalsReached.reset(true);
-        dialogJustQuit.reset(true);
-        dialogTurnsLoose.reset(true);
+        //dialogGoals.closeDialog();
     };
 
     this.loadField = function () {
@@ -271,6 +276,7 @@ PageBlockField = function PageBlockField() {
             dialogGoals.closeDialog();
         }, 1750 * 100
         );
+        noMoreGoals = false;
     };
 
     /**
@@ -319,14 +325,19 @@ PageBlockField = function PageBlockField() {
             }
         }
         self.redraw();
+    };
+
+    this.onFieldSilent = function () {
         if (noMoreGoals) {
             elementField.lock();
-            setTimeout(self.finishLevel, 1000);
+            noMoreGoals = false;
+            setTimeout(self.finishLevel, 500);
         }
     };
 
     this.finishLevel = function () {
         let pointId, user, lastScore;
+        stuffMode = null;
         Logs.log("finishLevel", Logs.LEVEL_DETAIL);
         user = LogicUser.getCurrentUser();
         pointId = DataPoints.getPlayedId();
@@ -344,6 +355,7 @@ PageBlockField = function PageBlockField() {
             );
         }
         dialogGoalsReached.showDialog(pointId);
+        PageController.redraw();
     };
 
     this.beforeTurnUse = function () {

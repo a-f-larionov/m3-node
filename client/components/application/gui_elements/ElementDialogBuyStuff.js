@@ -10,9 +10,9 @@ ElementDialogBuyStuff = function () {
         let el, offsetX, stepX, offsetY;
         this.__proto__.init.call(this);
 
-        offsetX = 25;
+        offsetX = 30;
         offsetY = 80;
-        stepX = 150;
+        stepX = 145;
 
         GUI.pushParent(self.dom);
         // заголовок диалога
@@ -25,6 +25,9 @@ ElementDialogBuyStuff = function () {
         for (let i = 0; i < 3; i++) {
             el = GUI.createElement(ElementButton, {
                 x: offsetX + stepX * i, y: offsetY,
+                srcRest: '/images/shop-hummer-2.png',
+                srcHover: '/images/shop-hummer-2.png',
+                srcActive: '/images/shop-hummer-2.png',
                 onClick: function () {
                     self.buyStuff(i);
                 }
@@ -32,7 +35,7 @@ ElementDialogBuyStuff = function () {
             items.push(el);
             self.elements.push(el);
 
-            self.elements.push(GUI.createElement(ElementButton, {
+            el = GUI.createElement(ElementButton, {
                 x: offsetX + stepX * i + 45, y: offsetY + 150 - 25,
                 srcRest: '/images/button-add-rest.png',
                 srcHover: '/images/button-add-hover.png',
@@ -41,7 +44,7 @@ ElementDialogBuyStuff = function () {
                 onClick: function () {
                     self.buyStuff(i);
                 }
-            }));
+            });
         }
 
         // кнопка закрыть
@@ -88,7 +91,7 @@ ElementDialogBuyStuff = function () {
         this.__proto__.redraw.call(this);
     };
 
-    this.buyStuff = function (i) {
+    this.buyStuff = function (itemIndex) {
 
         let userGold, quantity, buyFunc, giveFunc;
         userGold = LogicStuff.getStuff('goldQty');
@@ -97,24 +100,26 @@ ElementDialogBuyStuff = function () {
             case LogicStuff.STUFF_HUMMER:
                 buyFunc = SAPIStuff.buyHummer;
                 giveFunc = LogicStuff.giveAHummer;
-                shopItem = DataShop.hummers[i];
+                shopItem = DataShop.hummers[itemIndex];
                 break;
             case LogicStuff.STUFF_SHUFFLE:
                 buyFunc = SAPIStuff.buyShuffle;
                 giveFunc = LogicStuff.giveAShuffle;
-                shopItem = DataShop.shuffle[i];
+                shopItem = DataShop.shuffle[itemIndex];
                 break;
             case LogicStuff.STUFF_LIGHTING:
                 buyFunc = SAPIStuff.buyLighting;
                 giveFunc = LogicStuff.giveALighting;
-                shopItem = DataShop.lighting[i];
+                shopItem = DataShop.lighting[itemIndex];
                 break;
         }
 
         if (userGold < shopItem.gold) {
             PageBlockPanel.showDialogMoneyShop();
+            self.reset();
+            self.showDialog(stuffId);
         } else {
-            buyFunc(i);
+            buyFunc(itemIndex);
             giveFunc(shopItem.quantity);
             LogicStuff.usedGold(shopItem.gold);
             self.closeDialog();

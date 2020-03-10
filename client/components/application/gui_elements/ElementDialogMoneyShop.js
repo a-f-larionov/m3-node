@@ -7,7 +7,7 @@ ElementDialogMoneyShop = function () {
         this.__proto__.init.call(this);
 
         offsetX = 25;
-        offsetY = 80;
+        offsetY = 60;
         stepX = 150;
 
         GUI.pushParent(self.dom);
@@ -31,7 +31,7 @@ ElementDialogMoneyShop = function () {
             });
             self.elements.push(el);
 
-            self.elements.push(GUI.createElement(ElementButton, {
+            el = GUI.createElement(ElementButton, {
                 x: offsetX + stepX * i + 45, y: offsetY + 150 - 45,
                 srcRest: '/images/button-add-rest.png',
                 srcHover: '/images/button-add-hover.png',
@@ -40,7 +40,8 @@ ElementDialogMoneyShop = function () {
                     SocNet.openOrderDialog(DataShop.gold[i].votes);
                     self.closeDialog();
                 }
-            }));
+            });
+            //self.elements.push(el);
         }
 
         // кнопка закрыть

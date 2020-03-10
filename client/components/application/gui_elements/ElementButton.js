@@ -57,13 +57,13 @@ ElementButton = function () {
      * Ссылка на картинку в покое(ожидании/бездействии).
      * @type {string}
      */
-    this.srcRest = 'path/to/image/rest.png';
+    this.srcRest = 'path/to/image/rest2.png';
 
     /**
      * Будет вызываться при нажатии на кнопку.
      * @type {function}
      */
-    this.onClick;
+    this.onClick = null;
 
     /**
      * Подсказка кнопки.

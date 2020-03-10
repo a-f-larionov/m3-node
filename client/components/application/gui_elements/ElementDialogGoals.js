@@ -48,19 +48,6 @@ ElementDialogGoals = function () {
         GUI.popParent();
     };
 
-    this.show = function () {
-        this.__proto__.show.call(this);
-    };
-
-    this.hide = function () {
-        this.__proto__.hide.call(this);
-    };
-
-    this.redraw = function () {
-
-        this.__proto__.redraw.call(this);
-    };
-
     this.setGoals = function (goals) {
         for (let i in this.elements) {
             this.elements[i].hide();

@@ -209,6 +209,7 @@ PageBlockPanel = function PageBlockPanel() {
         backgroundImage = "url('" + GUI.getImagePath('/images/old-paper.png') + "')";
 
         elBody.style.backgroundImage = backgroundImage;
+        elBody.style.backgroundSize = "1px 1px";
     };
 
     let onFullScreenButtonClick = function () {

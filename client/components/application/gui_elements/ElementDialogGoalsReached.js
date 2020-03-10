@@ -91,13 +91,6 @@ ElementDialogGoalsReached = function () {
         GUI.popParent();
     };
 
-    this.show = function () {
-        this.__proto__.show.call(this);
-    };
-
-    this.hide = function () {
-        this.__proto__.hide.call(this);
-    };
 
     this.redraw = function () {
         let user, point, friend, score;

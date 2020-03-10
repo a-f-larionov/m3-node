@@ -79,6 +79,7 @@ ElementField = function () {
     let fieldHeight = 0;
 
     this.onDestroyLine = null;
+    this.onFieldSilent = null;
 
     /**
      * Создадим дом и настроем его.
@@ -411,9 +412,9 @@ ElementField = function () {
                         maskDoms[y][x].show();
                         maskDoms[y][x].redraw();
                         break;
-                    case DataPoints.OBJECT_NONE:
-                        maskDoms[y][x].hide();
-                        break;
+                    //case DataPoints.OBJECT_NONE:
+                        //maskDoms[y][x].hide();
+                      //  break;
                 }
             });
         });
@@ -504,6 +505,33 @@ ElementField = function () {
                 self.destroyLines();
                 break;
         }
+        if (self.isFieldSilent()) {
+            self.onFieldSilent();
+        }
+    };
+
+    this.isFieldSilent = function () {
+//        console.log(animBlock + " " + self.hasFallDown() + " " + self.hasFallDown() + " " + self.hasProcesSpecialLayer());
+
+        return !(animBlock ||
+            self.hasDestroyLines() ||
+            self.hasFallDown() ||
+            self.hasProcesSpecialLayer()
+        );
+    };
+
+    this.hasProcesSpecialLayer = function () {
+        layerSpecial.forEach(function (row, y) {
+            row.forEach(function (cell, x) {
+                //if emitter and empty layerGems, set random gem
+                if (cell === DataPoints.OBJECT_EMITTER &&
+                    layerGems[y][x] === DataPoints.OBJECT_EMPTY
+                ) {
+                    return true;
+                }
+            });
+        });
+        return false;
     };
 
     this.processSpecialLayer = function () {
@@ -523,6 +551,23 @@ ElementField = function () {
             });
         });
         self.run();
+    };
+
+    this.hasFallDown = function () {
+        if (animObjects.length) return true;
+
+        for (let y = fieldHeight - 1; y > 0; y--) {
+            for (let x = 0; x < fieldWidth; x++) {
+                let dom;
+                if (
+                    fallDownObjects.indexOf(layerGems[y][x]) === -1 &&
+                    fallDownObjects.indexOf(layerGems[y - 1][x]) !== -1
+                ) {
+                    return true;
+                }
+            }
+        }
+        return false;
     };
 
     this.fallDown = function () {
@@ -573,6 +618,12 @@ ElementField = function () {
         } else {
             self.run();
         }
+    };
+
+    this.hasDestroyLines = function () {
+        let lines;
+        lines = this.findLines();
+        return lines.length > 0;
     };
 
     this.destroyLines = function () {

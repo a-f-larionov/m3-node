@@ -49,10 +49,7 @@ LogicMain = function () {
         SAPITimeServer.sendMeTime();
         LogicUser.checkHealth();
         LogicStuff.loadStuff();
-        console.log('ddd', LogicUser.getCurrentUser());
-        console.log( DataMap.getMapIdFromPointId(
-            LogicUser.getCurrentUser().currentPoint
-        ));
+        // установить текущую карту игрока
         DataMap.setCurrentMapId(
             DataMap.getMapIdFromPointId(
                 LogicUser.getCurrentUser().currentPoint

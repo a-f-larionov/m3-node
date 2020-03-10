@@ -57,7 +57,7 @@ ElementStuffButton = function () {
      * Ссылка на картинку в покое(ожидании/бездействии).
      * @type {string}
      */
-    this.srcRest = 'path/to/image/rest.png';
+    this.srcRest = 'path/to/image/rest1.png';
 
     /**
      * Будет вызываться при нажатии на кнопку.
@@ -156,8 +156,8 @@ ElementStuffButton = function () {
         }
         dom.x = self.x;
         dom.y = self.y;
-        counter.x = self.x + 40;
-        counter.y = self.y + 40;
+        counter.x = self.x + 60;
+        counter.y = self.y + 60;
         counter.setText(LogicStuff.getStuff(self.fieldName));
         dom.redraw();
         counter.redraw();
