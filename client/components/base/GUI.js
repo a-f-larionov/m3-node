@@ -6,6 +6,10 @@
 GUI = function () {
     let self = this;
 
+    let isFSMode = false;
+
+    let appArea = false;
+
     /**
      * Событие нажатия мышы(левой), но не отпускания.
      * @type {number}
@@ -90,7 +94,8 @@ GUI = function () {
      * - установим родителя, это будет тело документа.
      */
     this.init = function () {
-        parentsStack.push(document.getElementById('applicationArea'));
+        appArea = document.getElementById('applicationArea');
+        parentsStack.push(appArea);
         let style = document.createElement('style');
         style.type = 'text/css';
         style.innerHTML = '.sepia { ' +
@@ -112,10 +117,61 @@ GUI = function () {
             '}';
         document.getElementsByTagName('head')[0].appendChild(style);
         document.addEventListener('mousemove', function (event) {
+
             mouseMoveStack.forEach(function (callback) {
-                callback.call(null, event.clientX, event.clientY);
+                callback.call(null, event.clientX - appArea.offsetLeft, event.clientY - appArea.offsetTop);
             })
         });
+
+        fsBindEvent(function () {
+            isFSMode = !isFSMode;
+            updateFS();
+        });
+
+        this.fsSwitch = function () {
+            updateFS(true);
+            if (GUI.isFullScreen()) {
+                fsExit();
+            } else {
+                fsRequest();
+            }
+        };
+
+        let updateFS = function (before) {
+            let vkWidgets;
+            vkWidgets = document.getElementById('vk_comments');
+
+            if ((before && !GUI.isFullScreen()) || (!before && GUI.isFullScreen())) {
+                vkWidgets.style.display = 'none';
+                appArea.style.left = (screen.availWidth / 2 - parseInt(appArea.style.width) / 2) + 'px';
+                appArea.style.top = (screen.availHeight / 2 - parseInt(appArea.style.height) / 2) + 'px'
+            } else {
+                vkWidgets.style.display = '';
+                appArea.style.left = '';
+                appArea.style.top = '';
+            }
+        };
+
+        let fsRequest = function () {
+            let doc = window.document.body;
+            if (doc.requestFullscreen) {
+                doc.requestFullscreen();
+            } else if (doc.mozRequestFullScreen) {
+                doc.mozRequestFullScreen();
+            } else if (doc.webkitRequestFullScreen) {
+                doc.webkitRequestFullScreen();
+            }
+        };
+
+        let fsExit = function () {
+            if (window.document.exitFullscreen) {
+                window.document.exitFullscreen();
+            } else if (window.document.mozCancelFullScreen) {
+                window.document.mozCancelFullScreen();
+            } else if (window.document.webkitCancelFullScreen) {
+                window.document.webkitCancelFullScreen();
+            }
+        };
     };
 
     /**
@@ -341,6 +397,32 @@ GUI = function () {
 
     this.onMouseMove = function (callback) {
         mouseMoveStack.push(callback);
+    };
+
+    let fsBindEvent = function (callback) {
+        /* Standard syntax */
+        document.addEventListener("fullscreenchange", callback);
+
+        /* Firefox */
+        document.addEventListener("mozfullscreenchange", callback);
+
+        /* Chrome, Safari and Opera */
+        document.addEventListener("webkitfullscreenchange", callback);
+
+        /* IE / Edge */
+        document.addEventListener("msfullscreenchange", callback);
+    };
+
+    this.isFullScreen = function () {
+        return isFSMode;
+        /*return !!(
+             document.fullScreenElement ||
+             document.msFullscreenElement ||
+             document.mozFullScreen ||
+             document.webkitIsFullScreen ||
+             cur.pvPartScreen
+         );
+         */
     };
 };
 

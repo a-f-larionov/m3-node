@@ -207,7 +207,6 @@ PageBlockField = function PageBlockField() {
         domStuff.__dom.style.zIndex = 10000;
 
         GUI.bind(domStuff, GUI.EVENT_MOUSE_CLICK, function (event, dom) {
-            let a;
             // передаем клик дальше, теоретически после анимации
             domStuff.hide();
             el = document.elementFromPoint(event.clientX, event.clientY);

@@ -23,8 +23,6 @@ PageBlockPanel = function PageBlockPanel() {
 
     let moneyText;
 
-    let isFSMode = false;
-
     let dialogMoneyShop;
 
     this.init = function () {
@@ -136,17 +134,6 @@ PageBlockPanel = function PageBlockPanel() {
         self.elements.push(dialogMoneyShop);
 
         setBackgroundImage();
-
-        fsBindEvent(function () {
-            console.log('change-fs');
-            console.log(arguments);
-            console.log(isFSMode);
-            //isFSMode = fsIsFullScreen();
-            isFSMode = !isFSMode;
-            console.log(isFSMode);
-            console.log(fsIsFullScreen());
-            updateFS();
-        });
     };
 
     /**
@@ -213,76 +200,18 @@ PageBlockPanel = function PageBlockPanel() {
     };
 
     let onFullScreenButtonClick = function () {
-        if (isFSMode) {
-            fsExit();
-        } else {
-            fsRequest();
-        }
-        updateFS();
-    };
-
-    let updateFS = function () {
-        let vkWidgets, appArea;
-        vkWidgets = document.getElementById('vk_comments');
-        appArea = document.getElementById('applicationArea');
-
-        if (isFSMode) {
+        GUI.fsSwitch();
+        if (GUI.isFullScreen()) {
             elFSButton.srcRest = '/images/button-fullscreen-on-rest.png';
             elFSButton.srcHover = '/images/button-fullscreen-on-rest.png';
             elFSButton.srcActive = '/images/button-fullscreen-on-rest.png';
-            vkWidgets.style.display = 'none';
-            appArea.style.left = (screen.availWidth / 2 - parseInt(appArea.style.width) / 2) + 'px';
-            appArea.style.top = (screen.availHeight / 2 - parseInt(appArea.style.height) / 2) + 'px'
         } else {
             elFSButton.srcRest = '/images/button-fullscreen-off-rest.png';
             elFSButton.srcHover = '/images/button-fullscreen-off-rest.png';
             elFSButton.srcActive = '/images/button-fullscreen-off-rest.png';
-            vkWidgets.style.display = '';
-            appArea.style.left = '';
-            appArea.style.top = '';
         }
     };
 
-    let fsRequest = function () {
-        let doc = window.document.body;
-        if (doc.requestFullscreen) {
-            doc.requestFullscreen();
-        } else if (doc.mozRequestFullScreen) {
-            doc.mozRequestFullScreen();
-        } else if (doc.webkitRequestFullScreen) {
-            doc.webkitRequestFullScreen();
-        }
-    };
-
-    let fsExit = function () {
-        if (window.document.exitFullscreen) {
-            window.document.exitFullscreen();
-        } else if (window.document.mozCancelFullScreen) {
-            window.document.mozCancelFullScreen();
-        } else if (window.document.webkitCancelFullScreen) {
-            window.document.webkitCancelFullScreen();
-        }
-    };
-
-    let fsIsFullScreen = function () {
-        //VK method;
-        //function T(){return!!(document.fullscreenElement||document.fullScreenElement||document.msFullscreenElement||document.mozFullScreen||document.webkitIsFullScreen||cur.pvPartScreen)}"
-        return window.innerHeight === screen.height || window.innerWidth === screen.width;
-    };
-
-    let fsBindEvent = function (callback) {
-        /* Standard syntax */
-        document.addEventListener("fullscreenchange", callback);
-
-        /* Firefox */
-        document.addEventListener("mozfullscreenchange", callback);
-
-        /* Chrome, Safari and Opera */
-        document.addEventListener("webkitfullscreenchange", callback);
-
-        /* IE / Edge */
-        document.addEventListener("msfullscreenchange", callback);
-    }
 };
 
 PageBlockPanel = new PageBlockPanel();
