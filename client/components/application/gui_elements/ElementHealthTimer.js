@@ -16,6 +16,8 @@ ElementHealthTimer = function () {
      */
     let showed = false;
 
+    let healthBefore = false;
+
     /**
      * Координата X текста.
      * @type {number}
@@ -28,9 +30,15 @@ ElementHealthTimer = function () {
      */
     this.y = undefined;
 
+    /**
+     *
+     * @type {ElementHealthIndicator}
+     */
+    this.healthIndicator = null;
+
     let elText;
     /**
-     * Создадим дом и настроем его.
+     * Создадим дом и настроим его.
      */
     this.init = function () {
 
@@ -79,7 +87,10 @@ ElementHealthTimer = function () {
         user = LogicUser.getCurrentUser();
 
         if (user.health === LogicUser.getMaxHealth()) {
+            console.log('hide ');
+            self.healthIndicator.redraw();
             elText.hide();
+
         } else {
             recoveryTime = LogicUser.getHealthRecoveryTime();
             healthStartTime = LogicUser.getCurrentUser().healthStartTime / 1000;
@@ -102,6 +113,7 @@ ElementHealthTimer = function () {
             elText.show();
             elText.redraw();
             if (left <= 0) {
+                console.log('check healrht of left <= 0 ');
                 LogicUser.checkHealth();
             }
         }

@@ -152,14 +152,12 @@ PageBlockField = function PageBlockField() {
         dialogGoals = GUI.createElement(ElementDialogGoals);
 
         dialogGoalsReached = GUI.createElement(ElementDialogGoalsReached);
-        //self.elements.push(dialogGoalsReached);
 
         dialogTurnsLoose = GUI.createElement(ElementDialogTurnLoose);
 
         dialogJustQuit = GUI.createElement(ElementDialogJustQuit);
 
         dialogBuyStuff = GUI.createElement(ElementDialogBuyStuff);
-        //self.elements.push(dialogBuyStuff);
 
         /** stuff hummer */
         el = GUI.createElement(ElementStuffButton, {

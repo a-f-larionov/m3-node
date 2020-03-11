@@ -15,7 +15,8 @@ ElementDialogJustQuit = function () {
         }, this.dom);
         element.setText("ВЫЙТИ?");
         self.elements.push(element);
-        // надпись в центре
+
+        /** надпись в центре */
         element = GUI.createElement(ElementText, {
             x: 127, y: 114, width: 250,
             //  fontSize: 24,
@@ -24,7 +25,8 @@ ElementDialogJustQuit = function () {
         }, this.dom);
         element.setText("Потеряешь одну жизнь.");
         self.elements.push(element);
-        // кнопка выйти
+
+        /** кнопка выйти */
         element = GUI.createElement(ElementButton, {
                 x: 75, y: 220,
                 srcRest: '/images/button-red-rest.png',
@@ -40,7 +42,7 @@ ElementDialogJustQuit = function () {
         );
         self.elements.push(element);
 
-        // кнопка вернуться в игру
+        /** Кнопка вернуться в игру */
         element = GUI.createElement(ElementButton, {
                 x: 275, y: 220,
                 srcRest: '/images/button-green-rest.png',
@@ -54,7 +56,7 @@ ElementDialogJustQuit = function () {
         );
         self.elements.push(element);
 
-        // кнопка закрыть
+        /** Кнопка закрыть */
         element = GUI.createElement(ElementButton, {
                 x: 452, y: 3,
                 srcRest: '/images/button-close-rest.png',
@@ -66,17 +68,5 @@ ElementDialogJustQuit = function () {
             }, this.dom
         );
         self.elements.push(element);
-    };
-
-    this.show = function () {
-        this.__proto__.show.call(this);
-    };
-
-    this.hide = function () {
-        this.__proto__.hide.call(this);
-    };
-
-    this.redraw = function () {
-        this.__proto__.redraw.call(this);
     };
 };

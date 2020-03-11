@@ -104,7 +104,7 @@ ElementText = function () {
      * Покажем текст.
      */
     this.show = function () {
-        if (showed === true) return;
+        if (showed) return;
         showed = true;
         dom.show();
         self.redraw();
@@ -114,7 +114,7 @@ ElementText = function () {
      * Спрячем текст.
      */
     this.hide = function () {
-        if (showed == false) return;
+        if (!showed) return;
         showed = false;
         dom.hide();
     };

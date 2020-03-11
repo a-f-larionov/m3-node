@@ -348,6 +348,8 @@ ClientCodeLoader = function () {
         imageCode = "<script>";
         imageCode += "imagesData = {};";
         timePostfix = "?t=" + new Date().getTime();
+        //@todo remove it! fo production
+        timePostfix = "?t=1";
         for (let i in imageFiles) {
             path = imagesPrefix + imageFiles[i].substr(imagesPath.length);
             demension = IMAGE_SIZE(imageFiles[i]);

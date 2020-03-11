@@ -82,9 +82,9 @@ ElementHealthIndicator = function () {
             step -= 10;
         }
         doms.forEach(function (dom) {
+            dom.x = self.x + (i - 1) * step;
             if (i <= health) dom.show(); else dom.hide();
             dom.redraw();
-            dom.x = self.x + (i - 1) * step;
             i++;
         });
     };

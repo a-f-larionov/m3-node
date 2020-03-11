@@ -266,7 +266,7 @@ LogicUser = function () {
     };
 
     this.getHealthRecoveryTime = function () {
-        return 60 * 0.2 * 1000;
+        return 60 * 0.1 * 1000;
     };
 
     this.checkHealth = function (userId) {

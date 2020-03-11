@@ -90,7 +90,8 @@ PageBlockPanel = function PageBlockPanel() {
 
         /** жизни - таймер */
         el = GUI.createElement(ElementHealthTimer, {
-            x: pHX + 111, y: 10
+            x: pHX + 111, y: 10,
+            healthIndicator: el,
         });
         self.elements.push(el);
 
