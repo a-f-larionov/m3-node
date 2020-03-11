@@ -46,18 +46,19 @@ LogicPayments = function () {
             let params, url;
 
             url = request.url;
-            FS.writeFile(CONST_DIR_SERVER + '/logs/payments.log',
-                LogicTimeServer.getCurrentTime() + " " + url + " " + body + "\r\n",
-                {flag: 'a'},
-                function () {
-                });
             params = QUERYSTRING.decode(body);
+            Logs.log("vk_buy request processing start", Logs.LEVEL_DETAIL, {
+                url: url,
+                body: body,
+                params: params
+            }, Logs.CHANNEL_VK_PAYMENTS);
 
             self.VKProcessBuy(params, function (answer) {
                 callback(JSON.stringify(answer));
             });
         });
-        Logs.log("vk_buy", Logs.LEVEL_NOTIFY);
+        Logs.log("vk_buy ready", Logs.LEVEL_DETAIL, request.url, Logs.CHANNEL_VK_PAYMENTS);
+        Logs.log("vk_buy ready", Logs.LEVEL_NOTIFY, request.url);
     };
 
 
@@ -72,6 +73,8 @@ LogicPayments = function () {
             !params.item_price ||
             !params.notification_type
         ) {
+            Logs.log("vk_buy: Не все аргументы", Logs.LEVEL_ERROR, params);
+            Logs.log("vk_buy: Не все аргументы", Logs.LEVEL_ERROR, params, Logs.CHANNEL_VK_PAYMENTS);
             return callback(vkErrorCommon);
         }
         app_id = parseInt(params.app_id);
@@ -83,17 +86,20 @@ LogicPayments = function () {
 
         // проверка id приложения
         if (app_id !== Config.SocNet.VK.appId) {
-            Logs.log("LogicPayments: Не верный appId", Logs.LEVEL_ERROR, params);
+            Logs.log("vk_buy: Не верный appId", Logs.LEVEL_ERROR, params);
+            Logs.log("vk_buy: Не верный appId", Logs.LEVEL_ERROR, params, Logs.CHANNEL_VK_PAYMENTS);
             return callback(vkErrorCommon);
         }
         if (!self.existsGoldWithPrice(item_price)) {
             vkErrorItemPriceNotFound.error_msg = 'Нет товара с ценой: ' + item_price;
-            Logs.log("LogicPayments: Нет товара с ценой", Logs.LEVEL_ERROR, params);
+            Logs.log("vk_buy: Нет товара с ценой", Logs.LEVEL_ERROR, params);
+            Logs.log("vk_buy: Нет товара с ценой", Logs.LEVEL_ERROR, params, Logs.CHANNEL_VK_PAYMENTS);
             return callback(vkErrorItemPriceNotFound);
         }
         // проверка сигнатуры
         if (sig !== self.calcVKSign(params)) {
-            Logs.log("LogicPayments: Не верная сигнатура подписи", Logs.LEVEL_ERROR, params);
+            Logs.log("vk_buy: Не верная сигнатура подписи", Logs.LEVEL_ERROR, params);
+            Logs.log("vk_buy: Не верная сигнатура подписи", Logs.LEVEL_ERROR, params, Logs.CHANNEL_VK_PAYMENTS);
             return callback(vkErrorSign);
         }
 
@@ -101,6 +107,8 @@ LogicPayments = function () {
             notification_type === 'order_status_change_test'
         ) {
             if (!params.status || params.status !== 'chargeable') {
+                Logs.log("vk_buy: Ошибка статуса", Logs.LEVEL_ERROR, params);
+                Logs.log("vk_buy: Ошибка статуса", Logs.LEVEL_ERROR, params, Logs.CHANNEL_VK_PAYMENTS);
                 return callback(vkErrorCommon);
             }
             return self.doOrderChange(receiver_id, order_id, item_price, callback);
@@ -119,6 +127,8 @@ LogicPayments = function () {
             // дальше мы проверяем что собсно мы покупаем,
             DataPayments.getByOrderId(order_id, function (order) {
                 if (order) {
+                    Logs.log("vk_buy: order exists", Logs.LEVEL_DETAIL, arguments);
+                    Logs.log("vk_buy: order exists", Logs.LEVEL_DETAIL, arguments, Logs.CHANNEL_VK_PAYMENTS);
                     return callback(vkErrorCommon);
                 }
                 DataPayments.createOrder(
@@ -128,6 +138,14 @@ LogicPayments = function () {
                     item_price, function (newOrder) {
                         DataStuff.giveAGold(user.id, itemGold);
                         CAPIStuff.incrementGold(user.id, itemGold);
+                        Logs.log("vk_buy: order complete", Logs.LEVEL_DETAIL, {
+                            arguments: arguments,
+                            itemGold: itemGold
+                        });
+                        Logs.log("vk_buy: order complete", Logs.LEVEL_DETAIL, {
+                            arguments: arguments,
+                            itemGold: item_price
+                        }, Logs.CHANNEL_VK_PAYMENTS);
                         return callback(
                             {"response": {"order_id": order_id, "app_order_id": newOrder.id}}
                         );

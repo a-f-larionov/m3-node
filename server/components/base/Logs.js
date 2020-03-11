@@ -1,3 +1,8 @@
+var FS;
+if (CONST_IS_SERVER_SIDE) {
+    FS = require('fs');
+}
+
 /**
  * Компонент логирования.
  * Клиент-серверный компонент!
@@ -33,7 +38,7 @@ Logs = function () {
      * @param level {int} тип Logs.LEVEL_*.
      * @param [details] {*} необязательный параметр, детали.
      */
-    this.log = function (message, level, details) {
+    this.log = function (message, level, details, channel) {
         let date, dateFormated, logText, levelTitle;
         // если не передан уровень, то считаем его детальным.
         if (!level) {
@@ -63,12 +68,24 @@ Logs = function () {
         // выведем на экран
         cache.push(logText);
         cache.shift();
-        switch (level) {
-            case Logs.LEVEL_WARNING:
-                console.warn(" > " + logText);
-                break;
+        switch (channel) {
             default:
-                console.log(" > " + logText);
+                switch (level) {
+                    case Logs.LEVEL_WARNING:
+                        console.warn(" > " + logText);
+                        break;
+                    default:
+                        console.log(" > " + logText);
+                        break;
+                }
+                break;
+            case Logs.CHANNEL_VK_PAYMENTS:
+                FS.writeFile(CONST_DIR_SERVER + '/logs/vk_payments.log', logText + "\r\n", {flag: 'a'}, function () {
+                });
+                break;
+            case Logs.CHANNEL_VK_STUFF:
+                FS.writeFile(CONST_DIR_SERVER + '/logs/vk_stuff.log', logText + "\r\n", {flag: 'a'}, function () {
+                });
                 break;
         }
         if (level === Logs.LEVEL_ERROR || level === Logs.LEVEL_FATAL_ERROR) {
@@ -141,5 +158,8 @@ Logs = function () {
  * @type {Logs}
  */
 Logs = new Logs();
+
+Logs.CHANNEL_VK_PAYMENTS = 1;
+Logs.CHANNEL_VK_STUFF = 2;
 
 Logs.depends = [];

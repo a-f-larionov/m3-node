@@ -34,13 +34,35 @@ DataStuff = function () {
     };
 
     let incrementStuff = function (fieldName, userId, quantity) {
+        Logs.log("vk_stuff inc start", Logs.LEVEL_NOTIFY, {fieldName: fieldName, userId: userId, quantity: quantity});
+        Logs.log("vk_stuff inc start", Logs.LEVEL_NOTIFY, {
+            fieldName: fieldName,
+            userId: userId,
+            quantity: quantity
+        }, Logs.CHANNEL_VK_STUFF);
         DB.query("UPDATE " + tableName + "" +
             " SET `" + fieldName + "` = `" + fieldName + "` + " + parseInt(quantity) +
-            " WHERE `userId` = " + parseInt(userId), function () {
+            " WHERE `userId` = " + parseInt(userId), function (data) {
+            Logs.log("vk_stuff inc ok ", Logs.LEVEL_NOTIFY, {
+                fieldName: fieldName,
+                userId: userId,
+                quantity: quantity,
+                affectedRows: data.affectedRows,
+                changedRows: data.changedRows
+            });
+            Logs.log("vk_stuff inc ok", Logs.LEVEL_NOTIFY, {
+                fieldName: fieldName,
+                userId: userId,
+                quantity: quantity,
+                affectedRows: data.affectedRows,
+                changedRows: data.changedRows
+            }, Logs.CHANNEL_VK_STUFF);
         });
     };
 
     let decrementStuff = function (fieldName, userId, quantity, callback) {
+        Logs.log("vk_stuff dec start", Logs.LEVEL_NOTIFY, arguments);
+        Logs.log("vk_stuff dec start", Logs.LEVEL_NOTIFY, arguments, Logs.CHANNEL_VK_STUFF);
         DB.beginTransaction(function (connection) {
 
             DB.query("SELECT `" + fieldName + "`" +
@@ -53,6 +75,20 @@ DataStuff = function () {
                         quantity: quantity,
                         goldQty: data[0][fieldName]
                     });
+                    Logs.log("vk_stuff dec rollback", Logs.LEVEL_NOTIFY, {
+                        fieldName:fieldName,
+                        userId:userId,
+                        quantity:quantity,
+                        affectedRows: data.affectedRows,
+                        changedRows: data.changedRows
+                    });
+                    Logs.log("vk_stuff dec rollback", Logs.LEVEL_NOTIFY, {
+                        fieldName:fieldName,
+                        userId:userId,
+                        quantity:quantity,
+                        affectedRows: data.affectedRows,
+                        changedRows: data.changedRows
+                    }, Logs.CHANNEL_VK_STUFF);
                     connection.rollback();
                     callback(false);
                     return;
@@ -61,6 +97,8 @@ DataStuff = function () {
                 DB.query("UPDATE `" + tableName + "`" +
                     " SET `" + fieldName + "` = `" + fieldName + "` -" + parseInt(quantity) +
                     " WHERE `userId` = " + parseInt(userId), function () {
+                    Logs.log("vk_stuff dec ok ", Logs.LEVEL_NOTIFY, arguments);
+                    Logs.log("vk_stuff dec ok ", Logs.LEVEL_NOTIFY, arguments, Logs.CHANNEL_VK_STUFF);
                 });
                 connection.commit();
                 callback(true);

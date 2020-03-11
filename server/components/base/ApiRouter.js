@@ -1,4 +1,4 @@
-let FS, PATH;
+var FS, PATH;
 if (CONST_IS_SERVER_SIDE) {
     FS = require('fs');
     PATH = require('path');

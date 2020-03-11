@@ -170,8 +170,8 @@ ClientCodeLoader = function () {
         let demension = IMAGE_SIZE('../public/images/sprite.png');
 
         code += "<style> body div { background-size: "
-            + demension.width / 2 + "px "
-            + demension.height / 2 + "px; " +
+            + translate2X(demension.width / 2) + "px "
+            + translate2X(demension.height / 2) + "px; " +
             "}</style>";
         code += "<script src='//vk.com/js/api/xd_connection.js?2' type='text/javascript'></script>\r\n";
         code += "<script>window.PLATFORM_ID = 'VK';</script>";
@@ -313,15 +313,16 @@ ClientCodeLoader = function () {
         } else {
             imageCode = "<script>";
             imageCode += "imagesData = {};";
-            timePostfix = "?t=" + new Date().getTime();
+            //@todo uncomment it
+            timePostfix = "?t=1";// + new Date().getTime();
             for (let i in generateImageSpriteResult.coordinates) {
                 path = i.replace('../public', '');
                 imageCode += "\r\nimagesData['" + path + "']={" + "" +
                     "path:'" + projectPrefix + '/images/sprite.png' + timePostfix + "'," +
-                    "w:" + generateImageSpriteResult.coordinates[i].width / 2 + "," +
-                    "h:" + generateImageSpriteResult.coordinates[i].height / 2 + "," +
-                    "x:" + generateImageSpriteResult.coordinates[i].x / 2 + "," +
-                    "y:" + generateImageSpriteResult.coordinates[i].y / 2 + "" +
+                    "w:" + translate2X(generateImageSpriteResult.coordinates[i].width) + "," +
+                    "h:" + translate2X(generateImageSpriteResult.coordinates[i].height) + "," +
+                    "x:" + translate2X(generateImageSpriteResult.coordinates[i].x) + "," +
+                    "y:" + translate2X(generateImageSpriteResult.coordinates[i].y) + "" +
                     "};";
             }
             imageCode += "</script>";
@@ -352,8 +353,8 @@ ClientCodeLoader = function () {
             demension = IMAGE_SIZE(imageFiles[i]);
             imageCode += "\r\nimagesData['" + path + "']=" +
                 "{path:'" + projectPrefix + path + timePostfix + "'" +
-                ",w:" + demension.width / 2 +
-                ",h:" + demension.height / 2 +
+                ",w:" + translate2X(demension.width) +
+                ",h:" + translate2X(demension.height) +
                 "};";
         }
         imageCode += "</script>";
@@ -450,7 +451,11 @@ ClientCodeLoader = function () {
         });
 
         return 'document.addEventListener("DOMContentLoaded", function() {' + guiCode + '});';
-    }
+    };
+
+    let translate2X = function (value) {
+        return value / 2;
+    };
 };
 
 ClientCodeLoader = new ClientCodeLoader;

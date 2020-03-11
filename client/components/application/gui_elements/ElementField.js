@@ -412,9 +412,9 @@ ElementField = function () {
                         maskDoms[y][x].show();
                         maskDoms[y][x].redraw();
                         break;
-                    //case DataPoints.OBJECT_NONE:
-                        //maskDoms[y][x].hide();
-                      //  break;
+                    case DataPoints.OBJECT_NONE:
+                        maskDoms[y][x].hide();
+                        break;
                 }
             });
         });
