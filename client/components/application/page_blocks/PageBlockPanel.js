@@ -25,6 +25,8 @@ PageBlockPanel = function PageBlockPanel() {
 
     let dialogMoneyShop;
 
+    let dialogHealthShop;
+
     this.init = function () {
         let el, pMX, pHX;
 
@@ -57,7 +59,7 @@ PageBlockPanel = function PageBlockPanel() {
         });
         self.elements.push(moneyText);
 
-        /** деньги кнопка плюс */
+        /** Деньги кнопка плюс */
         el = GUI.createElement(ElementButton, {
             x: pMX + 122, y: -2,
             srcRest: '/images/button-add-rest.png',
@@ -95,14 +97,14 @@ PageBlockPanel = function PageBlockPanel() {
         });
         self.elements.push(el);
 
-        /** жизни - кнопка плюс */
+        /** Жизни - кнопка плюс */
         el = GUI.createElement(ElementButton, {
             x: pHX + 190, y: -2,
             srcRest: '/images/button-add-rest.png',
             srcHover: '/images/button-add-hover.png',
             srcActive: '/images/button-add-active.png',
             onClick: function () {
-                dialogMoneyShop.showDialog();
+                dialogHealthShop.showDialog();
             }
         });
         self.elements.push(el);
@@ -133,6 +135,9 @@ PageBlockPanel = function PageBlockPanel() {
 
         dialogMoneyShop = GUI.createElement(ElementDialogMoneyShop, {});
         self.elements.push(dialogMoneyShop);
+
+        dialogHealthShop = GUI.createElement(ElementDialogHealthShop, {});
+        self.elements.push(dialogHealthShop);
 
         setBackgroundImage();
     };

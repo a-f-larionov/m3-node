@@ -1,4 +1,4 @@
-ElementDialogBuyStuff = function () {
+ElementDialogStuffShop = function () {
     let self = this;
     this.__proto__ = new ElementDialog();
 
@@ -15,7 +15,8 @@ ElementDialogBuyStuff = function () {
         stepX = 145;
 
         GUI.pushParent(self.dom);
-        // заголовок диалога
+
+        /** Заголовок диалога */
         el = GUI.createElement(ElementText, {
             x: 135, y: 11, width: 230, height: 40,
             text: 'МАГАЗИН'
@@ -93,7 +94,7 @@ ElementDialogBuyStuff = function () {
 
     this.buyStuff = function (itemIndex) {
 
-        let userGold, quantity, buyFunc, giveFunc;
+        let userGold, buyFunc, giveFunc, shopItem;
         userGold = LogicStuff.getStuff('goldQty');
 
         switch (stuffId) {

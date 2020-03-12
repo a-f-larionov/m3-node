@@ -87,7 +87,6 @@ ElementHealthTimer = function () {
         user = LogicUser.getCurrentUser();
 
         if (user.health === LogicUser.getMaxHealth()) {
-            console.log('hide ');
             self.healthIndicator.redraw();
             elText.hide();
 
@@ -113,7 +112,6 @@ ElementHealthTimer = function () {
             elText.show();
             elText.redraw();
             if (left <= 0) {
-                console.log('check healrht of left <= 0 ');
                 LogicUser.checkHealth();
             }
         }

@@ -173,15 +173,6 @@ DB = function () {
     this.escape = function (sourcevalue) {
         return MYSQL.escape(sourcevalue);
     };
-
-    this.beginTransaction = function (func) {
-        connection.beginTransaction(function (err) {
-            if (err) {
-                throw err;
-            }
-            func(connection);
-        });
-    };
 };
 
 /**

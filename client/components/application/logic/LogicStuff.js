@@ -58,6 +58,12 @@ LogicStuff = function () {
     this.giveAGold = function (quantity) {
         stuff['goldQty'] += quantity;
     };
+
+    this.giveAHealth = function (quantity) {
+        let user;
+        user = LogicUser.getCurrentUser();
+        user.health += quantity;
+    };
 };
 
 /**

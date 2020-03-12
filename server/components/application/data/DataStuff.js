@@ -1,3 +1,6 @@
+var AsyncLock = require('async-lock');
+var LOCK = new AsyncLock();
+
 DataStuff = function () {
 
     let tableName = 'users_stuff';
@@ -33,37 +36,25 @@ DataStuff = function () {
         });
     };
 
-    let incrementStuff = function (fieldName, userId, quantity) {
-        Logs.log("vk_stuff inc start", Logs.LEVEL_NOTIFY, {fieldName: fieldName, userId: userId, quantity: quantity});
-        Logs.log("vk_stuff inc start", Logs.LEVEL_NOTIFY, {
-            fieldName: fieldName,
-            userId: userId,
-            quantity: quantity
-        }, Logs.CHANNEL_VK_STUFF);
-        DB.query("UPDATE " + tableName + "" +
-            " SET `" + fieldName + "` = `" + fieldName + "` + " + parseInt(quantity) +
-            " WHERE `userId` = " + parseInt(userId), function (data) {
-            Logs.log("vk_stuff inc ok ", Logs.LEVEL_NOTIFY, {
-                fieldName: fieldName,
-                userId: userId,
-                quantity: quantity,
-                affectedRows: data.affectedRows,
-                changedRows: data.changedRows
+    let incrementStuff = function (fieldName, userId, quantity, tid) {
+        LOCK.acquire('stuff-' + userId + "-" + fieldName, function (done) {
+            setTimeout(done, 5 * 60 * 1000);
+            DB.query("UPDATE " + tableName + "" +
+                " SET `" + fieldName + "` = `" + fieldName + "` + " + parseInt(quantity) +
+                " WHERE `userId` = " + parseInt(userId), function (data) {
+                Logs.log("vk_stuff tid:" + tid + " uid:"
+                    + userId + " " + fieldName + " +" + quantity + " " + data.affectedRows + " " + data.changedRows,
+                    Logs.LEVEL_NOTIFY, undefined, Logs.CHANNEL_VK_STUFF);
+                done();
             });
-            Logs.log("vk_stuff inc ok", Logs.LEVEL_NOTIFY, {
-                fieldName: fieldName,
-                userId: userId,
-                quantity: quantity,
-                affectedRows: data.affectedRows,
-                changedRows: data.changedRows
-            }, Logs.CHANNEL_VK_STUFF);
         });
     };
 
-    let decrementStuff = function (fieldName, userId, quantity, callback) {
-        Logs.log("vk_stuff dec start", Logs.LEVEL_NOTIFY, arguments);
-        Logs.log("vk_stuff dec start", Logs.LEVEL_NOTIFY, arguments, Logs.CHANNEL_VK_STUFF);
-        DB.beginTransaction(function (connection) {
+    let decrementStuff = function (fieldName, userId, quantity, tid, callback) {
+        LOCK.acquire('stuff-' + userId + "-" + fieldName, function (done) {
+            setTimeout(done, 5 * 60 * 1000);
+            Logs.log("vk_stuff tid:" + tid + " uid:" + userId + " " + fieldName
+                + " -" + quantity + " START", Logs.LEVEL_NOTIFY, undefined, Logs.CHANNEL_VK_STUFF);
 
             DB.query("SELECT `" + fieldName + "`" +
                 " FROM `" + tableName + "`" +
@@ -75,21 +66,9 @@ DataStuff = function () {
                         quantity: quantity,
                         goldQty: data[0][fieldName]
                     });
-                    Logs.log("vk_stuff dec rollback", Logs.LEVEL_NOTIFY, {
-                        fieldName:fieldName,
-                        userId:userId,
-                        quantity:quantity,
-                        affectedRows: data.affectedRows,
-                        changedRows: data.changedRows
-                    });
-                    Logs.log("vk_stuff dec rollback", Logs.LEVEL_NOTIFY, {
-                        fieldName:fieldName,
-                        userId:userId,
-                        quantity:quantity,
-                        affectedRows: data.affectedRows,
-                        changedRows: data.changedRows
-                    }, Logs.CHANNEL_VK_STUFF);
-                    connection.rollback();
+                    Logs.log("vk_stuff tid:" + tid + " uid:" + userId + " " + fieldName
+                        + " -" + quantity + " ROLLBACK", Logs.LEVEL_NOTIFY, data, Logs.CHANNEL_VK_STUFF);
+                    done();
                     callback(false);
                     return;
                 }
@@ -97,46 +76,45 @@ DataStuff = function () {
                 DB.query("UPDATE `" + tableName + "`" +
                     " SET `" + fieldName + "` = `" + fieldName + "` -" + parseInt(quantity) +
                     " WHERE `userId` = " + parseInt(userId), function () {
-                    Logs.log("vk_stuff dec ok ", Logs.LEVEL_NOTIFY, arguments);
-                    Logs.log("vk_stuff dec ok ", Logs.LEVEL_NOTIFY, arguments, Logs.CHANNEL_VK_STUFF);
+                    Logs.log("vk_stuff tid:" + tid + " uid:" + userId + " "
+                        + fieldName + " -" + quantity + " OK", Logs.LEVEL_NOTIFY, data, Logs.CHANNEL_VK_STUFF);
+                    done();
+                    if (callback) callback(true);
                 });
-                connection.commit();
-                callback(true);
             });
         });
     };
 
-    this.usedGold = function (userId, quantity, callback) {
-        decrementStuff('goldQty', userId, quantity, callback)
+    this.usedGold = function (userId, quantity, tid, callback) {
+        decrementStuff('goldQty', userId, quantity, tid, callback)
     };
 
-    this.usedHummer = function (userId, callback) {
-        decrementStuff('hummerQty', userId, 1, callback)
+    this.usedHummer = function (userId, tid, callback) {
+        decrementStuff('hummerQty', userId, 1, tid, callback)
     };
 
-    this.usedShuffle = function (userId, callback) {
-        decrementStuff('shuffleQty', userId, 1, callback)
+    this.usedShuffle = function (userId, tid, callback) {
+        decrementStuff('shuffleQty', userId, 1, tid, callback)
     };
 
-    this.usedLighting = function (userId, callback) {
-        decrementStuff('lightingQty', userId, 1, callback)
+    this.usedLighting = function (userId, tid, callback) {
+        decrementStuff('lightingQty', userId, 1, tid, callback)
     };
 
-
-    this.giveAGold = function (userId, quantity) {
-        incrementStuff('goldQty', userId, quantity);
+    this.giveAGold = function (userId, quantity, tid) {
+        incrementStuff('goldQty', userId, quantity, tid);
     };
 
-    this.giveAHummer = function (userId, quantity) {
-        incrementStuff('hummerQty', userId, quantity);
+    this.giveAHummer = function (userId, quantity, tid) {
+        incrementStuff('hummerQty', userId, quantity, tid);
     };
 
-    this.giveAShuffle = function (userId, quantity) {
-        incrementStuff('shuffleQty', userId, quantity);
+    this.giveAShuffle = function (userId, quantity, tid) {
+        incrementStuff('shuffleQty', userId, quantity, tid);
     };
 
-    this.giveALighting = function (userId, quantity) {
-        incrementStuff('shuffleQty', userId, quantity);
+    this.giveALighting = function (userId, quantity, tid) {
+        incrementStuff('shuffleQty', userId, quantity, tid);
     };
 };
 

@@ -157,7 +157,7 @@ PageBlockField = function PageBlockField() {
 
         dialogJustQuit = GUI.createElement(ElementDialogJustQuit);
 
-        dialogBuyStuff = GUI.createElement(ElementDialogBuyStuff);
+        dialogBuyStuff = GUI.createElement(ElementDialogStuffShop);
 
         /** stuff hummer */
         el = GUI.createElement(ElementStuffButton, {
@@ -209,7 +209,6 @@ PageBlockField = function PageBlockField() {
             domStuff.hide();
             el = document.elementFromPoint(event.clientX, event.clientY);
             // признак каменного поля :)
-            console.log(el);
             if (el.__dom.fieldX && el.__dom.fieldY) {
                 el.dispatchEvent(new MouseEvent(event.type, event));
             }

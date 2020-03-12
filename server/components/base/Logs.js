@@ -87,6 +87,10 @@ Logs = function () {
                 FS.writeFile(CONST_DIR_SERVER + '/logs/vk_stuff.log', logText + "\r\n", {flag: 'a'}, function () {
                 });
                 break;
+            case Logs.CHANNEL_VK_HEALTH:
+                FS.writeFile(CONST_DIR_SERVER + '/logs/vk_health.log', logText + "\r\n", {flag: 'a'}, function () {
+                });
+                break;
         }
         if (level === Logs.LEVEL_ERROR || level === Logs.LEVEL_FATAL_ERROR) {
             if (typeof CONST_IS_SERVER_SIDE === 'undefined') {
@@ -161,5 +165,6 @@ Logs = new Logs();
 
 Logs.CHANNEL_VK_PAYMENTS = 1;
 Logs.CHANNEL_VK_STUFF = 2;
+Logs.CHANNEL_VK_HEALTH = 3;
 
 Logs.depends = [];
