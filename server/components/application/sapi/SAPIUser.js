@@ -92,7 +92,7 @@ SAPIUser = function () {
                 }
                 DataUser.updateHealthAndStartTime(
                     user.id,
-                    user.health,
+                    -1,
                     user.healthStartTime,
                     function () {
                         CAPIUser.updateUserInfo(cntx.user.id, user);

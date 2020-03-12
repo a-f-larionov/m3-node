@@ -1,3 +1,6 @@
+var AsyncLock = require('async-lock');
+var LOCK = new AsyncLock();
+
 SAPIStuff = function () {
 
     this.sendMeStuff = function (cntx) {
@@ -76,33 +79,39 @@ SAPIStuff = function () {
         // check user.gold
         // do exchange
         //@todo unlock
-        DataUser.getById(cntx.user.id, function (user) {
-            if (user.health < LogicUser.getMaxHealth()) {
-                DataStuff.usedGold(cntx.user.id, DataShop.health[itemIndex].gold, tid, function (success) {
-                    if (success) {
-                        Logs.log("Health tid:" + tid + "uid:" + user.id + " +" + DataShop.health[itemIndex].quantity + " OK", Logs.LEVEL_DETAIL, {
-                            itemIndex: itemIndex, user: user
-                        }, Logs.CHANNEL_VK_HEALTH);
-                        user.health += DataShop.health[itemIndex].quantity;
-                        user.health = Math.max(user.health, LogicUser.getMaxHealth());
 
-                        DataUser.updateHealthAndStartTime(
-                            user.id,
-                            user.health,
-                            user.healthStartTime,
-                            function () {
-                                CAPIUser.updateUserInfo(cntx.user.id, user);
-                            }
-                        );
-                    }
-                });
-            } else {
+        LOCK.acquire('buy-health-' + cntx.user.id, function (done) {
+            setTimeout(done, 5 * 60 * 1000);
+            DataUser.getById(cntx.user.id, function (user) {
+                if (user.health < LogicUser.getMaxHealth()) {
+                    DataStuff.usedGold(cntx.user.id, DataShop.health[itemIndex].gold, tid, function (success) {
+                        if (success) {
+                            Logs.log("Health tid:" + tid + "uid:" + user.id + " +" + DataShop.health[itemIndex].quantity + " OK", Logs.LEVEL_DETAIL, {
+                                itemIndex: itemIndex, user: user
+                            }, Logs.CHANNEL_VK_HEALTH);
+                            user.health += DataShop.health[itemIndex].quantity;
+                            user.health = Math.max(user.health, LogicUser.getMaxHealth());
 
-                Logs.log("Health tid:" + tid + " uid:" + user.id + " NO BECAUSE MAX", Logs.LEVEL_DETAIL, {
-                    itemIndex: itemIndex, user: user
-                }, Logs.CHANNEL_VK_HEALTH);
-            }
-        })
+                            DataUser.updateHealthAndStartTime(
+                                user.id,
+                                DataShop.health[itemIndex].quantity,
+                                user.healthStartTime,
+                                function () {
+                                    CAPIUser.updateUserInfo(cntx.user.id, user);
+                                }
+                            );
+                        }
+                        done();
+                    });
+                } else {
+
+                    Logs.log("Health tid:" + tid + " uid:" + user.id + " NO BECAUSE MAX", Logs.LEVEL_DETAIL, {
+                        itemIndex: itemIndex, user: user
+                    }, Logs.CHANNEL_VK_HEALTH);
+                }
+            })
+
+        });
     }
 };
 

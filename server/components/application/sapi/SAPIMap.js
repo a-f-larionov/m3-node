@@ -35,9 +35,7 @@ SAPIMap = function () {
             Logs.log("no friends - no data", Logs.LEVEL_DETAIL, cntx);
             return;
         }
-        CAPIMap.log(cntx.user.id, 'ad');
         DataPoints.getUsersInfo(mapId, userIds, function (userPoints) {
-            CAPIMap.log(cntx.user.id, 'ad2s');
             CAPIMap.gotUserScores(
                 cntx.userId,
                 userPoints

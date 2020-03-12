@@ -53,8 +53,6 @@ DataStuff = function () {
     let decrementStuff = function (fieldName, userId, quantity, tid, callback) {
         LOCK.acquire('stuff-' + userId + "-" + fieldName, function (done) {
             setTimeout(done, 5 * 60 * 1000);
-            Logs.log("vk_stuff tid:" + tid + " uid:" + userId + " " + fieldName
-                + " -" + quantity + " START", Logs.LEVEL_NOTIFY, undefined, Logs.CHANNEL_VK_STUFF);
 
             DB.query("SELECT `" + fieldName + "`" +
                 " FROM `" + tableName + "`" +
@@ -67,7 +65,7 @@ DataStuff = function () {
                         goldQty: data[0][fieldName]
                     });
                     Logs.log("vk_stuff tid:" + tid + " uid:" + userId + " " + fieldName
-                        + " -" + quantity + " ROLLBACK", Logs.LEVEL_NOTIFY, data, Logs.CHANNEL_VK_STUFF);
+                        + " -" + quantity + " CANCEL", Logs.LEVEL_NOTIFY, data, Logs.CHANNEL_VK_STUFF);
                     done();
                     callback(false);
                     return;
@@ -77,7 +75,7 @@ DataStuff = function () {
                     " SET `" + fieldName + "` = `" + fieldName + "` -" + parseInt(quantity) +
                     " WHERE `userId` = " + parseInt(userId), function () {
                     Logs.log("vk_stuff tid:" + tid + " uid:" + userId + " "
-                        + fieldName + " -" + quantity + " OK", Logs.LEVEL_NOTIFY, data, Logs.CHANNEL_VK_STUFF);
+                        + fieldName + " -" + quantity + " OK", Logs.LEVEL_NOTIFY, undefined, Logs.CHANNEL_VK_STUFF);
                     done();
                     if (callback) callback(true);
                 });
