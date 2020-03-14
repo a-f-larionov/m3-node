@@ -2,7 +2,7 @@
  * Элемент картинки.
  * @constructor
  */
-ElementDialog = function () {
+Dialog = function () {
     let self = this;
 
     /**
@@ -137,12 +137,12 @@ ElementDialog = function () {
     /**
      * Show dialog!
      */
-    this.showDialog = function () {
+    this.showDialog = function (afterDialog) {
         /**
          * 1 - добавить в очередь
          * 2 - показать последний из очереди
          */
-        ElementDialog.addDialog(this);
+        return Dialog.addDialog(this, afterDialog);
     };
 
     this.showConcreteDialog = function () {
@@ -167,7 +167,7 @@ ElementDialog = function () {
         /**
          * Показать диалог из очереди
          */
-        ElementDialog.removeDialog();
+        Dialog.removeDialog();
     };
 
     this.createElement = function (element, params) {
@@ -185,26 +185,50 @@ ElementDialog = function () {
             self.redraw();
             self.hide();
         }
-        ElementDialog.removeDialog();
+        Dialog.removeDialog();
     }
 };
 
-ElementDialog.queue = [];
+Dialog.queue = [];
 
-ElementDialog.addDialog = function (dialog) {
-    ElementDialog.queue.push(dialog);
-    ElementDialog.showDialog();
+Dialog.addDialog = function (dialog, afterDialog) {
+    if (afterDialog) {
+        /**
+         * 1 - найти элемент
+         * 2 - создать два массива до и после этого элемент
+         * 3 - добавить в конец первого массива
+         * 4 - соединить два массива
+         */
+        let index, leftArr, rightArr;
+        Dialog.queue.forEach(function (el, i) {
+            if (el === afterDialog) {
+                index = i;
+            }
+        });
+        console.log(321);
+        console.log(Dialog.queue);
+        leftArr = Dialog.queue.slice(0, index + 1);
+        leftArr.push(dialog);
+        rightArr = Dialog.queue.slice(index);
+        console.log(Dialog.queue);
+        Dialog.queue = leftArr.concat(rightArr);
+        console.log(Dialog.queue);
+        console.log(123);
+    } else {
+        Dialog.queue.push(dialog);
+    }
+    Dialog.showDialog();
 };
 
-ElementDialog.removeDialog = function () {
+Dialog.removeDialog = function () {
     GUI.unlockEvents();
-    ElementDialog.queue.shift();
-    ElementDialog.showDialog();
+    Dialog.queue.shift();
+    Dialog.showDialog();
 };
 
-ElementDialog.showDialog = function () {
-    if (ElementDialog.queue.length) {
-        ElementDialog.queue[0].showConcreteDialog();
-        GUI.lockEvents(ElementDialog.queue[0].dom);
+Dialog.showDialog = function () {
+    if (Dialog.queue.length) {
+        Dialog.queue[0].showConcreteDialog();
+        GUI.lockEvents(Dialog.queue[0].dom);
     }
 };

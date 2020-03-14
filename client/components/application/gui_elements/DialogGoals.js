@@ -1,6 +1,6 @@
-ElementDialogGoals = function () {
+DialogGoals = function () {
     let self = this;
-    this.__proto__ = new ElementDialog();
+    this.__proto__ = new Dialog();
 
     let goalsImagesEls = {};
     let goalsCounterEls = {};
@@ -70,7 +70,3 @@ ElementDialogGoals = function () {
         }
     };
 };
-
-
-
-

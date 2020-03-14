@@ -1,6 +1,6 @@
-ElementDialogChestNeedStars = function () {
+DialogChestNeedStars = function () {
     let self = this;
-    this.__proto__ = new ElementDialog();
+    this.__proto__ = new Dialog();
 
     let elText;
 

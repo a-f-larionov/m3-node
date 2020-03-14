@@ -1,6 +1,6 @@
-ElementDialogJustQuit = function () {
+DialogJustQuit = function () {
     let self = this;
-    this.__proto__ = new ElementDialog();
+    this.__proto__ = new Dialog();
 
     this.init = function () {
         this.__proto__.init.call(this);

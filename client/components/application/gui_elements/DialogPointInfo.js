@@ -1,6 +1,6 @@
-ElementDialogGoalsReached = function () {
+DialogPointInfo = function () {
     let self = this;
-    this.__proto__ = new ElementDialog();
+    this.__proto__ = new Dialog();
 
     /**
      * Номер точки
@@ -62,17 +62,24 @@ ElementDialogGoalsReached = function () {
         });
         elUserPhotoScore.show();
 
-        // кнопка играть
+        /** Кнопка играть */
         elButtonPlay = GUI.createElement(ElementButton, {
             x: 178, y: 240,
             srcRest: '/images/button-red-rest.png',
             srcHover: '/images/button-red-hover.png',
             srcActive: '/images/button-red-active.png',
             onClick: function () {
+                //self.reset();
                 self.closeDialog();
-                PageController.showPage(PageMain);
+                if (LogicUser.getCurrentUser().health === 0) {
+                    PageBlockPanel.showDialogHealthShop();
+                    self.showDialog(pointId);
+                } else {
+                    DataPoints.setPlayedId(pointId);
+                    PageController.showPage(PageField);
+                }
             },
-            title: 'НА КАРТУ'
+            title: 'ИГРАТЬ'
         });
         elButtonPlay.show();
 
@@ -84,13 +91,19 @@ ElementDialogGoalsReached = function () {
             srcActive: '/images/button-close-active.png',
             onClick: function () {
                 self.closeDialog();
-                PageController.showPage(PageMain);
             }
         }).show();
 
         GUI.popParent();
     };
 
+    this.show = function () {
+        this.__proto__.show.call(this);
+    };
+
+    this.hide = function () {
+        this.__proto__.hide.call(this);
+    };
 
     this.redraw = function () {
         let user, point, friend, score;
@@ -100,7 +113,7 @@ ElementDialogGoalsReached = function () {
 
         user = LogicUser.getCurrentUser();
         point = DataPoints.getById(pointId);
-        elTitle.text = 'ПРОЙДЕН ' + pointId;
+        elTitle.text = 'УРОВЕНЬ  ' + pointId;
 
         for (let i = 0; i < 3; i++) {
             if ((friend = friends[i]) && friend.id) {
@@ -138,11 +151,11 @@ ElementDialogGoalsReached = function () {
         elStarThree.redraw();
         elUserPhotoScore.redraw();
 
-        if (user.health === 0) {
-            elButtonPlay.hide();
-        } else {
-            elButtonPlay.show();
-        }
+        //if (user.health === 0) {
+        //  elButtonPlay.hide();
+        //} else {
+        //elButtonPlay.show();
+        //}
     };
 
     this.showDialog = function (pId) {
@@ -150,12 +163,8 @@ ElementDialogGoalsReached = function () {
         pointId = pId;
         //@todo mapId from pointId
         mapId = DataMap.getCurent().id;
-        friends = LogicUser.getFriendIdsByMapIdAndPointIdWithScore(mapId, pId);
+        friends = LogicUser.getFriendIdsByMapIdAndPointIdWithScore(mapId, pId, false);
         this.__proto__.showDialog.call(this);
         self.redraw();
     }
 };
-
-
-
-

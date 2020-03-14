@@ -133,11 +133,11 @@ PageBlockPanel = function PageBlockPanel() {
         });
         self.elements.push(elFSButton);
 
-        dialogMoneyShop = GUI.createElement(ElementDialogMoneyShop, {});
-        self.elements.push(dialogMoneyShop);
+        dialogMoneyShop = GUI.createElement(DialogMoneyShop, {});
+        //self.elements.push(dialogMoneyShop);
 
-        dialogHealthShop = GUI.createElement(ElementDialogHealthShop, {});
-        self.elements.push(dialogHealthShop);
+        dialogHealthShop = GUI.createElement(DialogHealthShop, {});
+        //self.elements.push(dialogHealthShop);
 
         setBackgroundImage();
     };
@@ -191,10 +191,6 @@ PageBlockPanel = function PageBlockPanel() {
         });
     };
 
-    this.showDialogMoneyShop = function () {
-        dialogMoneyShop.showDialog();
-    };
-
     let setBackgroundImage = function () {
         let elBody, backgroundImage;
         elBody = document.getElementsByTagName('body')[0];
@@ -218,6 +214,14 @@ PageBlockPanel = function PageBlockPanel() {
         }
     };
 
+    this.showDialogMoneyShop = function (afterDialog) {
+        dialogMoneyShop.showDialog(afterDialog);
+        return dialogMoneyShop;
+    };
+
+    this.showDialogHealthShop = function () {
+        return dialogHealthShop.showDialog();
+    }
 };
 
 PageBlockPanel = new PageBlockPanel();

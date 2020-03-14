@@ -1,6 +1,6 @@
-ElementDialogPointInfo = function () {
+DialogGoalsReached = function () {
     let self = this;
-    this.__proto__ = new ElementDialog();
+    this.__proto__ = new Dialog();
 
     /**
      * Номер точки
@@ -62,18 +62,17 @@ ElementDialogPointInfo = function () {
         });
         elUserPhotoScore.show();
 
-        // кнопка играть
+        /** Кнопка играть */
         elButtonPlay = GUI.createElement(ElementButton, {
             x: 178, y: 240,
             srcRest: '/images/button-red-rest.png',
             srcHover: '/images/button-red-hover.png',
             srcActive: '/images/button-red-active.png',
             onClick: function () {
-                self.reset();
-                DataPoints.setPlayedId(pointId);
-                PageController.showPage(PageField);
+                self.closeDialog();
+                PageController.showPage(PageMain);
             },
-            title: 'ИГРАТЬ'
+            title: 'НА КАРТУ'
         });
         elButtonPlay.show();
 
@@ -85,19 +84,13 @@ ElementDialogPointInfo = function () {
             srcActive: '/images/button-close-active.png',
             onClick: function () {
                 self.closeDialog();
+                PageController.showPage(PageMain);
             }
         }).show();
 
         GUI.popParent();
     };
 
-    this.show = function () {
-        this.__proto__.show.call(this);
-    };
-
-    this.hide = function () {
-        this.__proto__.hide.call(this);
-    };
 
     this.redraw = function () {
         let user, point, friend, score;
@@ -107,7 +100,7 @@ ElementDialogPointInfo = function () {
 
         user = LogicUser.getCurrentUser();
         point = DataPoints.getById(pointId);
-        elTitle.text = 'УРОВЕНЬ  ' + pointId;
+        elTitle.text = 'ПРОЙДЕН ' + pointId;
 
         for (let i = 0; i < 3; i++) {
             if ((friend = friends[i]) && friend.id) {
@@ -157,7 +150,7 @@ ElementDialogPointInfo = function () {
         pointId = pId;
         //@todo mapId from pointId
         mapId = DataMap.getCurent().id;
-        friends = LogicUser.getFriendIdsByMapIdAndPointIdWithScore(mapId, pId, false);
+        friends = LogicUser.getFriendIdsByMapIdAndPointIdWithScore(mapId, pId);
         this.__proto__.showDialog.call(this);
         self.redraw();
     }

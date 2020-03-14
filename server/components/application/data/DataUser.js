@@ -181,23 +181,23 @@ DataUser = function () {
         }
         DB.query("UPDATE " + tableName + " SET currentPoint = " + pointId + " WHERE id = " + userId, callback);
     };
-/*
-    this.updateHealth = function (userId, health, callback) {
-        if (cache[userId]) {
-            cache[userId].health = health;
-        }
-        DB.query("UPDATE " + tableName +
-            " SET health = " + health +
-            " WHERE id = " + userId, callback);
-    };
-*/
+    /*
+        this.updateHealth = function (userId, health, callback) {
+            if (cache[userId]) {
+                cache[userId].health = health;
+            }
+            DB.query("UPDATE " + tableName +
+                " SET health = " + health +
+                " WHERE id = " + userId, callback);
+        };
+    */
     this.updateHealthAndStartTime = function (userId, health, healthStartTime, callback) {
         if (cache[userId]) {
-            cache[userId].health += health;
+            cache[userId].health = health;
             cache[userId].healthStartTime = healthStartTime;
         }
         DB.query("UPDATE " + tableName +
-            " SET health = +" + health +
+            " SET health = " + health +
             " , healthStartTime = " + healthStartTime +
             " WHERE id = " + userId, callback);
     };

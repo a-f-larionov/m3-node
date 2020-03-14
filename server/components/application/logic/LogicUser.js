@@ -279,6 +279,7 @@ LogicUser = function () {
                 now = LogicTimeServer.getCurrentTime();
                 left = recoveryTime - (now - healthStartTime);
                 if (left > 0) {
+                    // повторим позже, если необходимо
                     CAPIUser.healthChecked(user.id);
                     Logs.log("healthCheck time bug:", Logs.LEVEL_WARNING, {user: user, now: now, left: left});
                     setTimeout(function () {
@@ -303,7 +304,7 @@ LogicUser = function () {
                 if (user.health < maxHealth) {
                     user.healthStartTime += recoveryTime * healthToUp;
                 }
-                DataUser.updateHealthAndStartTime(user.id, healthToUp, user.healthStartTime, function () {
+                DataUser.updateHealthAndStartTime(user.id, user.health, user.healthStartTime, function () {
                     CAPIMap.log(userId, 'update health');
                     CAPIUser.updateUserInfo(user.id, user);
                     CAPIUser.healthChecked(user.id);

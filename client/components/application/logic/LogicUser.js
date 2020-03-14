@@ -248,7 +248,7 @@ LogicUser = function () {
 
     this.getHealthRecoveryTime = function () {
         // @todo нужны общие настройки
-        return 60 * 0.1;
+        return 60 * 0.1 * 100;
     };
 
     this.clearHealthCheckFlag = function () {

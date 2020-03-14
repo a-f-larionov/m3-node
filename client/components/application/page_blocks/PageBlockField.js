@@ -149,15 +149,15 @@ PageBlockField = function PageBlockField() {
         });
         self.elements.push(elPanelGoals);
 
-        dialogGoals = GUI.createElement(ElementDialogGoals);
+        dialogGoals = GUI.createElement(DialogGoals);
 
-        dialogGoalsReached = GUI.createElement(ElementDialogGoalsReached);
+        dialogGoalsReached = GUI.createElement(DialogGoalsReached);
 
-        dialogTurnsLoose = GUI.createElement(ElementDialogTurnLoose);
+        dialogTurnsLoose = GUI.createElement(DialogTurnLoose);
 
-        dialogJustQuit = GUI.createElement(ElementDialogJustQuit);
+        dialogJustQuit = GUI.createElement(DialogJustQuit);
 
-        dialogBuyStuff = GUI.createElement(ElementDialogStuffShop);
+        dialogBuyStuff = GUI.createElement(DialogStuffShop);
 
         /** stuff hummer */
         el = GUI.createElement(ElementStuffButton, {

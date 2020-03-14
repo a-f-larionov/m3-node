@@ -1,4 +1,6 @@
 let FS = require('fs');
+var AsyncLock = require('async-lock');
+var LOCK = new AsyncLock();
 
 SAPIUser = function () {
 
@@ -80,30 +82,50 @@ SAPIUser = function () {
     };
 
     this.onTurnsLoose = function (cntx) {
-        //@todo check on game?
-        DataUser.getById(cntx.user.id, function (user) {
-            let now, recoveryTime;
-            if (user.health > 0) {
-                now = LogicTimeServer.getCurrentTime();
-                recoveryTime = LogicUser.getHealthRecoveryTime();
-                user.health--;
-                if (now > (user.healthStartTime + recoveryTime)) {
-                    user.healthStartTime = now;
-                }
-                DataUser.updateHealthAndStartTime(
-                    user.id,
-                    -1,
-                    user.healthStartTime,
-                    function () {
-                        CAPIUser.updateUserInfo(cntx.user.id, user);
+
+        LOCK.acquire('stuff-' + cntx.user.id + '-health', function (done) {
+            DataUser.getById(cntx.user.id, function (user) {
+                let now, recoveryTime;
+                if (user.health > 0) {
+                    user.health--;
+                    now = LogicTimeServer.getCurrentTime();
+                    recoveryTime = LogicUser.getHealthRecoveryTime();
+                    if (now > (user.healthStartTime + recoveryTime)) {
+                        user.healthStartTime = now;
                     }
-                );
-            }
-        })
+                    DataUser.updateHealthAndStartTime(
+                        user.id,
+                        user.health,
+                        user.healthStartTime,
+                        function () {
+                            CAPIUser.updateUserInfo(cntx.user.id, user);
+                        }
+                    );
+                    done();
+                } else {
+                    done();
+                }
+            })
+        });
     };
 
     this.checkHealth = function (cntx) {
         LogicUser.checkHealth(cntx.user.id);
+    };
+
+    this.zeroLife = function (cntx) {
+
+        DataUser.getById(cntx.user.id, function (user) {
+            user.health = 0;
+            user.healthStartTime = LogicTimeServer.getCurrentTime();
+            DataUser.updateHealthAndStartTime(
+                user.id,
+                0,
+                LogicTimeServer.getCurrentTime(),
+                function () {
+                    CAPIUser.updateUserInfo(user.id, user);
+                });
+        });
     };
 };
 /**

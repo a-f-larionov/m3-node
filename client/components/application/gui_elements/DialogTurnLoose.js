@@ -1,6 +1,6 @@
-ElementDialogTurnLoose = function () {
+DialogTurnLoose = function () {
     let self = this;
-    this.__proto__ = new ElementDialog();
+    this.__proto__ = new Dialog();
 
     /**
      * Номер точки
@@ -44,15 +44,4 @@ ElementDialogTurnLoose = function () {
         GUI.popParent();
     };
 
-    this.show = function () {
-        this.__proto__.show.call(this);
-    };
-
-    this.hide = function () {
-        this.__proto__.hide.call(this);
-    };
-
-    this.redraw = function () {
-        this.__proto__.redraw.call(this);
-    };
 };

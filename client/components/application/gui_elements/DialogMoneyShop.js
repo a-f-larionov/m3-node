@@ -1,6 +1,6 @@
-ElementDialogMoneyShop = function () {
+DialogMoneyShop = function () {
     let self = this;
-    this.__proto__ = new ElementDialog();
+    this.__proto__ = new Dialog();
 
     this.init = function () {
         let el, offsetX, stepX, offsetY;

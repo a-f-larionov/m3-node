@@ -168,7 +168,7 @@ ClientCodeLoader = function () {
         code += '';
 
         let demension = IMAGE_SIZE('../public/images/sprite.png');
-
+console.log(demension);
         code += "<style> body div { background-size: "
             + translate2X(demension.width / 2) + "px "
             + translate2X(demension.height / 2) + "px; " +
@@ -178,7 +178,7 @@ ClientCodeLoader = function () {
         code += "<script type='text/javascript' src=" + projectPrefix + "/js/MainClientCode.js?t=" + (new Date().getTime()).toString() + "'></script>\r\n";
         code += "</HEAD><BODY style='margin:0px;'>\r\n";
         code += getClientImageCode();
-        /* application div */
+        /** application div */
         code += "<div style='" +
             "height:" + Config.Project.applicationAreaHeight + "px;" +
             "width:" + Config.Project.applicationAreaWidth + "px;" +
@@ -186,7 +186,7 @@ ClientCodeLoader = function () {
             "top:0px;' " +
             "id='applicationArea' ></div>\r\n";
 
-        /* comments div */
+        /** comments div */
         code += "<div id='vk_comments' style='top:" + Config.Project.applicationAreaHeight + "px;position:absolute;'>";
         code += "<iframe src='" + projectPrefix + "/service/VKCommentsWidget' style='border:none; height: " + (Config.VKCommentWidget.height + 44) + "px; width:" + Config.VKCommentWidget.width + ";'></iframe>";
         code += "</div>\r\n";
@@ -399,11 +399,6 @@ ClientCodeLoader = function () {
         generateImageSpriteLoaded = true;
         spritePath = '../public/images/sprite.png';
 
-        if (FS.existsSync(spritePath)) {
-            FS.unlink(spritePath);
-            callback(true);
-        }
-
         sprites = getFileListRecursive(imagesPath);
 
         Logs.log("SPRITESMITH BEGIN", Logs.LEVEL_NOTIFY);
@@ -417,6 +412,10 @@ ClientCodeLoader = function () {
             }
             // coordinates: ['../public/images/buttons/addFriendActive.png': { x: 75, y: 1353, width: 75, height: 80 },
             //'../public/images/buttons/addFriendHover.png': { x: 150, y: 1353, width
+            if (FS.existsSync(spritePath)) {
+                FS.unlink(spritePath);
+            }
+
             let fsResult = FS.writeFileSync(spritePath, result.image, 'binary');
             Logs.log("SPRITESMITH Complete", Logs.LEVEL_NOTIFY);
             callback(result);

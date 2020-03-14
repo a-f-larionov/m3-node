@@ -159,14 +159,14 @@ PageBlockMaps = function PageBlockMaps() {
             chestsEls[coord.number] = el;
         });
 
-        dialogPointInfo = GUI.createElement(ElementDialogPointInfo, {});
-        self.elements.push(dialogPointInfo);
+        dialogPointInfo = GUI.createElement(DialogPointInfo, {});
+        //self.elements.push(dialogPointInfo);
 
-        dialogChestNeedStars = GUI.createElement(ElementDialogChestNeedStars, {});
-        self.elements.push(dialogChestNeedStars);
+        dialogChestNeedStars = GUI.createElement(DialogChestNeedStars, {});
+        //self.elements.push(dialogChestNeedStars);
 
-        dialogChestYouWin = GUI.createElement(ElementDialogChestYouWin, {});
-        self.elements.push(dialogChestYouWin);
+        dialogChestYouWin = GUI.createElement(DialogChestYouWin, {});
+        //self.elements.push(dialogChestYouWin);
 
         elFriendsPanel = GUI.createElement(ElementFriendsPanel, {
             x: 213,
@@ -386,11 +386,11 @@ PageBlockMaps = function PageBlockMaps() {
         //if (!mfids) waiting = true;
         if (fids && fids.length !== flist.length) waiting = true;
         if (mfids && mfids.length !== mflist.length) waiting = true;
-        if (waiting) {
-            Logs.log('PageBlockMaps::Waiting data');
-        } else {
-            Logs.log('PageBlockMaps::No Wating');
-        }
+        // if (waiting) {
+        //     Logs.log('PageBlockMaps::Waiting data');
+        // } else {
+        //     Logs.log('PageBlockMaps::No Wating');
+        // }
         return waiting;
     }
 }

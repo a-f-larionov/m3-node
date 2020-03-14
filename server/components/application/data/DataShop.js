@@ -83,20 +83,4 @@ DataShop.lighting = [
     }
 ];
 
-DataShop.health = [
-    {
-        gold: 10,
-        quantity: 1,
-        imageSrc: '/images/shop-health-1.png',
-    },
-    {
-        gold: 15,
-        quantity: 2,
-        imageSrc: '/images/shop-health-2.png',
-    },
-    {
-        gold: 30,
-        quantity: 5,
-        imageSrc: '/images/shop-health-3.png',
-    }
-];
+DataShop.healthPrice = 100;
