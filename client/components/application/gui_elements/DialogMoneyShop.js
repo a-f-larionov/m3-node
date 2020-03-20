@@ -1,5 +1,6 @@
 DialogMoneyShop = function () {
     let self = this;
+    self.__name = "DialogMoneyShop";
     this.__proto__ = new Dialog();
 
     this.init = function () {

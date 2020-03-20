@@ -1,5 +1,6 @@
 DialogHealthShop = function () {
     let self = this;
+    self.__name = "DialogHealthShop";
     this.__proto__ = new Dialog();
 
     let elHealth5 = null;

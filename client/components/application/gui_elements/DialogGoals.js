@@ -1,5 +1,6 @@
 DialogGoals = function () {
     let self = this;
+    self.__name = "DialogGoals";
     this.__proto__ = new Dialog();
 
     let goalsImagesEls = {};

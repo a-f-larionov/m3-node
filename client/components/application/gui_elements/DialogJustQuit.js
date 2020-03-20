@@ -1,5 +1,6 @@
 DialogJustQuit = function () {
     let self = this;
+    self.__name = "DialogJustQuit";
     this.__proto__ = new Dialog();
 
     this.init = function () {

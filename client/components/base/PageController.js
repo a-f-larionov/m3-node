@@ -104,4 +104,5 @@ PageController = function () {
     };
 };
 
+/** @type {PageController} */
 PageController = new PageController();

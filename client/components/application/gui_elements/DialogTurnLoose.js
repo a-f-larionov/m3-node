@@ -1,5 +1,6 @@
 DialogTurnLoose = function () {
     let self = this;
+    self.__name = "DialogTurnLoose";
     this.__proto__ = new Dialog();
 
     /**

@@ -1,5 +1,6 @@
 DialogPointInfo = function () {
     let self = this;
+    self.__name = "DialogPointInfo";
     this.__proto__ = new Dialog();
 
     /**
@@ -89,7 +90,7 @@ DialogPointInfo = function () {
         });
         elButtonPlay.show();
 
-        // кнопка закрыть
+        /** Кнопка закрыть */
         GUI.createElement(ElementButton, {
             x: 452, y: 3,
             srcRest: '/images/button-close-rest.png',

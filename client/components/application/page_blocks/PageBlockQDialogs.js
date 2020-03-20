@@ -38,6 +38,15 @@ PageBlockQDialogs = function PageBlockQDialogs() {
     /** @type {DialogJustQuit} */
     this.dialogJustQuit = null;
 
+    /** @type {DialogPointInfo} */
+    this.dialogPointInfo = null;
+
+    /** @type {DialogChestNeedStars} */
+    this.dialogChestNeedStars = null;
+
+    /** @type {DialogChestYouWin} */
+    this.dialogChestYouWin = null;
+
     this.init = function () {
 
         this.dialogMoneyShop = GUI.createElement(DialogMoneyShop, {});
@@ -60,6 +69,15 @@ PageBlockQDialogs = function PageBlockQDialogs() {
 
         this.dialogStuffShop = GUI.createElement(DialogStuffShop);
         self.elements.push(this.dialogStuffShop);
+
+        this.dialogPointInfo = GUI.createElement(DialogPointInfo);
+        self.elements.push(this.dialogPointInfo);
+
+        this.dialogChestNeedStars = GUI.createElement(DialogChestNeedStars);
+        self.elements.push(this.dialogChestNeedStars);
+
+        this.dialogChestYouWin = GUI.createElement(DialogChestYouWin);
+        self.elements.push(this.dialogChestYouWin);
     };
 
     /**
@@ -79,6 +97,7 @@ PageBlockQDialogs = function PageBlockQDialogs() {
      * Спрачем все элементы на странице.
      */
     this.hide = function () {
+        console.log('hide pbqd');
         if (!showed) return;
         showed = false;
         for (let i in self.elements) {

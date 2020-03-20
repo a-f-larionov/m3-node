@@ -399,4 +399,5 @@ PageBlockField = function PageBlockField() {
     };
 };
 
+/** @type {PageBlockField} */
 PageBlockField = new PageBlockField;

@@ -1,5 +1,6 @@
 DialogGoalsReached = function () {
     let self = this;
+    self.__name = "DialogGoalsReached";
     this.__proto__ = new Dialog();
 
     /**

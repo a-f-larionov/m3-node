@@ -11,12 +11,6 @@ PageBlockMaps = function PageBlockMaps() {
      */
     let showed = false;
 
-    let dialogPointInfo = false;
-
-    let dialogChestNeedStars;
-
-    let dialogChestYouWin;
-
     let elPreloader = false;
 
     let elArrowPrev = false;
@@ -114,7 +108,7 @@ PageBlockMaps = function PageBlockMaps() {
                 number: coords.number,
                 pointId: coords.number,
                 onClick: function (event, dom, element) {
-                    dialogPointInfo.showDialog(element.pointId);
+                    PageBlockQDialogs.dialogPointInfo.showDialog(element.pointId);
                 }
             });
             self.elements.push(el);
@@ -140,16 +134,16 @@ PageBlockMaps = function PageBlockMaps() {
                         console.log('уже открыт!');
                     } else {
                         if (mapStars < goalStars) {
-                            dialogChestNeedStars.mapStars = mapStars;
-                            dialogChestNeedStars.goalStars = goalStars;
-                            dialogChestNeedStars.showDialog();
+                            PageBlockQDialogs.dialogChestNeedStars.mapStars = mapStars;
+                            PageBlockQDialogs.dialogChestNeedStars.goalStars = goalStars;
+                            PageBlockQDialogs.dialogChestNeedStars.showDialog();
                             // если закрыт и не хватает звёзд - диалог с надписью: что бы открыть сундук , собери еще
                         } else {
                             SAPIChest.openChest(chestId);
                             DataChests.setOpened(chestId);
                             DataPrizes.giveOutPrizes(chest.prizes);
-                            dialogChestYouWin.chestId = chestId;
-                            dialogChestYouWin.showDialog();
+                            PageBlockQDialogs.dialogChestYouWin.chestId = chestId;
+                            PageBlockQDialogs.dialogChestYouWin.showDialog();
                             PageController.redraw();
                         }
                     }
@@ -158,15 +152,6 @@ PageBlockMaps = function PageBlockMaps() {
             //self.elements.push(el);
             chestsEls[coord.number] = el;
         });
-
-        dialogPointInfo = GUI.createElement(DialogPointInfo, {});
-        //self.elements.push(dialogPointInfo);
-
-        dialogChestNeedStars = GUI.createElement(DialogChestNeedStars, {});
-        //self.elements.push(dialogChestNeedStars);
-
-        dialogChestYouWin = GUI.createElement(DialogChestYouWin, {});
-        //self.elements.push(dialogChestYouWin);
 
         elFriendsPanel = GUI.createElement(ElementFriendsPanel, {
             x: 213,
