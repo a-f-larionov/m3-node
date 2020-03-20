@@ -17,15 +17,26 @@ PageBlockQDialogs = function PageBlockQDialogs() {
      */
     this.elements = [];
 
-    /**
-     * @type {DialogMoneyShop}
-     */
+    /** @type {DialogMoneyShop}  */
     this.dialogMoneyShop = null;
 
-    /**
-     * @type {DialogHealthShop}
-     */
+    /** @type {DialogHealthShop} */
     this.dialogHealthShop = null;
+
+    /** @type {DialogGoals} */
+    this.dialogGoals = null;
+
+    /** @type {DialogStuffShop} */
+    this.dialogStuffShop = null;
+
+    /** @type {DialogGoalsReached} */
+    this.dialogGoalsReached = null;
+
+    /** @type {DialogTurnLoose} */
+    this.dialogTurnsLoose = null;
+
+    /** @type {DialogJustQuit} */
+    this.dialogJustQuit = null;
 
     this.init = function () {
 
@@ -34,6 +45,21 @@ PageBlockQDialogs = function PageBlockQDialogs() {
 
         this.dialogHealthShop = GUI.createElement(DialogHealthShop, {});
         self.elements.push(this.dialogHealthShop);
+
+        this.dialogGoals = GUI.createElement(DialogGoals);
+        self.elements.push(this.dialogGoals);
+
+        this.dialogGoalsReached = GUI.createElement(DialogGoalsReached);
+        self.elements.push(this.dialogGoalsReached);
+
+        this.dialogTurnsLoose = GUI.createElement(DialogTurnLoose);
+        self.elements.push(this.dialogTurnsLoose);
+
+        this.dialogJustQuit = GUI.createElement(DialogJustQuit);
+        self.elements.push(this.dialogJustQuit);
+
+        this.dialogStuffShop = GUI.createElement(DialogStuffShop);
+        self.elements.push(this.dialogStuffShop);
     };
 
     /**

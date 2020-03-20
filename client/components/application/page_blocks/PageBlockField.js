@@ -11,16 +11,6 @@ PageBlockField = function PageBlockField() {
      */
     let showed = false;
 
-    let dialogGoals = false;
-
-    let dialogBuyStuff = false;
-
-    let dialogGoalsReached = false;
-
-    let dialogTurnsLoose = false;
-
-    let dialogJustQuit = false;
-
     let elementField = null;
 
     let elementScore = null;
@@ -64,7 +54,7 @@ PageBlockField = function PageBlockField() {
         elementField = el;
         this.elements.push(el);
 
-        // кнопка выхода
+        /** Кнопка выхода */
         el = GUI.createElement(ElementButton, {
             x: 720, y: 0,
             srcRest: '/images/button-quit-rest.png',
@@ -72,9 +62,9 @@ PageBlockField = function PageBlockField() {
             srcActive: '/images/button-quit-active.png',
             onClick: function () {
                 if (turns === 0) {
-                    dialogTurnsLoose.reset();
+                    PageBlockQDialogs.dialogTurnsLoose.reset();
                 } else {
-                    dialogJustQuit.showDialog();
+                    PageBlockQDialogs.dialogJustQuit.showDialog();
                 }
             }
         });
@@ -148,16 +138,6 @@ PageBlockField = function PageBlockField() {
             x: 10, y: 200, title: 'ЦЕЛИ'
         });
         self.elements.push(elPanelGoals);
-
-        dialogGoals = GUI.createElement(DialogGoals);
-
-        dialogGoalsReached = GUI.createElement(DialogGoalsReached);
-
-        dialogTurnsLoose = GUI.createElement(DialogTurnLoose);
-
-        dialogJustQuit = GUI.createElement(DialogJustQuit);
-
-        dialogBuyStuff = GUI.createElement(DialogStuffShop);
 
         /** stuff hummer */
         el = GUI.createElement(ElementStuffButton, {
@@ -250,7 +230,6 @@ PageBlockField = function PageBlockField() {
         }
         domStuff.hide();
         elPanelGoals.hide();
-        //dialogGoals.closeDialog();
     };
 
     this.loadField = function () {
@@ -264,16 +243,14 @@ PageBlockField = function PageBlockField() {
     };
 
     this.firstShow = function () {
-        // run fall down
         let data;
         elementField.unlock();
-        //elementField.fillRandom();
         elementField.run();
         data = DataPoints.getById(DataPoints.getPlayedId());
-        dialogGoals.setGoals(data.goals);
-        dialogGoals.showDialog();
+        PageBlockQDialogs.dialogGoals.setGoals(data.goals);
+        PageBlockQDialogs.dialogGoals.showDialog();
         setTimeout(function () {
-            dialogGoals.closeDialog();
+            PageBlockQDialogs.dialogGoals.closeDialog();
         }, 1750 * 100
         );
         noMoreGoals = false;
@@ -357,7 +334,7 @@ PageBlockField = function PageBlockField() {
         SAPIUser.onPlayFinish();
         LogicUser.getCurrentUser().health++;
         LogicUser.onFieldNow = false;
-        dialogGoalsReached.showDialog(pointId);
+        PageBlockQDialogs.dialogGoalsReached.showDialog(pointId);
         PageController.redraw();
     };
 
@@ -366,8 +343,7 @@ PageBlockField = function PageBlockField() {
         // and goals
         if (turns === 0 && !noMoreGoals) {
             elementField.lock();
-            dialogTurnsLoose.showDialog();
-            //LogicUser.onTurnsLoose();
+            PageBlockQDialogs.dialogTurnsLoose.showDialog();
         }
         self.redraw();
     };
@@ -397,21 +373,21 @@ PageBlockField = function PageBlockField() {
         switch (mode) {
             case LogicStuff.STUFF_HUMMER:
                 if (LogicStuff.getStuff('hummerQty') < 1) {
-                    dialogBuyStuff.showDialog(mode);
+                    PageBlockQDialogs.dialogStuffShop.showDialog(mode);
                     return;
                 }
                 domStuff.backgroundImage = '/images/button-hummer-active.png';
                 break;
             case LogicStuff.STUFF_LIGHTING:
                 if (LogicStuff.getStuff('lightingQty') < 1) {
-                    dialogBuyStuff.showDialog(mode);
+                    PageBlockQDialogs.dialogStuffShop.showDialog(mode);
                     return;
                 }
                 domStuff.backgroundImage = '/images/button-lighting-active.png';
                 break;
             case LogicStuff.STUFF_SHUFFLE:
                 if (LogicStuff.getStuff('shuffleQty') < 1) {
-                    dialogBuyStuff.showDialog(mode);
+                    PageBlockQDialogs.dialogStuffShop.showDialog(mode);
                     return;
                 }
                 domStuff.backgroundImage = '/images/button-shuffle-active.png';
