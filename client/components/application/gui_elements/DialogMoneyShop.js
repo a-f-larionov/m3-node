@@ -12,7 +12,7 @@ DialogMoneyShop = function () {
         stepX = 150;
 
         GUI.pushParent(self.dom);
-        // заголовок диалога
+        /** заголовок диалога */
         el = GUI.createElement(ElementText, {
             x: 135, y: 11, width: 230, height: 40,
             text: 'ГОЛОСА'
@@ -26,6 +26,9 @@ DialogMoneyShop = function () {
                 srcHover: '/images/money_' + (i + 1) + '.png',
                 srcActive: '/images/money_' + (i + 1) + '.png',
                 onClick: function () {
+                    if(GUI.isFullScreen()){
+                        GUI.fsSwitch();
+                    }
                     SocNet.openOrderDialog(DataShop.gold[i].votes);
                     self.closeDialog();
                 }
@@ -42,10 +45,9 @@ DialogMoneyShop = function () {
                     self.closeDialog();
                 }
             });
-            //self.elements.push(el);
         }
 
-        // кнопка закрыть
+        /** кнопка закрыть */
         GUI.createElement(ElementButton, {
             x: 452, y: 3,
             srcRest: '/images/button-close-rest.png',
