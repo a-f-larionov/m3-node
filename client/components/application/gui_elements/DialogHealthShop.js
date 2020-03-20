@@ -73,7 +73,7 @@ DialogHealthShop = function () {
         if (user.health > 0) return;
 
         if (gold < DataShop.healthPrice) {
-            PageBlockPanel.showDialogMoneyShop(this);
+            PageBlockQDialogs.dialogMoneyShop.showDialog(this);
             self.closeDialog();
         } else {
             SAPIStuff.buyHealth();

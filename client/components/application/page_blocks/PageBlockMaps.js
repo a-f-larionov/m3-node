@@ -396,4 +396,8 @@ PageBlockMaps = function PageBlockMaps() {
 }
 ;
 
+/**
+ *
+ * @type {PageBlockMaps}
+ */
 PageBlockMaps = new PageBlockMaps;

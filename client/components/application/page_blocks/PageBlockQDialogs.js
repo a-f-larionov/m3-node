@@ -1,8 +1,8 @@
 /**
- * Страница бэкграудна.
+ * Блок диалогов
  * @constructor
  */
-PageBlockBackground = function PageBlockBackground() {
+PageBlockQDialogs = function PageBlockQDialogs() {
     let self = this;
 
     /**
@@ -17,24 +17,30 @@ PageBlockBackground = function PageBlockBackground() {
      */
     this.elements = [];
 
-    this.init = function () {
-        let element;
-        /* Задний фон */
-        element = GUI.createElement(ElementImage, {
-            x: 0,
-            y: 0,
-            src: '/images/old-paper.png'
-        });
-        self.elements.push(element);
+    /**
+     * @type {DialogMoneyShop}
+     */
+    this.dialogMoneyShop = null;
 
-        setBackgroundImage();
+    /**
+     * @type {DialogHealthShop}
+     */
+    this.dialogHealthShop = null;
+
+    this.init = function () {
+
+        this.dialogMoneyShop = GUI.createElement(DialogMoneyShop, {});
+        self.elements.push(this.dialogMoneyShop);
+
+        this.dialogHealthShop = GUI.createElement(DialogHealthShop, {});
+        self.elements.push(this.dialogHealthShop);
     };
 
     /**
      * Покажем все элементы на странице.
      */
     this.show = function () {
-        if (showed === true) return;
+        if (showed) return;
         showed = true;
         self.preset();
         for (let i in self.elements) {
@@ -47,7 +53,7 @@ PageBlockBackground = function PageBlockBackground() {
      * Спрачем все элементы на странице.
      */
     this.hide = function () {
-        if (showed === false) return;
+        if (!showed) return;
         showed = false;
         for (let i in self.elements) {
             self.elements[i].hide();
@@ -67,24 +73,13 @@ PageBlockBackground = function PageBlockBackground() {
     this.redraw = function () {
         if (!showed) return;
         self.preset();
-        for (let i in self.elements) {
-            self.elements[i].redraw();
-        }
-    };
-
-    let setBackgroundImage = function () {
-        let elBody, backgroundImage;
-        elBody = document.getElementsByTagName('body')[0];
-
-        backgroundImage = "url('" + GUI.getImagePath('/images/old-paper.png') + "')";
-
-        elBody.style.backgroundImage = backgroundImage;
-        //elBody.style.backgroundSize = "1px 1px";
+        self.elements.forEach(function (el) {
+            el.redraw();
+        });
     };
 };
 
 /**
- *
- * @type {PageBlockBackground}
+ * @type {PageBlockQDialogs}
  */
-PageBlockBackground = new PageBlockBackground();
+PageBlockQDialogs = new PageBlockQDialogs();

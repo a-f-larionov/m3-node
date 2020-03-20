@@ -71,7 +71,7 @@ DialogPointInfo = function () {
             onClick: function () {
                 self.closeDialog();
                 if (LogicUser.getCurrentUser().health === 0) {
-                    PageBlockPanel.showDialogHealthShop();
+                    PageBlockQDialogs.dialogHealthShop.showDialog();
                     self.showDialog(pointId);
                 } else {
                     // onPlayStart health--

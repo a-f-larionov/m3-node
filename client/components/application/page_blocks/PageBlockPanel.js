@@ -23,10 +23,6 @@ PageBlockPanel = function PageBlockPanel() {
 
     let moneyText;
 
-    let dialogMoneyShop;
-
-    let dialogHealthShop;
-
     this.init = function () {
         let el, pMX, pHX;
 
@@ -48,7 +44,7 @@ PageBlockPanel = function PageBlockPanel() {
             srcHover: '/images/button-money-hover.png',
             srcActive: '/images/button-money-active.png',
             onClick: function () {
-                dialogMoneyShop.showDialog();
+                PageBlockQDialogs.dialogMoneyShop.showDialog();
             }
         });
         self.elements.push(el);
@@ -66,7 +62,7 @@ PageBlockPanel = function PageBlockPanel() {
             srcHover: '/images/button-add-hover.png',
             srcActive: '/images/button-add-active.png',
             onClick: function () {
-                dialogMoneyShop.showDialog();
+                PageBlockQDialogs.dialogMoneyShop.showDialog();
             }
         });
         self.elements.push(el);
@@ -104,7 +100,7 @@ PageBlockPanel = function PageBlockPanel() {
             srcHover: '/images/button-add-hover.png',
             srcActive: '/images/button-add-active.png',
             onClick: function () {
-                dialogHealthShop.showDialog();
+                PageBlockQDialogs.dialogHealthShop.showDialog();
             }
         });
         self.elements.push(el);
@@ -132,14 +128,6 @@ PageBlockPanel = function PageBlockPanel() {
             onClick: onFullScreenButtonClick
         });
         self.elements.push(elFSButton);
-
-        dialogMoneyShop = GUI.createElement(DialogMoneyShop, {});
-        //self.elements.push(dialogMoneyShop);
-
-        dialogHealthShop = GUI.createElement(DialogHealthShop, {});
-        //self.elements.push(dialogHealthShop);
-
-        setBackgroundImage();
     };
 
     /**
@@ -191,16 +179,6 @@ PageBlockPanel = function PageBlockPanel() {
         });
     };
 
-    let setBackgroundImage = function () {
-        let elBody, backgroundImage;
-        elBody = document.getElementsByTagName('body')[0];
-
-        backgroundImage = "url('" + GUI.getImagePath('/images/old-paper.png') + "')";
-
-        elBody.style.backgroundImage = backgroundImage;
-        //elBody.style.backgroundSize = "1px 1px";
-    };
-
     let onFullScreenButtonClick = function () {
         GUI.fsSwitch();
         if (GUI.isFullScreen()) {
@@ -213,15 +191,10 @@ PageBlockPanel = function PageBlockPanel() {
             elFSButton.srcActive = '/images/button-fullscreen-off-rest.png';
         }
     };
-
-    this.showDialogMoneyShop = function (afterDialog) {
-        dialogMoneyShop.showDialog(afterDialog);
-        return dialogMoneyShop;
-    };
-
-    this.showDialogHealthShop = function () {
-        return dialogHealthShop.showDialog();
-    }
 };
 
+/**
+ *
+ * @type {PageBlockPanel}
+ */
 PageBlockPanel = new PageBlockPanel();
