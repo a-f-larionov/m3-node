@@ -235,6 +235,10 @@ PageBlockField = function PageBlockField() {
         this.firstShow();
     };
 
+    this.isShowed = function () {
+        return showed;
+    };
+
     /**
      * Спрачем все элементы на странице.
      */
@@ -350,6 +354,9 @@ PageBlockField = function PageBlockField() {
                 score
             );
         }
+        SAPIUser.onPlayFinish();
+        LogicUser.getCurrentUser().health++;
+        LogicUser.onFieldNow = false;
         dialogGoalsReached.showDialog(pointId);
         PageController.redraw();
     };
@@ -360,7 +367,7 @@ PageBlockField = function PageBlockField() {
         if (turns === 0 && !noMoreGoals) {
             elementField.lock();
             dialogTurnsLoose.showDialog();
-            LogicUser.onTurnsLoose();
+            //LogicUser.onTurnsLoose();
         }
         self.redraw();
     };

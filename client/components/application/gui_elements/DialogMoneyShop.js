@@ -14,7 +14,7 @@ DialogMoneyShop = function () {
         // заголовок диалога
         el = GUI.createElement(ElementText, {
             x: 135, y: 11, width: 230, height: 40,
-            text: 'МАГАЗИН'
+            text: 'ПОКУПКА ГОЛОСОВ'
         });
         self.elements.push(el);
 

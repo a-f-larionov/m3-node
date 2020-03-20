@@ -81,7 +81,36 @@ SAPIUser = function () {
         });
     };
 
-    this.onTurnsLoose = function (cntx) {
+
+    this.onPlayFinish = function(cntx){
+        LOCK.acquire('stuff-' + cntx.user.id + '-health', function (done) {
+            DataUser.getById(cntx.user.id, function (user) {
+                let now, recoveryTime;
+                if (user.health > 0) {
+                    user.health++;
+                    user.health = Math.max(user.health, LogicUser.getMaxHealth());
+                    now = LogicTimeServer.getCurrentTime();
+                    recoveryTime = LogicUser.getHealthRecoveryTime();
+                    if (now > (user.healthStartTime + recoveryTime)) {
+                        user.healthStartTime = now;
+                    }
+                    DataUser.updateHealthAndStartTime(
+                        user.id,
+                        user.health,
+                        user.healthStartTime,
+                        function () {
+                            CAPIUser.updateUserInfo(cntx.user.id, user);
+                        }
+                    );
+                    done();
+                } else {
+                    done();
+                }
+            })
+        });
+    };
+
+    this.onPlayStart = function (cntx) {
 
         LOCK.acquire('stuff-' + cntx.user.id + '-health', function (done) {
             DataUser.getById(cntx.user.id, function (user) {

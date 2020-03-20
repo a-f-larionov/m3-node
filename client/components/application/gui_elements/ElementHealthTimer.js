@@ -82,11 +82,14 @@ ElementHealthTimer = function () {
     };
 
     this.updateTimer = function () {
-        let recoveryTime, healthStartTime, now, left, user;
+        let recoveryTime, healthStartTime, now, left, user, health;
         if (!showed) return;
         user = LogicUser.getCurrentUser();
-
-        if (user.health === LogicUser.getMaxHealth()) {
+        health = user.health;
+        if (LogicUser.onFieldNow) {
+            health = LogicUser.oldHealth;
+        }
+        if (health === LogicUser.getMaxHealth()) {
             self.healthIndicator.redraw();
             elText.hide();
 

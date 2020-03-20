@@ -216,7 +216,7 @@ LogicUser = function () {
      */
     this.getFriendIdsByMapIdAndPointIdWithScore = function (mapId, pointId, widthCurrentUser) {
         let ids, users, gamers;
-             //return LogicUser.getList([1,2,3]);
+        //return LogicUser.getList([1,2,3]);
         gamers = [];
         ids = LogicUser.getFriendIdsByMapId(mapId);
         if (widthCurrentUser) ids.push(LogicUser.getCurrentUser().id);
@@ -238,7 +238,7 @@ LogicUser = function () {
     this.onTurnsLoose = function () {
         users[authorizedUserId].health--;
         users[authorizedUserId].healthStartTime = LogicTimeClient.getTime() * 1000;
-        SAPIUser.onTurnsLoose();
+//        SAPIUser.onPlayStart();
         PageController.redraw();
     };
 

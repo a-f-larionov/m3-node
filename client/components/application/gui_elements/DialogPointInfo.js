@@ -69,12 +69,18 @@ DialogPointInfo = function () {
             srcHover: '/images/button-red-hover.png',
             srcActive: '/images/button-red-active.png',
             onClick: function () {
-                //self.reset();
                 self.closeDialog();
                 if (LogicUser.getCurrentUser().health === 0) {
                     PageBlockPanel.showDialogHealthShop();
                     self.showDialog(pointId);
                 } else {
+                    // onPlayStart health--
+                    LogicUser.onFieldNow = true;
+                    LogicUser.oldHealth = LogicUser.getCurrentUser().health;
+                    LogicUser.oldHealthStartTime = LogicUser.getCurrentUser().healthStartTime;
+
+                    LogicUser.getCurrentUser().health--;
+                    SAPIUser.onPlayStart();
                     DataPoints.setPlayedId(pointId);
                     PageController.showPage(PageField);
                 }
