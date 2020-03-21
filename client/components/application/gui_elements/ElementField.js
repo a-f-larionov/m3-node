@@ -19,7 +19,7 @@ ElementField = function () {
     this.ANIM_TYPE_LIGHTING_DESTROY = 4;
     this.ANIM_TYPE_SHUFFLE = 5;
 
-    // рамка и все что связано
+    /** Рамка и все что связано */
     let gemA = null;
     let gemB = null;
     let domFrame = null;
@@ -385,6 +385,7 @@ ElementField = function () {
                 gemDoms[y][x].hide();
             }
         }
+        domFrame.hide();
     };
 
     /**

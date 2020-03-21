@@ -243,12 +243,11 @@ LogicUser = function () {
     };
 
     this.getMaxHealth = function () {
-        return 5;
+        return DataCross.user.maxHealth;
     };
 
     this.getHealthRecoveryTime = function () {
-        // @todo нужны общие настройки
-        return 60 * 0.1 * 100;
+        return  DataCross.user.healthRecoveryTime;
     };
 
     this.clearHealthCheckFlag = function () {

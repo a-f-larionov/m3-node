@@ -105,7 +105,7 @@ PageBlockPanel = function PageBlockPanel() {
         });
         self.elements.push(el);
 
-        /** кнопка звука **/
+        /** Кнопка звука **/
         elSoundsButton = GUI.createElement(ElementButton, {
             x: 660, y: 10,
             srcRest: '/images/button-sound-off.png',
@@ -119,7 +119,7 @@ PageBlockPanel = function PageBlockPanel() {
         });
         self.elements.push(elSoundsButton);
 
-        /** кнопка фулскрин **/
+        /** Кнопка фулскрин **/
         elFSButton = GUI.createElement(ElementButton, {
             x: 690, y: 0,
             srcRest: '/images/button-fullscreen-on-rest.png',

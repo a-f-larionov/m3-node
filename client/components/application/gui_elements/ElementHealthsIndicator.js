@@ -76,9 +76,10 @@ ElementHealthIndicator = function () {
         let health, step, i;
         if (!showed) return;
         i = 1;
-        health = LogicUser.getCurrentUser().health;
         if (LogicUser.onFieldNow) {
-            health++;
+            health = LogicUser.oldHealth;
+        } else {
+            health = LogicUser.getCurrentUser().health;
         }
         step = 50 - 15;
         if (health === LogicUser.getMaxHealth() - 1) {

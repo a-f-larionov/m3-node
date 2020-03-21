@@ -85,9 +85,12 @@ ElementHealthTimer = function () {
         let recoveryTime, healthStartTime, now, left, user, health;
         if (!showed) return;
         user = LogicUser.getCurrentUser();
-        health = user.health;
         if (LogicUser.onFieldNow) {
             health = LogicUser.oldHealth;
+            healthStartTime = LogicUser.oldHealthStartTime / 1000;
+        }else{
+            health = user.health;
+            healthStartTime = LogicUser.getCurrentUser().healthStartTime / 1000;
         }
         if (health === LogicUser.getMaxHealth()) {
             self.healthIndicator.redraw();
@@ -95,7 +98,6 @@ ElementHealthTimer = function () {
 
         } else {
             recoveryTime = LogicUser.getHealthRecoveryTime();
-            healthStartTime = LogicUser.getCurrentUser().healthStartTime / 1000;
             now = LogicTimeClient.getTime();
             left = recoveryTime - (now - healthStartTime);
 
@@ -108,7 +110,7 @@ ElementHealthTimer = function () {
                 if (hours < 10) hours = "0" + hours;
                 if (minutes < 10) minutes = "0" + minutes;
                 if (seconds < 10) seconds = "0" + seconds;
-                /*hours+':'+*/
+                /** hours+':'+*/
                 return minutes + ':' + seconds;
             };
             elText.setText(toHHMMSS(left));

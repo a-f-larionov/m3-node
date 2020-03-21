@@ -71,11 +71,12 @@ DialogPointInfo = function () {
             srcActive: '/images/button-red-active.png',
             onClick: function () {
                 self.closeDialog();
+                /** Предложить купить жизни */
                 if (LogicUser.getCurrentUser().health === 0) {
                     PageBlockQDialogs.dialogHealthShop.showDialog();
                     self.showDialog(pointId);
                 } else {
-                    // onPlayStart health--
+                    /** Начать игру */
                     LogicUser.onFieldNow = true;
                     LogicUser.oldHealth = LogicUser.getCurrentUser().health;
                     LogicUser.oldHealthStartTime = LogicUser.getCurrentUser().healthStartTime;

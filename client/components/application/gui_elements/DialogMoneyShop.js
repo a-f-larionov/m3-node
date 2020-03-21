@@ -26,7 +26,7 @@ DialogMoneyShop = function () {
                 srcHover: '/images/money_' + (i + 1) + '.png',
                 srcActive: '/images/money_' + (i + 1) + '.png',
                 onClick: function () {
-                    if(GUI.isFullScreen()){
+                    if (GUI.isFullScreen()) {
                         GUI.fsSwitch();
                     }
                     SocNet.openOrderDialog(DataShop.gold[i].votes);

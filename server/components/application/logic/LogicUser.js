@@ -262,11 +262,11 @@ LogicUser = function () {
     };
 
     this.getMaxHealth = function () {
-        return 5;
+        return DataCross.user.maxHealth;
     };
 
     this.getHealthRecoveryTime = function () {
-        return 60 * 0.1 * 1000;
+        return DataCross.user.healthRecoveryTime * 1000;
     };
 
     this.checkHealth = function (userId) {

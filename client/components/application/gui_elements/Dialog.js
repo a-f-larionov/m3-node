@@ -206,15 +206,11 @@ Dialog.addDialog = function (dialog, afterDialog) {
                 index = i;
             }
         });
-        console.log(321);
-        console.log(Dialog.queue);
         leftArr = Dialog.queue.slice(0, index + 1);
         leftArr.push(dialog);
         rightArr = Dialog.queue.slice(index);
-        console.log(Dialog.queue);
         Dialog.queue = leftArr.concat(rightArr);
-        console.log(Dialog.queue);
-        console.log(123);
+
     } else {
         Dialog.queue.push(dialog);
     }

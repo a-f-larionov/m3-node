@@ -18,14 +18,23 @@ PageBlockBackground = function PageBlockBackground() {
     this.elements = [];
 
     this.init = function () {
-        let element;
-        /* Задний фон */
-        element = GUI.createElement(ElementImage, {
+        let el;
+
+        /** Рамка для фулскрина */
+        el = GUI.createElement(ElementImage, {
+            x: -15,
+            y: -15,
+            src: '/images/fs-frame.png'
+        });
+        self.elements.push(el);
+
+        /** Задний фон */
+        el = GUI.createElement(ElementImage, {
             x: 0,
             y: 0,
             src: '/images/old-paper.png'
         });
-        self.elements.push(element);
+        self.elements.push(el);
 
         setBackgroundImage();
     };
@@ -79,7 +88,7 @@ PageBlockBackground = function PageBlockBackground() {
         backgroundImage = "url('" + GUI.getImagePath('/images/old-paper.png') + "')";
 
         elBody.style.backgroundImage = backgroundImage;
-        //elBody.style.backgroundSize = "1px 1px";
+        //elBody.style.backgroundSize = "777px 500px";
     };
 };
 

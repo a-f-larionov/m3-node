@@ -7,7 +7,7 @@ DialogJustQuit = function () {
         this.__proto__.init.call(this);
         let element;
 
-        // заголовок
+        /** заголовок */
         element = GUI.createElement(ElementText, {
             x: 150, y: 12, width: 200,
             //   fontSize: 24,
@@ -27,7 +27,7 @@ DialogJustQuit = function () {
         element.setText("Потеряешь одну жизнь.");
         self.elements.push(element);
 
-        /** кнопка выйти */
+        /** Кнопка выйти */
         element = GUI.createElement(ElementButton, {
                 x: 75, y: 220,
                 srcRest: '/images/button-red-rest.png',
@@ -35,10 +35,11 @@ DialogJustQuit = function () {
                 srcActive: '/images/button-red-active.png',
                 onClick: function () {
                     //LogicUser.onTurnsLoose();
+                    LogicUser.onFieldNow = false;
                     self.closeDialog();
                     PageController.showPage(PageMain);
                 },
-                title: 'НА КАРТУ'
+                title: 'СДАТЬСЯ'
             }, this.dom,
         );
         self.elements.push(element);

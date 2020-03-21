@@ -189,7 +189,7 @@ PageBlockField = function PageBlockField() {
             domStuff.hide();
             el = document.elementFromPoint(event.clientX, event.clientY);
             // признак каменного поля :)
-            if (el.__dom.fieldX && el.__dom.fieldY) {
+            if (el.__dom.fieldX !== undefined && el.__dom.fieldY !== undefined) {
                 el.dispatchEvent(new MouseEvent(event.type, event));
             }
             domStuff.show();
