@@ -25,7 +25,9 @@ ElementField = function () {
         domFrame = null
     ;
 
-    let domHummerDestroy = null
+    let domHummerDestroy = null,
+        domLightingDestroy = null,
+        domShuffleDestroy = null
     ;
 
     let domStuffMode = null;
@@ -199,7 +201,110 @@ ElementField = function () {
             ]
         });
 
+        domLightingDestroy = GUI.createDom(undefined, {
+            x: 30, y: 10, height: GUI.getImageHeight('/images/anim-light-1.png'),
+            backgroundImage: '/images/anim-light-1.png',
+            animPlayed: false,
+            animTracks: [
+                [
+                    {
+                        type: GUI.ANIM_TYPE_MOVIE,
+                        images: [
+                            '/images/anim-light-1.png',
+                            '/images/anim-light-1.png',
+                            '/images/anim-light-1.png',
+                            '/images/anim-light-2.png',
+                            '/images/anim-light-2.png',
+                            '/images/anim-light-2.png',
+                            '/images/anim-light-3.png',
+                            '/images/anim-light-3.png',
+                            '/images/anim-light-3.png',
+                            '/images/anim-light-4.png',
+                            '/images/anim-light-4.png',
+                            '/images/anim-light-4.png',
+                            '/images/anim-light-5.png',
+                            '/images/anim-light-5.png',
+                            '/images/anim-light-5.png',
+                        ],
+                        duration: 15,
+                        callback: function () {
+                            domLightingDestroy.animData = [{
+                                frameN: 0,
+                                counter: 0
+                            }];
+                            domLightingDestroy.animPlayed = false;
+                            self.afterStuffUse();
+                            animBlock = false;
+                            animType = 0;
+                            domLightingDestroy.hide();
+                            self.run();
+                        }
+                    },
+                ]
+            ]
+        });
+
         GUI.popParent();
+
+        domShuffleDestroy = GUI.createDom(undefined, {
+            x: self.centerX - GUI.getImageWidth('/images/anim-shuffle-1.png') / 2,
+            y: self.centerY - GUI.getImageHeight('/images/anim-shuffle-1.png') / 2,
+            backgroundImage: '/images/anim-shuffle-1.png',
+            animPlayed: false,
+            animTracks: [
+                [
+                    {
+                        type: GUI.ANIM_TYPE_MOVIE,
+                        images: [
+                            '/images/anim-shuffle-1.png',
+                            '/images/anim-shuffle-1.png',
+                            '/images/anim-shuffle-2.png',
+                            '/images/anim-shuffle-2.png',
+                            '/images/anim-shuffle-3.png',
+                            '/images/anim-shuffle-3.png',
+                            '/images/anim-shuffle-4.png',
+                            '/images/anim-shuffle-4.png',
+                            '/images/anim-shuffle-5.png',
+                            '/images/anim-shuffle-5.png',
+                            '/images/anim-shuffle-6.png',
+                            '/images/anim-shuffle-6.png',
+                            '/images/anim-shuffle-7.png',
+                            '/images/anim-shuffle-7.png',
+                            '/images/anim-shuffle-8.png',
+                            '/images/anim-shuffle-8.png',
+                            '/images/anim-shuffle-9.png',
+                            '/images/anim-shuffle-9.png',
+                            '/images/anim-shuffle-10.png',
+                            '/images/anim-shuffle-10.png',
+                            '/images/anim-shuffle-11.png',
+                            '/images/anim-shuffle-11.png',
+                            '/images/anim-shuffle-12.png',
+                            '/images/anim-shuffle-12.png',
+                            '/images/anim-shuffle-13.png',
+                            '/images/anim-shuffle-13.png',
+                            '/images/anim-shuffle-14.png',
+                            '/images/anim-shuffle-14.png',
+                            '/images/anim-shuffle-15.png',
+                            '/images/anim-shuffle-15.png',
+                        ],
+                        duration: 29,
+                        callback: function () {
+                            console.log(domShuffleDestroy);
+                            domShuffleDestroy.animData = [{
+                                frameN: 0,
+                                counter: 0
+                            }];
+                            domShuffleDestroy.animPlayed = false;
+                            self.afterStuffUse();
+                            animBlock = false;
+                            animType = 0;
+                            domShuffleDestroy.hide();
+                            self.run();
+                        }
+                    },
+                ]
+            ]
+        });
 
         OnIdle.register(self.animate);
 
@@ -293,6 +398,9 @@ ElementField = function () {
         animBlock = true;
         animType = self.ANIM_TYPE_SHUFFLE;
         animCounter = 0;
+        domShuffleDestroy.animPlayed = true;
+        domShuffleDestroy.show();
+        domShuffleDestroy.redraw();
         self.redraw();
     };
 
@@ -307,9 +415,24 @@ ElementField = function () {
                 layerGems[gem.fieldY][x] = DataPoints.OBJECT_EMPTY;
             }
         }
+        self.redraw();
         animBlock = true;
         animType = self.ANIM_TYPE_LIGHTING_DESTROY;
         animCounter = 0;
+        domLightingDestroy.animPlayed = true;
+        let leftX = Infinity, rightX = -Infinity;
+        /** Получить длину текущей линии */
+        for (let x = 0; x < fieldWidth; x++) {
+            if (layerMask[gem.fieldY][x] !== DataPoints.OBJECT_NONE) {
+                leftX = Math.min(leftX, x);
+                rightX = Math.max(rightX, x);
+            }
+        }
+        domLightingDestroy.x = leftX * DataPoints.BLOCK_WIDTH - (GUI.getImageWidth('/images/anim-light-1.png') - DataPoints.BLOCK_WIDTH) / 2;
+        domLightingDestroy.y = gem.fieldY * DataPoints.BLOCK_HEIGHT - (GUI.getImageHeight('/images/anim-light-1.png') - DataPoints.BLOCK_HEIGHT) / 2;
+        domLightingDestroy.width = (rightX - leftX + 1) * DataPoints.BLOCK_WIDTH + (GUI.getImageWidth('/images/anim-light-1.png') - DataPoints.BLOCK_WIDTH) / 2;
+        domLightingDestroy.show();
+        domLightingDestroy.redraw();
         self.redraw();
     };
 
@@ -814,25 +937,15 @@ ElementField = function () {
         switch (animType) {
             case self.ANIM_TYPE_HUMMER_DESTROY:
                 animCounter++;
-                /** @see domHummerDestroy.animTracks*/
+                /** Смотри domHummerDestroy.animTracks*/
                 break;
             case self.ANIM_TYPE_SHUFFLE:
                 animCounter++;
-                if (animCounter === 5) {
-                    self.afterStuffUse();
-                    animBlock = false;
-                    animType = 0;
-                    self.run();
-                }
+                /** Смотри domLightingDestroy.animTracks */
                 break;
             case self.ANIM_TYPE_LIGHTING_DESTROY:
                 animCounter++;
-                if (animCounter === 5) {
-                    self.afterStuffUse();
-                    animBlock = false;
-                    animType = 0;
-                    self.run();
-                }
+                /** Смотри domShuffleDestroy.animTracks */
                 break;
             case self.ANIM_TYPE_FALLDOWN:
                 animCounter++;

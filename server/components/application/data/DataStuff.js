@@ -67,7 +67,7 @@ DataStuff = function () {
                     Logs.log("vk_stuff tid:" + tid + " uid:" + userId + " " + fieldName
                         + " -" + quantity + " CANCEL", Logs.LEVEL_NOTIFY, data, Logs.CHANNEL_VK_STUFF);
                     done();
-                    callback(false);
+                    if (callback) callback(false);
                     return;
                 }
 
@@ -112,7 +112,7 @@ DataStuff = function () {
     };
 
     this.giveALighting = function (userId, quantity, tid) {
-        incrementStuff('shuffleQty', userId, quantity, tid);
+        incrementStuff('lightingQty', userId, quantity, tid);
     };
 };
 
