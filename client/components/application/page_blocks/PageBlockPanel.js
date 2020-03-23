@@ -122,9 +122,9 @@ PageBlockPanel = function PageBlockPanel() {
         /** Кнопка фулскрин **/
         elFSButton = GUI.createElement(ElementButton, {
             x: 690, y: 0,
-            srcRest: '/images/button-fullscreen-on-rest.png',
-            srcHover: '/images/button-fullscreen-on-hover.png',
-            srcActive: '/images/button-fullscreen-on-active.png',
+            srcRest: '/images/button-fs-on-rest.png',
+            srcHover: '/images/button-fs-on-hover.png',
+            srcActive: '/images/button-fs-on-active.png',
             onClick: onFullScreenButtonClick
         });
         self.elements.push(elFSButton);
@@ -182,13 +182,13 @@ PageBlockPanel = function PageBlockPanel() {
     let onFullScreenButtonClick = function () {
         GUI.fsSwitch();
         if (GUI.isFullScreen()) {
-            elFSButton.srcRest = '/images/button-fullscreen-on-rest.png';
-            elFSButton.srcHover = '/images/button-fullscreen-on-rest.png';
-            elFSButton.srcActive = '/images/button-fullscreen-on-rest.png';
+            elFSButton.srcRest = '/images/button-fs-on-rest.png';
+            elFSButton.srcHover = '/images/button-fs-on-rest.png';
+            elFSButton.srcActive = '/images/button-fs-on-rest.png';
         } else {
-            elFSButton.srcRest = '/images/button-fullscreen-off-rest.png';
-            elFSButton.srcHover = '/images/button-fullscreen-off-rest.png';
-            elFSButton.srcActive = '/images/button-fullscreen-off-rest.png';
+            elFSButton.srcRest = '/images/button-fs-off-rest.png';
+            elFSButton.srcHover = '/images/button-fs-off-rest.png';
+            elFSButton.srcActive = '/images/button-fs-off-rest.png';
         }
     };
 };

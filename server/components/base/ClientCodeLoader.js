@@ -168,7 +168,7 @@ ClientCodeLoader = function () {
         code += '';
 
         let demension = IMAGE_SIZE('../public/images/sprite.png');
-console.log(demension);
+        console.log(demension);
         code += "<style> body div { background-size: "
             + translate2X(demension.width / 2) + "px "
             + translate2X(demension.height / 2) + "px; " +
@@ -313,7 +313,7 @@ console.log(demension);
         } else {
             imageCode = "<script>";
             imageCode += "imagesData = {};";
-            //@todo uncomment it
+            //@todo remove it! fo production
             timePostfix = "?t=1";// + new Date().getTime();
             for (let i in generateImageSpriteResult.coordinates) {
                 path = i.replace('../public', '');
@@ -401,7 +401,18 @@ console.log(demension);
 
         sprites = getFileListRecursive(imagesPath);
 
+        if (!Config.WebSocketServer.useSpritedImage) {
+            Logs.log("SPRITESMITH SKIP", Logs.LEVEL_NOTIFY);
+            callback(false);
+            return;
+        }
+
         Logs.log("SPRITESMITH BEGIN", Logs.LEVEL_NOTIFY);
+
+        /**
+         *@todo
+         * Calculate hash, if no changes - skip it!
+         */
 
         SPRITESMITH.run({src: sprites}, function handleResult(err, result) {
             // result.image; // Buffer representation of image

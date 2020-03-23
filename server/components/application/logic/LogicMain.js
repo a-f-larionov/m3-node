@@ -43,6 +43,7 @@ LogicMain = function () {
             '/service/--profiler': LogicSystemRequests.getProfiler,
             '/service/--log': LogicSystemRequests.getLog,
             '/service/--shutdown___': LogicSystemRequests.shutdown,
+            '/service/--reload-levels': LogicSystemRequests.reloadLevels,
             '/service/--logsSetDetail': LogicSystemRequests.logsSetDetail,
             '/service/--logsSetNotify': LogicSystemRequests.logsSetNotify,
             '/service/--help': function (callback) {

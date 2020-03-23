@@ -19,6 +19,14 @@ LogicSystemRequests = function () {
         });
     };
 
+    this.reloadLevels = function (callback) {
+        console.log(DataPoints.getById(20));
+        delete require.cache[require.resolve('/var/www/tri-base/server/components/application/data/DataPoints.js')];
+        loader.includeComponentByPath('/var/www/tri-base/server/components/application/data/DataPoints.js');
+        console.log(DataPoints.getById(20));
+        callback('OK!');
+    };
+
     this.logsSetDetail = function (callback) {
         Logs.setLevel(Logs.LEVEL_DETAIL);
         setTimeout(function () {

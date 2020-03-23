@@ -16,7 +16,7 @@ let FS = require('fs');
 let PATH = require('path');
 let OS = require('os');
 
-let loader = new Loader();
+loader = new Loader();
 console.log('step 1 - include constants');
 /* step 1 - include constants */
 loader.includeConstants();
@@ -118,8 +118,8 @@ function Loader() {
             list = FS.readdirSync(path);
             for (let i in list) {
                 //@TODO *.js extension must be
-                if (list[i] == '.gitkeep')continue;
-                if (list[i] == '.gitignore')continue;
+                if (list[i] === '.gitkeep') continue;
+                if (list[i] === '.gitignore') continue;
                 if (FS.statSync(path + list[i]).isDirectory()) {
                     scanRecursive(path + list[i] + '/');
                 } else {
@@ -133,48 +133,17 @@ function Loader() {
 
     this.includeComponentsByMap = function (map) {
         let name;
-        /**
-         * Подключение компонента по пути.
-         * @param path путь к файлу компонента.
-         */
-        let includeComponent = function (path) {
-            path = PATH.resolve(path);
-            //@todo is it detail level
-            //log("include component:" + /*getComponentNameFromPath(path) +*/ '(' + path + ')');
-            require(path);
-            validateComponent(path);
-            global[getComponentNameFromPath(path)].__path = path;
-        };
-
-        /**
-         * Проверка компонента.
-         * @param path {string} путь к файлу компонента.
-         */
-        let validateComponent = function (path) {
-            let name;
-            name = getComponentNameFromPath(path);
-            if (!global[name]) {
-                error("Файл компонента должен содержать определение компонента." +
-                    "\r\nфайл: " + path + "" +
-                    "\r\nкомпонент: " + name);
-            }
-            if (!(typeof global[name] == 'function' || typeof global[name] == 'object')) {
-                error("Определение компонента должно иметь тип function." +
-                    "\r\nфайл: " + path + "" +
-                    "\r\nкомпонент: " + name);
-            }
-        };
         let mapLength = 0, newMapLength = 0;
         for (name in map) {
             mapLength++;
-            includeComponent(map[name]);
+            this.includeComponentByPath(map[name]);
         }
         // sort by depends
         let dependsMap = [];
         while (mapLength !== newMapLength) {
             for (name in map) {
 
-                if (dependsMap[name])continue;
+                if (dependsMap[name]) continue;
 
                 if (global[name].depends) {
                     let depends, dependsAll, dependsInNewMap;
@@ -199,6 +168,39 @@ function Loader() {
 
         componentsMap = dependsMap;
     };
+
+    /**
+     * Подключение компонента по пути.
+     * @param path путь к файлу компонента.
+     */
+    this.includeComponentByPath = function (path) {
+        /**
+         * Проверка компонента.
+         * @param path {string} путь к файлу компонента.
+         */
+        let validateComponent = function (path) {
+            let name;
+            name = getComponentNameFromPath(path);
+            if (!global[name]) {
+                error("Файл компонента должен содержать определение компонента." +
+                    "\r\nфайл: " + path + "" +
+                    "\r\nкомпонент: " + name);
+            }
+            if (!(typeof global[name] == 'function' || typeof global[name] == 'object')) {
+                error("Определение компонента должно иметь тип function." +
+                    "\r\nфайл: " + path + "" +
+                    "\r\nкомпонент: " + name);
+            }
+        };
+
+        path = PATH.resolve(path);
+        //@todo is it detail level
+        log("Include component:" + /*getComponentNameFromPath(path) +*/ '(' + path + ')');
+        require(path);
+        validateComponent(path);
+        global[getComponentNameFromPath(path)].__path = path;
+    };
+
 
     this.initComponents = function (callback) {
         let name;

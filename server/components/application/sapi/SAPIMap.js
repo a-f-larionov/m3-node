@@ -1,5 +1,14 @@
 SAPIMap = function () {
 
+    this.reloadLevels = function (cntx) {
+        if (cntx.user.id !== 1) {
+            Logs.log("ERROR", Logs.LEVEL_WARNING);
+            return;
+        }
+        LogicSystemRequests.reloadLevels(function () {
+        });
+    };
+
     this.sendMeMapInfo = function (cntx, mapId) {
         let map, points, chests, userPoints, userChests;
         if (!DataMap.existsMap(mapId)) {
@@ -42,7 +51,6 @@ SAPIMap = function () {
             );
         });
     };
-
 
     /**
      * Закончили уровень.
