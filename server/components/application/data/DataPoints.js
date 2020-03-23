@@ -40,7 +40,7 @@ DataPoints = function () {
 
     wayPoints[1] = {
         id: 1,
-        turns: 10,
+        turns: 12,
         score1: 100,
         score2: 200,
         score3: 300,
@@ -109,8 +109,8 @@ DataPoints = function () {
                 "????????",
             ],
             special: [
-                "  ****  ",
-                "**    **",
+                "********",
+                "        ",
                 "        ",
                 "        ",
                 "        ",

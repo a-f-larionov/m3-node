@@ -27,6 +27,8 @@ PageBlockField = function PageBlockField() {
 
     let elPanelGoals;
 
+    let buttonReloadField = null;
+
     let score;
     let turns;
     let goals;
@@ -42,7 +44,7 @@ PageBlockField = function PageBlockField() {
     this.init = function () {
         let el, oX, oY;
 
-        // игровое поле
+        /** Игровое поле */
         el = GUI.createElement(ElementField, {
             centerX: 378, centerY: 250,
             onDestroyLine: self.onDestroyLine,
@@ -52,7 +54,7 @@ PageBlockField = function PageBlockField() {
 
         });
         elementField = el;
-        this.elements.push(el);
+        self.elements.push(el);
 
         /** Кнопка выхода */
         el = GUI.createElement(ElementButton, {
@@ -68,7 +70,7 @@ PageBlockField = function PageBlockField() {
                 }
             }
         });
-        this.elements.push(el);
+        self.elements.push(el);
 
         /**
          * ПАНЕЛЬ ОЧКИ
@@ -80,32 +82,32 @@ PageBlockField = function PageBlockField() {
             el = GUI.createElement(ElementImage, {
                 x: oX, y: oY, src: '/images/panel-score.png'
             });
-            this.elements.push(el);
+            self.elements.push(el);
             /** Надпись */
             el = GUI.createElement(ElementText, {
                 x: oX, y: oY + 8, width: 125, text: 'ОЧКИ', alignCenter: true
             });
-            this.elements.push(el);
+            self.elements.push(el);
             /** Текст */
             elementScore = GUI.createElement(ElementText, {
                 x: oX, y: oY + 40, width: 125, bold: true, alignCenter: true
             });
-            this.elements.push(elementScore);
+            self.elements.push(elementScore);
             /** Звезда 1 */
             elementStar1 = GUI.createDom(undefined, {
                 x: oX + 20, y: oY + 70
             });
-            this.elements.push(elementStar1);
+            self.elements.push(elementStar1);
             /** Звезда 2 */
             elementStar2 = GUI.createDom(undefined, {
                 x: oX + 20 + 30, y: oY + 70
             });
-            this.elements.push(elementStar2);
+            self.elements.push(elementStar2);
             /** Звезда 3 */
             elementStar3 = GUI.createDom(undefined, {
                 x: oX + 20 + 30 * 2, y: oY + 70
             });
-            this.elements.push(elementStar3);
+            self.elements.push(elementStar3);
         }
 
         /**
@@ -118,17 +120,17 @@ PageBlockField = function PageBlockField() {
             el = GUI.createElement(ElementImage, {
                 x: oX, y: oY, src: '/images/panel-turns.png'
             });
-            this.elements.push(el);
+            self.elements.push(el);
             /** Надпись */
             el = GUI.createElement(ElementText, {
                 x: oX, y: oY + 8, width: 125, text: 'ХОДЫ', alignCenter: true
             });
-            this.elements.push(el);
+            self.elements.push(el);
             /** Текст */
             elementTurns = GUI.createElement(ElementText, {
                 x: oX, y: oY + 40, width: 125, alignCenter: true
             });
-            this.elements.push(elementTurns);
+            self.elements.push(elementTurns);
         }
 
         /**
@@ -150,7 +152,7 @@ PageBlockField = function PageBlockField() {
                 self.setStuffMode(LogicStuff.STUFF_HUMMER);
             }
         });
-        this.elements.push(el);
+        self.elements.push(el);
 
         /** stuff lighting */
         el = GUI.createElement(ElementStuffButton, {
@@ -163,7 +165,7 @@ PageBlockField = function PageBlockField() {
                 self.setStuffMode(LogicStuff.STUFF_LIGHTING);
             }
         });
-        this.elements.push(el);
+        self.elements.push(el);
 
         /** stuff shuffle */
         el = GUI.createElement(ElementStuffButton, {
@@ -176,12 +178,23 @@ PageBlockField = function PageBlockField() {
                 self.setStuffMode(LogicStuff.STUFF_SHUFFLE);
             }
         });
-        this.elements.push(el);
+        self.elements.push(el);
 
-        // dom stuff
-        domStuff = GUI.createDom(null, {
-            x: 190, y: 10
+        /** Кнопка обновить поле, для админов */
+        buttonReloadField = GUI.createElement(ElementButton, {
+            x: 312, y: 5,
+            srcRest: '/images/button-reload-field-rest.png',
+            srcHover: '/images/button-reload-field-hover.png',
+            srcActive: '/images/button-reload-field-active.png',
+            onClick: function () {
+                CAPIMap.setCallbackOnMapsInfo(loadField);
+                SAPIMap.reloadLevels();
+                SAPIMap.sendMeMapInfo(DataMap.getCurent().id);
+            }
         });
+
+        /** Dom stuff */
+        domStuff = GUI.createDom(null, {x: 190, y: 10});
         domStuff.__dom.style.zIndex = 10000;
 
         GUI.bind(domStuff, GUI.EVENT_MOUSE_CLICK, function (event, dom) {
@@ -208,11 +221,14 @@ PageBlockField = function PageBlockField() {
     this.show = function () {
         if (showed === true) return;
         showed = true;
-        this.loadField();
+        loadField();
         for (let i in self.elements) {
             self.elements[i].show();
         }
-        this.firstShow();
+        self.firstShow();
+        if (LogicUser.getCurrentUser().id === 1) {
+            buttonReloadField.show();
+        }
     };
 
     this.isShowed = function () {
@@ -230,16 +246,22 @@ PageBlockField = function PageBlockField() {
         }
         domStuff.hide();
         elPanelGoals.hide();
+        buttonReloadField.hide();
     };
 
-    this.loadField = function () {
+    /**
+     * Загружает поле.
+     */
+    let loadField = function () {
         let data;
         data = DataPoints.getById(DataPoints.getPlayedId());
+        console.log('called');
+        console.log(data);
         score = 0;
         turns = data.turns;
         goals = DataPoints.copyGoals(data.goals);
         elementField.setLayers(data.layers);
-        this.redraw();
+        self.redraw();
     };
 
     this.firstShow = function () {
@@ -256,9 +278,6 @@ PageBlockField = function PageBlockField() {
         noMoreGoals = false;
     };
 
-    /**
-     *
-     */
     this.redraw = function () {
         if (!showed) return;
         elementScore.setText(score.toString());
@@ -284,6 +303,7 @@ PageBlockField = function PageBlockField() {
         } else {
             domStuff.hide();
         }
+        buttonReloadField.redraw();
     };
 
     let noMoreGoals;

@@ -1,4 +1,7 @@
 CAPIMap = function () {
+    let self = this;
+
+    this.onMapInfoCallback = null;
 
     this.gotMapsInfo = function (ctnx, mapId, map, points, userPoints, chests, userChests) {
         DataMap.setMapById(mapId, map);
@@ -17,6 +20,15 @@ CAPIMap = function () {
         userChests.forEach(function (info) {
             DataChests.setOpened(info.chestId);
         });
+        if (self.onMapInfoCallback) {
+            self.onMapInfoCallback.call();
+            self.onMapInfoCallback = null;
+        }
+    };
+
+    /** Каллбэк после обновления данных о карте(точках и прочие) */
+    this.setCallbackOnMapsInfo = function (callback) {
+        self.onMapInfoCallback = callback;
     };
 
     this.gotUserScores = function (cntx, usersInfo) {
