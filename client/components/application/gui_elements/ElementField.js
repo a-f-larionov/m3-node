@@ -68,15 +68,21 @@ ElementField = function () {
         DataPoints.OBJECT_PURPLE,
     ];
 
-    let animType = null;
-    let animBlock = false;
-    let animObjects = [];
-    let animCounter = 0;
-    let animExchangeHalf = false;
-    let animavx, animavy;
+    let animType = null,
+        animBlock = false,
+        animObjects = [],
+        animCounter = 0,
+        animExchangeHalf = false,
+        animavx, animavy
+    ;
 
-    let fieldWidth = 0;
-    let fieldHeight = 0;
+    let fieldWidth = 0,
+        fieldHeight = 0,
+        visibleWidth = 0,
+        visibleHeight = 0,
+        visibleOffsetX = 0,
+        visibleOffsetY = 0
+    ;
 
     this.onDestroyLine = null;
     this.onFieldSilent = null;
@@ -394,13 +400,19 @@ ElementField = function () {
     this.redraw = function () {
         if (!showed) return;
         if (animBlock) return;
-        self.x = self.centerX - DataPoints.BLOCK_WIDTH * Math.floor(fieldWidth / 2);
-        self.y = self.centerY - DataPoints.BLOCK_HEIGHT * Math.floor(fieldHeight / 2);
+        self.x = self.centerX - DataPoints.BLOCK_WIDTH / 2
+            - (visibleWidth - 1) / 2 * DataPoints.BLOCK_WIDTH
+            - visibleOffsetX * DataPoints.BLOCK_WIDTH
+        ;
+        self.y = self.centerY - DataPoints.BLOCK_HEIGHT / 2
+            - (visibleHeight - 1) / 2 * DataPoints.BLOCK_HEIGHT
+            - visibleOffsetY * DataPoints.BLOCK_HEIGHT
+        ;
         domGemsContainer.x = self.x;
         domGemsContainer.y = self.y;
         domGemsContainer.redraw();
         domBackground.redraw();
-        // layer.mask
+        /** layer.mask */
         layerMask.forEach(function (row, y) {
             row.forEach(function (cell, x) {
                 switch (cell) {
@@ -479,8 +491,34 @@ ElementField = function () {
             });
         });
 
+        /**
+         * Взять самый левый из всех слоёв
+         */
         fieldWidth = layers.gems[0].length;
         fieldHeight = layers.gems.length;
+        /**
+         * Corners schema
+         * a____
+         * \    \
+         * \____b
+         */
+        let aCorner, bCorner;
+        aCorner = {x: Infinity, y: Infinity};
+        bCorner = {x: -Infinity, y: -Infinity};
+        for (let y = 0; y < fieldHeight; y++) {
+            for (let x = 0; x < fieldWidth; x++) {
+                if (layers.mask[y][x] !== DataPoints.OBJECT_NONE) {
+                    aCorner.x = Math.min(aCorner.x, x);
+                    aCorner.y = Math.min(aCorner.y, y);
+                    bCorner.x = Math.max(bCorner.x, x);
+                    bCorner.y = Math.max(bCorner.y, y);
+                }
+            }
+        }
+        visibleWidth = bCorner.x - aCorner.x + 1;
+        visibleHeight = bCorner.y - aCorner.y + 1;
+        visibleOffsetX = aCorner.x;
+        visibleOffsetY = aCorner.y;
         this.redraw();
     };
 
@@ -512,8 +550,6 @@ ElementField = function () {
     };
 
     this.isFieldSilent = function () {
-//        console.log(animBlock + " " + self.hasFallDown() + " " + self.hasFallDown() + " " + self.hasProcesSpecialLayer());
-
         return !(animBlock ||
             self.hasDestroyLines() ||
             self.hasFallDown() ||
@@ -627,10 +663,12 @@ ElementField = function () {
         return lines.length > 0;
     };
 
+    /**
+     * Уничтожение лений 3+ длинной.
+     */
     this.destroyLines = function () {
         let lines;
         lines = this.findLines();
-        // destroy lines
         let p;
         if (lines.length)
             for (let i in lines) {
@@ -643,7 +681,7 @@ ElementField = function () {
         this.redraw();
 
         setTimeout(function () {
-            // animate here before run
+            /** Animate here before run */
             self.run();
         }, 1);
     };
@@ -670,17 +708,19 @@ ElementField = function () {
     this.findLine = function (x, y, orientation) {
         let startId, line;
         startId = layerGems[y][x];
-        if (fallDownObjects.indexOf(startId) == -1) return false;
+        /** Может ли такой объект вообще падать */
+        if (fallDownObjects.indexOf(startId) === -1) return false;
 
         line = {
             coords: [],
             gemId: startId
         };
-        if (orientation == 1) {
+        if (orientation === 1) {
             for (let offset = 0; offset < 5; offset++) {
                 if (y >= fieldHeight) continue;
                 if (x + offset >= fieldWidth) continue;
-                if (layerGems[y][x + offset] == startId) {
+                if (layerGems[y][x + offset] === startId &&
+                    layerMask[y][x + offset] === DataPoints.OBJECT_EMPTY) {
                     line.coords.push({
                         x: x + offset,
                         y: y
@@ -693,7 +733,8 @@ ElementField = function () {
             for (let offset = 0; offset < 5; offset++) {
                 if (y + offset >= fieldHeight) continue;
                 if (x >= fieldWidth) continue;
-                if (layerGems[y + offset][x] == startId) {
+                if (layerGems[y + offset][x] === startId &&
+                    layerMask[y + offset][x] === DataPoints.OBJECT_EMPTY) {
                     line.coords.push({
                         x: x,
                         y: y + offset

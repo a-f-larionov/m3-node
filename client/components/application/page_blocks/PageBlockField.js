@@ -46,7 +46,7 @@ PageBlockField = function PageBlockField() {
 
         /** Игровое поле */
         el = GUI.createElement(ElementField, {
-            centerX: 378, centerY: 250,
+            centerX: 388.5, centerY: 250,
             onDestroyLine: self.onDestroyLine,
             beforeTurnUse: self.beforeTurnUse,
             afterStuffUse: self.afterStuffUse,
@@ -255,8 +255,6 @@ PageBlockField = function PageBlockField() {
     let loadField = function () {
         let data;
         data = DataPoints.getById(DataPoints.getPlayedId());
-        console.log('called');
-        console.log(data);
         score = 0;
         turns = data.turns;
         goals = DataPoints.copyGoals(data.goals);
