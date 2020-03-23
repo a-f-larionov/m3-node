@@ -30,9 +30,9 @@ ElementPanelItems = function () {
     let elPanel2;
     let elPanel3;
 
-    let itemsImagesEls = {};
+    let imagesEls = {};
 
-    let itemsCountersEls = {};
+    let countersEls = {};
 
     let elTitle;
 
@@ -52,7 +52,7 @@ ElementPanelItems = function () {
         elPanel3 = GUI.createElement(ElementImage, {
             x: self.x, y: self.y, src: '/images/panel-goals-3.png'
         });
-        // текст : заголовок
+        /** Текст : заголовок */
         elTitle = GUI.createElement(ElementText, {
             x: self.x + 15, y: self.y + 10, width: 80, text: self.title
         });
@@ -62,12 +62,12 @@ ElementPanelItems = function () {
                 width: 50, height: 50,
                 src: DataPoints.objectImages[id]
             });
-            itemsImagesEls[id] = el;
+            imagesEls[id] = el;
             el = GUI.createElement(ElementText, {
                 width: DataPoints.BLOCK_WIDTH,
-                alignCenter: true
+                alignRight: true
             });
-            itemsCountersEls[id] = el;
+            countersEls[id] = el;
         }
     };
 
@@ -77,11 +77,11 @@ ElementPanelItems = function () {
     this.show = function () {
         if (showed) return;
         showed = true;
-        for (let i in itemsImagesEls) {
-            itemsImagesEls[i].show();
+        for (let i in imagesEls) {
+            imagesEls[i].show();
         }
-        for (let i in itemsCountersEls) {
-            itemsCountersEls[i].show();
+        for (let i in countersEls) {
+            countersEls[i].show();
         }
         elTitle.show();
     };
@@ -92,11 +92,11 @@ ElementPanelItems = function () {
     this.hide = function () {
         if (!showed) return;
         showed = false;
-        for (let i in itemsImagesEls) {
-            itemsImagesEls[i].hide();
+        for (let i in imagesEls) {
+            imagesEls[i].hide();
         }
-        for (let i in itemsCountersEls) {
-            itemsCountersEls[i].hide();
+        for (let i in countersEls) {
+            countersEls[i].hide();
         }
         elTitle.hide();
 
@@ -110,12 +110,12 @@ ElementPanelItems = function () {
      */
     this.redraw = function () {
         if (!showed) return;
-        // items indication
-        for (let i in itemsImagesEls) {
-            itemsImagesEls[i].hide();
+        /** Items indication */
+        for (let i in imagesEls) {
+            imagesEls[i].hide();
         }
-        for (let i in itemsCountersEls) {
-            itemsCountersEls[i].hide();
+        for (let i in countersEls) {
+            countersEls[i].hide();
         }
 
         elPanel1.hide();
@@ -142,14 +142,14 @@ ElementPanelItems = function () {
 
         for (let i in self.items) {
 
-            itemsImagesEls[self.items[i].id].x = self.x + 20;
-            itemsImagesEls[self.items[i].id].y = self.y + 50 + offsetY;
-            itemsImagesEls[self.items[i].id].show();
+            imagesEls[self.items[i].id].x = self.x + 20;
+            imagesEls[self.items[i].id].y = self.y + 50 + offsetY;
+            imagesEls[self.items[i].id].show();
 
-            itemsCountersEls[self.items[i].id].x = self.x + 2 + DataPoints.BLOCK_WIDTH;
-            itemsCountersEls[self.items[i].id].y = self.y + 50 + DataPoints.BLOCK_HEIGHT / 2 - 10 + offsetY;
-            itemsCountersEls[self.items[i].id].setText(self.items[i].count);
-            itemsCountersEls[self.items[i].id].show();
+            countersEls[self.items[i].id].x = self.x + 2 + DataPoints.BLOCK_WIDTH;
+            countersEls[self.items[i].id].y = self.y + 50 + DataPoints.BLOCK_HEIGHT / 2 - 10 + offsetY;
+            countersEls[self.items[i].id].setText(self.items[i].count);
+            countersEls[self.items[i].id].show();
 
             offsetY += DataPoints.BLOCK_HEIGHT + 5;
         }

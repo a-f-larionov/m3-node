@@ -78,6 +78,7 @@ ElementText = function () {
      * @type {boolean}
      */
     this.alignCenter = true;
+    this.alignRight = false;
 
     this.opacity = undefined;
 
@@ -145,6 +146,9 @@ ElementText = function () {
         if (self.bold) dom.fontWeight = 'bold'; else dom.fontWeight = 'normal';
         if (self.alignCenter) {
             dom.alignText = 'center';
+        }
+        if (self.alignRight) {
+            dom.alignText = 'right';
         }
         dom.redraw();
     };

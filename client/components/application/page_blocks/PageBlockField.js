@@ -198,10 +198,11 @@ PageBlockField = function PageBlockField() {
         domStuff.__dom.style.zIndex = 10000;
 
         GUI.bind(domStuff, GUI.EVENT_MOUSE_CLICK, function (event, dom) {
-            // передаем клик дальше, теоретически после анимации
+            /** Передаем клик дальше, теоретически после анимации */
             domStuff.hide();
             el = document.elementFromPoint(event.clientX, event.clientY);
-            // признак каменного поля :)
+            console.log(el);
+            /** Признак каменного поля :) */
             if (el.__dom.fieldX !== undefined && el.__dom.fieldY !== undefined) {
                 el.dispatchEvent(new MouseEvent(event.type, event));
             }

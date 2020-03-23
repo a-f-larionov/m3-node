@@ -3,10 +3,10 @@ CAPIUser = function () {
     /**
      * Авторизация успешна.
      * @param cntx {Object} контекст соединения.
-     * @param userId {Number} какой id авторизованного юзера сообщаем.
+     * @param user {Object} какой id авторизованного юзера сообщаем.
      */
     this.authorizeSuccess = function (cntx, user) {
-        //похоже на костыль, ну да ладно, время деньги
+        /** @todo похоже на костыль, ну да ладно, время деньги */
         CAPIUser.updateUserInfo(cntx, user);
         LogicUser.authorizeSuccess(user.id);
     };

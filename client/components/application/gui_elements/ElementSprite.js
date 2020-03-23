@@ -81,7 +81,7 @@ ElementSprite = function () {
      * Покажем картинку.
      */
     this.show = function () {
-        if (showed == true) return;
+        if (showed === true) return;
         showed = true;
         dom.show();
         self.redraw();
@@ -91,7 +91,7 @@ ElementSprite = function () {
      * Спрячем картинку.
      */
     this.hide = function () {
-        if (showed == false) return;
+        if (showed === false) return;
         showed = false;
         dom.hide();
     };

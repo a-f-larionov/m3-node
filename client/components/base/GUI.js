@@ -266,7 +266,7 @@ GUI = function () {
 
     this.updateAnimTracks = function (dom) {
         if (dom.animTracks) {
-            /* init animations */
+            /** Init animations */
             for (let tN in dom.animTracks) {
                 for (let fN in dom.animTracks[tN]) {
                     let frame = dom.animTracks[tN][fN];

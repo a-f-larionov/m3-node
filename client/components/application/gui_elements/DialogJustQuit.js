@@ -7,10 +7,9 @@ DialogJustQuit = function () {
         this.__proto__.init.call(this);
         let element;
 
-        /** заголовок */
+        /** Заголовок */
         element = GUI.createElement(ElementText, {
             x: 150, y: 12, width: 200,
-            //   fontSize: 24,
             bold: true,
             alignCenter: true,
         }, this.dom);
@@ -20,9 +19,7 @@ DialogJustQuit = function () {
         /** надпись в центре */
         element = GUI.createElement(ElementText, {
             x: 127, y: 114, width: 250,
-            //  fontSize: 24,
-            bold: true,
-            alignCenter: true,
+            bold: true, alignCenter: true,
         }, this.dom);
         element.setText("Потеряешь одну жизнь.");
         self.elements.push(element);

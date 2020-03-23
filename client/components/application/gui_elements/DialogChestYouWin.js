@@ -10,7 +10,7 @@ DialogChestYouWin = function () {
     this.init = function () {
         this.__proto__.init.call(this);
         GUI.pushParent(self.dom);
-        // кнопка закрыть
+        /** Кнопка закрыть */
         GUI.createElement(ElementButton, {
             x: 452, y: 3,
             width: 100, height: 40,

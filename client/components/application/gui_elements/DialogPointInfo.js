@@ -29,14 +29,14 @@ DialogPointInfo = function () {
         this.__proto__.init.call(this);
         GUI.pushParent(self.dom);
 
-        // номер точки\заголовок
+        /** Номер точки\заголовок */
         elTitle = GUI.createElement(ElementText, {
             x: 135, y: 12, width: 230, height: 40,
             text: ''
         });
         elTitle.show();
 
-        // кол-во звёзд
+        /** Кол-во звёзд */
         elStarOne = GUI.createElement(ElementImage, {
             x: 100, y: 40, src: '/images/star-off-big.png'
         });

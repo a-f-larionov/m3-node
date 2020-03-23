@@ -207,7 +207,7 @@ GUIDom = function () {
                 animateOpacityDown.apply(this, animateArguments);
                 break;
             default:
-                /* останавливаем анимацию. */
+                /** Останавливаем анимацию. */
                 return;
                 break;
         }
@@ -298,7 +298,7 @@ GUIDom = function () {
         dom.style.backgroundPositionX = '-' + GUI.getImageX(self.backgroundImage) + 'px';
         dom.style.backgroundPositionY = '-' + (GUI.getImageY(self.backgroundImage) + self.backgroundPositionY) + 'px';
         dom.style.backgroundRepeat = 'no-repeat';
-        if(true) {
+        if (true) {
             // double if no sprite...
             dom.style.backgroundSize = self.width + 'px' + ' ' + self.height + 'px';
         }

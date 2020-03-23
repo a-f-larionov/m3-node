@@ -29,14 +29,14 @@ DialogGoalsReached = function () {
         this.__proto__.init.call(this);
         GUI.pushParent(self.dom);
 
-        // номер точки\заголовок
+        // Номер точки\заголовок
         elTitle = GUI.createElement(ElementText, {
             x: 135, y: 12, width: 230, height: 40,
             text: ''
         });
         elTitle.show();
 
-        // кол-во звёзд
+        // Кол-во звёзд
         elStarOne = GUI.createElement(ElementImage, {
             x: 100, y: 40, src: '/images/star-off-big.png'
         });
@@ -77,7 +77,7 @@ DialogGoalsReached = function () {
         });
         elButtonPlay.show();
 
-        // кнопка закрыть
+        // Кнопка закрыть
         GUI.createElement(ElementButton, {
             x: 452, y: 3,
             srcRest: '/images/button-close-rest.png',
@@ -149,7 +149,7 @@ DialogGoalsReached = function () {
     this.showDialog = function (pId) {
         let mapId;
         pointId = pId;
-        //@todo mapId from pointId
+        /** @todo mapId from pointId */
         mapId = DataMap.getCurent().id;
         friends = LogicUser.getFriendIdsByMapIdAndPointIdWithScore(mapId, pId);
         this.__proto__.showDialog.call(this);

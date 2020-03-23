@@ -20,9 +20,13 @@ ElementField = function () {
     this.ANIM_TYPE_SHUFFLE = 5;
 
     /** Рамка и все что связано */
-    let gemA = null;
-    let gemB = null;
-    let domFrame = null;
+    let gemA = null,
+        gemB = null,
+        domFrame = null
+    ;
+
+    let domHummerDestroy = null
+    ;
 
     let domStuffMode = null;
 
@@ -48,9 +52,10 @@ ElementField = function () {
     let domGemsContainer = null;
     let gemDoms = [];
 
-    let layerGems = null;
-    let layerMask = null;
-    let layerSpecial = null;
+    let layerGems = null,
+        layerMask = null,
+        layerSpecial = null
+    ;
 
     let randomGems = [
         DataPoints.OBJECT_RED,
@@ -151,6 +156,49 @@ ElementField = function () {
             backgroundImage: '/images/field-frame.png'
         });
 
+        domHummerDestroy = GUI.createDom(undefined, {
+            x: 30, y: 10,
+            backgroundImage: '/images/anim-hd-1.png',
+            animPlayed: false,
+            animTracks: [
+                [
+                    {
+                        type: GUI.ANIM_TYPE_MOVIE,
+                        images: [
+                            '/images/anim-hd-1.png',
+                            '/images/anim-hd-2.png',
+                            '/images/anim-hd-3.png',
+                            '/images/anim-hd-4.png',
+                            '/images/anim-hd-5.png',
+                            '/images/anim-hd-6.png',
+                            '/images/anim-hd-7.png',
+                            '/images/anim-hd-8.png',
+                            '/images/anim-hd-9.png',
+                            '/images/anim-hd-10.png',
+                            '/images/anim-hd-11.png',
+                            '/images/anim-hd-12.png',
+                            '/images/anim-hd-13.png',
+                            '/images/anim-hd-14.png',
+                            '/images/anim-hd-15.png',
+                        ],
+                        duration: 15,
+                        callback: function () {
+                            domHummerDestroy.animData = [{
+                                frameN: 0,
+                                counter: 0
+                            }];
+                            domHummerDestroy.animPlayed = false;
+                            self.afterStuffUse();
+                            animBlock = false;
+                            animType = 0;
+                            domHummerDestroy.hide();
+                            self.run();
+                        }
+                    },
+                ]
+            ]
+        });
+
         GUI.popParent();
 
         OnIdle.register(self.animate);
@@ -210,9 +258,15 @@ ElementField = function () {
             return;
         }
         layerGems[gem.fieldY][gem.fieldX] = DataPoints.OBJECT_EMPTY;
+        self.redraw();
         animBlock = true;
         animType = self.ANIM_TYPE_HUMMER_DESTROY;
         animCounter = 0;
+        domHummerDestroy.animPlayed = true;
+        domHummerDestroy.x = gem.fieldX * DataPoints.BLOCK_WIDTH - (GUI.getImageWidth('/images/anim-hd-1.png') - DataPoints.BLOCK_WIDTH) / 2;
+        domHummerDestroy.y = gem.fieldY * DataPoints.BLOCK_HEIGHT - (GUI.getImageHeight('/images/anim-hd-1.png') - DataPoints.BLOCK_HEIGHT) / 2;
+        domHummerDestroy.show();
+        domHummerDestroy.redraw();
         self.redraw();
     };
 
@@ -392,6 +446,7 @@ ElementField = function () {
             }
         }
         domFrame.hide();
+        domHummerDestroy.hide();
     };
 
     /**
@@ -407,6 +462,7 @@ ElementField = function () {
         self.y = self.centerY - DataPoints.BLOCK_HEIGHT / 2
             - (visibleHeight - 1) / 2 * DataPoints.BLOCK_HEIGHT
             - visibleOffsetY * DataPoints.BLOCK_HEIGHT
+            + DataPoints.BLOCK_HEIGHT / 2 // выравнивание от панель
         ;
         domGemsContainer.x = self.x;
         domGemsContainer.y = self.y;
@@ -464,7 +520,7 @@ ElementField = function () {
 
     /**
      * Set the field data.
-     * @param newField
+     * @param layers {Object}
      */
     this.setLayers = function (layers) {
         layerMask = [];
@@ -758,12 +814,7 @@ ElementField = function () {
         switch (animType) {
             case self.ANIM_TYPE_HUMMER_DESTROY:
                 animCounter++;
-                if (animCounter === 5) {
-                    self.afterStuffUse();
-                    animBlock = false;
-                    animType = 0;
-                    self.run();
-                }
+                /** @see domHummerDestroy.animTracks*/
                 break;
             case self.ANIM_TYPE_SHUFFLE:
                 animCounter++;
@@ -825,8 +876,8 @@ ElementField = function () {
                 }
                 gemA.redraw();
                 gemB.redraw();
-                if ((animExchangeHalf && animCounter == 50 / step)
-                    || animCounter == 50 / step * 2
+                if ((animExchangeHalf && animCounter === 50 / step)
+                    || animCounter === 50 / step * 2
                 ) {
                     animBlock = false;
                     animType = 0;
@@ -838,7 +889,6 @@ ElementField = function () {
                 break;
         }
     };
-
 
     this.exchangeGems = function (gemA, gemB) {
         let tmp;
