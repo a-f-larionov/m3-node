@@ -377,9 +377,10 @@ ClientCodeLoader = function () {
         dirList = FS.readdirSync(basePath);
         for (let i in dirList) {
             /**@todo .js extenstion must be */
-            if (dirList[i] == '.gitkeep') continue;
-            if (dirList[i] == '.gitignore') continue;
-            if (dirList[i] == 'sprite.png.json') continue;
+            if (dirList[i] === '.gitkeep') continue;
+            if (dirList[i] === '.gitignore') continue;
+            if (dirList[i] === 'sprite.png') continue;
+            if (dirList[i] === 'sprite.png.json') continue;
             path = basePath + dirList[i];
             if (FS.statSync(path).isDirectory()) {
                 files = files.concat(getFileListRecursive(path + '/'));

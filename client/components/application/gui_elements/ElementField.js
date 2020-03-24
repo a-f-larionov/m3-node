@@ -250,46 +250,15 @@ ElementField = function () {
             x: self.centerX - GUI.getImageWidth('/images/anim-shuffle-1.png') / 2,
             y: self.centerY - GUI.getImageHeight('/images/anim-shuffle-1.png') / 2,
             backgroundImage: '/images/anim-shuffle-1.png',
+            opacity: 0.7,
             animPlayed: false,
             animTracks: [
                 [
                     {
-                        type: GUI.ANIM_TYPE_MOVIE,
-                        images: [
-                            '/images/anim-shuffle-1.png',
-                            '/images/anim-shuffle-1.png',
-                            '/images/anim-shuffle-2.png',
-                            '/images/anim-shuffle-2.png',
-                            '/images/anim-shuffle-3.png',
-                            '/images/anim-shuffle-3.png',
-                            '/images/anim-shuffle-4.png',
-                            '/images/anim-shuffle-4.png',
-                            '/images/anim-shuffle-5.png',
-                            '/images/anim-shuffle-5.png',
-                            '/images/anim-shuffle-6.png',
-                            '/images/anim-shuffle-6.png',
-                            '/images/anim-shuffle-7.png',
-                            '/images/anim-shuffle-7.png',
-                            '/images/anim-shuffle-8.png',
-                            '/images/anim-shuffle-8.png',
-                            '/images/anim-shuffle-9.png',
-                            '/images/anim-shuffle-9.png',
-                            '/images/anim-shuffle-10.png',
-                            '/images/anim-shuffle-10.png',
-                            '/images/anim-shuffle-11.png',
-                            '/images/anim-shuffle-11.png',
-                            '/images/anim-shuffle-12.png',
-                            '/images/anim-shuffle-12.png',
-                            '/images/anim-shuffle-13.png',
-                            '/images/anim-shuffle-13.png',
-                            '/images/anim-shuffle-14.png',
-                            '/images/anim-shuffle-14.png',
-                            '/images/anim-shuffle-15.png',
-                            '/images/anim-shuffle-15.png',
-                        ],
-                        duration: 29,
+                        type: GUI.ANIM_TYPE_ROTATE,
+                        angle: 12,
+                        duration: 20,
                         callback: function () {
-                            console.log(domShuffleDestroy);
                             domShuffleDestroy.animData = [{
                                 frameN: 0,
                                 counter: 0
@@ -379,20 +348,20 @@ ElementField = function () {
         if (lock) return;
         if (animBlock) return;
 
-        let tmp;
-        for (let y = 0; y < fieldHeight; y++) {
-            for (let x = 0; x < fieldWidth; x++) {
-                if (randomGems.indexOf(layerGems[gem.fieldY][gem.fieldX]) === -1) {
+        let tmp, x2, y2;
+        for (let y1 = 0; y1 < fieldHeight; y1++) {
+            for (let x1 = 0; x1 < fieldWidth; x1++) {
+                if (randomGems.indexOf(layerGems[y1][x1]) === -1) {
                     continue;
                 }
-                y = Math.floor(Math.random() * fieldHeight);
-                x = Math.floor(Math.random() * fieldWidth);
-                if (randomGems.indexOf(layerGems[y][x]) === -1) {
+                x2 = Math.floor(Math.random() * fieldWidth);
+                y2 = Math.floor(Math.random() * fieldHeight);
+                if (randomGems.indexOf(layerGems[y2][x2]) === -1) {
                     continue;
                 }
-                tmp = layerGems[y][x];
-                layerGems[y][x] = layerGems[gem.fieldY][gem.fieldX];
-                layerGems[gem.fieldY][gem.fieldX] = tmp;
+                tmp = layerGems[y2][x2];
+                layerGems[y2][x2] = layerGems[y1][x1];
+                layerGems[y1][x1] = tmp;
             }
         }
         animBlock = true;

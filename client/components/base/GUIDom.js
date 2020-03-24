@@ -449,7 +449,7 @@ GUIDom = function () {
         let frame;
         frame = self.animTracks[tN][self.animData[tN].frameN];
         switch (frame.type) {
-            case ElementSprite.ANIM_TYPE_ROTATE:
+            case GUI.ANIM_TYPE_ROTATE:
                 if (frame.currentAngle >= 360) {
                     frame.currentAngle = 0;
                 }
