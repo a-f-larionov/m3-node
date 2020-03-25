@@ -52,16 +52,25 @@ LogicField = function () {
         for (let y = 0; y < fieldHeight; y++) {
             for (let x = 0; x < fieldWidth; x++) {
                 /** 1 - Меняем a ⇔ b */
+                //this.exchangeGems({},{});
             }
         }
     };
 
-    this.exchangeGems = function (gemA, gemB, layerGems) {
+    this.exchangeGems = function (a, b, layerGems) {
         let tmp;
-        tmp = layerGems[gemB.fieldY][gemB.fieldX];
-        layerGems[gemB.fieldY][gemB.fieldX] = layerGems[gemA.fieldY][gemA.fieldX];
-        layerGems[gemA.fieldY][gemA.fieldX] = tmp;
+        tmp = layerGems[b.y][b.x];
+        layerGems[b.y][b.x] = layerGems[a.y][a.x];
+        layerGems[a.y][a.x] = tmp;
     };
+
+    this.isNear = function (a, b) {
+        if (a.x === b.x + 1 && a.y === b.y + 0) return true;
+        if (a.x === b.x - 1 && a.y === b.y + 0) return true;
+        if (a.x === b.x + 0 && a.y === b.y + 1) return true;
+        if (a.x === b.x + 0 && a.y === b.y - 1) return true;
+        return false;
+    }
 
 };
 

@@ -22,6 +22,8 @@ ElementField = function () {
     /** Рамка и все что связано */
     let gemA = null,
         gemB = null,
+        domA = null,
+        domB = null,
         domFrame = null
     ;
 
@@ -392,70 +394,72 @@ ElementField = function () {
     /**
      * Обработка дейтсвия с камнем, при клике например
      * или другом любом действием аналогичным клику.
-     * @param gem
+     * @param dom {Object}
      */
-    let gemChangeAct = function (gem) {
+    let gemChangeAct = function (dom) {
+        let gem,
+            mayLineDestroy,
+            lines;
         if (lock) return;
         if (animBlock) return;
-        if (LogicField.isNotGem(layerGems[gem.fieldY][gem.fieldX])) {
+        gem = {
+            x: dom.fieldX,
+            y: dom.fieldY
+        };
+
+        if (LogicField.isNotGem(layerGems[gem.y][gem.x])) {
             return;
         }
-        if (!gemA) {
+
+        if (!gemA || !LogicField.isNear(gemA, gem)) {
             gemA = gem;
-        } else {
-            //if near
-            let isNear;
-            isNear = false;
-            if (gemA.fieldX === gem.fieldX + 1 && gemA.fieldY === gem.fieldY + 0) isNear = true;
-            if (gemA.fieldX === gem.fieldX - 1 && gemA.fieldY === gem.fieldY + 0) isNear = true;
-            if (gemA.fieldX === gem.fieldX + 0 && gemA.fieldY === gem.fieldY + 1) isNear = true;
-            if (gemA.fieldX === gem.fieldX + 0 && gemA.fieldY === gem.fieldY - 1) isNear = true;
-
-            if (isNear) {
-                domFrame.hide();
-                gemB = gem;
-                animBlock = true;
-                let mayExchange;
-                let lines;
-                LogicField.exchangeGems(gemA, gemB, layerGems);
-                lines = self.findLines();
-                mayExchange =
-                    self.lineCrossing(lines, gemA.fieldX, gemA.fieldY)
-                    | self.lineCrossing(lines, gemB.fieldX, gemB.fieldY);
-                LogicField.exchangeGems(gemA, gemB, layerGems);
-
-                if (gemA.fieldX < gemB.fieldX) {
-                    animType = self.ANIM_TYPE_EXCHANGE;
-                    animavx = +1;
-                    animavy = 0;
-                }
-                if (gemA.fieldX > gemB.fieldX) {
-                    animType = self.ANIM_TYPE_EXCHANGE;
-                    animavx = -1;
-                    animavy = 0;
-                }
-                if (gemA.fieldY < gemB.fieldY) {
-                    animType = self.ANIM_TYPE_EXCHANGE;
-                    animavx = 0;
-                    animavy = +1;
-                }
-                if (gemA.fieldY > gemB.fieldY) {
-                    animType = self.ANIM_TYPE_EXCHANGE;
-                    animavx = 0;
-                    animavy = -1;
-                }
-                if (mayExchange) {
-                    LogicField.exchangeGems(gemA, gemB, layerGems);
-                    animExchangeHalf = true;
-                    self.beforeTurnUse();
-                } else {
-                    animExchangeHalf = false;
-                }
-                animCounter = 0;
-            } else {
-                gemA = gem;
-            }
+            domA = dom;
+            self.redraw();
+            return;
         }
+
+        domFrame.hide();
+        gemB = gem;
+        domB = dom;
+
+        animBlock = true;
+
+        LogicField.exchangeGems(gemA, gemB, layerGems);
+        lines = self.findLines();
+        mayLineDestroy =
+            self.lineCrossing(lines, gemA.x, gemA.y)
+            | self.lineCrossing(lines, gemB.x, gemB.y);
+        LogicField.exchangeGems(gemA, gemB, layerGems);
+
+        if (gemA.x < gemB.x) {
+            animType = self.ANIM_TYPE_EXCHANGE;
+            animavx = +1;
+            animavy = 0;
+        }
+        if (gemA.x > gemB.x) {
+            animType = self.ANIM_TYPE_EXCHANGE;
+            animavx = -1;
+            animavy = 0;
+        }
+        if (gemA.y < gemB.y) {
+            animType = self.ANIM_TYPE_EXCHANGE;
+            animavx = 0;
+            animavy = +1;
+        }
+        if (gemA.y > gemB.y) {
+            animType = self.ANIM_TYPE_EXCHANGE;
+            animavx = 0;
+            animavy = -1;
+        }
+        if (mayLineDestroy) {
+            LogicField.exchangeGems(gemA, gemB, layerGems);
+            animExchangeHalf = true;
+            self.beforeTurnUse();
+        } else {
+            animExchangeHalf = false;
+        }
+        animCounter = 0;
+
         self.redraw();
     };
 
@@ -602,8 +606,9 @@ ElementField = function () {
             }
         }
         if (gemA && !animBlock) {
-            domFrame.x = gemA.x;
-            domFrame.y = gemA.y;
+            //@todo
+            domFrame.x = domA.x;
+            domFrame.y = domA.y;
             domFrame.show();
             domFrame.redraw();
         } else {
@@ -690,7 +695,7 @@ ElementField = function () {
                 break;
         }
         if (self.isFieldSilent()) {
-            console.log("more turns" + LogicField.countTurns(layerGems, fieldHeight, fieldWidth));
+            //console.log("more turns" + LogicField.countTurns(layerGems, fieldHeight, fieldWidth));
             self.onFieldSilent();
         }
     };
@@ -937,26 +942,25 @@ ElementField = function () {
                 let step = 5;
                 animCounter++;
                 if (animCounter <= 50 / step) {
-                    gemA.x += animavx * step;
-                    gemB.x -= animavx * step;
-                    gemA.y += animavy * step;
-                    gemB.y -= animavy * step;
+                    domA.x += animavx * step;
+                    domB.x -= animavx * step;
+                    domA.y += animavy * step;
+                    domB.y -= animavy * step;
                 }
                 if (!animExchangeHalf && animCounter > 50 / step) {
-                    gemA.x -= animavx * step;
-                    gemB.x += animavx * step;
-                    gemA.y -= animavy * step;
-                    gemB.y += animavy * step;
+                    domA.x -= animavx * step;
+                    domB.x += animavx * step;
+                    domA.y -= animavy * step;
+                    domB.y += animavy * step;
                 }
-                gemA.redraw();
-                gemB.redraw();
+                domA.redraw();
+                domB.redraw();
                 if ((animExchangeHalf && animCounter === 50 / step)
                     || animCounter === 50 / step * 2
                 ) {
                     animBlock = false;
                     animType = 0;
-                    gemA = null;
-                    gemB = null;
+                    gemA = gemB = domA = domB = null;
                     self.redraw();
                     self.run();
                 }
@@ -986,7 +990,9 @@ ElementField = function () {
 
     this.setStuffMode = function (mode) {
         gemA = null;
+        domA = null;
         domStuffMode = mode;
         self.redraw();
     };
-};
+}
+;
