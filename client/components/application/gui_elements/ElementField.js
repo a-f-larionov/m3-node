@@ -13,6 +13,8 @@ ElementField = function () {
      */
     let showed = false;
 
+    let turnsCounted = false;
+
     this.ANIM_TYPE_FALL = 1;
     this.ANIM_TYPE_EXCHANGE = 2;
     this.ANIM_TYPE_HUMMER_DESTROY = 3;
@@ -334,6 +336,23 @@ ElementField = function () {
         if (lock) return;
         if (animBlock) return;
 
+        funcShuffleField();
+        /** Еще попытки, если не получилось */
+        for (let i = 0; i < 500; i++) {
+            if (LogicField.findLines(fieldHeight,fieldWidth,layerMask,layerGems).length) break;
+            funcShuffleField();
+        }
+
+        animBlock = true;
+        animType = self.ANIM_TYPE_SHUFFLE;
+        animCounter = 0;
+        domShuffleDestroy.animPlayed = true;
+        domShuffleDestroy.show();
+        domShuffleDestroy.redraw();
+        self.redraw();
+    };
+
+    let funcShuffleField = function () {
         let tmp, x2, y2;
         for (let y1 = 0; y1 < fieldHeight; y1++) {
             for (let x1 = 0; x1 < fieldWidth; x1++) {
@@ -350,13 +369,6 @@ ElementField = function () {
                 layerGems[y1][x1] = tmp;
             }
         }
-        animBlock = true;
-        animType = self.ANIM_TYPE_SHUFFLE;
-        animCounter = 0;
-        domShuffleDestroy.animPlayed = true;
-        domShuffleDestroy.show();
-        domShuffleDestroy.redraw();
-        self.redraw();
     };
 
     let gemLightingAct = function (gem) {
@@ -425,10 +437,10 @@ ElementField = function () {
         animBlock = true;
 
         LogicField.exchangeGems(gemA, gemB, layerGems);
-        lines = self.findLines();
+        lines = LogicField.findLines(fieldHeight, fieldWidth, layerMask, layerGems);
         mayLineDestroy =
-            self.lineCrossing(lines, gemA.x, gemA.y)
-            | self.lineCrossing(lines, gemB.x, gemB.y);
+            LogicField.lineCrossing(lines, gemA.x, gemA.y)
+            | LogicField.lineCrossing(lines, gemB.x, gemB.y);
         LogicField.exchangeGems(gemA, gemB, layerGems);
 
         if (gemA.x < gemB.x) {
@@ -593,6 +605,7 @@ ElementField = function () {
                         if (layerMask[y][x] !== DataPoints.OBJECT_EMPTY) {
                             gemDoms[y][x].hide();
                         } else {
+                            gemDoms[y][x].opacity = '';
                             gemDoms[y][x].backgroundImage = DataPoints.objectImages[layerGems[y][x]];
                             gemDoms[y][x].y = y * DataPoints.BLOCK_HEIGHT;
                             gemDoms[y][x].x = x * DataPoints.BLOCK_WIDTH;
@@ -694,9 +707,18 @@ ElementField = function () {
                 self.destroyLines();
                 break;
         }
+
         if (self.isFieldSilent()) {
-            //console.log("more turns" + LogicField.countTurns(layerGems, fieldHeight, fieldWidth));
+            if (!turnsCounted) {
+                turnsCounted = true;
+                let allTurns = LogicField.countTurns(layerMask, layerGems, fieldHeight, fieldWidth);
+                if (allTurns.length === 0) {
+                    gemShuffleAct();
+                }
+            }
             self.onFieldSilent();
+        } else {
+            turnsCounted = false;
         }
     };
 
@@ -730,11 +752,7 @@ ElementField = function () {
                     layerGems[y][x] === DataPoints.OBJECT_EMPTY
                 ) {
                     layerGems[y][x] = LogicField.getRandomGemId();
-                    if (layerMask[y][x] === DataPoints.OBJECT_NONE) {
-                        gemDoms[y][x].height = 0;
-                    } else {
-                        gemDoms[y][x].height = DataPoints.BLOCK_HEIGHT;
-                    }
+                    gemDoms[y][x].height = DataPoints.BLOCK_HEIGHT;
                 }
             });
         });
@@ -803,7 +821,7 @@ ElementField = function () {
 
     this.hasDestroyLines = function () {
         let lines;
-        lines = this.findLines();
+        lines = LogicField.findLines(fieldHeight, fieldWidth, layerMask, layerGems);
         return lines.length > 0;
     };
 
@@ -812,8 +830,7 @@ ElementField = function () {
      */
     this.destroyLines = function () {
         let lines;
-        lines = this.findLines();
-        //console.log('lines', lines);
+        lines = LogicField.findLines(fieldHeight, fieldWidth, layerMask, layerGems);
         let p;
         if (lines.length)
             for (let i in lines) {
@@ -829,70 +846,6 @@ ElementField = function () {
             /** Animate here before run */
             self.run();
         }, 1);
-    };
-
-    this.findLines = function () {
-        let line, lines;
-        lines = [];
-        for (let y = 0; y < fieldHeight; y++) {
-            for (let x = 0; x < fieldWidth; x++) {
-                if (this.lineCrossing(lines, x, y)) continue;
-                line = this.findLine(x, y, 1);
-                if (line) {
-                    lines.push(line);
-                }
-                line = this.findLine(x, y, 2);
-                if (line) {
-                    lines.push(line);
-                }
-            }
-        }
-        return lines;
-    };
-
-    this.findLine = function (x, y, orientation) {
-        let startId, line;
-        startId = layerGems[y][x];
-        /** Может ли такой объект вообще падать */
-        if (LogicField.isNotGem(startId)) return false;
-
-        line = {
-            coords: [],
-            gemId: startId
-        };
-        if (orientation === 1) {
-            for (let offset = 0; offset < 5; offset++) {
-                if (y >= fieldHeight) continue;
-                if (x + offset >= fieldWidth) continue;
-                if (layerGems[y][x + offset] === startId &&
-                    layerMask[y][x + offset] === DataPoints.OBJECT_EMPTY) {
-                    line.coords.push({
-                        x: x + offset,
-                        y: y
-                    });
-                } else {
-                    break;
-                }
-            }
-        } else {
-            for (let offset = 0; offset < 5; offset++) {
-                if (y + offset >= fieldHeight) continue;
-                if (x >= fieldWidth) continue;
-                if (layerGems[y + offset][x] === startId &&
-                    layerMask[y + offset][x] === DataPoints.OBJECT_EMPTY) {
-                    line.coords.push({
-                        x: x,
-                        y: y + offset
-                    });
-                } else {
-                    break;
-                }
-            }
-        }
-        if (line.coords.length >= 3)
-            return line;
-        else
-            return false;
     };
 
     this.animate = function () {
@@ -966,18 +919,6 @@ ElementField = function () {
                 }
                 break;
         }
-    };
-
-    this.lineCrossing = function (lines, x, y) {
-        for (let i in lines) {
-            for (let n in lines[i].coords) {
-                if (x === lines[i].coords[n].x &&
-                    y === lines[i].coords[n].y) {
-                    return true;
-                }
-            }
-        }
-        return false;
     };
 
     this.lock = function () {
