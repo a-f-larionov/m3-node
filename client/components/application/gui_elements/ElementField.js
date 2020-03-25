@@ -13,7 +13,7 @@ ElementField = function () {
      */
     let showed = false;
 
-    this.ANIM_TYPE_FALLDOWN = 1;
+    this.ANIM_TYPE_FALL = 1;
     this.ANIM_TYPE_EXCHANGE = 2;
     this.ANIM_TYPE_HUMMER_DESTROY = 3;
     this.ANIM_TYPE_LIGHTING_DESTROY = 4;
@@ -682,7 +682,7 @@ ElementField = function () {
                 break;
             case 1:
                 runNext = 2;
-                self.fallDown();
+                self.fall();
                 break;
             case 2:
                 runNext = 0;
@@ -698,7 +698,7 @@ ElementField = function () {
     this.isFieldSilent = function () {
         return !(animBlock ||
             self.hasDestroyLines() ||
-            self.hasFallDown() ||
+            self.hasFall() ||
             self.hasProcesSpecialLayer()
         );
     };
@@ -736,15 +736,12 @@ ElementField = function () {
         self.run();
     };
 
-    this.hasFallDown = function () {
+    this.hasFall = function () {
         if (animObjects.length) return true;
 
         for (let y = fieldHeight - 1; y > 0; y--) {
             for (let x = 0; x < fieldWidth; x++) {
-                if (
-                    !LogicField.isFalldownObject(layerGems[y][x]) &&
-                    LogicField.isFalldownObject(layerGems[y - 1][x])
-                ) {
+                if (LogicField.mayFall(x, y, layerGems)) {
                     return true;
                 }
             }
@@ -752,7 +749,7 @@ ElementField = function () {
         return false;
     };
 
-    this.fallDown = function () {
+    this.fall = function () {
         if (animBlock) return;
         self.redraw(); // reset coords and other states
         animObjects = [];
@@ -761,10 +758,7 @@ ElementField = function () {
         for (let y = fieldHeight - 1; y > 0; y--) {
             for (let x = 0; x < fieldWidth; x++) {
                 let dom;
-                if (
-                    !LogicField.isFalldownObject(layerGems[y][x]) &&
-                    LogicField.isFalldownObject(layerGems[y - 1][x])
-                ) {
+                if (LogicField.mayFall(x, y, layerGems)) {
                     dom = gemDoms[y - 1][x];
                     dom.mode = '';
                     // if dom now on NONE and below IS NOT NONE, set flag - showUp
@@ -795,7 +789,7 @@ ElementField = function () {
         }
 
         if (animObjects.length) {
-            animType = self.ANIM_TYPE_FALLDOWN;
+            animType = self.ANIM_TYPE_FALL;
             animBlock = true;
         } else {
             self.run();
@@ -854,7 +848,7 @@ ElementField = function () {
         let startId, line;
         startId = layerGems[y][x];
         /** Может ли такой объект вообще падать */
-        if (LogicField.isFalldownObject(startId)) return false;
+        if (LogicField.isFallingObject(startId)) return false;
 
         line = {
             coords: [],
@@ -913,7 +907,7 @@ ElementField = function () {
                 animCounter++;
                 /** Смотри domShuffleDestroy.animTracks */
                 break;
-            case self.ANIM_TYPE_FALLDOWN:
+            case self.ANIM_TYPE_FALL:
                 animCounter++;
                 for (let i in animObjects) {
                     dom = animObjects[i];

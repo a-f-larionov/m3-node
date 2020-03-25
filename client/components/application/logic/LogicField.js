@@ -25,8 +25,13 @@ LogicField = function () {
         return !self.isGem(id);
     };
 
-    this.isFalldownObject = function (id) {
+    this.isFallingObject = function (id) {
         return fallDownObjects.indexOf(id) !== -1;
+    };
+
+    this.mayFall = function (x, y, layerGems) {
+        return !LogicField.isFallingObject(layerGems[y][x]) &&
+            LogicField.isFallingObject(layerGems[y - 1][x]);
     };
 
     this.getRandomGemId = function () {
