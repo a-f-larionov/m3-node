@@ -9,6 +9,14 @@ LogicField = function () {
         DataPoints.OBJECT_PURPLE,
     ];
 
+    let fallDownObjects = [
+        DataPoints.OBJECT_RED,
+        DataPoints.OBJECT_GREEN,
+        DataPoints.OBJECT_BLUE,
+        DataPoints.OBJECT_YELLOW,
+        DataPoints.OBJECT_PURPLE,
+    ];
+
     this.isGem = function (id) {
         return gems.indexOf(id) !== -1;
     };
@@ -17,9 +25,17 @@ LogicField = function () {
         return !self.isGem(id);
     };
 
+    this.isFalldownObject = function (id) {
+        return fallDownObjects.indexOf(id) !== -1;
+    };
+
     this.getRandomGemId = function () {
         return gems[Math.floor(Math.random() * gems.length)];
     };
+
+    this.isNoMoreTurns = function (layerGems) {
+
+    }
 };
 
 LogicField = new LogicField;

@@ -59,14 +59,6 @@ ElementField = function () {
         layerSpecial = null
     ;
 
-    let fallDownObjects = [
-        DataPoints.OBJECT_RED,
-        DataPoints.OBJECT_GREEN,
-        DataPoints.OBJECT_BLUE,
-        DataPoints.OBJECT_YELLOW,
-        DataPoints.OBJECT_PURPLE,
-    ];
-
     let animType = null,
         animBlock = false,
         animObjects = [],
@@ -554,22 +546,22 @@ ElementField = function () {
         domBackground.redraw();
         /** layer.mask */
 
-      /*  LogicField.eachMaskCell(function (x, y, cellId, row) {
-            switch (cellId) {
-                case DataPoints.OBJECT_EMPTY:
-                    cellId = DataPoints.OBJECT_CELL;
-                default:
-                    maskDoms[y][x].x = self.x + x * DataPoints.BLOCK_WIDTH;
-                    maskDoms[y][x].y = self.y + y * DataPoints.BLOCK_HEIGHT;
-                    maskDoms[y][x].backgroundImage = DataPoints.objectImages[cellId];
-                    maskDoms[y][x].show();
-                    maskDoms[y][x].redraw();
-                    break;
-                case DataPoints.OBJECT_NONE:
-                    maskDoms[y][x].hide();
-                    break;
-            }
-        });*/
+        /*  LogicField.eachMaskCell(function (x, y, cellId, row) {
+              switch (cellId) {
+                  case DataPoints.OBJECT_EMPTY:
+                      cellId = DataPoints.OBJECT_CELL;
+                  default:
+                      maskDoms[y][x].x = self.x + x * DataPoints.BLOCK_WIDTH;
+                      maskDoms[y][x].y = self.y + y * DataPoints.BLOCK_HEIGHT;
+                      maskDoms[y][x].backgroundImage = DataPoints.objectImages[cellId];
+                      maskDoms[y][x].show();
+                      maskDoms[y][x].redraw();
+                      break;
+                  case DataPoints.OBJECT_NONE:
+                      maskDoms[y][x].hide();
+                      break;
+              }
+          });*/
         layerMask.forEach(function (row, y) {
             row.forEach(function (cell, x) {
                 switch (cell) {
@@ -698,6 +690,7 @@ ElementField = function () {
                 break;
         }
         if (self.isFieldSilent()) {
+            LogicField.isNoMoreTurns(layerGems);
             self.onFieldSilent();
         }
     };
@@ -748,10 +741,9 @@ ElementField = function () {
 
         for (let y = fieldHeight - 1; y > 0; y--) {
             for (let x = 0; x < fieldWidth; x++) {
-                let dom;
                 if (
-                    fallDownObjects.indexOf(layerGems[y][x]) === -1 &&
-                    fallDownObjects.indexOf(layerGems[y - 1][x]) !== -1
+                    !LogicField.isFalldownObject(layerGems[y][x]) &&
+                    LogicField.isFalldownObject(layerGems[y - 1][x])
                 ) {
                     return true;
                 }
@@ -770,8 +762,8 @@ ElementField = function () {
             for (let x = 0; x < fieldWidth; x++) {
                 let dom;
                 if (
-                    fallDownObjects.indexOf(layerGems[y][x]) === -1 &&
-                    fallDownObjects.indexOf(layerGems[y - 1][x]) !== -1
+                    !LogicField.isFalldownObject(layerGems[y][x]) &&
+                    LogicField.isFalldownObject(layerGems[y - 1][x])
                 ) {
                     dom = gemDoms[y - 1][x];
                     dom.mode = '';
@@ -862,7 +854,7 @@ ElementField = function () {
         let startId, line;
         startId = layerGems[y][x];
         /** Может ли такой объект вообще падать */
-        if (fallDownObjects.indexOf(startId) === -1) return false;
+        if (LogicField.isFalldownObject(startId)) return false;
 
         line = {
             coords: [],
