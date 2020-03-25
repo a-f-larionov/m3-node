@@ -417,12 +417,12 @@ ElementField = function () {
                 animBlock = true;
                 let mayExchange;
                 let lines;
-                self.exchangeGems(gemA, gemB);
+                LogicField.exchangeGems(gemA, gemB, layerGems);
                 lines = self.findLines();
                 mayExchange =
                     self.lineCrossing(lines, gemA.fieldX, gemA.fieldY)
                     | self.lineCrossing(lines, gemB.fieldX, gemB.fieldY);
-                self.exchangeGems(gemA, gemB);
+                LogicField.exchangeGems(gemA, gemB, layerGems);
 
                 if (gemA.fieldX < gemB.fieldX) {
                     animType = self.ANIM_TYPE_EXCHANGE;
@@ -445,7 +445,7 @@ ElementField = function () {
                     animavy = -1;
                 }
                 if (mayExchange) {
-                    self.exchangeGems(gemA, gemB);
+                    LogicField.exchangeGems(gemA, gemB, layerGems);
                     animExchangeHalf = true;
                     self.beforeTurnUse();
                 } else {
@@ -690,7 +690,7 @@ ElementField = function () {
                 break;
         }
         if (self.isFieldSilent()) {
-            LogicField.isNoMoreTurns(layerGems);
+            console.log("more turns" + LogicField.countTurns(layerGems, fieldHeight, fieldWidth));
             self.onFieldSilent();
         }
     };
@@ -779,7 +779,7 @@ ElementField = function () {
                         dom.x = x * DataPoints.BLOCK_WIDTH;
                         dom.show();
                     }
-                    // exchange
+                    /** Falling one gem */
                     layerGems[y][x] = layerGems[y - 1][x];
                     layerGems[y - 1][x] = DataPoints.OBJECT_EMPTY;
 
@@ -808,6 +808,7 @@ ElementField = function () {
     this.destroyLines = function () {
         let lines;
         lines = this.findLines();
+        //console.log('lines', lines);
         let p;
         if (lines.length)
             for (let i in lines) {
@@ -848,7 +849,7 @@ ElementField = function () {
         let startId, line;
         startId = layerGems[y][x];
         /** Может ли такой объект вообще падать */
-        if (LogicField.isFallingObject(startId)) return false;
+        if (LogicField.isNotGem(startId)) return false;
 
         line = {
             coords: [],
@@ -961,14 +962,6 @@ ElementField = function () {
                 }
                 break;
         }
-    };
-
-    this.exchangeGems = function (gemA, gemB) {
-        let tmp;
-        tmp = layerGems[gemB.fieldY][gemB.fieldX];
-        layerGems[gemB.fieldY][gemB.fieldX] =
-            layerGems[gemA.fieldY][gemA.fieldX];
-        layerGems[gemA.fieldY][gemA.fieldX] = tmp;
     };
 
     this.lineCrossing = function (lines, x, y) {
