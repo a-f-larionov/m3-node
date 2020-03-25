@@ -40,7 +40,8 @@ LogicField = function () {
     };
 
     this.isVisilbe = function (p, layerMask) {
-        return layerMask[p.y][p.x] !== DataPoints.OBJECT_NONE;
+        return layerMask[p.y] && layerMask[p.y][p.x] &&
+            layerMask[p.y][p.x] !== DataPoints.OBJECT_NONE;
     };
 
     this.countTurns = function (layerMask, layerGems, fieldHeight, fieldWidth) {
