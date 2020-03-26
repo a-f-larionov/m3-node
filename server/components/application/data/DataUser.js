@@ -96,7 +96,7 @@ DataUser = function () {
             lastLoginTimestamp: new Date().getTime(),
             //@todo is not current, is it next point id
             currentPoint: 1,
-            health: LogicUser.getMaxHealth(),
+            health: LogicHealth.getMaxHealth(),
         };
         cache[user.id] = user;
         callback(user);

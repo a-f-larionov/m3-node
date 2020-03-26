@@ -1,6 +1,10 @@
 SAPIMap = function () {
 
     this.reloadLevels = function (cntx) {
+        if (!cntx.isAuthorized) return Logs.log(arguments.callee.name + " not authorized", Logs.LEVEL_WARNING, cntx);
+        if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
+        if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
+
         if (cntx.user.id !== 1) {
             Logs.log("ERROR", Logs.LEVEL_WARNING);
             return;
@@ -11,6 +15,10 @@ SAPIMap = function () {
 
     this.sendMeMapInfo = function (cntx, mapId) {
         let map, points, chests, userPoints, userChests;
+        if (!cntx.isAuthorized) return Logs.log(arguments.callee.name + " not authorized", Logs.LEVEL_WARNING, cntx);
+        if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
+        if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
+
         if (!DataMap.existsMap(mapId)) {
             Logs.log("no map found:" + mapId, Logs.LEVEL_WARNING, cntx);
             return;
@@ -36,6 +44,11 @@ SAPIMap = function () {
     };
 
     this.sendMeUsersScore = function (cntx, mapId, userIds) {
+        if (!cntx.isAuthorized) return Logs.log(arguments.callee.name + " not authorized", Logs.LEVEL_WARNING, cntx);
+        if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
+        if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
+
+
         if (!DataMap.existsMap(mapId)) {
             Logs.log("no map found:" + mapId, Logs.LEVEL_WARNING, cntx);
             return;
@@ -59,6 +72,9 @@ SAPIMap = function () {
      * @param score
      */
     this.finishLevel = function (cntx, pointId, score) {
+        if (!cntx.isAuthorized) return Logs.log(arguments.callee.name + " not authorized", Logs.LEVEL_WARNING, cntx);
+        if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
+        if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
 
         DataPoints.updateUsersPoints(cntx.userId, pointId, score);
         DataUser.getById(cntx.userId, function (user) {

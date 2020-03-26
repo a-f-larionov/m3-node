@@ -78,7 +78,7 @@ DialogHealthShop = function () {
             self.closeDialog();
         } else {
             SAPIStuff.buyHealth();
-            LogicStuff.giveAHealth(LogicUser.getMaxHealth());
+            LogicStuff.giveAHealth(LogicHealth.getMaxHealth());
             LogicStuff.usedGold(DataShop.healthPrice);
             self.closeDialog();
         }

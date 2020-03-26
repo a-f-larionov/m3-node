@@ -107,7 +107,7 @@ Logs = function () {
     /**
      * Дополним нулями значение и вернёт строку
      * Тут это специфичная функция, дополнит нулями число спереди до 2ух знаков.
-     * @param sourceValue {Mixed}
+     * @param sourceValue {number}
      */
     let str_pad = function (sourceValue) {
         return "00000".substr(0, 2 - sourceValue.toString().length) + sourceValue;

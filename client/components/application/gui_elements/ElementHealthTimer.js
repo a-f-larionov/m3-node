@@ -92,12 +92,12 @@ ElementHealthTimer = function () {
             health = user.health;
             healthStartTime = LogicUser.getCurrentUser().healthStartTime / 1000;
         }
-        if (health === LogicUser.getMaxHealth()) {
+        if (health === LogicHealth.getMaxHealth()) {
             self.healthIndicator.redraw();
             elText.hide();
 
         } else {
-            recoveryTime = LogicUser.getHealthRecoveryTime();
+            recoveryTime = LogicHealth.getHealthRecoveryTime();
             now = LogicTimeClient.getTime();
             left = recoveryTime - (now - healthStartTime);
 
@@ -117,7 +117,7 @@ ElementHealthTimer = function () {
             elText.show();
             elText.redraw();
             if (left <= 0) {
-                LogicUser.checkHealth();
+                LogicHealth.checkHealth();
             }
         }
     }

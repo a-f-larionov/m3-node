@@ -55,10 +55,11 @@ SAPIUser = function () {
      * @param userId number
      */
     this.sendMeUserInfo = function (cntx, userId) {
-        if (!cntx.isAuthorized) {
-            Logs.log("SAPIUser.sendMeUserInfo: must be authorized", Logs.LEVEL_WARNING);
-            return;
-        }
+        if (!cntx.isAuthorized) return Logs.log(arguments.callee.name + " not authorized", Logs.LEVEL_WARNING, cntx);
+        if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
+        if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
+
+
         if (!userId || typeof userId !== 'number') {
             Logs.log("SAPIUser.sendMeUserInfo: must have userId", Logs.LEVEL_WARNING, userId);
             return;
@@ -73,7 +74,12 @@ SAPIUser = function () {
      * @param userIds
      */
     this.sendMeUserIdsBySocNet = function (cntx, userIds) {
-// @Todo validate userIds
+        if (!cntx.isAuthorized) return Logs.log(arguments.callee.name + " not authorized", Logs.LEVEL_WARNING, cntx);
+        if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
+        if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
+
+        // @Todo validate userIds
+
         DataUser.getById(cntx.user.id, function (user) {
             DataUser.getUserIdsBySocNet(user.socNetTypeId, userIds, function (ids) {
                 CAPIUser.gotFriendsIds(cntx.user.id, ids);
@@ -82,15 +88,19 @@ SAPIUser = function () {
     };
 
 
-    this.onPlayFinish = function(cntx){
+    this.onPlayFinish = function (cntx) {
+        if (!cntx.isAuthorized) return Logs.log(arguments.callee.name + " not authorized", Logs.LEVEL_WARNING, cntx);
+        if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
+        if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
+
         LOCK.acquire('stuff-' + cntx.user.id + '-health', function (done) {
             DataUser.getById(cntx.user.id, function (user) {
                 let now, recoveryTime;
                 if (user.health > 0) {
                     user.health++;
-                    user.health = Math.max(user.health, LogicUser.getMaxHealth());
+                    user.health = Math.max(user.health, LogicHealth.getMaxHealth());
                     now = LogicTimeServer.getCurrentTime();
-                    recoveryTime = LogicUser.getHealthRecoveryTime();
+                    recoveryTime = LogicHealth.getHealthRecoveryTime();
                     if (now > (user.healthStartTime + recoveryTime)) {
                         user.healthStartTime = now;
                     }
@@ -111,6 +121,9 @@ SAPIUser = function () {
     };
 
     this.onPlayStart = function (cntx) {
+        if (!cntx.isAuthorized) return Logs.log(arguments.callee.name + " not authorized", Logs.LEVEL_WARNING, cntx);
+        if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
+        if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
 
         LOCK.acquire('stuff-' + cntx.user.id + '-health', function (done) {
             DataUser.getById(cntx.user.id, function (user) {
@@ -118,7 +131,7 @@ SAPIUser = function () {
                 if (user.health > 0) {
                     user.health--;
                     now = LogicTimeServer.getCurrentTime();
-                    recoveryTime = LogicUser.getHealthRecoveryTime();
+                    recoveryTime = LogicHealth.getHealthRecoveryTime();
                     if (now > (user.healthStartTime + recoveryTime)) {
                         user.healthStartTime = now;
                     }
@@ -139,10 +152,17 @@ SAPIUser = function () {
     };
 
     this.checkHealth = function (cntx) {
-        LogicUser.checkHealth(cntx.user.id);
+        if (!cntx.isAuthorized) return Logs.log(arguments.callee.name + " not authorized", Logs.LEVEL_WARNING, cntx);
+        if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
+        if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
+
+        LogicHealth.checkHealth(cntx.user.id);
     };
 
     this.zeroLife = function (cntx) {
+        if (!cntx.isAuthorized) return Logs.log(arguments.callee.name + " not authorized", Logs.LEVEL_WARNING, cntx);
+        if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
+        if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
 
         DataUser.getById(cntx.user.id, function (user) {
             user.health = 0;

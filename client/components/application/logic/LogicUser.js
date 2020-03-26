@@ -241,50 +241,6 @@ LogicUser = function () {
 //        SAPIUser.onPlayStart();
         PageController.redraw();
     };
-
-    this.getMaxHealth = function () {
-        return DataCross.user.maxHealth;
-    };
-
-    this.getHealthRecoveryTime = function () {
-        return  DataCross.user.healthRecoveryTime;
-    };
-
-    this.clearHealthCheckFlag = function () {
-        checkHealthFlag = false;
-    };
-
-    let checkHealthFlag = false;
-
-    this.checkHealth = function () {
-        let recoveryTime, healthStartTime, now, left, healthToUp, maxHealth, user;
-        user = LogicUser.getCurrentUser();
-        maxHealth = LogicUser.getMaxHealth();
-        if (user.health < maxHealth) {
-            recoveryTime = LogicUser.getHealthRecoveryTime();
-            healthStartTime = user.healthStartTime / 1000;
-            now = LogicTimeClient.getTime();
-            left = recoveryTime - (now - healthStartTime);
-            if (left > 0) return;
-
-            healthToUp = Math.min(
-                Math.floor(Math.abs((now - healthStartTime) / recoveryTime)),
-                (maxHealth - user.health)
-            );
-            users[user.id].health += healthToUp;
-
-            if (users[user.id].health < maxHealth) {
-                user.healthStartTime += (recoveryTime * healthToUp) * 1000;
-            }
-
-            PageController.redraw();
-
-            if (left <= 0 && !checkHealthFlag) {
-                checkHealthFlag = true;
-                SAPIUser.checkHealth();
-            }
-        }
-    };
 };
 
 /**

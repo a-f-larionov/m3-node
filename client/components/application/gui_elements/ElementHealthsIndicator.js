@@ -82,7 +82,7 @@ ElementHealthIndicator = function () {
             health = LogicUser.getCurrentUser().health;
         }
         step = 50 - 15;
-        if (health === LogicUser.getMaxHealth() - 1) {
+        if (health === LogicHealth.getMaxHealth() - 1) {
             step -= 10;
         }
         doms.forEach(function (dom) {

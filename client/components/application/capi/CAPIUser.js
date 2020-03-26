@@ -24,7 +24,7 @@ CAPIUser = function () {
     };
 
     this.healthChecked = function (cntx) {
-        LogicUser.clearHealthCheckFlag();
+        LogicHealth.clearHealthCheckFlag();
     };
 
     this.gotFriendsIds = function (cntx, ids) {

@@ -2,8 +2,10 @@ SAPIChest = function () {
 
     this.openChest = function (cntx, chestId) {
         let chest, prize;
-        if (!cntx.user) return Logs.log("send-me-stuff not user", Logs.LEVEL_WARNING, cntx);
-        if (!cntx.user.id) return Logs.log("send-me-stuff not user id", Logs.LEVEL_WARNING, cntx);
+        if (!cntx.isAuthorized) return Logs.log(arguments.callee.name + " not authorized", Logs.LEVEL_WARNING, cntx);
+        if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
+        if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
+
         chest = DataChests.getById(chestId);
         if (!chest) Logs.log("no chest found", Logs.LEVEL_WARNING, arguments);
 
