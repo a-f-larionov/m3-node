@@ -16,7 +16,7 @@ LogicHealth = function () {
 
     this.getHealths = function (user) {
         let fullRecoveryTime, now, recoveryTime, timeLeft;
-        fullRecoveryTime = user.healthStartTime;
+        fullRecoveryTime = user.fullRecoveryTime;
         now = getTime();
         recoveryTime = LogicHealth.getHealthRecoveryTime();
 
@@ -32,7 +32,7 @@ LogicHealth = function () {
     };
 
     this.setMaxHealth = function (user) {
-        user.healthStartTime = getTime();
+        user.fullRecoveryTime = getTime();
     };
 
     this.decrementHealth = function (user, quantity) {
@@ -44,18 +44,18 @@ LogicHealth = function () {
         if (LogicHealth.getHealths(user) === 0) {
             LogicHealth.zeroLife(user);
         }
-        user.healthStartTime += this.getHealthRecoveryTime() * quantity;
+        user.fullRecoveryTime += this.getHealthRecoveryTime() * quantity;
     };
 
     this.getTimeLeft = function (user) {
         let left;
         if (this.isMaxHealths(user)) return 0;
-        left = user.healthStartTime - getTime();
+        left = user.fullRecoveryTime - getTime();
         return left - Math.floor(left / this.getHealthRecoveryTime()) * this.getHealthRecoveryTime();
     };
 
     this.zeroLife = function (user) {
-        user.healthStartTime = getTime() + this.getHealthRecoveryTime() * this.getMaxHealth();
+        user.fullRecoveryTime = getTime() + this.getHealthRecoveryTime() * this.getMaxHealth();
     }
 };
 

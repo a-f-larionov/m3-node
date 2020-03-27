@@ -34,8 +34,8 @@ LogicTimeClient = function () {
 
     this.convertToClient = function (timestamp) {
         let newTimestamp;
-        newTimestamp = timestamp - timeDiff;
-        return newTimestamp;
+        newTimestamp = timestamp * 1000 - timeDiff;
+        return newTimestamp / 1000;
     };
 };
 

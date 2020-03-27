@@ -19,7 +19,7 @@ CAPIUser = function () {
     this.updateUserInfo = function (cntx, user) {
         user.createTimestamp = LogicTimeClient.convertToClient(user.createTimestamp);
         user.lastLoginTimestamp = LogicTimeClient.convertToClient(user.lastLoginTimestamp);
-        user.healthStartTime = LogicTimeClient.convertToClient(user.healthStartTime * 1000) / 1000;
+        user.fullRecoveryTime = LogicTimeClient.convertToClient(user.fullRecoveryTime);
         LogicUser.updateUserInfo(user);
     };
 

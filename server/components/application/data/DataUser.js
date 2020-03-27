@@ -95,7 +95,6 @@ DataUser = function () {
             createTimestamp: LogicTimeServer.getTime(),
             lastLoginTimestamp: LogicTimeServer.getTime(),
             //@todo is not current, is it next point id
-            health: 1000,
             currentPoint: 1,
         };
         LogicHealth.setMaxHealth(user);
@@ -164,16 +163,19 @@ DataUser = function () {
      * @param userId {int} внутрений id пользователя.
      */
     this.updateLastLogin = function (userId) {
+        let time;
         if (!userId) {
             Logs.log("DataUser.udpateLastLogin. Must be userId", Logs.LEVEL_WARNING, userId);
             return;
         }
-        let time = (new Date().getTime());
+        time = LogicTimeServer.getTime();
         if (cache[userId]) {
             cache[userId].lastLoginTimestamp = time;
         }
-        DB.query("UPDATE " + tableName + " SET lastLoginTimestamp = " + time + " WHERE id = " + userId, function () {
-        });
+        DB.query("UPDATE " + tableName + " SET lastLoginTimestamp = " +
+            time + " WHERE id = " + userId, function () {
+            }
+        );
     };
 
     this.updateCurrentPoint = function (userId, pointId, callback) {
@@ -185,10 +187,10 @@ DataUser = function () {
 
     this.updateHealthAndStartTime = function (user, callback) {
         if (cache[user.id]) {
-            cache[user.id].healthStartTime = user.healthStartTime;
+            cache[user.id].fullRecoveryTime = user.fullRecoveryTime;
         }
         DB.query("UPDATE " + tableName +
-            " SET healthStartTime = " + user.healthStartTime +
+            " SET fullRecoveryTime = " + user.fullRecoveryTime +
             " WHERE id = " + user.id, callback);
     };
 };

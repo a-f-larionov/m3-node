@@ -65,8 +65,7 @@ CREATE TABLE `users` (
   `lastLoginTimestamp` int(11) unsigned DEFAULT NULL,
   `lastLogoutTimestamp` int(11) unsigned NOT NULL DEFAULT '0',
   `currentPoint` int(11) NOT NULL DEFAULT '1',
-  `health` int(11) NOT NULL,
-  `healthStartTime` bigint(11) unsigned DEFAULT NULL,
+  `fullRecoveryTime` bigint(11) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `socNetUniqueKey` (`socNetUserId`,`socNetTypeId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
