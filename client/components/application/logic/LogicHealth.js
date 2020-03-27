@@ -8,6 +8,14 @@ LogicHealth = function () {
         return DataCross.user.healthRecoveryTime * 1000;
     };
 
+    this.getHealths = function () {
+        let frt, now, rt;
+        frt = LogicUser.getCurrentUser().healthStartTime;
+        now = LogicTimeClient.getTime();
+        rt = LogicHealth.getHealthRecoveryTime();
+        Math.floor((LogicUser.getCurrentUser().healthStartTime - LogicTimeClient.getTime()) / this.getHealthRecoveryTime());
+    };
+
     this.clearHealthCheckFlag = function () {
         checkHealthFlag = false;
     };

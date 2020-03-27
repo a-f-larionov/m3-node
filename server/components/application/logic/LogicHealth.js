@@ -15,7 +15,7 @@ LogicHealth = function () {
             if (user.health < maxHealth) {
                 recoveryTime = LogicHealth.getHealthRecoveryTime();
                 healthStartTime = user.healthStartTime;
-                now = LogicTimeServer.getCurrentTime();
+                now = LogicTimeServer.getMicroTime();
                 left = recoveryTime - (now - healthStartTime);
                 if (left > 0) {
                     // повторим позже, если необходимо
@@ -53,10 +53,9 @@ LogicHealth = function () {
     };
 
     this.zeroLife = function (userId) {
-
         DataUser.getById(userId, function (user) {
             user.health = 0;
-            user.healthStartTime = LogicTimeServer.getCurrentTime();
+            user.healthStartTime = LogicTimeServer.getMicroTime();
             DataUser.updateHealthAndStartTime(user, function () {
                 CAPIUser.updateUserInfo(user.id, user);
             });

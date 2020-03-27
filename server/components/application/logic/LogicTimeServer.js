@@ -8,9 +8,13 @@ LogicTimeServer = function () {
      * Return current time.
      * @returns {number}
      */
-    this.getCurrentTime = function () {
+    this.getMicroTime = function () {
         return (new Date).getTime();
     };
+
+    this.getTime = function () {
+        Math.floor(this.getMicroTime() / 1000);
+    }
 };
 
 /**

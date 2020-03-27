@@ -86,6 +86,7 @@ ElementHealthTimer = function () {
         if (!showed) return;
 
         user = LogicUser.getCurrentUser();
+        health = LogicHealth.getHealths();
         health = user.health;
         if (LogicUser.onFieldNow) {
             health--;

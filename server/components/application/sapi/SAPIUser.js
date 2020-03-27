@@ -101,7 +101,7 @@ SAPIUser = function () {
                 if (user.health > 0) {
                     user.health++;
                     user.health = Math.max(user.health, LogicHealth.getMaxHealth());
-                    now = LogicTimeServer.getCurrentTime();
+                    now = LogicTimeServer.getMicroTime();
                     recoveryTime = LogicHealth.getHealthRecoveryTime();
                     if (now > (user.healthStartTime + recoveryTime)) {
                         user.healthStartTime = now;
@@ -128,7 +128,7 @@ SAPIUser = function () {
                 let now, recoveryTime;
                 if (user.health > 0) {
                     user.health--;
-                    now = LogicTimeServer.getCurrentTime();
+                    now = LogicTimeServer.getMicroTime();
                     recoveryTime = LogicHealth.getHealthRecoveryTime();
                     if (now > (user.healthStartTime + recoveryTime)) {
                         user.healthStartTime = now;
