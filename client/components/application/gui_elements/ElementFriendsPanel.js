@@ -125,7 +125,7 @@ ElementFriendsPanel = function () {
 
         cardsText.forEach(function (text, i) {
             if (friends[i]) {
-                text.text = 'ур. ' + friends[i].currentPoint;
+                text.text = 'ур. ' + friends[i].nextPointId;
                 text.show();
             } else {
                 text.hide();

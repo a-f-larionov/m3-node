@@ -64,11 +64,11 @@ CREATE TABLE `users` (
   `createTimestamp` int(11) unsigned DEFAULT NULL,
   `lastLoginTimestamp` int(11) unsigned DEFAULT NULL,
   `lastLogoutTimestamp` int(11) unsigned NOT NULL DEFAULT '0',
-  `currentPoint` int(11) NOT NULL DEFAULT '1',
+  `nextPointId` int(11) NOT NULL DEFAULT '1',
   `fullRecoveryTime` bigint(11) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `socNetUniqueKey` (`socNetUserId`,`socNetTypeId`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --

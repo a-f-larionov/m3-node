@@ -78,8 +78,8 @@ SAPIMap = function () {
 
         DataPoints.updateUsersPoints(cntx.userId, pointId, score);
         DataUser.getById(cntx.userId, function (user) {
-            if (user.currentPoint < pointId + 1) {
-                DataUser.updateCurrentPoint(cntx.userId, pointId + 1);
+            if (user.nextPointId < pointId + 1) {
+                DataUser.updateNextPointId(cntx.userId, pointId + 1);
             }
         });
     };

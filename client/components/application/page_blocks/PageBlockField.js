@@ -338,8 +338,8 @@ PageBlockField = function PageBlockField() {
         user = LogicUser.getCurrentUser();
         pointId = DataPoints.getPlayedId();
         lastScore = DataPoints.getScore(pointId);
-        if (user.currentPoint < pointId + 1) {
-            user.currentPoint = pointId + 1;
+        if (user.nextPointId < pointId + 1) {
+            user.nextPointId = pointId + 1;
             LogicUser.updateUserInfo(user);
         }
         if (score > lastScore) {

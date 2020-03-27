@@ -47,7 +47,7 @@ DataUser = function () {
         query = "SELECT id FROM " + tableName + " WHERE ";
         query += " socNetTypeId = " + DB.escape(socNetTypeId);
         query += " AND socNetUserId IN ( " + DB.escape(socNetUserIds) + " ) ";
-        query += " ORDER BY currentPoint DESC";
+        query += " ORDER BY nextPointId DESC";
 
         DB.query(query, function (rows) {
             let ids = [];
@@ -95,7 +95,7 @@ DataUser = function () {
             createTimestamp: LogicTimeServer.getTime(),
             lastLoginTimestamp: LogicTimeServer.getTime(),
             //@todo is not current, is it next point id
-            currentPoint: 1,
+            nextPointId: 1,
         };
         LogicHealth.setMaxHealth(user);
         cache[user.id] = user;
@@ -135,7 +135,7 @@ DataUser = function () {
             socNetUserId: user.socNetUserId,
             createTimestamp: user.createTimestamp,
             lastLoginTimestamp: user.lastLoginTimestamp,
-            currentPoint: user.currentPoint
+            nextPointId: user.nextPointId
         };
         callback(user);
         DB.update(tableName, data, function (result) {
@@ -178,11 +178,11 @@ DataUser = function () {
         );
     };
 
-    this.updateCurrentPoint = function (userId, pointId, callback) {
+    this.updateNextPointId = function (userId, pointId, callback) {
         if (cache[userId]) {
-            cache[userId].currentPoint = pointId;
+            cache[userId].nextPointId = pointId;
         }
-        DB.query("UPDATE " + tableName + " SET currentPoint = " + pointId + " WHERE id = " + userId, callback);
+        DB.query("UPDATE " + tableName + " SET nextPointId = " + pointId + " WHERE id = " + userId, callback);
     };
 
     this.updateHealthAndStartTime = function (user, callback) {

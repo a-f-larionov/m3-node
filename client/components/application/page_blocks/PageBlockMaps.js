@@ -320,9 +320,9 @@ PageBlockMaps = function PageBlockMaps() {
 
             pointEl = pointsEls[number];
 
-            if (point.id === user.currentPoint) pointEl.stateId = ElementPoint.STATE_CURRENT;
-            if (point.id < user.currentPoint) pointEl.stateId = ElementPoint.STATE_FINISHED;
-            if (point.id > user.currentPoint) pointEl.stateId = ElementPoint.STATE_CLOSE;
+            if (point.id === user.nextPointId) pointEl.stateId = ElementPoint.STATE_CURRENT;
+            if (point.id < user.nextPointId) pointEl.stateId = ElementPoint.STATE_FINISHED;
+            if (point.id > user.nextPointId) pointEl.stateId = ElementPoint.STATE_CLOSE;
 
             if (userPoint[pointId])
                 pointEl.userScore = userPoint[pointId][user.id] ? userPoint[pointId][user.id].score : 0;

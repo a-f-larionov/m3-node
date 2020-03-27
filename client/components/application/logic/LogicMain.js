@@ -47,12 +47,11 @@ LogicMain = function () {
 
     this.onAuthorizeSuccess = function () {
         SAPITimeServer.sendMeTime();
-        //LogicHealth.checkHealth();
         LogicStuff.loadStuff();
-        // установить текущую карту игрока
+        /** установить текущую карту игрока */
         DataMap.setCurrentMapId(
             DataMap.getMapIdFromPointId(
-                LogicUser.getCurrentUser().currentPoint
+                LogicUser.getCurrentUser().nextPointId
             )
         );
         PageController.showPage(PageMain);

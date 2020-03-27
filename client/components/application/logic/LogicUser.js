@@ -195,7 +195,7 @@ LogicUser = function () {
             lpid = DataMap.getLastPointId();
             ids = this.getList(friendIds)
                 .filter(function (user) {
-                    return user.currentPoint >= fpid && user.currentPoint <= lpid;
+                    return user.nextPointId >= fpid && user.nextPointId <= lpid;
                 }).map(function (user) {
                     return user.id;
                 });
@@ -225,7 +225,7 @@ LogicUser = function () {
         }
         if (users) {
             gamers = users.filter(function (user) {
-                return user.currentPoint >= pointId;
+                return user.nextPointId >= pointId;
             }).sort(function (a, b) {
                 return b.lastLoginTimestamp - a.lastLoginTimestamp;
             }).map(function (user) {

@@ -286,7 +286,7 @@ ElementPoint = function () {
             if (!user) doms[friendIndex].hide();
             else {
                 if (user && user.photo50
-                    //  && user.currentPoint === self.pointId
+                    //  && user.nextPointId === self.pointId
                 ) {
                     doms[friendIndex].backgroundImage = user.photo50;
                     doms[friendIndex].show();
@@ -353,7 +353,7 @@ ElementPoint = function () {
      */
     this.setGamers = function (newData) {
         newData = newData.filter(function (user) {
-            return user.currentPoint === self.pointId;
+            return user.nextPointId === self.pointId;
         });
         gamers = newData.slice(0, 3);
         // центрируем если игрок только один

@@ -55,7 +55,7 @@ DataMap = function () {
     };
 
     this.getMapIdFromPointId = function (pointId) {
-        return Math.ceil(LogicUser.getCurrentUser().currentPoint / DataMap.POINTS_PER_MAP);
+        return Math.ceil(LogicUser.getCurrentUser().nextPointId / DataMap.POINTS_PER_MAP);
     };
 
     this.getFirstPointId = function () {
@@ -124,6 +124,7 @@ GUI.ANIM_TYPE_MOVIE = 40;
 GUI.ANIM_TYPE_PAUSE = 50;
 GUI.ANIM_TYPE_STOP = 60;
 
+/** @type {DataMap} */
 DataMap = new DataMap();
 
 /* server see */
