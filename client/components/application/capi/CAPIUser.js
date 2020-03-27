@@ -19,12 +19,8 @@ CAPIUser = function () {
     this.updateUserInfo = function (cntx, user) {
         user.createTimestamp = LogicTimeClient.convertToClient(user.createTimestamp);
         user.lastLoginTimestamp = LogicTimeClient.convertToClient(user.lastLoginTimestamp);
-        user.healthStartTime = LogicTimeClient.convertToClient(user.healthStartTime);
+        user.healthStartTime = LogicTimeClient.convertToClient(user.healthStartTime * 1000) / 1000;
         LogicUser.updateUserInfo(user);
-    };
-
-    this.healthChecked = function (cntx) {
-        LogicHealth.clearHealthCheckFlag();
     };
 
     this.gotFriendsIds = function (cntx, ids) {

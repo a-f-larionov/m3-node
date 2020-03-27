@@ -139,7 +139,7 @@ DialogGoalsReached = function () {
         elStarThree.redraw();
         elUserPhotoScore.redraw();
 
-        if (user.health === 0) {
+        if (LogicHealth.getHealths(user) === 0) {
             elButtonPlay.hide();
         } else {
             elButtonPlay.show();

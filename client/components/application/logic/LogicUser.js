@@ -71,7 +71,7 @@ LogicUser = function () {
             return users[id];
         } else {
             self.loadUserInfoById(id);
-            /* некоторая заглушка */
+            /** Некоторая заглушка */
             return getDummy();
         }
     };
@@ -234,13 +234,6 @@ LogicUser = function () {
         }
         return gamers;
     };
-
-    this.onTurnsLoose = function () {
-        users[authorizedUserId].health--;
-        users[authorizedUserId].healthStartTime = LogicTimeClient.getTime() * 1000;
-//        SAPIUser.onPlayStart();
-        PageController.redraw();
-    };
 };
 
 /**
@@ -248,3 +241,6 @@ LogicUser = function () {
  * @type {LogicUser}
  */
 LogicUser = new LogicUser();
+
+/** Alias **/
+LU = LogicUser;

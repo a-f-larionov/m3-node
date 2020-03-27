@@ -146,7 +146,7 @@ LogicPayments = function () {
 
                     DataPayments.createOrder(
                         user.id,
-                        Math.floor(LogicTimeServer.getTime()),
+                        LogicTimeServer.getTime(),
                         order_id,
                         item_price, function (newOrder) {
 

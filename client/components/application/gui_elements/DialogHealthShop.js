@@ -44,7 +44,6 @@ DialogHealthShop = function () {
         });
         self.elements.push(el);
 
-
         /** Кнопка закрыть */
         GUI.createElement(ElementButton, {
             x: 452, y: 3,
@@ -62,7 +61,7 @@ DialogHealthShop = function () {
     this.redraw = function () {
         let user;
         user = LogicUser.getCurrentUser();
-        elHealth5.enabled = user.health === 0;
+        elHealth5.enabled = LogicHealth.getHealths(user) === 0;
         this.__proto__.redraw.call(this);
     };
 
@@ -71,7 +70,7 @@ DialogHealthShop = function () {
         gold = LogicStuff.getStuff('goldQty');
         user = LogicUser.getCurrentUser();
 
-        if (user.health > 0) return;
+        if (LogicHealth.getHealths(user) > 0) return;
 
         if (gold < DataShop.healthPrice) {
             PageBlockQDialogs.dialogMoneyShop.showDialog(this);

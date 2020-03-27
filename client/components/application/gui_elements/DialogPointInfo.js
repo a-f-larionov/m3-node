@@ -72,15 +72,11 @@ DialogPointInfo = function () {
             onClick: function () {
                 self.closeDialog();
                 /** Предложить купить жизни */
-                if (LogicUser.getCurrentUser().health === 0) {
+                if (LogicHealth.getHealths(LogicUser.getCurrentUser()) === 0) {
                     PageBlockQDialogs.dialogHealthShop.showDialog();
                     self.showDialog(pointId);
                 } else {
                     /** Начать игру */
-                    LogicUser.onFieldNow = true;
-                    LogicUser.oldHealthStartTime = LogicUser.getCurrentUser().healthStartTime;
-
-                    LogicUser.getCurrentUser().health--;
                     SAPIUser.onPlayStart();
                     DataPoints.setPlayedId(pointId);
                     PageController.showPage(PageField);

@@ -85,19 +85,20 @@ DataUser = function () {
      * @param callback
      */
     this.createFromSocNet = function (socNetTypeId, socNetUserId, callback) {
-        /* Предотвращение двойной мгновенной регистрации. */
+        /** Предотвращение двойной мгновенной регистрации. */
         if (waitForCreateBySocNet[socNetUserId]) return;
         waitForCreateBySocNet[socNetUserId] = true;
         let user = {
             id: autoIncrementValue++,
             socNetTypeId: parseInt(socNetTypeId),
             socNetUserId: parseInt(socNetUserId),
-            createTimestamp: new Date().getTime(),
-            lastLoginTimestamp: new Date().getTime(),
+            createTimestamp: LogicTimeServer.getTime(),
+            lastLoginTimestamp: LogicTimeServer.getTime(),
             //@todo is not current, is it next point id
+            health: 1000,
             currentPoint: 1,
-            health: LogicHealth.getMaxHealth(),
         };
+        LogicHealth.setMaxHealth(user);
         cache[user.id] = user;
         callback(user);
         //create user here
@@ -181,24 +182,13 @@ DataUser = function () {
         }
         DB.query("UPDATE " + tableName + " SET currentPoint = " + pointId + " WHERE id = " + userId, callback);
     };
-    /*
-        this.updateHealth = function (userId, health, callback) {
-            if (cache[userId]) {
-                cache[userId].health = health;
-            }
-            DB.query("UPDATE " + tableName +
-                " SET health = " + health +
-                " WHERE id = " + userId, callback);
-        };
-    */
+
     this.updateHealthAndStartTime = function (user, callback) {
         if (cache[user.id]) {
-            cache[user.id].health = user.health;
             cache[user.id].healthStartTime = user.healthStartTime;
         }
         DB.query("UPDATE " + tableName +
-            " SET health = " + user.health +
-            " , healthStartTime = " + user.healthStartTime +
+            " SET healthStartTime = " + user.healthStartTime +
             " WHERE id = " + user.id, callback);
     };
 };

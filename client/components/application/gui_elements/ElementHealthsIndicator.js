@@ -73,13 +73,12 @@ ElementHealthIndicator = function () {
      * Перерисуем картинку.
      */
     this.redraw = function () {
-        let health, step, i;
+        let health, step, i, user;
         if (!showed) return;
+        user = LogicUser.getCurrentUser();
         i = 1;
-        health = LogicUser.getCurrentUser().health;
-        if (LogicUser.onFieldNow) {
-            health--;
-        }
+        health = LogicHealth.getHealths(user);
+
         step = 50 - 15;
         if (health === LogicHealth.getMaxHealth() - 1) {
             step -= 10;

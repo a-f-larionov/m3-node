@@ -62,7 +62,7 @@ LogicStuff = function () {
     this.giveAHealth = function (quantity) {
         let user;
         user = LogicUser.getCurrentUser();
-        user.health += quantity;
+        LogicHealth.decrementHealth(user, -1);
     };
 };
 

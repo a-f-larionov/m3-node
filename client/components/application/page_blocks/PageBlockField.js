@@ -351,8 +351,6 @@ PageBlockField = function PageBlockField() {
             );
         }
         SAPIUser.onPlayFinish();
-        LogicUser.getCurrentUser().health++;
-        LogicUser.onFieldNow = false;
         PageBlockQDialogs.dialogGoalsReached.showDialog(pointId);
         PageController.redraw();
     };

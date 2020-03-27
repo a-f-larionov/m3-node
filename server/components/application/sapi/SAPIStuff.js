@@ -84,10 +84,10 @@ SAPIStuff = function () {
 
         let tid = LogicTid.getOne();
 
-        LOCK.acquire('stuff-' + cntx.user.id + '-health', function (done) {
+        LOCK.acquire(Keys.health(cntx.user.id), function (done) {
                 setTimeout(done, 5 * 60 * 1000);
                 DataUser.getById(cntx.user.id, function (user) {
-                    if (user.health > 0) {
+                    if (LogicHealth.getHealths(user) > 0) {
                         Logs.log("Health tid:" + tid + " uid:" + user.id + " NO ZERO", Logs.LEVEL_DETAIL, user, Logs.CHANNEL_VK_HEALTH);
                         done();
                     } else {
@@ -97,7 +97,7 @@ SAPIStuff = function () {
                                 done();
                             } else {
                                 Logs.log("Health tid:" + tid + "uid:" + user.id + " +" + LogicHealth.getMaxHealth() + " OK", Logs.LEVEL_DETAIL, user, Logs.CHANNEL_VK_HEALTH);
-                                user.health = LogicHealth.getMaxHealth();
+                                LogicHealth.setMaxHealth(user);
                                 DataUser.updateHealthAndStartTime(user, function () {
                                         CAPIUser.updateUserInfo(cntx.user.id, user);
                                         done();

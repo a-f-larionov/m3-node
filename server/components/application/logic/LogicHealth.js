@@ -1,5 +1,11 @@
 LogicHealth = function () {
 
+    let getTime = function () {
+        return typeof LogicTimeClient !== 'undefined' ?
+            LogicTimeClient.getTime() :
+            LogicTimeServer.getTime();
+    };
+
     this.getMaxHealth = function () {
         return DataCross.user.maxHealth;
     };
@@ -8,58 +14,48 @@ LogicHealth = function () {
         return DataCross.user.healthRecoveryTime;
     };
 
-    this.checkHealth = function (userId) {
-        let recoveryTime, healthStartTime, now, left, healthToUp, maxHealth;
-        maxHealth = LogicHealth.getMaxHealth();
-        DataUser.getById(userId, function (user) {
-            if (user.health < maxHealth) {
-                recoveryTime = LogicHealth.getHealthRecoveryTime();
-                healthStartTime = user.healthStartTime;
-                now = LogicTimeServer.getMicroTime();
-                left = recoveryTime - (now - healthStartTime);
-                if (left > 0) {
-                    // повторим позже, если необходимо
-                    CAPIUser.healthChecked(user.id);
-                    Logs.log("healthCheck time bug:", Logs.LEVEL_WARNING, {user: user, now: now, left: left});
-                    setTimeout(function () {
-                        LogicHealth.checkHealth(userId);
-                    }, left);
-                    return;
-                }
+    this.getHealths = function (user) {
+        let fullRecoveryTime, now, recoveryTime, timeLeft;
+        fullRecoveryTime = user.healthStartTime;
+        now = getTime();
+        recoveryTime = LogicHealth.getHealthRecoveryTime();
 
-                healthToUp = Math.min(
-                    Math.floor(Math.abs((now - healthStartTime) / recoveryTime)),
-                    (maxHealth - user.health)
-                );
-                user.health += healthToUp;
-                CAPIMap.log(userId, {
-                    health: user.health,
-                    recoveryTime: recoveryTime,
-                    healthStartTime: healthStartTime,
-                    now: now,
-                    left: left,
-                    healthToUp: healthToUp
-                });
-                if (user.health < maxHealth) {
-                    user.healthStartTime += recoveryTime * healthToUp;
-                }
-                DataUser.updateHealthAndStartTime(user, function () {
-                    CAPIMap.log(userId, 'update health');
-                    CAPIUser.updateUserInfo(user.id, user);
-                    CAPIUser.healthChecked(user.id);
-                });
-            }
-        });
+        timeLeft = fullRecoveryTime - now;
+
+        if (timeLeft <= 0) return this.getMaxHealth();
+
+        return Math.max(0, this.getMaxHealth() - Math.ceil(timeLeft / recoveryTime));
     };
 
-    this.zeroLife = function (userId) {
-        DataUser.getById(userId, function (user) {
-            user.health = 0;
-            user.healthStartTime = LogicTimeServer.getMicroTime();
-            DataUser.updateHealthAndStartTime(user, function () {
-                CAPIUser.updateUserInfo(user.id, user);
-            });
-        });
+    this.isMaxHealths = function (user) {
+        return this.getHealths(user) === this.getMaxHealth();
+    };
+
+    this.setMaxHealth = function (user) {
+        user.healthStartTime = getTime();
+    };
+
+    this.decrementHealth = function (user, quantity) {
+        if (!quantity) quantity = 1;
+        /** Сброс таймера, если максимум жизней */
+        if (LogicHealth.isMaxHealths(user)) {
+            LogicHealth.setMaxHealth(user);
+        }
+        if (LogicHealth.getHealths(user) === 0) {
+            LogicHealth.zeroLife(user);
+        }
+        user.healthStartTime += this.getHealthRecoveryTime() * quantity;
+    };
+
+    this.getTimeLeft = function (user) {
+        let left;
+        if (this.isMaxHealths(user)) return 0;
+        left = user.healthStartTime - getTime();
+        return left - Math.floor(left / this.getHealthRecoveryTime()) * this.getHealthRecoveryTime();
+    };
+
+    this.zeroLife = function (user) {
+        user.healthStartTime = getTime() + this.getHealthRecoveryTime() * this.getMaxHealth();
     }
 };
 

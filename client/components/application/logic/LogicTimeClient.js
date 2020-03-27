@@ -25,7 +25,7 @@ LogicTimeClient = function () {
     };
 
     this.getTime = function () {
-        return Math.floor(((new Date()).getTime() + timeDiff) / 1000);
+        return Math.floor(this.getMicroTime() / 1000);
     };
 
     this.getMicroTime = function () {

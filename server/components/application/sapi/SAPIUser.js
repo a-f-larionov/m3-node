@@ -93,19 +93,11 @@ SAPIUser = function () {
         if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
 
-        //KEYS.(cntx.user.id, KEYS.KEY_HEALTH)
-        //KEYS.health(cntx.user.id);
-        LOCK.acquire('stuff-' + cntx.user.id + '-health', function (done) {
+        LOCK.acquire(Keys.health(cntx.user.id), function (done) {
+            setTimeout(done, 5 * 60 * 1000);
             DataUser.getById(cntx.user.id, function (user) {
-                let now, recoveryTime;
-                if (user.health > 0) {
-                    user.health++;
-                    user.health = Math.max(user.health, LogicHealth.getMaxHealth());
-                    now = LogicTimeServer.getMicroTime();
-                    recoveryTime = LogicHealth.getHealthRecoveryTime();
-                    if (now > (user.healthStartTime + recoveryTime)) {
-                        user.healthStartTime = now;
-                    }
+                if (!LogicHealth.isMaxHealths(user)) {
+                    LogicHealth.decrementHealth(user, -1);
                     DataUser.updateHealthAndStartTime(user, function () {
                             CAPIUser.updateUserInfo(cntx.user.id, user);
                         }
@@ -124,17 +116,13 @@ SAPIUser = function () {
         if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
 
         LOCK.acquire(Keys.health(cntx.user.id), function (done) {
+            //@todo auto LOCK timeout(with keys!)
+            setTimeout(done, 5 * 60 * 1000);
             DataUser.getById(cntx.user.id, function (user) {
-                let now, recoveryTime;
-                if (user.health > 0) {
-                    user.health--;
-                    now = LogicTimeServer.getMicroTime();
-                    recoveryTime = LogicHealth.getHealthRecoveryTime();
-                    if (now > (user.healthStartTime + recoveryTime)) {
-                        user.healthStartTime = now;
-                    }
+                if (LogicHealth.getHealths(user) > 0) {
+                    LogicHealth.decrementHealth(user, 1);
                     DataUser.updateHealthAndStartTime(user, function () {
-                            CAPIUser.updateUserInfo(cntx.user.id, user);
+                            CAPIUser.updateUserInfo(user.id, user);
                         }
                     );
                     done();
@@ -145,6 +133,7 @@ SAPIUser = function () {
         });
     };
 
+    /*
     this.checkHealth = function (cntx) {
         if (!cntx.isAuthorized) return Logs.log(arguments.callee.name + " not authorized", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
@@ -153,12 +142,22 @@ SAPIUser = function () {
         LogicHealth.checkHealth(cntx.user.id);
     };
 
+     */
+
     this.zeroLife = function (cntx) {
         if (!cntx.isAuthorized) return Logs.log(arguments.callee.name + " not authorized", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
 
-        LogicHealth.zeroLife(cntx.user.id);
+        //@todo lock
+        DataUser.getById(cntx.user.id, function (user) {
+
+            LogicHealth.zeroLife(user);
+
+            DataUser.updateHealthAndStartTime(user, function () {
+                CAPIUser.updateUserInfo(user.id, user);
+            });
+        });
     };
 };
 /**

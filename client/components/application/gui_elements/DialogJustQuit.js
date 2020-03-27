@@ -31,8 +31,6 @@ DialogJustQuit = function () {
                 srcHover: '/images/button-red-hover.png',
                 srcActive: '/images/button-red-active.png',
                 onClick: function () {
-                    //LogicUser.onTurnsLoose();
-                    LogicUser.onFieldNow = false;
                     self.closeDialog();
                     PageController.showPage(PageMain);
                 },
