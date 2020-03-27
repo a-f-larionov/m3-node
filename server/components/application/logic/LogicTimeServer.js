@@ -5,15 +5,19 @@ LogicTimeServer = function () {
     };
 
     /**
-     * Return current time.
+     * Return current time. (micro seconds)
      * @returns {number}
      */
     this.getMicroTime = function () {
         return (new Date).getTime();
     };
 
+    /**
+     * Return time in seconds.
+     * @returns {number}
+     */
     this.getTime = function () {
-        Math.floor(this.getMicroTime() / 1000);
+        return Math.floor(this.getMicroTime() / 1000);
     }
 };
 
