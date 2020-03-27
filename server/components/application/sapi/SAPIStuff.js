@@ -98,11 +98,7 @@ SAPIStuff = function () {
                             } else {
                                 Logs.log("Health tid:" + tid + "uid:" + user.id + " +" + LogicHealth.getMaxHealth() + " OK", Logs.LEVEL_DETAIL, user, Logs.CHANNEL_VK_HEALTH);
                                 user.health = LogicHealth.getMaxHealth();
-                                DataUser.updateHealthAndStartTime(
-                                    user.id,
-                                    user.health,
-                                    user.healthStartTime,
-                                    function () {
+                                DataUser.updateHealthAndStartTime(user, function () {
                                         CAPIUser.updateUserInfo(cntx.user.id, user);
                                         done();
                                     }

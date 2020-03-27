@@ -84,35 +84,23 @@ ElementHealthTimer = function () {
     this.updateTimer = function () {
         let recoveryTime, healthStartTime, now, left, user, health;
         if (!showed) return;
+
         user = LogicUser.getCurrentUser();
+        health = user.health;
         if (LogicUser.onFieldNow) {
-            health = LogicUser.oldHealth;
+            health--;
             healthStartTime = LogicUser.oldHealthStartTime / 1000;
-        }else{
-            health = user.health;
+        } else {
             healthStartTime = LogicUser.getCurrentUser().healthStartTime / 1000;
         }
         if (health === LogicHealth.getMaxHealth()) {
             self.healthIndicator.redraw();
             elText.hide();
-
         } else {
             recoveryTime = LogicHealth.getHealthRecoveryTime();
             now = LogicTimeClient.getTime();
             left = recoveryTime - (now - healthStartTime);
 
-            let toHHMMSS = function (val) {
-                let sec_num = parseInt(val, 10); // don't forget the second param
-                let hours = Math.floor(sec_num / 3600);
-                let minutes = Math.floor((sec_num - (hours * 3600)) / 60);
-                let seconds = sec_num - (hours * 3600) - (minutes * 60);
-
-                if (hours < 10) hours = "0" + hours;
-                if (minutes < 10) minutes = "0" + minutes;
-                if (seconds < 10) seconds = "0" + seconds;
-                /** hours+':'+*/
-                return minutes + ':' + seconds;
-            };
             elText.setText(toHHMMSS(left));
             elText.show();
             elText.redraw();
@@ -120,5 +108,18 @@ ElementHealthTimer = function () {
                 LogicHealth.checkHealth();
             }
         }
-    }
+    };
+
+    let toHHMMSS = function (val) {
+        let sec_num = parseInt(val, 10); /** don't forget the second param */
+         let hours = Math.floor(sec_num / 3600);
+         let minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+         let seconds = sec_num - (hours * 3600) - (minutes * 60);
+
+         if (hours < 10) hours = "0" + hours;
+         if (minutes < 10) minutes = "0" + minutes;
+         if (seconds < 10) seconds = "0" + seconds;
+         /** hours+':'+*/
+        return minutes + ':' + seconds;
+    };
 };

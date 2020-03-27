@@ -78,7 +78,6 @@ DialogPointInfo = function () {
                 } else {
                     /** Начать игру */
                     LogicUser.onFieldNow = true;
-                    LogicUser.oldHealth = LogicUser.getCurrentUser().health;
                     LogicUser.oldHealthStartTime = LogicUser.getCurrentUser().healthStartTime;
 
                     LogicUser.getCurrentUser().health--;

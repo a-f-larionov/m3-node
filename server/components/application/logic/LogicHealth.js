@@ -5,7 +5,7 @@ LogicHealth = function () {
     };
 
     this.getHealthRecoveryTime = function () {
-        return DataCross.user.healthRecoveryTime * 1000;
+        return DataCross.user.healthRecoveryTime;
     };
 
     this.checkHealth = function (userId) {
@@ -43,12 +43,23 @@ LogicHealth = function () {
                 if (user.health < maxHealth) {
                     user.healthStartTime += recoveryTime * healthToUp;
                 }
-                DataUser.updateHealthAndStartTime(user.id, user.health, user.healthStartTime, function () {
+                DataUser.updateHealthAndStartTime(user, function () {
                     CAPIMap.log(userId, 'update health');
                     CAPIUser.updateUserInfo(user.id, user);
                     CAPIUser.healthChecked(user.id);
                 });
             }
+        });
+    };
+
+    this.zeroLife = function (userId) {
+
+        DataUser.getById(userId, function (user) {
+            user.health = 0;
+            user.healthStartTime = LogicTimeServer.getCurrentTime();
+            DataUser.updateHealthAndStartTime(user, function () {
+                CAPIUser.updateUserInfo(user.id, user);
+            });
         });
     }
 };

@@ -191,15 +191,15 @@ DataUser = function () {
                 " WHERE id = " + userId, callback);
         };
     */
-    this.updateHealthAndStartTime = function (userId, health, healthStartTime, callback) {
-        if (cache[userId]) {
-            cache[userId].health = health;
-            cache[userId].healthStartTime = healthStartTime;
+    this.updateHealthAndStartTime = function (user, callback) {
+        if (cache[user.id]) {
+            cache[user.id].health = user.health;
+            cache[user.id].healthStartTime = user.healthStartTime;
         }
         DB.query("UPDATE " + tableName +
-            " SET health = " + health +
-            " , healthStartTime = " + healthStartTime +
-            " WHERE id = " + userId, callback);
+            " SET health = " + user.health +
+            " , healthStartTime = " + user.healthStartTime +
+            " WHERE id = " + user.id, callback);
     };
 };
 

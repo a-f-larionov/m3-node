@@ -93,6 +93,8 @@ SAPIUser = function () {
         if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
 
+        //KEYS.(cntx.user.id, KEYS.KEY_HEALTH)
+        //KEYS.health(cntx.user.id);
         LOCK.acquire('stuff-' + cntx.user.id + '-health', function (done) {
             DataUser.getById(cntx.user.id, function (user) {
                 let now, recoveryTime;
@@ -104,11 +106,7 @@ SAPIUser = function () {
                     if (now > (user.healthStartTime + recoveryTime)) {
                         user.healthStartTime = now;
                     }
-                    DataUser.updateHealthAndStartTime(
-                        user.id,
-                        user.health,
-                        user.healthStartTime,
-                        function () {
+                    DataUser.updateHealthAndStartTime(user, function () {
                             CAPIUser.updateUserInfo(cntx.user.id, user);
                         }
                     );
@@ -125,7 +123,7 @@ SAPIUser = function () {
         if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
 
-        LOCK.acquire('stuff-' + cntx.user.id + '-health', function (done) {
+        LOCK.acquire(Keys.health(cntx.user.id), function (done) {
             DataUser.getById(cntx.user.id, function (user) {
                 let now, recoveryTime;
                 if (user.health > 0) {
@@ -135,11 +133,7 @@ SAPIUser = function () {
                     if (now > (user.healthStartTime + recoveryTime)) {
                         user.healthStartTime = now;
                     }
-                    DataUser.updateHealthAndStartTime(
-                        user.id,
-                        user.health,
-                        user.healthStartTime,
-                        function () {
+                    DataUser.updateHealthAndStartTime(user, function () {
                             CAPIUser.updateUserInfo(cntx.user.id, user);
                         }
                     );
@@ -164,17 +158,7 @@ SAPIUser = function () {
         if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
 
-        DataUser.getById(cntx.user.id, function (user) {
-            user.health = 0;
-            user.healthStartTime = LogicTimeServer.getCurrentTime();
-            DataUser.updateHealthAndStartTime(
-                user.id,
-                0,
-                LogicTimeServer.getCurrentTime(),
-                function () {
-                    CAPIUser.updateUserInfo(user.id, user);
-                });
-        });
+        LogicHealth.zeroLife(cntx.user.id);
     };
 };
 /**

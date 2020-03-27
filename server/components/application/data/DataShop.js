@@ -24,7 +24,7 @@ DataShop.gold = [
     },
     {
         votes: 10,
-        quantity: 100
+        quantity: 1000
     }
 ];
 
