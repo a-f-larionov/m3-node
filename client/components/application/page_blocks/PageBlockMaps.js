@@ -76,7 +76,7 @@ PageBlockMaps = function PageBlockMaps() {
         });
         self.elements.push(elMap);
 
-        /*
+        /**
          - 1 on load map - create elements and hide it
          - 2 on showMap(1) -> set Map picture, show elements on current map
          */
@@ -99,8 +99,9 @@ PageBlockMaps = function PageBlockMaps() {
         });
         self.elements.push(elArrowNext);
 
-        /* Points */
+        /** Points */
         DataPoints.getPointsCoords().forEach(function (coords) {
+            if (coords.number === 1) GUI.setTagId(LogicWizard.TAG_FIRST_NUMBER_POINT);
             el = GUI.createElement(ElementPoint, {
                 x: coords.x, y: coords.y,
                 friends: [],
@@ -113,9 +114,10 @@ PageBlockMaps = function PageBlockMaps() {
             });
             self.elements.push(el);
             pointsEls[coords.number] = el;
+            if (coords.number === 1) GUI.setTagId(null);
         });
 
-        // сундуки
+        /** Сундуки */
         DataChests.getCoords().forEach(function (coord) {
             el = GUI.createElement(ElementChest, {
                 x: coord.x, y: coord.y,
@@ -149,7 +151,6 @@ PageBlockMaps = function PageBlockMaps() {
                     }
                 }
             });
-            //self.elements.push(el);
             chestsEls[coord.number] = el;
         });
 

@@ -89,6 +89,8 @@ GUI = function () {
 
     this.lockEventsExcept = null;
 
+    let tagId = null;
+
     /**
      * Инициализация.
      * - установим родителя, это будет тело документа.
@@ -194,13 +196,13 @@ GUI = function () {
             Logs.log("GUI.craeteElement: элемент должен иметь функцию init().", Logs.LEVEL_FATAL_ERROR, arguments);
         }
         if (!element.show || typeof element.show != 'function') {
-            Logs.log("GUI.craeteElement: элемент должен иметь функцию show().", Logs.LEVEL_FATAL_ERROR, arguments);
+            Logs.log("GUI.createElement: элемент должен иметь функцию show().", Logs.LEVEL_FATAL_ERROR, arguments);
         }
         if (!element.hide || typeof element.hide != 'function') {
-            Logs.log("GUI.craeteElement: элемент должен иметь функцию hide().", Logs.LEVEL_FATAL_ERROR, arguments);
+            Logs.log("GUI.createElement: элемент должен иметь функцию hide().", Logs.LEVEL_FATAL_ERROR, arguments);
         }
         if (!element.redraw || typeof element.redraw != 'function') {
-            Logs.log("GUI.craeteElement: элемент должен иметь функцию redraw().", Logs.LEVEL_FATAL_ERROR, arguments);
+            Logs.log("GUI.createElement: элемент должен иметь функцию redraw().", Logs.LEVEL_FATAL_ERROR, arguments);
         }
         for (let i in params) {
             element[i] = params[i];
@@ -251,6 +253,7 @@ GUI = function () {
         let dom;
         dom = new GUIDom();
         dom.init(undefined, parent);
+        if (tagId) dom.__dom.tagId = tagId;
         if (params) {
             for (let name in params) {
                 dom[name] = params[name];
@@ -415,14 +418,10 @@ GUI = function () {
 
     this.isFullScreen = function () {
         return isFSMode;
-        /*return !!(
-             document.fullScreenElement ||
-             document.msFullscreenElement ||
-             document.mozFullScreen ||
-             document.webkitIsFullScreen ||
-             cur.pvPartScreen
-         );
-         */
+    };
+
+    this.setTagId = function (id) {
+        tagId = id;
     };
 };
 

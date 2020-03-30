@@ -338,7 +338,7 @@ ElementPoint = function () {
      * @param dom {Element}
      */
     let onMouseClick = function (mouseEvent, dom) {
-        /* Да, тут мы останавливаем дальнейшие течение клика. */
+        /** Да, тут мы останавливаем дальнейшие течение клика. */
         mouseEvent.stopPropagation();
         if (self.stateId === ElementPoint.STATE_CLOSE) return;
         mouseStateDown = false;

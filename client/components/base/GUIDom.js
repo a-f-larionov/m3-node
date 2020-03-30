@@ -71,26 +71,26 @@ GUIDom = function () {
      * @param parent [GUIDom] родитель.
      */
     this.init = function (tagName, parent) {
-        /* Начальное значение старых свойств */
+        /** Начальное значение старых свойств */
         for (let i in props) {
             oldProps[i] = undefined;
         }
         if (!tagName) {
             tagName = 'span';
         }
-        /* Создадим дом */
+        /** Создадим дом */
         dom = document.createElement(tagName);
-        /* значения по умолчанию для дом-ов. */
+        /** Значения по умолчанию для дом-ов. */
         dom.style.position = 'absolute';
         dom.style.overflow = 'hidden';
         if (tagName === 'input') {
             dom.style.border = 'none';
         }
-        /* no dragable by default */
+        /** Does not dragable by default */
         dom.ondragstart = function () {
             return false;
         };
-        /* Добавим дом к родителю. */
+        /** Добавим дом к родителю. */
         this.__dom = dom;
         dom.__dom = this;
         if (!parent) {

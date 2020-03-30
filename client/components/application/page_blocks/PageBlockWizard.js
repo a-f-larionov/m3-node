@@ -31,19 +31,10 @@ PageBlockWizard = function PageBlockWizard() {
         canvas = document.getElementById('wizardArea');
         canvas.width = DataCross.application.width;
         canvas.height = DataCross.application.height;
+        canvas.style.display = 'none';
         cntx = canvas.getContext('2d');
-        self.elements.push({
-            redraw: function () {
-            },
-            show: function () {
-                canvas.style.display = '';
-            },
-            hide: function () {
-                canvas.style.display = 'none';
-            }
-        });
 
-        /** on Click */
+        /** On Click */
         canvas.onclick = function (event) {
             let pixelData, el;
             pixelData = cntx.getImageData(event.offsetX, event.offsetY, 1, 1).data;
@@ -52,8 +43,10 @@ PageBlockWizard = function PageBlockWizard() {
                 el = document.elementFromPoint(event.clientX, event.clientY);
                 el.dispatchEvent(new MouseEvent(event.type, event));
                 canvas.style.display = '';
+                LogicWizard.onClick(el);
             }
         };
+        /** On Move*/
         canvas.onmousemove = function (event) {
             let pixelData, el;
             pixelData = cntx.getImageData(event.offsetX, event.offsetY, 1, 1).data;
@@ -68,23 +61,11 @@ PageBlockWizard = function PageBlockWizard() {
             }
         };
 
-        let image;
-        // images
-        image = new Image();
-        image.onload = function () {
-            drawBackground();
-
-            cntx.globalAlpha = 1;
-            cntx.globalCompositeOperation = 'destination-out';
-            cntx.drawImage(image, -5, 140);
-        };
-        image.src = '/images/wizard-01.png';
-
         elDialog = GUI.createElement(ElementImage, {
             x: 400, y: 360, src: '/images/wizard-dialog.png'
         });
         elDialog.dom.__dom.style.zIndex = 20000;
-        self.elements.push(elDialog);
+        elDialog.hide();
 
         let dialogBorder = 16;
         elText = GUI.createElement(ElementText, {
@@ -94,7 +75,7 @@ PageBlockWizard = function PageBlockWizard() {
             alignCenter: true, zIndex: 20001,
             text: 'text'
         });
-        self.elements.push(elText);
+        elText.hide();
     };
 
     let drawBackground = function () {
@@ -132,7 +113,7 @@ PageBlockWizard = function PageBlockWizard() {
      * Настройка перед отрисовкой.
      */
     this.preset = function () {
-        elText.text = 'НАЖМИ НА КРАСНЫЙ КРУЖОК ЧТО БЫ НАЧАТЬ ИГРАТЬ!';
+
     };
 
     /**
@@ -144,6 +125,35 @@ PageBlockWizard = function PageBlockWizard() {
         self.elements.forEach(function (el) {
             el.redraw();
         });
+        elDialog.redraw();
+        elText.redraw();
+    };
+
+    this.begin = function () {
+        canvas.style.display = '';
+        drawBackground();
+    };
+
+    this.finish = function () {
+        canvas.style.display = 'none';
+        elDialog.hide();
+        elText.hide();
+    };
+
+    this.updateText = function (text) {
+        elText.text = text;
+        self.redraw();
+    };
+
+    this.showDialog = function () {
+        elDialog.show();
+        elText.show();
+    };
+
+    this.draw = function (callback) {
+        cntx.globalAlpha = 1;
+        cntx.globalCompositeOperation = 'destination-out';
+        callback(cntx);
     };
 };
 
