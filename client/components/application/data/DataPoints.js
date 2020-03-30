@@ -34,9 +34,6 @@ DataPoints = function () {
     this.objectImages[this.OBJECT_YELLOW] = '/images/field-yellow.png';
     this.objectImages[this.OBJECT_PURPLE] = '/images/field-purple.png';
 
-    let yA = 190;
-    let yB = 260;
-
     let pointsCoords = [
         {
             number: 1,

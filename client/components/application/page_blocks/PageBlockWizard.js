@@ -24,35 +24,42 @@ PageBlockWizard = function PageBlockWizard() {
     let elDialog = null;
     let elText = null;
 
+    let dialogBorder = 16;
+
     this.init = function () {
         let el;
 
         /** Canvas */
         canvas = document.getElementById('wizardArea');
-        canvas.width = DataCross.application.width;
-        canvas.height = DataCross.application.height;
+
+        canvas.width = DataCross.application.width * window.devicePixelRatio;
+        canvas.height = DataCross.application.height * window.devicePixelRatio;
         canvas.style.display = 'none';
         cntx = canvas.getContext('2d');
 
         /** On Click */
         canvas.onclick = function (event) {
-            let pixelData, el;
-            pixelData = cntx.getImageData(event.offsetX, event.offsetY, 1, 1).data;
+            let pixelData, el, x, y;
+            x = event.offsetX * window.devicePixelRatio;
+            y = event.offsetY * window.devicePixelRatio;
+            pixelData = cntx.getImageData(x, y, 1, 1).data;
             if (pixelData[3] === 0) {
                 canvas.style.display = 'none';
-                el = document.elementFromPoint(event.clientX, event.clientY);
+                el = document.elementFromPoint(event.offsetX, event.offsetY);
                 el.dispatchEvent(new MouseEvent(event.type, event));
                 canvas.style.display = '';
                 LogicWizard.onClick(el);
             }
         };
-        /** On Move*/
+        /** On Move */
         canvas.onmousemove = function (event) {
-            let pixelData, el;
-            pixelData = cntx.getImageData(event.offsetX, event.offsetY, 1, 1).data;
+            let pixelData, el, x, y;
+            x = event.offsetX * window.devicePixelRatio;
+            y = event.offsetY * window.devicePixelRatio;
+            pixelData = cntx.getImageData(x, y, 1, 1).data;
             if (pixelData[3] === 0) {
                 canvas.style.display = 'none';
-                el = document.elementFromPoint(event.clientX, event.clientY);
+                el = document.elementFromPoint(event.offsetX, event.offsetY);
                 el.dispatchEvent(new MouseEvent(event.type, event));
                 canvas.style.cursor = el.style.cursor;
                 canvas.style.display = '';
@@ -67,7 +74,6 @@ PageBlockWizard = function PageBlockWizard() {
         elDialog.dom.__dom.style.zIndex = 20000;
         elDialog.hide();
 
-        let dialogBorder = 16;
         elText = GUI.createElement(ElementText, {
             x: 400 + dialogBorder, y: 360 + dialogBorder,
             width: GUI.getImageWidth('/images/wizard-dialog.png') - dialogBorder * 2,
@@ -79,10 +85,17 @@ PageBlockWizard = function PageBlockWizard() {
     };
 
     let drawBackground = function () {
+        cntx.clearRect(0, 0,
+            DataCross.application.width * window.devicePixelRatio,
+            DataCross.application.height * window.devicePixelRatio
+        );
         cntx.globalCompositeOperation = 'source-out';
         cntx.globalAlpha = 0.75;
         cntx.fillStyle = 'black';
-        cntx.fillRect(0, 0, DataCross.application.width, DataCross.application.height);
+        cntx.fillRect(0, 0,
+            DataCross.application.width * window.devicePixelRatio,
+            DataCross.application.height * window.devicePixelRatio
+        );
     };
 
     /**
@@ -145,9 +158,17 @@ PageBlockWizard = function PageBlockWizard() {
         self.redraw();
     };
 
-    this.showDialog = function () {
+    this.showDialog = function (x, y, textOffsetY) {
+        if (!x) x = 400;
+        if (!y) y = 360;
+        if (!textOffsetY) textOffsetY = 0;
+        elDialog.x = x;
+        elDialog.y = y;
+        elText.x = x + dialogBorder;
+        elText.y = y + dialogBorder + textOffsetY;
         elDialog.show();
         elText.show();
+        self.redraw();
     };
 
     this.draw = function (callback) {
