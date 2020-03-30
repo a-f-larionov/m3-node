@@ -44,7 +44,7 @@ PageBlockPanel = function PageBlockPanel() {
             srcHover: '/images/button-money-hover.png',
             srcActive: '/images/button-money-active.png',
             onClick: function () {
-                PageBlockQDialogs.dialogMoneyShop.showDialog();
+                PageBlockZDialogs.dialogMoneyShop.showDialog();
             }
         });
         self.elements.push(el);
@@ -62,7 +62,7 @@ PageBlockPanel = function PageBlockPanel() {
             srcHover: '/images/button-add-hover.png',
             srcActive: '/images/button-add-active.png',
             onClick: function () {
-                PageBlockQDialogs.dialogMoneyShop.showDialog();
+                PageBlockZDialogs.dialogMoneyShop.showDialog();
             }
         });
         self.elements.push(el);
@@ -100,7 +100,7 @@ PageBlockPanel = function PageBlockPanel() {
             srcHover: '/images/button-add-hover.png',
             srcActive: '/images/button-add-active.png',
             onClick: function () {
-                PageBlockQDialogs.dialogHealthShop.showDialog();
+                PageBlockZDialogs.dialogHealthShop.showDialog();
             }
         });
         self.elements.push(el);

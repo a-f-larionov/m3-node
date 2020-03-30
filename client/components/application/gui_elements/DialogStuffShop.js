@@ -117,7 +117,7 @@ DialogStuffShop = function () {
         }
 
         if (userGold < shopItem.gold) {
-            PageBlockQDialogs.dialogMoneyShop.showDialog();
+            PageBlockZDialogs.dialogMoneyShop.showDialog();
             self.reset();
             self.showDialog(stuffId);
         } else {

@@ -73,7 +73,7 @@ DialogHealthShop = function () {
         if (LogicHealth.getHealths(user) > 0) return;
 
         if (gold < DataShop.healthPrice) {
-            PageBlockQDialogs.dialogMoneyShop.showDialog(this);
+            PageBlockZDialogs.dialogMoneyShop.showDialog(this);
             self.closeDialog();
         } else {
             SAPIStuff.buyHealth();

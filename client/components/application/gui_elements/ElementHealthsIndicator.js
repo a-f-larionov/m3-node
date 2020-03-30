@@ -80,7 +80,6 @@ ElementHealthIndicator = function () {
         i = 1;
 
         health = LogicHealth.getHealths(user);
-        console.log('health', health);
 
         step = 50 - 15;
         if (health === LogicHealth.getMaxHealth() - 1) {

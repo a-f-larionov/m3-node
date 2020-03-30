@@ -64,9 +64,9 @@ PageBlockField = function PageBlockField() {
             srcActive: '/images/button-quit-active.png',
             onClick: function () {
                 if (turns === 0) {
-                    PageBlockQDialogs.dialogTurnsLoose.reset();
+                    PageBlockZDialogs.dialogTurnsLoose.reset();
                 } else {
-                    PageBlockQDialogs.dialogJustQuit.showDialog();
+                    PageBlockZDialogs.dialogJustQuit.showDialog();
                 }
             }
         });
@@ -201,7 +201,7 @@ PageBlockField = function PageBlockField() {
             /** Передаем клик дальше, теоретически после анимации */
             domStuff.hide();
             el = document.elementFromPoint(event.clientX, event.clientY);
-            console.log(el);
+
             /** Признак каменного поля :) */
             if (el.__dom.fieldX !== undefined && el.__dom.fieldY !== undefined) {
                 el.dispatchEvent(new MouseEvent(event.type, event));
@@ -268,10 +268,10 @@ PageBlockField = function PageBlockField() {
         elementField.unlock();
         elementField.run();
         data = DataPoints.getById(DataPoints.getPlayedId());
-        PageBlockQDialogs.dialogGoals.setGoals(data.goals);
-        PageBlockQDialogs.dialogGoals.showDialog();
+        PageBlockZDialogs.dialogGoals.setGoals(data.goals);
+        PageBlockZDialogs.dialogGoals.showDialog();
         setTimeout(function () {
-            PageBlockQDialogs.dialogGoals.closeDialog();
+            PageBlockZDialogs.dialogGoals.closeDialog();
         }, 1750 * 100
         );
         noMoreGoals = false;
@@ -353,7 +353,7 @@ PageBlockField = function PageBlockField() {
         //@todo
         SAPIUser.onPlayFinish();
         //PageBlockPanel.oneHealthHide =false;
-        PageBlockQDialogs.dialogGoalsReached.showDialog(pointId);
+        PageBlockZDialogs.dialogGoalsReached.showDialog(pointId);
         PageController.redraw();
     };
 
@@ -362,7 +362,7 @@ PageBlockField = function PageBlockField() {
         // and goals
         if (turns === 0 && !noMoreGoals) {
             elementField.lock();
-            PageBlockQDialogs.dialogTurnsLoose.showDialog();
+            PageBlockZDialogs.dialogTurnsLoose.showDialog();
         }
         self.redraw();
     };
@@ -392,21 +392,21 @@ PageBlockField = function PageBlockField() {
         switch (mode) {
             case LogicStuff.STUFF_HUMMER:
                 if (LogicStuff.getStuff('hummerQty') < 1) {
-                    PageBlockQDialogs.dialogStuffShop.showDialog(mode);
+                    PageBlockZDialogs.dialogStuffShop.showDialog(mode);
                     return;
                 }
                 domStuff.backgroundImage = '/images/button-hummer-active.png';
                 break;
             case LogicStuff.STUFF_LIGHTING:
                 if (LogicStuff.getStuff('lightingQty') < 1) {
-                    PageBlockQDialogs.dialogStuffShop.showDialog(mode);
+                    PageBlockZDialogs.dialogStuffShop.showDialog(mode);
                     return;
                 }
                 domStuff.backgroundImage = '/images/button-lighting-active.png';
                 break;
             case LogicStuff.STUFF_SHUFFLE:
                 if (LogicStuff.getStuff('shuffleQty') < 1) {
-                    PageBlockQDialogs.dialogStuffShop.showDialog(mode);
+                    PageBlockZDialogs.dialogStuffShop.showDialog(mode);
                     return;
                 }
                 domStuff.backgroundImage = '/images/button-shuffle-active.png';

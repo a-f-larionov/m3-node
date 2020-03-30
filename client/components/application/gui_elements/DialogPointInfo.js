@@ -73,7 +73,7 @@ DialogPointInfo = function () {
                 self.closeDialog();
                 /** Предложить купить жизни */
                 if (LogicHealth.getHealths(LogicUser.getCurrentUser()) === 0) {
-                    PageBlockQDialogs.dialogHealthShop.showDialog();
+                    PageBlockZDialogs.dialogHealthShop.showDialog();
                     self.showDialog(pointId);
                 } else {
                     /** Начать игру */

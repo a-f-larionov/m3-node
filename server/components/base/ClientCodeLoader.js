@@ -168,7 +168,6 @@ ClientCodeLoader = function () {
         code += '';
 
         let demension = IMAGE_SIZE('../public/images/sprite.png');
-        console.log(demension);
         code += "<style> body div { background-size: "
             + translate2X(demension.width / 2) + "px "
             + translate2X(demension.height / 2) + "px; " +
@@ -180,14 +179,20 @@ ClientCodeLoader = function () {
         code += getClientImageCode();
         /** application div */
         code += "<div style='" +
-            "height:" + Config.Project.applicationAreaHeight + "px;" +
-            "width:" + Config.Project.applicationAreaWidth + "px;" +
+            "height:" + DataCross.application.height + "px;" +
+            "width:" + DataCross.application.width + "px;" +
             "position:absolute;" +
             "top:0px;' " +
             "id='applicationArea' ></div>\r\n";
+        code += "<canvas style='" +
+            "height:" + DataCross.application.height + "px;" +
+            "width:" + DataCross.application.width + "px;" +
+            "position:absolute;" +
+            "top:0px;' " +
+            "id='wizardArea' ></canvas>\r\n";
 
         /** comments div */
-        code += "<div id='vk_comments' style='top:" + Config.Project.applicationAreaHeight + "px;position:absolute;'>";
+        code += "<div id='vk_comments' style='top:" + DataCross.application.height + "px;position:absolute;'>";
         code += "<iframe src='" + projectPrefix + "/service/VKCommentsWidget' style='border:none; height: " + (Config.VKCommentWidget.height + 44) + "px; width:" + Config.VKCommentWidget.width + ";'></iframe>";
         code += "</div>\r\n";
         code += "</BODY></HTML>";
@@ -211,10 +216,17 @@ ClientCodeLoader = function () {
         code += "</head>";
         code += "<body>";
         code += "<div style='" +
-            "height:" + Config.Project.applicationAreaHeight + "px;" +
-            "width:" + Config.Project.applicationAreaWidth + "px;" +
+            "height:" + DataCross.application.height + "px;" +
+            "width:" + DataCross.application.width + "px;" +
             "position:absolute;' " +
             "id='applicationArea' ></div>\r\n";
+        code += "<canvas style='" +
+            "height:" + DataCross.application.height + "px;" +
+            "width:" + DataCross.application.width + "px;" +
+            "position:absolute;" +
+            "top:0px;' " +
+            "id='wizardArea' ></canvas>\r\n";
+
         code += getClientImageCode();
         code += "</body>";
         code += "</html>";

@@ -45,8 +45,6 @@ Config = {
         cacheLimit: 1000
     },
     Project: {
-        applicationAreaHeight: 500,
-        applicationAreaWidth: 777,
         maintance: false
     },
     VKCommentWidget: {

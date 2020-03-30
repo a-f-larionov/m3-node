@@ -108,7 +108,7 @@ PageBlockMaps = function PageBlockMaps() {
                 number: coords.number,
                 pointId: coords.number,
                 onClick: function (event, dom, element) {
-                    PageBlockQDialogs.dialogPointInfo.showDialog(element.pointId);
+                    PageBlockZDialogs.dialogPointInfo.showDialog(element.pointId);
                 }
             });
             self.elements.push(el);
@@ -134,16 +134,16 @@ PageBlockMaps = function PageBlockMaps() {
                         console.log('уже открыт!');
                     } else {
                         if (mapStars < goalStars) {
-                            PageBlockQDialogs.dialogChestNeedStars.mapStars = mapStars;
-                            PageBlockQDialogs.dialogChestNeedStars.goalStars = goalStars;
-                            PageBlockQDialogs.dialogChestNeedStars.showDialog();
+                            PageBlockZDialogs.dialogChestNeedStars.mapStars = mapStars;
+                            PageBlockZDialogs.dialogChestNeedStars.goalStars = goalStars;
+                            PageBlockZDialogs.dialogChestNeedStars.showDialog();
                             // если закрыт и не хватает звёзд - диалог с надписью: что бы открыть сундук , собери еще
                         } else {
                             SAPIChest.openChest(chestId);
                             DataChests.setOpened(chestId);
                             DataPrizes.giveOutPrizes(chest.prizes);
-                            PageBlockQDialogs.dialogChestYouWin.chestId = chestId;
-                            PageBlockQDialogs.dialogChestYouWin.showDialog();
+                            PageBlockZDialogs.dialogChestYouWin.chestId = chestId;
+                            PageBlockZDialogs.dialogChestYouWin.showDialog();
                             PageController.redraw();
                         }
                     }
