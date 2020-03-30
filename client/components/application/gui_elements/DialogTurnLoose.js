@@ -21,6 +21,7 @@ DialogTurnLoose = function () {
                 srcActive: '/images/button-close-active.png',
                 onClick: function () {
                     self.closeDialog();
+                    PageBlockPanel.oneHealthHide = false;
                     PageController.showPage(PageMain);
                 }
             }

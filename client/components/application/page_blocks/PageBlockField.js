@@ -350,7 +350,9 @@ PageBlockField = function PageBlockField() {
                 score
             );
         }
+        //@todo
         SAPIUser.onPlayFinish();
+        //PageBlockPanel.oneHealthHide =false;
         PageBlockQDialogs.dialogGoalsReached.showDialog(pointId);
         PageController.redraw();
     };

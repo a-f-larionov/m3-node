@@ -86,22 +86,26 @@ ElementHealthTimer = function () {
         if (!showed) return;
 
         user = LogicUser.getCurrentUser();
+        if (PageBlockPanel.oneHealthHide) user.fullRecoveryTime -= LogicHealth.getHealthRecoveryTime();
 
         if (LogicHealth.isMaxHealths(user)) {
-
+            if (PageBlockPanel.oneHealthHide) user.fullRecoveryTime += LogicHealth.getHealthRecoveryTime();
             self.healthIndicator.redraw();
             elText.hide();
+
         } else {
-            self.healthIndicator.redraw();
+            if (PageBlockPanel.oneHealthHide) user.fullRecoveryTime += LogicHealth.getHealthRecoveryTime();
+
             elText.setText(toHHMMSS(LogicHealth.getTimeLeft(user)));
             elText.show();
             elText.redraw();
+            self.healthIndicator.redraw();
         }
     };
 
     let toHHMMSS = function (val) {
         let sec_num = parseInt(val, 10);
-        /** don't forget the second param */
+        /** Don't forget the second param */
         let hours = Math.floor(sec_num / 3600);
         let minutes = Math.floor((sec_num - (hours * 3600)) / 60);
         let seconds = sec_num - (hours * 3600) - (minutes * 60);

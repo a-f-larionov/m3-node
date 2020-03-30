@@ -71,6 +71,7 @@ DialogGoalsReached = function () {
             srcActive: '/images/button-red-active.png',
             onClick: function () {
                 self.closeDialog();
+                //PageBlockPanel.oneHealthHide = false;
                 PageController.showPage(PageMain);
             },
             title: 'НА КАРТУ'

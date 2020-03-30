@@ -191,10 +191,9 @@ PageBlockPanel = function PageBlockPanel() {
             elFSButton.srcActive = '/images/button-fs-off-rest.png';
         }
     };
+
+    this.oneHealthHide = false;
 };
 
-/**
- *
- * @type {PageBlockPanel}
- */
+/** @type {PageBlockPanel} */
 PageBlockPanel = new PageBlockPanel();

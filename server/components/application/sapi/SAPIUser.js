@@ -70,7 +70,7 @@ SAPIUser = function () {
     /**
      * Отправляет внутрение id пользователей по их socNetUserId.
      * Тип социальной сети определяется по cntx.user
-     * @param cntx
+     * @param cntx {Object}
      * @param userIds
      */
     this.sendMeUserIdsBySocNet = function (cntx, userIds) {
@@ -87,7 +87,11 @@ SAPIUser = function () {
         });
     };
 
-
+    /**
+     *
+     * @param cntx {Object}
+     * @returns {undefined}
+     */
     this.onPlayFinish = function (cntx) {
         if (!cntx.isAuthorized) return Logs.log(arguments.callee.name + " not authorized", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
@@ -100,6 +104,7 @@ SAPIUser = function () {
                     LogicHealth.decrementHealth(user, -1);
                     DataUser.updateHealthAndStartTime(user, function () {
                             CAPIUser.updateUserInfo(cntx.user.id, user);
+                            CAPIUser.setOneHealthHide(cntx.user.id, false);
                         }
                     );
                     done();
@@ -123,6 +128,7 @@ SAPIUser = function () {
                     LogicHealth.decrementHealth(user, 1);
                     DataUser.updateHealthAndStartTime(user, function () {
                             CAPIUser.updateUserInfo(user.id, user);
+                            CAPIUser.setOneHealthHide(cntx.user.id, true);
                         }
                     );
                     done();

@@ -78,6 +78,7 @@ DialogPointInfo = function () {
                 } else {
                     /** Начать игру */
                     SAPIUser.onPlayStart();
+                    PageBlockPanel.oneHealthHide = true;
                     DataPoints.setPlayedId(pointId);
                     PageController.showPage(PageField);
                 }

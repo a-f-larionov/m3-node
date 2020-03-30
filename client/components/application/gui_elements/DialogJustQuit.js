@@ -16,7 +16,7 @@ DialogJustQuit = function () {
         element.setText("ВЫЙТИ?");
         self.elements.push(element);
 
-        /** надпись в центре */
+        /** Надпись в центре */
         element = GUI.createElement(ElementText, {
             x: 127, y: 114, width: 250,
             bold: true, alignCenter: true,
@@ -32,6 +32,7 @@ DialogJustQuit = function () {
                 srcActive: '/images/button-red-active.png',
                 onClick: function () {
                     self.closeDialog();
+                    PageBlockPanel.oneHealthHide = false;
                     PageController.showPage(PageMain);
                 },
                 title: 'СДАТЬСЯ'

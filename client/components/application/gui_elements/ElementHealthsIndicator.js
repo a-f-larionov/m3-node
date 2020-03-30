@@ -76,8 +76,11 @@ ElementHealthIndicator = function () {
         let health, step, i, user;
         if (!showed) return;
         user = LogicUser.getCurrentUser();
+        if (PageBlockPanel.oneHealthHide) user.fullRecoveryTime -= LogicHealth.getHealthRecoveryTime();
         i = 1;
+
         health = LogicHealth.getHealths(user);
+        console.log('health', health);
 
         step = 50 - 15;
         if (health === LogicHealth.getMaxHealth() - 1) {
@@ -89,5 +92,6 @@ ElementHealthIndicator = function () {
             dom.redraw();
             i++;
         });
+        if (PageBlockPanel.oneHealthHide) user.fullRecoveryTime += LogicHealth.getHealthRecoveryTime();
     };
 };

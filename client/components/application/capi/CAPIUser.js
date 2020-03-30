@@ -26,6 +26,14 @@ CAPIUser = function () {
     this.gotFriendsIds = function (cntx, ids) {
         LogicUser.setFriendIds(ids);
     };
+
+    /**
+     * @param cntx {Object}
+     * @param value {bool}
+     */
+    this.setOneHealthHide = function (cntx, value) {
+        PageBlockPanel.oneHealthHide = value;
+    }
 };
 
 /**

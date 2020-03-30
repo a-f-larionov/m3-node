@@ -48,7 +48,7 @@ LogicMain = function () {
     this.onAuthorizeSuccess = function () {
         SAPITimeServer.sendMeTime();
         LogicStuff.loadStuff();
-        /** установить текущую карту игрока */
+        /** Установить текущую карту игрока */
         DataMap.setCurrentMapId(
             DataMap.getMapIdFromPointId(
                 LogicUser.getCurrentUser().nextPointId

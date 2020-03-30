@@ -10,4 +10,5 @@ PageMain = function () {
     };
 };
 
+/** @type {PageMain} */
 PageMain = new PageMain;
