@@ -30,7 +30,7 @@ ElementField = function () {
     ;
 
     let domHummerDestroy = null,
-        domLightingDestroy = null,
+        domLightningDestroy = null,
         domShuffleDestroy = null
     ;
 
@@ -115,7 +115,7 @@ ElementField = function () {
 
             if (!gemDoms[x]) gemDoms[x] = [];
             dom = GUI.createDom(undefined, {
-                fieldX: x, fieldY: y,
+                p: {x: x, y: y},
                 height: DataPoints.BLOCK_HEIGHT,
                 width: DataPoints.BLOCK_WIDTH,
                 backgroundImage: '/images/field-none.png'
@@ -179,7 +179,7 @@ ElementField = function () {
             ]
         });
 
-        domLightingDestroy = GUI.createDom(undefined, {
+        domLightningDestroy = GUI.createDom(undefined, {
             x: 30, y: 10, height: GUI.getImageHeight('/images/anim-light-1.png'),
             backgroundImage: '/images/anim-light-1.png',
             animPlayed: false,
@@ -206,15 +206,15 @@ ElementField = function () {
                         ],
                         duration: 15,
                         callback: function () {
-                            domLightingDestroy.animData = [{
+                            domLightningDestroy.animData = [{
                                 frameN: 0,
                                 counter: 0
                             }];
-                            domLightingDestroy.animPlayed = false;
+                            domLightningDestroy.animPlayed = false;
                             self.afterStuffUse();
                             animBlock = false;
                             animType = 0;
-                            domLightingDestroy.hide();
+                            domLightningDestroy.hide();
                             self.run();
                         }
                     },
@@ -272,8 +272,8 @@ ElementField = function () {
             let elem = document.elementFromPoint(changedTouch.clientX, changedTouch.clientY);
 
             if (gemTouched) {
-                fieldAct(gemTouched.fieldX, gemTouched.fieldY);
-                fieldAct(elem.__dom.fieldX, elem.__dom.fieldY);
+                fieldAct(gemTouched.p);
+                fieldAct(elem.__dom.p);
                 gemTouched = null;
             }
         } catch (e) {
@@ -282,47 +282,47 @@ ElementField = function () {
     };
 
     let onGemClick = function () {
-        fieldAct(this.fieldX, this.fieldY);
+        fieldAct(this.p);
     };
 
-    let fieldAct = function (x, y) {
+    let fieldAct = function (p) {
         if (lock) return;
         if (animBlock) return;
 
         switch (domStuffMode) {
             case LogicStuff.STUFF_HUMMER:
-                gemHummerAct(gemDoms[x][y]);
+                gemHummerAct(p);
                 break;
             case LogicStuff.STUFF_SHUFFLE:
-                gemShuffleAct(gemDoms[x][y]);
+                gemShuffleAct(p);
                 break;
             case LogicStuff.STUFF_LIGHTING:
-                gemLightingAct(gemDoms[x][y]);
+                gemLightingAct(p);
                 break;
         }
-        gemChangeAct(gemDoms[x][y]);
+        gemChangeAct(p);
     };
 
-    let gemHummerAct = function (gem) {
+    let gemHummerAct = function (p) {
         if (lock) return;
         if (animBlock) return;
-        if (LogicField.isNotGem({x: gem.fieldX, y: gem.fieldY}, layerGems)) {
+        if (LogicField.isNotGem(p, layerGems)) {
             return;
         }
-        LogicField.setGem({x: gem.fieldX, y: gem.fieldY}, DataObjects.OBJECT_HOLE, layerGems);
+        LogicField.setGem(p, DataObjects.OBJECT_HOLE, layerGems);
         self.redraw();
         animBlock = true;
         animType = self.ANIM_TYPE_HUMMER_DESTROY;
         animCounter = 0;
         domHummerDestroy.animPlayed = true;
-        domHummerDestroy.x = gem.fieldX * DataPoints.BLOCK_WIDTH - (GUI.getImageWidth('/images/anim-hd-1.png') - DataPoints.BLOCK_WIDTH) / 2;
-        domHummerDestroy.y = gem.fieldY * DataPoints.BLOCK_HEIGHT - (GUI.getImageHeight('/images/anim-hd-1.png') - DataPoints.BLOCK_HEIGHT) / 2;
+        domHummerDestroy.x = p.x * DataPoints.BLOCK_WIDTH - (GUI.getImageWidth('/images/anim-hd-1.png') - DataPoints.BLOCK_WIDTH) / 2;
+        domHummerDestroy.y = p.y * DataPoints.BLOCK_HEIGHT - (GUI.getImageHeight('/images/anim-hd-1.png') - DataPoints.BLOCK_HEIGHT) / 2;
         domHummerDestroy.show();
         domHummerDestroy.redraw();
         self.redraw();
     };
 
-    let gemShuffleAct = function (gem) {
+    let gemShuffleAct = function () {
         if (lock) return;
         if (animBlock) return;
 
@@ -359,35 +359,35 @@ ElementField = function () {
         }
     };
 
-    let gemLightingAct = function (gem) {
+    let gemLightingAct = function (p) {
         if (lock) return;
         if (animBlock) return;
-        if (LogicField.isNotGem({x: gem.fieldX, y: gem.fieldY}, layerGems)) {
-            return;
-        }
+        if (LogicField.isNotGem(p, layerGems)) return;
         for (let x = 0; x < fieldWidth; x++) {
-            if (LogicField.isGem({x: x, y: gem.fieldY}, layerGems)) {
-                LogicField.setGem({x: x, y: gem.fieldY}, DataObjects.OBJECT_HOLE, layerGems);
+            p.x = x;
+            if (LogicField.isGem(p, layerGems)) {
+                LogicField.setGem(p, DataObjects.OBJECT_HOLE, layerGems);
             }
         }
         self.redraw();
         animBlock = true;
         animType = self.ANIM_TYPE_LIGHTNING_HORIZONTAL_DESTROY;
         animCounter = 0;
-        domLightingDestroy.animPlayed = true;
+        domLightningDestroy.animPlayed = true;
         let leftX = Infinity, rightX = -Infinity;
         /** Получить длину текущей линии */
         for (let x = 0; x < fieldWidth; x++) {
-            if (LogicField.isVisilbe({x: x, y: gem.fieldY}, layerMask)) {
+            p.x = x;
+            if (LogicField.isVisilbe(p, layerMask)) {
                 leftX = Math.min(leftX, x);
                 rightX = Math.max(rightX, x);
             }
         }
-        domLightingDestroy.x = leftX * DataPoints.BLOCK_WIDTH;
-        domLightingDestroy.y = gem.fieldY * DataPoints.BLOCK_HEIGHT - (GUI.getImageHeight('/images/anim-light-1.png') - DataPoints.BLOCK_HEIGHT) / 2;
-        domLightingDestroy.width = (rightX - leftX + 1) * DataPoints.BLOCK_WIDTH;
-        domLightingDestroy.show();
-        domLightingDestroy.redraw();
+        domLightningDestroy.x = leftX * DataPoints.BLOCK_WIDTH;
+        domLightningDestroy.y = p.y * DataPoints.BLOCK_HEIGHT - (GUI.getImageHeight('/images/anim-light-1.png') - DataPoints.BLOCK_HEIGHT) / 2;
+        domLightningDestroy.width = (rightX - leftX + 1) * DataPoints.BLOCK_WIDTH;
+        domLightningDestroy.show();
+        domLightningDestroy.redraw();
         self.redraw();
     };
 
@@ -396,31 +396,26 @@ ElementField = function () {
      * или другом любом действием аналогичным клику.
      * @param dom {Object}
      */
-    let gemChangeAct = function (dom) {
-        let gem,
-            mayLineDestroy,
+    let gemChangeAct = function (p) {
+        let mayLineDestroy,
             lines;
         if (lock) return;
         if (animBlock) return;
-        gem = {
-            x: dom.fieldX,
-            y: dom.fieldY
-        };
 
-        if (LogicField.isNotGem({x: gem.x, y: gem.y}, layerGems)) {
+        if (LogicField.isNotGem(p, layerGems)) {
             return;
         }
 
-        if (!gemA || !LogicField.isNear(gemA, gem)) {
-            gemA = gem;
-            domA = dom;
+        if (!gemA || !LogicField.isNear(gemA, p)) {
+            gemA = p;
+            domA = gemDoms[p.x][p.y];
             self.redraw();
             return;
         }
 
         domFrame.hide();
-        gemB = gem;
-        domB = dom;
+        gemB = p;
+        domB = gemDoms[p.x][p.y];
 
         animBlock = true;
 
@@ -480,8 +475,8 @@ ElementField = function () {
 
     let onGemMouseOver = function () {
         if (gemMouseDown) {
-            fieldAct(gemMouseDown.fieldX, gemMouseDown.fieldY);
-            fieldAct(this.fieldX, this.fieldY);
+            fieldAct(gemMouseDown.p);
+            fieldAct(this.p);
             gemMouseDown = null;
         }
     };
@@ -711,11 +706,9 @@ ElementField = function () {
 
     this.processSpecialLayer = function () {
         LogicField.eachLayerMask(function (x, y, maskId, gemId, specId) {
-            //if emitter and empty layerGems, set random gem
             if (specId === DataObjects.OBJECT_EMITTER &&
                 LogicField.isHole({x: x, y: y}, layerGems)
             ) {
-                console.log('set gem');
                 LogicField.setGem({x: x, y: y}, LogicField.getRandomGemId(), layerGems);
                 gemDoms[x][y].height = DataPoints.BLOCK_HEIGHT;
             }
@@ -818,7 +811,7 @@ ElementField = function () {
 
         switch (animType) {
             case self.ANIM_TYPE_HUMMER_DESTROY: /** Смотри domHummerDestroy.animTracks*/
-            case self.ANIM_TYPE_SHUFFLE:    /** Смотри domLightingDestroy.animTracks */
+            case self.ANIM_TYPE_SHUFFLE:    /** Смотри domLightningDestroy.animTracks */
             case self.ANIM_TYPE_LIGHTNING_HORIZONTAL_DESTROY:   /** Смотри domShuffleDestroy.animTracks */
                 break;
             case self.ANIM_TYPE_FALL:
