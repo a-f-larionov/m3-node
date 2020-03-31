@@ -1,6 +1,10 @@
 LogicField = function () {
     let self = this;
 
+    /**
+     * Список всех камней
+     * @type {number[]}
+     */
     let gems = [
         DataObjects.OBJECT_RED,
         DataObjects.OBJECT_GREEN,
@@ -9,6 +13,10 @@ LogicField = function () {
         DataObjects.OBJECT_PURPLE,
     ];
 
+    /**
+     * Объекты, способные падать вниз.
+     * @type {number[]}
+     */
     let fallDownObjects = [
         DataObjects.OBJECT_RED,
         DataObjects.OBJECT_GREEN,
@@ -17,9 +25,9 @@ LogicField = function () {
         DataObjects.OBJECT_PURPLE,
     ];
 
-    this.isGem = function (id, layerGems) {
-        if (layerGems) id = layerGems[id.y][id.x];
-        return gems.indexOf(id) !== -1;
+    this.isGem = function (gemOrId, layerGems) {
+        if (layerGems) gemOrId = layerGems[gemOrId.y][gemOrId.x];
+        return gems.indexOf(gemOrId) !== -1;
     };
 
     this.isNotGem = function (id) {
@@ -200,6 +208,17 @@ LogicField = function () {
         return false;
     };
 
+    this.eachLayerMask = function (callback, layerMask, layerGems) {
+        let mask, gem;
+        for (let y = 0; y < DataPoints.FIELD_MAX_HEIGHT; y++) {
+            for (let x = 0; x < DataPoints.FIELD_MAX_WIDTH; x++) {
+                mask = layerMask && layerMask[y] && layerMask[y][x];
+                gem = layerGems && layerGems[y] && layerGems[y][x];
+                callback(x, y, mask, gem);
+            }
+        }
+    };
 };
 
+/** @type {LogicField} */
 LogicField = new LogicField;

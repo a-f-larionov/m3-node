@@ -37,8 +37,14 @@ CAPIMap = function () {
         });
     };
 
+    /**
+     * @param layer
+     * @returns {*[]}
+     * ⬍⬌⭥⭤⯐↔↕
+     */
     let convertLayer = function (layer) {
-        let layerMapping = {
+
+        let mapping = {
             /** ??? */
             '■': DataObjects.OBJECT_BLOCK,
             'c': DataObjects.OBJECT_CELL,
@@ -49,7 +55,9 @@ CAPIMap = function () {
 
             /** Layer special */
             '*': DataObjects.OBJECT_EMITTER,
-//            '': DataObjects.OBJECT_BLOCK
+            '⭤': DataObjects.OBJECT_LIGHTNING_HORIZONTAL,
+            '⭥': DataObjects.OBJECT_LIGHTNING_VERTICAL,
+            '⯐': DataObjects.OBJECT_LIGHTNING_CROSS,
 
             /** Layer gems */
             '?': DataObjects.OBJECT_RANDOM,
@@ -66,19 +74,16 @@ CAPIMap = function () {
         layer.forEach(function (row, y) {
             out[y] = [];
             row.split('').forEach(function (ceil, x) {
-                if (!layerMapping[ceil]) {
+                if (!mapping[ceil]) {
                     Logs.log("error", Logs.LEVEL_DETAIL, [layer]);
                     Logs.alert(Logs.LEVEL_ERROR, 'ERROR: Нет такого символа в мепинге.' + ceil);
                 }
-                out[y][x] = layerMapping[ceil];
+                out[y][x] = mapping[ceil];
             });
         });
         return out;
     };
-
-    this.log = function (ctnx, message, data) {
-        console.log(message, data);
-    };
 };
 
+/** @type {CAPIMap} */
 CAPIMap = new CAPIMap();

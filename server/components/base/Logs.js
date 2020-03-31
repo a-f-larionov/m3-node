@@ -150,7 +150,7 @@ Logs = function () {
     };
 
     let typeTitles = {};
-    /* человеко-читаемые типы логов. */
+    /** Человеко-читаемые типы логов. */
     typeTitles[this.LEVEL_DETAIL] = 'detail';
     typeTitles[this.LEVEL_NOTIFY] = 'NOTIFY';
     typeTitles[this.LEVEL_WARNING] = 'WARNING';

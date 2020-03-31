@@ -10,7 +10,7 @@ SAPIChest = function () {
         if (!chest) Logs.log("no chest found", Logs.LEVEL_WARNING, arguments);
 
         DataChests.updateUsersChests(cntx.user.id, chestId, function (data) {
-            CAPIMap.log(cntx.user.id, arguments);
+            CAPILog.log(cntx.user.id, arguments);
             if (data.affectedRows) {
                 // выдать приз
                 DataPrizes.giveOutPrizes(cntx.user.id, chest.prizes);
