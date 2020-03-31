@@ -655,6 +655,7 @@ ElementField = function () {
                     gemShuffleAct();
                 }
             }
+            console.log('call silent');
             self.onFieldSilent();
         } else {
             turnsCounted = false;
@@ -662,8 +663,12 @@ ElementField = function () {
     };
 
     this.isFieldSilent = function () {
-        console.log('hsa fall', self.hasFall());
-
+        console.log('has fall', self.hasFall());
+        console.log(!(animBlock ||
+            self.hasDestroyLines() ||
+            self.hasFall() ||
+            self.hasProcesSpecialLayer()
+        ));
         return !(animBlock ||
             self.hasDestroyLines() ||
             self.hasFall() ||
@@ -695,11 +700,11 @@ ElementField = function () {
     };
 
     this.hasFall = function () {
-        if (animObjects.length) return true;
+        let out = false;
         LogicField.eachCell(function (x, y) {
-            if (LogicField.mayFall(x, y)) return true;
+            if (LogicField.mayFall(x, y + 1)) out = true;
         });
-        return false;
+        return out;
     };
 
     this.fall = function () {
@@ -765,6 +770,7 @@ ElementField = function () {
                     p = lines[i].coords[c];
                     LogicField.setGem({x: p.x, y: p.y}, DataObjects.OBJECT_HOLE);
                 }
+                console.log('call on destroy line');
                 self.onDestroyLine(lines[i]);
             }
         this.redraw();

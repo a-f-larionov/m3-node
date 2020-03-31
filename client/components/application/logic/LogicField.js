@@ -54,6 +54,7 @@ LogicField = function () {
      * @returns {boolean|boolean}
      */
     this.mayFall = function (x, y) {
+        window.jkl = layerGems;
         return layerGems[x] && layerGems[x][y] &&
             !LogicField.isFallObject(layerGems[x][y]) &&
             LogicField.isFallObject(layerGems[x][y - 1]);
