@@ -72,13 +72,13 @@ CAPIMap = function () {
 
         out = [];
         layer.forEach(function (row, y) {
-            out[y] = [];
             row.split('').forEach(function (ceil, x) {
+                if (!out[x]) out[x] = [];
                 if (!mapping[ceil]) {
                     Logs.log("error", Logs.LEVEL_DETAIL, [layer]);
                     Logs.alert(Logs.LEVEL_ERROR, 'ERROR: Нет такого символа в мепинге.' + ceil);
                 }
-                out[y][x] = mapping[ceil];
+                out[x][y] = mapping[ceil];
             });
         });
         return out;

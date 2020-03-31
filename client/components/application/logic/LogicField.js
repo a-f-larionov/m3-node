@@ -26,7 +26,7 @@ LogicField = function () {
     ];
 
     this.isGem = function (gemOrId, layerGems) {
-        if (layerGems) gemOrId = layerGems[gemOrId.y][gemOrId.x];
+        if (layerGems) gemOrId = layerGems[gemOrId.x][gemOrId.y];
         return gems.indexOf(gemOrId) !== -1;
     };
 
@@ -39,8 +39,8 @@ LogicField = function () {
     };
 
     this.mayFall = function (x, y, layerGems) {
-        return !LogicField.isFallingObject(layerGems[y][x]) &&
-            LogicField.isFallingObject(layerGems[y - 1][x]);
+        return !LogicField.isFallingObject(layerGems[x][y]) &&
+            LogicField.isFallingObject(layerGems[x][y-1]);
     };
 
     this.getRandomGemId = function () {
@@ -48,8 +48,8 @@ LogicField = function () {
     };
 
     this.isVisilbe = function (p, layerMask) {
-        return layerMask[p.y] && layerMask[p.y][p.x] &&
-            layerMask[p.y][p.x] !== DataObjects.OBJECT_NONE;
+        return layerMask[p.x] && layerMask[p.x][p.y] &&
+            layerMask[p.x][p.y] !== DataObjects.OBJECT_NONE;
     };
 
     this.countTurns = function (layerMask, layerGems, fieldHeight, fieldWidth) {
@@ -109,14 +109,14 @@ LogicField = function () {
 
     this.exchangeGems = function (a, b, layerGems) {
         let tmp;
-        if (layerGems[a.y] === undefined ||
-            layerGems[a.y][a.x] === undefined ||
-            layerGems[b.y] === undefined ||
-            layerGems[b.y][b.x] === undefined
+        if (layerGems[a.x] === undefined ||
+            layerGems[a.x][a.y] === undefined ||
+            layerGems[b.x] === undefined ||
+            layerGems[b.x][b.y] === undefined
         ) return false;
-        tmp = layerGems[b.y][b.x];
-        layerGems[b.y][b.x] = layerGems[a.y][a.x];
-        layerGems[a.y][a.x] = tmp;
+        tmp = layerGems[b.x][b.y];
+        layerGems[b.x][b.y] = layerGems[a.x][a.y];
+        layerGems[a.x][a.y] = tmp;
         return true;
     };
 
@@ -153,7 +153,7 @@ LogicField = function () {
 
     this.findLine = function (x, y, orientation, fieldHeight, fieldWidth, layerMask, layerGems) {
         let startId, line;
-        startId = layerGems[y][x];
+        startId = layerGems[x][y];
         /** Может ли такой объект вообще падать */
         if (LogicField.isNotGem(startId)) return false;
 
@@ -165,8 +165,8 @@ LogicField = function () {
             for (let offset = 0; offset < 5; offset++) {
                 if (y >= fieldHeight) continue;
                 if (x + offset >= fieldWidth) continue;
-                if (layerGems[y][x + offset] === startId &&
-                    layerMask[y][x + offset] === DataObjects.OBJECT_EMPTY) {
+                if (layerGems[x + offset][y] === startId &&
+                    layerMask[x + offset][y] === DataObjects.OBJECT_EMPTY) {
                     line.coords.push({
                         x: x + offset,
                         y: y
@@ -179,8 +179,8 @@ LogicField = function () {
             for (let offset = 0; offset < 5; offset++) {
                 if (y + offset >= fieldHeight) continue;
                 if (x >= fieldWidth) continue;
-                if (layerGems[y + offset][x] === startId &&
-                    layerMask[y + offset][x] === DataObjects.OBJECT_EMPTY) {
+                if (layerGems[x][y + offset] === startId &&
+                    layerMask[x][y + offset] === DataObjects.OBJECT_EMPTY) {
                     line.coords.push({
                         x: x,
                         y: y + offset
@@ -212,8 +212,8 @@ LogicField = function () {
         let mask, gem;
         for (let y = 0; y < DataPoints.FIELD_MAX_HEIGHT; y++) {
             for (let x = 0; x < DataPoints.FIELD_MAX_WIDTH; x++) {
-                mask = layerMask && layerMask[y] && layerMask[y][x];
-                gem = layerGems && layerGems[y] && layerGems[y][x];
+                mask = layerMask && layerMask[x] && layerMask[x][y];
+                gem = layerGems && layerGems[x] && layerGems[x][y];
                 callback(x, y, mask, gem);
             }
         }

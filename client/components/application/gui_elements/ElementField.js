@@ -306,10 +306,10 @@ ElementField = function () {
     let gemHummerAct = function (gem) {
         if (lock) return;
         if (animBlock) return;
-        if (LogicField.isNotGem(layerGems[gem.fieldY][gem.fieldX])) {
+        if (LogicField.isNotGem(layerGems[gem.fieldX][gem.fieldY])) {
             return;
         }
-        layerGems[gem.fieldY][gem.fieldX] = DataObjects.OBJECT_EMPTY;
+        layerGems[gem.fieldX][gem.fieldY] = DataObjects.OBJECT_EMPTY;
         self.redraw();
         animBlock = true;
         animType = self.ANIM_TYPE_HUMMER_DESTROY;
@@ -346,17 +346,17 @@ ElementField = function () {
         let tmp, x2, y2;
         for (let y1 = 0; y1 < fieldHeight; y1++) {
             for (let x1 = 0; x1 < fieldWidth; x1++) {
-                if (LogicField.isNotGem(layerGems[y1][x1])) {
+                if (LogicField.isNotGem(layerGems[x1][y1])) {
                     continue;
                 }
                 x2 = Math.floor(Math.random() * fieldWidth);
                 y2 = Math.floor(Math.random() * fieldHeight);
-                if (LogicField.isNotGem(layerGems[y2][x2])) {
+                if (LogicField.isNotGem(layerGems[x2][y2])) {
                     continue;
                 }
-                tmp = layerGems[y2][x2];
-                layerGems[y2][x2] = layerGems[y1][x1];
-                layerGems[y1][x1] = tmp;
+                tmp = layerGems[x2][y2];
+                layerGems[x2][y2] = layerGems[x1][y1];
+                layerGems[x1][y1] = tmp;
             }
         }
     };
@@ -364,12 +364,12 @@ ElementField = function () {
     let gemLightingAct = function (gem) {
         if (lock) return;
         if (animBlock) return;
-        if (LogicField.isNotGem(layerGems[gem.fieldY][gem.fieldX])) {
+        if (LogicField.isNotGem(layerGems[gem.fieldX][gem.fieldY])) {
             return;
         }
         for (let x = 0; x < fieldWidth; x++) {
-            if (LogicField.isGem(layerGems[gem.fieldY][x])) {
-                layerGems[gem.fieldY][x] = DataObjects.OBJECT_EMPTY;
+            if (LogicField.isGem(layerGems[x][gem.fieldY])) {
+                layerGems[x][gem.fieldY] = DataObjects.OBJECT_EMPTY;
             }
         }
         self.redraw();
@@ -380,7 +380,7 @@ ElementField = function () {
         let leftX = Infinity, rightX = -Infinity;
         /** Получить длину текущей линии */
         for (let x = 0; x < fieldWidth; x++) {
-            if (layerMask[gem.fieldY][x] !== DataObjects.OBJECT_NONE) {
+            if (layerMask[x][gem.fieldY] !== DataObjects.OBJECT_NONE) {
                 leftX = Math.min(leftX, x);
                 rightX = Math.max(rightX, x);
             }
@@ -409,7 +409,7 @@ ElementField = function () {
             y: dom.fieldY
         };
 
-        if (LogicField.isNotGem(layerGems[gem.y][gem.x])) {
+        if (LogicField.isNotGem(layerGems[gem.x][gem.y])) {
             return;
         }
 
@@ -576,7 +576,7 @@ ElementField = function () {
                     if (LogicField.isGem({x: x, y: y}, layerGems) &&
                         LogicField.isVisilbe({x: x, y: y}, layerMask)) {
                         gemDoms[x][y].opacity = '';
-                        gemDoms[x][y].backgroundImage = DataPoints.objectImages[layerGems[y][x]];
+                        gemDoms[x][y].backgroundImage = DataPoints.objectImages[layerGems[x][y]];
                         gemDoms[x][y].y = y * DataPoints.BLOCK_HEIGHT;
                         gemDoms[x][y].x = x * DataPoints.BLOCK_WIDTH;
                         gemDoms[x][y].height = DataPoints.BLOCK_HEIGHT;
@@ -609,31 +609,31 @@ ElementField = function () {
         layerGems = [];
         layerSpecials = [];
 
-        layers.gems.forEach(function (row, y) {
-            layerGems[y] = [];
-            row.forEach(function (cell, x) {
+        layers.gems.forEach(function (row, x) {
+            layerGems[x] = [];
+            row.forEach(function (cell, y) {
                 if (cell === DataObjects.OBJECT_RANDOM) cell = LogicField.getRandomGemId();
-                layerGems[y][x] = cell;
+                layerGems[x][y] = cell;
             });
         });
-        layers.mask.forEach(function (row, y) {
-            layerMask[y] = [];
-            row.forEach(function (cell, x) {
-                layerMask[y][x] = cell;
+        layers.mask.forEach(function (row, x) {
+            layerMask[x] = [];
+            row.forEach(function (cell, y) {
+                layerMask[x][y] = cell;
             });
         });
-        layers.special.forEach(function (row, y) {
-            layerSpecials[y] = [];
-            row.forEach(function (cell, x) {
-                layerSpecials[y][x] = cell;
+        layers.special.forEach(function (row, x) {
+            layerSpecials[x] = [];
+            row.forEach(function (cell, y) {
+                layerSpecials[x][y] = cell;
             });
         });
 
         /**
          * Взять самый левый из всех слоёв
          */
-        fieldWidth = layers.gems[0].length;
-        fieldHeight = layers.gems.length;
+        fieldHeight = layers.gems[0].length;
+        fieldWidth = layers.gems.length;
         /**
          * Corners schema
          * a____
@@ -645,7 +645,7 @@ ElementField = function () {
         bCorner = {x: -Infinity, y: -Infinity};
         for (let y = 0; y < fieldHeight; y++) {
             for (let x = 0; x < fieldWidth; x++) {
-                if (layers.mask[y][x] !== DataObjects.OBJECT_NONE) {
+                if (layers.mask[x][y] !== DataObjects.OBJECT_NONE) {
                     aCorner.x = Math.min(aCorner.x, x);
                     aCorner.y = Math.min(aCorner.y, y);
                     bCorner.x = Math.max(bCorner.x, x);
@@ -702,11 +702,11 @@ ElementField = function () {
     };
 
     this.hasProcesSpecialLayer = function () {
-        layerSpecials.forEach(function (row, y) {
-            row.forEach(function (cell, x) {
+        layerSpecials.forEach(function (row, x) {
+            row.forEach(function (cell, y) {
                 //if emitter and empty layerGems, set random gem
                 if (cell === DataObjects.OBJECT_EMITTER &&
-                    layerGems[y][x] === DataObjects.OBJECT_EMPTY
+                    layerGems[x][y] === DataObjects.OBJECT_EMPTY
                 ) {
                     return true;
                 }
@@ -716,13 +716,13 @@ ElementField = function () {
     };
 
     this.processSpecialLayer = function () {
-        layerSpecials.forEach(function (row, y) {
-            row.forEach(function (cell, x) {
+        layerSpecials.forEach(function (row, x) {
+            row.forEach(function (cell, y) {
                 //if emitter and empty layerGems, set random gem
                 if (cell === DataObjects.OBJECT_EMITTER &&
-                    layerGems[y][x] === DataObjects.OBJECT_EMPTY
+                    layerGems[x][y] === DataObjects.OBJECT_EMPTY
                 ) {
-                    layerGems[y][x] = LogicField.getRandomGemId();
+                    layerGems[x][y] = LogicField.getRandomGemId();
                     gemDoms[x][y].height = DataPoints.BLOCK_HEIGHT;
                 }
             });
@@ -757,15 +757,15 @@ ElementField = function () {
                     dom.mode = '';
                     // if dom now on NONE and below IS NOT NONE, set flag - showUp
                     // if dom now is NOT NONE and below IS NONE, set flag hideDown
-                    if (layerMask[y - 1][x] === DataObjects.OBJECT_EMPTY &&
-                        layerMask[y][x] !== DataObjects.OBJECT_EMPTY
+                    if (layerMask[x][y - 1] === DataObjects.OBJECT_EMPTY &&
+                        layerMask[x][y] !== DataObjects.OBJECT_EMPTY
                     ) dom.mode = 'tohide';
 
-                    if (layerMask[y - 1][x] !== DataObjects.OBJECT_EMPTY &&
-                        layerMask[y][x] === DataObjects.OBJECT_EMPTY
+                    if (layerMask[x][y - 1] !== DataObjects.OBJECT_EMPTY &&
+                        layerMask[x][y] === DataObjects.OBJECT_EMPTY
                     ) {
                         dom.mode = 'toshow';
-                        dom.backgroundImage = DataPoints.objectImages[layerGems[y - 1][x]];
+                        dom.backgroundImage = DataPoints.objectImages[layerGems[x][y - 1]];
                         // переисовка backgroundPositionY это хитрый хак и костыль :)
                         dom.backgroundPositionY = DataPoints.BLOCK_HEIGHT;
                         dom.height = 0;
@@ -774,8 +774,8 @@ ElementField = function () {
                         dom.show();
                     }
                     /** Falling one gem */
-                    layerGems[y][x] = layerGems[y - 1][x];
-                    layerGems[y - 1][x] = DataObjects.OBJECT_EMPTY;
+                    layerGems[x][y] = layerGems[x][y - 1];
+                    layerGems[x][y - 1] = DataObjects.OBJECT_EMPTY;
 
                     animObjects.push(dom);
                 }
@@ -807,7 +807,7 @@ ElementField = function () {
             for (let i in lines) {
                 for (let c in lines[i].coords) {
                     p = lines[i].coords[c];
-                    layerGems[p.y][p.x] = DataObjects.OBJECT_EMPTY;
+                    layerGems[p.x][p.y] = DataObjects.OBJECT_EMPTY;
                 }
                 self.onDestroyLine(lines[i]);
             }
