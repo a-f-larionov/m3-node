@@ -8,17 +8,67 @@ DataPoints = function () {
 
     this.objectImages = {};
     this.objectImages[DataObjects.OBJECT_INVISIBLE] = '/images/field-none-2.png';
-    this.objectImages[DataObjects.OBJECT_CELL] = '/images/field-cell.png';
     this.objectImages[DataObjects.OBJECT_VISIBLE] = '/images/field-none-2.png';
-    this.objectImages[DataObjects.OBJECT_RANDOM] = '/images/field-none.png';
+
+    this.objectImages[DataObjects.OBJECT_CELL] = '/images/field-cell.png';
     this.objectImages[DataObjects.OBJECT_BLOCK] = '/images/field-block.png';
 
     this.objectImages[DataObjects.OBJECT_HOLE] = '/images/field-none-2.png';
+    this.objectImages[DataObjects.OBJECT_RANDOM] = '/images/field-none.png';
     this.objectImages[DataObjects.OBJECT_RED] = '/images/field-red.png';
     this.objectImages[DataObjects.OBJECT_GREEN] = '/images/field-green.png';
     this.objectImages[DataObjects.OBJECT_BLUE] = '/images/field-blue.png';
     this.objectImages[DataObjects.OBJECT_YELLOW] = '/images/field-yellow.png';
     this.objectImages[DataObjects.OBJECT_PURPLE] = '/images/field-purple.png';
+
+    this.objectImages[DataObjects.OBJECT_LIGHTNING_VERTICAL] = '/images/spec-light-ver-1.png';
+    this.objectImages[DataObjects.OBJECT_LIGHTNING_HORIZONTAL] = '/images/spec-light-hor-1.png';
+    this.objectImages[DataObjects.OBJECT_LIGHTNING_CROSS] = '/images/spec-light-cross-1.png';
+
+    this.objectAnims = {};
+
+    this.objectAnims[DataObjects.OBJECT_LIGHTNING_HORIZONTAL] = [[{
+        type: GUI.ANIM_TYPE_MOVIE,
+        images: [
+            '/images/spec-light-hor-1.png',
+            '/images/spec-light-hor-2.png',
+            '/images/spec-light-hor-3.png',
+            '/images/spec-light-hor-4.png',
+            '/images/spec-light-hor-5.png',
+        ],
+        duration: 5,
+    }, {
+        type: GUI.ANIM_TYPE_GOTO,
+        pos: 0
+    }]];
+    this.objectAnims[DataObjects.OBJECT_LIGHTNING_VERTICAL] = [[{
+        type: GUI.ANIM_TYPE_MOVIE,
+        images: [
+            '/images/spec-light-ver-1.png',
+            '/images/spec-light-ver-2.png',
+            '/images/spec-light-ver-3.png',
+            '/images/spec-light-ver-4.png',
+            '/images/spec-light-ver-5.png',
+        ],
+        duration: 5,
+    }, {
+        type: GUI.ANIM_TYPE_GOTO,
+        pos: 0
+    }]];
+    this.objectAnims[DataObjects.OBJECT_LIGHTNING_CROSS] = [[{
+        type: GUI.ANIM_TYPE_MOVIE,
+        images: [
+            '/images/spec-light-cross-1.png',
+            '/images/spec-light-cross-2.png',
+            '/images/spec-light-cross-3.png',
+            '/images/spec-light-cross-4.png',
+            '/images/spec-light-cross-5.png',
+        ],
+        duration: 5,
+    }, {
+        type: GUI.ANIM_TYPE_GOTO,
+        pos: 0
+    }]];
 
     let pointsCoords = [
         {

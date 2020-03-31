@@ -57,7 +57,7 @@ CAPIMap = function () {
             '*': DataObjects.OBJECT_EMITTER,
             '⭤': DataObjects.OBJECT_LIGHTNING_HORIZONTAL,
             '⭥': DataObjects.OBJECT_LIGHTNING_VERTICAL,
-            '⯐': DataObjects.OBJECT_LIGHTNING_CROSS,
+            '+': DataObjects.OBJECT_LIGHTNING_CROSS,
 
             /** Layer gems */
             '?': DataObjects.OBJECT_RANDOM,

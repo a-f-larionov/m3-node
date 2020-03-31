@@ -271,6 +271,7 @@ GUI = function () {
         if (dom.animTracks) {
             /** Init animations */
             for (let tN in dom.animTracks) {
+                dom.animData[tN] = {frameN: 0, counter: 0};
                 for (let fN in dom.animTracks[tN]) {
                     let frame = dom.animTracks[tN][fN];
                     switch (frame.type) {
@@ -287,13 +288,7 @@ GUI = function () {
                             break;
                     }
                 }
-                dom.animData[tN] = {
-                    frameN: 0,
-                    counter: 0
-                };
             }
-
-            OnIdle.register(dom.animate);
         }
     };
 
@@ -423,6 +418,22 @@ GUI = function () {
     this.setTagId = function (id) {
         tagId = id;
     };
+
+    this.copyAnimTracks = function (animTracks) {
+        let newAnimTracks, newFrameData;
+        newAnimTracks = [];
+        animTracks.forEach(function (animTrack, i) {
+            newAnimTracks[i] = [];
+            animTrack.forEach(function (frameData, j) {
+                newFrameData = {};
+                for (let name in frameData) {
+                    newFrameData[name] = frameData[name];
+                }
+                newAnimTracks[i][j] = newFrameData;
+            })
+        });
+        return newAnimTracks;
+    }
 };
 
 /**

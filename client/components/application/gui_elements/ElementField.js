@@ -54,9 +54,10 @@ ElementField = function () {
     let domBackground = null;
 
     let domContainer = null;
-    let maskDoms = [];
-    let gemDoms = [];
-    let specialsDoms = [];
+    let maskDoms = [],
+        gemDoms = [],
+        specDoms = [];
+    let specDomLimit = 150;
 
     let animType = null,
         animBlock = false,
@@ -121,6 +122,16 @@ ElementField = function () {
             dom.bind(GUI.EVENT_MOUSE_OVER, onGemMouseOver, dom);
             gemDoms[x][y] = dom;
         });
+
+        for (let i = 0; i < specDomLimit; i++) {
+            dom = GUI.createDom(undefined, {
+                width: DataPoints.BLOCK_WIDTH,
+                height: DataPoints.BLOCK_HEIGHT
+            });
+            //GUI.bind(dom, GUI.EVENT_MOUSE_MOUSE_DOWN, onMouseDown, self);
+            OnIdle.register(dom.animate);
+            specDoms.push(dom);
+        }
 
         domFrame = GUI.createDom(undefined, {
             x: self.x, y: self.y,
@@ -299,10 +310,10 @@ ElementField = function () {
     let gemHummerAct = function (p) {
         if (lock) return;
         if (animBlock) return;
-        if (LogicField.isNotGem(p)) {
-            return;
-        }
+        if (LogicField.isNotGem(p)) return;
+        //@destroygem
         LogicField.setGem(p, DataObjects.OBJECT_HOLE);
+
         self.redraw();
         animBlock = true;
         animType = self.ANIM_TYPE_HUMMER_DESTROY;
@@ -359,6 +370,7 @@ ElementField = function () {
         for (let x = 0; x < DataPoints.FIELD_MAX_WIDTH; x++) {
             p.x = x;
             if (LogicField.isGem(p)) {
+                //@destroy
                 LogicField.setGem(p, DataObjects.OBJECT_HOLE);
             }
         }
@@ -525,7 +537,8 @@ ElementField = function () {
         domContainer.redraw();
         domBackground.redraw();
 
-        LogicField.eachCell(function (x, y, maskId, gemId) {
+        let specIndex = 0;
+        LogicField.eachCell(function (x, y, maskId, gemId, specId) {
             let maskDom, gemDom;
             maskDom = maskDoms[x][y];
             gemDom = gemDoms[x][y];
@@ -562,7 +575,42 @@ ElementField = function () {
                 gemDom.hide();
             }
 
+            window.jkl = specDoms;
+            /** Specials layers **/
+            if (specId) {
+                switch (specId) {
+                    case DataObjects.OBJECT_LIGHTNING_VERTICAL:
+                    case DataObjects.OBJECT_LIGHTNING_HORIZONTAL:
+                    case DataObjects.OBJECT_LIGHTNING_CROSS:
+                        /**
+                         * 1 - взять свободный дом
+                         * 2 - присвоить картинкиу\анимацию
+                         */
+                        let dom = specDoms[specIndex];
+                        if (dom.specId !== specId || dom.x !== x * DataPoints.BLOCK_WIDTH || dom.y !== y * DataPoints.BLOCK_HEIGHT) {
+                            console.log('set:', specId);
+                            dom.specId = specId;
+                            dom.opacity = 0.88;
+                            dom.x = x * DataPoints.BLOCK_WIDTH;
+                            dom.y = y * DataPoints.BLOCK_HEIGHT;
+                            dom.animPlayed = true;
+                            dom.animTracks = GUI.copyAnimTracks(DataPoints.objectAnims[specId]);
+                            GUI.updateAnimTracks(dom);
+                            dom.show();
+                        }
+                        break;
+                    default:
+                        specIndex--;
+                        break;
+                }
+                specIndex++;
+            }
         });
+
+        /** Спрячем не используемые специальные домы */
+        for (let i = specIndex; i < specDomLimit; i++) {
+            specDoms[i].hide();
+        }
 
         if (gemA && !animBlock) {
             domFrame.x = domA.x;
@@ -655,7 +703,6 @@ ElementField = function () {
                     gemShuffleAct();
                 }
             }
-            console.log('call silent');
             self.onFieldSilent();
         } else {
             turnsCounted = false;
@@ -663,12 +710,6 @@ ElementField = function () {
     };
 
     this.isFieldSilent = function () {
-        console.log('has fall', self.hasFall());
-        console.log(!(animBlock ||
-            self.hasDestroyLines() ||
-            self.hasFall() ||
-            self.hasProcesSpecialLayer()
-        ));
         return !(animBlock ||
             self.hasDestroyLines() ||
             self.hasFall() ||
@@ -768,9 +809,9 @@ ElementField = function () {
             for (let i in lines) {
                 for (let c in lines[i].coords) {
                     p = lines[i].coords[c];
+                    //@destroy
                     LogicField.setGem({x: p.x, y: p.y}, DataObjects.OBJECT_HOLE);
                 }
-                console.log('call on destroy line');
                 self.onDestroyLine(lines[i]);
             }
         this.redraw();
