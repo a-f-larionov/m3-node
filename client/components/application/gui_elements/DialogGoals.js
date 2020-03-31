@@ -50,16 +50,20 @@ DialogGoals = function () {
     };
 
     this.setGoals = function (goals) {
+        let offsetX, startX;
         for (let i in this.elements) {
             this.elements[i].hide();
         }
         this.elements = [];
-        let offsetX;
+        startX = GUI.getImageWidth('/images/window-1.png') / 2
+            - goals.length * (DataPoints.BLOCK_WIDTH + 5) / 2
+        ;
+
         offsetX = 0;
         for (let i in goals) {
 
-            goalsImagesEls[goals[i].id].x = 175 + offsetX;
-            goalsCounterEls[goals[i].id].x = 175 + offsetX;
+            goalsImagesEls[goals[i].id].x = startX + offsetX;
+            goalsCounterEls[goals[i].id].x = startX + offsetX;
             goalsCounterEls[goals[i].id].setText(goals[i].count);
             this.elements.push(goalsImagesEls[goals[i].id]);
             this.elements.push(goalsCounterEls[goals[i].id]);
