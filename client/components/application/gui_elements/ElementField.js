@@ -560,24 +560,8 @@ ElementField = function () {
         domGemsContainer.y = self.y;
         domGemsContainer.redraw();
         domBackground.redraw();
-        /** layer.mask */
 
-        /*  LogicField.eachMaskCell(function (x, y, cellId, row) {
-              switch (cellId) {
-                  case DataPoints.OBJECT_EMPTY:
-                      cellId = DataPoints.OBJECT_CELL;
-                  default:
-                      maskDoms[y][x].x = self.x + x * DataPoints.BLOCK_WIDTH;
-                      maskDoms[y][x].y = self.y + y * DataPoints.BLOCK_HEIGHT;
-                      maskDoms[y][x].backgroundImage = DataPoints.objectImages[cellId];
-                      maskDoms[y][x].show();
-                      maskDoms[y][x].redraw();
-                      break;
-                  case DataPoints.OBJECT_NONE:
-                      maskDoms[y][x].hide();
-                      break;
-              }
-          });*/
+        /** Layer.mask */
         layerMask.forEach(function (row, y) {
             row.forEach(function (cell, x) {
                 switch (cell) {

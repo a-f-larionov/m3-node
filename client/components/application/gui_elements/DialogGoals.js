@@ -16,16 +16,16 @@ DialogGoals = function () {
             text: 'ЦЕЛИ'
         }).show();
 
-        // Список целей
+        /** Список целей */
         for (let i in DataPoints.objectImages) {
-            // Список целей - картинки
+            /** Список целей - картинки */
             goalsImagesEls[i] =
                 GUI.createElement(ElementImage, {
                     x: 200 + i * (DataPoints.BLOCK_WIDTH + 5),
                     y: 125,
                     src: DataPoints.objectImages[i]
                 });
-            // Список целей - кол-во
+            /** Список целей - кол-во */
             goalsCounterEls[i] =
                 GUI.createElement(ElementText, {
                     x: 100 + i * (DataPoints.BLOCK_WIDTH + 5),
@@ -34,7 +34,7 @@ DialogGoals = function () {
                 });
         }
 
-        // Кнопка закрыть
+        /** Кнопка закрыть */
         GUI.createElement(ElementButton, {
                 x: 452, y: 3,
                 srcRest: '/images/button-close-rest.png',
@@ -59,7 +59,7 @@ DialogGoals = function () {
         for (let i in goals) {
 
             goalsImagesEls[goals[i].id].x = 175 + offsetX;
-            goalsCounterEls[goals[i].id].x = 175  + offsetX;
+            goalsCounterEls[goals[i].id].x = 175 + offsetX;
             goalsCounterEls[goals[i].id].setText(goals[i].count);
             this.elements.push(goalsImagesEls[goals[i].id]);
             this.elements.push(goalsCounterEls[goals[i].id]);

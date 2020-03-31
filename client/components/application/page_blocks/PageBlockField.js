@@ -271,8 +271,8 @@ PageBlockField = function PageBlockField() {
         PageBlockZDialogs.dialogGoals.setGoals(data.goals);
         PageBlockZDialogs.dialogGoals.showDialog();
         setTimeout(function () {
-            PageBlockZDialogs.dialogGoals.closeDialog();
-        }, 1750 * 100
+                PageBlockZDialogs.dialogGoals.closeDialog();
+            }, 2750
         );
         noMoreGoals = false;
     };
@@ -321,6 +321,7 @@ PageBlockField = function PageBlockField() {
             }
         }
         self.redraw();
+        LogicWizard.onDestroyLine(line);
     };
 
     this.onFieldSilent = function () {
@@ -416,6 +417,14 @@ PageBlockField = function PageBlockField() {
         elementField.setStuffMode(mode);
         self.redraw();
     };
+
+    this.getFieldCoords = function () {
+        elementField.redraw();
+        return {
+            x: elementField.x,
+            y: elementField.y
+        };
+    }
 };
 
 /** @type {PageBlockField} */

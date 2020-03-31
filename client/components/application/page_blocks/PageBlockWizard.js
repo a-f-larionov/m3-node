@@ -158,14 +158,16 @@ PageBlockWizard = function PageBlockWizard() {
         self.redraw();
     };
 
-    this.showDialog = function (x, y, textOffsetY) {
+    this.showDialog = function (x, y, textOffsetY, fontSize) {
         if (!x) x = 400;
         if (!y) y = 360;
         if (!textOffsetY) textOffsetY = 0;
+        if (!fontSize) fontSize = 21;
         elDialog.x = x;
         elDialog.y = y;
         elText.x = x + dialogBorder;
         elText.y = y + dialogBorder + textOffsetY;
+        elText.fontSize = fontSize;
         elDialog.show();
         elText.show();
         self.redraw();
@@ -174,8 +176,17 @@ PageBlockWizard = function PageBlockWizard() {
     this.draw = function (callback) {
         cntx.globalAlpha = 1;
         cntx.globalCompositeOperation = 'destination-out';
-        callback(cntx);
+        callback(cntx, drawImage);
     };
+
+    let drawImage = function (cntx, url, x, y) {
+        let image;
+        image = new Image();
+        image.onload = function () {
+            cntx.drawImage(image, x * window.devicePixelRatio, y * window.devicePixelRatio);
+        };
+        image.src = url;
+    }
 };
 
 /** @type {PageBlockWizard} */
