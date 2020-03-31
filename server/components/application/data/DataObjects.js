@@ -9,13 +9,14 @@ DataObjects = function () {
      * ???
      * @type {number}
      */
-    this.OBJECT_EMPTY = 3;
+    this.OBJECT_VISIBLE = 3;
 
     /**
      * Не видна игроку.
      * @type {number}
      */
-    this.OBJECT_NONE = 1;
+    this.OBJECT_INVISIBLE = 1;
+
 
     /**
      * Просто картинка блока на маске
@@ -55,6 +56,12 @@ DataObjects = function () {
      * @type {number}
      */
     this.OBJECT_PURPLE = 106;
+
+    /**
+     * Нет камня
+     * @type {number}
+     */
+    this.OBJECT_HOLE = 120;
 
     /**
      * Эмитер камней

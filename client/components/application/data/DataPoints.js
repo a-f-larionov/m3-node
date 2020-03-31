@@ -7,9 +7,9 @@ DataPoints = function () {
     this.BLOCK_HEIGHT = 50;
 
     this.objectImages = {};
-    this.objectImages[DataObjects.OBJECT_NONE] = '/images/field-none-2.png';
+    this.objectImages[DataObjects.OBJECT_INVISIBLE] = '/images/field-none-2.png';
     this.objectImages[DataObjects.OBJECT_CELL] = '/images/field-cell.png';
-    this.objectImages[DataObjects.OBJECT_EMPTY] = '/images/field-none-2.png';
+    this.objectImages[DataObjects.OBJECT_VISIBLE] = '/images/field-none-2.png';
     this.objectImages[DataObjects.OBJECT_RANDOM] = '/images/field-none.png';
     this.objectImages[DataObjects.OBJECT_BLOCK] = '/images/field-block.png';
 

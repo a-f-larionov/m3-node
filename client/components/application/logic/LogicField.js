@@ -17,7 +17,7 @@ LogicField = function () {
      * Объекты, способные падать вниз.
      * @type {number[]}
      */
-    let fallDownObjects = [
+    let fallObjects = [
         DataObjects.OBJECT_RED,
         DataObjects.OBJECT_GREEN,
         DataObjects.OBJECT_BLUE,
@@ -25,25 +25,37 @@ LogicField = function () {
         DataObjects.OBJECT_PURPLE,
     ];
 
-    this.isGem = function (gemOrId, layerGems) {
+    this.isGem = function (pOrId, layerGems) {
         if (layerGems) {
-            if (!layerGems[gemOrId.x] || !layerGems[gemOrId.x][gemOrId.y]) return false;
-            gemOrId = layerGems[gemOrId.x][gemOrId.y];
+            if (!layerGems[pOrId.x] || !layerGems[pOrId.x][pOrId.y]) return false;
+            pOrId = layerGems[pOrId.x][pOrId.y];
         }
-        return gems.indexOf(gemOrId) !== -1;
+        return gems.indexOf(pOrId) !== -1;
     };
 
-    this.isNotGem = function (id) {
-        return !self.isGem(id);
+    this.isNotGem = function (pOrId, layerGems) {
+        return !self.isGem(pOrId, layerGems);
     };
 
-    this.isFallingObject = function (id) {
-        return fallDownObjects.indexOf(id) !== -1;
+    this.isHole = function (p, layerGems) {
+        return layerGems[p.x] && layerGems[p.x][p.y] &&
+            layerGems[p.x][p.y] === DataObjects.OBJECT_HOLE;
     };
 
+    this.isFallObject = function (id) {
+        return fallObjects.indexOf(id) !== -1;
+    };
+
+    /**
+     * Может ли упасть камень с верху
+     * @param x
+     * @param y
+     * @param layerGems
+     * @returns {boolean|boolean}
+     */
     this.mayFall = function (x, y, layerGems) {
-        return !LogicField.isFallingObject(layerGems[x][y]) &&
-            LogicField.isFallingObject(layerGems[x][y - 1]);
+        return !LogicField.isFallObject(layerGems[x][y]) &&
+            LogicField.isFallObject(layerGems[x][y - 1]);
     };
 
     this.getRandomGemId = function () {
@@ -52,7 +64,7 @@ LogicField = function () {
 
     this.isVisilbe = function (p, layerMask) {
         return layerMask[p.x] && layerMask[p.x][p.y] &&
-            layerMask[p.x][p.y] !== DataObjects.OBJECT_NONE;
+            layerMask[p.x][p.y] !== DataObjects.OBJECT_INVISIBLE;
     };
 
     this.countTurns = function (layerMask, layerGems, fieldHeight, fieldWidth) {
@@ -123,6 +135,12 @@ LogicField = function () {
         return true;
     };
 
+    /**
+     * Камни рядом, значит они прилегают друг к другу.
+     * @param a
+     * @param b
+     * @returns {boolean}
+     */
     this.isNear = function (a, b) {
         if (
             Math.abs(a.x - b.x) === 1
@@ -169,7 +187,7 @@ LogicField = function () {
                 if (y >= fieldHeight) continue;
                 if (x + offset >= fieldWidth) continue;
                 if (layerGems[x + offset][y] === startId &&
-                    layerMask[x + offset][y] === DataObjects.OBJECT_EMPTY) {
+                    layerMask[x + offset][y] === DataObjects.OBJECT_VISIBLE) {
                     line.coords.push({
                         x: x + offset,
                         y: y
@@ -183,7 +201,7 @@ LogicField = function () {
                 if (y + offset >= fieldHeight) continue;
                 if (x >= fieldWidth) continue;
                 if (layerGems[x][y + offset] === startId &&
-                    layerMask[x][y + offset] === DataObjects.OBJECT_EMPTY) {
+                    layerMask[x][y + offset] === DataObjects.OBJECT_VISIBLE) {
                     line.coords.push({
                         x: x,
                         y: y + offset
@@ -220,6 +238,14 @@ LogicField = function () {
                 callback(x, y, maskId, gemId);
             }
         }
+    };
+
+    this.setGem = function (p, gemId, layerGems) {
+        layerGems[p.x][p.y] = gemId;
+    };
+
+    this.getGemId = function (p, layerGems) {
+        return layerGems[p.y][p.x];
     };
 };
 
