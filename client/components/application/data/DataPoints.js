@@ -13,6 +13,7 @@ DataPoints = function () {
     this.objectImages[DataObjects.OBJECT_RANDOM] = '/images/field-none.png';
     this.objectImages[DataObjects.OBJECT_BLOCK] = '/images/field-block.png';
 
+    this.objectImages[DataObjects.OBJECT_HOLE] = '/images/field-none-2.png';
     this.objectImages[DataObjects.OBJECT_RED] = '/images/field-red.png';
     this.objectImages[DataObjects.OBJECT_GREEN] = '/images/field-green.png';
     this.objectImages[DataObjects.OBJECT_BLUE] = '/images/field-blue.png';

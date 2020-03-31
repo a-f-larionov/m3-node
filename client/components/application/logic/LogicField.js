@@ -229,13 +229,14 @@ LogicField = function () {
         return false;
     };
 
-    this.eachLayerMask = function (callback, layerMask, layerGems) {
-        let maskId, gemId;
+    this.eachLayerMask = function (callback, layerMask, layerGems, layerSpecial) {
+        let maskId, gemId, specId;
         for (let y = 0; y < DataPoints.FIELD_MAX_HEIGHT; y++) {
             for (let x = 0; x < DataPoints.FIELD_MAX_WIDTH; x++) {
                 maskId = layerMask && layerMask[x] && layerMask[x][y];
                 gemId = layerGems && layerGems[x] && layerGems[x][y];
-                callback(x, y, maskId, gemId);
+                specId = layerSpecial && layerSpecial[x] && layerSpecial[x][y];
+                callback(x, y, maskId, gemId, specId);
             }
         }
     };

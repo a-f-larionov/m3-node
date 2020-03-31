@@ -699,32 +699,27 @@ ElementField = function () {
     };
 
     this.hasProcesSpecialLayer = function () {
-        layerSpecials.forEach(function (row, x) {
-            row.forEach(function (cell, y) {
-                //if emitter and empty layerGems, set random gem
-                if (cell === DataObjects.OBJECT_EMITTER &&
-                    LogicField.isHole({x: x, y: y}, layerGems)
-                ) {
-                    return true;
-                }
-            });
-        });
+        LogicField.eachLayerMask(function (x, y, maskId, gemId, specId) {
+            if (specId === DataObjects.OBJECT_EMITTER &&
+                LogicField.isHole({x: x, y: y}, layerGems)
+            ) {
+                return true;
+            }
+        }, layerMask, layerGems, layerSpecials);
         return false;
     };
 
     this.processSpecialLayer = function () {
-        layerSpecials.forEach(function (row, x) {
-            row.forEach(function (cell, y) {
-                //if emitter and empty layerGems, set random gem
-                if (cell === DataObjects.OBJECT_EMITTER &&
-                    LogicField.isHole({x: x, y: y}, layerGems)
-                ) {
-                    //@todo
-                    LogicField.setGem({x: x, y: y}, LogicField.getRandomGemId(), layerGems);
-                    gemDoms[x][y].height = DataPoints.BLOCK_HEIGHT;
-                }
-            });
-        });
+        LogicField.eachLayerMask(function (x, y, maskId, gemId, specId) {
+            //if emitter and empty layerGems, set random gem
+            if (specId === DataObjects.OBJECT_EMITTER &&
+                LogicField.isHole({x: x, y: y}, layerGems)
+            ) {
+                console.log('set gem');
+                LogicField.setGem({x: x, y: y}, LogicField.getRandomGemId(), layerGems);
+                gemDoms[x][y].height = DataPoints.BLOCK_HEIGHT;
+            }
+        }, layerMask, layerGems, layerSpecials);
         self.run();
     };
 
@@ -765,7 +760,7 @@ ElementField = function () {
                     ) {
                         dom.mode = 'toshow';
                         dom.backgroundImage = DataPoints.objectImages[LogicField.getGemId({x: x, y: y - 1}, layerGems)];
-                        // переисовка backgroundPositionY это хитрый хак и костыль :)
+                        // перерисовка backgroundPositionY это хитрый хак и костыль :)
                         dom.backgroundPositionY = DataPoints.BLOCK_HEIGHT;
                         dom.height = 0;
                         dom.y = y * DataPoints.BLOCK_HEIGHT;
@@ -773,7 +768,6 @@ ElementField = function () {
                         dom.show();
                     }
                     /** Falling one gem */
-                    //@todo
                     LogicField.exchangeGems({x: x, y: y}, {x: x, y: y - 1}, layerGems);
                     animObjects.push(dom);
                 }
@@ -823,17 +817,9 @@ ElementField = function () {
         if (!animBlock) return;
 
         switch (animType) {
-            case self.ANIM_TYPE_HUMMER_DESTROY:
-                animCounter++;
-                /** Смотри domHummerDestroy.animTracks*/
-                break;
-            case self.ANIM_TYPE_SHUFFLE:
-                animCounter++;
-                /** Смотри domLightingDestroy.animTracks */
-                break;
-            case self.ANIM_TYPE_LIGHTNING_HORIZONTAL_DESTROY:
-                animCounter++;
-                /** Смотри domShuffleDestroy.animTracks */
+            case self.ANIM_TYPE_HUMMER_DESTROY: /** Смотри domHummerDestroy.animTracks*/
+            case self.ANIM_TYPE_SHUFFLE:    /** Смотри domLightingDestroy.animTracks */
+            case self.ANIM_TYPE_LIGHTNING_HORIZONTAL_DESTROY:   /** Смотри domShuffleDestroy.animTracks */
                 break;
             case self.ANIM_TYPE_FALL:
                 animCounter++;
