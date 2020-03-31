@@ -2,19 +2,19 @@ LogicField = function () {
     let self = this;
 
     let gems = [
-        DataPoints.OBJECT_RED,
-        DataPoints.OBJECT_GREEN,
-        DataPoints.OBJECT_BLUE,
-        DataPoints.OBJECT_YELLOW,
-        DataPoints.OBJECT_PURPLE,
+        DataObjects.OBJECT_RED,
+        DataObjects.OBJECT_GREEN,
+        DataObjects.OBJECT_BLUE,
+        DataObjects.OBJECT_YELLOW,
+        DataObjects.OBJECT_PURPLE,
     ];
 
     let fallDownObjects = [
-        DataPoints.OBJECT_RED,
-        DataPoints.OBJECT_GREEN,
-        DataPoints.OBJECT_BLUE,
-        DataPoints.OBJECT_YELLOW,
-        DataPoints.OBJECT_PURPLE,
+        DataObjects.OBJECT_RED,
+        DataObjects.OBJECT_GREEN,
+        DataObjects.OBJECT_BLUE,
+        DataObjects.OBJECT_YELLOW,
+        DataObjects.OBJECT_PURPLE,
     ];
 
     this.isGem = function (id, layerGems) {
@@ -41,7 +41,7 @@ LogicField = function () {
 
     this.isVisilbe = function (p, layerMask) {
         return layerMask[p.y] && layerMask[p.y][p.x] &&
-            layerMask[p.y][p.x] !== DataPoints.OBJECT_NONE;
+            layerMask[p.y][p.x] !== DataObjects.OBJECT_NONE;
     };
 
     this.countTurns = function (layerMask, layerGems, fieldHeight, fieldWidth) {
@@ -158,7 +158,7 @@ LogicField = function () {
                 if (y >= fieldHeight) continue;
                 if (x + offset >= fieldWidth) continue;
                 if (layerGems[y][x + offset] === startId &&
-                    layerMask[y][x + offset] === DataPoints.OBJECT_EMPTY) {
+                    layerMask[y][x + offset] === DataObjects.OBJECT_EMPTY) {
                     line.coords.push({
                         x: x + offset,
                         y: y
@@ -172,7 +172,7 @@ LogicField = function () {
                 if (y + offset >= fieldHeight) continue;
                 if (x >= fieldWidth) continue;
                 if (layerGems[y + offset][x] === startId &&
-                    layerMask[y + offset][x] === DataPoints.OBJECT_EMPTY) {
+                    layerMask[y + offset][x] === DataObjects.OBJECT_EMPTY) {
                     line.coords.push({
                         x: x,
                         y: y + offset

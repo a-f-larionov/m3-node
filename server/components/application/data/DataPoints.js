@@ -1,20 +1,5 @@
 DataPoints = function () {
 
-    this.OBJECT_NONE = 1;
-    this.OBJECT_CELL = 2;
-    this.OBJECT_EMPTY = 3;
-    this.OBJECT_BLOCK = 4;
-
-    this.OBJECT_RANDOM = 101;
-
-    this.OBJECT_RED = 102;
-    this.OBJECT_GREEN = 103;
-    this.OBJECT_BLUE = 104;
-    this.OBJECT_YELLOW = 105;
-    this.OBJECT_PURPLE = 106;
-
-    this.OBJECT_EMITTER = 1001;
-
     this.FIELD_MAX_WIDTH = 10;
     this.FIELD_MAX_HEIGHT = 10;
 
@@ -46,7 +31,7 @@ DataPoints = function () {
         score3: 300,
         goals: [
             {
-                id: this.OBJECT_RED,
+                id: DataObjects.OBJECT_RED,
                 count: 9
             }
         ],
@@ -77,13 +62,13 @@ DataPoints = function () {
 
     wayPoints[2] = {
         id: 2,
-        turns: 14,
+        turns: 15,
         score1: 100,
         score2: 200,
         score3: 300,
         goals: [
             {
-                id: this.OBJECT_GREEN,
+                id: DataObjects.OBJECT_GREEN,
                 count: 15
             }
         ],
@@ -99,14 +84,14 @@ DataPoints = function () {
                 "  □□□□  ",
             ],
             gems: [
-                "????????",
-                "????????",
-                "????????",
-                "????????",
-                "????????",
-                "????????",
-                "????????",
-                "????????",
+                "RGBYPRGB",
+                "PRGPYPRG",
+                "RYPBGBYR",
+                "GPYBPYBG",
+                "BYPGBBRB",
+                "PPYBPYBP",
+                "PRGBGYGB",
+                "RGBYPRGB",
             ],
             special: [
                 "********",
@@ -129,7 +114,7 @@ DataPoints = function () {
         score3: 500,
         goals: [
             {
-                id: this.OBJECT_YELLOW,
+                id: DataObjects.OBJECT_YELLOW,
                 count: 20
             }
         ],
@@ -173,7 +158,7 @@ DataPoints = function () {
         score3: 300,
         goals: [
             {
-                id: this.OBJECT_RED,
+                id: DataObjects.OBJECT_RED,
                 count: 7
             }
         ],
@@ -216,7 +201,7 @@ DataPoints = function () {
         score3: 300,
         goals: [
             {
-                id: this.OBJECT_RED,
+                id: DataObjects.OBJECT_RED,
                 count: 7
             }
         ],
@@ -265,7 +250,7 @@ DataPoints = function () {
         score3: 300,
         goals: [
             {
-                id: this.OBJECT_RED,
+                id: DataObjects.OBJECT_RED,
                 count: 12
             }
         ],
@@ -314,15 +299,15 @@ DataPoints = function () {
         score3: 300,
         goals: [
             {
-                id: this.OBJECT_GREEN,
+                id: DataObjects.OBJECT_GREEN,
                 count: 20
             },
             {
-                id: this.OBJECT_BLUE,
+                id: DataObjects.OBJECT_BLUE,
                 count: 20
             },
             {
-                id: this.OBJECT_YELLOW,
+                id: DataObjects.OBJECT_YELLOW,
                 count: 14
             }
         ],
@@ -371,11 +356,11 @@ DataPoints = function () {
         score3: 300,
         goals: [
             {
-                id: this.OBJECT_YELLOW,
+                id: DataObjects.OBJECT_YELLOW,
                 count: 16
             },
             {
-                id: this.OBJECT_RED,
+                id: DataObjects.OBJECT_RED,
                 count: 33
             }
         ],
@@ -424,7 +409,7 @@ DataPoints = function () {
         score3: 300,
         goals: [
             {
-                id: this.OBJECT_GREEN,
+                id: DataObjects.OBJECT_GREEN,
                 count: 12
             }
         ],
@@ -473,7 +458,7 @@ DataPoints = function () {
         score3: 300,
         goals: [
             {
-                id: this.OBJECT_BLUE,
+                id: DataObjects.OBJECT_BLUE,
                 count: 14
             }
         ],
@@ -522,15 +507,15 @@ DataPoints = function () {
         score3: 300,
         goals: [
             {
-                id: this.OBJECT_BLUE,
+                id: DataObjects.OBJECT_BLUE,
                 count: 40
             },
             {
-                id: this.OBJECT_RED,
+                id: DataObjects.OBJECT_RED,
                 count: 40
             },
             {
-                id: this.OBJECT_YELLOW,
+                id: DataObjects.OBJECT_YELLOW,
                 count: 40
             }
         ],
@@ -579,7 +564,7 @@ DataPoints = function () {
         score3: 300,
         goals: [
             {
-                id: this.OBJECT_GREEN,
+                id: DataObjects.OBJECT_GREEN,
                 count: 5
             }
         ],
@@ -628,7 +613,7 @@ DataPoints = function () {
         score3: 300,
         goals: [
             {
-                id: this.OBJECT_GREEN,
+                id: DataObjects.OBJECT_GREEN,
                 count: 18
             }
         ],
@@ -677,11 +662,11 @@ DataPoints = function () {
         score3: 300,
         goals: [
             {
-                id: this.OBJECT_GREEN,
+                id: DataObjects.OBJECT_GREEN,
                 count: 14
             },
             {
-                id: this.OBJECT_RED,
+                id: DataObjects.OBJECT_RED,
                 count: 12
             }
         ],
@@ -730,7 +715,7 @@ DataPoints = function () {
         score3: 300,
         goals: [
             {
-                id: this.OBJECT_YELLOW,
+                id: DataObjects.OBJECT_YELLOW,
                 count: 12
             }
         ],
@@ -779,15 +764,15 @@ DataPoints = function () {
         score3: 300,
         goals: [
             {
-                id: this.OBJECT_GREEN,
+                id: DataObjects.OBJECT_GREEN,
                 count: 12
             },
             {
-                id: this.OBJECT_RED,
+                id: DataObjects.OBJECT_RED,
                 count: 18
             },
             {
-                id: this.OBJECT_YELLOW,
+                id: DataObjects.OBJECT_YELLOW,
                 count: 8
             },
         ],
@@ -836,15 +821,15 @@ DataPoints = function () {
         score3: 300,
         goals: [
             {
-                id: this.OBJECT_GREEN,
+                id: DataObjects.OBJECT_GREEN,
                 count: 18
             },
             {
-                id: this.OBJECT_RED,
+                id: DataObjects.OBJECT_RED,
                 count: 18
             },
             {
-                id: this.OBJECT_YELLOW,
+                id: DataObjects.OBJECT_YELLOW,
                 count: 18
             },
         ],
@@ -893,7 +878,7 @@ DataPoints = function () {
         score3: 300,
         goals: [
             {
-                id: this.OBJECT_GREEN,
+                id: DataObjects.OBJECT_GREEN,
                 count: 14
             }
         ],
@@ -977,7 +962,7 @@ DataPoints = function () {
         },
         goals: [
             {
-                id: this.OBJECT_GREEN,
+                id: DataObjects.OBJECT_GREEN,
                 count: 10
             }
         ],
@@ -991,15 +976,15 @@ DataPoints = function () {
         score3: 300,
         goals: [
             {
-                id: this.OBJECT_GREEN,
+                id: DataObjects.OBJECT_GREEN,
                 count: 3
             },
             {
-                id: this.OBJECT_YELLOW,
+                id: DataObjects.OBJECT_YELLOW,
                 count: 3
             },
             {
-                id: this.OBJECT_PURPLE,
+                id: DataObjects.OBJECT_PURPLE,
                 count: 3
             }
         ],
@@ -1039,15 +1024,15 @@ DataPoints = function () {
         score3: 300,
         goals: [
             {
-                id: this.OBJECT_GREEN,
+                id: DataObjects.OBJECT_GREEN,
                 count: 18
             },
             {
-                id: this.OBJECT_RED,
+                id: DataObjects.OBJECT_RED,
                 count: 18
             },
             {
-                id: this.OBJECT_YELLOW,
+                id: DataObjects.OBJECT_YELLOW,
                 count: 18
             },
         ],
@@ -1096,15 +1081,15 @@ DataPoints = function () {
         score3: 300,
         goals: [
             {
-                id: this.OBJECT_GREEN,
+                id: DataObjects.OBJECT_GREEN,
                 count: 18
             },
             {
-                id: this.OBJECT_RED,
+                id: DataObjects.OBJECT_RED,
                 count: 18
             },
             {
-                id: this.OBJECT_YELLOW,
+                id: DataObjects.OBJECT_YELLOW,
                 count: 18
             },
         ],
@@ -1153,15 +1138,15 @@ DataPoints = function () {
         score3: 300,
         goals: [
             {
-                id: this.OBJECT_GREEN,
+                id: DataObjects.OBJECT_GREEN,
                 count: 18
             },
             {
-                id: this.OBJECT_RED,
+                id: DataObjects.OBJECT_RED,
                 count: 18
             },
             {
-                id: this.OBJECT_YELLOW,
+                id: DataObjects.OBJECT_YELLOW,
                 count: 18
             },
         ],
@@ -1210,15 +1195,15 @@ DataPoints = function () {
         score3: 300,
         goals: [
             {
-                id: this.OBJECT_GREEN,
+                id: DataObjects.OBJECT_GREEN,
                 count: 18
             },
             {
-                id: this.OBJECT_RED,
+                id: DataObjects.OBJECT_RED,
                 count: 18
             },
             {
-                id: this.OBJECT_YELLOW,
+                id: DataObjects.OBJECT_YELLOW,
                 count: 18
             },
         ],
@@ -1267,15 +1252,15 @@ DataPoints = function () {
         score3: 300,
         goals: [
             {
-                id: this.OBJECT_GREEN,
+                id: DataObjects.OBJECT_GREEN,
                 count: 18
             },
             {
-                id: this.OBJECT_RED,
+                id: DataObjects.OBJECT_RED,
                 count: 18
             },
             {
-                id: this.OBJECT_YELLOW,
+                id: DataObjects.OBJECT_YELLOW,
                 count: 18
             },
         ],
@@ -1324,15 +1309,15 @@ DataPoints = function () {
         score3: 300,
         goals: [
             {
-                id: this.OBJECT_GREEN,
+                id: DataObjects.OBJECT_GREEN,
                 count: 18
             },
             {
-                id: this.OBJECT_RED,
+                id: DataObjects.OBJECT_RED,
                 count: 18
             },
             {
-                id: this.OBJECT_YELLOW,
+                id: DataObjects.OBJECT_YELLOW,
                 count: 18
             },
         ],
@@ -1381,15 +1366,15 @@ DataPoints = function () {
         score3: 300,
         goals: [
             {
-                id: this.OBJECT_GREEN,
+                id: DataObjects.OBJECT_GREEN,
                 count: 18
             },
             {
-                id: this.OBJECT_RED,
+                id: DataObjects.OBJECT_RED,
                 count: 18
             },
             {
-                id: this.OBJECT_YELLOW,
+                id: DataObjects.OBJECT_YELLOW,
                 count: 18
             },
         ],
@@ -1438,15 +1423,15 @@ DataPoints = function () {
         score3: 300,
         goals: [
             {
-                id: this.OBJECT_GREEN,
+                id: DataObjects.OBJECT_GREEN,
                 count: 18
             },
             {
-                id: this.OBJECT_RED,
+                id: DataObjects.OBJECT_RED,
                 count: 18
             },
             {
-                id: this.OBJECT_YELLOW,
+                id: DataObjects.OBJECT_YELLOW,
                 count: 18
             },
         ],
@@ -1530,7 +1515,7 @@ DataPoints = function () {
         },
         goals: [
             {
-                id: this.OBJECT_GREEN,
+                id: DataObjects.OBJECT_GREEN,
                 count: 1
             }
         ],
@@ -1579,7 +1564,7 @@ DataPoints = function () {
         },
         goals: [
             {
-                id: this.OBJECT_GREEN,
+                id: DataObjects.OBJECT_GREEN,
                 count: 1
             }
         ],
@@ -1628,7 +1613,7 @@ DataPoints = function () {
         },
         goals: [
             {
-                id: this.OBJECT_GREEN,
+                id: DataObjects.OBJECT_GREEN,
                 count: 1
             }
         ],
@@ -1677,7 +1662,7 @@ DataPoints = function () {
         },
         goals: [
             {
-                id: this.OBJECT_GREEN,
+                id: DataObjects.OBJECT_GREEN,
                 count: 1
             }
         ],
@@ -1726,7 +1711,7 @@ DataPoints = function () {
         },
         goals: [
             {
-                id: this.OBJECT_GREEN,
+                id: DataObjects.OBJECT_GREEN,
                 count: 1
             }
         ],
@@ -1775,7 +1760,7 @@ DataPoints = function () {
         },
         goals: [
             {
-                id: this.OBJECT_GREEN,
+                id: DataObjects.OBJECT_GREEN,
                 count: 1
             }
         ],
@@ -1824,7 +1809,7 @@ DataPoints = function () {
         },
         goals: [
             {
-                id: this.OBJECT_GREEN,
+                id: DataObjects.OBJECT_GREEN,
                 count: 1
             }
         ],
@@ -1873,7 +1858,7 @@ DataPoints = function () {
         },
         goals: [
             {
-                id: this.OBJECT_GREEN,
+                id: DataObjects.OBJECT_GREEN,
                 count: 1
             }
         ],
@@ -1922,7 +1907,7 @@ DataPoints = function () {
         },
         goals: [
             {
-                id: this.OBJECT_GREEN,
+                id: DataObjects.OBJECT_GREEN,
                 count: 1
             }
         ],
@@ -1971,7 +1956,7 @@ DataPoints = function () {
         },
         goals: [
             {
-                id: this.OBJECT_GREEN,
+                id: DataObjects.OBJECT_GREEN,
                 count: 1
             }
         ],
@@ -2020,7 +2005,7 @@ DataPoints = function () {
         },
         goals: [
             {
-                id: this.OBJECT_GREEN,
+                id: DataObjects.OBJECT_GREEN,
                 count: 1
             }
         ],
@@ -2069,7 +2054,7 @@ DataPoints = function () {
         },
         goals: [
             {
-                id: this.OBJECT_GREEN,
+                id: DataObjects.OBJECT_GREEN,
                 count: 1
             }
         ],
@@ -2118,7 +2103,7 @@ DataPoints = function () {
         },
         goals: [
             {
-                id: this.OBJECT_GREEN,
+                id: DataObjects.OBJECT_GREEN,
                 count: 1
             }
         ],
@@ -2167,7 +2152,7 @@ DataPoints = function () {
         },
         goals: [
             {
-                id: this.OBJECT_GREEN,
+                id: DataObjects.OBJECT_GREEN,
                 count: 1
             }
         ],
@@ -2216,7 +2201,7 @@ DataPoints = function () {
         },
         goals: [
             {
-                id: this.OBJECT_GREEN,
+                id: DataObjects.OBJECT_GREEN,
                 count: 1
             }
         ],
@@ -2265,7 +2250,7 @@ DataPoints = function () {
         },
         goals: [
             {
-                id: this.OBJECT_GREEN,
+                id: DataObjects.OBJECT_GREEN,
                 count: 1
             }
         ],
@@ -2314,7 +2299,7 @@ DataPoints = function () {
         },
         goals: [
             {
-                id: this.OBJECT_GREEN,
+                id: DataObjects.OBJECT_GREEN,
                 count: 1
             }
         ],
@@ -2363,7 +2348,7 @@ DataPoints = function () {
         },
         goals: [
             {
-                id: this.OBJECT_GREEN,
+                id: DataObjects.OBJECT_GREEN,
                 count: 1
             }
         ],
@@ -2412,7 +2397,7 @@ DataPoints = function () {
         },
         goals: [
             {
-                id: this.OBJECT_GREEN,
+                id: DataObjects.OBJECT_GREEN,
                 count: 1
             }
         ],
@@ -2461,7 +2446,7 @@ DataPoints = function () {
         },
         goals: [
             {
-                id: this.OBJECT_GREEN,
+                id: DataObjects.OBJECT_GREEN,
                 count: 1
             }
         ],
@@ -2510,7 +2495,7 @@ DataPoints = function () {
         },
         goals: [
             {
-                id: this.OBJECT_GREEN,
+                id: DataObjects.OBJECT_GREEN,
                 count: 1
             }
         ],
@@ -2524,7 +2509,7 @@ DataPoints = function () {
         score3: 300,
         goals: [
             {
-                id: this.OBJECT_GREEN,
+                id: DataObjects.OBJECT_GREEN,
                 count: 1
             }
         ],
@@ -2573,7 +2558,7 @@ DataPoints = function () {
         score3: 300,
         goals: [
             {
-                id: this.OBJECT_GREEN,
+                id: DataObjects.OBJECT_GREEN,
                 count: 1
             }
         ],
@@ -2622,7 +2607,7 @@ DataPoints = function () {
         score3: 300,
         goals: [
             {
-                id: this.OBJECT_GREEN,
+                id: DataObjects.OBJECT_GREEN,
                 count: 1
             }
         ],
@@ -2671,7 +2656,7 @@ DataPoints = function () {
         score3: 300,
         goals: [
             {
-                id: this.OBJECT_GREEN,
+                id: DataObjects.OBJECT_GREEN,
                 count: 1
             }
         ],
@@ -2720,7 +2705,7 @@ DataPoints = function () {
         score3: 300,
         goals: [
             {
-                id: this.OBJECT_GREEN,
+                id: DataObjects.OBJECT_GREEN,
                 count: 1
             }
         ],
@@ -2769,7 +2754,7 @@ DataPoints = function () {
         score3: 300,
         goals: [
             {
-                id: this.OBJECT_GREEN,
+                id: DataObjects.OBJECT_GREEN,
                 count: 1
             }
         ],
@@ -2818,7 +2803,7 @@ DataPoints = function () {
         score3: 300,
         goals: [
             {
-                id: this.OBJECT_GREEN,
+                id: DataObjects.OBJECT_GREEN,
                 count: 1
             }
         ],
@@ -2867,7 +2852,7 @@ DataPoints = function () {
         score3: 300,
         goals: [
             {
-                id: this.OBJECT_GREEN,
+                id: DataObjects.OBJECT_GREEN,
                 count: 1
             }
         ],
@@ -2916,7 +2901,7 @@ DataPoints = function () {
         score3: 300,
         goals: [
             {
-                id: this.OBJECT_GREEN,
+                id: DataObjects.OBJECT_GREEN,
                 count: 1
             }
         ],
@@ -2965,7 +2950,7 @@ DataPoints = function () {
         score3: 300,
         goals: [
             {
-                id: this.OBJECT_GREEN,
+                id: DataObjects.OBJECT_GREEN,
                 count: 1
             }
         ],
@@ -3014,7 +2999,7 @@ DataPoints = function () {
         score3: 300,
         goals: [
             {
-                id: this.OBJECT_GREEN,
+                id: DataObjects.OBJECT_GREEN,
                 count: 1
             }
         ],
@@ -3063,7 +3048,7 @@ DataPoints = function () {
         score3: 300,
         goals: [
             {
-                id: this.OBJECT_GREEN,
+                id: DataObjects.OBJECT_GREEN,
                 count: 1
             }
         ],

@@ -39,17 +39,25 @@ CAPIMap = function () {
 
     let convertLayer = function (layer) {
         let layerMapping = {
-            ' ': DataPoints.OBJECT_NONE,
-            '■': DataPoints.OBJECT_BLOCK,
-            '*': DataPoints.OBJECT_EMITTER,
-            '□': DataPoints.OBJECT_EMPTY,
-            'c': DataPoints.OBJECT_CELL,
-            '?': DataPoints.OBJECT_RANDOM,
-            'R': DataPoints.OBJECT_RED,
-            'G': DataPoints.OBJECT_GREEN,
-            'B': DataPoints.OBJECT_BLUE,
-            'Y': DataPoints.OBJECT_YELLOW,
-            'P': DataPoints.OBJECT_PURPLE,
+            /** ??? */
+            '■': DataObjects.OBJECT_BLOCK,
+            'c': DataObjects.OBJECT_CELL,
+
+            /** Layer mask */
+            ' ': DataObjects.OBJECT_NONE,
+            '□': DataObjects.OBJECT_EMPTY,
+
+            /** Layer special */
+            '*': DataObjects.OBJECT_EMITTER,
+//            '': DataObjects.OBJECT_BLOCK
+
+            /** Layer gems */
+            '?': DataObjects.OBJECT_RANDOM,
+            'R': DataObjects.OBJECT_RED,
+            'G': DataObjects.OBJECT_GREEN,
+            'B': DataObjects.OBJECT_BLUE,
+            'Y': DataObjects.OBJECT_YELLOW,
+            'P': DataObjects.OBJECT_PURPLE,
         };
 
         let out;

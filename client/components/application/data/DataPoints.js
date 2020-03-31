@@ -1,20 +1,5 @@
 DataPoints = function () {
 
-    this.OBJECT_NONE = 1;
-    this.OBJECT_CELL = 2;
-    this.OBJECT_EMPTY = 3;
-    this.OBJECT_BLOCK = 4;
-
-    this.OBJECT_RANDOM = 101;
-
-    this.OBJECT_RED = 102;
-    this.OBJECT_GREEN = 103;
-    this.OBJECT_BLUE = 104;
-    this.OBJECT_YELLOW = 105;
-    this.OBJECT_PURPLE = 106;
-
-    this.OBJECT_EMITTER = 1001;
-
     this.FIELD_MAX_WIDTH = 10;
     this.FIELD_MAX_HEIGHT = 10;
 
@@ -22,17 +7,17 @@ DataPoints = function () {
     this.BLOCK_HEIGHT = 50;
 
     this.objectImages = {};
-    this.objectImages[this.OBJECT_NONE] = '/images/field-none-2.png';
-    this.objectImages[this.OBJECT_CELL] = '/images/field-cell.png';
-    this.objectImages[this.OBJECT_EMPTY] = '/images/field-none-2.png';
-    this.objectImages[this.OBJECT_RANDOM] = '/images/field-none.png';
-    this.objectImages[this.OBJECT_BLOCK] = '/images/field-block.png';
+    this.objectImages[DataObjects.OBJECT_NONE] = '/images/field-none-2.png';
+    this.objectImages[DataObjects.OBJECT_CELL] = '/images/field-cell.png';
+    this.objectImages[DataObjects.OBJECT_EMPTY] = '/images/field-none-2.png';
+    this.objectImages[DataObjects.OBJECT_RANDOM] = '/images/field-none.png';
+    this.objectImages[DataObjects.OBJECT_BLOCK] = '/images/field-block.png';
 
-    this.objectImages[this.OBJECT_RED] = '/images/field-red.png';
-    this.objectImages[this.OBJECT_GREEN] = '/images/field-green.png';
-    this.objectImages[this.OBJECT_BLUE] = '/images/field-blue.png';
-    this.objectImages[this.OBJECT_YELLOW] = '/images/field-yellow.png';
-    this.objectImages[this.OBJECT_PURPLE] = '/images/field-purple.png';
+    this.objectImages[DataObjects.OBJECT_RED] = '/images/field-red.png';
+    this.objectImages[DataObjects.OBJECT_GREEN] = '/images/field-green.png';
+    this.objectImages[DataObjects.OBJECT_BLUE] = '/images/field-blue.png';
+    this.objectImages[DataObjects.OBJECT_YELLOW] = '/images/field-yellow.png';
+    this.objectImages[DataObjects.OBJECT_PURPLE] = '/images/field-purple.png';
 
     let pointsCoords = [
         {
