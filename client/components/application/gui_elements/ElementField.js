@@ -551,46 +551,45 @@ ElementField = function () {
         domContainer.redraw();
         domBackground.redraw();
 
-        LogicField.eachLayerMask(function (x, y, mask, gem) {
+        LogicField.eachLayerMask(function (x, y, maskId, gemId) {
+            let maskDom, gemDom;
+            maskDom = maskDoms[x][y];
+            gemDom = gemDoms[x][y];
 
             /** Layer.mask redraw */
-            switch (mask) {
+            switch (maskId) {
                 case DataObjects.OBJECT_EMPTY:
-                    mask = DataObjects.OBJECT_CELL;
+                    maskId = DataObjects.OBJECT_CELL;
                 default:
-                    maskDoms[x][y].x = x * DataPoints.BLOCK_WIDTH;
-                    maskDoms[x][y].y = y * DataPoints.BLOCK_HEIGHT;
-                    maskDoms[x][y].backgroundImage = DataPoints.objectImages[mask];
-                    maskDoms[x][y].show();
-                    maskDoms[x][y].redraw();
+                    maskDom.x = x * DataPoints.BLOCK_WIDTH;
+                    maskDom.y = y * DataPoints.BLOCK_HEIGHT;
+                    maskDom.backgroundImage = DataPoints.objectImages[maskId];
+                    maskDom.show();
+                    maskDom.redraw();
                     break;
                 case DataObjects.OBJECT_NONE:
-                    maskDoms[x][y].hide();
+                    maskDom.hide();
                     break;
             }
+
+            /** Layer.gems redraw */
+            if (LogicField.isGem(gemId) &&
+                LogicField.isVisilbe({x: x, y: y}, layerMask)) {
+                gemDom.opacity = '';
+                gemDom.backgroundImage = DataPoints.objectImages[layerGems[x][y]];
+                gemDom.y = y * DataPoints.BLOCK_HEIGHT;
+                gemDom.x = x * DataPoints.BLOCK_WIDTH;
+                gemDom.height = DataPoints.BLOCK_HEIGHT;
+                gemDom.backgroundPositionY = null;
+                gemDom.show();
+                gemDom.redraw();
+            } else {
+                gemDom.hide();
+            }
+
         }, layerMask, layerGems);
 
-        if (layerGems) {
-            for (let y = 0; y < fieldHeight; y++) {
-                for (let x = 0; x < fieldWidth; x++) {
-                    if (LogicField.isGem({x: x, y: y}, layerGems) &&
-                        LogicField.isVisilbe({x: x, y: y}, layerMask)) {
-                        gemDoms[x][y].opacity = '';
-                        gemDoms[x][y].backgroundImage = DataPoints.objectImages[layerGems[x][y]];
-                        gemDoms[x][y].y = y * DataPoints.BLOCK_HEIGHT;
-                        gemDoms[x][y].x = x * DataPoints.BLOCK_WIDTH;
-                        gemDoms[x][y].height = DataPoints.BLOCK_HEIGHT;
-                        gemDoms[x][y].backgroundPositionY = null;
-                        gemDoms[x][y].show();
-                        gemDoms[x][y].redraw();
-                    } else {
-                        gemDoms[x][y].hide();
-                    }
-                }
-            }
-        }
         if (gemA && !animBlock) {
-            //@todo
             domFrame.x = domA.x;
             domFrame.y = domA.y;
             domFrame.show();

@@ -26,7 +26,10 @@ LogicField = function () {
     ];
 
     this.isGem = function (gemOrId, layerGems) {
-        if (layerGems) gemOrId = layerGems[gemOrId.x][gemOrId.y];
+        if (layerGems) {
+            if (!layerGems[gemOrId.x] || !layerGems[gemOrId.x][gemOrId.y]) return false;
+            gemOrId = layerGems[gemOrId.x][gemOrId.y];
+        }
         return gems.indexOf(gemOrId) !== -1;
     };
 
@@ -40,7 +43,7 @@ LogicField = function () {
 
     this.mayFall = function (x, y, layerGems) {
         return !LogicField.isFallingObject(layerGems[x][y]) &&
-            LogicField.isFallingObject(layerGems[x][y-1]);
+            LogicField.isFallingObject(layerGems[x][y - 1]);
     };
 
     this.getRandomGemId = function () {
@@ -209,12 +212,12 @@ LogicField = function () {
     };
 
     this.eachLayerMask = function (callback, layerMask, layerGems) {
-        let mask, gem;
+        let maskId, gemId;
         for (let y = 0; y < DataPoints.FIELD_MAX_HEIGHT; y++) {
             for (let x = 0; x < DataPoints.FIELD_MAX_WIDTH; x++) {
-                mask = layerMask && layerMask[x] && layerMask[x][y];
-                gem = layerGems && layerGems[x] && layerGems[x][y];
-                callback(x, y, mask, gem);
+                maskId = layerMask && layerMask[x] && layerMask[x][y];
+                gemId = layerGems && layerGems[x] && layerGems[x][y];
+                callback(x, y, maskId, gemId);
             }
         }
     };
