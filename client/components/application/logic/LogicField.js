@@ -1,6 +1,10 @@
 LogicField = function () {
     let self = this;
 
+    let layerMask = null,
+        layerGems = null,
+        layerSpecial = null;
+
     /**
      * Список всех камней
      * @type {number[]}
@@ -25,19 +29,16 @@ LogicField = function () {
         DataObjects.OBJECT_PURPLE,
     ];
 
-    this.isGem = function (pOrId, layerGems) {
-        if (layerGems) {
-            if (!layerGems[pOrId.x] || !layerGems[pOrId.x][pOrId.y]) return false;
-            pOrId = layerGems[pOrId.x][pOrId.y];
-        }
-        return gems.indexOf(pOrId) !== -1;
+    this.isGem = function (p) {
+        if (!layerGems[p.x] || !layerGems[p.x][p.y]) return false;
+        return gems.indexOf(layerGems[p.x][p.y]) !== -1;
     };
 
-    this.isNotGem = function (pOrId, layerGems) {
-        return !self.isGem(pOrId, layerGems);
+    this.isNotGem = function (p) {
+        return !self.isGem(p);
     };
 
-    this.isHole = function (p, layerGems) {
+    this.isHole = function (p) {
         return layerGems[p.x] && layerGems[p.x][p.y] &&
             layerGems[p.x][p.y] === DataObjects.OBJECT_HOLE;
     };
@@ -50,11 +51,11 @@ LogicField = function () {
      * Может ли упасть камень с верху
      * @param x
      * @param y
-     * @param layerGems
      * @returns {boolean|boolean}
      */
-    this.mayFall = function (x, y, layerGems) {
-        return !LogicField.isFallObject(layerGems[x][y]) &&
+    this.mayFall = function (x, y) {
+        return layerGems[x] && layerGems[x][y] &&
+            !LogicField.isFallObject(layerGems[x][y]) &&
             LogicField.isFallObject(layerGems[x][y - 1]);
     };
 
@@ -62,16 +63,13 @@ LogicField = function () {
         return gems[Math.floor(Math.random() * gems.length)];
     };
 
-    this.isVisilbe = function (p, layerMask) {
+    this.isVisilbe = function (p) {
         return layerMask[p.x] && layerMask[p.x][p.y] &&
-            layerMask[p.x][p.y] !== DataObjects.OBJECT_INVISIBLE;
+            layerMask[p.x][p.y] === DataObjects.OBJECT_VISIBLE;
     };
 
-    this.countTurns = function (layerMask, layerGems, fieldHeight, fieldWidth) {
-        let turnCount = 0,
-            allLines = [],
-            lines
-        ;
+    this.countTurns = function () {
+        let allLines = [], lines;
 
         /**
          * 1 - Меняем a ⇔ b
@@ -83,46 +81,46 @@ LogicField = function () {
          * 7 - Возвращаем a⇕b
          */
         let a, b;
-        for (let y = 0; y < fieldHeight; y++) {
-            for (let x = 0; x < fieldWidth; x++) {
+        this.eachCell(function (x, y) {
 
-                a = {x: x, y: y};
-                b = {x: x + 1, y: y};
-                if (this.isVisilbe(a, layerMask) && this.isGem(a, layerGems) &&
-                    this.isVisilbe(b, layerMask) && this.isGem(b, layerGems)
-                ) {
-                    /** 1 - Меняем a ⇔ b */
-                    this.exchangeGems(a, b, layerGems);
+            a = {x: x, y: y};
+            b = {x: x + 1, y: y};
+            if (self.isVisilbe(a) && self.isGem(a) &&
+                self.isVisilbe(b) && self.isGem(b)
+            ) {
+                /** 1 - Меняем a ⇔ b */
+                self.exchangeGems(a, b);
 
-                    /** 2 - Считаем линии */
-                    lines = this.findLines(fieldHeight, fieldWidth, layerMask, layerGems, true);
-                    if (lines.length) allLines.push({a: a, b: b.y, lines: lines});
+                /** 2 - Считаем линии */
+                lines = self.findLines();
 
-                    /** 3 - Возвращаем a ⇔ b */
-                    this.exchangeGems(a, b, layerGems);
-                }
+                if (lines.length) allLines.push({a: a, b: b.y, lines: lines});
 
-                a = {x: x, y: y};
-                b = {x: x, y: y + 1};
-                if (this.isVisilbe(a, layerMask) && this.isGem(a, layerGems) &&
-                    this.isVisilbe(b, layerMask) && this.isGem(b, layerGems)
-                ) {
-                    /** 5 - Меняем a ⇕ b */
-                    this.exchangeGems(a, b, layerGems);
-
-                    /** 6 - Считаем линии */
-                    lines = this.findLines(fieldHeight, fieldWidth, layerMask, layerGems, true);
-                    if (lines.length) allLines.push({a: a, b: b.y, lines: lines});
-
-                    /** 7 - Возвращаем a ⇕ b */
-                    this.exchangeGems(a, b, layerGems);
-                }
+                /** 3 - Возвращаем a ⇔ b */
+                self.exchangeGems(a, b);
             }
-        }
+
+            a = {x: x, y: y};
+            b = {x: x, y: y + 1};
+            if (self.isVisilbe(a) && self.isGem(a) &&
+                self.isVisilbe(b) && self.isGem(b)
+            ) {
+                /** 5 - Меняем a ⇕ b */
+                self.exchangeGems(a, b);
+
+                /** 6 - Считаем линии */
+                lines = self.findLines();
+                if (lines.length) allLines.push({a: a, b: b.y, lines: lines});
+
+                /** 7 - Возвращаем a ⇕ b */
+                self.exchangeGems(a, b);
+            }
+        });
+
         return allLines;
     };
 
-    this.exchangeGems = function (a, b, layerGems) {
+    this.exchangeGems = function (a, b) {
         let tmp;
         if (layerGems[a.x] === undefined ||
             layerGems[a.x][a.y] === undefined ||
@@ -153,17 +151,17 @@ LogicField = function () {
         return false;
     };
 
-    this.findLines = function (fieldHeight, fieldWidth, layerMask, layerGems, log) {
+    this.findLines = function () {
         let line, lines;
         lines = [];
-        for (let y = 0; y < fieldHeight; y++) {
-            for (let x = 0; x < fieldWidth; x++) {
+        for (let y = 0; y < DataPoints.FIELD_MAX_HEIGHT; y++) {
+            for (let x = 0; x < DataPoints.FIELD_MAX_WIDTH; x++) {
                 if (this.lineCrossing(lines, x, y)) continue;
-                line = this.findLine(x, y, 1, fieldHeight, fieldWidth, layerMask, layerGems);
+                line = this.findLine(x, y, 1);
                 if (line) {
                     lines.push(line);
                 }
-                line = this.findLine(x, y, 2, fieldHeight, fieldWidth, layerMask, layerGems);
+                line = this.findLine(x, y, 2);
                 if (line) {
                     lines.push(line);
                 }
@@ -172,22 +170,23 @@ LogicField = function () {
         return lines;
     };
 
-    this.findLine = function (x, y, orientation, fieldHeight, fieldWidth, layerMask, layerGems) {
-        let startId, line;
-        startId = layerGems[x][y];
+    this.findLine = function (x, y, orientation) {
+        let gemId, line;
+        gemId = self.getGemId({x: x, y: y});
         /** Может ли такой объект вообще падать */
-        if (LogicField.isNotGem(startId)) return false;
-
+        if (LogicField.isNotGem({x: x, y: y})) return false;
         line = {
             coords: [],
-            gemId: startId
+            gemId: gemId
         };
         if (orientation === 1) {
             for (let offset = 0; offset < 5; offset++) {
-                if (y >= fieldHeight) continue;
-                if (x + offset >= fieldWidth) continue;
-                if (layerGems[x + offset][y] === startId &&
-                    layerMask[x + offset][y] === DataObjects.OBJECT_VISIBLE) {
+                if (x + offset >= DataPoints.FIELD_MAX_WIDTH) continue;
+                if (y >= DataPoints.FIELD_MAX_HEIGHT) continue;
+                if (
+                    self.isVisilbe({x: x + offset, y: y}) &&
+                    self.getGemId({x: x + offset, y: y}) === gemId
+                ) {
                     line.coords.push({
                         x: x + offset,
                         y: y
@@ -198,10 +197,10 @@ LogicField = function () {
             }
         } else {
             for (let offset = 0; offset < 5; offset++) {
-                if (y + offset >= fieldHeight) continue;
-                if (x >= fieldWidth) continue;
-                if (layerGems[x][y + offset] === startId &&
-                    layerMask[x][y + offset] === DataObjects.OBJECT_VISIBLE) {
+                if (x + offset >= DataPoints.FIELD_MAX_WIDTH) continue;
+                if (y >= DataPoints.FIELD_MAX_HEIGHT) continue;
+                if (self.isVisilbe({x: x, y: y + offset}) &&
+                    self.getGemId({x: x, y: y + offset}) === gemId) {
                     line.coords.push({
                         x: x,
                         y: y + offset
@@ -229,7 +228,7 @@ LogicField = function () {
         return false;
     };
 
-    this.eachLayerMask = function (callback, layerMask, layerGems, layerSpecial) {
+    this.eachCell = function (callback) {
         let maskId, gemId, specId;
         for (let y = 0; y < DataPoints.FIELD_MAX_HEIGHT; y++) {
             for (let x = 0; x < DataPoints.FIELD_MAX_WIDTH; x++) {
@@ -241,13 +240,19 @@ LogicField = function () {
         }
     };
 
-    this.setGem = function (p, gemId, layerGems) {
+    this.setGem = function (p, gemId) {
         layerGems[p.x][p.y] = gemId;
     };
 
-    this.getGemId = function (p, layerGems) {
-        return layerGems[p.y][p.x];
+    this.getGemId = function (p) {
+        return layerGems[p.x] && layerGems[p.x][p.y];
     };
+
+    this.setLayers = function (mask, gems, special) {
+        layerMask = mask;
+        layerGems = gems;
+        layerSpecial = special;
+    }
 };
 
 /** @type {LogicField} */

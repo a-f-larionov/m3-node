@@ -50,8 +50,8 @@ CAPIMap = function () {
             'c': DataObjects.OBJECT_CELL,
 
             /** Layer mask */
-            ' ': DataObjects.OBJECT_INVISIBLE,
             '□': DataObjects.OBJECT_VISIBLE,
+            ' ': DataObjects.OBJECT_INVISIBLE,
 
             /** Layer special */
             '*': DataObjects.OBJECT_EMITTER,
