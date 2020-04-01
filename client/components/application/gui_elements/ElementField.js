@@ -16,16 +16,13 @@ ElementField = function () {
     let turnsCounted = false;
 
     this.ANIM_TYPE_FALL = 1;
-    this.ANIM_TYPE_EXCHANGE = 2;
     this.ANIM_TYPE_HUMMER_DESTROY = 3;
     this.ANIM_TYPE_LIGHTNING_HORIZONTAL_DESTROY = 4;
     this.ANIM_TYPE_SHUFFLE = 5;
 
     /** Рамка и все что связано */
-    let gemA = null,
-        gemB = null,
-        domA = null,
-        domB = null,
+    let gemFramed = null,
+        pB = null,
         domFrame = null
     ;
 
@@ -62,9 +59,7 @@ ElementField = function () {
     let animType = null,
         animBlock = false,
         animObjects = [],
-        animCounter = 0,
-        animExchangeHalf = false,
-        animavx, animavy
+        animCounter = 0
     ;
 
     let visibleWidth = 0,
@@ -108,14 +103,14 @@ ElementField = function () {
         /**
          * Create mask layer cells
          */
-        LogicField.eachCell(function (x, y) {
+        Field.eachCell(function (x, y) {
             if (!maskDoms[x]) maskDoms[x] = [];
             maskDoms[x][y] = GUI.createDom(undefined, {
                 opacity: 0.4,
             });
         });
 
-        LogicField.eachCell(function (x, y) {
+        Field.eachCell(function (x, y) {
             if (!gemDoms[x]) gemDoms[x] = [];
             dom = GUI.createDom(undefined, {
                 p: {x: x, y: y},
@@ -317,17 +312,19 @@ ElementField = function () {
             case LogicStuff.STUFF_LIGHTING:
                 gemLightingAct(p);
                 break;
+            default:
+                gemChangeAct(p);
+                break;
         }
-        gemChangeAct(p);
     };
 
     let gemHummerAct = function (p) {
         if (lock) return;
         if (animBlock) return;
-        if (LogicField.isNotGem(p)) return;
+        if (Field.isNotGem(p)) return;
         //@destroygem
-        LogicField.setGem(p, DataObjects.OBJECT_HOLE);
-        if (LogicField.isLightningGem(p)) {
+        Field.setGem(p, DataObjects.OBJECT_HOLE);
+        if (Field.isLightningGem(p)) {
             console.log('IS LIGT!');
             setTimeout(function () {
                 gemLightingAct(p);
@@ -353,7 +350,7 @@ ElementField = function () {
         funcShuffleField();
         /** Еще попытки, если не получилось */
         for (let i = 0; i < 500; i++) {
-            if (LogicField.findLines().length) break;
+            if (Field.findLines().length) break;
             funcShuffleField();
         }
 
@@ -368,17 +365,17 @@ ElementField = function () {
 
     let funcShuffleField = function () {
         let p1, p2;
-        LogicField.eachCell(function (x1, y1) {
+        Field.eachCell(function (x1, y1) {
             p1 = {x: x1, y: y1};
             p2 = {
                 x: Math.floor(Math.random() * DataPoints.FIELD_MAX_WIDTH),
                 y: Math.floor(Math.random() * DataPoints.FIELD_MAX_HEIGHT)
             };
             if (
-                LogicField.isVisilbe(p1) && LogicField.isGem(p1) &&
-                LogicField.isVisilbe(p2) && LogicField.isGem(p2)
+                Field.isVisilbe(p1) && Field.isGem(p1) &&
+                Field.isVisilbe(p2) && Field.isGem(p2)
             ) {
-                LogicField.exchangeGems({x: x1, y: y1}, p2)
+                Field.exchangeGems({x: x1, y: y1}, p2)
             }
         });
     };
@@ -386,12 +383,12 @@ ElementField = function () {
     let gemLightingAct = function (p) {
         if (lock) return;
         if (animBlock) return;
-        if (LogicField.isNotGem(p)) return;
+        if (Field.isNotGem(p)) return;
         for (let x = 0; x < DataPoints.FIELD_MAX_WIDTH; x++) {
             p.x = x;
-            if (LogicField.isGem(p)) {
+            if (Field.isGem(p)) {
                 //@destroy
-                LogicField.setGem(p, DataObjects.OBJECT_HOLE);
+                Field.setGem(p, DataObjects.OBJECT_HOLE);
             }
         }
         self.redraw();
@@ -403,7 +400,7 @@ ElementField = function () {
         /** Получить длину текущей линии */
         for (let x = 0; x < DataPoints.FIELD_MAX_WIDTH; x++) {
             p.x = x;
-            if (LogicField.isVisilbe(p)) {
+            if (Field.isVisilbe(p)) {
                 leftX = Math.min(leftX, x);
                 rightX = Math.max(rightX, x);
             }
@@ -419,65 +416,34 @@ ElementField = function () {
     /**
      * Обработка дейтсвия с камнем, при клике например
      * или другом любом действием аналогичным клику.
-     * @param p {Object}
+     * @param gemB {Object}
      */
-    let gemChangeAct = function (p) {
-        let mayLineDestroy,
-            lines;
-        if (lock) return;
-        if (animBlock) return;
-        if (LogicField.isNotGem(p)) return;
+    let gemChangeAct = function (gemB) {
+        let gemA = gemFramed;
+        if (lock || animBlock || Field.isNotGem(gemB)) return;
 
-        if (!gemA || !LogicField.isNear(gemA, p)) {
-            gemA = p;
-            domA = gemDoms[p.x][p.y];
+        /** Set frame */
+        if (!gemA || (gemA && !Field.isNear(gemA, gemB))) {
+            gemFramed = gemB;
             self.redraw();
-            return;
         }
 
-        domFrame.hide();
-        gemB = p;
-        domB = gemDoms[p.x][p.y];
+        /** Near gems */
+        if (gemA && Field.isNear(gemA, gemB)) {
+            gemFramed = null;
 
-        animBlock = true;
+            /** Change and back */
+            if (!Field.isLinePossiblyDestroy(gemA, gemB)) {
+                animate(animChangeAndBack, gemA, gemB, gemDoms);
+            }
 
-        LogicField.exchangeGems(gemA, gemB);
-        lines = LogicField.findLines();
-        mayLineDestroy =
-            LogicField.lineCrossing(lines, gemA.x, gemA.y)
-            | LogicField.lineCrossing(lines, gemB.x, gemB.y);
-        LogicField.exchangeGems(gemA, gemB);
-
-        if (gemA.x < gemB.x) {
-            animType = self.ANIM_TYPE_EXCHANGE;
-            animavx = +1;
-            animavy = 0;
+            /** Change and destroy */
+            if (Field.isLinePossiblyDestroy(gemA, gemB)) {
+                self.beforeTurnUse();
+                Field.exchangeGems(gemA, gemB);
+                animate(animChangeAndDestroy, gemA, gemB, gemDoms);
+            }
         }
-        if (gemA.x > gemB.x) {
-            animType = self.ANIM_TYPE_EXCHANGE;
-            animavx = -1;
-            animavy = 0;
-        }
-        if (gemA.y < gemB.y) {
-            animType = self.ANIM_TYPE_EXCHANGE;
-            animavx = 0;
-            animavy = +1;
-        }
-        if (gemA.y > gemB.y) {
-            animType = self.ANIM_TYPE_EXCHANGE;
-            animavx = 0;
-            animavy = -1;
-        }
-        if (mayLineDestroy) {
-            LogicField.exchangeGems(gemA, gemB);
-            animExchangeHalf = true;
-            self.beforeTurnUse();
-        } else {
-            animExchangeHalf = false;
-        }
-        animCounter = 0;
-
-        self.redraw();
     };
 
     let gemMouseDown = null;
@@ -511,7 +477,7 @@ ElementField = function () {
         showed = true;
         domBackground.show();
         domContainer.show();
-        LogicField.eachCell(function (x, y) {
+        Field.eachCell(function (x, y) {
             maskDoms[x][y].show();
             gemDoms[x][y].show();
         });
@@ -526,7 +492,7 @@ ElementField = function () {
         showed = false;
         domBackground.hide();
         domContainer.hide();
-        LogicField.eachCell(function (x, y) {
+        Field.eachCell(function (x, y) {
             maskDoms[x][y].hide();
             gemDoms[x][y].hide();
         });
@@ -555,7 +521,7 @@ ElementField = function () {
         domBackground.redraw();
 
         let specIndex = 0;
-        LogicField.eachCell(function (x, y, maskId, gemId, specId) {
+        Field.eachCell(function (x, y, maskId, gemId, specId) {
             let maskDom, gemDom;
             maskDom = maskDoms[x][y];
             gemDom = gemDoms[x][y];
@@ -578,8 +544,8 @@ ElementField = function () {
             }
 
             /** Layer.gems redraw */
-            if (LogicField.isGem({x: x, y: y}) &&
-                LogicField.isVisilbe({x: x, y: y})) {
+            if (Field.isGem({x: x, y: y}) &&
+                Field.isVisilbe({x: x, y: y})) {
                 gemDom.opacity = '';
                 gemDom.backgroundImage = DataPoints.objectImages[gemId];
                 gemDom.y = y * DataPoints.BLOCK_HEIGHT;
@@ -628,9 +594,9 @@ ElementField = function () {
             specDoms[i].hide();
         }
 
-        if (gemA && !animBlock) {
-            domFrame.x = domA.x;
-            domFrame.y = domA.y;
+        if (gemFramed) {
+            domFrame.x = gemDoms[gemFramed.x][gemFramed.y].x;
+            domFrame.y = gemDoms[gemFramed.x][gemFramed.y].y;
             domFrame.show();
             domFrame.redraw();
         } else {
@@ -656,10 +622,10 @@ ElementField = function () {
             return out;
         };
 
-        LogicField.setLayers(
+        Field.setLayers(
             copyLayer(layers.mask),
             copyLayer(layers.gems, function (value) {
-                if (value === DataObjects.OBJECT_RANDOM) return LogicField.getRandomGemId();
+                if (value === DataObjects.OBJECT_RANDOM) return Field.getRandomGemId();
                 return value;
             }),
             copyLayer(layers.special)
@@ -677,8 +643,8 @@ ElementField = function () {
         let aCorner, bCorner;
         aCorner = {x: Infinity, y: Infinity};
         bCorner = {x: -Infinity, y: -Infinity};
-        LogicField.eachCell(function (x, y) {
-            if (LogicField.isVisilbe({x: x, y: y})) {
+        Field.eachCell(function (x, y) {
+            if (Field.isVisilbe({x: x, y: y})) {
                 aCorner.x = Math.min(aCorner.x, x);
                 aCorner.y = Math.min(aCorner.y, y);
                 bCorner.x = Math.max(bCorner.x, x);
@@ -714,7 +680,7 @@ ElementField = function () {
         if (self.isFieldSilent()) {
             if (!turnsCounted) {
                 turnsCounted = true;
-                let allTurns = LogicField.countTurns();
+                let allTurns = Field.countTurns();
                 if (allTurns.length === 0) {
                     gemShuffleAct();
                 }
@@ -734,9 +700,9 @@ ElementField = function () {
     };
 
     this.hasProcesSpecialLayer = function () {
-        LogicField.eachCell(function (x, y, maskId, gemId, specId) {
+        Field.eachCell(function (x, y, maskId, gemId, specId) {
             if (specId === DataObjects.OBJECT_EMITTER &&
-                LogicField.isHole({x: x, y: y})
+                Field.isHole({x: x, y: y})
             ) {
                 return true;
             }
@@ -745,11 +711,11 @@ ElementField = function () {
     };
 
     this.processSpecialLayer = function () {
-        LogicField.eachCell(function (x, y, maskId, gemId, specId) {
+        Field.eachCell(function (x, y, maskId, gemId, specId) {
             if (specId === DataObjects.OBJECT_EMITTER &&
-                LogicField.isHole({x: x, y: y})
+                Field.isHole({x: x, y: y})
             ) {
-                LogicField.setGem({x: x, y: y}, LogicField.getRandomGemId());
+                Field.setGem({x: x, y: y}, Field.getRandomGemId());
                 gemDoms[x][y].height = DataPoints.BLOCK_HEIGHT;
             }
         });
@@ -758,8 +724,8 @@ ElementField = function () {
 
     this.hasFall = function () {
         let out = false;
-        LogicField.eachCell(function (x, y) {
-            if (LogicField.mayFall(x, y + 1)) out = true;
+        Field.eachCell(function (x, y) {
+            if (Field.mayFall(x, y + 1)) out = true;
         });
         return out;
     };
@@ -770,24 +736,24 @@ ElementField = function () {
         animObjects = [];
         animCounter = 0;
 
-        LogicField.eachCell(function (x, y) {
+        Field.eachCell(function (x, y) {
             let dom;
             y = DataPoints.FIELD_MAX_HEIGHT - y;
 
-            if (!LogicField.mayFall(x, y)) return;
+            if (!Field.mayFall(x, y)) return;
 
             dom = gemDoms[x][y - 1];
             dom.mode = '';
             // if dom now on NONE and below IS NOT NONE, set flag - showUp
             // if dom now is NOT NONE and below IS NONE, set flag hideDown
 
-            if (LogicField.isVisilbe({x: x, y: y - 1}) && !LogicField.isVisilbe({x: x, y: y})
+            if (Field.isVisilbe({x: x, y: y - 1}) && !Field.isVisilbe({x: x, y: y})
             ) dom.mode = 'tohide';
 
-            if (!LogicField.isVisilbe({x: x, y: y - 1}) && LogicField.isVisilbe({x: x, y: y})
+            if (!Field.isVisilbe({x: x, y: y - 1}) && Field.isVisilbe({x: x, y: y})
             ) {
                 dom.mode = 'toshow';
-                dom.backgroundImage = DataPoints.objectImages[LogicField.getGemId({x: x, y: y - 1})];
+                dom.backgroundImage = DataPoints.objectImages[Field.getGemId({x: x, y: y - 1})];
                 // перерисовка backgroundPositionY это хитрый хак и костыль :)
                 dom.backgroundPositionY = DataPoints.BLOCK_HEIGHT;
                 dom.height = 0;
@@ -796,7 +762,7 @@ ElementField = function () {
                 dom.show();
             }
             /** Falling one gem */
-            LogicField.exchangeGems({x: x, y: y}, {x: x, y: y - 1});
+            Field.exchangeGems({x: x, y: y}, {x: x, y: y - 1});
             animObjects.push(dom);
         });
 
@@ -810,7 +776,7 @@ ElementField = function () {
 
     this.hasDestroyLines = function () {
         let lines;
-        lines = LogicField.findLines();
+        lines = Field.findLines();
         return lines.length > 0;
     };
 
@@ -819,14 +785,14 @@ ElementField = function () {
      */
     this.destroyLines = function () {
         let lines;
-        lines = LogicField.findLines();
+        lines = Field.findLines();
         let p;
         if (lines.length)
             for (let i in lines) {
                 for (let c in lines[i].coords) {
                     p = lines[i].coords[c];
                     //@destroy
-                    LogicField.setGem({x: p.x, y: p.y}, DataObjects.OBJECT_HOLE);
+                    Field.setGem({x: p.x, y: p.y}, DataObjects.OBJECT_HOLE);
                 }
                 self.onDestroyLine(lines[i]);
             }
@@ -873,33 +839,6 @@ ElementField = function () {
                     self.run();
                 }
                 break;
-            case self.ANIM_TYPE_EXCHANGE: // a <-> b
-                let step = 5;
-                animCounter++;
-                if (animCounter <= 50 / step) {
-                    domA.x += animavx * step;
-                    domB.x -= animavx * step;
-                    domA.y += animavy * step;
-                    domB.y -= animavy * step;
-                }
-                if (!animExchangeHalf && animCounter > 50 / step) {
-                    domA.x -= animavx * step;
-                    domB.x += animavx * step;
-                    domA.y -= animavy * step;
-                    domB.y += animavy * step;
-                }
-                domA.redraw();
-                domB.redraw();
-                if ((animExchangeHalf && animCounter === 50 / step)
-                    || animCounter === 50 / step * 2
-                ) {
-                    animBlock = false;
-                    animType = 0;
-                    gemA = gemB = domA = domB = null;
-                    self.redraw();
-                    self.run();
-                }
-                break;
         }
     };
 
@@ -912,10 +851,94 @@ ElementField = function () {
     };
 
     this.setStuffMode = function (mode) {
-        gemA = null;
-        domA = null;
+        gemFramed = null;
         domStuffMode = mode;
         self.redraw();
     };
-}
-;
+
+    let animate = function (animClass) {
+        let args, animObj;
+
+        self.redraw();
+        animBlock = true;
+
+        animObj = new animClass();
+        animObj.continue = true;
+        animObj.gemDoms = gemDoms;
+
+        args = Array.from(arguments);
+        args.shift();
+
+        animObj.init.apply(animObj, args);
+
+        let iterate = function () {
+            if (!animObj.continue) {
+                animBlock = false;
+                self.redraw();
+                self.run();
+                return;
+            }
+            animObj.continue = animObj.iterate();
+            setTimeout(iterate, Config.OnIdle.animateInterval);
+        };
+
+        iterate();
+    };
+};
+
+let animChangeAndBack = function animChangeAndBack() {
+    let counter, pA, pB, domA, domB, v, velocity, counterHalf, counterStop;
+    velocity = 5;
+    counterStop = Math.floor(100 / velocity);
+    counterHalf = Math.floor(counterStop / 2);
+
+    this.init = function (a, b) {
+        counter = 0;
+        pA = a;
+        pB = b;
+        v = {x: (pB.x - pA.x) * velocity, y: (pB.y - pA.y) * velocity};
+        domA = this.gemDoms[pA.x][pA.y];
+        domB = this.gemDoms[pB.x][pB.y];
+    };
+
+    this.iterate = function () {
+        if (counter === counterHalf) {
+            v.x = -v.x;
+            v.y = -v.y;
+        }
+        domA.x += v.x;
+        domA.y += v.y;
+        domB.x -= v.x;
+        domB.y -= v.y;
+        domA.redraw();
+        domB.redraw();
+        counter++;
+        return counter < counterStop;
+    };
+};
+
+let animChangeAndDestroy = function animChangeAndDestroy() {
+    let counter, pA, pB, domA, domB, v, velocity, counterStop;
+    velocity = 5;
+    counterStop = Math.floor(50 / velocity);
+
+    this.init = function (a, b) {
+        counter = 0;
+        pA = a;
+        pB = b;
+        v = {x: (pB.x - pA.x) * velocity, y: (pB.y - pA.y) * velocity};
+        domA = this.gemDoms[pA.x][pA.y];
+        domB = this.gemDoms[pB.x][pB.y];
+    };
+
+    this.iterate = function () {
+        domA.x += v.x;
+        domA.y += v.y;
+        domB.x -= v.x;
+        domB.y -= v.y;
+        domA.redraw();
+        domB.redraw();
+        counter++;
+        return counter < counterStop;
+    };
+};

@@ -216,6 +216,7 @@ LogicField = function () {
             return false;
     };
 
+    //@todo refactring
     this.lineCrossing = function (lines, x, y) {
         for (let i in lines) {
             for (let n in lines[i].coords) {
@@ -252,13 +253,24 @@ LogicField = function () {
         layerMask = mask;
         layerGems = gems;
         layerSpecial = special;
-    }
+    };
 
     this.isLightningGem = function (p) {
         return layerSpecial[p.x] && layerSpecial[p.x][p.y]
             && layerSpecial[p.x][p.y] === DataObjects.OBJECT_LIGHTNING_VERTICAL;
+    };
+
+    this.isLinePossiblyDestroy = function (pA, pB) {
+        let lines, mayLineDestroy;
+        LogicField.exchangeGems(pA, pB);
+        lines = LogicField.findLines();
+        mayLineDestroy = LogicField.lineCrossing(lines, pA.x, pA.y) | LogicField.lineCrossing(lines, pB.x, pB.y);
+        LogicField.exchangeGems(pA, pB);
+        return mayLineDestroy;
     }
 };
 
 /** @type {LogicField} */
 LogicField = new LogicField;
+/** Aliases */
+Field = LogicField;
