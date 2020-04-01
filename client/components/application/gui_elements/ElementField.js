@@ -113,7 +113,9 @@ ElementField = function () {
             maskDoms[x][y] = GUI.createDom(undefined, {
                 opacity: 0.4,
             });
+        });
 
+        LogicField.eachCell(function (x, y) {
             if (!gemDoms[x]) gemDoms[x] = [];
             dom = GUI.createDom(undefined, {
                 p: {x: x, y: y},
