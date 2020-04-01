@@ -209,9 +209,9 @@ PageBlockField = function PageBlockField() {
                         break;
                     case standard :
                         buttonChangeSpeed.srcRest = '/images/field-red.png';
-                        Config.OnIdle.animateInterval = standard / 5;
+                        Config.OnIdle.animateInterval = standard / 20;
                         break;
-                    case standard / 5:
+                    case standard / 20:
                         buttonChangeSpeed.srcRest = '/images/field-green.png';
                         Config.OnIdle.animateInterval = standard * 5;
                         break;
