@@ -16,9 +16,7 @@ ElementField = function () {
     let turnsCounted = false;
 
     this.ANIM_TYPE_FALL = 1;
-    this.ANIM_TYPE_HUMMER_DESTROY = 3;
     //@todo
-    this.ANIM_TYPE_LIGHTNING_HORIZONTAL_DESTROY = 4;
     this.ANIM_TYPE_SHUFFLE = 5;
 
     /** Рамка и все что связано */
@@ -174,21 +172,9 @@ ElementField = function () {
                             '/images/anim-hd-14.png',
                             '/images/anim-hd-15.png',
                         ],
-                        duration: 15,
-                        callback: function () {
-                            return;
-                            domHummerDestroy.animData = [{
-                                frameN: 0,
-                                counter: 0
-                            }];
-                            domHummerDestroy.animPlayed = false;
-                            self.afterStuffUse();
-                            animBlock = false;
-                            animType = 0;
-                            domHummerDestroy.hide();
-                            self.run();
-                        }
+                        duration: 15
                     },
+                    {type: GUI.ANIM_TYPE_GOTO, pos: 0}
                 ]
             ]
         });
@@ -220,6 +206,7 @@ ElementField = function () {
                         ],
                         duration: 15
                     },
+                    {type: GUI.ANIM_TYPE_GOTO, pos: 0}
                 ]
             ]
         });
@@ -315,28 +302,10 @@ ElementField = function () {
     };
 
     let gemHummerAct = function (p) {
-        if (lock) return;
-        if (animBlock) return;
-        if (Field.isNotGem(p)) return;
-        //@destroygem
-        Field.setGem(p, DataObjects.OBJECT_HOLE);
-        if (Field.isLightningGem(p)) {
-            console.log('IS LIGT!');
-            setTimeout(function () {
-                gemLightingAct(p);
-            }, 1);
-        }
-
-        self.redraw();
-        animBlock = true;
-        animType = self.ANIM_TYPE_HUMMER_DESTROY;
-        animCounter = 0;
-        domHummerDestroy.animPlayed = true;
-        domHummerDestroy.x = p.x * DataPoints.BLOCK_WIDTH - (GUI.getImageWidth('/images/anim-hd-1.png') - DataPoints.BLOCK_WIDTH) / 2;
-        domHummerDestroy.y = p.y * DataPoints.BLOCK_HEIGHT - (GUI.getImageHeight('/images/anim-hd-1.png') - DataPoints.BLOCK_HEIGHT) / 2;
-        domHummerDestroy.show();
-        domHummerDestroy.redraw();
-        self.redraw();
+        if (lock || animBlock || Field.isNotGem(p)) return;
+        self.afterStuffUse();
+        self.destroyGem(p);
+        animate(animHummerDestroy, p);
     };
 
     let gemShuffleAct = function () {
@@ -376,12 +345,18 @@ ElementField = function () {
         });
     };
 
-    let gemLightingAct = function (p) {
+    let gemLightingAct = function (p, orientation) {
+        if (!orientation) orientation = 'h';
         if (lock || animBlock || !Field.isVisilbe(p)) return;
-        Field.destroyLine(p, 'h');
+        Field.destroyLine(p, orientation, self.destroyGem);
         self.afterStuffUse();
         self.redraw();
-        animate(animLightning, p);
+        if (orientation === 'c') {
+            //animate(animLightning, p, 'v');
+            animate(animLightning, p, 'h');
+        } else {
+            animate(animLightning, p, orientation);
+        }
     };
 
     /**
@@ -754,15 +729,14 @@ ElementField = function () {
      * Уничтожение лений 3+ длинной.
      */
     this.destroyLines = function () {
-        let lines;
+        let lines, p;
         lines = Field.findLines();
-        let p;
         if (lines.length)
             for (let i in lines) {
                 for (let c in lines[i].coords) {
                     p = lines[i].coords[c];
                     //@destroy
-                    Field.setGem({x: p.x, y: p.y}, DataObjects.OBJECT_HOLE);
+                    self.destroyGem({x: p.x, y: p.y});
                 }
                 self.onDestroyLine(lines[i]);
             }
@@ -780,10 +754,7 @@ ElementField = function () {
         if (!animBlock) return;
 
         switch (animType) {
-            case self.ANIM_TYPE_HUMMER_DESTROY: /** Смотри domHummerDestroy.animTracks*/
             case self.ANIM_TYPE_SHUFFLE:    /** Смотри domLightningDestroy.animTracks */
-            case self.ANIM_TYPE_LIGHTNING_HORIZONTAL_DESTROY:   /** Смотри domShuffleDestroy.animTracks */
-                break;
             case self.ANIM_TYPE_FALL:
                 animCounter++;
                 for (let i in animObjects) {
@@ -826,10 +797,16 @@ ElementField = function () {
         self.redraw();
     };
 
+    this.destroyGem = function (p) {
+        Field.setGem(p, DataObjects.OBJECT_HOLE);
+        if (Field.isLightningGem(p)) {
+            gemLightingAct(p, Field.isLightningGem(p));
+        }
+    };
+
     let animate = function (animClass) {
         let args, animObj, counter;
 
-        self.redraw();
         animBlock = true;
 
         counter = 0;
@@ -891,12 +868,19 @@ let animChangeAndBack = function animChangeAndBack() {
 
 let animLightning = function () {
 
-    this.init = function (p) {
-        let lineData = Field.getVisibleLength(p, 'h');
+    this.init = function (p, orientation) {
+        let lineData = Field.getVisibleLength(p, orientation);
         this.domLightningDestroy.animPlayed = true;
-        this.domLightningDestroy.x = lineData.lower * DataPoints.BLOCK_WIDTH;
-        this.domLightningDestroy.y = p.y * DataPoints.BLOCK_HEIGHT - (GUI.getImageHeight('/images/anim-light-1.png') - DataPoints.BLOCK_HEIGHT) / 2;
+        if (orientation === 'v') {
+            this.domLightningDestroy.x = (p.x - 1) * DataPoints.BLOCK_WIDTH;
+            this.domLightningDestroy.y = (lineData.higher - 1) * DataPoints.BLOCK_HEIGHT - (GUI.getImageHeight('/images/anim-light-1.png') - DataPoints.BLOCK_HEIGHT) / 2;
+        } else {
+            this.domLightningDestroy.x = lineData.lower * DataPoints.BLOCK_WIDTH;
+            this.domLightningDestroy.y = p.y * DataPoints.BLOCK_HEIGHT - (GUI.getImageHeight('/images/anim-light-1.png') - DataPoints.BLOCK_HEIGHT) / 2;
+        }
         this.domLightningDestroy.width = (lineData.length) * DataPoints.BLOCK_WIDTH;
+        if (orientation === 'v') this.domLightningDestroy.rotate = 90;
+        if (orientation === 'h') this.domLightningDestroy.rotate = 0;
         this.domLightningDestroy.show();
         this.domLightningDestroy.redraw();
     };
@@ -912,8 +896,29 @@ let animLightning = function () {
     };
 };
 
+let animHummerDestroy = function () {
+
+    this.init = function (p) {
+        this.domHummerDestroy.animPlayed = true;
+        this.domHummerDestroy.x = p.x * DataPoints.BLOCK_WIDTH - (GUI.getImageWidth('/images/anim-hd-1.png') - DataPoints.BLOCK_WIDTH) / 2;
+        this.domHummerDestroy.y = p.y * DataPoints.BLOCK_HEIGHT - (GUI.getImageHeight('/images/anim-hd-1.png') - DataPoints.BLOCK_HEIGHT) / 2;
+        this.domHummerDestroy.show();
+        this.domHummerDestroy.redraw();
+    };
+
+    this.iterate = function (counter) {
+        if (counter <= 30) return true;
+        this.domHummerDestroy.animData = [{
+            frameN: 0,
+            counter: 0
+        }];
+        this.domHummerDestroy.animPlayed = false;
+        this.domHummerDestroy.hide();
+    };
+};
+
 let animChangeAndDestroy = function animChangeAndDestroy() {
-    let  pA, pB, domA, domB, v, velocity, counterStop;
+    let pA, pB, domA, domB, v, velocity, counterStop;
     velocity = 5;
     counterStop = Math.floor(50 / velocity);
 

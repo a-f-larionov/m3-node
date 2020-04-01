@@ -34,6 +34,7 @@
  * @property fontWeight {String}
  * @property overflow {String}
  * @property textDecoration {String}
+ * @property rotate {Int}
  */
 GUIDom = function () {
     let self = this;
@@ -390,6 +391,9 @@ GUIDom = function () {
     let redrawTextDecoration = function () {
         dom.style.textDecoration = self.textDecoration;
     };
+    let redrawRotate = function () {
+        dom.style.transform = 'rotate(' + self.rotate + 'deg)';
+    };
 
     /**
      * Имена свойств и их методы обработки.
@@ -427,7 +431,8 @@ GUIDom = function () {
         alignText: redrawAlignText,
         zIndex: redrawZIndex,
         overflow: redrawOverflow,
-        textDecoration: redrawTextDecoration
+        textDecoration: redrawTextDecoration,
+        rotate: redrawRotate,
     };
 
     /**

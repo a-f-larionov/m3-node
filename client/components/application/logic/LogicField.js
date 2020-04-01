@@ -256,8 +256,19 @@ LogicField = function () {
     };
 
     this.isLightningGem = function (p) {
-        return layerSpecial[p.x] && layerSpecial[p.x][p.y]
-            && layerSpecial[p.x][p.y] === DataObjects.OBJECT_LIGHTNING_VERTICAL;
+        if (!layerSpecial[p.x]) return false;
+        if (!layerSpecial[p.x][p.y]) return false;
+        switch (layerSpecial[p.x][p.y]) {
+            case DataObjects.OBJECT_LIGHTNING_HORIZONTAL:
+                return 'h';
+                break;
+            case DataObjects.OBJECT_LIGHTNING_VERTICAL:
+                return 'v';
+                break;
+            case DataObjects.OBJECT_LIGHTNING_CROSS:
+                return 'c';
+                break;
+        }
     };
 
     this.isLinePossiblyDestroy = function (pA, pB) {
@@ -273,16 +284,20 @@ LogicField = function () {
      * @param p
      * @param orientation
      */
-    this.destroyLine = function (p, orientation) {
+    this.destroyLine = function (p, orientation, onDestroyGem) {
         switch (orientation) {
             case 'h':
                 for (let x = 0; x < DataPoints.FIELD_MAX_WIDTH; x++) {
-                    if (Field.isGem({x: x, y: p.y})) Field.setGem({x: x, y: p.y}, DataObjects.OBJECT_HOLE);
+                    if (Field.isGem({x: x, y: p.y})) {
+                        onDestroyGem({x: x, y: p.y});
+                    }
                 }
                 break;
             case 'v':
                 for (let y = 0; y < DataPoints.FIELD_MAX_HEIGHT; y++) {
-                    if (Field.isGem({x: p.x, y: y})) Field.setGem({x: p.x, y: y}, DataObjects.OBJECT_HOLE);
+                    if (Field.isGem({x: p.x, y: y})) {
+                        onDestroyGem({x: p.x, y: y});
+                    }
                 }
                 break;
             default:
@@ -300,6 +315,15 @@ LogicField = function () {
                     if (Field.isVisilbe({x: x, y: p.y})) {
                         leftX = Math.min(leftX, x);
                         rightX = Math.max(rightX, x);
+                    }
+                }
+                return {lower: leftX, higher: rightX, length: rightX - leftX + 1};
+                break;
+            case 'v':
+                for (let y = 0; y < DataPoints.FIELD_MAX_HEIGHT; y++) {
+                    if (Field.isVisilbe({x: p.x, y: y})) {
+                        leftX = Math.min(leftX, y);
+                        rightX = Math.max(rightX, y);
                     }
                 }
                 return {lower: leftX, higher: rightX, length: rightX - leftX + 1};
