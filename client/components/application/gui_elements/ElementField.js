@@ -98,6 +98,13 @@ ElementField = function () {
         });
         GUI.pushParent(domContainer);
 
+        domContainer.bind(GUI.EVENT_MOUSE_CLICK, onGemClick, domContainer);
+        domContainer.bind(GUI.EVENT_MOUSE_MOUSE_DOWN, onGemMouseDown, domContainer);
+        domContainer.bind(GUI.EVENT_MOUSE_MOUSE_UP, onGemMouseUp, domContainer);
+        domContainer.bind(GUI.EVENT_MOUSE_OVER, onGemMouseOver, domContainer);
+        //@todo
+        //domContainer.bind(GUI.EVENT_MOUSE_MOUSE_TOUCH_START, onGemTouchStart, domContainer);
+        //domContainer.bind(GUI.EVENT_MOUSE_MOUSE_TOUCH_END, onGemTouchEnd, domContainer);
         /**
          * Create mask layer cells
          */
@@ -114,12 +121,12 @@ ElementField = function () {
                 width: DataPoints.BLOCK_WIDTH,
                 backgroundImage: '/images/field-none.png'
             });
-            dom.bind(GUI.EVENT_MOUSE_CLICK, onGemClick, dom);
-            dom.bind(GUI.EVENT_MOUSE_MOUSE_DOWN, onGemMouseDown, dom);
-            dom.bind(GUI.EVENT_MOUSE_MOUSE_TOUCH_START, onGemTouchStart, dom);
-            dom.bind(GUI.EVENT_MOUSE_MOUSE_TOUCH_END, onGemTouchEnd, dom);
-            dom.bind(GUI.EVENT_MOUSE_MOUSE_UP, onGemMouseUp, dom);
-            dom.bind(GUI.EVENT_MOUSE_OVER, onGemMouseOver, dom);
+            //dom.bind(GUI.EVENT_MOUSE_CLICK, onGemClick, dom);
+            //dom.bind(GUI.EVENT_MOUSE_MOUSE_DOWN, onGemMouseDown, dom);
+            //dom.bind(GUI.EVENT_MOUSE_MOUSE_TOUCH_START, onGemTouchStart, dom);
+            //dom.bind(GUI.EVENT_MOUSE_MOUSE_TOUCH_END, onGemTouchEnd, dom);
+            //dom.bind(GUI.EVENT_MOUSE_MOUSE_UP, onGemMouseUp, dom);
+            //dom.bind(GUI.EVENT_MOUSE_OVER, onGemMouseOver, dom);
             gemDoms[x][y] = dom;
         });
 
@@ -128,7 +135,6 @@ ElementField = function () {
                 width: DataPoints.BLOCK_WIDTH,
                 height: DataPoints.BLOCK_HEIGHT
             });
-            //GUI.bind(dom, GUI.EVENT_MOUSE_MOUSE_DOWN, onMouseDown, self);
             OnIdle.register(dom.animate);
             specDoms.push(dom);
         }
@@ -264,9 +270,9 @@ ElementField = function () {
 
     let gemTouched = null;
 
-    let onGemTouchStart = function () {
+    let onGemTouchStart = function (event) {
         Sounds.play(Sounds.PATH_CHALK);
-        gemTouched = this;
+        gemTouched = pointFromEvent(event);
     };
 
     let onGemTouchEnd = function (event) {
@@ -274,10 +280,9 @@ ElementField = function () {
             event.stopPropagation();
             let changedTouch = event.changedTouches[0];
             let elem = document.elementFromPoint(changedTouch.clientX, changedTouch.clientY);
-
             if (gemTouched) {
-                fieldAct(gemTouched.p);
-                fieldAct(elem.__dom.p);
+                //fieldAct(gemTouched);
+                //fieldAct(pointFromEvent(event.changedTouches[0]));
                 gemTouched = null;
             }
         } catch (e) {
@@ -285,8 +290,15 @@ ElementField = function () {
         }
     };
 
-    let onGemClick = function () {
-        fieldAct(this.p);
+    let pointFromEvent = function (event) {
+        return {
+            x: Math.floor((event.clientX - self.x) / DataPoints.BLOCK_WIDTH),
+            y: Math.floor((event.clientY - self.y) / DataPoints.BLOCK_HEIGHT)
+        }
+    };
+
+    let onGemClick = function (event) {
+        fieldAct(pointFromEvent(event));
     };
 
     let fieldAct = function (p) {
@@ -313,6 +325,12 @@ ElementField = function () {
         if (LogicField.isNotGem(p)) return;
         //@destroygem
         LogicField.setGem(p, DataObjects.OBJECT_HOLE);
+        if (LogicField.isLightningGem(p)) {
+            console.log('IS LIGT!');
+            setTimeout(function () {
+                gemLightingAct(p);
+            }, 1);
+        }
 
         self.redraw();
         animBlock = true;
@@ -399,17 +417,14 @@ ElementField = function () {
     /**
      * Обработка дейтсвия с камнем, при клике например
      * или другом любом действием аналогичным клику.
-     * @param dom {Object}
+     * @param p {Object}
      */
     let gemChangeAct = function (p) {
         let mayLineDestroy,
             lines;
         if (lock) return;
         if (animBlock) return;
-
-        if (LogicField.isNotGem(p)) {
-            return;
-        }
+        if (LogicField.isNotGem(p)) return;
 
         if (!gemA || !LogicField.isNear(gemA, p)) {
             gemA = p;
@@ -465,9 +480,9 @@ ElementField = function () {
 
     let gemMouseDown = null;
 
-    let onGemMouseDown = function () {
+    let onGemMouseDown = function (event) {
         Sounds.play(Sounds.PATH_CHALK);
-        gemMouseDown = this;
+        gemMouseDown = pointFromEvent(event);
         // 1 - при mousedown - ждём перехода в соседнию
         // 2 - если перешли - вызываем onclick дважды
     };
@@ -478,10 +493,10 @@ ElementField = function () {
         // 2 - если перешли - вызываем onclick дважды
     };
 
-    let onGemMouseOver = function () {
+    let onGemMouseOver = function (event) {
         if (gemMouseDown) {
-            fieldAct(gemMouseDown.p);
-            fieldAct(this.p);
+            fieldAct(gemMouseDown);
+            fieldAct(pointFromEvent(event));
             gemMouseDown = null;
         }
     };
@@ -588,7 +603,6 @@ ElementField = function () {
                          */
                         let dom = specDoms[specIndex];
                         if (dom.specId !== specId || dom.x !== x * DataPoints.BLOCK_WIDTH || dom.y !== y * DataPoints.BLOCK_HEIGHT) {
-                            console.log('set:', specId);
                             dom.specId = specId;
                             dom.opacity = 0.88;
                             dom.x = x * DataPoints.BLOCK_WIDTH;

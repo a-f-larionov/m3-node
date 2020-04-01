@@ -253,6 +253,11 @@ LogicField = function () {
         layerGems = gems;
         layerSpecial = special;
     }
+
+    this.isLightningGem = function (p) {
+        return layerSpecial[p.x] && layerSpecial[p.x][p.y]
+            && layerSpecial[p.x][p.y] === DataObjects.OBJECT_LIGHTNING_VERTICAL;
+    }
 };
 
 /** @type {LogicField} */

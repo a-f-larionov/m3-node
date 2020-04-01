@@ -28,6 +28,7 @@ PageBlockField = function PageBlockField() {
     let elPanelGoals;
 
     let buttonReloadField = null;
+    let buttonChangeSpeed = null;
 
     let score;
     let turns;
@@ -182,7 +183,7 @@ PageBlockField = function PageBlockField() {
 
         /** Кнопка обновить поле, для админов */
         buttonReloadField = GUI.createElement(ElementButton, {
-            x: 312, y: 5,
+            x: 312, y: 5, width: 25, height: 25,
             srcRest: '/images/button-reload-field-rest.png',
             srcHover: '/images/button-reload-field-hover.png',
             srcActive: '/images/button-reload-field-active.png',
@@ -193,6 +194,36 @@ PageBlockField = function PageBlockField() {
             }
         });
 
+        /** Кнопка обновить поле, для админов */
+        buttonChangeSpeed = GUI.createElement(ElementButton, {
+            x: 312 + 30, y: 5, width: 25, height: 25,
+            srcRest: '/images/field-yellow.png',
+            srcHover: '/images/field-yellow.png',
+            srcActive: '/images/field-yellow.png',
+            onClick: function () {
+                let standard = 33.33;
+                switch (Config.OnIdle.animateInterval) {
+                    case standard * 5:
+                        buttonChangeSpeed.srcRest = '/images/field-yellow.png';
+                        Config.OnIdle.animateInterval = standard;
+                        break;
+                    case standard :
+                        buttonChangeSpeed.srcRest = '/images/field-red.png';
+                        Config.OnIdle.animateInterval = standard / 5;
+                        break;
+                    case standard / 5:
+                        buttonChangeSpeed.srcRest = '/images/field-green.png';
+                        Config.OnIdle.animateInterval = standard * 5;
+                        break;
+                    default:
+                        Config.OnIdle.animateInterval = standard;
+                        break;
+                }
+                buttonChangeSpeed.redraw();
+            }
+        });
+
+
         /** Dom stuff */
         domStuff = GUI.createDom(null, {x: 190, y: 10});
         domStuff.__dom.style.zIndex = 10000;
@@ -201,9 +232,10 @@ PageBlockField = function PageBlockField() {
             /** Передаем клик дальше, теоретически после анимации */
             domStuff.hide();
             el = document.elementFromPoint(event.clientX, event.clientY);
-
+            //console.log(el);
             /** Признак каменного поля :) */
-            if (el.__dom.p !== undefined) el.dispatchEvent(new MouseEvent(event.type, event));
+            //if (el.__dom.p !== undefined)
+            el.dispatchEvent(new MouseEvent(event.type, event));
 
             domStuff.show();
         });
@@ -228,6 +260,7 @@ PageBlockField = function PageBlockField() {
         self.firstShow();
         if (LogicUser.getCurrentUser().id === 1) {
             buttonReloadField.show();
+            buttonChangeSpeed.show();
         }
     };
 
@@ -247,6 +280,7 @@ PageBlockField = function PageBlockField() {
         domStuff.hide();
         elPanelGoals.hide();
         buttonReloadField.hide();
+        buttonChangeSpeed.hide();
     };
 
     /**
@@ -302,6 +336,7 @@ PageBlockField = function PageBlockField() {
             domStuff.hide();
         }
         buttonReloadField.redraw();
+        buttonChangeSpeed.redraw();
     };
 
     let noMoreGoals;
