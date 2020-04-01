@@ -17,6 +17,7 @@ ElementField = function () {
 
     this.ANIM_TYPE_FALL = 1;
     this.ANIM_TYPE_HUMMER_DESTROY = 3;
+    //@todo
     this.ANIM_TYPE_LIGHTNING_HORIZONTAL_DESTROY = 4;
     this.ANIM_TYPE_SHUFFLE = 5;
 
@@ -31,7 +32,7 @@ ElementField = function () {
         domShuffleDestroy = null
     ;
 
-    let domStuffMode = null;
+    let stuffMode = null;
 
     this.centerX = 0;
     this.centerY = 0;
@@ -70,12 +71,17 @@ ElementField = function () {
 
     /**
      * Каллбек
-     * @type {null}
+     * @type {function}
      */
     this.onDestroyLine = null;
     /**
+     *
+     * @type {function}
+     */
+    this.afterStuffUse = null;
+    /**
      * Каллбек
-     * @type {null}
+     * @type {function}
      */
     this.onFieldSilent = null;
 
@@ -170,6 +176,7 @@ ElementField = function () {
                         ],
                         duration: 15,
                         callback: function () {
+                            return;
                             domHummerDestroy.animData = [{
                                 frameN: 0,
                                 counter: 0
@@ -211,19 +218,7 @@ ElementField = function () {
                             '/images/anim-light-5.png',
                             '/images/anim-light-5.png',
                         ],
-                        duration: 15,
-                        callback: function () {
-                            domLightningDestroy.animData = [{
-                                frameN: 0,
-                                counter: 0
-                            }];
-                            domLightningDestroy.animPlayed = false;
-                            self.afterStuffUse();
-                            animBlock = false;
-                            animType = 0;
-                            domLightningDestroy.hide();
-                            self.run();
-                        }
+                        duration: 15
                     },
                 ]
             ]
@@ -244,6 +239,7 @@ ElementField = function () {
                         angle: 12,
                         duration: 20,
                         callback: function () {
+                            return;
                             domShuffleDestroy.animData = [{
                                 frameN: 0,
                                 counter: 0
@@ -302,7 +298,7 @@ ElementField = function () {
         if (lock) return;
         if (animBlock) return;
 
-        switch (domStuffMode) {
+        switch (stuffMode) {
             case LogicStuff.STUFF_HUMMER:
                 gemHummerAct(p);
                 break;
@@ -381,36 +377,11 @@ ElementField = function () {
     };
 
     let gemLightingAct = function (p) {
-        if (lock) return;
-        if (animBlock) return;
-        if (Field.isNotGem(p)) return;
-        for (let x = 0; x < DataPoints.FIELD_MAX_WIDTH; x++) {
-            p.x = x;
-            if (Field.isGem(p)) {
-                //@destroy
-                Field.setGem(p, DataObjects.OBJECT_HOLE);
-            }
-        }
+        if (lock || animBlock || !Field.isVisilbe(p)) return;
+        Field.destroyLine(p, 'h');
+        self.afterStuffUse();
         self.redraw();
-        animBlock = true;
-        animType = self.ANIM_TYPE_LIGHTNING_HORIZONTAL_DESTROY;
-        animCounter = 0;
-        domLightningDestroy.animPlayed = true;
-        let leftX = Infinity, rightX = -Infinity;
-        /** Получить длину текущей линии */
-        for (let x = 0; x < DataPoints.FIELD_MAX_WIDTH; x++) {
-            p.x = x;
-            if (Field.isVisilbe(p)) {
-                leftX = Math.min(leftX, x);
-                rightX = Math.max(rightX, x);
-            }
-        }
-        domLightningDestroy.x = leftX * DataPoints.BLOCK_WIDTH;
-        domLightningDestroy.y = p.y * DataPoints.BLOCK_HEIGHT - (GUI.getImageHeight('/images/anim-light-1.png') - DataPoints.BLOCK_HEIGHT) / 2;
-        domLightningDestroy.width = (rightX - leftX + 1) * DataPoints.BLOCK_WIDTH;
-        domLightningDestroy.show();
-        domLightningDestroy.redraw();
-        self.redraw();
+        animate(animLightning, p);
     };
 
     /**
@@ -558,7 +529,6 @@ ElementField = function () {
                 gemDom.hide();
             }
 
-            window.jkl = specDoms;
             /** Specials layers **/
             if (specId) {
                 switch (specId) {
@@ -852,19 +822,23 @@ ElementField = function () {
 
     this.setStuffMode = function (mode) {
         gemFramed = null;
-        domStuffMode = mode;
+        stuffMode = mode;
         self.redraw();
     };
 
     let animate = function (animClass) {
-        let args, animObj;
+        let args, animObj, counter;
 
         self.redraw();
         animBlock = true;
 
+        counter = 0;
         animObj = new animClass();
         animObj.continue = true;
         animObj.gemDoms = gemDoms;
+        animObj.domShuffleDestroy = domShuffleDestroy;
+        animObj.domLightningDestroy = domLightningDestroy;
+        animObj.domHummerDestroy = domHummerDestroy;
 
         args = Array.from(arguments);
         args.shift();
@@ -878,7 +852,7 @@ ElementField = function () {
                 self.run();
                 return;
             }
-            animObj.continue = animObj.iterate();
+            animObj.continue = animObj.iterate(counter++);
             setTimeout(iterate, Config.OnIdle.animateInterval);
         };
 
@@ -887,13 +861,12 @@ ElementField = function () {
 };
 
 let animChangeAndBack = function animChangeAndBack() {
-    let counter, pA, pB, domA, domB, v, velocity, counterHalf, counterStop;
+    let pA, pB, domA, domB, v, velocity, counterHalf, counterStop;
     velocity = 5;
     counterStop = Math.floor(100 / velocity);
     counterHalf = Math.floor(counterStop / 2);
 
     this.init = function (a, b) {
-        counter = 0;
         pA = a;
         pB = b;
         v = {x: (pB.x - pA.x) * velocity, y: (pB.y - pA.y) * velocity};
@@ -901,7 +874,7 @@ let animChangeAndBack = function animChangeAndBack() {
         domB = this.gemDoms[pB.x][pB.y];
     };
 
-    this.iterate = function () {
+    this.iterate = function (counter) {
         if (counter === counterHalf) {
             v.x = -v.x;
             v.y = -v.y;
@@ -912,18 +885,39 @@ let animChangeAndBack = function animChangeAndBack() {
         domB.y -= v.y;
         domA.redraw();
         domB.redraw();
-        counter++;
         return counter < counterStop;
     };
 };
 
+let animLightning = function () {
+
+    this.init = function (p) {
+        let lineData = Field.getVisibleLength(p, 'h');
+        this.domLightningDestroy.animPlayed = true;
+        this.domLightningDestroy.x = lineData.lower * DataPoints.BLOCK_WIDTH;
+        this.domLightningDestroy.y = p.y * DataPoints.BLOCK_HEIGHT - (GUI.getImageHeight('/images/anim-light-1.png') - DataPoints.BLOCK_HEIGHT) / 2;
+        this.domLightningDestroy.width = (lineData.length) * DataPoints.BLOCK_WIDTH;
+        this.domLightningDestroy.show();
+        this.domLightningDestroy.redraw();
+    };
+
+    this.iterate = function (counter) {
+        if (counter <= 50) return true;
+        this.domLightningDestroy.animData = [{
+            frameN: 0,
+            counter: 0
+        }];
+        this.domLightningDestroy.animPlayed = false;
+        this.domLightningDestroy.hide();
+    };
+};
+
 let animChangeAndDestroy = function animChangeAndDestroy() {
-    let counter, pA, pB, domA, domB, v, velocity, counterStop;
+    let  pA, pB, domA, domB, v, velocity, counterStop;
     velocity = 5;
     counterStop = Math.floor(50 / velocity);
 
     this.init = function (a, b) {
-        counter = 0;
         pA = a;
         pB = b;
         v = {x: (pB.x - pA.x) * velocity, y: (pB.y - pA.y) * velocity};
@@ -931,14 +925,13 @@ let animChangeAndDestroy = function animChangeAndDestroy() {
         domB = this.gemDoms[pB.x][pB.y];
     };
 
-    this.iterate = function () {
+    this.iterate = function (counter) {
         domA.x += v.x;
         domA.y += v.y;
         domB.x -= v.x;
         domB.y -= v.y;
         domA.redraw();
         domB.redraw();
-        counter++;
         return counter < counterStop;
     };
 };

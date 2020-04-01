@@ -223,21 +223,17 @@ PageBlockField = function PageBlockField() {
             }
         });
 
-
         /** Dom stuff */
         domStuff = GUI.createDom(null, {x: 190, y: 10});
         domStuff.__dom.style.zIndex = 10000;
 
         GUI.bind(domStuff, GUI.EVENT_MOUSE_CLICK, function (event, dom) {
+            let el;
             /** Передаем клик дальше, теоретически после анимации */
             domStuff.hide();
             el = document.elementFromPoint(event.clientX, event.clientY);
-            //console.log(el);
-            /** Признак каменного поля :) */
-            //if (el.__dom.p !== undefined)
             el.dispatchEvent(new MouseEvent(event.type, event));
-
-            domStuff.show();
+            if (stuffMode) domStuff.show();
         });
 
         GUI.onMouseMove(function (x, y) {
@@ -311,7 +307,9 @@ PageBlockField = function PageBlockField() {
     };
 
     this.redraw = function () {
+        console.log('stuff mode', stuffMode, showed);
         if (!showed) return;
+
         elementScore.setText(score.toString());
 
         let countStars = DataPoints.countStars(null, null, score);
@@ -403,7 +401,7 @@ PageBlockField = function PageBlockField() {
     };
 
     this.afterStuffUse = function () {
-
+        console.log('afterStuffUse', stuffMode);
         switch (stuffMode) {
             case LogicStuff.STUFF_HUMMER:
                 SAPIStuff.usedHummer();

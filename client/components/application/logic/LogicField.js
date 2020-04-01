@@ -267,6 +267,44 @@ LogicField = function () {
         mayLineDestroy = LogicField.lineCrossing(lines, pA.x, pA.y) | LogicField.lineCrossing(lines, pB.x, pB.y);
         LogicField.exchangeGems(pA, pB);
         return mayLineDestroy;
+    };
+
+    /**
+     * @param p
+     * @param orientation
+     */
+    this.destroyLine = function (p, orientation) {
+        switch (orientation) {
+            case 'h':
+                for (let x = 0; x < DataPoints.FIELD_MAX_WIDTH; x++) {
+                    if (Field.isGem({x: x, y: p.y})) Field.setGem({x: x, y: p.y}, DataObjects.OBJECT_HOLE);
+                }
+                break;
+            case 'v':
+                for (let y = 0; y < DataPoints.FIELD_MAX_HEIGHT; y++) {
+                    if (Field.isGem({x: p.x, y: y})) Field.setGem({x: p.x, y: y}, DataObjects.OBJECT_HOLE);
+                }
+                break;
+            default:
+                Logs.log("Error :" + arguments.callee.name, Logs.LEVEL_ERROR);
+                break;
+        }
+    };
+
+    this.getVisibleLength = function (p, orientation) {
+        let leftX = Infinity, rightX = -Infinity;
+        /** Получить длину текущей линии */
+        switch (orientation) {
+            case 'h':
+                for (let x = 0; x < DataPoints.FIELD_MAX_WIDTH; x++) {
+                    if (Field.isVisilbe({x: x, y: p.y})) {
+                        leftX = Math.min(leftX, x);
+                        rightX = Math.max(rightX, x);
+                    }
+                }
+                return {lower: leftX, higher: rightX, length: rightX - leftX + 1};
+                break;
+        }
     }
 };
 
