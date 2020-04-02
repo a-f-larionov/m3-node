@@ -517,7 +517,7 @@ ElementField = function () {
                     shuffleDo();
                 }
             }
-            self.redraw();//@todo some strange...but
+            //self.redraw();//@todo some strange...but
             self.onFieldSilent();
             return;
         } else {
@@ -527,11 +527,11 @@ ElementField = function () {
         switch (runNext) {
             case 0:
                 runNext = 1;
-                self.processSpecialLayer();
+                self.fall();
                 break;
             case 1:
                 runNext = 2;
-                self.fall();
+                self.processSpecialLayer();
                 break;
             case 2:
                 runNext = 0;
@@ -620,7 +620,6 @@ ElementField = function () {
             self.run();
         }, 1);
     };
-
 
     this.lock = function () {
         lock = true;
