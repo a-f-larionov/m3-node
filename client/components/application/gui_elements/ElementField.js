@@ -247,12 +247,15 @@ ElementField = function () {
     };
 
     let lightningDo = function (p, orientation) {
-        Field.destroyLine(p, orientation, self.destroyGem);
-        self.redraw();
         if (orientation === 'c') {
+            Field.destroyLine(p, 'v', self.destroyGem);
+            Field.destroyLine(p, 'h', self.destroyGem);
+            self.redraw();
             animate(animLightning, p, 'v');
             animate(animLightning, p, 'h');
         } else {
+            Field.destroyLine(p, orientation, self.destroyGem);
+            self.redraw();
             animate(animLightning, p, orientation);
         }
     };
@@ -704,10 +707,8 @@ let animChangeAndBack = function animChangeAndBack() {
 let animLightning = function () {
     let dom;
     this.init = function (p, orientation) {
-        console.log('init', p, orientation);
         dom = this.animDoms.pop();
         let lineData = Field.getVisibleLength(p, orientation);
-        console.log(p, lineData);
         dom.width = lineData.length * DataPoints.BLOCK_WIDTH;
         dom.height = GUI.getImageHeight('/images/anim-light-1.png');
         if (orientation === 'v') {
@@ -725,14 +726,11 @@ let animLightning = function () {
             dom.y = p.y * DataPoints.BLOCK_HEIGHT
                 - (GUI.getImageHeight('/images/anim-light-1.png') - DataPoints.BLOCK_HEIGHT) / 2;
         }
-        console.log('x1', dom.x, p.x);
         dom.show();
         dom.redraw();
     };
 
     this.iterate = function (counter) {
-        console.log('x2', dom.x, dom.width, dom.height);
-        window.m = dom;
         dom.backgroundImage =
             '/images/anim-light-' + ((counter - Math.floor(counter / 5) * 5) + 1) + '.png';
         dom.redraw();
