@@ -97,9 +97,9 @@ DataPoints = function () {
                 "RGBYPRGB",
             ],
             special: [
+                "********",
                 "        ",
                 "        ",
-                "    *   ",
                 "        ",
                 "        ",
                 "  ⭤   ⭥ ",

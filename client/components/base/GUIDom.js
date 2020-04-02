@@ -301,7 +301,9 @@ GUIDom = function () {
         dom.style.backgroundRepeat = 'no-repeat';
         if (true) {
             // double if no sprite...
-            dom.style.backgroundSize = self.width + 'px' + ' ' + self.height + 'px';
+            dom.style.backgroundSize =
+                (GUI.getImageWidth(self.backgroundImage) || self.width) + 'px' + ' ' +
+                (GUI.getImageHeight(self.backgroundImage) || self.height) + 'px' + ' ';
         }
     };
     let redrawBackgroundSize = function () {

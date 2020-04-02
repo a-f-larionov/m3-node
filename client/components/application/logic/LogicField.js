@@ -39,8 +39,9 @@ LogicField = function () {
     };
 
     this.isHole = function (p) {
-        return layerGems[p.x] && layerGems[p.x][p.y] &&
-            layerGems[p.x][p.y] === DataObjects.OBJECT_HOLE;
+        if (!layerGems[p.x]) return false;
+        if (!layerGems[p.x][p.y]) return false;
+        return layerGems[p.x][p.y] === DataObjects.OBJECT_HOLE;
     };
 
     this.isFallObject = function (id) {
@@ -54,16 +55,19 @@ LogicField = function () {
      * @returns {boolean|boolean}
      */
     this.mayFall = function (x, y) {
-        return layerGems[x] && layerGems[x][y] &&
-            !LogicField.isFallObject(layerGems[x][y]) &&
-            LogicField.isFallObject(layerGems[x][y - 1]);
+        window.jkl = layerGems;
+        if (!layerGems[x]) return false;
+        if (!layerGems[x][y]) return false;
+        if (!layerGems[x][y + 1]) return false;
+        return LogicField.isFallObject(layerGems[x][y]) &&
+            LogicField.isHole({x: x, y: y + 1});
     };
 
     this.getRandomGemId = function () {
         return gems[Math.floor(Math.random() * gems.length)];
     };
 
-    this.isVisilbe = function (p) {
+    this.isVisible = function (p) {
         return layerMask[p.x] && layerMask[p.x][p.y] &&
             layerMask[p.x][p.y] === DataObjects.OBJECT_VISIBLE;
     };
@@ -85,8 +89,8 @@ LogicField = function () {
 
             a = {x: x, y: y};
             b = {x: x + 1, y: y};
-            if (self.isVisilbe(a) && self.isGem(a) &&
-                self.isVisilbe(b) && self.isGem(b)
+            if (self.isVisible(a) && self.isGem(a) &&
+                self.isVisible(b) && self.isGem(b)
             ) {
                 /** 1 - Меняем a ⇔ b */
                 self.exchangeGems(a, b);
@@ -102,8 +106,8 @@ LogicField = function () {
 
             a = {x: x, y: y};
             b = {x: x, y: y + 1};
-            if (self.isVisilbe(a) && self.isGem(a) &&
-                self.isVisilbe(b) && self.isGem(b)
+            if (self.isVisible(a) && self.isGem(a) &&
+                self.isVisible(b) && self.isGem(b)
             ) {
                 /** 5 - Меняем a ⇕ b */
                 self.exchangeGems(a, b);
@@ -184,7 +188,7 @@ LogicField = function () {
                 if (x + offset >= DataPoints.FIELD_MAX_WIDTH) continue;
                 if (y >= DataPoints.FIELD_MAX_HEIGHT) continue;
                 if (
-                    self.isVisilbe({x: x + offset, y: y}) &&
+                    self.isVisible({x: x + offset, y: y}) &&
                     self.getGemId({x: x + offset, y: y}) === gemId
                 ) {
                     line.coords.push({
@@ -199,7 +203,7 @@ LogicField = function () {
             for (let offset = 0; offset < 5; offset++) {
                 if (x + offset >= DataPoints.FIELD_MAX_WIDTH) continue;
                 if (y >= DataPoints.FIELD_MAX_HEIGHT) continue;
-                if (self.isVisilbe({x: x, y: y + offset}) &&
+                if (self.isVisible({x: x, y: y + offset}) &&
                     self.getGemId({x: x, y: y + offset}) === gemId) {
                     line.coords.push({
                         x: x,
@@ -312,7 +316,7 @@ LogicField = function () {
         switch (orientation) {
             case 'h':
                 for (let x = 0; x < DataPoints.FIELD_MAX_WIDTH; x++) {
-                    if (Field.isVisilbe({x: x, y: p.y})) {
+                    if (Field.isVisible({x: x, y: p.y})) {
                         leftX = Math.min(leftX, x);
                         rightX = Math.max(rightX, x);
                     }
@@ -321,7 +325,7 @@ LogicField = function () {
                 break;
             case 'v':
                 for (let y = 0; y < DataPoints.FIELD_MAX_HEIGHT; y++) {
-                    if (Field.isVisilbe({x: p.x, y: y})) {
+                    if (Field.isVisible({x: p.x, y: y})) {
                         leftX = Math.min(leftX, y);
                         rightX = Math.max(rightX, y);
                     }

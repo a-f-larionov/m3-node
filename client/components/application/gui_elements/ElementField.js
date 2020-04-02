@@ -15,10 +15,6 @@ ElementField = function () {
 
     let turnsCounted = false;
 
-    this.ANIM_TYPE_FALL = 1;
-    //@todo
-    this.ANIM_TYPE_SHUFFLE = 5;
-
     /** Рамка и все что связано */
     let gemFramed = null,
         domFrame = null
@@ -338,8 +334,8 @@ ElementField = function () {
                 y: Math.floor(Math.random() * DataPoints.FIELD_MAX_HEIGHT)
             };
             if (
-                Field.isVisilbe(p1) && Field.isGem(p1) &&
-                Field.isVisilbe(p2) && Field.isGem(p2)
+                Field.isVisible(p1) && Field.isGem(p1) &&
+                Field.isVisible(p2) && Field.isGem(p2)
             ) {
                 Field.exchangeGems({x: x1, y: y1}, p2)
             }
@@ -347,7 +343,7 @@ ElementField = function () {
     };
 
     let lightningAct = function (p, orientation) {
-        if (lock || AnimLocker.busy() || !Field.isVisilbe(p)) return;
+        if (lock || AnimLocker.busy() || !Field.isVisible(p)) return;
         if (!orientation) orientation = 'h';
         self.beforeStuffUse();
         lightningDo(p, orientation);
@@ -496,7 +492,7 @@ ElementField = function () {
 
             /** Layer.gems redraw */
             if (Field.isGem({x: x, y: y}) &&
-                Field.isVisilbe({x: x, y: y})) {
+                Field.isVisible({x: x, y: y})) {
                 gemDom.opacity = '';
                 gemDom.backgroundImage = DataPoints.objectImages[gemId];
                 gemDom.y = y * DataPoints.BLOCK_HEIGHT;
@@ -594,7 +590,7 @@ ElementField = function () {
         aCorner = {x: Infinity, y: Infinity};
         bCorner = {x: -Infinity, y: -Infinity};
         Field.eachCell(function (x, y) {
-            if (Field.isVisilbe({x: x, y: y})) {
+            if (Field.isVisible({x: x, y: y})) {
                 aCorner.x = Math.min(aCorner.x, x);
                 aCorner.y = Math.min(aCorner.y, y);
                 bCorner.x = Math.max(bCorner.x, x);
@@ -611,7 +607,7 @@ ElementField = function () {
     let runNext = 0;
 
     this.run = function () {
-        console.log('run');
+        //console.log('run');
         if (self.isFieldSilent()) {
             console.log('silent', turnsCounted);
             if (!turnsCounted) {
@@ -652,15 +648,12 @@ ElementField = function () {
         );
     };
 
-    this.hasProcesSpecialLayer = function () {
+    this.hasProcesSpecialLayer = function (out) {
         Field.eachCell(function (x, y, maskId, gemId, specId) {
-            if (specId === DataObjects.OBJECT_EMITTER &&
-                Field.isHole({x: x, y: y})
-            ) {
-                return true;
-            }
+            if (specId === DataObjects.OBJECT_EMITTER && Field.isHole({x: x, y: y}))
+                out = true;
         });
-        return false;
+        return out;
     };
 
     this.processSpecialLayer = function () {
@@ -669,63 +662,34 @@ ElementField = function () {
                 Field.isHole({x: x, y: y})
             ) {
                 Field.setGem({x: x, y: y}, Field.getRandomGemId());
-                animate(animGemFader, {x: x, y: y});
-                // gemDoms[x][y].height = DataPoints.BLOCK_HEIGHT;
+                if (Field.isVisible({x: x, y: y})) animate(animGemFader, {x: x, y: y});
             }
         });
         self.run();
     };
 
-    this.hasFall = function () {
-        let out = false;
+    this.hasFall = function (out) {
         Field.eachCell(function (x, y) {
-            if (Field.mayFall(x, y + 1)) out = true;
+            if (Field.mayFall(x, y)) out = true;
         });
         return out;
     };
 
     this.fall = function () {
         if (AnimLocker.busy()) return;
-        self.redraw(); // reset coords and other states
-        animObjects = [];
-        animCounter = 0;
 
+        let fallDoms = [];
+
+        /** Собираем камни и меняем поле */
         Field.eachCell(function (x, y) {
-            let dom;
-            y = DataPoints.FIELD_MAX_HEIGHT - y;
-
+            y = DataPoints.FIELD_MAX_HEIGHT - y - 1;
             if (!Field.mayFall(x, y)) return;
 
-            dom = gemDoms[x][y - 1];
-            dom.mode = '';
-            // if dom now on NONE and below IS NOT NONE, set flag - showUp
-            // if dom now is NOT NONE and below IS NONE, set flag hideDown
-
-            if (Field.isVisilbe({x: x, y: y - 1}) && !Field.isVisilbe({x: x, y: y})
-            ) dom.mode = 'tohide';
-
-            if (!Field.isVisilbe({x: x, y: y - 1}) && Field.isVisilbe({x: x, y: y})
-            ) {
-                dom.mode = 'toshow';
-                dom.backgroundImage = DataPoints.objectImages[Field.getGemId({x: x, y: y - 1})];
-                /** Перерисовка backgroundPositionY это хитрый хак и костыль :) */
-                dom.backgroundPositionY = DataPoints.BLOCK_HEIGHT;
-                dom.height = 0;
-                dom.y = y * DataPoints.BLOCK_HEIGHT;
-                dom.x = x * DataPoints.BLOCK_WIDTH;
-                dom.show();
-            }
-            /** Falling one gem */
-            Field.exchangeGems({x: x, y: y}, {x: x, y: y - 1});
-            animObjects.push(dom);
+            Field.exchangeGems({x: x, y: y}, {x: x, y: y + 1});
+            fallDoms.push(gemDoms[x][y]);
         });
 
-        if (animObjects.length) {
-            animType = self.ANIM_TYPE_FALL;
-            AnimLocker.lock();
-        } else {
-            self.run();
-        }
+        animate(animFallGems, fallDoms);
     };
 
     this.hasDestroyLines = function () {
@@ -761,35 +725,6 @@ ElementField = function () {
         let dom;
         if (lock) return;
         if (AnimLocker.free()) return;
-
-        switch (animType) {
-            case self.ANIM_TYPE_SHUFFLE:    /** Смотри domLightningDestroy.animTracks */
-            case self.ANIM_TYPE_FALL:
-                animCounter++;
-                for (let i in animObjects) {
-                    dom = animObjects[i];
-                    switch (dom.mode) {
-                        case 'toshow':
-                            dom.height += 15;
-                            dom.backgroundPositionY -= 15;
-                            break;
-                        case 'tohide':
-                            dom.y += 15;
-                            dom.height -= 15;
-                            break;
-                        default:
-                            dom.y += 15;
-                            break;
-                    }
-                    dom.redraw();
-                }
-                if (animCounter === 3) {
-                    AnimLocker.release();
-                    animType = 0;
-                    self.run();
-                }
-                break;
-        }
     };
 
     this.lock = function () {
@@ -917,9 +852,6 @@ let animHummerDestroy = function () {
     let dom, imageUrl = '/images/anim-hd-1.png';
 
     this.init = function (p) {
-        console.log(this.gemDoms[p.x][p.y]);
-        window.jkl = this.gemDoms;
-        window.jklp = p;
         dom = this.animDoms.pop();
         dom.x = p.x * DataPoints.BLOCK_WIDTH
             - (GUI.getImageWidth(imageUrl) - DataPoints.BLOCK_WIDTH) / 2;
@@ -984,6 +916,54 @@ let animGemFader = function () {
         dom.opacity = (counter / 10);
         dom.redraw();
         return counter < 10;
+    };
+};
+
+let animFallGems = function () {
+    let fallDoms;
+
+    this.init = function (doms) {
+        fallDoms = doms;
+        fallDoms.forEach(function (dom) {
+            dom.fallMode = 'just';
+
+            if (Field.isVisible({x: dom.p.x, y: dom.p.y + 1}) &&
+                !Field.isVisible(dom.p)) dom.fallMode = 'to-show';
+            if (!Field.isVisible({x: dom.p.x, y: dom.p.y + 1}) &&
+                Field.isVisible(dom.p)) dom.fallMode = 'to-hide';
+
+            if (dom.fallMode === 'to-show') {
+                /** Его уже ранее спустили  */
+                dom.x = dom.p.x * DataPoints.BLOCK_WIDTH;
+                dom.y = (dom.p.y + 1) * DataPoints.BLOCK_HEIGHT;
+                dom.height = 0;
+                dom.width = DataPoints.BLOCK_WIDTH;
+                dom.backgroundImage = DataPoints.objectImages[Field.getGemId({x: dom.p.x, y: dom.p.y + 1})];
+                /** Перерисовка backgroundPositionY это хитрый хак и костыль :) */
+                dom.backgroundPositionY = DataPoints.BLOCK_HEIGHT;
+                dom.show();
+            }
+        });
+    };
+
+    this.iterate = function (counter) {
+        fallDoms.forEach(function (dom) {
+            switch (dom.fallMode) {
+                case 'to-hide':
+                    dom.y += 5;
+                    dom.height -= 5;
+                    break;
+                case 'to-show':
+                    dom.height += 5;
+                    dom.backgroundPositionY -= 5;
+                    break;
+                case 'just':
+                    dom.y += 5;
+                    break;
+            }
+            dom.redraw();
+        });
+        return counter + 1 < 10;
     };
 };
 
