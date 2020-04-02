@@ -21,7 +21,6 @@ ElementField = function () {
 
     /** Рамка и все что связано */
     let gemFramed = null,
-        pB = null,
         domFrame = null
     ;
 
@@ -52,11 +51,12 @@ ElementField = function () {
     let domContainer = null;
     let maskDoms = [],
         gemDoms = [],
-        specDoms = [];
-    let specDomLimit = 150;
+        specDoms = [],
+        animDoms = [];
+    let specDomsLimit = 100;
+    let animDomsLimit = 10;
 
     let animType = null,
-        animBlock = false,
         animObjects = [],
         animCounter = 0
     ;
@@ -76,7 +76,7 @@ ElementField = function () {
      *
      * @type {function}
      */
-    this.afterStuffUse = null;
+    this.beforeStuffUse = null;
     /**
      * Каллбек
      * @type {function}
@@ -131,7 +131,7 @@ ElementField = function () {
             gemDoms[x][y] = dom;
         });
 
-        for (let i = 0; i < specDomLimit; i++) {
+        for (let i = 0; i < specDomsLimit; i++) {
             dom = GUI.createDom(undefined, {
                 width: DataPoints.BLOCK_WIDTH,
                 height: DataPoints.BLOCK_HEIGHT
@@ -139,13 +139,12 @@ ElementField = function () {
             OnIdle.register(dom.animate);
             specDoms.push(dom);
         }
-
-        domFrame = GUI.createDom(undefined, {
-            x: self.x, y: self.y,
-            width: DataPoints.BLOCK_WIDTH,
-            height: DataPoints.BLOCK_HEIGHT,
-            backgroundImage: '/images/field-frame.png'
-        });
+        /** Anim Doms Pool */
+        for (let i = 0; i < animDomsLimit; i++) {
+            animDoms.push(GUI.createDom(undefined, {}));
+        }
+        /** Frame dom */
+        domFrame = GUI.createDom(undefined, {backgroundImage: '/images/field-frame.png'});
 
         domHummerDestroy = GUI.createDom(undefined, {
             x: 30, y: 10,
@@ -232,7 +231,7 @@ ElementField = function () {
                                 counter: 0
                             }];
                             domShuffleDestroy.animPlayed = false;
-                            self.afterStuffUse();
+                            self.beforeStuffUse();
                             animBlock = false;
                             animType = 0;
                             domShuffleDestroy.hide();
@@ -283,17 +282,18 @@ ElementField = function () {
 
     let fieldAct = function (p) {
         if (lock) return;
-        if (animBlock) return;
-
+        if (AnimLocker.busy()) return;
+        //@todo
+        //Config.OnIdle.animateInterval = 33 * 5;
         switch (stuffMode) {
             case LogicStuff.STUFF_HUMMER:
-                gemHummerAct(p);
+                hummerAct(p);
                 break;
             case LogicStuff.STUFF_SHUFFLE:
-                gemShuffleAct(p);
+                shuffleAct(p);
                 break;
             case LogicStuff.STUFF_LIGHTING:
-                gemLightingAct(p);
+                lightningAct(p);
                 break;
             default:
                 gemChangeAct(p);
@@ -301,16 +301,16 @@ ElementField = function () {
         }
     };
 
-    let gemHummerAct = function (p) {
-        if (lock || animBlock || Field.isNotGem(p)) return;
-        self.afterStuffUse();
+    let hummerAct = function (p) {
+        if (lock || AnimLocker.busy() || Field.isNotGem(p)) return;
+        self.beforeStuffUse();
         self.destroyGem(p);
         animate(animHummerDestroy, p);
     };
 
-    let gemShuffleAct = function () {
+    let shuffleAct = function () {
         if (lock) return;
-        if (animBlock) return;
+        if (AnimLocker.busy()) return;
 
         funcShuffleField();
         /** Еще попытки, если не получилось */
@@ -318,7 +318,8 @@ ElementField = function () {
             if (Field.findLines().length) break;
             funcShuffleField();
         }
-
+//Todoalert
+        alert('todo');
         animBlock = true;
         animType = self.ANIM_TYPE_SHUFFLE;
         animCounter = 0;
@@ -345,14 +346,18 @@ ElementField = function () {
         });
     };
 
-    let gemLightingAct = function (p, orientation) {
+    let lightningAct = function (p, orientation) {
+        if (lock || AnimLocker.busy() || !Field.isVisilbe(p)) return;
         if (!orientation) orientation = 'h';
-        if (lock || animBlock || !Field.isVisilbe(p)) return;
+        self.beforeStuffUse();
+        lightningDo(p, orientation);
+    };
+
+    let lightningDo = function (p, orientation) {
         Field.destroyLine(p, orientation, self.destroyGem);
-        self.afterStuffUse();
         self.redraw();
         if (orientation === 'c') {
-            //animate(animLightning, p, 'v');
+            animate(animLightning, p, 'v');
             animate(animLightning, p, 'h');
         } else {
             animate(animLightning, p, orientation);
@@ -366,7 +371,7 @@ ElementField = function () {
      */
     let gemChangeAct = function (gemB) {
         let gemA = gemFramed;
-        if (lock || animBlock || Field.isNotGem(gemB)) return;
+        if (lock || AnimLocker.busy() || Field.isNotGem(gemB)) return;
 
         /** Set frame */
         if (!gemA || (gemA && !Field.isNear(gemA, gemB))) {
@@ -451,7 +456,7 @@ ElementField = function () {
      */
     this.redraw = function () {
         if (!showed) return;
-        if (animBlock) return;
+        if (AnimLocker.busy()) return;
         self.x = self.centerX - DataPoints.BLOCK_WIDTH / 2
             - (visibleWidth - 1) / 2 * DataPoints.BLOCK_WIDTH
             - visibleOffsetX * DataPoints.BLOCK_WIDTH
@@ -497,7 +502,7 @@ ElementField = function () {
                 gemDom.y = y * DataPoints.BLOCK_HEIGHT;
                 gemDom.x = x * DataPoints.BLOCK_WIDTH;
                 gemDom.height = DataPoints.BLOCK_HEIGHT;
-                gemDom.backgroundPositionY = null;
+                gemDom.backgroundPositionY = 0;
                 gemDom.show();
                 gemDom.redraw();
             } else {
@@ -535,7 +540,7 @@ ElementField = function () {
         });
 
         /** Спрячем не используемые специальные домы */
-        for (let i = specIndex; i < specDomLimit; i++) {
+        for (let i = specIndex; i < specDomsLimit; i++) {
             specDoms[i].hide();
         }
 
@@ -606,6 +611,22 @@ ElementField = function () {
     let runNext = 0;
 
     this.run = function () {
+        console.log('run');
+        if (self.isFieldSilent()) {
+            console.log('silent', turnsCounted);
+            if (!turnsCounted) {
+                turnsCounted = true;
+                let allTurns = Field.countTurns();
+                if (allTurns.length === 0) {
+                    shuffleAct();
+                }
+            }
+            self.redraw();
+            self.onFieldSilent();
+            return;
+        } else {
+            turnsCounted = false;
+        }
 
         switch (runNext) {
             case 0:
@@ -621,23 +642,10 @@ ElementField = function () {
                 self.destroyLines();
                 break;
         }
-
-        if (self.isFieldSilent()) {
-            if (!turnsCounted) {
-                turnsCounted = true;
-                let allTurns = Field.countTurns();
-                if (allTurns.length === 0) {
-                    gemShuffleAct();
-                }
-            }
-            self.onFieldSilent();
-        } else {
-            turnsCounted = false;
-        }
     };
 
     this.isFieldSilent = function () {
-        return !(animBlock ||
+        return !(AnimLocker.busy() ||
             self.hasDestroyLines() ||
             self.hasFall() ||
             self.hasProcesSpecialLayer()
@@ -661,7 +669,8 @@ ElementField = function () {
                 Field.isHole({x: x, y: y})
             ) {
                 Field.setGem({x: x, y: y}, Field.getRandomGemId());
-                gemDoms[x][y].height = DataPoints.BLOCK_HEIGHT;
+                animate(animGemFader, {x: x, y: y});
+                // gemDoms[x][y].height = DataPoints.BLOCK_HEIGHT;
             }
         });
         self.run();
@@ -676,7 +685,7 @@ ElementField = function () {
     };
 
     this.fall = function () {
-        if (animBlock) return;
+        if (AnimLocker.busy()) return;
         self.redraw(); // reset coords and other states
         animObjects = [];
         animCounter = 0;
@@ -699,7 +708,7 @@ ElementField = function () {
             ) {
                 dom.mode = 'toshow';
                 dom.backgroundImage = DataPoints.objectImages[Field.getGemId({x: x, y: y - 1})];
-                // перерисовка backgroundPositionY это хитрый хак и костыль :)
+                /** Перерисовка backgroundPositionY это хитрый хак и костыль :) */
                 dom.backgroundPositionY = DataPoints.BLOCK_HEIGHT;
                 dom.height = 0;
                 dom.y = y * DataPoints.BLOCK_HEIGHT;
@@ -713,7 +722,7 @@ ElementField = function () {
 
         if (animObjects.length) {
             animType = self.ANIM_TYPE_FALL;
-            animBlock = true;
+            AnimLocker.lock();
         } else {
             self.run();
         }
@@ -751,7 +760,7 @@ ElementField = function () {
     this.animate = function () {
         let dom;
         if (lock) return;
-        if (!animBlock) return;
+        if (AnimLocker.free()) return;
 
         switch (animType) {
             case self.ANIM_TYPE_SHUFFLE:    /** Смотри domLightningDestroy.animTracks */
@@ -775,7 +784,7 @@ ElementField = function () {
                     dom.redraw();
                 }
                 if (animCounter === 3) {
-                    animBlock = false;
+                    AnimLocker.release();
                     animType = 0;
                     self.run();
                 }
@@ -800,19 +809,19 @@ ElementField = function () {
     this.destroyGem = function (p) {
         Field.setGem(p, DataObjects.OBJECT_HOLE);
         if (Field.isLightningGem(p)) {
-            gemLightingAct(p, Field.isLightningGem(p));
+            lightningDo(p, Field.isLightningGem(p));
         }
     };
 
     let animate = function (animClass) {
         let args, animObj, counter;
-
-        animBlock = true;
+        AnimLocker.lock();
 
         counter = 0;
         animObj = new animClass();
         animObj.continue = true;
         animObj.gemDoms = gemDoms;
+        animObj.animDoms = animDoms;
         animObj.domShuffleDestroy = domShuffleDestroy;
         animObj.domLightningDestroy = domLightningDestroy;
         animObj.domHummerDestroy = domHummerDestroy;
@@ -824,15 +833,17 @@ ElementField = function () {
 
         let iterate = function () {
             if (!animObj.continue) {
-                animBlock = false;
-                self.redraw();
-                self.run();
-                return;
+                if (animObj.finish) animObj.finish();
+                AnimLocker.release();
+                if (AnimLocker.free()) {
+                    self.redraw();
+                    self.run();
+                }
+            } else {
+                animObj.continue = animObj.iterate(counter++);
+                setTimeout(iterate, Config.OnIdle.animateInterval);
             }
-            animObj.continue = animObj.iterate(counter++);
-            setTimeout(iterate, Config.OnIdle.animateInterval);
         };
-
         iterate();
     };
 };
@@ -862,65 +873,81 @@ let animChangeAndBack = function animChangeAndBack() {
         domB.y -= v.y;
         domA.redraw();
         domB.redraw();
-        return counter < counterStop;
+        return counter + 1 < counterStop;
     };
 };
 
 let animLightning = function () {
-
+    let dom;
     this.init = function (p, orientation) {
+        dom = this.animDoms.pop();
         let lineData = Field.getVisibleLength(p, orientation);
-        this.domLightningDestroy.animPlayed = true;
         if (orientation === 'v') {
-            this.domLightningDestroy.x = (p.x - 1) * DataPoints.BLOCK_WIDTH;
-            this.domLightningDestroy.y = (lineData.higher - 1) * DataPoints.BLOCK_HEIGHT - (GUI.getImageHeight('/images/anim-light-1.png') - DataPoints.BLOCK_HEIGHT) / 2;
+            dom.rotate = 90;
+            dom.x = (p.x - 1) * DataPoints.BLOCK_WIDTH;
+            dom.y = (lineData.higher - 1) * DataPoints.BLOCK_HEIGHT
+                - (GUI.getImageHeight('/images/anim-light-1.png') - DataPoints.BLOCK_HEIGHT) / 2;
         } else {
-            this.domLightningDestroy.x = lineData.lower * DataPoints.BLOCK_WIDTH;
-            this.domLightningDestroy.y = p.y * DataPoints.BLOCK_HEIGHT - (GUI.getImageHeight('/images/anim-light-1.png') - DataPoints.BLOCK_HEIGHT) / 2;
+            dom.rotate = 0;
+            dom.x = lineData.lower * DataPoints.BLOCK_WIDTH;
+            dom.y = p.y * DataPoints.BLOCK_HEIGHT
+                - (GUI.getImageHeight('/images/anim-light-1.png') - DataPoints.BLOCK_HEIGHT) / 2;
         }
-        this.domLightningDestroy.width = (lineData.length) * DataPoints.BLOCK_WIDTH;
-        if (orientation === 'v') this.domLightningDestroy.rotate = 90;
-        if (orientation === 'h') this.domLightningDestroy.rotate = 0;
-        this.domLightningDestroy.show();
-        this.domLightningDestroy.redraw();
+        dom.width = lineData.length * DataPoints.BLOCK_WIDTH;
+        dom.height = GUI.getImageHeight('/images/anim-light-1.png');
+        dom.show();
+        dom.redraw();
     };
 
     this.iterate = function (counter) {
-        if (counter <= 50) return true;
-        this.domLightningDestroy.animData = [{
-            frameN: 0,
-            counter: 0
-        }];
-        this.domLightningDestroy.animPlayed = false;
-        this.domLightningDestroy.hide();
+        dom.backgroundImage = '/images/anim-light-' +
+            ((counter - Math.floor(counter / 5) * 5) + 1)
+            + '.png';
+        dom.redraw();
+        if (counter < 15) return true;
     };
+
+    this.finish = function () {
+        dom.hide();
+        this.animDoms.push(dom);
+    }
 };
 
 let animHummerDestroy = function () {
+    let dom, imageUrl = '/images/anim-hd-1.png';
 
     this.init = function (p) {
-        this.domHummerDestroy.animPlayed = true;
-        this.domHummerDestroy.x = p.x * DataPoints.BLOCK_WIDTH - (GUI.getImageWidth('/images/anim-hd-1.png') - DataPoints.BLOCK_WIDTH) / 2;
-        this.domHummerDestroy.y = p.y * DataPoints.BLOCK_HEIGHT - (GUI.getImageHeight('/images/anim-hd-1.png') - DataPoints.BLOCK_HEIGHT) / 2;
-        this.domHummerDestroy.show();
-        this.domHummerDestroy.redraw();
+        console.log(this.gemDoms[p.x][p.y]);
+        window.jkl = this.gemDoms;
+        window.jklp = p;
+        dom = this.animDoms.pop();
+        dom.x = p.x * DataPoints.BLOCK_WIDTH
+            - (GUI.getImageWidth(imageUrl) - DataPoints.BLOCK_WIDTH) / 2;
+        dom.y = p.y * DataPoints.BLOCK_HEIGHT
+            - (GUI.getImageHeight(imageUrl) - DataPoints.BLOCK_HEIGHT) / 2;
+        dom.width = null;
+        dom.height = null;
+        dom.backgroundImage = imageUrl;
+        dom.show();
+        dom.redraw();
     };
 
     this.iterate = function (counter) {
-        if (counter <= 30) return true;
-        this.domHummerDestroy.animData = [{
-            frameN: 0,
-            counter: 0
-        }];
-        this.domHummerDestroy.animPlayed = false;
-        this.domHummerDestroy.hide();
+        dom.backgroundImage = '/images/anim-hd-' + (counter + 1) + '.png';
+        dom.redraw();
+        return counter < 15 - 1;
     };
+
+    this.finish = function () {
+        this.animDoms.push(dom);
+        dom.hide();
+    }
 };
 
 let animChangeAndDestroy = function animChangeAndDestroy() {
     let pA, pB, domA, domB, v, velocity, counterStop;
     velocity = 5;
-    counterStop = Math.floor(50 / velocity);
+    counterStop = Math.floor(50 / velocity) - 1;
 
     this.init = function (a, b) {
         pA = a;
@@ -939,4 +966,39 @@ let animChangeAndDestroy = function animChangeAndDestroy() {
         domB.redraw();
         return counter < counterStop;
     };
+};
+
+let animGemFader = function () {
+    let dom;
+    this.init = function (p) {
+        dom = this.gemDoms[p.x][p.y];
+        dom.x = p.x * DataPoints.BLOCK_WIDTH;
+        dom.y = p.y * DataPoints.BLOCK_HEIGHT;
+        dom.backgroundImage = DataPoints.objectImages[Field.getGemId(p)];
+        dom.width = null;//DataPoints.BLOCK_WIDTH;
+        dom.height = null;//DataPoints.BLOCK_HEIGHT;
+        dom.redraw();
+        dom.show();
+    };
+    this.iterate = function (counter) {
+        dom.opacity = (counter / 10);
+        dom.redraw();
+        return counter < 10;
+    };
+};
+
+let AnimLocker = {
+    locks: 0,
+    lock: function () {
+        AnimLocker.locks++;
+    },
+    release: function () {
+        AnimLocker.locks--;
+    },
+    free: function () {
+        return AnimLocker.locks === 0;
+    },
+    busy: function () {
+        return !AnimLocker.free();
+    }
 };

@@ -286,7 +286,7 @@ GUIDom = function () {
     let redrawBackgroundImage = function () {
         let url;
         url = GUI.getImagePath(self.backgroundImage);
-        /* Если размер не задан, пробуем задать его автоматически. */
+        /** Если размер не задан, пробуем задать его автоматически. */
         if (!self.width && !self.height && GUI.getImagePath(self.backgroundImage)) {
             self.width = GUI.getImageWidth(self.backgroundImage);
             self.height = GUI.getImageHeight(self.backgroundImage);

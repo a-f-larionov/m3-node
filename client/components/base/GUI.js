@@ -379,7 +379,9 @@ GUI = function () {
             return {
                 path: '/images/notFound.png',
                 w: undefined,
-                h: undefined
+                h: undefined,
+                x:0,
+                y:0
             }
         }
         return window.imagesData[url];

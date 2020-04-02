@@ -50,7 +50,7 @@ PageBlockField = function PageBlockField() {
             centerX: 388.5, centerY: 250,
             onDestroyLine: self.onDestroyLine,
             beforeTurnUse: self.beforeTurnUse,
-            afterStuffUse: self.afterStuffUse,
+            beforeStuffUse: self.beforeStuffUse,
             onFieldSilent: self.onFieldSilent
 
         });
@@ -307,7 +307,6 @@ PageBlockField = function PageBlockField() {
     };
 
     this.redraw = function () {
-        console.log('stuff mode', stuffMode, showed);
         if (!showed) return;
 
         elementScore.setText(score.toString());
@@ -400,8 +399,7 @@ PageBlockField = function PageBlockField() {
         self.redraw();
     };
 
-    this.afterStuffUse = function () {
-        console.log('afterStuffUse', stuffMode);
+    this.beforeStuffUse = function () {
         switch (stuffMode) {
             case LogicStuff.STUFF_HUMMER:
                 SAPIStuff.usedHummer();

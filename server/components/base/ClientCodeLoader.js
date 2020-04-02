@@ -369,6 +369,8 @@ ClientCodeLoader = function () {
                 "{path:'" + projectPrefix + path + timePostfix + "'" +
                 ",w:" + translate2X(demension.width) +
                 ",h:" + translate2X(demension.height) +
+                ",x:" + 0 +
+                ",y:" + 0 +
                 "};";
         }
         imageCode += "</script>";

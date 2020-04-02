@@ -121,7 +121,6 @@ WizardFirstStart_3 = {
         console.log(el);
     },
     onDestroyLine: function (line) {
-        console.log(line);
         LogicWizard.start(LogicWizard.WIZARD_FIRST_START_STEP_4);
     }
 };
