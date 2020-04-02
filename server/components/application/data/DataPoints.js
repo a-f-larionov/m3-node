@@ -37,12 +37,14 @@ DataPoints = function () {
         ],
         layers: {
             mask: [
+                "     ",
                 "□□□□□",
                 "□□□□□",
                 "□□□□□",
                 "□□□□□",
             ],
             gems: [
+                ".....",
                 "YRPRR",
                 "BYBPB",
                 "RPRBR",
@@ -91,17 +93,26 @@ DataPoints = function () {
                 "PRGBGYGB",
                 "RGBYPRGB",
             ],
-            special: [
+            special: [[
                 "********",
                 "        ",
                 "        ",
                 "        ",
                 "        ",
-                "  ⭤   ⭥ ",
+                "      ⭥ ",
                 "        ",
                 "        ",
                 //⭥⭥⭥⭥+⭥
-            ],
+            ], [
+                "        ",
+                "        ",
+                "        ",
+                "⭥  ⭥⭥⭥  ",
+                "        ",
+                "        ",
+                "  ⭤     ",
+                "        ",
+            ]],
         }
     };
 

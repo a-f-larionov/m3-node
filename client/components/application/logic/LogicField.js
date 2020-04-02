@@ -3,7 +3,7 @@ LogicField = function () {
 
     let layerMask = null,
         layerGems = null,
-        layerSpecial = null;
+        layerSpecials = null;
 
     /**
      * Список всех камней
@@ -57,9 +57,11 @@ LogicField = function () {
     };
 
     this.isBindedObject = function (p) {
-        if (!layerSpecial[p.x]) return false;
-        if (!layerSpecial[p.x][p.y]) return false;
-        return bindedObjects.indexOf(layerSpecial[p.x][p.y]) !== -1;
+        let isIt;
+        self.getSpecIds(p).forEach(function (specId) {
+            isIt |= bindedObjects.indexOf(specId) !== -1;
+        });
+        return isIt;
     };
 
     /**
@@ -250,13 +252,12 @@ LogicField = function () {
     };
 
     this.eachCell = function (callback) {
-        let maskId, gemId, specId;
+        let maskId, gemId;
         for (let y = 0; y < DataPoints.FIELD_MAX_HEIGHT; y++) {
             for (let x = 0; x < DataPoints.FIELD_MAX_WIDTH; x++) {
                 maskId = layerMask && layerMask[x] && layerMask[x][y];
                 gemId = layerGems && layerGems[x] && layerGems[x][y];
-                specId = layerSpecial && layerSpecial[x] && layerSpecial[x][y];
-                callback(x, y, maskId, gemId, specId);
+                callback(x, y, maskId, gemId);
             }
         }
     };
@@ -269,26 +270,45 @@ LogicField = function () {
         return layerGems[p.x] && layerGems[p.x][p.y];
     };
 
-    this.setLayers = function (mask, gems, special) {
+    this.setLayers = function (mask, gems, specials) {
         layerMask = mask;
         layerGems = gems;
-        layerSpecial = special;
+        layerSpecials = specials;
     };
 
-    this.isLightningGem = function (p) {
-        if (!layerSpecial[p.x]) return false;
-        if (!layerSpecial[p.x][p.y]) return false;
-        switch (layerSpecial[p.x][p.y]) {
-            case DataObjects.OBJECT_LIGHTNING_HORIZONTAL:
-                return 'h';
-                break;
-            case DataObjects.OBJECT_LIGHTNING_VERTICAL:
-                return 'v';
-                break;
-            case DataObjects.OBJECT_LIGHTNING_CROSS:
-                return 'c';
-                break;
-        }
+    this.getSpecIds = function (p) {
+        let specIds = [];
+        layerSpecials.forEach(function (level) {
+            if (level[p.x] && level[p.x][p.y])
+                specIds.push(level[p.x][p.y]);
+        });
+        return specIds;
+    };
+
+    this.specPresent = function (p, needleId) {
+        let out;
+        self.getSpecIds(p).forEach(function (presentId) {
+            out |= (presentId === needleId);
+        });
+        return out;
+    };
+
+    this.isLightningSpec = function (p) {
+        let orientation;
+        self.getSpecIds(p).forEach(function (specId) {
+            switch (specId) {
+                case DataObjects.OBJECT_LIGHTNING_HORIZONTAL:
+                    orientation = 'h';
+                    break;
+                case DataObjects.OBJECT_LIGHTNING_VERTICAL:
+                    orientation = 'v';
+                    break;
+                case DataObjects.OBJECT_LIGHTNING_CROSS:
+                    orientation = 'c';
+                    break;
+            }
+        });
+        return orientation;
     };
 
     this.isLinePossiblyDestroy = function (pA, pB) {
@@ -338,7 +358,6 @@ LogicField = function () {
                     }
                 }
                 return {lower: leftX, higher: rightX, length: rightX - leftX + 1};
-                break;
             case 'v':
                 for (let y = 0; y < DataPoints.FIELD_MAX_HEIGHT; y++) {
                     if (Field.isVisible({x: p.x, y: y})) {
@@ -347,7 +366,6 @@ LogicField = function () {
                     }
                 }
                 return {lower: leftX, higher: rightX, length: rightX - leftX + 1};
-                break;
         }
     }
 };

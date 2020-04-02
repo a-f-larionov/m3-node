@@ -8,7 +8,11 @@ CAPIMap = function () {
         points.forEach(function (point) {
             point.layers.mask = convertLayer(point.layers.mask);
             point.layers.gems = convertLayer(point.layers.gems);
-            point.layers.special = convertLayer(point.layers.special);
+            if (typeof point.layers.special[0] === 'string') {
+                point.layers.special = [point.layers.special];
+            }
+            for (let z = 0; z < point.layers.special.length; z++)
+                point.layers.special[z] = convertLayer(point.layers.special[z]);
             DataPoints.setPointData(point);
         });
         chests.forEach(function (chest) {
