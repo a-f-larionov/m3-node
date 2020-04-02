@@ -110,12 +110,6 @@ ElementField = function () {
                 width: DataPoints.BLOCK_WIDTH,
                 backgroundImage: '/images/field-none.png'
             });
-            //dom.bind(GUI.EVENT_MOUSE_CLICK, onGemClick, dom);
-            //dom.bind(GUI.EVENT_MOUSE_MOUSE_DOWN, onGemMouseDown, dom);
-            //dom.bind(GUI.EVENT_MOUSE_MOUSE_TOUCH_START, onGemTouchStart, dom);
-            //dom.bind(GUI.EVENT_MOUSE_MOUSE_TOUCH_END, onGemTouchEnd, dom);
-            //dom.bind(GUI.EVENT_MOUSE_MOUSE_UP, onGemMouseUp, dom);
-            //dom.bind(GUI.EVENT_MOUSE_OVER, onGemMouseOver, dom);
             gemDoms[x][y] = dom;
         });
 
@@ -241,22 +235,22 @@ ElementField = function () {
 
     let lightningAct = function (p, orientation) {
         if (lock || AnimLocker.busy() || !Field.isVisible(p)) return;
-        if (!orientation) orientation = 'h';
+        if (!orientation) orientation = DataObjects.OBJECT_LIGHTNING_HORIZONTAL;
         self.beforeStuffUse();
         lightningDo(p, orientation);
     };
 
-    let lightningDo = function (p, orientation) {
-        if (orientation === 'c') {
-            Field.destroyLine(p, 'v', self.destroyGem);
-            Field.destroyLine(p, 'h', self.destroyGem);
+    let lightningDo = function (p, specId) {
+        if (specId === DataObjects.OBJECT_LIGHTNING_CROSS) {
+            Field.destroyLine(p, DataObjects.OBJECT_LIGHTNING_VERTICAL, self.destroyGem);
+            Field.destroyLine(p, DataObjects.OBJECT_LIGHTNING_HORIZONTAL, self.destroyGem);
             self.redraw();
-            animate(animLightning, p, 'v');
-            animate(animLightning, p, 'h');
+            animate(animLightning, p, DataObjects.OBJECT_LIGHTNING_VERTICAL);
+            animate(animLightning, p, DataObjects.OBJECT_LIGHTNING_HORIZONTAL);
         } else {
-            Field.destroyLine(p, orientation, self.destroyGem);
+            Field.destroyLine(p, specId, self.destroyGem);
             self.redraw();
-            animate(animLightning, p, orientation);
+            animate(animLightning, p, specId);
         }
     };
 
@@ -415,7 +409,6 @@ ElementField = function () {
             }
 
             /** Specials layers **/
-
             Field.getSpecIds({x: x, y: y}).forEach(function (specId) {
                 switch (specId) {
                     case DataObjects.OBJECT_LIGHTNING_VERTICAL:
@@ -478,13 +471,18 @@ ElementField = function () {
             return out;
         };
 
+        let specialLayers = [];
+        layers.special.forEach(function (specLayer) {
+            console.log(specLayer);
+            specialLayers.push(copyLayer(specLayer));
+        });
         Field.setLayers(
             copyLayer(layers.mask),
             copyLayer(layers.gems, function (value) {
                 if (value === DataObjects.OBJECT_RANDOM) return Field.getRandomGemId();
                 return value;
             }),
-            copyLayer(layers.special)
+            specialLayers
         );
 
         /**
@@ -568,6 +566,7 @@ ElementField = function () {
             if (Field.specPresent({x: x, y: y}, DataObjects.OBJECT_EMITTER) &&
                 Field.isHole({x: x, y: y})
             ) {
+                console.log('emit');
                 Field.setGem({x: x, y: y}, Field.getRandomGemId());
                 if (Field.isVisible({x: x, y: y})) animate(animGemFader, {x: x, y: y});
             }
@@ -642,10 +641,22 @@ ElementField = function () {
     };
 
     this.destroyGem = function (p) {
+        setTimeout(function () {
+            dg(p)
+        }, 500);
+    };
+
+    let dg = function (p) {
+        let lightningId;
         Field.setGem(p, DataObjects.OBJECT_HOLE);
-        if (Field.isLightningSpec(p)) {
-            lightningDo(p, Field.isLightningSpec(p));
+
+        lightningId = Field.isLightningSpec(p);
+        console.log('id', lightningId);
+        if (lightningId) {
+            Field.specClear(p, lightningId);
+            lightningDo(p, lightningId);
         }
+        self.run();
     };
 
     let animate = function (animClass) {
@@ -706,21 +717,21 @@ let animChangeAndBack = function animChangeAndBack() {
 
 let animLightning = function () {
     let dom;
-    this.init = function (p, orientation) {
+    this.init = function (p, specId) {
         dom = this.animDoms.pop();
-        let lineData = Field.getVisibleLength(p, orientation);
+        let lineData = Field.getVisibleLength(p, specId);
         dom.width = lineData.length * DataPoints.BLOCK_WIDTH;
         dom.height = GUI.getImageHeight('/images/anim-light-1.png');
-        if (orientation === 'v') {
+        if (specId === DataObjects.OBJECT_LIGHTNING_VERTICAL) {
             dom.rotate = 90;
             dom.x = (p.x) * DataPoints.BLOCK_WIDTH;
             dom.y = (lineData.lower) * DataPoints.BLOCK_HEIGHT
                 - (GUI.getImageHeight('/images/anim-light-1.png') - DataPoints.BLOCK_HEIGHT) / 2;
-            /** rotate from center like a cos&sin*/
+            /** Rotate from center like a cos&sin*/
             dom.x -= (dom.width - DataPoints.BLOCK_WIDTH) / 2;
             dom.y += (dom.width - DataPoints.BLOCK_WIDTH) / 2;
         }
-        if (orientation === 'h') {
+        if (specId === DataObjects.OBJECT_LIGHTNING_HORIZONTAL) {
             dom.rotate = 0;
             dom.x = lineData.lower * DataPoints.BLOCK_WIDTH;
             dom.y = p.y * DataPoints.BLOCK_HEIGHT

@@ -197,9 +197,9 @@ PageBlockField = function PageBlockField() {
         /** Кнопка обновить поле, для админов */
         buttonChangeSpeed = GUI.createElement(ElementButton, {
             x: 312 + 30, y: 5, width: 25, height: 25,
-            srcRest: '/images/field-yellow.png',
-            srcHover: '/images/field-yellow.png',
-            srcActive: '/images/field-yellow.png',
+            srcRest: '/images/field-red.png',
+            srcHover: '/images/field-red.png',
+            srcActive: '/images/field-red.png',
             onClick: function () {
                 let standard = 33.33;
                 switch (Config.OnIdle.animateInterval) {

@@ -40,6 +40,10 @@ LogicField = function () {
         return gems.indexOf(layerGems[p.x][p.y]) !== -1;
     };
 
+    this.isVisibleGem = function (p) {
+        return self.isGem(p) && self.isVisible(p);
+    };
+
     this.isNotGem = function (p) {
         return !self.isGem(p);
     };
@@ -71,7 +75,11 @@ LogicField = function () {
      * @returns {boolean|boolean}
      */
     this.mayFall = function (x, y) {
-        window.jkl = layerGems;
+        window.jkl = {
+            layerGems: layerGems,
+            layerSpecials: layerSpecials,
+            layerMask: layerMask
+        };
         if (!layerGems[x]) return false;
         if (!layerGems[x][y]) return false;
         if (!layerGems[x][y + 1]) return false;
@@ -142,11 +150,24 @@ LogicField = function () {
 
     this.exchangeGems = function (a, b) {
         let tmp;
-        if (layerGems[a.x] === undefined ||
-            layerGems[a.x][a.y] === undefined ||
-            layerGems[b.x] === undefined ||
-            layerGems[b.x][b.y] === undefined
+        if (!layerGems[a.x] ||
+            !layerGems[a.x][a.y] ||
+            !layerGems[b.x] ||
+            !layerGems[b.x][b.y]
         ) return false;
+
+        layerSpecials.forEach(function (level) {
+            if (!level[a.x] || !level[a.x][a.y]) return;
+            if (!level[b.x] || !level[b.x][b.y]) return;
+            tmp = level[b.x][b.y];
+            if (
+                (bindedObjects.indexOf(level[a.x][a.y]) !== -1 && Field.isGem(a))||
+                (bindedObjects.indexOf(level[b.x][b.y]) !== -1 && Field.isGem(b))
+            ){
+                level[b.x][b.y] = level[a.x][a.y];
+                level[a.x][a.y] = tmp;
+            }
+        });
 
         tmp = layerGems[b.x][b.y];
         layerGems[b.x][b.y] = layerGems[a.x][a.y];
@@ -293,22 +314,23 @@ LogicField = function () {
         return out;
     };
 
-    this.isLightningSpec = function (p) {
-        let orientation;
-        self.getSpecIds(p).forEach(function (specId) {
-            switch (specId) {
-                case DataObjects.OBJECT_LIGHTNING_HORIZONTAL:
-                    orientation = 'h';
-                    break;
-                case DataObjects.OBJECT_LIGHTNING_VERTICAL:
-                    orientation = 'v';
-                    break;
-                case DataObjects.OBJECT_LIGHTNING_CROSS:
-                    orientation = 'c';
-                    break;
+    this.specClear = function (p, id) {
+        layerSpecials.forEach(function (level) {
+            if (level[p.x] && level[p.x][p.y] && level[p.x][p.y] === id) {
+                level[p.x][p.y] = DataObjects.OBJECT_INVISIBLE;
             }
         });
-        return orientation;
+    };
+
+    this.isLightningSpec = function (p) {
+        let lastSpecId;
+        lastSpecId = false;
+        self.getSpecIds(p).forEach(function (specId) {
+            if (specId === DataObjects.OBJECT_LIGHTNING_CROSS) lastSpecId = specId;
+            if (specId === DataObjects.OBJECT_LIGHTNING_VERTICAL) lastSpecId = specId;
+            if (specId === DataObjects.OBJECT_LIGHTNING_HORIZONTAL) lastSpecId = specId;
+        });
+        return lastSpecId;
     };
 
     this.isLinePossiblyDestroy = function (pA, pB) {
@@ -322,20 +344,21 @@ LogicField = function () {
 
     /**
      * @param p
-     * @param orientation
+     * @param specId
+     * @param onDestroyGem
      */
-    this.destroyLine = function (p, orientation, onDestroyGem) {
-        switch (orientation) {
-            case 'h':
+    this.destroyLine = function (p, specId, onDestroyGem) {
+        switch (specId) {
+            case DataObjects.OBJECT_LIGHTNING_HORIZONTAL:
                 for (let x = 0; x < DataPoints.FIELD_MAX_WIDTH; x++) {
-                    if (Field.isGem({x: x, y: p.y})) {
+                    if (Field.isVisibleGem({x: x, y: p.y})) {
                         onDestroyGem({x: x, y: p.y});
                     }
                 }
                 break;
-            case 'v':
+            case DataObjects.OBJECT_LIGHTNING_VERTICAL:
                 for (let y = 0; y < DataPoints.FIELD_MAX_HEIGHT; y++) {
-                    if (Field.isGem({x: p.x, y: y})) {
+                    if (Field.isVisibleGem({x: p.x, y: y})) {
                         onDestroyGem({x: p.x, y: y});
                     }
                 }
@@ -350,7 +373,7 @@ LogicField = function () {
         let leftX = Infinity, rightX = -Infinity;
         /** Получить длину текущей линии */
         switch (orientation) {
-            case 'h':
+            case DataObjects.OBJECT_LIGHTNING_HORIZONTAL:
                 for (let x = 0; x < DataPoints.FIELD_MAX_WIDTH; x++) {
                     if (Field.isVisible({x: x, y: p.y})) {
                         leftX = Math.min(leftX, x);
@@ -358,7 +381,7 @@ LogicField = function () {
                     }
                 }
                 return {lower: leftX, higher: rightX, length: rightX - leftX + 1};
-            case 'v':
+            case DataObjects.OBJECT_LIGHTNING_VERTICAL:
                 for (let y = 0; y < DataPoints.FIELD_MAX_HEIGHT; y++) {
                     if (Field.isVisible({x: p.x, y: y})) {
                         leftX = Math.min(leftX, y);
