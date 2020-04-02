@@ -379,17 +379,20 @@ ElementField = function () {
         /** Near gems */
         if (gemA && Field.isNear(gemA, gemB)) {
             gemFramed = null;
+            self.redraw();
 
             /** Change and back */
             if (!Field.isLinePossiblyDestroy(gemA, gemB)) {
-                animate(animChangeAndBack, gemA, gemB, gemDoms);
+                animate(animChangeAndBack, gemA, gemB);
+                animate(animChangeAndBack, gemB, gemA);
             }
 
             /** Change and destroy */
             if (Field.isLinePossiblyDestroy(gemA, gemB)) {
                 self.beforeTurnUse();
                 Field.exchangeGems(gemA, gemB);
-                animate(animChangeAndDestroy, gemA, gemB, gemDoms);
+                animate(animChangeAndDestroy, gemA, gemB);
+                animate(animChangeAndDestroy, gemB, gemA);
             }
         }
     };
@@ -785,17 +788,14 @@ ElementField = function () {
 };
 
 let animChangeAndBack = function animChangeAndBack() {
-    let pA, pB, domA, domB, v, velocity, counterHalf, counterStop;
+    let dom, v, velocity, counterHalf, counterStop;
     velocity = 5;
     counterStop = Math.floor(100 / velocity);
     counterHalf = Math.floor(counterStop / 2);
 
     this.init = function (a, b) {
-        pA = a;
-        pB = b;
-        v = {x: (pB.x - pA.x) * velocity, y: (pB.y - pA.y) * velocity};
-        domA = this.gemDoms[pA.x][pA.y];
-        domB = this.gemDoms[pB.x][pB.y];
+        v = {x: (b.x - a.x) * velocity, y: (b.y - a.y) * velocity};
+        dom = this.gemDoms[a.x][a.y];
     };
 
     this.iterate = function (counter) {
@@ -803,12 +803,9 @@ let animChangeAndBack = function animChangeAndBack() {
             v.x = -v.x;
             v.y = -v.y;
         }
-        domA.x += v.x;
-        domA.y += v.y;
-        domB.x -= v.x;
-        domB.y -= v.y;
-        domA.redraw();
-        domB.redraw();
+        dom.x += v.x;
+        dom.y += v.y;
+        dom.redraw();
         return counter + 1 < counterStop;
     };
 };
@@ -877,26 +874,20 @@ let animHummerDestroy = function () {
     }
 };
 
-let animChangeAndDestroy = function animChangeAndDestroy() {
-    let pA, pB, domA, domB, v, velocity, counterStop;
+let animChangeAndDestroy = function () {
+    let dom, v, velocity, counterStop;
     velocity = 5;
     counterStop = Math.floor(50 / velocity) - 1;
 
     this.init = function (a, b) {
-        pA = a;
-        pB = b;
-        v = {x: (pB.x - pA.x) * velocity, y: (pB.y - pA.y) * velocity};
-        domA = this.gemDoms[pA.x][pA.y];
-        domB = this.gemDoms[pB.x][pB.y];
+        v = {x: (b.x - a.x) * velocity, y: (b.y - a.y) * velocity};
+        dom = this.gemDoms[a.x][a.y];
     };
 
     this.iterate = function (counter) {
-        domA.x += v.x;
-        domA.y += v.y;
-        domB.x -= v.x;
-        domB.y -= v.y;
-        domA.redraw();
-        domB.redraw();
+        dom.x += v.x;
+        dom.y += v.y;
+        dom.redraw();
         return counter < counterStop;
     };
 };
