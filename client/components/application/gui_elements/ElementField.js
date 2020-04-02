@@ -114,6 +114,7 @@ ElementField = function () {
             if (!gemDoms[x]) gemDoms[x] = [];
             dom = GUI.createDom(undefined, {
                 p: {x: x, y: y},
+                noScale: true,
                 height: DataPoints.BLOCK_HEIGHT,
                 width: DataPoints.BLOCK_WIDTH,
                 backgroundImage: '/images/field-none.png'

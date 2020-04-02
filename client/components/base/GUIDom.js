@@ -299,11 +299,16 @@ GUIDom = function () {
         dom.style.backgroundPositionX = '-' + GUI.getImageX(self.backgroundImage) + 'px';
         dom.style.backgroundPositionY = '-' + (GUI.getImageY(self.backgroundImage) + self.backgroundPositionY) + 'px';
         dom.style.backgroundRepeat = 'no-repeat';
-        if (true) {
+        if (self.noScale) {
             // double if no sprite...
             dom.style.backgroundSize =
-                (GUI.getImageWidth(self.backgroundImage) || self.width) + 'px' + ' ' +
-                (GUI.getImageHeight(self.backgroundImage) || self.height) + 'px' + ' ';
+                (GUI.getImageWidth(self.backgroundImage)) + 'px' + ' ' +
+                (GUI.getImageHeight(self.backgroundImage)) + 'px';
+
+        } else {
+            dom.style.backgroundSize =
+                (self.width) + 'px' + ' ' +
+                (self.height) + 'px';
         }
     };
     let redrawBackgroundSize = function () {
