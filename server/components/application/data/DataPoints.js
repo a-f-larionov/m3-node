@@ -37,16 +37,12 @@ DataPoints = function () {
         ],
         layers: {
             mask: [
-                "     ",
-                "     ",
                 "□□□□□",
                 "□□□□□",
                 "□□□□□",
                 "□□□□□",
             ],
             gems: [
-                "BBBBB",
-                "YPRRP",
                 "YRPRR",
                 "BYBPB",
                 "RPRBR",

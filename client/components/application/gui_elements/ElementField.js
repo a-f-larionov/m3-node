@@ -20,11 +20,6 @@ ElementField = function () {
         domFrame = null
     ;
 
-    let domHummerDestroy = null,
-        domLightningDestroy = null,
-        domShuffleDestroy = null
-    ;
-
     let stuffMode = null;
 
     this.centerX = 0;
@@ -44,18 +39,13 @@ ElementField = function () {
 
     let domBackground = null;
 
-    let domContainer = null;
+    let container = null;
     let maskDoms = [],
         gemDoms = [],
         specDoms = [],
         animDoms = [];
     let specDomsLimit = 100;
     let animDomsLimit = 10;
-
-    let animType = null,
-        animObjects = [],
-        animCounter = 0
-    ;
 
     let visibleWidth = 0,
         visibleHeight = 0,
@@ -87,16 +77,17 @@ ElementField = function () {
 
         domBackground = GUI.createDom(undefined, {});
 
-        domContainer = GUI.createDom(undefined, {
+        container = GUI.createDom(undefined, {
             width: DataPoints.FIELD_MAX_WIDTH * DataPoints.BLOCK_WIDTH,
-            height: DataPoints.FIELD_MAX_HEIGHT * DataPoints.BLOCK_HEIGHT
+            height: DataPoints.FIELD_MAX_HEIGHT * DataPoints.BLOCK_HEIGHT,
+            overflow: 'visible'
         });
-        GUI.pushParent(domContainer);
+        GUI.pushParent(container);
 
-        domContainer.bind(GUI.EVENT_MOUSE_CLICK, onGemClick, domContainer);
-        domContainer.bind(GUI.EVENT_MOUSE_MOUSE_DOWN, onGemMouseDown, domContainer);
-        domContainer.bind(GUI.EVENT_MOUSE_MOUSE_UP, onGemMouseUp, domContainer);
-        domContainer.bind(GUI.EVENT_MOUSE_OVER, onGemMouseOver, domContainer);
+        container.bind(GUI.EVENT_MOUSE_CLICK, onGemClick, container);
+        container.bind(GUI.EVENT_MOUSE_MOUSE_DOWN, onGemMouseDown, container);
+        container.bind(GUI.EVENT_MOUSE_MOUSE_UP, onGemMouseUp, container);
+        container.bind(GUI.EVENT_MOUSE_OVER, onGemMouseOver, container);
         //@todo
         //domContainer.bind(GUI.EVENT_MOUSE_MOUSE_TOUCH_START, onGemTouchStart, domContainer);
         //domContainer.bind(GUI.EVENT_MOUSE_MOUSE_TOUCH_END, onGemTouchEnd, domContainer);
@@ -143,103 +134,7 @@ ElementField = function () {
         /** Frame dom */
         domFrame = GUI.createDom(undefined, {backgroundImage: '/images/field-frame.png'});
 
-        domHummerDestroy = GUI.createDom(undefined, {
-            x: 30, y: 10,
-            backgroundImage: '/images/anim-hd-1.png',
-            animPlayed: false,
-            animTracks: [
-                [
-                    {
-                        type: GUI.ANIM_TYPE_MOVIE,
-                        images: [
-                            '/images/anim-hd-1.png',
-                            '/images/anim-hd-2.png',
-                            '/images/anim-hd-3.png',
-                            '/images/anim-hd-4.png',
-                            '/images/anim-hd-5.png',
-                            '/images/anim-hd-6.png',
-                            '/images/anim-hd-7.png',
-                            '/images/anim-hd-8.png',
-                            '/images/anim-hd-9.png',
-                            '/images/anim-hd-10.png',
-                            '/images/anim-hd-11.png',
-                            '/images/anim-hd-12.png',
-                            '/images/anim-hd-13.png',
-                            '/images/anim-hd-14.png',
-                            '/images/anim-hd-15.png',
-                        ],
-                        duration: 15
-                    },
-                    {type: GUI.ANIM_TYPE_GOTO, pos: 0}
-                ]
-            ]
-        });
-
-        domLightningDestroy = GUI.createDom(undefined, {
-            x: 30, y: 10, height: GUI.getImageHeight('/images/anim-light-1.png'),
-            backgroundImage: '/images/anim-light-1.png',
-            animPlayed: false,
-            animTracks: [
-                [
-                    {
-                        type: GUI.ANIM_TYPE_MOVIE,
-                        images: [
-                            '/images/anim-light-1.png',
-                            '/images/anim-light-1.png',
-                            '/images/anim-light-1.png',
-                            '/images/anim-light-2.png',
-                            '/images/anim-light-2.png',
-                            '/images/anim-light-2.png',
-                            '/images/anim-light-3.png',
-                            '/images/anim-light-3.png',
-                            '/images/anim-light-3.png',
-                            '/images/anim-light-4.png',
-                            '/images/anim-light-4.png',
-                            '/images/anim-light-4.png',
-                            '/images/anim-light-5.png',
-                            '/images/anim-light-5.png',
-                            '/images/anim-light-5.png',
-                        ],
-                        duration: 15
-                    },
-                    {type: GUI.ANIM_TYPE_GOTO, pos: 0}
-                ]
-            ]
-        });
-
         GUI.popParent();
-
-        domShuffleDestroy = GUI.createDom(undefined, {
-            x: self.centerX - GUI.getImageWidth('/images/anim-shuffle-1.png') / 2,
-            y: self.centerY - GUI.getImageHeight('/images/anim-shuffle-1.png') / 2,
-            backgroundImage: '/images/anim-shuffle-1.png',
-            opacity: 0.7,
-            animPlayed: false,
-            animTracks: [
-                [
-                    {
-                        type: GUI.ANIM_TYPE_ROTATE,
-                        angle: 12,
-                        duration: 20,
-                        callback: function () {
-                            return;
-                            domShuffleDestroy.animData = [{
-                                frameN: 0,
-                                counter: 0
-                            }];
-                            domShuffleDestroy.animPlayed = false;
-                            self.beforeStuffUse();
-                            animBlock = false;
-                            animType = 0;
-                            domShuffleDestroy.hide();
-                            self.run();
-                        }
-                    },
-                ]
-            ]
-        });
-
-        OnIdle.register(self.animate);
 
         this.redraw();
     };
@@ -309,21 +204,21 @@ ElementField = function () {
         if (lock) return;
         if (AnimLocker.busy()) return;
 
+        self.beforeStuffUse();
+        shuffleDo();
+    };
+
+    let shuffleDo = function () {
         funcShuffleField();
         /** Еще попытки, если не получилось */
         for (let i = 0; i < 500; i++) {
             if (Field.findLines().length) break;
             funcShuffleField();
         }
-//Todoalert
-        alert('todo');
-        animBlock = true;
-        animType = self.ANIM_TYPE_SHUFFLE;
-        animCounter = 0;
-        domShuffleDestroy.animPlayed = true;
-        domShuffleDestroy.show();
-        domShuffleDestroy.redraw();
-        self.redraw();
+        animate(animShuffle,
+            visibleWidth * DataPoints.BLOCK_WIDTH / 2,
+            visibleHeight * DataPoints.BLOCK_HEIGHT / 2
+        );
     };
 
     let funcShuffleField = function () {
@@ -385,6 +280,10 @@ ElementField = function () {
             if (!Field.isLinePossiblyDestroy(gemA, gemB)) {
                 animate(animChangeAndBack, gemA, gemB);
                 animate(animChangeAndBack, gemB, gemA);
+                if (Field.isLightningGem(gemA)) {
+
+                    //animate(animChangeAndBack, gemA, gemB);
+                }
             }
 
             /** Change and destroy */
@@ -427,7 +326,7 @@ ElementField = function () {
         if (showed === true) return;
         showed = true;
         domBackground.show();
-        domContainer.show();
+        container.show();
         Field.eachCell(function (x, y) {
             maskDoms[x][y].show();
             gemDoms[x][y].show();
@@ -442,13 +341,12 @@ ElementField = function () {
         if (showed === false) return;
         showed = false;
         domBackground.hide();
-        domContainer.hide();
+        container.hide();
         Field.eachCell(function (x, y) {
             maskDoms[x][y].hide();
             gemDoms[x][y].hide();
         });
         domFrame.hide();
-        domHummerDestroy.hide();
     };
 
     /**
@@ -466,9 +364,9 @@ ElementField = function () {
             - visibleOffsetY * DataPoints.BLOCK_HEIGHT
             + DataPoints.BLOCK_HEIGHT / 2 // выравнивание от панель
         ;
-        domContainer.x = self.x;
-        domContainer.y = self.y;
-        domContainer.redraw();
+        container.x = self.x;
+        container.y = self.y;
+        container.redraw();
         domBackground.redraw();
 
         let specIndex = 0;
@@ -611,17 +509,15 @@ ElementField = function () {
     let runNext = 0;
 
     this.run = function () {
-        //console.log('run');
         if (self.isFieldSilent()) {
-            console.log('silent', turnsCounted);
             if (!turnsCounted) {
                 turnsCounted = true;
                 let allTurns = Field.countTurns();
                 if (allTurns.length === 0) {
-                    shuffleAct();
+                    shuffleDo();
                 }
             }
-            self.redraw();
+            self.redraw();//@todo some strange...but
             self.onFieldSilent();
             return;
         } else {
@@ -725,11 +621,6 @@ ElementField = function () {
         }, 1);
     };
 
-    this.animate = function () {
-        let dom;
-        if (lock) return;
-        if (AnimLocker.free()) return;
-    };
 
     this.lock = function () {
         lock = true;
@@ -761,9 +652,6 @@ ElementField = function () {
         animObj.continue = true;
         animObj.gemDoms = gemDoms;
         animObj.animDoms = animDoms;
-        animObj.domShuffleDestroy = domShuffleDestroy;
-        animObj.domLightningDestroy = domLightningDestroy;
-        animObj.domHummerDestroy = domHummerDestroy;
 
         args = Array.from(arguments);
         args.shift();
@@ -796,6 +684,7 @@ let animChangeAndBack = function animChangeAndBack() {
     this.init = function (a, b) {
         v = {x: (b.x - a.x) * velocity, y: (b.y - a.y) * velocity};
         dom = this.gemDoms[a.x][a.y];
+        //
     };
 
     this.iterate = function (counter) {
@@ -957,6 +846,33 @@ let animFallGems = function () {
         });
         return counter + 1 < 10;
     };
+};
+
+let animShuffle = function () {
+    let dom;
+
+    this.init = function (x, y) {
+        dom = this.animDoms.pop();
+        dom.x = x - GUI.getImageWidth('/images/anim-shuffle-1.png') / 2;
+        dom.y = y + DataPoints.BLOCK_HEIGHT / 2 - GUI.getImageHeight('/images/anim-shuffle-1.png') / 2;
+        dom.width = GUI.getImageWidth('/images/anim-shuffle-1.png');
+        dom.height = GUI.getImageHeight('/images/anim-shuffle-1.png');
+        dom.backgroundImage = '/images/anim-shuffle-1.png';
+        dom.opacity = 0.7;
+        dom.rotate = 0;
+        dom.show();
+    };
+
+    this.iterate = function (counter) {
+        dom.rotate += 10 * 2;
+        dom.redraw();
+        return counter < 36 / 2;
+    };
+
+    this.finish = function () {
+        dom.hide();
+        this.animDoms.push(dom);
+    }
 };
 
 let AnimLocker = {

@@ -29,6 +29,12 @@ LogicField = function () {
         DataObjects.OBJECT_PURPLE,
     ];
 
+    let bindedObjects = [
+        DataObjects.OBJECT_LIGHTNING_VERTICAL,
+        DataObjects.OBJECT_LIGHTNING_HORIZONTAL,
+        DataObjects.OBJECT_LIGHTNING_CROSS,
+    ];
+
     this.isGem = function (p) {
         if (!layerGems[p.x] || !layerGems[p.x][p.y]) return false;
         return gems.indexOf(layerGems[p.x][p.y]) !== -1;
@@ -44,8 +50,16 @@ LogicField = function () {
         return layerGems[p.x][p.y] === DataObjects.OBJECT_HOLE;
     };
 
-    this.isFallObject = function (id) {
-        return fallObjects.indexOf(id) !== -1;
+    this.isFallObject = function (p) {
+        if (!layerGems[p.x]) return false;
+        if (!layerGems[p.x][p.y]) return false;
+        return fallObjects.indexOf(layerGems[p.x][p.y]) !== -1;
+    };
+
+    this.isBindedObject = function (p) {
+        if (!layerSpecial[p.x]) return false;
+        if (!layerSpecial[p.x][p.y]) return false;
+        return bindedObjects.indexOf(layerSpecial[p.x][p.y]) !== -1;
     };
 
     /**
@@ -59,7 +73,7 @@ LogicField = function () {
         if (!layerGems[x]) return false;
         if (!layerGems[x][y]) return false;
         if (!layerGems[x][y + 1]) return false;
-        return LogicField.isFallObject(layerGems[x][y]) &&
+        return LogicField.isFallObject({x: x, y: y}) &&
             LogicField.isHole({x: x, y: y + 1});
     };
 
@@ -131,9 +145,11 @@ LogicField = function () {
             layerGems[b.x] === undefined ||
             layerGems[b.x][b.y] === undefined
         ) return false;
+
         tmp = layerGems[b.x][b.y];
         layerGems[b.x][b.y] = layerGems[a.x][a.y];
         layerGems[a.x][a.y] = tmp;
+
         return true;
     };
 
