@@ -1,28 +1,15 @@
 DataObjects = function () {
     /**
-     * ???
-     * @type {number}
-     */
-    this.OBJECT_CELL = 2;
-
-    /**
-     * ???
-     * @type {number}
-     */
-    this.OBJECT_VISIBLE = 3;
-
-    /**
      * Не видна игроку.
      * @type {number}
      */
-    this.OBJECT_INVISIBLE = 1;
-
+    this.CELL_INVISIBLE = 1;
 
     /**
-     * Просто картинка блока на маске
+     * ???
      * @type {number}
      */
-    this.OBJECT_BLOCK = 4;
+    this.CELL_VISIBLE = 2;
 
     /**
      * Случайнный камень из набора камней.
@@ -67,23 +54,23 @@ DataObjects = function () {
      * Эмитер камней
      * @type {number}
      */
-    this.OBJECT_EMITTER = 1001;
+    this.IS_EMITTER = 1001;
 
     /**
      * Молния хоризонтальная
      * @type {number}
      */
-    this.OBJECT_LIGHTNING_HORIZONTAL = 1010;
+    this.WITH_LIGHTNING_HORIZONTAL = 1010;
     /**
      * Молния вертикальная
      * @type {number}
      */
-    this.OBJECT_LIGHTNING_VERTICAL = 1011;
+    this.WITH_LIGHTNING_VERTICAL = 1011;
     /**
      * Молния кросс(двунаправленная)
      * @type {number}
      */
-    this.OBJECT_LIGHTNING_CROSS = 1012;
+    this.WITH_LIGHTNING_CROSS = 1012;
 
 };
 

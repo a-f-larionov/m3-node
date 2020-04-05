@@ -35,8 +35,6 @@ ElementField = function () {
      */
     this.y = 0;
 
-    let domBackground = null;
-
     let container = null;
     let maskDoms = [],
         gemDoms = [],
@@ -74,7 +72,6 @@ ElementField = function () {
         let dom;
         window.elf = this;
 
-        domBackground = GUI.createDom(undefined, {});
 
         container = GUI.createDom(undefined, {
             width: DataPoints.FIELD_MAX_WIDTH * DataPoints.BLOCK_WIDTH,
@@ -169,6 +166,8 @@ ElementField = function () {
         if (lock) return;
         if (AnimLocker.busy()) return;
         if (stopHint) stopHint();
+        if (!Field.isVisible(p)) return;
+
         //@todo
         //Config.OnIdle.animateInterval = 33 * 5;
         switch (stuffMode) {
@@ -216,16 +215,17 @@ ElementField = function () {
     };
 
     let funcShuffleField = function () {
-        let p1, p2;
-        Field.eachCell(function (x1, y1) {
+        let p1, p2, cell2;
+        Field.eachCell(function (x1, y1, cell1) {
             p1 = {x: x1, y: y1};
             p2 = {
                 x: Math.floor(Math.random() * DataPoints.FIELD_MAX_WIDTH),
                 y: Math.floor(Math.random() * DataPoints.FIELD_MAX_HEIGHT)
             };
+            cell2 = Field.getCell(p2);
             if (
-                Field.isVisible(p1) && Field.isGem(p1) &&
-                Field.isVisible(p2) && Field.isGem(p2)
+                cell1.isVisible && cell1.object.isGem &&
+                cell2.isVisible && cell2.object.isGem
             ) {
                 Field.exchangeGems({x: x1, y: y1}, p2)
             }
@@ -234,18 +234,19 @@ ElementField = function () {
 
     let lightningAct = function (p, orientation) {
         if (lock || AnimLocker.busy() || !Field.isVisible(p)) return;
-        if (!orientation) orientation = DataObjects.OBJECT_LIGHTNING_HORIZONTAL;
+        if (!orientation) orientation = DataObjects.WITH_LIGHTNING_HORIZONTAL;
         self.beforeStuffUse();
         lightningDo(p, orientation);
     };
 
     let lightningDo = function (p, specId) {
-        if (specId === DataObjects.OBJECT_LIGHTNING_CROSS) {
-            Field.destroyLine(p, DataObjects.OBJECT_LIGHTNING_VERTICAL, self.destroyGem);
-            Field.destroyLine(p, DataObjects.OBJECT_LIGHTNING_HORIZONTAL, self.destroyGem);
+        console.log('l do', specId, p);
+        if (specId === DataObjects.WITH_LIGHTNING_CROSS) {
+            Field.destroyLine(p, DataObjects.WITH_LIGHTNING_VERTICAL, self.destroyGem);
+            Field.destroyLine(p, DataObjects.WITH_LIGHTNING_HORIZONTAL, self.destroyGem);
             self.redraw();
-            animate(animLightning, p, DataObjects.OBJECT_LIGHTNING_VERTICAL);
-            animate(animLightning, p, DataObjects.OBJECT_LIGHTNING_HORIZONTAL);
+            animate(animLightning, p, DataObjects.WITH_LIGHTNING_VERTICAL);
+            animate(animLightning, p, DataObjects.WITH_LIGHTNING_HORIZONTAL);
         } else {
             Field.destroyLine(p, specId, self.destroyGem);
             self.redraw();
@@ -277,10 +278,6 @@ ElementField = function () {
             if (!Field.isLinePossiblyDestroy(gemA, gemB)) {
                 animate(animChangeAndBack, gemA, gemB);
                 animate(animChangeAndBack, gemB, gemA);
-                if (Field.isLightningSpec(gemA)) {
-//@todo
-                    //animate(animChangeAndBack, gemA, gemB);
-                }
             }
 
             /** Change and destroy */
@@ -322,7 +319,6 @@ ElementField = function () {
     this.show = function () {
         if (showed === true) return;
         showed = true;
-        domBackground.show();
         container.show();
         Field.eachCell(function (x, y) {
             maskDoms[x][y].show();
@@ -338,7 +334,6 @@ ElementField = function () {
         console.log('hide it');
         if (showed === false) return;
         showed = false;
-        domBackground.hide();
         container.hide();
         Field.eachCell(function (x, y) {
             maskDoms[x][y].hide();
@@ -348,93 +343,65 @@ ElementField = function () {
         if (stopHint) stopHint();
     };
 
+    let drawCell = function (dom, x, y, objectId) {
+        dom.x = x * DataPoints.BLOCK_WIDTH;
+        dom.y = y * DataPoints.BLOCK_HEIGHT;
+        if (DataPoints.objectImages[objectId]) dom.backgroundImage = DataPoints.objectImages[objectId];
+        if (DataPoints.objectAnims[objectId]) {
+            dom.animPlayed = true;
+            dom.animTracks = GUI.copyAnimTracks(DataPoints.objectAnims[objectId]);
+            GUI.updateAnimTracks(dom);
+        }
+        dom.show();
+        dom.redraw();
+    };
+
     /**
      * Перерисуем картинку.
      */
     this.redraw = function () {
         if (!showed) return;
         if (AnimLocker.busy()) return;
-        self.x = self.centerX - DataPoints.BLOCK_WIDTH / 2
-            - (visibleWidth - 1) / 2 * DataPoints.BLOCK_WIDTH
-            - visibleOffsetX * DataPoints.BLOCK_WIDTH
-        ;
-        self.y = self.centerY - DataPoints.BLOCK_HEIGHT / 2
-            - (visibleHeight - 1) / 2 * DataPoints.BLOCK_HEIGHT
-            - visibleOffsetY * DataPoints.BLOCK_HEIGHT
-            + DataPoints.BLOCK_HEIGHT / 2 // выравнивание от панель
-        ;
-        container.x = self.x;
-        container.y = self.y;
+
         container.redraw();
-        domBackground.redraw();
 
         let specIndex = 0;
-        Field.eachCell(function (x, y, maskId, gemId) {
-            let maskDom, gemDom;
-            maskDom = maskDoms[x][y];
-            gemDom = gemDoms[x][y];
+        Field.eachCell(function (x, y, cell) {
+                let maskDom, gemDom;
+                maskDom = maskDoms[x][y];
+                gemDom = gemDoms[x][y];
 
-            /** Layer.mask redraw */
-            switch (maskId) {
-                case DataObjects.OBJECT_VISIBLE:
-                    maskId = DataObjects.OBJECT_CELL;
-                default:
-                    maskDom.x = x * DataPoints.BLOCK_WIDTH;
-                    maskDom.y = y * DataPoints.BLOCK_HEIGHT;
-                    maskDom.backgroundImage = DataPoints.objectImages[maskId];
-                    maskDom.show();
-                    maskDom.redraw();
-                    break;
-                case DataObjects.OBJECT_INVISIBLE:
-                case undefined:
+                /** Layer.mask redraw */
+                if (cell.isVisible) {
+                    drawCell(maskDom, x, y, DataObjects.CELL_VISIBLE);
+                } else {
                     maskDom.hide();
-                    break;
-            }
-
-            /** Layer.gems redraw */
-            if (Field.isGem({x: x, y: y}) &&
-                Field.isVisible({x: x, y: y})) {
-                gemDom.opacity = '';
-                gemDom.backgroundImage = DataPoints.objectImages[gemId];
-                gemDom.y = y * DataPoints.BLOCK_HEIGHT;
-                gemDom.x = x * DataPoints.BLOCK_WIDTH;
-                gemDom.height = DataPoints.BLOCK_HEIGHT;
-                gemDom.backgroundPositionY = 0;
-                gemDom.show();
-                gemDom.redraw();
-            } else {
-                gemDom.hide();
-            }
-
-            /** Specials layers **/
-            Field.getSpecIds({x: x, y: y}).forEach(function (specId) {
-                switch (specId) {
-                    case DataObjects.OBJECT_LIGHTNING_VERTICAL:
-                    case DataObjects.OBJECT_LIGHTNING_HORIZONTAL:
-                    case DataObjects.OBJECT_LIGHTNING_CROSS:
-                        /**
-                         * 1 - взять свободный дом
-                         * 2 - присвоить картинкиу\анимацию
-                         */
-                        let dom = specDoms[specIndex];
-                        if (dom.specId !== specId || dom.x !== x * DataPoints.BLOCK_WIDTH || dom.y !== y * DataPoints.BLOCK_HEIGHT) {
-                            dom.specId = specId;
-                            dom.opacity = 0.5;
-                            dom.x = x * DataPoints.BLOCK_WIDTH;
-                            dom.y = y * DataPoints.BLOCK_HEIGHT;
-                            dom.animPlayed = true;
-                            dom.animTracks = GUI.copyAnimTracks(DataPoints.objectAnims[specId]);
-                            GUI.updateAnimTracks(dom);
-                            dom.show();
-                        }
-                        break;
-                    default:
-                        specIndex--;
-                        break;
                 }
-                specIndex++;
-            });
-        });
+
+                /** Layer.gems redraw */
+                if (cell.object.isGem && cell.isVisible) {
+                    drawCell(gemDom, x, y, cell.object.objectId);
+
+                    if (cell.object.lightningId) {
+                        let dom = specDoms[specIndex];
+                        if (dom.specId !== cell.object.lightningId || dom.pX !== x || dom.pY !== y) {
+                            dom.pX = x;
+                            dom.pY = y;
+                            dom.specId = cell.object.lightningId;
+                            gemDom.bindedDoms = dom;
+
+                            dom.opacity = 0.5;
+                            drawCell(dom, x, y, cell.object.lightningId);
+                        }
+                        specIndex++;
+                    } else {
+                        gemDom.bindedDoms = null;
+                    }
+                } else {
+                    gemDom.hide();
+                }
+            }
+        );
 
         /** Спрячем не используемые специальные домы */
         for (let i = specIndex; i < specDomsLimit; i++) {
@@ -442,14 +409,16 @@ ElementField = function () {
         }
 
         if (gemFramed) {
-            domFrame.x = gemDoms[gemFramed.x][gemFramed.y].x;
-            domFrame.y = gemDoms[gemFramed.x][gemFramed.y].y;
-            domFrame.show();
-            domFrame.redraw();
+            drawCell(domFrame, gemFramed.x, gemFramed.y);
+            // domFrame.x = gemDoms[gemFramed.x][gemFramed.y].x;
+            // domFrame.y = gemDoms[gemFramed.x][gemFramed.y].y;
+            // domFrame.show();
+            // domFrame.redraw();
         } else {
             domFrame.hide();
         }
-    };
+    }
+    ;
 
     /**
      * Set the field data.
@@ -506,6 +475,20 @@ ElementField = function () {
         visibleHeight = bCorner.y - aCorner.y + 1;
         visibleOffsetX = aCorner.x;
         visibleOffsetY = aCorner.y;
+
+        /** Update some coords */
+        self.x = self.centerX - DataPoints.BLOCK_WIDTH / 2
+            - (visibleWidth - 1) / 2 * DataPoints.BLOCK_WIDTH
+            - visibleOffsetX * DataPoints.BLOCK_WIDTH
+        ;
+        self.y = self.centerY - DataPoints.BLOCK_HEIGHT / 2
+            - (visibleHeight - 1) / 2 * DataPoints.BLOCK_HEIGHT
+            - visibleOffsetY * DataPoints.BLOCK_HEIGHT
+            + DataPoints.BLOCK_HEIGHT / 2 // выравнивание от панель
+        ;
+        container.x = self.x;
+        container.y = self.y;
+
         this.redraw();
     };
 
@@ -563,20 +546,17 @@ ElementField = function () {
     };
 
     this.hasProcesSpecialLayer = function (out) {
-        Field.eachCell(function (x, y) {
-            out |= (Field.specPresent({x: x, y: y}, DataObjects.OBJECT_EMITTER) &&
-                Field.isHole({x: x, y: y}));
+        Field.eachCell(function (x, y, cell) {
+            out |= (cell.isEmitter && Field.isHole({x: x, y: y}));
         });
         return out;
     };
 
     this.processSpecialLayer = function () {
         console.log('processLayer');
-        Field.eachCell(function (x, y) {
-            if (Field.specPresent({x: x, y: y}, DataObjects.OBJECT_EMITTER) &&
-                Field.isHole({x: x, y: y})
-            ) {
-                Field.setGem({x: x, y: y}, Field.getRandomGemId());
+        Field.eachCell(function (x, y, cell) {
+            if (cell.isEmitter && Field.isHole({x: x, y: y})) {
+                Field.setObject({x: x, y: y}, Field.getRandomGemId());
                 if (Field.isVisible({x: x, y: y})) animate(animGemFader, {x: x, y: y});
             }
         });
@@ -652,16 +632,12 @@ ElementField = function () {
     };
 
     this.destroyGem = function (p) {
-        console.log('destroy gem');
-        let lightningId;
-        Field.setGem(p, DataObjects.OBJECT_HOLE);
-
-        lightningId = Field.isLightningSpec(p);
-
-        if (lightningId) {
-            Field.specClear(p, lightningId);
-            lightningDo(p, lightningId);
-        }
+        let cell, lightningId;
+        cell = Field.getCell(p);
+        console.log('destroy gem', cell);
+        lightningId = cell.object.lightningId;
+        Field.setObject(p, DataObjects.OBJECT_HOLE);
+        if (lightningId) lightningDo(p, lightningId);
         animate(animDestroyGem);
     };
 
@@ -670,6 +646,7 @@ ElementField = function () {
         counter = 0;
         animObj = new animClass();
         animObj.gemDoms = gemDoms;
+        animObj.specDoms = specDoms;
         animObj.animDoms = animDoms;
 
         args = Array.from(arguments);
@@ -709,7 +686,7 @@ ElementField = function () {
             console.log('call stop anim', timerId, animObj.constructor.name);
             stopAnim();
         };
-    };
+    }
 };
 
 let animChangeAndBack = function animChangeAndBack() {
@@ -731,6 +708,11 @@ let animChangeAndBack = function animChangeAndBack() {
         dom.x += v.x;
         dom.y += v.y;
         dom.redraw();
+        if (dom.bindedDoms) {
+            dom.bindedDoms.x = dom.x;
+            dom.bindedDoms.y = dom.y;
+            dom.redraw();
+        }
         return counter + 1 < counterStop;
     };
 };
@@ -742,7 +724,7 @@ let animLightning = function () {
         let lineData = Field.getVisibleLength(p, specId);
         dom.width = lineData.length * DataPoints.BLOCK_WIDTH;
         dom.height = GUI.getImageHeight('/images/anim-light-1.png');
-        if (specId === DataObjects.OBJECT_LIGHTNING_VERTICAL) {
+        if (specId === DataObjects.WITH_LIGHTNING_VERTICAL) {
             dom.rotate = 90;
             dom.x = (p.x) * DataPoints.BLOCK_WIDTH;
             dom.y = (lineData.lower) * DataPoints.BLOCK_HEIGHT
@@ -751,7 +733,7 @@ let animLightning = function () {
             dom.x -= (dom.width - DataPoints.BLOCK_WIDTH) / 2;
             dom.y += (dom.width - DataPoints.BLOCK_WIDTH) / 2;
         }
-        if (specId === DataObjects.OBJECT_LIGHTNING_HORIZONTAL) {
+        if (specId === DataObjects.WITH_LIGHTNING_HORIZONTAL) {
             dom.rotate = 0;
             dom.x = lineData.lower * DataPoints.BLOCK_WIDTH;
             dom.y = p.y * DataPoints.BLOCK_HEIGHT
@@ -886,6 +868,13 @@ let animFallGems = function () {
         });
         return counter + 1 < DataPoints.BLOCK_HEIGHT / velocity;
     };
+
+    this.finish = function () {
+        fallDoms.forEach(function (dom) {
+            dom.backgroundPositionY = 0;
+            dom.height = DataPoints.BLOCK_WIDTH;
+        });
+    }
 };
 
 let animShuffle = function () {

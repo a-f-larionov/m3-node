@@ -1,9 +1,7 @@
 LogicField = function () {
     let self = this;
 
-    let layerMask = null,
-        layerGems = null,
-        layerSpecials = null;
+    let cells = null;
 
     /**
      * Список всех камней
@@ -29,15 +27,13 @@ LogicField = function () {
         DataObjects.OBJECT_PURPLE,
     ];
 
-    let bindedObjects = [
-        DataObjects.OBJECT_LIGHTNING_VERTICAL,
-        DataObjects.OBJECT_LIGHTNING_HORIZONTAL,
-        DataObjects.OBJECT_LIGHTNING_CROSS,
-    ];
+    this.getCell = function (p) {
+        return cells[p.x][p.y];
+    };
 
     this.isGem = function (p) {
-        if (!layerGems[p.x] || !layerGems[p.x][p.y]) return false;
-        return gems.indexOf(layerGems[p.x][p.y]) !== -1;
+        if (!cells[p.x] || !cells[p.x][p.y]) return false;
+        return cells[p.x][p.y].object.isGem;
     };
 
     this.isVisibleGem = function (p) {
@@ -49,42 +45,19 @@ LogicField = function () {
     };
 
     this.isHole = function (p) {
-        if (!layerGems[p.x]) return false;
-        if (!layerGems[p.x][p.y]) return false;
-        return layerGems[p.x][p.y] === DataObjects.OBJECT_HOLE;
+        if (!cells[p.x] || !cells[p.x][p.y]) return false;
+        return cells[p.x][p.y].object.isHole;
     };
 
     this.isFallObject = function (p) {
-        if (!layerGems[p.x]) return false;
-        if (!layerGems[p.x][p.y]) return false;
-        return fallObjects.indexOf(layerGems[p.x][p.y]) !== -1;
+        if (self.isOut(p)) return false;
+        return fallObjects.indexOf(cells[p.x][p.y].object.objectId) !== -1;
     };
 
-    this.isBindedObject = function (p) {
-        let isIt;
-        self.getSpecIds(p).forEach(function (specId) {
-            isIt |= bindedObjects.indexOf(specId) !== -1;
-        });
-        return isIt;
-    };
-
-    /**
-     * Может ли упасть камень с верху
-     * @param x
-     * @param y
-     * @returns {boolean|boolean}
-     */
     this.mayFall = function (x, y) {
-        window.jkl = {
-            layerGems: layerGems,
-            layerSpecials: layerSpecials,
-            layerMask: layerMask
-        };
-        if (!layerGems[x]) return false;
-        if (!layerGems[x][y]) return false;
-        if (!layerGems[x][y + 1]) return false;
-        return LogicField.isFallObject({x: x, y: y}) &&
-            LogicField.isHole({x: x, y: y + 1});
+        if (self.isOut({x: x, y: y})) return false;
+        if (self.isOut({x: x, y: y + 1})) return false;
+        return LogicField.isFallObject({x: x, y: y}) && LogicField.isHole({x: x, y: y + 1});
     };
 
     this.getRandomGemId = function () {
@@ -92,8 +65,8 @@ LogicField = function () {
     };
 
     this.isVisible = function (p) {
-        return layerMask[p.x] && layerMask[p.x][p.y] &&
-            layerMask[p.x][p.y] === DataObjects.OBJECT_VISIBLE;
+        if (!cells[p.x] || !cells[p.x][p.y]) return false;
+        return cells[p.x][p.y].isVisible;
     };
 
     this.countTurns = function () {
@@ -109,13 +82,11 @@ LogicField = function () {
          * 7 - Возвращаем a⇕b
          */
         let a, b;
-        this.eachCell(function (x, y) {
+        this.eachCell(function (x, y, cell) {
 
             a = {x: x, y: y};
             b = {x: x + 1, y: y};
-            if (self.isVisible(a) && self.isGem(a) &&
-                self.isVisible(b) && self.isGem(b)
-            ) {
+            if (self.isVisible(a) && self.isGem(a) && self.isVisible(b) && self.isGem(b)) {
                 /** 1 - Меняем a ⇔ b */
                 self.exchangeGems(a, b);
 
@@ -130,9 +101,7 @@ LogicField = function () {
 
             a = {x: x, y: y};
             b = {x: x, y: y + 1};
-            if (self.isVisible(a) && self.isGem(a) &&
-                self.isVisible(b) && self.isGem(b)
-            ) {
+            if (self.isVisible(a) && self.isGem(a) && self.isVisible(b) && self.isGem(b)) {
                 /** 5 - Меняем a ⇕ b */
                 self.exchangeGems(a, b);
 
@@ -150,30 +119,20 @@ LogicField = function () {
 
     this.exchangeGems = function (a, b) {
         let tmp;
-        if (!layerGems[a.x] ||
-            !layerGems[a.x][a.y] ||
-            !layerGems[b.x] ||
-            !layerGems[b.x][b.y]
-        ) return false;
+        if (self.isOut(a) || self.isOut(b)) return false;
 
-        layerSpecials.forEach(function (level) {
-            if (!level[a.x] || !level[a.x][a.y]) return;
-            if (!level[b.x] || !level[b.x][b.y]) return;
-            tmp = level[b.x][b.y];
-            if (
-                (bindedObjects.indexOf(level[a.x][a.y]) !== -1 && Field.isGem(a))||
-                (bindedObjects.indexOf(level[b.x][b.y]) !== -1 && Field.isGem(b))
-            ){
-                level[b.x][b.y] = level[a.x][a.y];
-                level[a.x][a.y] = tmp;
-            }
-        });
-
-        tmp = layerGems[b.x][b.y];
-        layerGems[b.x][b.y] = layerGems[a.x][a.y];
-        layerGems[a.x][a.y] = tmp;
+        tmp = cells[b.x][b.y].object;
+        cells[b.x][b.y].object = cells[a.x][a.y].object;
+        cells[a.x][a.y].object = tmp;
 
         return true;
+    };
+
+    this.isOut = function (p) {
+        return p.x < 0 ||
+            p.x >= DataPoints.FIELD_MAX_WIDTH ||
+            p.y < 0 ||
+            p.y > DataPoints.FIELD_MAX_HEIGHT;
     };
 
     /**
@@ -183,12 +142,10 @@ LogicField = function () {
      * @returns {boolean}
      */
     this.isNear = function (a, b) {
-        if (
-            Math.abs(a.x - b.x) === 1
+        if (Math.abs(a.x - b.x) === 1
             && a.y - b.y === 0
         ) return true;
-        if (
-            a.x - b.x === 0
+        if (a.x - b.x === 0
             && Math.abs(a.y - b.y) === 1
         ) return true;
         return false;
@@ -215,7 +172,7 @@ LogicField = function () {
 
     this.findLine = function (x, y, orientation) {
         let gemId, line;
-        gemId = self.getGemId({x: x, y: y});
+        gemId = self.getCell({x: x, y: y}).object.objectId;
         /** Может ли такой объект вообще падать */
         if (LogicField.isNotGem({x: x, y: y})) return false;
         line = {
@@ -273,65 +230,76 @@ LogicField = function () {
     };
 
     this.eachCell = function (callback) {
-        let maskId, gemId;
         for (let y = 0; y < DataPoints.FIELD_MAX_HEIGHT; y++) {
             for (let x = 0; x < DataPoints.FIELD_MAX_WIDTH; x++) {
-                maskId = layerMask && layerMask[x] && layerMask[x][y];
-                gemId = layerGems && layerGems[x] && layerGems[x][y];
-                callback(x, y, maskId, gemId);
+                callback(x, y, cells && cells[x][y]);
             }
         }
     };
 
-    this.setGem = function (p, gemId) {
-        layerGems[p.x][p.y] = gemId;
+    this.setObject = function (p, objectId, lightningId) {
+        let object;
+        object = cells[p.x][p.y].object;
+        object.objectId = objectId;
+        object.isHole = (objectId === DataObjects.OBJECT_HOLE);
+        object.isGem = gems.indexOf(objectId) !== -1;
+        object.isGem = gems.indexOf(objectId) !== -1;
+        object.lightningId = lightningId;
     };
 
     this.getGemId = function (p) {
-        return layerGems[p.x] && layerGems[p.x][p.y];
+        return cells[p.x] && cells[p.x][p.y].object.objectId;
     };
 
-    this.setLayers = function (mask, gems, specials) {
-        layerMask = mask;
-        layerGems = gems;
-        layerSpecials = specials;
-        //@todo convert to one
+    this.setLayers = function (mask, objects, specials) {
+        let specIds, lightningId;
+        cells = [];
+        for (let x = 0; x < DataPoints.FIELD_MAX_WIDTH; x++) {
+            cells[x] = [];
+            for (let y = 0; y < DataPoints.FIELD_MAX_HEIGHT; y++) {
+                specIds = self.getSpecIds({x: x, y: y}, specials);
+
+                lightningId = false;
+                if (specIds.indexOf(DataObjects.WITH_LIGHTNING_HORIZONTAL) !== -1) lightningId = DataObjects.WITH_LIGHTNING_HORIZONTAL;
+                if (specIds.indexOf(DataObjects.WITH_LIGHTNING_VERTICAL) !== -1) lightningId = DataObjects.WITH_LIGHTNING_VERTICAL;
+                if (specIds.indexOf(DataObjects.WITH_LIGHTNING_CROSS) !== -1) lightningId = DataObjects.WITH_LIGHTNING_CROSS;
+
+                cells[x][y] = {
+
+                    isVisible: mask[x] && mask[x][y] && mask[x][y] === DataObjects.CELL_VISIBLE,
+                    isEmitter: specIds.indexOf(DataObjects.IS_EMITTER) !== -1,
+
+                    object: {
+                        objectId: objects[x] && objects[x][y],
+
+                        isHole: objects[x] && objects[x][y] === DataObjects.OBJECT_HOLE,
+                        isGem: objects[x] && gems.indexOf(objects[x][y]) !== -1,
+
+                        lightningId: lightningId
+                    }
+                };
+            }
+        }
+        console.log('set layers');
+        console.log(cells);
+        let str = '';
+        cells.forEach(function (row) {
+            //   str += "\r\n";
+            row.forEach(function (cell) {
+                //str += cell.isVisible ? 'Y' : ' ';
+                //str += cell.gemId;
+            });
+        });
+        console.log(str);
     };
 
-    this.getSpecIds = function (p) {
+    this.getSpecIds = function (p, specials) {
         let specIds = [];
-        layerSpecials.forEach(function (level) {
+        specials.forEach(function (level) {
             if (level[p.x] && level[p.x][p.y])
                 specIds.push(level[p.x][p.y]);
         });
         return specIds;
-    };
-
-    this.specPresent = function (p, needleId) {
-        let out;
-        self.getSpecIds(p).forEach(function (presentId) {
-            out |= (presentId === needleId);
-        });
-        return out;
-    };
-
-    this.specClear = function (p, id) {
-        layerSpecials.forEach(function (level) {
-            if (level[p.x] && level[p.x][p.y] && level[p.x][p.y] === id) {
-                level[p.x][p.y] = DataObjects.OBJECT_INVISIBLE;
-            }
-        });
-    };
-
-    this.isLightningSpec = function (p) {
-        let lastSpecId;
-        lastSpecId = false;
-        self.getSpecIds(p).forEach(function (specId) {
-            if (specId === DataObjects.OBJECT_LIGHTNING_CROSS) lastSpecId = specId;
-            if (specId === DataObjects.OBJECT_LIGHTNING_VERTICAL) lastSpecId = specId;
-            if (specId === DataObjects.OBJECT_LIGHTNING_HORIZONTAL) lastSpecId = specId;
-        });
-        return lastSpecId;
     };
 
     this.isLinePossiblyDestroy = function (pA, pB) {
@@ -350,14 +318,14 @@ LogicField = function () {
      */
     this.destroyLine = function (p, specId, onDestroyGem) {
         switch (specId) {
-            case DataObjects.OBJECT_LIGHTNING_HORIZONTAL:
+            case DataObjects.WITH_LIGHTNING_HORIZONTAL:
                 for (let x = 0; x < DataPoints.FIELD_MAX_WIDTH; x++) {
                     if (Field.isVisibleGem({x: x, y: p.y})) {
                         onDestroyGem({x: x, y: p.y});
                     }
                 }
                 break;
-            case DataObjects.OBJECT_LIGHTNING_VERTICAL:
+            case DataObjects.WITH_LIGHTNING_VERTICAL:
                 for (let y = 0; y < DataPoints.FIELD_MAX_HEIGHT; y++) {
                     if (Field.isVisibleGem({x: p.x, y: y})) {
                         onDestroyGem({x: p.x, y: y});
@@ -374,7 +342,7 @@ LogicField = function () {
         let leftX = Infinity, rightX = -Infinity;
         /** Получить длину текущей линии */
         switch (orientation) {
-            case DataObjects.OBJECT_LIGHTNING_HORIZONTAL:
+            case DataObjects.WITH_LIGHTNING_HORIZONTAL:
                 for (let x = 0; x < DataPoints.FIELD_MAX_WIDTH; x++) {
                     if (Field.isVisible({x: x, y: p.y})) {
                         leftX = Math.min(leftX, x);
@@ -382,7 +350,7 @@ LogicField = function () {
                     }
                 }
                 return {lower: leftX, higher: rightX, length: rightX - leftX + 1};
-            case DataObjects.OBJECT_LIGHTNING_VERTICAL:
+            case DataObjects.WITH_LIGHTNING_VERTICAL:
                 for (let y = 0; y < DataPoints.FIELD_MAX_HEIGHT; y++) {
                     if (Field.isVisible({x: p.x, y: y})) {
                         leftX = Math.min(leftX, y);

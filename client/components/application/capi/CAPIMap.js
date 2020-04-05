@@ -49,19 +49,9 @@ CAPIMap = function () {
     let convertLayer = function (layer) {
 
         let mapping = {
-            /** ??? */
-            '■': DataObjects.OBJECT_BLOCK,
-            'c': DataObjects.OBJECT_CELL,
-
             /** Layer mask */
-            '□': DataObjects.OBJECT_VISIBLE,
-            ' ': DataObjects.OBJECT_INVISIBLE,
-
-            /** Layer special */
-            '*': DataObjects.OBJECT_EMITTER,
-            '⭤': DataObjects.OBJECT_LIGHTNING_HORIZONTAL,
-            '⭥': DataObjects.OBJECT_LIGHTNING_VERTICAL,
-            '+': DataObjects.OBJECT_LIGHTNING_CROSS,
+            '□': DataObjects.CELL_VISIBLE,
+            ' ': DataObjects.CELL_INVISIBLE,
 
             /** Layer gems */
             '?': DataObjects.OBJECT_RANDOM,
@@ -71,6 +61,13 @@ CAPIMap = function () {
             'B': DataObjects.OBJECT_BLUE,
             'Y': DataObjects.OBJECT_YELLOW,
             'P': DataObjects.OBJECT_PURPLE,
+
+            '⭤': DataObjects.WITH_LIGHTNING_HORIZONTAL,
+            '⭥': DataObjects.WITH_LIGHTNING_VERTICAL,
+            '+': DataObjects.WITH_LIGHTNING_CROSS,
+
+            /** Layer special */
+            '*': DataObjects.IS_EMITTER,
         };
 
         let out;
