@@ -65,6 +65,7 @@ WebSocketClient = function () {
         checkBeforeInit();
         init();
     };
+
     let checkBeforeInit = function () {
         if (typeof  self.onConnect != 'function') {
             Logs.log("onConnect must be function", Logs.LEVEL_FATAL_ERROR, self.onConnect);

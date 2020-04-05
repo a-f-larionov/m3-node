@@ -122,7 +122,7 @@ LogicField = function () {
                 /** 2 - Считаем линии */
                 lines = self.findLines();
 
-                if (lines.length) allLines.push({a: a, b: b.y, lines: lines});
+                if (lines.length) allLines.push({a: a, b: b, lines: lines});
 
                 /** 3 - Возвращаем a ⇔ b */
                 self.exchangeGems(a, b);
@@ -138,7 +138,7 @@ LogicField = function () {
 
                 /** 6 - Считаем линии */
                 lines = self.findLines();
-                if (lines.length) allLines.push({a: a, b: b.y, lines: lines});
+                if (lines.length) allLines.push({a: a, b: b, lines: lines});
 
                 /** 7 - Возвращаем a ⇕ b */
                 self.exchangeGems(a, b);
@@ -295,6 +295,7 @@ LogicField = function () {
         layerMask = mask;
         layerGems = gems;
         layerSpecials = specials;
+        //@todo convert to one
     };
 
     this.getSpecIds = function (p) {

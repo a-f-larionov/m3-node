@@ -12,6 +12,25 @@ email: a.f.larionov@gmail.com ;
 facebook: https://www.facebook.com/a.f.larionov ;
 vkontakte: https://vk.com/a.f.larionov
 
+# Virtual Box 
+
+ Настройки сети : NAT + Virtual Host Adapter 
+ 192.168.0.1 255.255.255.0
+ @todo screenshot here
+
+ netplan generate
+ netplan apply
+ 
+ vi /etc/netplan/50-cloud.yaml
+ network:
+    ethernets:
+        enp0s8:
+            addresses: [192.168.0.1/24]
+            dhcp4: no
+        enp0s3:
+            dhcp4: true
+     version: 2
+
 # Setup server
 
 Ubuntu
@@ -54,15 +73,16 @@ https://certbot.eff.org/lets-encrypt/ubuntubionic-nginx
 
 To start server with OS
 
-1 copy ./other/daemon.files/init.d/tri_base to /etc/init.d/tri_base
-2 sudo chmod 755 /etc/init.d/tri_base
-3 sudo chown root:root /etc/init.d/tri_base
-4 sudo update-rc.d tri_base defaults
-5 sudo update-rc.d tri_base enable
-6 sudo service tri_base start
-7 copy ./other/daemon.files/nginx_sites-enabled/tri_base.conf to /etc/nginx/sites-available
-8 sudo ln -s /etc/nginx/sites-available/tri_base.conf /etc/nginx/sites-enabled/tri_base.conf
-9 nginx -t # for test
-10 systemctl restart nginx
+copy ./other/daemon.files/init.d/tri-base to /etc/init.d/tri-base
+sudo chmod 755 /etc/init.d/tri-base
+sudo chown root:root /etc/init.d/tri-base
+sudo dos2unix /etc/init.d/tri-base
+sudo update-rc.d tri-base defaults
+sudo update-rc.d tri-base enable
+sudo service tri-base start
+copy ./other/daemon.files/nginx_sites-enabled/tri-base.conf to /etc/nginx/sites-available
+sudo ln -s /etc/nginx/sites-available/tri-base.conf /etc/nginx/sites-enabled/tri-base.conf
+nginx -t # for test
+systemctl restart nginx
 
 here nginx_sites-enabled - is a /etc/nginx/sites-enabled/

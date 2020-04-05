@@ -13,8 +13,6 @@ ElementField = function () {
      */
     let showed = false;
 
-    let turnsCounted = false;
-
     /** Рамка и все что связано */
     let gemFramed = null,
         domFrame = null
@@ -74,6 +72,7 @@ ElementField = function () {
      */
     this.init = function () {
         let dom;
+        window.elf = this;
 
         domBackground = GUI.createDom(undefined, {});
 
@@ -167,9 +166,9 @@ ElementField = function () {
     };
 
     let fieldAct = function (p) {
-        console.log(lock, AnimLocker.busy());
         if (lock) return;
         if (AnimLocker.busy()) return;
+        if (stopHint) stopHint();
         //@todo
         //Config.OnIdle.animateInterval = 33 * 5;
         switch (stuffMode) {
@@ -261,19 +260,16 @@ ElementField = function () {
      */
     let gemChangeAct = function (gemB) {
         let gemA = gemFramed;
-        console.log(lock, AnimLocker.busy(), Field.isNotGem(gemB));
+
         if (lock || AnimLocker.busy() || Field.isNotGem(gemB)) return;
-        console.log(1);
+
         /** Set frame */
         if (!gemA || (gemA && !Field.isNear(gemA, gemB))) {
-            console.log(2);
             gemFramed = gemB;
             self.redraw();
         }
-        console.log(3);
         /** Near gems */
         if (gemA && Field.isNear(gemA, gemB)) {
-            console.log(4);
             gemFramed = null;
             self.redraw();
 
@@ -282,7 +278,7 @@ ElementField = function () {
                 animate(animChangeAndBack, gemA, gemB);
                 animate(animChangeAndBack, gemB, gemA);
                 if (Field.isLightningSpec(gemA)) {
-
+//@todo
                     //animate(animChangeAndBack, gemA, gemB);
                 }
             }
@@ -339,6 +335,7 @@ ElementField = function () {
      * Спрячем картинку.
      */
     this.hide = function () {
+        console.log('hide it');
         if (showed === false) return;
         showed = false;
         domBackground.hide();
@@ -348,6 +345,7 @@ ElementField = function () {
             gemDoms[x][y].hide();
         });
         domFrame.hide();
+        if (stopHint) stopHint();
     };
 
     /**
@@ -421,7 +419,7 @@ ElementField = function () {
                         let dom = specDoms[specIndex];
                         if (dom.specId !== specId || dom.x !== x * DataPoints.BLOCK_WIDTH || dom.y !== y * DataPoints.BLOCK_HEIGHT) {
                             dom.specId = specId;
-                            dom.opacity = 0.88;
+                            dom.opacity = 0.5;
                             dom.x = x * DataPoints.BLOCK_WIDTH;
                             dom.y = y * DataPoints.BLOCK_HEIGHT;
                             dom.animPlayed = true;
@@ -473,7 +471,6 @@ ElementField = function () {
 
         let specialLayers = [];
         layers.special.forEach(function (specLayer) {
-            console.log(specLayer);
             specialLayers.push(copyLayer(specLayer));
         });
         Field.setLayers(
@@ -512,61 +509,73 @@ ElementField = function () {
         this.redraw();
     };
 
-    let runNext = 0;
-
     this.run = function () {
-        if (self.isFieldSilent()) {
-            if (!turnsCounted) {
-                turnsCounted = true;
-                let allTurns = Field.countTurns();
-                if (allTurns.length === 0) {
-                    shuffleDo();
-                }
-            }
-            //self.redraw();//@todo some strange...but
-            self.onFieldSilent();
-            return;
-        } else {
-            turnsCounted = false;
-        }
+        if (AnimLocker.busy()) return;
+        console.log('run');
 
-        switch (runNext) {
-            case 0:
-                runNext = 1;
-                self.fall();
-                break;
-            case 1:
-                runNext = 2;
-                self.processSpecialLayer();
-                break;
-            case 2:
-                runNext = 0;
-                self.destroyLines();
-                break;
-        }
+        if (self.hasProcesSpecialLayer()) return self.processSpecialLayer();
+        if (self.hasFall()) return self.fall();
+        if (self.hasDestroyLines()) return self.destroyLines();
+        if (self.hasNoTurns()) return shuffleDo();
+        if (self.isFieldSilent()) return onFieldSilent();
+    };
+
+    let onFieldSilent = function () {
+        console.log('on field silent');
+        self.onFieldSilent();
+        tryShowHint();
+    };
+
+    let stopHint;
+
+    let tryShowHint = function () {
+        setTimeout(function () {
+            console.log('try show hint');
+            if (self.isFieldSilent() && !lock && showed && !stopHint) {
+                console.log('show hint', stopHint);
+                let allTurns = Field.countTurns();
+                let stopFunc = animate(animHint, allTurns[0].a, allTurns[0].b);
+                stopHint = function () {
+                    stopHint = null;
+                    stopFunc();
+                    tryShowHint();
+                }
+            } else {
+                console.log('skip show hint');
+            }
+        }, 3000);
     };
 
     this.isFieldSilent = function () {
+        console.log(
+            ' b=' + Number(AnimLocker.busy()) +
+            ' dl=' + Number(self.hasDestroyLines()) +
+            ' f=' + Number(self.hasFall()) +
+            ' pl=' + Number(self.hasProcesSpecialLayer()) +
+            ' ntrns=' + Number(self.hasNoTurns())
+        );
         return !(AnimLocker.busy() ||
             self.hasDestroyLines() ||
             self.hasFall() ||
-            self.hasProcesSpecialLayer()
+            self.hasProcesSpecialLayer() ||
+            self.hasNoTurns()
         );
     };
 
     this.hasProcesSpecialLayer = function (out) {
         Field.eachCell(function (x, y) {
-            out |= Field.specPresent({x: x, y: y}, DataObjects.OBJECT_EMITTER);
+            out |= (Field.specPresent({x: x, y: y}, DataObjects.OBJECT_EMITTER) &&
+                Field.isHole({x: x, y: y}));
         });
         return out;
     };
 
     this.processSpecialLayer = function () {
+        console.log('processLayer');
         Field.eachCell(function (x, y) {
             if (Field.specPresent({x: x, y: y}, DataObjects.OBJECT_EMITTER) &&
                 Field.isHole({x: x, y: y})
             ) {
-                console.log('emit');
                 Field.setGem({x: x, y: y}, Field.getRandomGemId());
                 if (Field.isVisible({x: x, y: y})) animate(animGemFader, {x: x, y: y});
             }
@@ -574,7 +583,7 @@ ElementField = function () {
         self.run();
     };
 
-    this.hasFall = function (out) {
+    this.hasFall = function (out = false) {
         Field.eachCell(function (x, y) {
             if (Field.mayFall(x, y)) out = true;
         });
@@ -607,6 +616,7 @@ ElementField = function () {
      * Уничтожение лений 3+ длинной.
      */
     this.destroyLines = function () {
+        console.log('destroy lines');
         let lines, p;
         lines = Field.findLines();
         if (lines.length)
@@ -618,12 +628,13 @@ ElementField = function () {
                 }
                 self.onDestroyLine(lines[i]);
             }
-        this.redraw();
+        //this.redraw();
 
-        setTimeout(function () {
-            /** Animate here before run */
-            self.run();
-        }, 1);
+        animate(animDestoyLines);
+    };
+
+    this.hasNoTurns = function () {
+        return Field.countTurns().length === 0;
     };
 
     this.lock = function () {
@@ -641,31 +652,23 @@ ElementField = function () {
     };
 
     this.destroyGem = function (p) {
-        setTimeout(function () {
-            dg(p)
-        }, 500);
-    };
-
-    let dg = function (p) {
+        console.log('destroy gem');
         let lightningId;
         Field.setGem(p, DataObjects.OBJECT_HOLE);
 
         lightningId = Field.isLightningSpec(p);
-        console.log('id', lightningId);
+
         if (lightningId) {
             Field.specClear(p, lightningId);
             lightningDo(p, lightningId);
         }
-        self.run();
+        animate(animDestroyGem);
     };
 
     let animate = function (animClass) {
-        let args, animObj, counter;
-        AnimLocker.lock();
-
+        let args, animObj, counter, timerId;
         counter = 0;
         animObj = new animClass();
-        animObj.continue = true;
         animObj.gemDoms = gemDoms;
         animObj.animDoms = animDoms;
 
@@ -674,20 +677,38 @@ ElementField = function () {
 
         animObj.init.apply(animObj, args);
 
+        if (!animObj.noAnimLock) AnimLocker.lock();
+
         let iterate = function () {
-            if (!animObj.continue) {
-                if (animObj.finish) animObj.finish();
+            if (animObj.iterate(counter++)) {
+                timerId = setTimeout(iterate, Config.OnIdle.animateInterval);
+            } else {
+                stopAnim();
+            }
+        };
+        let stopAnim = function () {
+            console.log('stop anim', animObj.constructor.name);
+            clearTimeout(timerId);
+
+            if (animObj.finish) animObj.finish();
+
+            if (!animObj.noAnimLock) {
                 AnimLocker.release();
                 if (AnimLocker.free()) {
+                    console.log('end of anim');
                     self.redraw();
                     self.run();
                 }
             } else {
-                animObj.continue = animObj.iterate(counter++);
-                setTimeout(iterate, Config.OnIdle.animateInterval);
+                self.redraw();
             }
         };
+
         iterate();
+        return function () {
+            console.log('call stop anim', timerId, animObj.constructor.name);
+            stopAnim();
+        };
     };
 };
 
@@ -700,7 +721,6 @@ let animChangeAndBack = function animChangeAndBack() {
     this.init = function (a, b) {
         v = {x: (b.x - a.x) * velocity, y: (b.y - a.y) * velocity};
         dom = this.gemDoms[a.x][a.y];
-        //
     };
 
     this.iterate = function (counter) {
@@ -895,7 +915,55 @@ let animShuffle = function () {
     }
 };
 
-let AnimLocker = {
+let animHint = function () {
+    let domA, domB;
+
+    this.init = function (_a, _b) {
+        this.noAnimLock = true;
+        console.log('init anim hint', _a, _b);
+        domA = this.gemDoms[_a.x][_a.y];
+        domB = this.gemDoms[_b.x][_b.y];
+    };
+
+    this.iterate = function (counter) {
+        domA.y += Math.cos(Math.PI / 10 * counter);
+        domB.y += Math.cos(Math.PI / 10 * counter);
+        domA.redraw();
+        domB.redraw();
+        return !AnimLocker.busy();
+    };
+
+    this.finish = function () {
+        console.log('finish hint', AnimLocker.busy());
+    }
+};
+
+/**
+ * @todo
+ */
+let animDestroyGem = function () {
+
+    this.init = function () {
+
+    };
+
+    this.iterate = function (counter) {
+        return counter < 10;
+    };
+};
+
+let animDestoyLines = function () {
+
+    this.init = function () {
+
+    };
+
+    this.iterate = function (counter) {
+        return counter < 10;
+    };
+};
+
+AnimLocker = {
     locks: 0,
     lock: function () {
         AnimLocker.locks++;

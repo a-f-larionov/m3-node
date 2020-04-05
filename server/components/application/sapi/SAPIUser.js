@@ -79,6 +79,9 @@ SAPIUser = function () {
         if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
 
         // @Todo validate userIds
+        if (typeof userIds !== 'object' || !userIds.length) return Logs.log(arguments.callee.name + " wrong params", Logs.LEVEL_WARNING, {
+            cntx, userIds: userIds
+        });
 
         DataUser.getById(cntx.user.id, function (user) {
             DataUser.getUserIdsBySocNet(user.socNetTypeId, userIds, function (ids) {

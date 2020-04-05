@@ -356,6 +356,7 @@ PageBlockField = function PageBlockField() {
     };
 
     this.onFieldSilent = function () {
+        //console.log('silent', noMoreGoals);
         if (noMoreGoals) {
             elementField.lock();
             noMoreGoals = false;

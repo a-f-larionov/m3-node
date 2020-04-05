@@ -1,12 +1,12 @@
 #!/bin/sh
 ### BEGIN INIT INFO
-# Provides:	tri_base
+# Provides:	tri-base
 # Required-Start: $all
 # Required-Stop: $all
 # Default-Start: 2 3 4 5
 # Default-Stop:  0 1 6
-# Short-Description: Start/stop tri_base.
-# Description: tri_base Server init.
+# Short-Description: Start/stop tri-base.
+# Description: tri-base Server init.
 ### END INIT INFO
 
 DAEMON_PATH="/var/www/tri_base/"
@@ -17,7 +17,7 @@ DAEMONOPTS=""
 
 OUTPUT_FILE="/var/www/tri_base/server/last.log"
 
-NAME=tri_base
+NAME=tri-base
 
 DESC="tri_base service daemon description"
 

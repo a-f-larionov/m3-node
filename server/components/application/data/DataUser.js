@@ -36,7 +36,7 @@ DataUser = function () {
     };
 
     /**
-     * Возвращает внутрение id-шники по их id в социальной сети.
+     * Возвращает внутренние id-шники по их id в социальной сети.
      * Отсортировано по point
      * @param socNetTypeId
      * @param socNetUserIds
@@ -44,6 +44,7 @@ DataUser = function () {
      */
     this.getUserIdsBySocNet = function (socNetTypeId, socNetUserIds, callback) {
         let query;
+        if (socNetUserIds.length === 0) return callback([]);
         query = "SELECT id FROM " + tableName + " WHERE ";
         query += " socNetTypeId = " + DB.escape(socNetTypeId);
         query += " AND socNetUserId IN ( " + DB.escape(socNetUserIds) + " ) ";
