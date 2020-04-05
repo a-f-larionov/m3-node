@@ -65,6 +65,8 @@ ElementField = function () {
      */
     this.onFieldSilent = null;
 
+    let lastExchangeGems = null;
+
     /**
      * Создадим дом и настроем его.
      */
@@ -168,8 +170,6 @@ ElementField = function () {
         if (stopHint) stopHint();
         if (!Field.isVisible(p)) return;
 
-        //@todo
-        //Config.OnIdle.animateInterval = 33 * 5;
         switch (stuffMode) {
             case LogicStuff.STUFF_HUMMER:
                 hummerAct(p);
@@ -208,10 +208,7 @@ ElementField = function () {
             if (Field.findLines().length) break;
             funcShuffleField();
         }
-        animate(animShuffle,
-            visibleWidth * DataPoints.BLOCK_WIDTH / 2,
-            visibleHeight * DataPoints.BLOCK_HEIGHT / 2
-        );
+        animate(animShuffle, visibleWidth * DataPoints.BLOCK_WIDTH / 2, visibleHeight * DataPoints.BLOCK_HEIGHT / 2);
     };
 
     let funcShuffleField = function () {
@@ -242,13 +239,13 @@ ElementField = function () {
     let lightningDo = function (p, specId) {
         console.log('l do', specId, p);
         if (specId === DataObjects.WITH_LIGHTNING_CROSS) {
-            Field.destroyLine(p, DataObjects.WITH_LIGHTNING_VERTICAL, self.destroyGem);
-            Field.destroyLine(p, DataObjects.WITH_LIGHTNING_HORIZONTAL, self.destroyGem);
+            Field.forceDestroyLine(p, DataObjects.WITH_LIGHTNING_VERTICAL, self.destroyGem);
+            Field.forceDestroyLine(p, DataObjects.WITH_LIGHTNING_HORIZONTAL, self.destroyGem);
             self.redraw();
             animate(animLightning, p, DataObjects.WITH_LIGHTNING_VERTICAL);
             animate(animLightning, p, DataObjects.WITH_LIGHTNING_HORIZONTAL);
         } else {
-            Field.destroyLine(p, specId, self.destroyGem);
+            Field.forceDestroyLine(p, specId, self.destroyGem);
             self.redraw();
             animate(animLightning, p, specId);
         }
@@ -282,6 +279,7 @@ ElementField = function () {
 
             /** Change and destroy */
             if (Field.isLinePossiblyDestroy(gemA, gemB)) {
+                lastExchangeGems = {a: gemA, b: gemB};
                 self.beforeTurnUse();
                 Field.exchangeGems(gemA, gemB);
                 animate(animChangeAndDestroy, gemA, gemB);
@@ -383,15 +381,17 @@ ElementField = function () {
                     drawCell(gemDom, x, y, cell.object.objectId);
 
                     if (cell.object.lightningId) {
-                        let dom = specDoms[specIndex];
-                        if (dom.specId !== cell.object.lightningId || dom.pX !== x || dom.pY !== y) {
-                            dom.pX = x;
-                            dom.pY = y;
-                            dom.specId = cell.object.lightningId;
-                            gemDom.bindedDoms = dom;
+                        let specDom = specDoms[specIndex];
+                        if (specDom.specId !== cell.object.lightningId || specDom.pX !== x || specDom.pY !== y) {
+                            specDom.pX = x;
+                            specDom.pY = y;
+                            specDom.specId = cell.object.lightningId;
+                            gemDom.bindedDoms = specDom;
 
-                            dom.opacity = 0.5;
-                            drawCell(dom, x, y, cell.object.lightningId);
+                            specDom.opacity = 0.5;
+                            drawCell(specDom, x, y, cell.object.lightningId);
+                        } else {
+                            specDom.redraw();
                         }
                         specIndex++;
                     } else {
@@ -405,6 +405,7 @@ ElementField = function () {
 
         /** Спрячем не используемые специальные домы */
         for (let i = specIndex; i < specDomsLimit; i++) {
+            specDoms[i].specId = null;
             specDoms[i].hide();
         }
 
@@ -425,7 +426,7 @@ ElementField = function () {
      * @param layers {Object}
      */
     this.setLayers = function (layers) {
-
+        console.log('set layers', layers);
         let copyLayer = function (source, callback) {
             let out;
             out = [];
@@ -442,6 +443,7 @@ ElementField = function () {
         layers.special.forEach(function (specLayer) {
             specialLayers.push(copyLayer(specLayer));
         });
+        console.log('set layers special', specialLayers);
         Field.setLayers(
             copyLayer(layers.mask),
             copyLayer(layers.gems, function (value) {
@@ -596,21 +598,34 @@ ElementField = function () {
      * Уничтожение лений 3+ длинной.
      */
     this.destroyLines = function () {
-        console.log('destroy lines');
-        let lines, p;
+        let lines, p, actGem;
         lines = Field.findLines();
-        if (lines.length)
-            for (let i in lines) {
-                for (let c in lines[i].coords) {
-                    p = lines[i].coords[c];
-                    //@destroy
-                    self.destroyGem({x: p.x, y: p.y});
-                }
-                self.onDestroyLine(lines[i]);
-            }
-        //this.redraw();
 
-        animate(animDestoyLines);
+        lines.forEach(function (line) {
+            console.log('length', line, line.coords.length);
+            actGem = null;
+            if (line.coords.length === 4) {
+                if (Field.lineCrossing([line], lastExchangeGems.a.x, lastExchangeGems.a.y)) {
+                    console.log(lastExchangeGems, 'a');
+                    actGem = lastExchangeGems.a;
+                }
+                if (Field.lineCrossing([line], lastExchangeGems.b.x, lastExchangeGems.b.y)) {
+                    console.log(lastExchangeGems, 'b');
+                    actGem = lastExchangeGems.b;
+                }
+                console.log('is it 4 length line', lastExchangeGems, actGem);
+            }
+            if (actGem) {
+                Field.setObject(actGem, Field.getCell(actGem).object.objectId, line.orientation);
+            }
+            line.coords.forEach(function (p) {
+                if (actGem && p.x === actGem.x && p.y === actGem.y) return;
+                self.destroyGem(p);
+            });
+            self.onDestroyLine(line);
+        });
+
+        animate(animDestroyLines);
     };
 
     this.hasNoTurns = function () {
@@ -634,9 +649,9 @@ ElementField = function () {
     this.destroyGem = function (p) {
         let cell, lightningId;
         cell = Field.getCell(p);
-        console.log('destroy gem', cell);
+        console.log('destroy gem', cell, p);
         lightningId = cell.object.lightningId;
-        Field.setObject(p, DataObjects.OBJECT_HOLE);
+        Field.setObject(p, DataObjects.OBJECT_HOLE, false);
         if (lightningId) lightningDo(p, lightningId);
         animate(animDestroyGem);
     };
@@ -711,7 +726,7 @@ let animChangeAndBack = function animChangeAndBack() {
         if (dom.bindedDoms) {
             dom.bindedDoms.x = dom.x;
             dom.bindedDoms.y = dom.y;
-            dom.redraw();
+            dom.bindedDoms.redraw();
         }
         return counter + 1 < counterStop;
     };
@@ -798,6 +813,11 @@ let animChangeAndDestroy = function () {
         dom.x += v.x;
         dom.y += v.y;
         dom.redraw();
+        if (dom.bindedDoms) {
+            dom.bindedDoms.x = dom.x;
+            dom.bindedDoms.y = dom.y;
+            dom.bindedDoms.redraw();
+        }
         return counter < counterStop;
     };
 };
@@ -863,6 +883,11 @@ let animFallGems = function () {
                 case 'just':
                     dom.y += velocity;
                     break;
+            }
+            if (dom.bindedDoms) {
+                dom.bindedDoms.x = dom.x;
+                dom.bindedDoms.y = dom.y;
+                dom.bindedDoms.redraw();
             }
             dom.redraw();
         });
@@ -941,7 +966,7 @@ let animDestroyGem = function () {
     };
 };
 
-let animDestoyLines = function () {
+let animDestroyLines = function () {
 
     this.init = function () {
 

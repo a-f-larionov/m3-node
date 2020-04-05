@@ -55,7 +55,7 @@ CAPIMap = function () {
 
             /** Layer gems */
             '?': DataObjects.OBJECT_RANDOM,
-            '.': DataObjects.OBJECT_HOLE,
+            'H': DataObjects.OBJECT_HOLE,
             'R': DataObjects.OBJECT_RED,
             'G': DataObjects.OBJECT_GREEN,
             'B': DataObjects.OBJECT_BLUE,

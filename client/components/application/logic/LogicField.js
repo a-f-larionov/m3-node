@@ -157,11 +157,11 @@ LogicField = function () {
         for (let y = 0; y < DataPoints.FIELD_MAX_HEIGHT; y++) {
             for (let x = 0; x < DataPoints.FIELD_MAX_WIDTH; x++) {
                 if (this.lineCrossing(lines, x, y)) continue;
-                line = this.findLine(x, y, 1);
+                line = this.findLine(x, y, DataObjects.WITH_LIGHTNING_VERTICAL);
                 if (line) {
                     lines.push(line);
                 }
-                line = this.findLine(x, y, 2);
+                line = this.findLine(x, y, DataObjects.WITH_LIGHTNING_HORIZONTAL);
                 if (line) {
                     lines.push(line);
                 }
@@ -176,10 +176,11 @@ LogicField = function () {
         /** Может ли такой объект вообще падать */
         if (LogicField.isNotGem({x: x, y: y})) return false;
         line = {
+            orientation: orientation,
             coords: [],
             gemId: gemId
         };
-        if (orientation === 1) {
+        if (orientation === DataObjects.WITH_LIGHTNING_HORIZONTAL) {
             for (let offset = 0; offset < 5; offset++) {
                 if (x + offset >= DataPoints.FIELD_MAX_WIDTH) continue;
                 if (y >= DataPoints.FIELD_MAX_HEIGHT) continue;
@@ -187,10 +188,7 @@ LogicField = function () {
                     self.isVisible({x: x + offset, y: y}) &&
                     self.getGemId({x: x + offset, y: y}) === gemId
                 ) {
-                    line.coords.push({
-                        x: x + offset,
-                        y: y
-                    });
+                    line.coords.push({x: x + offset, y: y});
                 } else {
                     break;
                 }
@@ -201,10 +199,7 @@ LogicField = function () {
                 if (y >= DataPoints.FIELD_MAX_HEIGHT) continue;
                 if (self.isVisible({x: x, y: y + offset}) &&
                     self.getGemId({x: x, y: y + offset}) === gemId) {
-                    line.coords.push({
-                        x: x,
-                        y: y + offset
-                    });
+                    line.coords.push({x: x, y: y + offset});
                 } else {
                     break;
                 }
@@ -316,7 +311,7 @@ LogicField = function () {
      * @param specId
      * @param onDestroyGem
      */
-    this.destroyLine = function (p, specId, onDestroyGem) {
+    this.forceDestroyLine = function (p, specId, onDestroyGem) {
         switch (specId) {
             case DataObjects.WITH_LIGHTNING_HORIZONTAL:
                 for (let x = 0; x < DataPoints.FIELD_MAX_WIDTH; x++) {
