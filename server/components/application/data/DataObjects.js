@@ -43,13 +43,56 @@ DataObjects = function () {
      * @type {number}
      */
     this.OBJECT_PURPLE = 106;
-
     /**
      * Нет камня
      * @type {number}
      */
     this.OBJECT_HOLE = 120;
-
+    /**
+     * Бочка
+     * @type {number}
+     */
+    this.OBJECT_BARREL = 130;
+    /**
+     * Многоцветный камень
+     * @type {number}
+     */
+    this.OBJECT_POLY_COLOR = 140;
+    /**
+     * Рыба
+     * @type {number}
+     */
+    this.OBJECT_SPIDER = 150;
+    /**
+     * Осминог
+     * @type {number}
+     */
+    this.OBJECT_OCTOPUS = 160;
+    /**
+     * Лёд
+     * @type {number}
+     */
+    this.OBJECT_ICE = 170;
+    /**
+     * Драгоцености
+     * @type {number}
+     */
+    this.OBJECT_TRESURE = 180;
+    /**
+     * Ящик
+     * @type {number}
+     */
+    this.OBJECT_BOX = 190;
+    /**
+     * Цепь
+     * @type {number}
+     */
+    this.OBJECT_CHAIN = 200;
+    /**
+     * Цепь на ящик
+     * @type {number}
+     */
+    this.OBJECT_CHAIN_BOX = 210;
     /**
      * Эмитер камней
      * @type {number}

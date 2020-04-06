@@ -44,7 +44,35 @@ CAPIMap = function () {
     /**
      * @param layer
      * @returns {*[]}
-     * ⬍⬌⭥⭤⯐↔↕
+     * ⬍⬌⭥⭤⯐↔↕       ʘ¤ïĦȪ ȫ ȯ ɷ ɵ ʆ ʭ ʬ ʚ ░▒▓∏∩≡▀ ϔ∎
+     *
+     * https://pixelplus.ru/samostoyatelno/stati/vnutrennie-faktory/tablica-simvolov-unicode.html
+     * обозначения:
+     * RGBPY - камни цветные
+     * ⯐↔↕ - молния, вертикальная, горизонтальная, кросовая
+     *
+     * ȫ - рыба
+     * ᴥ - осминог
+     * ᥩ - бочка
+     * ɨ - лёд
+     * $ - драгоценности
+     * ■ - ящик
+     * Z - цепи
+     * Ż - цепи на ящик
+     * ᨔ - многоцветный камень
+     *
+     *
+     * китайский:
+     * 冰 - лёд
+     * 桶 - бочка
+     *
+     * 洞  - дырка
+     * 红 - красный
+     * 绿 - зеленый
+     * 蓝 - голубой
+     * 紫 - фиолетовый
+     * 黄 - желтый
+     *
      */
     let convertLayer = function (layer) {
 
@@ -56,11 +84,25 @@ CAPIMap = function () {
             /** Layer gems */
             '?': DataObjects.OBJECT_RANDOM,
             'H': DataObjects.OBJECT_HOLE,
+
             'R': DataObjects.OBJECT_RED,
             'G': DataObjects.OBJECT_GREEN,
             'B': DataObjects.OBJECT_BLUE,
             'Y': DataObjects.OBJECT_YELLOW,
             'P': DataObjects.OBJECT_PURPLE,
+
+            'ᨔ' : DataObjects.OBJECT_POLY_COLOR,
+            'ᥩ' : DataObjects.OBJECT_BARREL,
+            'ȫ' : DataObjects.OBJECT_SPIDER,
+
+
+            'ᴥ' : DataObjects.OBJECT_OCTOPUS,
+            'ɨ' : DataObjects.OBJECT_ICE,
+            '$' : DataObjects.OBJECT_TRESURE,
+            '■' : DataObjects.OBJECT_BOX,
+            'Z' : DataObjects.OBJECT_CHAIN,
+            'Ż' : DataObjects.OBJECT_CHAIN_BOX,
+
 
             '⭤': DataObjects.WITH_LIGHTNING_HORIZONTAL,
             '⭥': DataObjects.WITH_LIGHTNING_VERTICAL,

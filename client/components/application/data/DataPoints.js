@@ -19,6 +19,15 @@ DataPoints = function () {
     this.objectImages[DataObjects.OBJECT_YELLOW] = '/images/field-yellow.png';
     this.objectImages[DataObjects.OBJECT_PURPLE] = '/images/field-purple.png';
 
+    this.objectImages[DataObjects.OBJECT_BARREL] = '/images/field-barrel.png';
+    this.objectImages[DataObjects.OBJECT_POLY_COLOR] = '/images/field-poly-color.png';
+    this.objectImages[DataObjects.OBJECT_ICE] = '/images/field-ice.png';
+    this.objectImages[DataObjects.OBJECT_TRESURE] = '/images/field-tresure.png';
+    this.objectImages[DataObjects.OBJECT_OCTOPUS] = '/images/field-octopus.png';
+    this.objectImages[DataObjects.OBJECT_SPIDER] = '/images/field-fish.png';
+    this.objectImages[DataObjects.OBJECT_CHAIN] = '/images/field-chain.png';
+    this.objectImages[DataObjects.OBJECT_CHAIN_BOX] = '/images/field-chain-box.png';
+
     this.objectImages[DataObjects.WITH_LIGHTNING_VERTICAL] = '/images/spec-light-ver-1.png';
     this.objectImages[DataObjects.WITH_LIGHTNING_HORIZONTAL] = '/images/spec-light-hor-1.png';
     this.objectImages[DataObjects.WITH_LIGHTNING_CROSS] = '/images/spec-light-cross-1.png';

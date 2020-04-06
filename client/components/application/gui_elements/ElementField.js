@@ -55,6 +55,11 @@ ElementField = function () {
      */
     this.onDestroyLine = null;
     /**
+     * Каллбек
+     * @type {function}
+     */
+    this.onBarrelFloor = null;
+    /**
      *
      * @type {function}
      */
@@ -224,7 +229,7 @@ ElementField = function () {
                 cell1.isVisible && cell1.object.isGem &&
                 cell2.isVisible && cell2.object.isGem
             ) {
-                Field.exchangeGems({x: x1, y: y1}, p2)
+                Field.exchangeObjects({x: x1, y: y1}, p2)
             }
         });
     };
@@ -237,7 +242,7 @@ ElementField = function () {
     };
 
     let lightningDo = function (p, specId) {
-        console.log('l do', specId, p);
+        //console.log('l do', specId, p);
         if (specId === DataObjects.WITH_LIGHTNING_CROSS) {
             Field.forceDestroyLine(p, DataObjects.WITH_LIGHTNING_VERTICAL, self.destroyGem);
             Field.forceDestroyLine(p, DataObjects.WITH_LIGHTNING_HORIZONTAL, self.destroyGem);
@@ -259,7 +264,7 @@ ElementField = function () {
     let gemChangeAct = function (gemB) {
         let gemA = gemFramed;
 
-        if (lock || AnimLocker.busy() || Field.isNotGem(gemB)) return;
+        if (lock || AnimLocker.busy() || !Field.isFallObject(gemB)) return;
 
         /** Set frame */
         if (!gemA || (gemA && !Field.isNear(gemA, gemB))) {
@@ -281,7 +286,7 @@ ElementField = function () {
             if (Field.isLinePossiblyDestroy(gemA, gemB)) {
                 lastExchangeGems = {a: gemA, b: gemB};
                 self.beforeTurnUse();
-                Field.exchangeGems(gemA, gemB);
+                Field.exchangeObjects(gemA, gemB);
                 animate(animChangeAndDestroy, gemA, gemB);
                 animate(animChangeAndDestroy, gemB, gemA);
             }
@@ -329,7 +334,7 @@ ElementField = function () {
      * Спрячем картинку.
      */
     this.hide = function () {
-        console.log('hide it');
+        //console.log('hide it');
         if (showed === false) return;
         showed = false;
         container.hide();
@@ -365,7 +370,8 @@ ElementField = function () {
 
         let specIndex = 0;
         Field.eachCell(function (x, y, cell) {
-                let maskDom, gemDom;
+                let maskDom, gemDom, object;
+                object = cell.object;
                 maskDom = maskDoms[x][y];
                 gemDom = gemDoms[x][y];
 
@@ -376,20 +382,30 @@ ElementField = function () {
                     maskDom.hide();
                 }
 
-                /** Layer.gems redraw */
-                if (cell.object.isGem && cell.isVisible) {
-                    drawCell(gemDom, x, y, cell.object.objectId);
+                /**
+                 * Draw gems
+                 */
+                if (cell.isVisible &&
+                    (object.isGem || object.isFish || object.isBarrel || object.isPolyColor)
+                ) {
+                    drawCell(gemDom, x, y, object.objectId)
+                } else {
+                    gemDom.hide();
+                }
 
-                    if (cell.object.lightningId) {
+
+                /** Layer.gems redraw */
+                if (object.isGem && cell.isVisible) {
+                    if (object.lightningId) {
                         let specDom = specDoms[specIndex];
-                        if (specDom.specId !== cell.object.lightningId || specDom.pX !== x || specDom.pY !== y) {
+                        if (specDom.specId !== object.lightningId || specDom.pX !== x || specDom.pY !== y) {
                             specDom.pX = x;
                             specDom.pY = y;
-                            specDom.specId = cell.object.lightningId;
+                            specDom.specId = object.lightningId;
                             gemDom.bindedDoms = specDom;
 
                             specDom.opacity = 0.5;
-                            drawCell(specDom, x, y, cell.object.lightningId);
+                            drawCell(specDom, x, y, object.lightningId);
                         } else {
                             specDom.redraw();
                         }
@@ -397,9 +413,9 @@ ElementField = function () {
                     } else {
                         gemDom.bindedDoms = null;
                     }
-                } else {
-                    gemDom.hide();
                 }
+                /** Layer.barrel */
+
             }
         );
 
@@ -411,10 +427,6 @@ ElementField = function () {
 
         if (gemFramed) {
             drawCell(domFrame, gemFramed.x, gemFramed.y);
-            // domFrame.x = gemDoms[gemFramed.x][gemFramed.y].x;
-            // domFrame.y = gemDoms[gemFramed.x][gemFramed.y].y;
-            // domFrame.show();
-            // domFrame.redraw();
         } else {
             domFrame.hide();
         }
@@ -426,7 +438,7 @@ ElementField = function () {
      * @param layers {Object}
      */
     this.setLayers = function (layers) {
-        console.log('set layers', layers);
+        //console.log('set layers', layers);
         let copyLayer = function (source, callback) {
             let out;
             out = [];
@@ -443,7 +455,7 @@ ElementField = function () {
         layers.special.forEach(function (specLayer) {
             specialLayers.push(copyLayer(specLayer));
         });
-        console.log('set layers special', specialLayers);
+        //console.log('set layers special', specialLayers);
         Field.setLayers(
             copyLayer(layers.mask),
             copyLayer(layers.gems, function (value) {
@@ -496,7 +508,7 @@ ElementField = function () {
 
     this.run = function () {
         if (AnimLocker.busy()) return;
-        console.log('run');
+        //console.log('run');
 
         if (self.hasProcesSpecialLayer()) return self.processSpecialLayer();
         if (self.hasFall()) return self.fall();
@@ -506,7 +518,7 @@ ElementField = function () {
     };
 
     let onFieldSilent = function () {
-        console.log('on field silent');
+        //console.log('on field silent');
         self.onFieldSilent();
         tryShowHint();
     };
@@ -515,9 +527,9 @@ ElementField = function () {
 
     let tryShowHint = function () {
         setTimeout(function () {
-            console.log('try show hint');
+            //console.log('try show hint');
             if (self.isFieldSilent() && !lock && showed && !stopHint) {
-                console.log('show hint', stopHint);
+                //console.log('show hint', stopHint);
                 let allTurns = Field.countTurns();
                 let stopFunc = animate(animHint, allTurns[0].a, allTurns[0].b);
                 stopHint = function () {
@@ -526,19 +538,19 @@ ElementField = function () {
                     tryShowHint();
                 }
             } else {
-                console.log('skip show hint');
+                //console.log('skip show hint');
             }
         }, 3000);
     };
 
     this.isFieldSilent = function () {
-        console.log(
+        /*console.log(
             ' b=' + Number(AnimLocker.busy()) +
             ' dl=' + Number(self.hasDestroyLines()) +
             ' f=' + Number(self.hasFall()) +
             ' pl=' + Number(self.hasProcesSpecialLayer()) +
             ' ntrns=' + Number(self.hasNoTurns())
-        );
+        );*/
         return !(AnimLocker.busy() ||
             self.hasDestroyLines() ||
             self.hasFall() ||
@@ -549,17 +561,22 @@ ElementField = function () {
 
     this.hasProcesSpecialLayer = function (out) {
         Field.eachCell(function (x, y, cell) {
-            out |= (cell.isEmitter && Field.isHole({x: x, y: y}));
+            out |= (cell.isEmitter && cell.object.isHole);
+            out |= (cell.isVisible && cell.object.isBarrel && !Field.isVisible({x: x, y: y + 1}));
         });
         return out;
     };
 
     this.processSpecialLayer = function () {
-        console.log('processLayer');
         Field.eachCell(function (x, y, cell) {
             if (cell.isEmitter && Field.isHole({x: x, y: y})) {
                 Field.setObject({x: x, y: y}, Field.getRandomGemId());
                 if (Field.isVisible({x: x, y: y})) animate(animGemFader, {x: x, y: y});
+            }
+            if (cell.isVisible && cell.object.isBarrel && !Field.isVisible({x: x, y: y + 1})) {
+                Field.setObject({x: x, y: y}, DataObjects.OBJECT_HOLE, false);
+                animate(animHummerDestroy, {x: x, y: y});
+                self.onBarrelFloor();
             }
         });
         self.run();
@@ -582,7 +599,8 @@ ElementField = function () {
             y = DataPoints.FIELD_MAX_HEIGHT - y - 1;
             if (!Field.mayFall(x, y)) return;
 
-            Field.exchangeGems({x: x, y: y}, {x: x, y: y + 1});
+            Field.exchangeObjects({x: x, y: y}, {x: x, y: y + 1});
+
             fallDoms.push(gemDoms[x][y]);
         });
         if (fallDoms.length) animate(animFallGems, fallDoms);
@@ -602,18 +620,18 @@ ElementField = function () {
         lines = Field.findLines();
 
         lines.forEach(function (line) {
-            console.log('length', line, line.coords.length);
+            //console.log('length', line, line.coords.length);
             actGem = null;
             if (line.coords.length === 4) {
                 if (Field.lineCrossing([line], lastExchangeGems.a.x, lastExchangeGems.a.y)) {
-                    console.log(lastExchangeGems, 'a');
+                    //console.log(lastExchangeGems, 'a');
                     actGem = lastExchangeGems.a;
                 }
                 if (Field.lineCrossing([line], lastExchangeGems.b.x, lastExchangeGems.b.y)) {
-                    console.log(lastExchangeGems, 'b');
+                    //console.log(lastExchangeGems, 'b');
                     actGem = lastExchangeGems.b;
                 }
-                console.log('is it 4 length line', lastExchangeGems, actGem);
+                //console.log('is it 4 length line', lastExchangeGems, actGem);
             }
             if (actGem) {
                 Field.setObject(actGem, Field.getCell(actGem).object.objectId, line.orientation);
@@ -649,7 +667,7 @@ ElementField = function () {
     this.destroyGem = function (p) {
         let cell, lightningId;
         cell = Field.getCell(p);
-        console.log('destroy gem', cell, p);
+        //console.log('destroy gem', cell, p);
         lightningId = cell.object.lightningId;
         Field.setObject(p, DataObjects.OBJECT_HOLE, false);
         if (lightningId) lightningDo(p, lightningId);
@@ -679,7 +697,7 @@ ElementField = function () {
             }
         };
         let stopAnim = function () {
-            console.log('stop anim', animObj.constructor.name);
+            //console.log('stop anim', animObj.constructor.name);
             clearTimeout(timerId);
 
             if (animObj.finish) animObj.finish();
@@ -687,7 +705,7 @@ ElementField = function () {
             if (!animObj.noAnimLock) {
                 AnimLocker.release();
                 if (AnimLocker.free()) {
-                    console.log('end of anim');
+                    //console.log('end of anim');
                     self.redraw();
                     self.run();
                 }
@@ -698,7 +716,7 @@ ElementField = function () {
 
         iterate();
         return function () {
-            console.log('call stop anim', timerId, animObj.constructor.name);
+            //console.log('call stop anim', timerId, animObj.constructor.name);
             stopAnim();
         };
     }
@@ -934,7 +952,7 @@ let animHint = function () {
 
     this.init = function (_a, _b) {
         this.noAnimLock = true;
-        console.log('init anim hint', _a, _b);
+        //console.log('init anim hint', _a, _b);
         domA = this.gemDoms[_a.x][_a.y];
         domB = this.gemDoms[_b.x][_b.y];
     };
@@ -948,7 +966,7 @@ let animHint = function () {
     };
 
     this.finish = function () {
-        console.log('finish hint', AnimLocker.busy());
+        //console.log('finish hint', AnimLocker.busy());
     }
 };
 

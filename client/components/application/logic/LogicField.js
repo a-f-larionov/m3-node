@@ -25,6 +25,10 @@ LogicField = function () {
         DataObjects.OBJECT_BLUE,
         DataObjects.OBJECT_YELLOW,
         DataObjects.OBJECT_PURPLE,
+
+        DataObjects.OBJECT_POLY_COLOR,
+        DataObjects.OBJECT_BARREL,
+        DataObjects.OBJECT_SPIDER
     ];
 
     this.getCell = function (p) {
@@ -88,7 +92,7 @@ LogicField = function () {
             b = {x: x + 1, y: y};
             if (self.isVisible(a) && self.isGem(a) && self.isVisible(b) && self.isGem(b)) {
                 /** 1 - Меняем a ⇔ b */
-                self.exchangeGems(a, b);
+                self.exchangeObjects(a, b);
 
                 /** 2 - Считаем линии */
                 lines = self.findLines();
@@ -96,28 +100,28 @@ LogicField = function () {
                 if (lines.length) allLines.push({a: a, b: b, lines: lines});
 
                 /** 3 - Возвращаем a ⇔ b */
-                self.exchangeGems(a, b);
+                self.exchangeObjects(a, b);
             }
 
             a = {x: x, y: y};
             b = {x: x, y: y + 1};
             if (self.isVisible(a) && self.isGem(a) && self.isVisible(b) && self.isGem(b)) {
                 /** 5 - Меняем a ⇕ b */
-                self.exchangeGems(a, b);
+                self.exchangeObjects(a, b);
 
                 /** 6 - Считаем линии */
                 lines = self.findLines();
                 if (lines.length) allLines.push({a: a, b: b, lines: lines});
 
                 /** 7 - Возвращаем a ⇕ b */
-                self.exchangeGems(a, b);
+                self.exchangeObjects(a, b);
             }
         });
 
         return allLines;
     };
 
-    this.exchangeGems = function (a, b) {
+    this.exchangeObjects = function (a, b) {
         let tmp;
         if (self.isOut(a) || self.isOut(b)) return false;
 
@@ -240,6 +244,10 @@ LogicField = function () {
         object.isGem = gems.indexOf(objectId) !== -1;
         object.isGem = gems.indexOf(objectId) !== -1;
         object.lightningId = lightningId;
+
+        object.isPolyColor = (objectId === DataObjects.OBJECT_POLY_COLOR);
+        object.isBarrel = (objectId === DataObjects.OBJECT_BARREL);
+        object.isFish = (objectId === DataObjects.OBJECT_SPIDER);
     };
 
     this.getGemId = function (p) {
@@ -259,20 +267,12 @@ LogicField = function () {
                 if (specIds.indexOf(DataObjects.WITH_LIGHTNING_VERTICAL) !== -1) lightningId = DataObjects.WITH_LIGHTNING_VERTICAL;
                 if (specIds.indexOf(DataObjects.WITH_LIGHTNING_CROSS) !== -1) lightningId = DataObjects.WITH_LIGHTNING_CROSS;
 
-                cells[x][y] = {
+                cells[x][y] = {object: {}};
+                
+                cells[x][y].isVisible = mask[x] && mask[x][y] && mask[x][y] === DataObjects.CELL_VISIBLE;
+                cells[x][y].isEmitter = specIds.indexOf(DataObjects.IS_EMITTER) !== -1;
 
-                    isVisible: mask[x] && mask[x][y] && mask[x][y] === DataObjects.CELL_VISIBLE,
-                    isEmitter: specIds.indexOf(DataObjects.IS_EMITTER) !== -1,
-
-                    object: {
-                        objectId: objects[x] && objects[x][y],
-
-                        isHole: objects[x] && objects[x][y] === DataObjects.OBJECT_HOLE,
-                        isGem: objects[x] && gems.indexOf(objects[x][y]) !== -1,
-
-                        lightningId: lightningId
-                    }
-                };
+                self.setObject({x: x, y: y}, objects[x] && objects[x][y], lightningId)
             }
         }
         console.log('set layers');
@@ -299,10 +299,10 @@ LogicField = function () {
 
     this.isLinePossiblyDestroy = function (pA, pB) {
         let lines, mayLineDestroy;
-        LogicField.exchangeGems(pA, pB);
+        LogicField.exchangeObjects(pA, pB);
         lines = LogicField.findLines();
         mayLineDestroy = LogicField.lineCrossing(lines, pA.x, pA.y) | LogicField.lineCrossing(lines, pB.x, pB.y);
-        LogicField.exchangeGems(pA, pB);
+        LogicField.exchangeObjects(pA, pB);
         return mayLineDestroy;
     };
 

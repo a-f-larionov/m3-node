@@ -64,8 +64,8 @@ DataPoints = function () {
         score3: 300,
         goals: [
             {
-                id: DataObjects.OBJECT_GREEN,
-                count: 15
+                id: DataObjects.OBJECT_BARREL,
+                count: 2
             }
         ],
         layers: {
@@ -81,7 +81,7 @@ DataPoints = function () {
             ],
             gems: [
                 "RGBYPRGB",
-                "PRGPYPRG",
+                "PRᥩᨔȫᥩRG",
                 "RYPBGBYR",
                 "GPYBPYBG",
                 "BYPGBBRB",

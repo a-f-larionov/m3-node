@@ -49,6 +49,7 @@ PageBlockField = function PageBlockField() {
         el = GUI.createElement(ElementField, {
             centerX: 388.5, centerY: 250,
             onDestroyLine: self.onDestroyLine,
+            onBarrelFloor: self.onBarrelFloor,
             beforeTurnUse: self.beforeTurnUse,
             beforeStuffUse: self.beforeStuffUse,
             onFieldSilent: self.onFieldSilent
@@ -338,21 +339,28 @@ PageBlockField = function PageBlockField() {
 
     let noMoreGoals;
 
+    this.onBarrelFloor = function () {
+        decreaseGoal(DataObjects.OBJECT_BARREL, 1);
+    };
+
     this.onDestroyLine = function (line) {
         score += line.coords.length * 10;
 
-        noMoreGoals = true;
-        for (let g in goals) {
-            if (goals[g].id === line.gemId) {
-                goals[g].count -= line.coords.length;
-                if (goals[g].count < 0) goals[g].count = 0;
-            }
-            if (goals[g].count > 0) {
-                noMoreGoals = false;
-            }
-        }
-        self.redraw();
+        decreaseGoal(line.gemId, line.coords.length);
+
         LogicWizard.onDestroyLine(line);
+    };
+
+    let decreaseGoal = function (id, qty) {
+        noMoreGoals = true;
+        goals.forEach(function (goal) {
+            if (goal.id === id) {
+                goal.count -= qty;
+            }
+            if (goal.count > 0) noMoreGoals = false;
+            if (goal.count < 0) goal.count = 0;
+        });
+        self.redraw();
     };
 
     this.onFieldSilent = function () {
