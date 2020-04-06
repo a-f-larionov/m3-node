@@ -11,6 +11,7 @@ DataPoints = function () {
     this.objectImages[DataObjects.CELL_INVISIBLE] = '/images/field-none-2.png';
     this.objectImages[DataObjects.CELL_VISIBLE] = '/images/field-cell.png';
 
+    /** Gem images */
     this.objectImages[DataObjects.OBJECT_HOLE] = '/images/field-none-2.png';
     this.objectImages[DataObjects.OBJECT_RANDOM] = '/images/field-none.png';
     this.objectImages[DataObjects.OBJECT_RED] = '/images/field-red.png';
@@ -28,9 +29,17 @@ DataPoints = function () {
     this.objectImages[DataObjects.OBJECT_CHAIN] = '/images/field-chain.png';
     this.objectImages[DataObjects.OBJECT_CHAIN_BOX] = '/images/field-chain-box.png';
 
+    /** Gem-lighting images */
     this.objectImages[DataObjects.WITH_LIGHTNING_VERTICAL] = '/images/spec-light-ver-1.png';
     this.objectImages[DataObjects.WITH_LIGHTNING_HORIZONTAL] = '/images/spec-light-hor-1.png';
     this.objectImages[DataObjects.WITH_LIGHTNING_CROSS] = '/images/spec-light-cross-1.png';
+
+    /** Spider healths */
+    this.healthImages = {};
+    this.healthImages[0] = '/images/creature-health-0.png';
+    this.healthImages[1] = '/images/creature-health-1.png';
+    this.healthImages[2] = '/images/creature-health-2.png';
+    this.healthImages[3] = '/images/creature-health-3.png';
 
     this.objectAnims = {};
 

@@ -60,6 +60,11 @@ ElementField = function () {
      */
     this.onBarrelFloor = null;
     /**
+     * Каллбек
+     * @type {function}
+     */
+    this.onSpiderKilled = null;
+    /**
      *
      * @type {function}
      */
@@ -370,7 +375,7 @@ ElementField = function () {
 
         let specIndex = 0;
         Field.eachCell(function (x, y, cell) {
-                let maskDom, gemDom, object;
+                let maskDom, gemDom, object, specDom;
                 object = cell.object;
                 maskDom = maskDoms[x][y];
                 gemDom = gemDoms[x][y];
@@ -385,31 +390,28 @@ ElementField = function () {
                 /**
                  * Draw gems
                  */
-                if (cell.isVisible &&
-                    (object.isGem || object.isFish || object.isBarrel || object.isPolyColor)
-                ) {
+                if (cell.isVisible && (object.isGem || object.isSpider || object.isBarrel || object.isPolyColor)) {
                     drawCell(gemDom, x, y, object.objectId)
                 } else {
                     gemDom.hide();
                 }
 
+                /** Spider */
+                if (cell.isVisible && object.isSpider) {
+                    specDom = specDoms[specIndex++];
+                    specDom.opacity = '';
+                    specDom.backgroundImage = DataPoints.healthImages[object.health];
+                    drawCell(specDom, x, y);
+                    gemDom.bindedDoms = specDom;
+                }
 
                 /** Layer.gems redraw */
                 if (object.isGem && cell.isVisible) {
                     if (object.lightningId) {
-                        let specDom = specDoms[specIndex];
-                        if (specDom.specId !== object.lightningId || specDom.pX !== x || specDom.pY !== y) {
-                            specDom.pX = x;
-                            specDom.pY = y;
-                            specDom.specId = object.lightningId;
-                            gemDom.bindedDoms = specDom;
-
-                            specDom.opacity = 0.5;
-                            drawCell(specDom, x, y, object.lightningId);
-                        } else {
-                            specDom.redraw();
-                        }
-                        specIndex++;
+                        specDom = specDoms[specIndex++];
+                        specDom.opacity = 0.5;
+                        drawCell(specDom, x, y, object.lightningId);
+                        gemDom.bindedDoms = specDom;
                     } else {
                         gemDom.bindedDoms = null;
                     }
@@ -421,7 +423,7 @@ ElementField = function () {
 
         /** Спрячем не используемые специальные домы */
         for (let i = specIndex; i < specDomsLimit; i++) {
-            specDoms[i].specId = null;
+            //specDoms[i].key = null;
             specDoms[i].hide();
         }
 
@@ -575,8 +577,10 @@ ElementField = function () {
             }
             if (cell.isVisible && cell.object.isBarrel && !Field.isVisible({x: x, y: y + 1})) {
                 Field.setObject({x: x, y: y}, DataObjects.OBJECT_HOLE, false);
-                animate(animHummerDestroy, {x: x, y: y});
+                cell.object.isBarrel = false;
                 self.onBarrelFloor();
+                //@todo animBarrelGoOut
+                animate(animHummerDestroy, {x: x, y: y});
             }
         });
         self.run();
@@ -670,8 +674,23 @@ ElementField = function () {
         //console.log('destroy gem', cell, p);
         lightningId = cell.object.lightningId;
         Field.setObject(p, DataObjects.OBJECT_HOLE, false);
+        /** */
+        Field.eachNears(p, function (x, y, cell) {
+            //@todo animSpiderAtacked
+            //@todo animSpiderKilled
+            if (cell.object.isSpider) {
+                cell.object.health--;
+                if (cell.object.health) {
+                    animate(animHummerDestroy, {x: x, y: y});
+                } else {
+                    Field.setObject({x: x, y: y}, DataObjects.OBJECT_HOLE);
+                    self.onSpiderKilled();
+                    animate(animHummerDestroy, {x: x, y: y});
+                }
+            }
+        });
         if (lightningId) lightningDo(p, lightningId);
-        animate(animDestroyGem);
+        animate(animHummerDestroy, p);
     };
 
     let animate = function (animClass) {

@@ -82,8 +82,7 @@ GUIDom = function () {
         /** Создадим дом */
         dom = document.createElement(tagName);
         /** Значения по умолчанию для дом-ов. */
-        dom.style.position = 'absolute';
-        dom.style.overflow = 'hidden';
+        dom.className = 'gui-dom';
         if (tagName === 'input') {
             dom.style.border = 'none';
         }
@@ -110,7 +109,7 @@ GUIDom = function () {
             return;
         }
         showed = true;
-        dom.style.display = 'block';
+        dom.style.display = '';
         self.redraw();
     };
 

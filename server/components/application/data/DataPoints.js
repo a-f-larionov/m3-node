@@ -64,8 +64,8 @@ DataPoints = function () {
         score3: 300,
         goals: [
             {
-                id: DataObjects.OBJECT_BARREL,
-                count: 2
+                id: DataObjects.OBJECT_SPIDER,
+                count: 1
             }
         ],
         layers: {

@@ -109,6 +109,10 @@ GUI = function () {
             '-o-filter: sepia(70%);' +
             'filter: sepia(70%);' +
             '}';
+        style.innerHTML += '.gui-dom { ' +
+            ' position: absolute;' +
+            ' overflow: hidden' +
+            '}';
         style.innerHTML += '* {' +
             '-webkit-touch-callout: none;' +
             '-webkit-user-select: none;' +
@@ -380,8 +384,8 @@ GUI = function () {
                 path: '/images/notFound.png',
                 w: undefined,
                 h: undefined,
-                x:0,
-                y:0
+                x: 0,
+                y: 0
             }
         }
         return window.imagesData[url];

@@ -236,18 +236,17 @@ LogicField = function () {
         }
     };
 
-    this.setObject = function (p, objectId, lightningId) {
+    this.setObject = function (p, id, lightningId) {
         let object;
         object = cells[p.x][p.y].object;
-        object.objectId = objectId;
-        object.isHole = (objectId === DataObjects.OBJECT_HOLE);
-        object.isGem = gems.indexOf(objectId) !== -1;
-        object.isGem = gems.indexOf(objectId) !== -1;
+        object.objectId = id;
+        object.isHole = (id === DataObjects.OBJECT_HOLE);
+        object.isGem = gems.indexOf(id) !== -1;
         object.lightningId = lightningId;
 
-        object.isPolyColor = (objectId === DataObjects.OBJECT_POLY_COLOR);
-        object.isBarrel = (objectId === DataObjects.OBJECT_BARREL);
-        object.isFish = (objectId === DataObjects.OBJECT_SPIDER);
+        object.isPolyColor = (id === DataObjects.OBJECT_POLY_COLOR);
+        object.isBarrel = (id === DataObjects.OBJECT_BARREL);
+        object.isSpider = (id === DataObjects.OBJECT_SPIDER);
     };
 
     this.getGemId = function (p) {
@@ -255,7 +254,7 @@ LogicField = function () {
     };
 
     this.setLayers = function (mask, objects, specials) {
-        let specIds, lightningId;
+        let specIds, lightningId, objectId;
         cells = [];
         for (let x = 0; x < DataPoints.FIELD_MAX_WIDTH; x++) {
             cells[x] = [];
@@ -267,25 +266,36 @@ LogicField = function () {
                 if (specIds.indexOf(DataObjects.WITH_LIGHTNING_VERTICAL) !== -1) lightningId = DataObjects.WITH_LIGHTNING_VERTICAL;
                 if (specIds.indexOf(DataObjects.WITH_LIGHTNING_CROSS) !== -1) lightningId = DataObjects.WITH_LIGHTNING_CROSS;
 
-                cells[x][y] = {object: {}};
-                
+                objectId = objects[x] && objects[x][y];
+
+                let object;
+                object = {};
+                cells[x][y] = {object: object};
                 cells[x][y].isVisible = mask[x] && mask[x][y] && mask[x][y] === DataObjects.CELL_VISIBLE;
                 cells[x][y].isEmitter = specIds.indexOf(DataObjects.IS_EMITTER) !== -1;
 
-                self.setObject({x: x, y: y}, objects[x] && objects[x][y], lightningId)
+                if (objectId === DataObjects.OBJECT_SPIDER) object.health = 3;
+
+                self.setObject({x: x, y: y}, objectId, lightningId)
             }
         }
         console.log('set layers');
         console.log(cells);
-        let str = '';
-        cells.forEach(function (row) {
-            //   str += "\r\n";
-            row.forEach(function (cell) {
-                //str += cell.isVisible ? 'Y' : ' ';
-                //str += cell.gemId;
-            });
+    };
+
+    this.eachNears = function (p, callback) {
+        let points = [];
+        let toSearch = [
+            {x: p.x + 1, y: p.y},
+            {x: p.x - 1, y: p.y},
+            {x: p.x, y: p.y + 1},
+            {x: p.x, y: p.y - 1},
+        ];
+        toSearch.forEach(function (p) {
+            if (!self.isOut(p) && self.isVisible(p)) {
+                callback(p.x, p.y, self.getCell(p));
+            }
         });
-        console.log(str);
     };
 
     this.getSpecIds = function (p, specials) {
