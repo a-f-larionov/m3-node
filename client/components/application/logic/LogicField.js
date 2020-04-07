@@ -57,7 +57,7 @@ LogicField = function () {
 
     this.mayFall = function (x, y) {
         if (self.isOut({x: x, y: y})) return false;
-        if (LogicField.getCell({x: x, y: y}).object.withBox) return false;
+        if (!LogicField.getCell({x: x, y: y}).object.isCanMoved) return false;
 
         return LogicField.isFallObject({x: x, y: y}) &&
             getHole({x: x, y: y})
@@ -67,7 +67,7 @@ LogicField = function () {
         for (let y = 0, cell; y < DataPoints.FIELD_MAX_HEIGHT; y++) {
             p.y++;
             cell = self.getCell(p);
-            if (cell && cell.object.isHole && !cell.object.withBox) {
+            if (cell && cell.object.isHole && !cell.object.isCanMoved) {
                 return p;
             }
         }
@@ -92,7 +92,7 @@ LogicField = function () {
             if (cellA && cellB) {
                 objectA = cellA.object;
                 objectB = cellB.object;
-                if (cellA.isVisible && objectA.isNoBoxGem && cellB.isVisible && objectB.isNoBoxGem) {
+                if (cellA.isVisible && objectA.isCanMoved && cellB.isVisible && objectB.isCanMoved) {
                     /** 1 - Меняем a ⇔ b */
                     self.exchangeObjects(a, b);
                     /** 2 - Считаем линии */
@@ -166,7 +166,7 @@ LogicField = function () {
         let gemId, line, cell;
         cell = self.getCell({x: x, y: y});
         gemId = cell.object.objectId;
-        if (!cell.isVisible || !cell.object.isNoBoxGem) return false;
+        if (!cell.isVisible || !cell.object.isCanMoved) return false;
 
         line = {
             orientation: orientation,
@@ -176,7 +176,7 @@ LogicField = function () {
         let checkCell = function (p) {
             cell = self.getCell(p);
             if (cell && cell.isVisible &&
-                cell.object.isNoBoxGem &&
+                cell.object.isCanMoved &&
                 cell.object.objectId === gemId)
                 return line.coords.push(p);
             return false;
@@ -226,13 +226,18 @@ LogicField = function () {
         object.objectId = id;
         object.isHole = (id === DataObjects.OBJECT_HOLE);
         object.isGem = gems.indexOf(id) !== -1;
-        //object.isVisibleGem = object.isGem && cells[p.x][p.y].isVisible;
-        object.isNoBoxGem = object.isGem && !object.withBox;
         object.lightningId = lightningId;
 
         object.isPolyColor = (id === DataObjects.OBJECT_POLY_COLOR);
         object.isBarrel = (id === DataObjects.OBJECT_BARREL);
         object.isSpider = (id === DataObjects.OBJECT_SPIDER);
+
+        self.updateIsCanMoved(object);
+    };
+
+    this.updateIsCanMoved = function (object) {
+        //object.isCanMoved = (object.isGem || object.isBarrel || object.isPolyColor) && !object.withBox && !object.withChain;
+        object.isCanMoved = (object.isGem || object.isBarrel || object.isPolyColor) && !object.withBox && !object.withChain;
     };
 
     this.getGemId = function (p) {
@@ -263,6 +268,7 @@ LogicField = function () {
                 if (objectId === DataObjects.OBJECT_SPIDER) object.health = 3;
 
                 object.withBox = specIds.indexOf(DataObjects.OBJECT_BOX) !== -1;
+                object.withChain = specIds.indexOf(DataObjects.OBJECT_CHAIN) !== -1;
 
                 self.setObject({x: x, y: y}, objectId, lightningId)
             }
@@ -280,7 +286,7 @@ LogicField = function () {
         ];
         toSearch.forEach(function (p) {
             if (!self.isOut(p) && self.isVisible(p)) {
-                callback(p.x, p.y, self.getCell(p));
+                callback(p, self.getCell(p));
             }
         });
     };
@@ -305,21 +311,20 @@ LogicField = function () {
 
     /**
      * @param p
-     * @param specId
-     * @param onDestroyGem
+     * @param oreintation
+     * @param callback
      */
-    this.destroyVisibleLine = function (p, specId, onDestroyGem) {
-        let checkGem = function (p) {
-            let cell;
+    this.eachVisibleLine = function (p, oreintation, callback) {
+        let isVisbleCall = function (p, cell) {
             cell = self.getCell(p);
-            if (cell.isVisible && !cell.withBox) onDestroyGem(p);
+            if (cell.isVisible) callback(p, cell);
         };
-        switch (specId) {
+        switch (oreintation) {
             case DataObjects.WITH_LIGHTNING_HORIZONTAL:
-                for (let x = 0; x < DataPoints.FIELD_MAX_WIDTH; x++) checkGem({x: x, y: p.y});
+                for (let x = 0; x < DataPoints.FIELD_MAX_WIDTH; x++) isVisbleCall({x: x, y: p.y});
                 break;
             case DataObjects.WITH_LIGHTNING_VERTICAL:
-                for (let y = 0; y < DataPoints.FIELD_MAX_HEIGHT; y++) checkGem({x: p.x, y: y});
+                for (let y = 0; y < DataPoints.FIELD_MAX_HEIGHT; y++) isVisbleCall({x: p.x, y: y});
                 break;
             default:
                 Logs.log("Error :" + arguments.callee.name, Logs.LEVEL_ERROR);

@@ -101,8 +101,6 @@ CAPIMap = function () {
             '$' : DataObjects.OBJECT_TRESURE,
             '■' : DataObjects.OBJECT_BOX,
             'Z' : DataObjects.OBJECT_CHAIN,
-            'Ż' : DataObjects.OBJECT_CHAIN_BOX,
-
 
             '⭤': DataObjects.WITH_LIGHTNING_HORIZONTAL,
             '⭥': DataObjects.WITH_LIGHTNING_VERTICAL,

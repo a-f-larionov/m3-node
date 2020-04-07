@@ -89,11 +89,6 @@ DataObjects = function () {
      */
     this.OBJECT_CHAIN = 200;
     /**
-     * Цепь на ящик
-     * @type {number}
-     */
-    this.OBJECT_CHAIN_BOX = 210;
-    /**
      * Эмитер камней
      * @type {number}
      */

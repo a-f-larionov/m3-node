@@ -27,7 +27,6 @@ DataPoints = function () {
     this.objectImages[DataObjects.OBJECT_OCTOPUS] = '/images/field-octopus.png';
     this.objectImages[DataObjects.OBJECT_SPIDER] = '/images/field-fish.png';
     this.objectImages[DataObjects.OBJECT_CHAIN] = '/images/field-chain.png';
-    this.objectImages[DataObjects.OBJECT_CHAIN_BOX] = '/images/field-chain-box.png';
     this.objectImages[DataObjects.OBJECT_BOX] = '/images/field-box.png';
 
     /** Gem-lighting images */
