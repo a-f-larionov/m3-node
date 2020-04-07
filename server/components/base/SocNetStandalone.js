@@ -16,10 +16,10 @@ SocNetStandalone = function () {
      * @param callback {Function} is it array of friend ids
      */
     this.getFriends = function (socNetUserId, callback) {
-        friends = [];
+        let friends = [];
         callback(friends);
     };
-    
+
     /**
      * Получит
      * @param socNetTypeId
@@ -27,10 +27,12 @@ SocNetStandalone = function () {
      * @param callback
      */
     this.getUserInfo = function (socNetUserId, callback) {
-        info = {};
-        info.firstName = 'firstName';
-        info.lastName = 'lastName';
-        info.photo50 = '';
+        let info = {};
+        info.id = id;
+        info.first_name = 'firstName';
+        info.last_name = 'lastName';
+        info.photo_50 = '/images/not-found.png';
+        info.photo_100 = '/images/not-found.png';
         info.sex = SocNet.SEX_UNKNOWN;
         callback(info);
     };
@@ -48,4 +50,5 @@ SocNetStandalone = function () {
 
 };
 
+/** @type {SocNetStandalone} */
 SocNetStandalone = new SocNetStandalone;

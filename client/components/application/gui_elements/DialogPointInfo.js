@@ -30,10 +30,7 @@ DialogPointInfo = function () {
         GUI.pushParent(self.dom);
 
         /** Номер точки\заголовок */
-        elTitle = GUI.createElement(ElementText, {
-            x: 135, y: 12, width: 230, height: 40,
-            text: ''
-        });
+        elTitle = GUI.createElement(ElementText, {x: 135, y: 12, width: 230, height: 40, text: ''});
         elTitle.show();
 
         /** Кол-во звёзд */
@@ -45,22 +42,16 @@ DialogPointInfo = function () {
             x: 200, y: 40, src: '/images/star-off-big.png'
         });
         elStarTwo.show();
-        elStarThree = GUI.createElement(ElementImage, {
-            x: 300, y: 40, src: '/images/star-off-big.png'
-        });
+        elStarThree = GUI.createElement(ElementImage, {x: 300, y: 40, src: '/images/star-off-big.png'});
         elStarThree.show();
 
-        for (let i = 0; i < 3; i++) {
+        [0, 1, 2].forEach(function (i) {
             friendsPanel[i] = {
-                elPhotoScore: GUI.createElement(ElementUserScorePhoto, {
-                    x: 75 + 75 * i + 15, y: 155
-                }),
+                elPhotoScore: GUI.createElement(ElementUserScorePhoto, {x: 75 + 75 * i + 15, y: 155})
             }
-        }
-
-        elUserPhotoScore = GUI.createElement(ElementUserScorePhoto, {
-            x: 75 + 75 * 3 + 55, y: 155
         });
+
+        elUserPhotoScore = GUI.createElement(ElementUserScorePhoto, {x: 75 + 75 * 3 + 55, y: 155});
         elUserPhotoScore.show();
 
         /** Кнопка играть */
@@ -112,12 +103,11 @@ DialogPointInfo = function () {
     };
 
     this.redraw = function () {
-        let user, point, friend, score;
+        let point, friend, score;
         this.__proto__.redraw.call(this);
 
         if (!this.dialogShowed) return;
 
-        user = LogicUser.getCurrentUser();
         point = DataPoints.getById(pointId);
         elTitle.text = 'УРОВЕНЬ  ' + pointId;
 
@@ -156,12 +146,6 @@ DialogPointInfo = function () {
         elStarTwo.redraw();
         elStarThree.redraw();
         elUserPhotoScore.redraw();
-
-        //if (user.health === 0) {
-        //  elButtonPlay.hide();
-        //} else {
-        //elButtonPlay.show();
-        //}
     };
 
     this.showDialog = function (pId) {

@@ -53,9 +53,10 @@ PageBlockMaps = function PageBlockMaps() {
     this.init = function () {
         let el;
 
+        //@todo preloader
         elPreloader = GUI.createElement(ElementImage, {
             x: 0, y: 0, width: 777, height: 500,
-            src: '/images/map-preloader.png'
+            src: '/images/not-found.png'
         });
 
         elOldPaper = GUI.createElement(ElementImage, {
@@ -72,7 +73,7 @@ PageBlockMaps = function PageBlockMaps() {
 
         elMap = GUI.createElement(ElementImage, {
             x: 0, y: 0, width: 777, height: 500,
-            src: '/images/ratingInfo.png'
+            src: '/images/map-001.png'
         });
         self.elements.push(elMap);
 
@@ -177,8 +178,9 @@ PageBlockMaps = function PageBlockMaps() {
         });
         self.elements.push(el);
 
+        //@todo preloader
         domLoader = GUI.createDom(undefined, {
-            x: 0, y: 0, backgroundImage: '/images/map-preloader.png'
+            x: 0, y: 0, backgroundImage: '/images/not-found.png'
         });
     };
 

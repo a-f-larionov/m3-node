@@ -67,13 +67,13 @@ WebSocketClient = function () {
     };
 
     let checkBeforeInit = function () {
-        if (typeof  self.onConnect != 'function') {
+        if (typeof self.onConnect != 'function') {
             Logs.log("onConnect must be function", Logs.LEVEL_FATAL_ERROR, self.onConnect);
         }
-        if (typeof  self.onDisconnect != 'function') {
+        if (typeof self.onDisconnect != 'function') {
             Logs.log("onConnect must be function", Logs.LEVEL_FATAL_ERROR, self.onDisconnect);
         }
-        if (typeof  self.onData != 'function') {
+        if (typeof self.onData != 'function') {
             Logs.log("onConnect must be function", Logs.LEVEL_FATAL_ERROR, self.onData);
         }
     };
@@ -116,10 +116,10 @@ WebSocketClient = function () {
     let connect = function () {
         let uri;
         raiseConnectCount++;
-        uri = protocol + "://" + host + ":" + port + url ;
-        Logs.log("WebSocket URL=`" + uri + "`" + "raiseConnectCount:" + raiseConnectCount, Logs.LEVEL_NOTIFY);
+        uri = protocol + "://" + host + ":" + port + url;
+        Logs.log("WebSocket, raiseConnectCount:" + raiseConnectCount, Logs.LEVEL_NOTIFY, {uri: uri});
         socket = new WebSocket(uri);
-        /* установим обработчики. */
+        /** Установим обработчики. */
         socket.onopen = onOpen;
         socket.onclose = onClose;
         socket.onmessage = onMessage;

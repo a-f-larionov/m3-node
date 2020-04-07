@@ -32,6 +32,7 @@ LogicField = function () {
     ];
 
     this.getCell = function (p) {
+        if (self.isOut(p)) return false;
         return cells[p.x][p.y];
     };
 
@@ -86,11 +87,14 @@ LogicField = function () {
          * 7 - Возвращаем a⇕b
          */
         let a, b;
-        this.eachCell(function (x, y, cell) {
-
+        this.eachCell(function (x, y, cellA, objectA) {
+            let cellB, objectB;
             a = {x: x, y: y};
             b = {x: x + 1, y: y};
-            if (self.isVisible(a) && self.isGem(a) && self.isVisible(b) && self.isGem(b)) {
+            if (self.isOut(b)) return;
+            cellB = self.getCell(b);
+            objectB = cellB.object;
+            if (cellA.isVisible && objectA.isGem && cellB.isVisible && objectB.isGem) {
                 /** 1 - Меняем a ⇔ b */
                 self.exchangeObjects(a, b);
 
@@ -105,7 +109,9 @@ LogicField = function () {
 
             a = {x: x, y: y};
             b = {x: x, y: y + 1};
-            if (self.isVisible(a) && self.isGem(a) && self.isVisible(b) && self.isGem(b)) {
+            if (self.isOut(b)) return;
+            cellB = self.getCell(b);
+            if (cellA.isVisible && objectA.isGem && cellB.isVisible && objectB.isGem) {
                 /** 5 - Меняем a ⇕ b */
                 self.exchangeObjects(a, b);
 
@@ -231,7 +237,7 @@ LogicField = function () {
     this.eachCell = function (callback) {
         for (let y = 0; y < DataPoints.FIELD_MAX_HEIGHT; y++) {
             for (let x = 0; x < DataPoints.FIELD_MAX_WIDTH; x++) {
-                callback(x, y, cells && cells[x][y]);
+                callback(x, y, cells && cells[x][y], cells && cells[x][y].object);
             }
         }
     };
@@ -242,6 +248,7 @@ LogicField = function () {
         object.objectId = id;
         object.isHole = (id === DataObjects.OBJECT_HOLE);
         object.isGem = gems.indexOf(id) !== -1;
+        object.isVisibleGem = object.isGem && cells[p.x][p.y].isVisible;
         object.lightningId = lightningId;
 
         object.isPolyColor = (id === DataObjects.OBJECT_POLY_COLOR);
@@ -284,7 +291,6 @@ LogicField = function () {
     };
 
     this.eachNears = function (p, callback) {
-        let points = [];
         let toSearch = [
             {x: p.x + 1, y: p.y},
             {x: p.x - 1, y: p.y},

@@ -256,7 +256,10 @@ PageBlockField = function PageBlockField() {
             self.elements[i].show();
         }
         self.firstShow();
-        if (LogicUser.getCurrentUser().id === 1) {
+        if (false
+            || LogicUser.getCurrentUser().id === 1
+            || LogicUser.getCurrentUser().socNetUserId ===1
+        ) {
             buttonReloadField.show();
             buttonChangeSpeed.show();
         }

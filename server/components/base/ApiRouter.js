@@ -87,7 +87,11 @@ ApiRouter = new (function () {
         connectionsKey = '';
         if (id) connectionsKey = id;
 
-        Logs.log(id + " " + ">> " + group + "." + method + ':' + JSON.stringify(args), Logs.LEVEL_DETAIL);
+        if (CONST_IS_SERVER_SIDE) {
+            Logs.log(id + " " + ">> " + group + "." + method, Logs.LEVEL_DETAIL, args);
+        } else {
+            Logs.log(group + "." + method, Logs.LEVEL_DETAIL, args);
+        }
 
         /* group_method.counter ++ */
         map[group][method].apply(self, args);
@@ -120,7 +124,11 @@ ApiRouter = new (function () {
         for (i in cntxList) {
             connectionsKey += cntxList[i].connectionId;
         }
-        Logs.log(connectionsKey + " " + "<< " + group + "." + method + ':' + args.join(','), Logs.LEVEL_DETAIL);
+        if (CONST_IS_SERVER_SIDE) {
+            Logs.log(group + "." + method + ':' + args.join(','), Logs.LEVEL_DETAIL);
+        } else {
+            Logs.log(connectionsKey + " " + "<< " + group + "." + method + ':' + args.join(','), Logs.LEVEL_DETAIL);
+        }
 
         let packet = {
             group: group,

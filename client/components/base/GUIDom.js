@@ -283,8 +283,8 @@ GUIDom = function () {
         dom.style.height = self.height + 'px';
     };
     let redrawBackgroundImage = function () {
-        let url;
-        url = GUI.getImagePath(self.backgroundImage);
+        let path;
+        path = GUI.getImagePath(self.backgroundImage);
         /** Если размер не задан, пробуем задать его автоматически. */
         if (!self.width && !self.height && GUI.getImagePath(self.backgroundImage)) {
             self.width = GUI.getImageWidth(self.backgroundImage);
@@ -293,7 +293,7 @@ GUIDom = function () {
             props.width.call();
         }
 
-        dom.style.backgroundImage = 'url(' + url + ')';
+        dom.style.backgroundImage = 'url(' + path + ')';
         self.backgroundPositionY = self.backgroundPositionY ? self.backgroundPositionY : 0;
         dom.style.backgroundPositionX = '-' + GUI.getImageX(self.backgroundImage) + 'px';
         dom.style.backgroundPositionY = '-' + (GUI.getImageY(self.backgroundImage) + self.backgroundPositionY) + 'px';

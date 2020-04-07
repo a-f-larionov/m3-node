@@ -37,11 +37,19 @@ SocNetStandalone = function () {
     };
 
     this.getFriendIds = function (callback) {
-        //callback();
+        let friends = [];
+        callback(friends);
     };
 
-    this.getUserInfo = function (callback) {
-        //callback();
+    this.getUserInfo = function (id, callback) {
+        let info = {};
+        info.id = id;
+        info.first_name = 'firstName';
+        info.last_name = 'lastName';
+        info.photo_50 = '/images/not-found.png';
+        info.photo_100 = '/images/not-found.png';
+        info.sex = SocNet.SEX_UNKNOWN;
+        callback([info]);
     };
 
     /**
@@ -49,7 +57,7 @@ SocNetStandalone = function () {
      * @returns {boolean}
      */
     this.detectIsItThat = function () {
-        if (window.PLATFORM_ID == 'STANDALONE') return true;
+        if (window.PLATFORM_ID === 'STANDALONE') return true;
         return false;
     };
 };

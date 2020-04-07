@@ -37,6 +37,7 @@ Logs = function () {
      * @param message {string} сообщение.
      * @param level {int} тип Logs.LEVEL_*.
      * @param [details] {*} необязательный параметр, детали.
+     * @param channel
      */
     this.log = function (message, level, details, channel) {
         let date, dateFormated, logText, levelTitle;
@@ -56,26 +57,36 @@ Logs = function () {
         hour = str_pad(date.getHours());
         minutes = str_pad(date.getMinutes());
         seconds = str_pad(date.getSeconds());
-        dateFormated = day + '-' + month + '-' + year + ' ' + hour + ':' + minutes + ':' + seconds;
-        // превратим в строку переданные детали лога.
-        details = JSON.stringify(details);
+        if (CONST_IS_CLIENT_SIDE) {
+            dateFormated = minutes + ':' + seconds;
+        } else {
+            dateFormated = day + '-' + month + '-' + year + ' ' + hour + ':' + minutes + ':' + seconds;
+        }
         // превратим уровень лога из константы в человеко-читаемый текст.
         levelTitle = typeTitles[level];
         // соединим время, текст уровня лога и сообщение лога в одну строку
         logText = dateFormated + ' [' + levelTitle + '] ' + message;
+        if (!details) details = '';
         // добавим к тексту лога детали, если они были переданы
-        if (details) logText += ' ' + details;
+        if (CONST_IS_SERVER_SIDE && channel) {
+            // превратим в строку переданные детали лога.
+            details = JSON.stringify(details);
+            if (details) logText += ' ' + details;
+        }
         // выведем на экран
         cache.push(logText);
         cache.shift();
         switch (channel) {
             default:
                 switch (level) {
+                    case Logs.LEVEL_ERROR:
+                        console.error(" > " + logText, details);
+                        break;
                     case Logs.LEVEL_WARNING:
-                        console.warn(" > " + logText);
+                        console.warn(" > " + logText, details);
                         break;
                     default:
-                        console.log(" > " + logText);
+                        console.log(" > " + logText, details);
                         break;
                 }
                 break;
@@ -93,8 +104,9 @@ Logs = function () {
                 break;
         }
         if (level === Logs.LEVEL_ERROR || level === Logs.LEVEL_FATAL_ERROR) {
-            if (typeof CONST_IS_SERVER_SIDE === 'undefined') {
-                SAPILogs.log(message, level, details);
+            if (typeof CONST_IS_CLIENT_SIDE) {
+                //@todo client errors channel
+                // SAPILogs.log(message, level, details);
             }
         }
         // если это фатальная ошибка - завершим работу программы.
@@ -151,11 +163,11 @@ Logs = function () {
 
     let typeTitles = {};
     /** Человеко-читаемые типы логов. */
-    typeTitles[this.LEVEL_DETAIL] = 'detail';
-    typeTitles[this.LEVEL_NOTIFY] = 'NOTIFY';
-    typeTitles[this.LEVEL_WARNING] = 'WARNING';
-    typeTitles[this.LEVEL_ERROR] = 'ERROR';
-    typeTitles[this.LEVEL_FATAL_ERROR] = 'FATAL ERROR';
+    typeTitles[this.LEVEL_DETAIL] = 'd';
+    typeTitles[this.LEVEL_NOTIFY] = 'N';
+    typeTitles[this.LEVEL_WARNING] = 'w';
+    typeTitles[this.LEVEL_ERROR] = 'E';
+    typeTitles[this.LEVEL_FATAL_ERROR] = 'FE';
 };
 /**
  * Статичный класс.

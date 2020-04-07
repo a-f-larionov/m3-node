@@ -374,9 +374,8 @@ ElementField = function () {
         container.redraw();
 
         let specIndex = 0;
-        Field.eachCell(function (x, y, cell) {
-                let maskDom, gemDom, object, specDom;
-                object = cell.object;
+        Field.eachCell(function (x, y, cell, object) {
+                let maskDom, gemDom, specDom;
                 maskDom = maskDoms[x][y];
                 gemDom = gemDoms[x][y];
 
@@ -403,9 +402,11 @@ ElementField = function () {
                     specDom.backgroundImage = DataPoints.healthImages[object.health];
                     drawCell(specDom, x, y);
                     gemDom.bindedDoms = specDom;
+                }else{
+                    gemDom.bindedDoms = null;
                 }
 
-                /** Layer.gems redraw */
+                /** Gems */
                 if (object.isGem && cell.isVisible) {
                     if (object.lightningId) {
                         specDom = specDoms[specIndex++];
@@ -420,6 +421,7 @@ ElementField = function () {
 
             }
         );
+        console.log(specDoms);
 
         /** Спрячем не используемые специальные домы */
         for (let i = specIndex; i < specDomsLimit; i++) {

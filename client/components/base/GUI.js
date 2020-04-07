@@ -148,11 +148,11 @@ GUI = function () {
             vkWidgets = document.getElementById('vk_comments');
 
             if ((before && !GUI.isFullScreen()) || (!before && GUI.isFullScreen())) {
-                vkWidgets.style.display = 'none';
+                if (vkWidgets) vkWidgets.style.display = 'none';
                 appArea.style.left = (screen.availWidth / 2 - parseInt(appArea.style.width) / 2) + 'px';
                 appArea.style.top = (screen.availHeight / 2 - parseInt(appArea.style.height) / 2) + 'px'
             } else {
-                vkWidgets.style.display = '';
+                if (vkWidgets) vkWidgets.style.display = '';
                 appArea.style.left = '';
                 appArea.style.top = '';
             }
@@ -362,6 +362,14 @@ GUI = function () {
         return this.getImageMetaData(url).y;
     };
 
+    let notFoundImg = {
+        path: '',
+        w: undefined,
+        h: undefined,
+        x: 0,
+        y: 0
+    };
+
     /**
      * Return image meta data
      * @param url
@@ -369,24 +377,18 @@ GUI = function () {
      */
     this.getImageMetaData = function (url) {
         /** Абсолютный url, используем без изменений, т.к. это внешний url */
+        if (!url) {
+            Logs.log("Url not found:" + url, Logs.LEVEL_ERROR);
+            throw Error("Url not found:" + url, Logs.LEVEL_ERROR);
+        }
         if (url.indexOf('https://') === 0 || url.indexOf('http://') === 0) {
-            return {
-                path: url,
-                w: undefined,
-                h: undefined,
-                x: 0,
-                y: 0
-            }
+            notFoundImg.path = url;
+            return notFoundImg;
         }
         if (!window.imagesData[url]) {
             Logs.log("Image url not found for: " + url, Logs.LEVEL_ERROR);
-            return {
-                path: '/images/notFound.png',
-                w: undefined,
-                h: undefined,
-                x: 0,
-                y: 0
-            }
+            notFoundImg.path = url;
+            return notFoundImg;
         }
         return window.imagesData[url];
     };
