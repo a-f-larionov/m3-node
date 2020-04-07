@@ -65,7 +65,7 @@ DataPoints = function () {
         goals: [
             {
                 id: DataObjects.OBJECT_SPIDER,
-                count: 1
+                count: 10
             }
         ],
         layers: {
@@ -84,21 +84,21 @@ DataPoints = function () {
                 "PRᥩᨔRᥩRG",
                 "RYPBGBYR",
                 "GPYBPYBG",
-                "BYPGȫBRB",
+                "BYPGȫȫRB",
                 "PPYBPYBP",
                 "PRGPGYGB",
                 "RGBYPRGB",
             ],
             special: [[
-                "********",
-                "        ",
-                "     +  ",
-                "  ⭥ ⭤   ",
-                "  ⭤  ⭤  ",
-                "    ⭤   ",
-                ///"        ",
-               // "        ",
-                //⭥⭥⭥⭥+⭥
+                "******",
+                "■       ",
+                "■       ",
+                "■       ",
+                "■   ■■■ ",
+                "■■■■■■■■",
+                "■       ",
+                "■       ",
+                "■       ",
             ], [
                 "        ",
                 "        ",

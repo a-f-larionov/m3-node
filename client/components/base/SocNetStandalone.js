@@ -54,8 +54,6 @@ SocNetStandalone = function () {
 
     this.openOrderDialog = function (votes) {
         let product = DataShop.getGoldProductByPrice(votes);
-        console.log(DataShop.getGoldProductByPrice(votes));
-        console.log(DataShop.getGoldProductByPrice(votes).quantity);
         let qty = confirm("Купить " + product.quantity + "монет за " + votes + " стенделонов?");
         if (qty) {
             //@todo callback here!

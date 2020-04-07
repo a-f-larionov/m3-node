@@ -41,10 +41,6 @@ LogicField = function () {
         return cells[p.x][p.y].object.isGem;
     };
 
-    this.isVisibleGem = function (p) {
-        return self.isGem(p) && self.isVisible(p);
-    };
-
     this.isNotGem = function (p) {
         return !self.isGem(p);
     };
@@ -61,8 +57,21 @@ LogicField = function () {
 
     this.mayFall = function (x, y) {
         if (self.isOut({x: x, y: y})) return false;
-        if (self.isOut({x: x, y: y + 1})) return false;
-        return LogicField.isFallObject({x: x, y: y}) && LogicField.isHole({x: x, y: y + 1});
+        if (LogicField.getCell({x: x, y: y}).object.withBox) return false;
+
+        return LogicField.isFallObject({x: x, y: y}) &&
+            getHole({x: x, y: y})
+    };
+
+    let getHole = function (p) {
+        for (let y = 0, cell; y < DataPoints.FIELD_MAX_HEIGHT; y++) {
+            p.y++;
+            cell = self.getCell(p);
+            if (cell && cell.object.isHole && !cell.object.withBox) {
+                return p;
+            }
+        }
+        return false;
     };
 
     this.getRandomGemId = function () {
@@ -75,53 +84,28 @@ LogicField = function () {
     };
 
     this.countTurns = function () {
-        let allLines = [], lines;
+        let allLines = [], lines, objectA, objectB, cellA, cellB;
 
-        /**
-         * 1 - Меняем a ⇔ b
-         * 2 - Считаем линии
-         * 3 - Возвращаем a <> b
-         * 4 - Считаем линии
-         * 5 - Меняем a⇕b
-         * 6 - Считаем линии
-         * 7 - Возвращаем a⇕b
-         */
-        let a, b;
-        this.eachCell(function (x, y, cellA, objectA) {
-            let cellB, objectB;
-            a = {x: x, y: y};
-            b = {x: x + 1, y: y};
-            if (self.isOut(b)) return;
+        let checkGems = function (a, b) {
+            cellA = self.getCell(a);
             cellB = self.getCell(b);
-            objectB = cellB.object;
-            if (cellA.isVisible && objectA.isGem && cellB.isVisible && objectB.isGem) {
-                /** 1 - Меняем a ⇔ b */
-                self.exchangeObjects(a, b);
-
-                /** 2 - Считаем линии */
-                lines = self.findLines();
-
-                if (lines.length) allLines.push({a: a, b: b, lines: lines});
-
-                /** 3 - Возвращаем a ⇔ b */
-                self.exchangeObjects(a, b);
+            if (cellA && cellB) {
+                objectA = cellA.object;
+                objectB = cellB.object;
+                if (cellA.isVisible && objectA.isNoBoxGem && cellB.isVisible && objectB.isNoBoxGem) {
+                    /** 1 - Меняем a ⇔ b */
+                    self.exchangeObjects(a, b);
+                    /** 2 - Считаем линии */
+                    lines = self.findLines();
+                    if (lines.length) allLines.push({a: a, b: b, lines: lines});
+                    /** 3 - Возвращаем a ⇔ b */
+                    self.exchangeObjects(a, b);
+                }
             }
-
-            a = {x: x, y: y};
-            b = {x: x, y: y + 1};
-            if (self.isOut(b)) return;
-            cellB = self.getCell(b);
-            if (cellA.isVisible && objectA.isGem && cellB.isVisible && objectB.isGem) {
-                /** 5 - Меняем a ⇕ b */
-                self.exchangeObjects(a, b);
-
-                /** 6 - Считаем линии */
-                lines = self.findLines();
-                if (lines.length) allLines.push({a: a, b: b, lines: lines});
-
-                /** 7 - Возвращаем a ⇕ b */
-                self.exchangeObjects(a, b);
-            }
+        };
+        this.eachCell(function (x, y) {
+            checkGems({x: x, y: y}, {x: x + 1, y: y});
+            checkGems({x: x, y: y}, {x: x, y: y + 1});
         });
 
         return allLines;
@@ -167,52 +151,43 @@ LogicField = function () {
         for (let y = 0; y < DataPoints.FIELD_MAX_HEIGHT; y++) {
             for (let x = 0; x < DataPoints.FIELD_MAX_WIDTH; x++) {
                 if (this.lineCrossing(lines, x, y)) continue;
+
                 line = this.findLine(x, y, DataObjects.WITH_LIGHTNING_VERTICAL);
-                if (line) {
-                    lines.push(line);
-                }
+                if (line) lines.push(line);
+
                 line = this.findLine(x, y, DataObjects.WITH_LIGHTNING_HORIZONTAL);
-                if (line) {
-                    lines.push(line);
-                }
+                if (line) lines.push(line);
             }
         }
         return lines;
     };
 
     this.findLine = function (x, y, orientation) {
-        let gemId, line;
-        gemId = self.getCell({x: x, y: y}).object.objectId;
-        /** Может ли такой объект вообще падать */
-        if (LogicField.isNotGem({x: x, y: y})) return false;
+        let gemId, line, cell;
+        cell = self.getCell({x: x, y: y});
+        gemId = cell.object.objectId;
+        if (!cell.isVisible || !cell.object.isNoBoxGem) return false;
+
         line = {
             orientation: orientation,
             coords: [],
             gemId: gemId
         };
+        let checkCell = function (p) {
+            cell = self.getCell(p);
+            if (cell && cell.isVisible &&
+                cell.object.isNoBoxGem &&
+                cell.object.objectId === gemId)
+                return line.coords.push(p);
+            return false;
+        };
         if (orientation === DataObjects.WITH_LIGHTNING_HORIZONTAL) {
             for (let offset = 0; offset < 5; offset++) {
-                if (x + offset >= DataPoints.FIELD_MAX_WIDTH) continue;
-                if (y >= DataPoints.FIELD_MAX_HEIGHT) continue;
-                if (
-                    self.isVisible({x: x + offset, y: y}) &&
-                    self.getGemId({x: x + offset, y: y}) === gemId
-                ) {
-                    line.coords.push({x: x + offset, y: y});
-                } else {
-                    break;
-                }
+                if (!checkCell({x: x + offset, y: y})) break;
             }
         } else {
             for (let offset = 0; offset < 5; offset++) {
-                if (x + offset >= DataPoints.FIELD_MAX_WIDTH) continue;
-                if (y >= DataPoints.FIELD_MAX_HEIGHT) continue;
-                if (self.isVisible({x: x, y: y + offset}) &&
-                    self.getGemId({x: x, y: y + offset}) === gemId) {
-                    line.coords.push({x: x, y: y + offset});
-                } else {
-                    break;
-                }
+                if (!checkCell({x: x, y: y + offset})) break;
             }
         }
         if (line.coords.length >= 3)
@@ -221,7 +196,7 @@ LogicField = function () {
             return false;
     };
 
-    //@todo refactring
+//@todo refactring
     this.lineCrossing = function (lines, x, y) {
         for (let i in lines) {
             for (let n in lines[i].coords) {
@@ -237,7 +212,10 @@ LogicField = function () {
     this.eachCell = function (callback) {
         for (let y = 0; y < DataPoints.FIELD_MAX_HEIGHT; y++) {
             for (let x = 0; x < DataPoints.FIELD_MAX_WIDTH; x++) {
-                callback(x, y, cells && cells[x][y], cells && cells[x][y].object);
+                callback(x, y,
+                    cells && cells[x][y],
+                    cells && cells[x][y].object
+                );
             }
         }
     };
@@ -248,7 +226,8 @@ LogicField = function () {
         object.objectId = id;
         object.isHole = (id === DataObjects.OBJECT_HOLE);
         object.isGem = gems.indexOf(id) !== -1;
-        object.isVisibleGem = object.isGem && cells[p.x][p.y].isVisible;
+        //object.isVisibleGem = object.isGem && cells[p.x][p.y].isVisible;
+        object.isNoBoxGem = object.isGem && !object.withBox;
         object.lightningId = lightningId;
 
         object.isPolyColor = (id === DataObjects.OBJECT_POLY_COLOR);
@@ -266,7 +245,7 @@ LogicField = function () {
         for (let x = 0; x < DataPoints.FIELD_MAX_WIDTH; x++) {
             cells[x] = [];
             for (let y = 0; y < DataPoints.FIELD_MAX_HEIGHT; y++) {
-                specIds = self.getSpecIds({x: x, y: y}, specials);
+                specIds = getSpecIds({x: x, y: y}, specials);
 
                 lightningId = false;
                 if (specIds.indexOf(DataObjects.WITH_LIGHTNING_HORIZONTAL) !== -1) lightningId = DataObjects.WITH_LIGHTNING_HORIZONTAL;
@@ -282,6 +261,8 @@ LogicField = function () {
                 cells[x][y].isEmitter = specIds.indexOf(DataObjects.IS_EMITTER) !== -1;
 
                 if (objectId === DataObjects.OBJECT_SPIDER) object.health = 3;
+
+                object.withBox = specIds.indexOf(DataObjects.OBJECT_BOX) !== -1;
 
                 self.setObject({x: x, y: y}, objectId, lightningId)
             }
@@ -304,7 +285,7 @@ LogicField = function () {
         });
     };
 
-    this.getSpecIds = function (p, specials) {
+    let getSpecIds = function (p, specials) {
         let specIds = [];
         specials.forEach(function (level) {
             if (level[p.x] && level[p.x][p.y])
@@ -327,21 +308,18 @@ LogicField = function () {
      * @param specId
      * @param onDestroyGem
      */
-    this.forceDestroyLine = function (p, specId, onDestroyGem) {
+    this.destroyVisibleLine = function (p, specId, onDestroyGem) {
+        let checkGem = function (p) {
+            let cell;
+            cell = self.getCell(p);
+            if (cell.isVisible && !cell.withBox) onDestroyGem(p);
+        };
         switch (specId) {
             case DataObjects.WITH_LIGHTNING_HORIZONTAL:
-                for (let x = 0; x < DataPoints.FIELD_MAX_WIDTH; x++) {
-                    if (Field.isVisibleGem({x: x, y: p.y})) {
-                        onDestroyGem({x: x, y: p.y});
-                    }
-                }
+                for (let x = 0; x < DataPoints.FIELD_MAX_WIDTH; x++) checkGem({x: x, y: p.y});
                 break;
             case DataObjects.WITH_LIGHTNING_VERTICAL:
-                for (let y = 0; y < DataPoints.FIELD_MAX_HEIGHT; y++) {
-                    if (Field.isVisibleGem({x: p.x, y: y})) {
-                        onDestroyGem({x: p.x, y: y});
-                    }
-                }
+                for (let y = 0; y < DataPoints.FIELD_MAX_HEIGHT; y++) checkGem({x: p.x, y: y});
                 break;
             default:
                 Logs.log("Error :" + arguments.callee.name, Logs.LEVEL_ERROR);

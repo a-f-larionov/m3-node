@@ -5,11 +5,16 @@ SAPIMap = function () {
         if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
 
-        if (cntx.user.id !== 1) {
-            Logs.log("ERROR", Logs.LEVEL_WARNING);
-            return;
-        }
-        LogicSystemRequests.reloadLevels(function () {
+
+        let user;
+        DataUser.getById(cntx.user.id, function (user) {
+            if (!
+                (user.id === 1 || user.socNetUserId === 1)
+            ) {
+                Logs.log("ERROR", Logs.LEVEL_ERROR);
+            }
+            LogicSystemRequests.reloadLevels(function () {
+            });
         });
     };
 

@@ -175,10 +175,13 @@ ElementField = function () {
     };
 
     let fieldAct = function (p) {
+        let cell;
         if (lock) return;
         if (AnimLocker.busy()) return;
         if (stopHint) stopHint();
-        if (!Field.isVisible(p)) return;
+        cell = Field.getCell(p);
+        if (!cell.isVisible) return;
+        if (cell.object.withBox) return;
 
         switch (stuffMode) {
             case LogicStuff.STUFF_HUMMER:
@@ -230,11 +233,8 @@ ElementField = function () {
                 y: Math.floor(Math.random() * DataPoints.FIELD_MAX_HEIGHT)
             };
             cell2 = Field.getCell(p2);
-            if (
-                cell1.isVisible && cell1.object.isGem &&
-                cell2.isVisible && cell2.object.isGem
-            ) {
-                Field.exchangeObjects({x: x1, y: y1}, p2)
+            if (cell1.isVisible && cell1.object.isNoBoxGem && cell2.isVisible && cell2.object.isNoBoxGem) {
+                Field.exchangeObjects(p1, p2)
             }
         });
     };
@@ -249,13 +249,13 @@ ElementField = function () {
     let lightningDo = function (p, specId) {
         //console.log('l do', specId, p);
         if (specId === DataObjects.WITH_LIGHTNING_CROSS) {
-            Field.forceDestroyLine(p, DataObjects.WITH_LIGHTNING_VERTICAL, self.destroyGem);
-            Field.forceDestroyLine(p, DataObjects.WITH_LIGHTNING_HORIZONTAL, self.destroyGem);
+            Field.destroyVisibleLine(p, DataObjects.WITH_LIGHTNING_VERTICAL, self.destroyGem);
+            Field.destroyVisibleLine(p, DataObjects.WITH_LIGHTNING_HORIZONTAL, self.destroyGem);
             self.redraw();
             animate(animLightning, p, DataObjects.WITH_LIGHTNING_VERTICAL);
             animate(animLightning, p, DataObjects.WITH_LIGHTNING_HORIZONTAL);
         } else {
-            Field.forceDestroyLine(p, specId, self.destroyGem);
+            Field.destroyVisibleLine(p, specId, self.destroyGem);
             self.redraw();
             animate(animLightning, p, specId);
         }
@@ -380,14 +380,12 @@ ElementField = function () {
                 gemDom = gemDoms[x][y];
 
                 /** Layer.mask redraw */
-                if (cell.isVisible) {
-                    drawCell(maskDom, x, y, DataObjects.CELL_VISIBLE);
-                } else {
+                cell.isVisible ?
+                    drawCell(maskDom, x, y, DataObjects.CELL_VISIBLE) :
                     maskDom.hide();
-                }
 
                 /**
-                 * Draw gems
+                 * Draw any
                  */
                 if (cell.isVisible && (object.isGem || object.isSpider || object.isBarrel || object.isPolyColor)) {
                     drawCell(gemDom, x, y, object.objectId)
@@ -395,19 +393,8 @@ ElementField = function () {
                     gemDom.hide();
                 }
 
-                /** Spider */
-                if (cell.isVisible && object.isSpider) {
-                    specDom = specDoms[specIndex++];
-                    specDom.opacity = '';
-                    specDom.backgroundImage = DataPoints.healthImages[object.health];
-                    drawCell(specDom, x, y);
-                    gemDom.bindedDoms = specDom;
-                }else{
-                    gemDom.bindedDoms = null;
-                }
-
                 /** Gems */
-                if (object.isGem && cell.isVisible) {
+                if (cell.isVisible && object.isGem) {
                     if (object.lightningId) {
                         specDom = specDoms[specIndex++];
                         specDom.opacity = 0.5;
@@ -417,15 +404,29 @@ ElementField = function () {
                         gemDom.bindedDoms = null;
                     }
                 }
-                /** Layer.barrel */
 
+                /** Spider health */
+                if (cell.isVisible && object.isSpider) {
+                    specDom = specDoms[specIndex++];
+                    specDom.opacity = '';
+                    specDom.backgroundImage = DataPoints.healthImages[object.health];
+                    drawCell(specDom, x, y);
+                    gemDom.bindedDoms = specDom;
+                } else {
+                    gemDom.bindedDoms = null;
+                }
+
+                /** Box */
+                if (cell.isVisible && object.withBox) {
+                    specDom = specDoms[specIndex++];
+                    specDom.opacity = 0.4;
+                    drawCell(specDom, x, y, DataObjects.OBJECT_BOX);
+                }
             }
         );
-        console.log(specDoms);
 
         /** Спрячем не используемые специальные домы */
         for (let i = specIndex; i < specDomsLimit; i++) {
-            //specDoms[i].key = null;
             specDoms[i].hide();
         }
 
@@ -596,6 +597,7 @@ ElementField = function () {
     };
 
     this.fall = function () {
+        let hole;
         if (AnimLocker.busy()) return;
 
         let fallDoms = [];
@@ -603,9 +605,10 @@ ElementField = function () {
         /** Собираем камни и меняем поле */
         Field.eachCell(function (x, y) {
             y = DataPoints.FIELD_MAX_HEIGHT - y - 1;
-            if (!Field.mayFall(x, y)) return;
-
-            Field.exchangeObjects({x: x, y: y}, {x: x, y: y + 1});
+            hole = Field.mayFall(x, y);
+            if (!hole) return;
+            console.log('hole', hole);
+            Field.exchangeObjects({x: x, y: y}, hole);
 
             fallDoms.push(gemDoms[x][y]);
         });
@@ -675,24 +678,31 @@ ElementField = function () {
         cell = Field.getCell(p);
         //console.log('destroy gem', cell, p);
         lightningId = cell.object.lightningId;
-        Field.setObject(p, DataObjects.OBJECT_HOLE, false);
-        /** */
-        Field.eachNears(p, function (x, y, cell) {
-            //@todo animSpiderAtacked
-            //@todo animSpiderKilled
-            if (cell.object.isSpider) {
-                cell.object.health--;
-                if (cell.object.health) {
-                    animate(animHummerDestroy, {x: x, y: y});
-                } else {
-                    Field.setObject({x: x, y: y}, DataObjects.OBJECT_HOLE);
-                    self.onSpiderKilled();
+        if (cell.isVisible && !cell.object.withBox) {
+            Field.setObject(p, DataObjects.OBJECT_HOLE, false);
+            animate(animHummerDestroy, p);
+            if (lightningId) lightningDo(p, lightningId);
+
+            /** Any near objects */
+            Field.eachNears(p, function (x, y, nearCell) {
+                //@todo animSpiderAtacked
+                //@todo animSpiderKilled
+                if (nearCell.object.isSpider) {
+                    nearCell.object.health--;
+                    if (nearCell.object.health) {
+                        animate(animHummerDestroy, {x: x, y: y});
+                    } else {
+                        Field.setObject({x: x, y: y}, DataObjects.OBJECT_HOLE);
+                        self.onSpiderKilled();
+                        animate(animHummerDestroy, {x: x, y: y});
+                    }
+                }
+                if (nearCell.object.withBox) {
+                    nearCell.object.withBox = false;
                     animate(animHummerDestroy, {x: x, y: y});
                 }
-            }
-        });
-        if (lightningId) lightningDo(p, lightningId);
-        animate(animHummerDestroy, p);
+            });
+        }
     };
 
     let animate = function (animClass) {

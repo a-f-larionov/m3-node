@@ -134,7 +134,7 @@ PageBlockMaps = function PageBlockMaps() {
                     goalStars = chest.goalStars;
                     mapStars = DataMap.countStarsByMapId();
                     if (isItOpened) {
-                        console.log('уже открыт!');
+                        //console.log('уже открыт!');
                     } else {
                         if (mapStars < goalStars) {
                             PageBlockZDialogs.dialogChestNeedStars.mapStars = mapStars;
