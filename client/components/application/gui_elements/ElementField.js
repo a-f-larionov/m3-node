@@ -419,8 +419,8 @@ ElementField = function () {
                 /** Box */
                 if (cell.isVisible && object.withBox) {
                     specDom = specDoms[specIndex++];
-                    specDom.opacity = 0.4;
                     drawCell(specDom, x, y, DataObjects.OBJECT_BOX);
+                    gemDom.hide();
                 }
             }
         );
@@ -607,7 +607,6 @@ ElementField = function () {
             y = DataPoints.FIELD_MAX_HEIGHT - y - 1;
             hole = Field.mayFall(x, y);
             if (!hole) return;
-            console.log('hole', hole);
             Field.exchangeObjects({x: x, y: y}, hole);
 
             fallDoms.push(gemDoms[x][y]);
@@ -699,6 +698,7 @@ ElementField = function () {
                 }
                 if (nearCell.object.withBox) {
                     nearCell.object.withBox = false;
+                    nearCell.object.isNoBoxGem = true;
                     animate(animHummerDestroy, {x: x, y: y});
                 }
             });
