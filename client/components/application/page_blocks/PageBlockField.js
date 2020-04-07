@@ -48,9 +48,12 @@ PageBlockField = function PageBlockField() {
         /** Игровое поле */
         el = GUI.createElement(ElementField, {
             centerX: 388.5, centerY: 250,
+
             onDestroyLine: self.onDestroyLine,
             onBarrelFloor: self.onBarrelFloor,
             onSpiderKilled: self.onSpiderKilled,
+            onTreasuresDestroy: self.onTreasuresDestroy,
+
             beforeTurnUse: self.beforeTurnUse,
             beforeStuffUse: self.beforeStuffUse,
             onFieldSilent: self.onFieldSilent
@@ -258,7 +261,7 @@ PageBlockField = function PageBlockField() {
         self.firstShow();
         if (false
             || LogicUser.getCurrentUser().id === 1
-            || LogicUser.getCurrentUser().socNetUserId ===1
+            || LogicUser.getCurrentUser().socNetUserId === 1
         ) {
             buttonReloadField.show();
             buttonChangeSpeed.show();
@@ -349,6 +352,10 @@ PageBlockField = function PageBlockField() {
 
     this.onSpiderKilled = function () {
         decreaseGoal(DataObjects.OBJECT_SPIDER, 1);
+    };
+
+    this.onTreasuresDestroy = function () {
+        decreaseGoal(DataObjects.OBJECT_TREASURES, 1);
     };
 
     this.onDestroyLine = function (line) {

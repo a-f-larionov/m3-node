@@ -65,7 +65,11 @@ DataPoints = function () {
         goals: [
             {
                 id: DataObjects.OBJECT_SPIDER,
-                count: 10
+                count: 1
+            },
+            {
+                id: DataObjects.OBJECT_TREASURES,
+                count: 1
             }
         ],
         layers: {
@@ -102,7 +106,7 @@ DataPoints = function () {
             ], [
                 "        ",
                 "   Z    ",
-                "   Z    ",
+                "   Z$   ",
                 "   ZZZZ ",
                 "   ZZZZ ",
                 "        ",

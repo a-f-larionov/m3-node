@@ -98,7 +98,7 @@ CAPIMap = function () {
 
             'ᴥ' : DataObjects.OBJECT_OCTOPUS,
             'ɨ' : DataObjects.OBJECT_ICE,
-            '$' : DataObjects.OBJECT_TRESURE,
+            '$' : DataObjects.OBJECT_TREASURES,
             '■' : DataObjects.OBJECT_BOX,
             'Z' : DataObjects.OBJECT_CHAIN,
 

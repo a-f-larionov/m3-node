@@ -236,7 +236,6 @@ LogicField = function () {
     };
 
     this.updateIsCanMoved = function (object) {
-        //object.isCanMoved = (object.isGem || object.isBarrel || object.isPolyColor) && !object.withBox && !object.withChain;
         object.isCanMoved = (object.isGem || object.isBarrel || object.isPolyColor) && !object.withBox && !object.withChain;
     };
 
@@ -259,13 +258,16 @@ LogicField = function () {
 
                 objectId = objects[x] && objects[x][y];
 
-                let object;
+                let cell, object;
                 object = {};
-                cells[x][y] = {object: object};
-                cells[x][y].isVisible = mask[x] && mask[x][y] && mask[x][y] === DataObjects.CELL_VISIBLE;
-                cells[x][y].isEmitter = specIds.indexOf(DataObjects.IS_EMITTER) !== -1;
+                cell = {object: object};
+                cells[x][y] = cell;
+                cell.isVisible = mask[x] && mask[x][y] && mask[x][y] === DataObjects.CELL_VISIBLE;
+                cell.isEmitter = specIds.indexOf(DataObjects.IS_EMITTER) !== -1;
 
                 if (objectId === DataObjects.OBJECT_SPIDER) object.health = 3;
+
+                cell.withTreasures = specIds.indexOf(DataObjects.OBJECT_TREASURES) !== -1;
 
                 object.withBox = specIds.indexOf(DataObjects.OBJECT_BOX) !== -1;
                 object.withChain = specIds.indexOf(DataObjects.OBJECT_CHAIN) !== -1;
@@ -315,9 +317,10 @@ LogicField = function () {
      * @param callback
      */
     this.eachVisibleLine = function (p, oreintation, callback) {
+        let list = [];
         let isVisbleCall = function (p, cell) {
             cell = self.getCell(p);
-            if (cell.isVisible) callback(p, cell);
+            if (cell.isVisible) list.push({p: p, cell: cell});
         };
         switch (oreintation) {
             case DataObjects.WITH_LIGHTNING_HORIZONTAL:
@@ -330,6 +333,14 @@ LogicField = function () {
                 Logs.log("Error :" + arguments.callee.name, Logs.LEVEL_ERROR);
                 break;
         }
+        list.sort(function (a, b) {
+            if (a.cell.object.isCanMoved && !b.cell.object.isCanMoved) return 1;
+            if (!a.cell.object.isCanMoved && b.cell.object.isCanMoved) return -1;
+            return 0;
+        });
+        list.forEach(function (i) {
+            callback(i.p, i.cell);
+        })
     };
 
     this.getVisibleLength = function (p, orientation) {

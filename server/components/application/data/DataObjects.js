@@ -77,7 +77,7 @@ DataObjects = function () {
      * Драгоцености
      * @type {number}
      */
-    this.OBJECT_TRESURE = 180;
+    this.OBJECT_TREASURES = 180;
     /**
      * Ящик
      * @type {number}
