@@ -125,9 +125,9 @@ ApiRouter = new (function () {
             connectionsKey += cntxList[i].connectionId;
         }
         if (CONST_IS_SERVER_SIDE) {
-            Logs.log(group + "." + method + ':' + args.join(','), Logs.LEVEL_DETAIL);
-        } else {
             Logs.log(connectionsKey + " " + "<< " + group + "." + method + ':' + args.join(','), Logs.LEVEL_DETAIL);
+        } else {
+            Logs.log(group + "." + method + ':' + args.join(','), Logs.LEVEL_DETAIL);
         }
 
         let packet = {

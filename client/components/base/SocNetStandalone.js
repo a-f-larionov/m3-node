@@ -52,6 +52,19 @@ SocNetStandalone = function () {
         callback([info]);
     };
 
+    this.openOrderDialog = function (votes) {
+        let product = DataShop.getGoldProductByPrice(votes);
+        console.log(DataShop.getGoldProductByPrice(votes));
+        console.log(DataShop.getGoldProductByPrice(votes).quantity);
+        let qty = confirm("Купить " + product.quantity + "монет за " + votes + " стенделонов?");
+        if (qty) {
+            //@todo callback here!
+            //https://8ffd246e-5d74-49a5-8696-e92eff606a60.pub.cloud.scaleway.com/service/vk_buy
+            //https://local.host/service/standalone_buy
+            //do something here
+        }
+    };
+
     /**
      * Detect is now is a that soc net\platform.
      * @returns {boolean}
