@@ -52,6 +52,7 @@ PageBlockField = function PageBlockField() {
             onDestroyLine: self.onDestroyLine,
             onBarrelFloor: self.onBarrelFloor,
             onSpiderKilled: self.onSpiderKilled,
+            onOctopusDestroy: self.onOctopusDestroy,
             onTreasuresDestroy: self.onTreasuresDestroy,
 
             beforeTurnUse: self.beforeTurnUse,
@@ -352,6 +353,10 @@ PageBlockField = function PageBlockField() {
 
     this.onSpiderKilled = function () {
         decreaseGoal(DataObjects.OBJECT_SPIDER, 1);
+    };
+
+    this.onOctopusDestroy = function () {
+        decreaseGoal(DataObjects.OBJECT_OCTOPUS, 1);
     };
 
     this.onTreasuresDestroy = function () {

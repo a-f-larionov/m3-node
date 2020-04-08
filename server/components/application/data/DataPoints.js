@@ -64,12 +64,8 @@ DataPoints = function () {
         score3: 300,
         goals: [
             {
-                id: DataObjects.OBJECT_SPIDER,
-                count: 1
-            },
-            {
-                id: DataObjects.OBJECT_TREASURES,
-                count: 1
+                id: DataObjects.OBJECT_OCTOPUS,
+                count: 6
             }
         ],
         layers: {
@@ -85,11 +81,11 @@ DataPoints = function () {
             ],
             gems: [
                 "RGBYPRGB",
-                "PRᥩᨔRᥩRG",
+                "PRPYRPRG",
                 "RYPBGBYR",
                 "GPYBPYBG",
-                "BYPGȫȫRB",
-                "PPYᨔPYBP",
+                "BYPGYPRB",
+                "PPYPPYBP",
                 "PRGPGYGB",
                 "RGBYPRGB",
             ],
@@ -97,19 +93,10 @@ DataPoints = function () {
                 "********",
                 "        ",
                 "        ",
-                "        ",
-                "    ■■■ ",
-                "        ",
+                "   ᴥᴥᴥ  ",
                 "        ",
                 "        ",
-                "        ",
-            ], [
-                "        ",
-                "   Z    ",
-                "   Z$   ",
-                "   ZZZZ ",
-                "   ZZZZ ",
-                "        ",
+                "   ᴥᴥᴥ  ",
                 "        ",
                 "        ",
             ]],

@@ -71,6 +71,11 @@ ElementField = function () {
      */
     this.onTreasuresDestroy = null;
     /**
+     * Каллбек
+     * @type {function}
+     */
+    this.onOctopusDestroy = null;
+    /**
      *
      * @type {function}
      */
@@ -489,10 +494,20 @@ ElementField = function () {
                     specDom = specDoms2[spec2Index++];
                     drawCell(specDom, x, y, DataObjects.OBJECT_CHAIN, '');
                 }
+
                 /** Treasure */
                 if (cell.isVisible && cell.withTreasures) {
                     specDom = specDoms1[spec1Index++];
                     drawCell(specDom, x, y, DataObjects.OBJECT_TREASURES, '');
+                }
+
+                /** Spider green */
+                if (cell.isVisible && object.withOctopus) {
+                    specDom = specDoms2[spec2Index++];
+                    drawCell(specDom, x, y, DataObjects.OBJECT_OCTOPUS,'');
+                    gemDom.bindedDoms = specDom;
+                } else {
+                    gemDom.bindedDoms = null;
                 }
             }
         );
@@ -704,20 +719,21 @@ ElementField = function () {
         lines.forEach(function (line) {
             //console.log('length', line, line.coords.length);
             actGem = null;
-            if (line.coords.length === 4) {
-                if (Field.lineCrossing([line], lastExchangeGems.a.x, lastExchangeGems.a.y)) {
-                    //console.log(lastExchangeGems, 'a');
+            if (line.coords.length > 3) {
+                if (lastExchangeGems && Field.lineCrossing([line], lastExchangeGems.a.x, lastExchangeGems.a.y)) {
                     actGem = lastExchangeGems.a;
                 }
-                if (Field.lineCrossing([line], lastExchangeGems.b.x, lastExchangeGems.b.y)) {
-                    //console.log(lastExchangeGems, 'b');
+                if (lastExchangeGems && Field.lineCrossing([line], lastExchangeGems.b.x, lastExchangeGems.b.y)) {
                     actGem = lastExchangeGems.b;
                 }
-                //console.log('is it 4 length line', lastExchangeGems, actGem);
+                if (actGem && line.coords.length === 4) {
+                    Field.setObject(actGem, Field.getCell(actGem).object.objectId, line.orientation);
+                }
+                if (actGem && line.coords.length === 5) {
+                    Field.setObject(actGem, DataObjects.OBJECT_POLY_COLOR, false);
+                }
             }
-            if (actGem) {
-                Field.setObject(actGem, Field.getCell(actGem).object.objectId, line.orientation);
-            }
+
             line.coords.forEach(function (p) {
                 if (actGem && p.x === actGem.x && p.y === actGem.y) return;
                 self.cellAttack(p);
@@ -784,6 +800,13 @@ ElementField = function () {
                 self.onTreasuresDestroy();
                 animate(animHummerDestroy, p);
             }
+
+            if (cell.object.withOctopus) {
+                cell.object.withOctopus = false;
+                self.onOctopusDestroy();
+                animate(animHummerDestroy, p);
+            }
+
             /** Any near objects */
             Field.eachNears(p, function (nearP, nearCell) {
                 //@todo animSpiderAtacked

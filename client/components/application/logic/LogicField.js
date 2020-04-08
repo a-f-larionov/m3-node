@@ -271,6 +271,7 @@ LogicField = function () {
 
                 object.withBox = specIds.indexOf(DataObjects.OBJECT_BOX) !== -1;
                 object.withChain = specIds.indexOf(DataObjects.OBJECT_CHAIN) !== -1;
+                object.withOctopus = specIds.indexOf(DataObjects.OBJECT_OCTOPUS) !== -1;
 
                 self.setObject({x: x, y: y}, objectId, lightningId)
             }
