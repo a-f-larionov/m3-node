@@ -58,7 +58,6 @@ DialogChestYouWin = function () {
         elText.setText('Собраны все звезды! Ты открыл сундук и нашел там:');
         for (let i = 0; i < 4; i++) {
             prize = chest.prizes[i];
-            //console.log(i, prize);
             if (prize) {
                 imagesEls[i].src = DataPrizes.getImageFor(prize);
                 countersEls[i].setText(prize.count);

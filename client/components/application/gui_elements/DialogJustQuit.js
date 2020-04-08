@@ -34,6 +34,7 @@ DialogJustQuit = function () {
                     self.closeDialog();
                     PageBlockPanel.oneHealthHide = false;
                     PageController.showPage(PageMain);
+                    PageBlockField.setStuffMode(null);
                 },
                 title: 'СДАТЬСЯ'
             }, this.dom,

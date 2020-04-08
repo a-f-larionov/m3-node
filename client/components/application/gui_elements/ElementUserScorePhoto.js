@@ -79,7 +79,6 @@ ElementUserScorePhoto = function () {
         if (!this.user || !this.user.id) return;
         elTextName.text = this.user.firstName;
         elPhoto.src = this.user.photo50;
-        console.log(this.user);
         elTextScore.text = this.score.toString();
         elTextName.redraw();
         elPhoto.redraw();

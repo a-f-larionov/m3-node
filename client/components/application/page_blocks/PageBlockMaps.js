@@ -127,7 +127,6 @@ PageBlockMaps = function PageBlockMaps() {
                 enabled: true,
                 onClick: function (e, d, el) {
                     let chestId, isItOpened, chest, goalStars, mapStars;
-                    console.log('click on chest');
                     chestId = el.chestId;
                     isItOpened = DataChests.isItOpened(chestId);
                     chest = DataChests.getById(chestId);

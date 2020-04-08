@@ -83,6 +83,8 @@ ElementField = function () {
 
     let lastExchangeGems = null;
 
+    let polyColorCell = false;
+
     /**
      * Создадим дом и настроем его.
      */
@@ -102,6 +104,7 @@ ElementField = function () {
         container.bind(GUI.EVENT_MOUSE_MOUSE_DOWN, onGemMouseDown, container);
         container.bind(GUI.EVENT_MOUSE_MOUSE_UP, onGemMouseUp, container);
         container.bind(GUI.EVENT_MOUSE_OVER, onGemMouseOver, container);
+        container.bind(GUI.EVENT_MOUSE_OUT, onGemMouseOut, container);
         //@todo
         //domContainer.bind(GUI.EVENT_MOUSE_MOUSE_TOUCH_START, onGemTouchStart, domContainer);
         //domContainer.bind(GUI.EVENT_MOUSE_MOUSE_TOUCH_END, onGemTouchEnd, domContainer);
@@ -190,7 +193,6 @@ ElementField = function () {
         if (AnimLocker.busy()) return;
         if (stopHint) stopHint();
         cell = Field.getCell(p);
-        console.log(cell);
         if (!cell.isVisible) return;
         if (!cell.object.isCanMoved) return;
 
@@ -258,7 +260,6 @@ ElementField = function () {
     };
 
     let lightningDo = function (p, specId) {
-        //console.log('l do', specId, p);
         if (specId === DataObjects.WITH_LIGHTNING_CROSS) {
             Field.eachVisibleLine(p, DataObjects.WITH_LIGHTNING_VERTICAL, self.cellAttack);
             Field.eachVisibleLine(p, DataObjects.WITH_LIGHTNING_HORIZONTAL, self.cellAttack);
@@ -278,19 +279,38 @@ ElementField = function () {
      * @param gemB {Object}
      */
     let gemChangeAct = function (gemB) {
-        let gemA = gemFramed;
+        let gemA = gemFramed, cell, pList;
 
         if (lock || AnimLocker.busy() || !Field.isFallObject(gemB)) return;
 
         /** Set frame */
         if (!gemA || (gemA && !Field.isNear(gemA, gemB))) {
             gemFramed = gemB;
+            cell = Field.getCell(gemFramed);
+            polyColorCell = cell && cell.isVisible && cell.object.isPolyColor && cell;
             self.redraw();
         }
         /** Near gems */
         if (gemA && Field.isNear(gemA, gemB)) {
             gemFramed = null;
             self.redraw();
+
+            if (polyColorCell) {
+                pList = [];
+                Field.eachCell(function (x, y, cell, object) {
+                    if (cell.isVisible && object.isGem && object.objectId === Field.getCell(gemB).object.objectId && cell.object.isCanMoved) {
+                        pList.push({x: x, y: y, cell: cell});
+                    }
+                });
+                pList.push({x: polyColorCell.x, y: polyColorCell.y, cell: polyColorCell});
+                pList.forEach(function (p) {
+                    self.cellAttack(p, p.cell);
+                });
+                stopPolyColorAnim();
+                polyColorCell = false;
+                gemA = gemB = gemFramed = null;
+                return;
+            }
 
             /** Change and back */
             if (!Field.isLinePossiblyDestroy(gemA, gemB)) {
@@ -324,11 +344,38 @@ ElementField = function () {
         // 2 - если перешли - вызываем onclick дважды
     };
 
+    let stopPolyColorAnim = false;
     let onGemMouseOver = function (event) {
+        let p, mousedCell, pList;
+        if (polyColorCell) {
+            p = pointFromEvent(event);
+            mousedCell = Field.getCell(p);
+            if (Field.isNear(p, gemFramed) && mousedCell.isVisible && mousedCell.object.isGem && mousedCell.object.isCanMoved) {
+                if (stopHint) stopHint();
+                if (stopPolyColorAnim === false) {
+                    pList = [];
+                    Field.eachCell(function (x, y, cell, object) {
+                        if (cell.isVisible && object.isGem && object.objectId === mousedCell.object.objectId && cell.object.isCanMoved) {
+                            pList.push({x: x, y: y});
+                        }
+                    });
+                    stopPolyColorAnim = animate(animHint, pList);
+                }
+            }
+        }
         if (gemMouseDown) {
             fieldAct(gemMouseDown);
             fieldAct(pointFromEvent(event));
             gemMouseDown = null;
+        }
+    };
+
+    let onGemMouseOut = function (event) {
+        if (polyColorCell) {
+            if (stopPolyColorAnim) {
+                stopPolyColorAnim();
+                stopPolyColorAnim = false;
+            }
         }
     };
 
@@ -560,10 +607,10 @@ ElementField = function () {
     let tryShowHint = function () {
         setTimeout(function () {
             //console.log('try show hint');
-            if (self.isFieldSilent() && !lock && showed && !stopHint) {
+            if (self.isFieldSilent() && !lock && showed && !stopHint && !stopPolyColorAnim) {
                 //console.log('show hint', stopHint);
                 let allTurns = Field.countTurns();
-                let stopFunc = animate(animHint, allTurns[0].a, allTurns[0].b);
+                let stopFunc = animate(animHint, [allTurns[0].a, allTurns[0].b]);
                 stopHint = function () {
                     stopHint = null;
                     stopFunc();
@@ -695,6 +742,7 @@ ElementField = function () {
 
     this.setStuffMode = function (mode) {
         gemFramed = null;
+        polyColorCell = false;
         stuffMode = mode;
         self.redraw();
     };
@@ -720,15 +768,14 @@ ElementField = function () {
         cell = cell ? cell : Field.getCell(p);
         //console.log('destroy gem', cell, p);
         lightningId = cell.object.lightningId;
-        console.log(cell.object.isCanMoved);
 
         if (cell.isVisible && cell.object.isGem && !cell.object.isCanMoved) {
             //@todo
+            // problem with lightgning!
             //removeBlock(p, cell);
         }
 
-        if (cell.isVisible && cell.object.isGem && cell.object.isCanMoved) {
-
+        if (cell.isVisible && (cell.object.isGem || cell.object.isPolyColor) && cell.object.isCanMoved) {
             Field.setObject(p, DataObjects.OBJECT_HOLE, false);
             animate(animHummerDestroy, p);
 
@@ -1032,20 +1079,21 @@ let animShuffle = function () {
 };
 
 let animHint = function () {
-    let domA, domB;
+    let doms;
 
-    this.init = function (_a, _b) {
+    this.init = function (pList) {
         this.noAnimLock = true;
-        //console.log('init anim hint', _a, _b);
-        domA = this.gemDoms[_a.x][_a.y];
-        domB = this.gemDoms[_b.x][_b.y];
+        doms = [];
+        pList.forEach(function (p) {
+            doms.push(this.gemDoms[p.x][p.y]);
+        }, this);
     };
 
     this.iterate = function (counter) {
-        domA.y += Math.cos(Math.PI / 10 * counter);
-        domB.y += Math.cos(Math.PI / 10 * counter);
-        domA.redraw();
-        domB.redraw();
+        doms.forEach(function (dom) {
+            dom.y += Math.cos(Math.PI / 10 * counter);
+            dom.redraw();
+        });
         return !AnimLocker.busy();
     };
 

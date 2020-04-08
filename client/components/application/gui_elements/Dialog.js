@@ -155,7 +155,6 @@ Dialog = function () {
     };
 
     this.closeDialog = function () {
-        //console.log('closeDialog:' + this.__name);
         /**
          * - Запуск прятания диалога
          */

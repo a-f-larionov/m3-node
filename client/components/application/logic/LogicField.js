@@ -260,7 +260,7 @@ LogicField = function () {
 
                 let cell, object;
                 object = {};
-                cell = {object: object};
+                cell = {object: object, x: x, y: y};
                 cells[x][y] = cell;
                 cell.isVisible = mask[x] && mask[x][y] && mask[x][y] === DataObjects.CELL_VISIBLE;
                 cell.isEmitter = specIds.indexOf(DataObjects.IS_EMITTER) !== -1;
@@ -275,8 +275,6 @@ LogicField = function () {
                 self.setObject({x: x, y: y}, objectId, lightningId)
             }
         }
-        console.log('set layers');
-        console.log(cells);
     };
 
     this.eachNears = function (p, callback) {
