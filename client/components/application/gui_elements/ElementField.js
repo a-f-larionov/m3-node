@@ -619,7 +619,7 @@ ElementField = function () {
             } else {
                 //console.log('skip show hint');
             }
-        }, 3000);
+        }, Config.OnIdle.animateInterval * 90);
     };
 
     this.isFieldSilent = function () {

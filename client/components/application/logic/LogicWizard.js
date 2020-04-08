@@ -115,7 +115,7 @@ WizardFirstStart_3 = {
                     coords.x + DataPoints.BLOCK_WIDTH * 4,
                     coords.y + DataPoints.BLOCK_HEIGHT);
             });
-        }, 3500);
+        }, Config.OnIdle.animateInterval * 105);
     },
     onClick: function (el) {
         console.log(el);
@@ -148,7 +148,7 @@ WizardFirstStart_4 = {
                     coords.x + DataPoints.BLOCK_WIDTH * 3,
                     coords.y + DataPoints.BLOCK_HEIGHT * 4);
             });
-        }, 1);
+        }, Config.OnIdle.animateInterval / 30);
     },
     onDestroyLine: function (line) {
         PageBlockWizard.finish();

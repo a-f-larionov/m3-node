@@ -53,7 +53,7 @@ WebSocketClient = function () {
      */
     this.sendData = function (data) {
         packetBuffer.push(data);
-        setTimeout(trySend, 50);
+        trySend();
         return true;
     };
 
@@ -152,11 +152,11 @@ WebSocketClient = function () {
         }
         Logs.log('WebSocketClient: Код: ' + event.code + ' причина: ' + event.reason);
         self.onDisconnect(connectionId);
-        setTimeout(tryReconnect, 500);
+        setTimeout(tryReconnect, 3000);
     };
 
     let tryReconnect = function () {
-        if (isConnected == false) {
+        if (isConnected === false) {
             Logs.log('Try reconnect', Logs.LEVEL_NOTIFY);
             if (raiseConnectCount < 3) {
                 connect();
@@ -206,7 +206,7 @@ WebSocketClient = function () {
         /* Logs.log("WebSocketClient.send data: length=" + data.length, Logs.LEVEL_DETAIL); */
         /* Остальные данные отправим позже. */
         if (packetBuffer.length) {
-            setTimeout(trySend, self.trySendTimeout);
+            setTimeout(trySend, 1500);
         }
     };
 };

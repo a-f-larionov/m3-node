@@ -4,7 +4,7 @@ OnIdle = function () {
     this.stack = [];
 
     this.init = function (callbackAfterInit) {
-        setTimeout(OnIdle.iterate, 501);
+        setTimeout(OnIdle.iterate, Config.OnIdle.animateInterval * 15);
         callbackAfterInit();
     };
 

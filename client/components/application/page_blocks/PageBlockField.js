@@ -308,8 +308,8 @@ PageBlockField = function PageBlockField() {
         PageBlockZDialogs.dialogGoals.setGoals(data.goals);
         PageBlockZDialogs.dialogGoals.showDialog();
         setTimeout(function () {
-                PageBlockZDialogs.dialogGoals.closeDialog();
-            }, 2750
+            PageBlockZDialogs.dialogGoals.closeDialog();
+        }, Config.OnIdle.animateInterval * 83
         );
         noMoreGoals = false;
     };
@@ -383,7 +383,7 @@ PageBlockField = function PageBlockField() {
         if (noMoreGoals) {
             elementField.lock();
             noMoreGoals = false;
-            setTimeout(self.finishLevel, 500);
+            setTimeout(self.finishLevel, Config.OnIdle.animateInterval * 15);
         }
     };
 
