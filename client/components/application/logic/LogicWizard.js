@@ -56,13 +56,16 @@ WizardFirstStart_1 = {
         PageBlockWizard.begin();
         PageBlockWizard.updateText('НАЖМИ НА КРАСНЫЙ КРУЖОК ЧТО БЫ НАЧАТЬ ИГРАТЬ');
         PageBlockWizard.showDialog(400, 360, 4);
-        PageBlockWizard.draw(function (cntx, drawImage) {
+        PageBlockWizard.draw(function (drawImage) {
+            drawImage();
+        });
+        PageBlockWizard.draw(function (drawImage) {
             let pnt = DataPoints.getPointsCoords()[0];
-            drawImage(cntx, '/images/wizard-point-circle.png',
-                pnt.x - GUI.getImageWidth('/images/wizard-point-circle.png') / 2
-                + GUI.getImageWidth('/images/map-way-point-red.png') / 2,
-                pnt.y - GUI.getImageHeight('/images/wizard-point-circle.png') / 2
-                + GUI.getImageHeight('/images/map-way-point-red.png') / 2,
+            drawImage('/images/wizard-point-circle.png',
+                pnt.x - Images.getImageWidth('/images/wizard-point-circle.png') / 2
+                + Images.getImageWidth('/images/map-way-point-red.png') / 2,
+                pnt.y - Images.getImageHeight('/images/wizard-point-circle.png') / 2
+                + Images.getImageHeight('/images/map-way-point-red.png') / 2,
             );
         });
     },
@@ -79,9 +82,9 @@ WizardFirstStart_2 = {
         PageBlockWizard.begin();
         PageBlockWizard.updateText('НАЖМИ КНОПКУ ИГРАТЬ');
         PageBlockWizard.showDialog(400, 380, 30);
-        PageBlockWizard.draw(function (cntx, drawImage) {
-            drawImage(cntx, '/images/wizard-button.png',
-                390 - GUI.getImageWidth('/images/wizard-button.png') / 2,
+        PageBlockWizard.draw(function (drawImage) {
+            drawImage('/images/wizard-button.png',
+                390 - Images.getImageWidth('/images/wizard-button.png') / 2,
                 280 + 42
             );
         });
@@ -100,18 +103,18 @@ WizardFirstStart_3 = {
             'ПОМЕНЯЙ СОСЕДНИЕ КАМНИ МЕСТАМИ, ЧТОБЫ СОБРАТЬ КАМНИ КРАСНОГО ЦВЕТА');
         setTimeout(function () {
             PageBlockWizard.showDialog(210, 380, 5, 20);
-            PageBlockWizard.draw(function (cntx, drawImage) {
+            PageBlockWizard.draw(function (drawImage) {
                 let coords = PageBlockField.getFieldCoords();
-                drawImage(cntx, '/images/wizard-diamond-cell.png',
+                drawImage('/images/wizard-diamond-cell.png',
                     coords.x + DataPoints.BLOCK_WIDTH,
                     coords.y + DataPoints.BLOCK_HEIGHT);
-                drawImage(cntx, '/images/wizard-diamond-cell.png',
+                drawImage('/images/wizard-diamond-cell.png',
                     coords.x + DataPoints.BLOCK_WIDTH * 2,
                     coords.y + DataPoints.BLOCK_HEIGHT);
-                drawImage(cntx, '/images/wizard-diamond-cell.png',
+                drawImage('/images/wizard-diamond-cell.png',
                     coords.x + DataPoints.BLOCK_WIDTH * 3,
                     coords.y + DataPoints.BLOCK_HEIGHT);
-                drawImage(cntx, '/images/wizard-diamond-cell.png',
+                drawImage('/images/wizard-diamond-cell.png',
                     coords.x + DataPoints.BLOCK_WIDTH * 4,
                     coords.y + DataPoints.BLOCK_HEIGHT);
             });
@@ -133,18 +136,18 @@ WizardFirstStart_4 = {
         );
         setTimeout(function () {
             PageBlockWizard.showDialog(210, 380, 15, 21);
-            PageBlockWizard.draw(function (cntx, drawImage) {
+            PageBlockWizard.draw(function (drawImage) {
                 let coords = PageBlockField.getFieldCoords();
-                drawImage(cntx, '/images/wizard-diamond-cell.png',
+                drawImage('/images/wizard-diamond-cell.png',
                     coords.x + DataPoints.BLOCK_WIDTH * 2,
                     coords.y + DataPoints.BLOCK_HEIGHT * 3);
-                drawImage(cntx, '/images/wizard-diamond-cell.png',
+                drawImage('/images/wizard-diamond-cell.png',
                     coords.x + DataPoints.BLOCK_WIDTH * 3,
                     coords.y + DataPoints.BLOCK_HEIGHT * 3);
-                drawImage(cntx, '/images/wizard-diamond-cell.png',
+                drawImage('/images/wizard-diamond-cell.png',
                     coords.x + DataPoints.BLOCK_WIDTH * 4,
                     coords.y + DataPoints.BLOCK_HEIGHT * 3);
-                drawImage(cntx, '/images/wizard-diamond-cell.png',
+                drawImage('/images/wizard-diamond-cell.png',
                     coords.x + DataPoints.BLOCK_WIDTH * 3,
                     coords.y + DataPoints.BLOCK_HEIGHT * 4);
             });

@@ -98,7 +98,7 @@ ApiRouter = new (function () {
     };
 
     this.onConnect = function (id) {
-        Logs.log("connection created: id=" + id, Logs.LEVEL_DETAIL);
+        Logs.log("ApiRouter.onConnect: id=" + id, Logs.LEVEL_DETAIL);
         connections[id] = {
             connectionId: id
         };
@@ -127,7 +127,7 @@ ApiRouter = new (function () {
         if (CONST_IS_SERVER_SIDE) {
             Logs.log(connectionsKey + " " + "<< " + group + "." + method + ':' + args.join(','), Logs.LEVEL_DETAIL);
         } else {
-            Logs.log(group + "." + method + ':' + args.join(','), Logs.LEVEL_DETAIL);
+            Logs.log(group + "." + method + (args.length ? ' ' + args.join(',') : ''), Logs.LEVEL_DETAIL);
         }
 
         let packet = {

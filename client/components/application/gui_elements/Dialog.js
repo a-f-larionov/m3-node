@@ -84,7 +84,7 @@ Dialog = function () {
                 ]
             ]
         });
-        self.x = (document.getElementById('applicationArea').clientWidth / 2)
+        self.x = (document.getElementById('appArea').clientWidth / 2)
             - self.width / 2;
         self.y = -500;
 

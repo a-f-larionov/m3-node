@@ -28,8 +28,18 @@ ClientCodeLoader = function () {
      * Use Sprite image by SpriteSmith
      * @type {boolean}
      */
-    let useSpritedImage = true;
+    let useSprite = true;
 
+    let htmlHeader = '<!doctype html>\
+        <html style="background:white;">\
+        <head><meta charset=utf-8></head>\
+        <title></title>\
+        <body>';
+
+    let htmlMaintaince = htmlHeader + '\
+            <div style="text-align:center;">Игра на техническом обслуживании, пожалуйста зайдите немного позже.</div>\
+            </body>\
+            </html>';
     /**
      * Client code VK.
      * @type {string}
@@ -70,7 +80,7 @@ ClientCodeLoader = function () {
         clientCodePath = Config.WebSocketServer.clientCodePath;
         //@todo is it no WebSocketServer config , but is it LogicClientCodeLoader component config.
         imagesPath = Config.WebSocketServer.imagesPath;
-        useSpritedImage = Config.WebSocketServer.useSpritedImage;
+        useSprite = Config.WebSocketServer.useSprite;
         // check before after init
         if (typeof reloadClientCodeEveryRequest !== 'boolean') {
             Logs.log("reloadClientCodeEveryRequest given by .setup, must be boolean", Logs.LEVEL_FATAL_ERROR, reloadClientCodeEveryRequest);
@@ -81,8 +91,8 @@ ClientCodeLoader = function () {
         if (typeof imagesPath !== 'string') {
             Logs.log("imagesPath given by .setup, must be string", Logs.LEVEL_FATAL_ERROR, imagesPath);
         }
-        if (typeof useSpritedImage !== 'boolean') {
-            Logs.log("useSpritedImage given by .setup, must be boolean", Logs.LEVEL_FATAL_ERROR, useSpritedImage);
+        if (typeof useSprite !== 'boolean') {
+            Logs.log("useSprite given by .setup, must be boolean", Logs.LEVEL_FATAL_ERROR, useSprite);
         }
         /* Обновим клиентский код. */
         generateImageSprite(function (result) {
@@ -94,18 +104,12 @@ ClientCodeLoader = function () {
         });
     };
 
+    let getMaintainceHtml = function () {
+
+    }
+
     this.getClientCodeVK = function (callback) {
-        if (Config.Project.maintance) {
-            let html;
-            html = '';
-            html += '\<!DOCTYPE html>\
-            <html style="background:white;">\
-                <head><meta charset=utf-8></head>\
-            <div style="text-align:center;">Игра на техническом обслуживании, пожалуйста зайдите немного позже.</div>\
-            </html>\
-                ';
-            callback(html);
-        }
+        if (Config.Project.maintance) return callback(htmlMaintaince);
         if (reloadClientCodeEveryRequest) {
             generateClientCodeVK();
             reloadMainClientCode();
@@ -114,17 +118,7 @@ ClientCodeLoader = function () {
     };
 
     this.getClientCodeStandalone = function (callback) {
-        if (Config.Project.maintance) {
-            let html;
-            html = '';
-            html += '\<!DOCTYPE html>\
-            <html style="background:white;">\
-                <head><meta charset=utf-8></head>\
-            <div style="text-align:center;">Игра на техническом обслуживании, пожалуйста зайдите немного позже.</div>\
-            </html>\
-                ';
-            callback(html);
-        }
+        if (Config.Project.maintance) return callback(htmlMaintaince);
         if (reloadClientCodeEveryRequest) {
             loadClientCodeStandalone();
             reloadMainClientCode();
@@ -156,8 +150,12 @@ ClientCodeLoader = function () {
         callback('<pre>' + "Reload Client Code executed!" + new Date().getTime() + '</pre>');
     };
 
+    let getTimeKey = function () {
+        return Config.Project.develop ? "" : "?t=" + (new Date().getTime()).toString();
+    };
+
     let getClientCodeCommonPart = function (socNetCode) {
-        let code = '', getParams = '';
+        let code = '';
 
         let demension = IMAGE_SIZE('../public/images/sprite.png');
 
@@ -171,23 +169,18 @@ ClientCodeLoader = function () {
             + translate2X(demension.height / 2) + "px; " +
             "}</style>";
         code += "<script>window.PLATFORM_ID = '" + socNetCode + "';</script>";
-        getParams += Config.Project.develop ? "?" : "?t=" + (new Date().getTime()).toString();
-        code += "<script type='text/javascript' src=" + projectPrefix + "/js/client.js" + getParams + "'></script>\r\n";
+        code += "<script type='text/javascript' src='" + projectPrefix + "/js/client.js" + getTimeKey() + "'></script>\r\n";
         code += "</head>";
         code += "<body>";
         /** Application div */
         code += "<div style='" +
-            "height:" + DataCross.application.height + "px;" +
-            "width:" + DataCross.application.width + "px;" +
-            "position:absolute;" +
-            "top:0px;' " +
-            "id='applicationArea' ></div>\r\n";
-        /** Wizard div */
+            "height:" + DataCross.app.height + "px;" + "width:" + DataCross.app.width + "px;" +
+            "position:absolute;top:0px;' " +
+            "id='appArea' ></div>\r\n";
+        /** Wizard canvas */
         code += "<canvas style='" +
-            "height:" + DataCross.application.height + "px;" +
-            "width:" + DataCross.application.width + "px;" +
-            "position:absolute;" +
-            "top:0px;' " +
+            "height:" + DataCross.app.height + "px;" + "width:" + DataCross.app.width + "px;" +
+            "position:absolute;top:0px;' " +
             "id='wizardArea' ></canvas>\r\n";
         code += getClientImageCode();
 
@@ -196,7 +189,7 @@ ClientCodeLoader = function () {
             code += "<script src='//vk.com/js/api/xd_connection.js?2' type='text/javascript'></script>\r\n";
 
             /** comments div */
-            code += "<div id='vk_comments' style='top:" + DataCross.application.height + "px;position:absolute;'>";
+            code += "<div id='vk_comments' style='top:" + DataCross.app.height + "px;position:absolute;'>";
             code += "<iframe src='" + projectPrefix + "/service/VKCommentsWidget' style='border:none; height: " + (Config.VKCommentWidget.height + 44) + "px; width:" + Config.VKCommentWidget.width + ";'></iframe>";
             code += "</div>\r\n";
         }
@@ -292,14 +285,14 @@ ClientCodeLoader = function () {
     };
 
     let getClientImageCode = function () {
-        if (useSpritedImage) {
-            return getClientImageCodeSprited();
+        if (useSprite) {
+            return getImageCodeSprited();
         } else {
-            return getClientImageCodeImageList();
+            return getImageCodeList();
         }
     };
 
-    let getClientImageCodeSprited = function () {
+    let getImageCodeSprited = function () {
         let imageCode, path, timePostfix;
         let spriteJsonPath = '../public/images/sprite.png.json';
         if (!reloadClientImageCodeEveryRequest && clientImageCode) {
@@ -310,12 +303,10 @@ ClientCodeLoader = function () {
         } else {
             imageCode = "<script>";
             imageCode += "imagesData = {};";
-            //@todo remove it! fo production
-            timePostfix = "?t=1";// + new Date().getTime();
             for (let i in generateImageSpriteResult.coordinates) {
                 path = i.replace('../public', '');
                 imageCode += "\r\nimagesData['" + path + "']={" + "" +
-                    "path:'" + projectPrefix + '/images/sprite.png' + timePostfix + "'," +
+                    "path:'" + projectPrefix + '/images/sprite.png' + getTimeKey() + "'," +
                     "w:" + translate2X(generateImageSpriteResult.coordinates[i].width) + "," +
                     "h:" + translate2X(generateImageSpriteResult.coordinates[i].height) + "," +
                     "x:" + translate2X(generateImageSpriteResult.coordinates[i].x) + "," +
@@ -324,7 +315,7 @@ ClientCodeLoader = function () {
             }
             imageCode += "</script>";
             imageCode += "<div style='display:none;'>";
-            imageCode += "<img src='" + projectPrefix + '/images/sprite.png' + timePostfix + "'>";
+            imageCode += "<img src='" + projectPrefix + '/images/sprite.png' + getTimeKey() + "'>";
             imageCode += "</div>";
             FS.writeFileSync(spriteJsonPath, imageCode);
             // cache it
@@ -336,7 +327,7 @@ ClientCodeLoader = function () {
     /**
      * Формирует Js-код картинок.
      */
-    let getClientImageCodeImageList = function () {
+    let getImageCodeList = function () {
         let imageFiles, imageCode, path, timePostfix, demension;
         if (!reloadClientImageCodeEveryRequest && clientImageCode) {
             return clientImageCode;
@@ -344,14 +335,11 @@ ClientCodeLoader = function () {
         imageFiles = getFileListRecursive(imagesPath);
         imageCode = "<script>";
         imageCode += "imagesData = {};";
-        timePostfix = "?t=" + new Date().getTime();
-        //@todo remove it! fo production
-        timePostfix = "?t=1";
         for (let i in imageFiles) {
             path = imagesPrefix + imageFiles[i].substr(imagesPath.length);
             demension = IMAGE_SIZE(imageFiles[i]);
             imageCode += "\r\nimagesData['" + path + "']=" +
-                "{path:'" + projectPrefix + path + timePostfix + "'" +
+                "{path:'" + projectPrefix + path + getTimeKey() + "'" +
                 ",w:" + translate2X(demension.width) +
                 ",h:" + translate2X(demension.height) +
                 ",x:" + 0 +
@@ -362,7 +350,7 @@ ClientCodeLoader = function () {
         imageCode += "<div style='display:none;'>";
         for (let i in imageFiles) {
             path = imagesPrefix + imageFiles[i].substr(imagesPath.length);
-            imageCode += "\r\n<img src='" + projectPrefix + path + timePostfix + "'>";
+            imageCode += "\r\n<img src='" + projectPrefix + path + getTimeKey() + "'>";
         }
         imageCode += "</div>";
         // cache it
@@ -401,7 +389,7 @@ ClientCodeLoader = function () {
 
         sprites = getFileListRecursive(imagesPath);
 
-        if (!Config.WebSocketServer.useSpritedImage) {
+        if (!Config.WebSocketServer.useSprite) {
             Logs.log("SPRITESMITH SKIP", Logs.LEVEL_NOTIFY);
             callback(false);
             return;

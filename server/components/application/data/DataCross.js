@@ -5,7 +5,7 @@ DataCross.user = {
     healthRecoveryTime: 30,
 };
 
-DataCross.application = {
+DataCross.app = {
     width: 777,
     height: 500
 };

@@ -10,7 +10,7 @@ SocNet = function () {
 
     this.init = function (afterInitCallBack) {
 
-        Logs.log("SocNet inited", Logs.LEVEL_NOTIFY);
+        Logs.log("SocNet.Init()", Logs.LEVEL_NOTIFY);
         switch (self.getType()) {
             case SocNet.TYPE_VK:
                 self.__proto__ = SocNetVK;

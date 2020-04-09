@@ -910,12 +910,12 @@ let animLightning = function () {
         dom = this.animDoms.pop();
         let lineData = Field.getVisibleLength(p, specId);
         dom.width = lineData.length * DataPoints.BLOCK_WIDTH;
-        dom.height = GUI.getImageHeight('/images/anim-light-1.png');
+        dom.height = Images.getImageHeight('/images/anim-light-1.png');
         if (specId === DataObjects.WITH_LIGHTNING_VERTICAL) {
             dom.rotate = 90;
             dom.x = (p.x) * DataPoints.BLOCK_WIDTH;
             dom.y = (lineData.lower) * DataPoints.BLOCK_HEIGHT
-                - (GUI.getImageHeight('/images/anim-light-1.png') - DataPoints.BLOCK_HEIGHT) / 2;
+                - (Images.getImageHeight('/images/anim-light-1.png') - DataPoints.BLOCK_HEIGHT) / 2;
             /** Rotate from center like a cos&sin*/
             dom.x -= (dom.width - DataPoints.BLOCK_WIDTH) / 2;
             dom.y += (dom.width - DataPoints.BLOCK_WIDTH) / 2;
@@ -924,7 +924,7 @@ let animLightning = function () {
             dom.rotate = 0;
             dom.x = lineData.lower * DataPoints.BLOCK_WIDTH;
             dom.y = p.y * DataPoints.BLOCK_HEIGHT
-                - (GUI.getImageHeight('/images/anim-light-1.png') - DataPoints.BLOCK_HEIGHT) / 2;
+                - (Images.getImageHeight('/images/anim-light-1.png') - DataPoints.BLOCK_HEIGHT) / 2;
         }
         dom.show();
         dom.redraw();
@@ -949,9 +949,9 @@ let animHummerDestroy = function () {
     this.init = function (p) {
         dom = this.animDoms.pop();
         dom.x = p.x * DataPoints.BLOCK_WIDTH
-            - (GUI.getImageWidth(imageUrl) - DataPoints.BLOCK_WIDTH) / 2;
+            - (Images.getImageWidth(imageUrl) - DataPoints.BLOCK_WIDTH) / 2;
         dom.y = p.y * DataPoints.BLOCK_HEIGHT
-            - (GUI.getImageHeight(imageUrl) - DataPoints.BLOCK_HEIGHT) / 2;
+            - (Images.getImageHeight(imageUrl) - DataPoints.BLOCK_HEIGHT) / 2;
         dom.width = null;
         dom.height = null;
         dom.backgroundImage = imageUrl;
@@ -1079,10 +1079,10 @@ let animShuffle = function () {
 
     this.init = function (x, y) {
         dom = this.animDoms.pop();
-        dom.x = x - GUI.getImageWidth('/images/anim-shuffle-1.png') / 2;
-        dom.y = y + DataPoints.BLOCK_HEIGHT / 2 - GUI.getImageHeight('/images/anim-shuffle-1.png') / 2;
-        dom.width = GUI.getImageWidth('/images/anim-shuffle-1.png');
-        dom.height = GUI.getImageHeight('/images/anim-shuffle-1.png');
+        dom.x = x - Images.getImageWidth('/images/anim-shuffle-1.png') / 2;
+        dom.y = y + DataPoints.BLOCK_HEIGHT / 2 - Images.getImageHeight('/images/anim-shuffle-1.png') / 2;
+        dom.width = Images.getImageWidth('/images/anim-shuffle-1.png');
+        dom.height = Images.getImageHeight('/images/anim-shuffle-1.png');
         dom.backgroundImage = '/images/anim-shuffle-1.png';
         dom.opacity = 0.7;
         dom.rotate = 0;

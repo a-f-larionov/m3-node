@@ -284,25 +284,25 @@ GUIDom = function () {
     };
     let redrawBackgroundImage = function () {
         let path;
-        path = GUI.getImagePath(self.backgroundImage);
+        path = Images.getImagePath(self.backgroundImage);
         /** Если размер не задан, пробуем задать его автоматически. */
-        if (!self.width && !self.height && GUI.getImagePath(self.backgroundImage)) {
-            self.width = GUI.getImageWidth(self.backgroundImage);
-            self.height = GUI.getImageHeight(self.backgroundImage);
+        if (!self.width && !self.height && Images.getImagePath(self.backgroundImage)) {
+            self.width = Images.getImageWidth(self.backgroundImage);
+            self.height = Images.getImageHeight(self.backgroundImage);
             props.height.call();
             props.width.call();
         }
 
         dom.style.backgroundImage = 'url(' + path + ')';
         self.backgroundPositionY = self.backgroundPositionY ? self.backgroundPositionY : 0;
-        dom.style.backgroundPositionX = '-' + GUI.getImageX(self.backgroundImage) + 'px';
-        dom.style.backgroundPositionY = '-' + (GUI.getImageY(self.backgroundImage) + self.backgroundPositionY) + 'px';
+        dom.style.backgroundPositionX = '-' + Images.getImageX(self.backgroundImage) + 'px';
+        dom.style.backgroundPositionY = '-' + (Images.getImageY(self.backgroundImage) + self.backgroundPositionY) + 'px';
         dom.style.backgroundRepeat = 'no-repeat';
         if (self.noScale) {
             // double if no sprite...
             dom.style.backgroundSize =
-                (GUI.getImageWidth(self.backgroundImage)) + 'px' + ' ' +
-                (GUI.getImageHeight(self.backgroundImage)) + 'px';
+                (Images.getImageWidth(self.backgroundImage)) + 'px' + ' ' +
+                (Images.getImageHeight(self.backgroundImage)) + 'px';
 
         } else {
             dom.style.backgroundSize =

@@ -35,7 +35,7 @@ Config = {
         port: 1234,
         clientCodePath: '../client/',
         imagesPath: '../public/images/',
-        useSpritedImage: true
+        useSprite: true
     },
     SAPUUser: {
         postsPath: '/var/www/node-framework/other/posts/'

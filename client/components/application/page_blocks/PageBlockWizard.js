@@ -27,15 +27,14 @@ PageBlockWizard = function PageBlockWizard() {
     let dialogBorder = 16;
 
     this.init = function () {
-        let el;
 
         /** Canvas */
         canvas = document.getElementById('wizardArea');
 
         console.log(canvas);
 
-        canvas.width = DataCross.application.width;// * window.devicePixelRatio;
-        canvas.height = DataCross.application.height;// * window.devicePixelRatio;
+        canvas.width = DataCross.app.width;// * window.devicePixelRatio;
+        canvas.height = DataCross.app.height;// * window.devicePixelRatio;
         canvas.style.display = 'none';
         cntx = canvas.getContext('2d');
 
@@ -53,7 +52,7 @@ PageBlockWizard = function PageBlockWizard() {
                 LogicWizard.onClick(el);
             }
         };
-        /** On Move */
+        /** On Mouse Move */
         canvas.onmousemove = function (event) {
             let pixelData, el, x, y;
             x = event.offsetX * window.devicePixelRatio;
@@ -62,8 +61,10 @@ PageBlockWizard = function PageBlockWizard() {
             if (pixelData[3] === 0) {
                 canvas.style.display = 'none';
                 el = document.elementFromPoint(event.offsetX, event.offsetY);
-                el.dispatchEvent(new MouseEvent(event.type, event));
-                canvas.style.cursor = el.style.cursor;
+                if (el) {
+                    el.dispatchEvent(new MouseEvent(event.type, event));
+                    canvas.style.cursor = el.style.cursor;
+                }
                 canvas.style.display = '';
             } else {
                 canvas.style.cursor = '';
@@ -78,8 +79,8 @@ PageBlockWizard = function PageBlockWizard() {
 
         elText = GUI.createElement(ElementText, {
             x: 400 + dialogBorder, y: 360 + dialogBorder,
-            width: GUI.getImageWidth('/images/wizard-dialog.png') - dialogBorder * 2,
-            height: GUI.getImageHeight('/images/wizard-dialog.png'),
+            width: Images.getImageWidth('/images/wizard-dialog.png') - dialogBorder * 2,
+            height: Images.getImageHeight('/images/wizard-dialog.png'),
             alignCenter: true, zIndex: 20001,
             text: 'text'
         });
@@ -88,15 +89,15 @@ PageBlockWizard = function PageBlockWizard() {
 
     let drawBackground = function () {
         cntx.clearRect(0, 0,
-            DataCross.application.width * window.devicePixelRatio,
-            DataCross.application.height * window.devicePixelRatio
+            DataCross.app.width * window.devicePixelRatio,
+            DataCross.app.height * window.devicePixelRatio
         );
         cntx.globalCompositeOperation = 'source-out';
         cntx.globalAlpha = 0.75;
         cntx.fillStyle = 'black';
         cntx.fillRect(0, 0,
-            DataCross.application.width * window.devicePixelRatio,
-            DataCross.application.height * window.devicePixelRatio
+            DataCross.app.width * window.devicePixelRatio,
+            DataCross.app.height * window.devicePixelRatio
         );
     };
 
@@ -178,10 +179,10 @@ PageBlockWizard = function PageBlockWizard() {
     this.draw = function (callback) {
         cntx.globalAlpha = 1;
         cntx.globalCompositeOperation = 'destination-out';
-        callback(cntx, drawImage);
+        callback(drawImage, cntx);
     };
 
-    let drawImage = function (cntx, url, x, y) {
+    let drawImage = function (url, x, y) {
         let image;
         image = new Image();
         image.onload = function () {

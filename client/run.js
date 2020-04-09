@@ -1,6 +1,5 @@
 window.onload = function () {
-    Logs.log('OnLoad raized', Logs.LEVEL_NOTIFY);
-    /* Эмуляция совместимости клиентского и серверного кода. */
+    /** Эмуляция совместимости клиентского и серверного кода. */
     global = window;
     process = {};
     process.exit = function () {
@@ -9,9 +8,7 @@ window.onload = function () {
         throw new Error("server is broken!");
     };
 
-
-    /* Передаем управление вхдоной точки. */
+    /** Передаем управление вхдоной точки. */
     LogicMain = new LogicMain();
     LogicMain.main();
-
 };

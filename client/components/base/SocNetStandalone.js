@@ -10,7 +10,7 @@ SocNetStandalone = function () {
     };
 
     this.getAuthParams = function () {
-        Logs.log("TODO me, SocNetStandalone.getAuthParams", Logs.LEVEL_WARNING);
+        //@todo
         return {
             //some params
         };

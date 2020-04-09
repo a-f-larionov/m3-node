@@ -21,7 +21,7 @@ LogicTimeClient = function () {
         serverTime = timestamp;
         gotTime = (new Date).getTime();
         timeDiff = serverTime - gotTime;
-        Logs.log("Got server time: servertime:" + timestamp + ' gotTime:' + gotTime + ' timeDiff:' + timeDiff, Logs.LEVEL_NOTIFY);
+        Logs.log("Time sync:" + timestamp + ' gotTime:' + gotTime + ' timeDiff:' + timeDiff, Logs.LEVEL_DETAIL);
     };
 
     this.getTime = function () {

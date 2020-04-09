@@ -44,7 +44,6 @@ PageController = function () {
      * @param pagesToShow {Array}
      */
     this.showBlocks = function (pagesToShow) {
-        Logs.log("Pages to show:...", Logs.LEVEL_DETAIL);
         let toShow;
         for (let i in blocks) {
             toShow = false;
