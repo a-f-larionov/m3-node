@@ -40,6 +40,7 @@ DataPoints = function () {
                 "     ",
                 "     ",
                 "     ",
+
                 "□□□□□",
                 "□□□□□",
                 "□□□□□",
@@ -49,6 +50,7 @@ DataPoints = function () {
                 "RRGRR",
                 "GBRBG",
                 "RGBRG",
+
                 "YRPRR",
                 "BYBPB",
                 "RPRBR",

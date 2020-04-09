@@ -1,12 +1,11 @@
-
 WizardFirstStart_1 = {
     init: function () {
         PBWizard.begin();
         PBWizard.updateText('НАЖМИ НА КРАСНЫЙ КРУЖОК ЧТО БЫ НАЧАТЬ ИГРАТЬ');
         PBWizard.showDialog(400, 360, 4);
-        PBWizard.draw(function (drawImage) {
+        PBWizard.draw(function (unlockByImage) {
             let pnt = DataPoints.getPointsCoords()[0];
-            drawImage('/images/wizard-point-circle.png',
+            unlockByImage('/images/wizard-point-circle.png',
                 pnt.x - Images.getWidth('/images/wizard-point-circle.png') / 2
                 + Images.getWidth('/images/map-way-point-red.png') / 2,
                 pnt.y - Images.getHeight('/images/wizard-point-circle.png') / 2
@@ -48,20 +47,24 @@ WizardFirstStart_3 = {
         PBWizard.begin();
         PBWizard.updateText(
             'ПОМЕНЯЙ СОСЕДНИЕ КАМНИ МЕСТАМИ, ЧТОБЫ СОБРАТЬ КАМНИ КРАСНОГО ЦВЕТА');
+        PBWizard.draw(function (unlockByImage, showByImage) {
+            //@todo show goals dialog
+        });
         setTimeout(function () {
+            PBWizard.showHint([{x: 1, y: 3}, {x: 2, y: 3}]);
             PBWizard.showDialog(210, 380, 5, 20);
-            PBWizard.draw(function (drawImage) {
-                let coords = PageBlockField.getFieldCoords();
-                drawImage('/images/wizard-diamond-cell.png',
+            PBWizard.draw(function (unlockByImg, showByImg) {
+                let coords = PageBlockField.getElementField().getCoords();
+                unlockByImg('/images/wizard-diamond-cell.png',
                     coords.x + DataPoints.BLOCK_WIDTH,
                     coords.y + DataPoints.BLOCK_HEIGHT);
-                drawImage('/images/wizard-diamond-cell.png',
+                unlockByImg('/images/wizard-diamond-cell.png',
                     coords.x + DataPoints.BLOCK_WIDTH * 2,
                     coords.y + DataPoints.BLOCK_HEIGHT);
-                drawImage('/images/wizard-diamond-cell.png',
+                showByImg('/images/wizard-diamond-cell.png',
                     coords.x + DataPoints.BLOCK_WIDTH * 3,
                     coords.y + DataPoints.BLOCK_HEIGHT);
-                drawImage('/images/wizard-diamond-cell.png',
+                showByImg('/images/wizard-diamond-cell.png',
                     coords.x + DataPoints.BLOCK_WIDTH * 4,
                     coords.y + DataPoints.BLOCK_HEIGHT);
             });
@@ -76,26 +79,27 @@ WizardFirstStart_4 = {
     init: function () {
         PBWizard.begin();
         PBWizard.updateText(
-            'ТЫ СПРАВИЛСЯ. ДАВАЙ ЕЩЁ!'
+            'У ТЕБЯ ПОЛУЧИЛОСЬ. ДАВАЙ ЕЩЁ!'
         );
         setTimeout(function () {
+            PBWizard.showHint([{x: 3, y: 5}, {x: 3, y: 6}]);
             PBWizard.showDialog(210, 380, 15, 21);
-            PBWizard.draw(function (drawImage) {
-                let coords = PageBlockField.getFieldCoords();
-                drawImage('/images/wizard-diamond-cell.png',
+            PBWizard.draw(function (unlockByImg, showByImg) {
+                let coords = PageBlockField.getElementField().getCoords();
+                showByImg('/images/wizard-diamond-cell.png',
                     coords.x + DataPoints.BLOCK_WIDTH * 2,
                     coords.y + DataPoints.BLOCK_HEIGHT * 3);
-                drawImage('/images/wizard-diamond-cell.png',
+                unlockByImg('/images/wizard-diamond-cell.png',
                     coords.x + DataPoints.BLOCK_WIDTH * 3,
                     coords.y + DataPoints.BLOCK_HEIGHT * 3);
-                drawImage('/images/wizard-diamond-cell.png',
+                showByImg('/images/wizard-diamond-cell.png',
                     coords.x + DataPoints.BLOCK_WIDTH * 4,
                     coords.y + DataPoints.BLOCK_HEIGHT * 3);
-                drawImage('/images/wizard-diamond-cell.png',
+                unlockByImg('/images/wizard-diamond-cell.png',
                     coords.x + DataPoints.BLOCK_WIDTH * 3,
                     coords.y + DataPoints.BLOCK_HEIGHT * 4);
             });
-        }, Config.OnIdle.second / 500);
+        }, Config.OnIdle.second * 1.500);
     },
     onDestroyLine: function (line) {
         PBWizard.finish();

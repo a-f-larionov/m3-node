@@ -11,6 +11,7 @@ PageBlockField = function PageBlockField() {
      */
     let showed = false;
 
+    /** @type {ElementField} */
     let elementField = null;
 
     let elementScore = null;
@@ -399,7 +400,7 @@ PageBlockField = function PageBlockField() {
     this.finishLevel = function () {
         let pointId, user, lastScore;
         stuffMode = null;
-        Logs.log("finishLevel", Logs.LEVEL_DETAIL);
+        Logs.log("finishLevel()", Logs.LEVEL_DETAIL);
         user = LogicUser.getCurrentUser();
         pointId = DataPoints.getPlayedId();
         lastScore = DataPoints.getScore(pointId);
@@ -481,9 +482,8 @@ PageBlockField = function PageBlockField() {
         self.redraw();
     };
 
-    this.getFieldCoords = function () {
-        elementField.redraw();
-        return elementField.getCoords();
+    this.getElementField = function () {
+        return elementField;
     }
 };
 

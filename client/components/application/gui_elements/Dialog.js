@@ -75,8 +75,10 @@ Dialog = function () {
                     {type: GUI.ANIM_TYPE_MOVE, vX: 0, vY: 15, duration: 38},
                     {
                         type: GUI.ANIM_TYPE_STOP, callback: function () {
+                            console.log('callbacl');
                         }
                     },
+
                     {type: GUI.ANIM_TYPE_MOVE, vX: 0, vY: -15, duration: 38},
                     {
                         type: GUI.ANIM_TYPE_STOP, callback: onCloseFinished
@@ -155,14 +157,13 @@ Dialog = function () {
     };
 
     this.closeDialog = function () {
-        /**
-         * - Запуск прятания диалога
-         */
+        /** - Запуск прятания диалога */
         dom.animData[0].frameN = 2;
         dom.animPlayed = true;
     };
 
     let onCloseFinished = function () {
+        console.log('finidhed');
         self.dialogShowed = false;
         /**
          * Показать диалог из очереди

@@ -7,6 +7,8 @@ ElementField = function () {
 
     let lock = true;
 
+    let lockHint = false;
+
     /**
      * Показывать ли элемент.
      * @type {boolean}
@@ -528,7 +530,6 @@ ElementField = function () {
      * @param layers {Object}
      */
     this.setLayers = function (layers) {
-        //console.log('set layers', layers);
         let copyLayer = function (source, callback) {
             let out;
             out = [];
@@ -617,14 +618,15 @@ ElementField = function () {
 
     let tryShowHint = function () {
         setTimeout(function () {
-            if (self.isFieldSilent() && !lock && showed && !stopHint && !stopPolyColorAnim) {
-                //console.log('show hint', stopHint);
+            if (self.isFieldSilent() && !lock && showed && !stopHint && !stopPolyColorAnim && !lockHint) {
                 let allTurns = Field.countTurns();
-                let stopFunc = animate(animHint, [allTurns[0].a, allTurns[0].b]);
-                stopHint = function () {
-                    stopHint = null;
-                    stopFunc();
-                    tryShowHint();
+                if (allTurns.length) {
+                    let stopFunc = animate(animHint, [allTurns[0].a, allTurns[0].b]);
+                    stopHint = function () {
+                        stopHint = null;
+                        stopFunc();
+                        tryShowHint();
+                    }
                 }
             }
         }, Config.OnIdle.second * 3);
@@ -865,18 +867,34 @@ ElementField = function () {
             //console.log('call stop anim', timerId, animObj.constructor.name);
             stopAnim();
         };
-    }
+    };
 
     this.getCoords = function () {
         return {
-            x: self.x,
+            x: self.x + (visibleOffsetX) * DataPoints.BLOCK_WIDTH,
             y: self.y + (visibleOffsetY - 1) * DataPoints.BLOCK_HEIGHT,
-            fieldX: self.x,
-            fieldY: self.y,
-            visibleOffsetX: visibleOffsetX,
-            visibleOffsetY: visibleOffsetY
         }
-    }
+    };
+
+    this.lockHint = function () {
+        lockHint = true;
+        if (stopHint) stopHint();
+    };
+
+    this.unlockHint = function () {
+        lockHint = false;
+        if (stopHint) {
+            stopHint();
+            stopHint = false;
+            tryShowHint();
+        }
+    };
+
+    this.showHint = function (pList) {
+        console.log(pList);
+        if (stopHint) stopHint();
+        stopHint = animate(animHint, pList);
+    };
 };
 
 let animChangeAndBack = function animChangeAndBack() {
@@ -1109,6 +1127,7 @@ let animHint = function () {
 
     this.init = function (pList) {
         this.noAnimLock = true;
+        console.log('start anim');
         doms = [];
         pList.forEach(function (p) {
             doms.push(this.gemDoms[p.x][p.y]);
@@ -1124,7 +1143,8 @@ let animHint = function () {
     };
 
     this.finish = function () {
-        //console.log('finish hint', AnimLocker.busy());
+        console.log(arguments);
+        console.log('finish hint', AnimLocker.busy());
     }
 };
 

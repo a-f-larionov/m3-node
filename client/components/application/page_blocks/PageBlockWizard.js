@@ -11,6 +11,8 @@ PageBlockWizard = function PageBlockWizard() {
      */
     let showed = false;
 
+    let images = {};
+
     /**
      * Массив всех элементов страницы.
      * @type {Array}
@@ -147,6 +149,7 @@ PageBlockWizard = function PageBlockWizard() {
     };
 
     this.begin = function () {
+        PageBlockField.getElementField().lockHint();
         canvas.style.display = '';
         drawBackground();
     };
@@ -155,6 +158,12 @@ PageBlockWizard = function PageBlockWizard() {
         canvas.style.display = 'none';
         elDialog.hide();
         elText.hide();
+        PageBlockField.getElementField().unlockHint();
+    };
+
+    this.showHint = function (p) {
+
+        PageBlockField.getElementField().showHint(p);
     };
 
     this.updateText = function (text) {
@@ -178,18 +187,36 @@ PageBlockWizard = function PageBlockWizard() {
     };
 
     this.draw = function (callback) {
-        cntx.globalAlpha = 1;
-        cntx.globalCompositeOperation = 'destination-out';
-        callback(drawImage, cntx);
+        callback(unlockByImage, showByImage, cntx);
     };
 
-    let drawImage = function (url, x, y) {
+    let unlockByImage = function (url, x, y) {
         let image;
-        image = new Image();
-        image.onload = function () {
-            cntx.drawImage(image, x, y, Images.getWidth(url), Images.getHeight(url));
-        };
-        image.src = url;
+        cntx.globalAlpha = 1;
+        cntx.globalCompositeOperation = 'destination-out';
+        if (!images[url]) {
+            images[url] = new Image();
+            images[url].onload = function () {
+                unlockByImage(url, x, y);
+            };
+            images[url].src = url;
+            return;
+        }
+        cntx.drawImage(images[url], x, y, Images.getWidth(url), Images.getHeight(url));
+    };
+
+    let showByImage = function (url, x, y) {
+        cntx.globalAlpha = 0.99;
+        cntx.globalCompositeOperation = 'destination-out';
+        if (!images[url]) {
+            images[url] = new Image();
+            images[url].onload = function () {
+                showByImage(url, x, y);
+            };
+            images[url].src = url;
+            return;
+        }
+        cntx.drawImage(images[url], x, y, Images.getWidth(url), Images.getHeight(url));
     }
 };
 

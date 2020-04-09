@@ -105,7 +105,7 @@ ApiRouter = new (function () {
     };
 
     this.onDisconnect = function (id) {
-        Logs.log("connection close: id=" + id, Logs.LEVEL_DETAIL);
+        Logs.log("connection close: id=" + id, Logs.LEVEL_WARNING);
         for (let i in onDisconnectCallbacks) {
             onDisconnectCallbacks[i].call(self, connections[id]);
         }

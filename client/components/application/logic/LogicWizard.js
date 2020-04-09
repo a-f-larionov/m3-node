@@ -35,28 +35,6 @@ LogicWizard = function LogicWizard() {
 LogicWizard = new LogicWizard();
 
 
-WizardLevel2_1 = {
-    init: function () {
-        PBWizard.begin();
-        PBWizard.updateText(
-            'ТЫ СПРАВИЛСЯ. ДАВАЙ ЕЩЁ!'
-        );
-        setTimeout(function () {
-            PBWizard.showDialog(210, 380, 15, 21);
-            PBWizard.draw(function (drawImage) {
-            });
-        });
-    },
-    onDestroyLine: function () {
-        LogicWizard.start(WizardLevel2_2);
-    }
-};
-//2 level
-// Собрав ряд из 4ёх камней, полушь камень с молнией.
-
-// Взорви камень с молнией, что бы использовать её.
-
-
 //3 level
 // Собери 5 камней в ряд, что бы получить звезду
 
