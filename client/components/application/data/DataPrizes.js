@@ -15,8 +15,8 @@ DataPrizes = function () {
             case DataPrizes.PRIZE_STUFF_SHUFFLE:
                 LogicStuff.giveAShuffle(prize.count);
                 break;
-            case DataPrizes.PRIZE_STUFF_LIGHTING:
-                LogicStuff.giveALighting(prize.count);
+            case DataPrizes.PRIZE_STUFF_LIGHTNING:
+                LogicStuff.giveALighnting(prize.count);
                 break;
             case DataPrizes.PRIZE_STUFF_GOLD:
                 LogicStuff.giveAGold(prize.count);
@@ -36,8 +36,8 @@ DataPrizes = function () {
             case DataPrizes.PRIZE_STUFF_SHUFFLE:
                 src = '/images/button-shuffle-rest.png';
                 break;
-            case DataPrizes.PRIZE_STUFF_LIGHTING:
-                src = '/images/button-lighting-rest.png';
+            case DataPrizes.PRIZE_STUFF_LIGHTNING:
+                src = '/images/button-lightning-rest.png';
                 break;
         }
         return src;
@@ -48,6 +48,6 @@ DataPrizes = new DataPrizes;
 
 DataPrizes.PRIZE_STUFF_HUMMER = 1;
 DataPrizes.PRIZE_STUFF_SHUFFLE = 2;
-DataPrizes.PRIZE_STUFF_LIGHTING = 3;
+DataPrizes.PRIZE_STUFF_LIGHTNING = 3;
 
 DataPrizes.PRIZE_STUFF_GOLD = 100;

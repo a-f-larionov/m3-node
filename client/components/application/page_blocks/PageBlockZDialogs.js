@@ -124,6 +124,8 @@ PageBlockZDialogs = function PageBlockZDialogs() {
 };
 
 /**
- * @type {PageBlockZDialogs}
+ * @type {PageBLockZDialogs}
  */
 PageBlockZDialogs = new PageBlockZDialogs();
+
+PBZDialogs = PageBlockZDialogs;

@@ -4,7 +4,7 @@ LogicStuff = function () {
     let stuff = {};
 
     this.STUFF_HUMMER = 1;
-    this.STUFF_LIGHTING = 2;
+    this.STUFF_LIGHTNING = 2;
     this.STUFF_SHUFFLE = 3;
 
     this.STUFF_GOLD = 100;
@@ -35,8 +35,8 @@ LogicStuff = function () {
         stuff['shuffleQty']--;
     };
 
-    this.usedLighting = function () {
-        stuff['lightingQty']--;
+    this.usedlightning = function () {
+        stuff['lightningQty']--;
     };
 
     this.usedGold = function (quantity) {
@@ -51,8 +51,8 @@ LogicStuff = function () {
         stuff['shuffleQty'] += quantity;
     };
 
-    this.giveALighting = function (quantity) {
-        stuff['lightingQty'] += quantity;
+    this.giveALighnting = function (quantity) {
+        stuff['lightningQty'] += quantity;
     };
 
     this.giveAGold = function (quantity) {

@@ -94,7 +94,7 @@ PageBlockWizard = function PageBlockWizard() {
             DataCross.app.height * window.devicePixelRatio
         );
         cntx.globalCompositeOperation = 'source-out';
-        cntx.globalAlpha = 0.75;
+        cntx.globalAlpha = 0.55;
         cntx.fillStyle = 'black';
         cntx.fillRect(0, 0,
             DataCross.app.width * window.devicePixelRatio,
@@ -195,3 +195,5 @@ PageBlockWizard = function PageBlockWizard() {
 
 /** @type {PageBlockWizard} */
 PageBlockWizard = new PageBlockWizard();
+
+PBWizard = PageBlockWizard;

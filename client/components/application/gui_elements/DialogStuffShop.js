@@ -76,8 +76,8 @@ DialogStuffShop = function () {
                 case LogicStuff.STUFF_HUMMER:
                     data = DataShop.hummers;
                     break;
-                case LogicStuff.STUFF_LIGHTING:
-                    data = DataShop.lighting;
+                case LogicStuff.STUFF_LIGHTNING:
+                    data = DataShop.lightning;
                     break;
                 case LogicStuff.STUFF_SHUFFLE:
                     data = DataShop.shuffle;
@@ -109,15 +109,15 @@ DialogStuffShop = function () {
                 giveFunc = LogicStuff.giveAShuffle;
                 shopItem = DataShop.shuffle[itemIndex];
                 break;
-            case LogicStuff.STUFF_LIGHTING:
-                buyFunc = SAPIStuff.buyLighting;
-                giveFunc = LogicStuff.giveALighting;
-                shopItem = DataShop.lighting[itemIndex];
+            case LogicStuff.STUFF_LIGHTNING:
+                buyFunc = SAPIStuff.buylightning;
+                giveFunc = LogicStuff.giveALighnting;
+                shopItem = DataShop.lightning[itemIndex];
                 break;
         }
 
         if (userGold < shopItem.gold) {
-            PageBlockZDialogs.dialogMoneyShop.showDialog();
+            PBZDialogs.dialogMoneyShop.showDialog();
             self.reset();
             self.showDialog(stuffId);
         } else {

@@ -29,7 +29,7 @@ DataPoints = function () {
     this.objectImages[DataObjects.OBJECT_CHAIN] = '/images/field-chain.png';
     this.objectImages[DataObjects.OBJECT_BOX] = '/images/field-box.png';
 
-    /** Gem-lighting images */
+    /** Gem-lightning images */
     this.objectImages[DataObjects.WITH_LIGHTNING_VERTICAL] = '/images/spec-light-ver-1.png';
     this.objectImages[DataObjects.WITH_LIGHTNING_HORIZONTAL] = '/images/spec-light-hor-1.png';
     this.objectImages[DataObjects.WITH_LIGHTNING_CROSS] = '/images/spec-light-cross-1.png';

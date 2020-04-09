@@ -38,17 +38,21 @@ DataPoints = function () {
         layers: {
             mask: [
                 "     ",
+                "     ",
+                "     ",
                 "□□□□□",
                 "□□□□□",
                 "□□□□□",
                 "□□□□□",
             ],
             gems: [
-                "HHHHH",
+                "RRGRR",
+                "GBRBG",
+                "RGBRG",
                 "YRPRR",
                 "BYBPB",
                 "RPRBR",
-                "YPBRB",
+                "YRBRB",
             ],
             special: [
                 "*****",
@@ -64,41 +68,37 @@ DataPoints = function () {
         score3: 300,
         goals: [
             {
-                id: DataObjects.OBJECT_OCTOPUS,
-                count: 6
+                id: DataObjects.OBJECT_PURPLE,
+                count: 12
             }
         ],
         layers: {
             mask: [
                 "        ",
-                "  □□□□  ",
-                "  □□□□  ",
+                "        ",
+                "        ",
+                "        ",
+
+                " □□□□□□ ",
                 "□□□□□□□□",
                 "□□□□□□□□",
                 "□□□□□□□□",
-                "  □□□□  ",
-                "  □□□□  ",
+                " □□□□□□ ",
             ],
             gems: [
-                "RGBYPRGB",
-                "PRPYRPRG",
-                "RYPBGBYR",
-                "GPYBPYBG",
-                "BYPGYPRB",
-                "PPYPPYBP",
-                "PRGPGYGB",
-                "RGBYPRGB",
+                "RGBPPRGP",
+                "RGBPPRGP",
+                "GPYPPYPP",
+                "RGRPPRGB",
+
+                "RGBPPRGB",
+                "PRPPRPRG",
+                "RPPBGPGR",
+                "GPYPPYPG",
+                "BYPGPPBB",
             ],
             special: [[
                 "********",
-                "        ",
-                "        ",
-                "   ᴥᴥᴥ  ",
-                "        ",
-                "        ",
-                "   ᴥᴥᴥ  ",
-                "        ",
-                "        ",
             ]],
         }
     };

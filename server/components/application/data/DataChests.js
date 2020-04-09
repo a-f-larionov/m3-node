@@ -45,7 +45,7 @@ DataChests = function () {
                     count: 5
                 },
                 {
-                    id: DataPrizes.PRIZE_STUFF_LIGHTING,
+                    id: DataPrizes.PRIZE_STUFF_LIGHTNING,
                     count: 5
                 }
             ]

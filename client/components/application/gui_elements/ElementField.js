@@ -95,8 +95,6 @@ ElementField = function () {
      */
     this.init = function () {
         let dom;
-        window.elf = this;
-
 
         container = GUI.createDom(undefined, {
             width: DataPoints.FIELD_MAX_WIDTH * DataPoints.BLOCK_WIDTH,
@@ -110,9 +108,7 @@ ElementField = function () {
         container.bind(GUI.EVENT_MOUSE_MOUSE_UP, onGemMouseUp, container);
         container.bind(GUI.EVENT_MOUSE_OVER, onGemMouseOver, container);
         container.bind(GUI.EVENT_MOUSE_OUT, onGemMouseOut, container);
-        //@todo
-        //domContainer.bind(GUI.EVENT_MOUSE_MOUSE_TOUCH_START, onGemTouchStart, domContainer);
-        //domContainer.bind(GUI.EVENT_MOUSE_MOUSE_TOUCH_END, onGemTouchEnd, domContainer);
+
         /**
          * Create mask layer cells
          */
@@ -208,7 +204,7 @@ ElementField = function () {
             case LogicStuff.STUFF_SHUFFLE:
                 shuffleAct(p);
                 break;
-            case LogicStuff.STUFF_LIGHTING:
+            case LogicStuff.STUFF_LIGHTNING:
                 lightningAct(p);
                 break;
             default:
@@ -504,7 +500,7 @@ ElementField = function () {
                 /** Spider green */
                 if (cell.isVisible && object.withOctopus) {
                     specDom = specDoms2[spec2Index++];
-                    drawCell(specDom, x, y, DataObjects.OBJECT_OCTOPUS,'');
+                    drawCell(specDom, x, y, DataObjects.OBJECT_OCTOPUS, '');
                     gemDom.bindedDoms = specDom;
                 } else {
                     gemDom.bindedDoms = null;
@@ -568,21 +564,21 @@ ElementField = function () {
          * \    \
          * \____b
          */
-        let aCorner, bCorner;
-        aCorner = {x: Infinity, y: Infinity};
-        bCorner = {x: -Infinity, y: -Infinity};
-        Field.eachCell(function (x, y) {
-            if (Field.isVisible({x: x, y: y})) {
-                aCorner.x = Math.min(aCorner.x, x);
-                aCorner.y = Math.min(aCorner.y, y);
-                bCorner.x = Math.max(bCorner.x, x);
-                bCorner.y = Math.max(bCorner.y, y);
+        let minCorner, maxCorner;
+        minCorner = {x: Infinity, y: Infinity};
+        maxCorner = {x: -Infinity, y: -Infinity};
+        Field.eachCell(function (x, y, cell) {
+            if (cell.isVisible) {
+                minCorner.x = Math.min(minCorner.x, x);
+                minCorner.y = Math.min(minCorner.y, y);
+                maxCorner.x = Math.max(maxCorner.x, x);
+                maxCorner.y = Math.max(maxCorner.y, y);
             }
         });
-        visibleWidth = bCorner.x - aCorner.x + 1;
-        visibleHeight = bCorner.y - aCorner.y + 1;
-        visibleOffsetX = aCorner.x;
-        visibleOffsetY = aCorner.y;
+        visibleWidth = maxCorner.x - minCorner.x + 1;
+        visibleHeight = maxCorner.y - minCorner.y + 1;
+        visibleOffsetX = minCorner.x;
+        visibleOffsetY = minCorner.y;
 
         /** Update some coords */
         self.x = self.centerX - DataPoints.BLOCK_WIDTH / 2
@@ -621,7 +617,6 @@ ElementField = function () {
 
     let tryShowHint = function () {
         setTimeout(function () {
-            //console.log('try show hint');
             if (self.isFieldSilent() && !lock && showed && !stopHint && !stopPolyColorAnim) {
                 //console.log('show hint', stopHint);
                 let allTurns = Field.countTurns();
@@ -631,10 +626,8 @@ ElementField = function () {
                     stopFunc();
                     tryShowHint();
                 }
-            } else {
-                //console.log('skip show hint');
             }
-        }, Config.OnIdle.animateInterval * 90);
+        }, Config.OnIdle.second * 3);
     };
 
     this.isFieldSilent = function () {
@@ -763,7 +756,6 @@ ElementField = function () {
         self.redraw();
     };
 
-
     let removeBlock = function (nearP, nearCell) {
         //@todo animBoxDetroyed
         if (nearCell.object.withBox && !nearCell.object.withChain) {
@@ -873,6 +865,17 @@ ElementField = function () {
             //console.log('call stop anim', timerId, animObj.constructor.name);
             stopAnim();
         };
+    }
+
+    this.getCoords = function () {
+        return {
+            x: self.x,
+            y: self.y + (visibleOffsetY - 1) * DataPoints.BLOCK_HEIGHT,
+            fieldX: self.x,
+            fieldY: self.y,
+            visibleOffsetX: visibleOffsetX,
+            visibleOffsetY: visibleOffsetY
+        }
     }
 };
 

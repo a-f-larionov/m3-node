@@ -157,7 +157,7 @@ CREATE TABLE `users_stuff` (
   `userId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `hummerQty` int(11) unsigned NOT NULL DEFAULT '0',
   `shuffleQty` int(11) unsigned NOT NULL DEFAULT '0',
-  `lightingQty` int(11) unsigned NOT NULL DEFAULT '0',
+  `lightningQty` int(11) unsigned NOT NULL DEFAULT '0',
   `goldQty` int(11) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`userId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

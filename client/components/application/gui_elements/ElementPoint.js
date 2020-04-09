@@ -220,7 +220,7 @@ ElementPoint = function () {
         dom.y = self.y;
 
         elText.x = 9;
-        elText.y = 16.5;
+        elText.y = 15;
         elText.text = self.pointId.toString();
 
         redrawStars();

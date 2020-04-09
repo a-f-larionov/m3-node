@@ -27,12 +27,12 @@ SAPIStuff = function () {
         DataStuff.usedShuffle(cntx.user.id, LogicTid.getOne());
     };
 
-    this.usedLighting = function (cntx) {
+    this.usedlightning = function (cntx) {
         if (!cntx.isAuthorized) return Logs.log(arguments.callee.name + " not authorized", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
 
-        DataStuff.usedLighting(cntx.user.id, LogicTid.getOne());
+        DataStuff.usedlightning(cntx.user.id, LogicTid.getOne());
     };
 
     this.buyHummer = function (cntx, itemIndex) {
@@ -63,17 +63,17 @@ SAPIStuff = function () {
         });
     };
 
-    this.buyLighting = function (cntx, itemIndex) {
+    this.buylightning = function (cntx, itemIndex) {
         if (!cntx.isAuthorized) return Logs.log(arguments.callee.name + " not authorized", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
 
-        if (!DataShop.lighting[itemIndex]) return Logs.log("no item hummer " + itemIndex, Logs.LEVEL_WARNING, cntx);
+        if (!DataShop.lightning[itemIndex]) return Logs.log("no item hummer " + itemIndex, Logs.LEVEL_WARNING, cntx);
 
         let tid;
-        DataStuff.usedGold(cntx.user.id, DataShop.lighting[itemIndex].gold, tid = LogicTid.getOne(), function (success) {
+        DataStuff.usedGold(cntx.user.id, DataShop.lightning[itemIndex].gold, tid = LogicTid.getOne(), function (success) {
             if (success)
-                DataStuff.giveALighting(cntx.user.id, DataShop.lighting[itemIndex].quantity, tid);
+                DataStuff.giveAlightning(cntx.user.id, DataShop.lightning[itemIndex].quantity, tid);
         });
     };
 

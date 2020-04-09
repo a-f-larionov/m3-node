@@ -46,7 +46,7 @@ PageBlockField = function PageBlockField() {
         let el, oX, oY;
 
         /** Игровое поле */
-        el = GUI.createElement(ElementField, {
+        elementField = GUI.createElement(ElementField, {
             centerX: 388.5, centerY: 250,
 
             onDestroyLine: self.onDestroyLine,
@@ -60,8 +60,7 @@ PageBlockField = function PageBlockField() {
             onFieldSilent: self.onFieldSilent
 
         });
-        elementField = el;
-        self.elements.push(el);
+        self.elements.push(elementField);
 
         /** Кнопка выхода */
         el = GUI.createElement(ElementButton, {
@@ -71,9 +70,9 @@ PageBlockField = function PageBlockField() {
             srcActive: '/images/button-quit-active.png',
             onClick: function () {
                 if (turns === 0) {
-                    PageBlockZDialogs.dialogTurnsLoose.reset();
+                    PBZDialogs.dialogTurnsLoose.reset();
                 } else {
-                    PageBlockZDialogs.dialogJustQuit.showDialog();
+                    PBZDialogs.dialogJustQuit.showDialog();
                 }
             }
         });
@@ -161,15 +160,15 @@ PageBlockField = function PageBlockField() {
         });
         self.elements.push(el);
 
-        /** stuff lighting */
+        /** stuff lightning */
         el = GUI.createElement(ElementStuffButton, {
             x: 650, y: 280,
-            fieldName: 'lightingQty',
-            srcRest: '/images/button-lighting-rest.png',
-            srcHover: '/images/button-lighting-hover.png',
-            srcActive: '/images/button-lighting-active.png',
+            fieldName: 'lightningQty',
+            srcRest: '/images/button-lightning-rest.png',
+            srcHover: '/images/button-lightning-hover.png',
+            srcActive: '/images/button-lightning-active.png',
             onClick: function () {
-                self.setStuffMode(LogicStuff.STUFF_LIGHTING);
+                self.setStuffMode(LogicStuff.STUFF_LIGHTNING);
             }
         });
         self.elements.push(el);
@@ -194,7 +193,10 @@ PageBlockField = function PageBlockField() {
             srcHover: '/images/button-reload-field-hover.png',
             srcActive: '/images/button-reload-field-active.png',
             onClick: function () {
-                CAPIMap.setCallbackOnMapsInfo(loadField);
+                CAPIMap.setCallbackOnMapsInfo(function () {
+                    PageController.showPage(PageMain);
+                    PageController.showPage(PageField);
+                });
                 SAPIMap.reloadLevels();
                 SAPIMap.sendMeMapInfo(DataMap.getCurent().id);
             }
@@ -261,6 +263,7 @@ PageBlockField = function PageBlockField() {
         }
         self.firstShow();
         if (false
+            || SocNet.getType() === SocNet.TYPE_STANDALONE
             || LogicUser.getCurrentUser().id === 1
             || LogicUser.getCurrentUser().socNetUserId === 1
         ) {
@@ -303,16 +306,17 @@ PageBlockField = function PageBlockField() {
 
     this.firstShow = function () {
         let data;
+        console.log('first');
         elementField.unlock();
         elementField.run();
         data = DataPoints.getById(DataPoints.getPlayedId());
-        PageBlockZDialogs.dialogGoals.setGoals(data.goals);
-        PageBlockZDialogs.dialogGoals.showDialog();
+        PBZDialogs.dialogGoals.setGoals(data.goals);
+        PBZDialogs.dialogGoals.showDialog();
         setTimeout(function () {
-            PageBlockZDialogs.dialogGoals.closeDialog();
-        }, Config.OnIdle.animateInterval * 83
-        );
+            PBZDialogs.dialogGoals.closeDialog();
+        }, Config.OnIdle.second * 4);
         noMoreGoals = false;
+        LogicWizard.onFieldFirstShow();
     };
 
     this.redraw = function () {
@@ -414,7 +418,7 @@ PageBlockField = function PageBlockField() {
         //@todo
         SAPIUser.onPlayFinish();
         //PageBlockPanel.oneHealthHide =false;
-        PageBlockZDialogs.dialogGoalsReached.showDialog(pointId);
+        PBZDialogs.dialogGoalsReached.showDialog(pointId);
         PageController.redraw();
     };
 
@@ -423,7 +427,7 @@ PageBlockField = function PageBlockField() {
         // and goals
         if (turns === 0 && !noMoreGoals) {
             elementField.lock();
-            PageBlockZDialogs.dialogTurnsLoose.showDialog();
+            PBZDialogs.dialogTurnsLoose.showDialog();
         }
         self.redraw();
     };
@@ -434,9 +438,9 @@ PageBlockField = function PageBlockField() {
                 SAPIStuff.usedHummer();
                 LogicStuff.usedHummer();
                 break;
-            case LogicStuff.STUFF_LIGHTING:
-                SAPIStuff.usedLighting();
-                LogicStuff.usedLighting();
+            case LogicStuff.STUFF_LIGHTNING:
+                SAPIStuff.usedlightning();
+                LogicStuff.usedlightning();
                 break;
             case LogicStuff.STUFF_SHUFFLE:
                 SAPIStuff.usedShuffle();
@@ -452,21 +456,21 @@ PageBlockField = function PageBlockField() {
         switch (mode) {
             case LogicStuff.STUFF_HUMMER:
                 if (LogicStuff.getStuff('hummerQty') < 1) {
-                    PageBlockZDialogs.dialogStuffShop.showDialog(mode);
+                    PBZDialogs.dialogStuffShop.showDialog(mode);
                     return;
                 }
                 domStuff.backgroundImage = '/images/button-hummer-active.png';
                 break;
-            case LogicStuff.STUFF_LIGHTING:
-                if (LogicStuff.getStuff('lightingQty') < 1) {
-                    PageBlockZDialogs.dialogStuffShop.showDialog(mode);
+            case LogicStuff.STUFF_LIGHTNING:
+                if (LogicStuff.getStuff('lightningQty') < 1) {
+                    PBZDialogs.dialogStuffShop.showDialog(mode);
                     return;
                 }
-                domStuff.backgroundImage = '/images/button-lighting-active.png';
+                domStuff.backgroundImage = '/images/button-lightning-active.png';
                 break;
             case LogicStuff.STUFF_SHUFFLE:
                 if (LogicStuff.getStuff('shuffleQty') < 1) {
-                    PageBlockZDialogs.dialogStuffShop.showDialog(mode);
+                    PBZDialogs.dialogStuffShop.showDialog(mode);
                     return;
                 }
                 domStuff.backgroundImage = '/images/button-shuffle-active.png';
@@ -479,10 +483,7 @@ PageBlockField = function PageBlockField() {
 
     this.getFieldCoords = function () {
         elementField.redraw();
-        return {
-            x: elementField.x,
-            y: elementField.y
-        };
+        return elementField.getCoords();
     }
 };
 

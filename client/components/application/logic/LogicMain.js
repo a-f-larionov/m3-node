@@ -55,10 +55,11 @@ LogicMain = function () {
                 LogicUser.getCurrentUser().nextPointId
             )
         );
-        /** Проверка визарада начала игры */
-        LogicWizard.onAuthorizeSuccess();
 
         /** Первый показ игры: Главная страница */
         PageController.showPage(PageMain);
+
+        /** Проверка визарада начала игры */
+        LogicWizard.onAuthorizeSuccess();
     };
 };

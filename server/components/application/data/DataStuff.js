@@ -10,7 +10,7 @@ DataStuff = function () {
         if (data.userId) data.userId = parseInt(data.userId);
         if (data.hummerQty) data.hummerQty = parseInt(data.hummerQty);
         if (data.shuffleQty) data.shuffleQty = parseInt(data.shuffleQty);
-        if (data.lightingQty) data.lightingQty = parseInt(data.lightingQty);
+        if (data.lightningQty) data.lightningQty = parseInt(data.lightningQty);
         return data;
     };
 
@@ -27,7 +27,7 @@ DataStuff = function () {
             userId: userId,
             hummerQty: 0,
             shuffleQty: 0,
-            lightingQty: 0,
+            lightningQty: 0,
             goldQty: 0
         };
         DB.insert(tableName, data, function (result) {
@@ -95,8 +95,8 @@ DataStuff = function () {
         decrementStuff('shuffleQty', userId, 1, tid, callback)
     };
 
-    this.usedLighting = function (userId, tid, callback) {
-        decrementStuff('lightingQty', userId, 1, tid, callback)
+    this.usedlightning = function (userId, tid, callback) {
+        decrementStuff('lightningQty', userId, 1, tid, callback)
     };
 
     this.giveAGold = function (userId, quantity, tid) {
@@ -111,8 +111,8 @@ DataStuff = function () {
         incrementStuff('shuffleQty', userId, quantity, tid);
     };
 
-    this.giveALighting = function (userId, quantity, tid) {
-        incrementStuff('lightingQty', userId, quantity, tid);
+    this.giveAlightning = function (userId, quantity, tid) {
+        incrementStuff('lightningQty', userId, quantity, tid);
     };
 };
 

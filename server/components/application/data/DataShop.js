@@ -65,21 +65,21 @@ DataShop.shuffle = [
 ];
 
 
-DataShop.lighting = [
+DataShop.lightning = [
     {
         gold: 10,
         quantity: 3,
-        imageSrc: '/images/shop-lighting-1.png',
+        imageSrc: '/images/shop-lightning-1.png',
     },
     {
         gold: 15,
         quantity: 6,
-        imageSrc: '/images/shop-lighting-2.png',
+        imageSrc: '/images/shop-lightning-2.png',
     },
     {
         gold: 30,
         quantity: 9,
-        imageSrc: '/images/shop-lighting-3.png',
+        imageSrc: '/images/shop-lightning-3.png',
     }
 ];
 
