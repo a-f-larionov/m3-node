@@ -57,9 +57,6 @@ WizardFirstStart_1 = {
         PageBlockWizard.updateText('НАЖМИ НА КРАСНЫЙ КРУЖОК ЧТО БЫ НАЧАТЬ ИГРАТЬ');
         PageBlockWizard.showDialog(400, 360, 4);
         PageBlockWizard.draw(function (drawImage) {
-            drawImage();
-        });
-        PageBlockWizard.draw(function (drawImage) {
             let pnt = DataPoints.getPointsCoords()[0];
             drawImage('/images/wizard-point-circle.png',
                 pnt.x - Images.getWidth('/images/wizard-point-circle.png') / 2

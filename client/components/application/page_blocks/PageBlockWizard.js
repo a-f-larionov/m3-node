@@ -33,8 +33,9 @@ PageBlockWizard = function PageBlockWizard() {
 
         console.log(canvas);
 
-        canvas.width = DataCross.app.width;// * window.devicePixelRatio;
-        canvas.height = DataCross.app.height;// * window.devicePixelRatio;
+        canvas.width = DataCross.app.width;
+        canvas.height = DataCross.app.height;
+
         canvas.style.display = 'none';
         cntx = canvas.getContext('2d');
 
@@ -186,7 +187,7 @@ PageBlockWizard = function PageBlockWizard() {
         let image;
         image = new Image();
         image.onload = function () {
-            cntx.drawImage(image, x * window.devicePixelRatio, y * window.devicePixelRatio);
+            cntx.drawImage(image, x, y, Images.getWidth(url), Images.getHeight(url));
         };
         image.src = url;
     }
