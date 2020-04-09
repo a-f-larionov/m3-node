@@ -618,6 +618,7 @@ ElementField = function () {
 
     let tryShowHint = function () {
         setTimeout(function () {
+            console.log('try hint');
             if (self.isFieldSilent() && !lock && showed && !stopHint && !stopPolyColorAnim && !lockHint) {
                 let allTurns = Field.countTurns();
                 if (allTurns.length) {
