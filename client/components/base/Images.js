@@ -5,24 +5,24 @@ Images = function () {
      * @param url
      * @returns {*}
      */
-    this.getImagePath = function (url) {
-        return this.getImageMetaData(url).path;
+    this.getPath = function (url) {
+        return this.getMeta(url).path;
     };
 
-    this.getImageHeight = function (url) {
-        return this.getImageMetaData(url).h;
+    this.getHeight = function (url) {
+        return this.getMeta(url).h;
     };
 
-    this.getImageWidth = function (url) {
-        return this.getImageMetaData(url).w;
+    this.getWidth = function (url) {
+        return this.getMeta(url).w;
     };
 
-    this.getImageX = function (url) {
-        return this.getImageMetaData(url).x;
+    this.getX = function (url) {
+        return this.getMeta(url).x;
     };
 
-    this.getImageY = function (url) {
-        return this.getImageMetaData(url).y;
+    this.getY = function (url) {
+        return this.getMeta(url).y;
     };
 
     let notFoundImg = {
@@ -38,7 +38,7 @@ Images = function () {
      * @param url
      * @returns {{path: string, w: number, h: number}}
      */
-    this.getImageMetaData = function (url) {
+    this.getMeta = function (url) {
         /** Абсолютный url, используем без изменений, т.к. это внешний url */
         if (!url) {
             Logs.log("Url not found:" + url, Logs.LEVEL_ERROR);

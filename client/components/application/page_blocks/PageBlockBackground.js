@@ -85,7 +85,7 @@ PageBlockBackground = function PageBlockBackground() {
         let elBody, backgroundImage;
         elBody = document.getElementsByTagName('body')[0];
 
-        backgroundImage = "url('" + Images.getImagePath('/images/old-paper.png') + "')";
+        backgroundImage = "url('" + Images.getPath('/images/old-paper.png') + "')";
 
         elBody.style.backgroundImage = backgroundImage;
         //elBody.style.backgroundSize = "777px 500px";

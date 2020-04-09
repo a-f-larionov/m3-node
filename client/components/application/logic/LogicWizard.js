@@ -62,10 +62,10 @@ WizardFirstStart_1 = {
         PageBlockWizard.draw(function (drawImage) {
             let pnt = DataPoints.getPointsCoords()[0];
             drawImage('/images/wizard-point-circle.png',
-                pnt.x - Images.getImageWidth('/images/wizard-point-circle.png') / 2
-                + Images.getImageWidth('/images/map-way-point-red.png') / 2,
-                pnt.y - Images.getImageHeight('/images/wizard-point-circle.png') / 2
-                + Images.getImageHeight('/images/map-way-point-red.png') / 2,
+                pnt.x - Images.getWidth('/images/wizard-point-circle.png') / 2
+                + Images.getWidth('/images/map-way-point-red.png') / 2,
+                pnt.y - Images.getHeight('/images/wizard-point-circle.png') / 2
+                + Images.getHeight('/images/map-way-point-red.png') / 2,
             );
         });
     },
@@ -84,7 +84,7 @@ WizardFirstStart_2 = {
         PageBlockWizard.showDialog(400, 380, 30);
         PageBlockWizard.draw(function (drawImage) {
             drawImage('/images/wizard-button.png',
-                390 - Images.getImageWidth('/images/wizard-button.png') / 2,
+                390 - Images.getWidth('/images/wizard-button.png') / 2,
                 280 + 42
             );
         });

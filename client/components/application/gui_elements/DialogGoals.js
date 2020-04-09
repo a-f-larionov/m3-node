@@ -55,7 +55,7 @@ DialogGoals = function () {
             this.elements[i].hide();
         }
         this.elements = [];
-        startX = Images.getImageWidth('/images/window-1.png') / 2
+        startX = Images.getWidth('/images/window-1.png') / 2
             - goals.length * (DataPoints.BLOCK_WIDTH + 5) / 2
         ;
 

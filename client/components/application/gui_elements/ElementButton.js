@@ -155,7 +155,7 @@ ElementButton = function () {
         dom.backgroundImage = src;
         if (self.title) {
             dom.title = self.title;
-            elText.width = Images.getImageWidth(src);
+            elText.width = Images.getWidth(src);
             elText.redraw();
         }
         if (self.enabled) {

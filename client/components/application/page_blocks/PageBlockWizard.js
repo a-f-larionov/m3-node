@@ -79,8 +79,8 @@ PageBlockWizard = function PageBlockWizard() {
 
         elText = GUI.createElement(ElementText, {
             x: 400 + dialogBorder, y: 360 + dialogBorder,
-            width: Images.getImageWidth('/images/wizard-dialog.png') - dialogBorder * 2,
-            height: Images.getImageHeight('/images/wizard-dialog.png'),
+            width: Images.getWidth('/images/wizard-dialog.png') - dialogBorder * 2,
+            height: Images.getHeight('/images/wizard-dialog.png'),
             alignCenter: true, zIndex: 20001,
             text: 'text'
         });
