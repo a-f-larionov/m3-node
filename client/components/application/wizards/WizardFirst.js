@@ -24,17 +24,19 @@ WizardFirstStart_1 = {
 WizardFirstStart_2 = {
     init: function () {
         PBWizard.begin();
-
-        setTimeout(function () {
-            PBWizard.updateText('НАЖМИ КНОПКУ ИГРАТЬ');
-            PBWizard.showDialog(400, 380, 30);
-            PBWizard.draw(function (drawImage) {
-                drawImage('/images/wizard-button.png',
-                    390 - Images.getWidth('/images/wizard-button.png') / 2, 280 + 42
-                );
-            });
-        }, Config.OnIdle.second * 1.35);
     },
+
+    onShowDialog: function () {
+        PBWizard.updateText('НАЖМИ КНОПКУ ИГРАТЬ');
+        PBWizard.showDialog(400, 380, 30);
+        PBWizard.draw(function (drawImage) {
+            drawImage('/images/wizard-button.png',
+                390 - Images.getWidth('/images/wizard-button.png') / 2,
+                80 + 240 - 12,
+            );
+        });
+    },
+
     onClick: function (el) {
         if (el.tagId === LogicWizard.TAG_PLAY_BUTTON) {
             LogicWizard.start(WizardFirstStart_3);

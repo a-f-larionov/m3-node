@@ -80,6 +80,7 @@ DataPoints = function () {
                 "        ",
                 "        ",
                 "        ",
+                "        ",
 
                 " □□□□□□ ",
                 "□□□□□□□□",
@@ -88,8 +89,9 @@ DataPoints = function () {
                 " □□□□□□ ",
             ],
             gems: [
+                "BRGPPBGR",
                 "RGBPPRGP",
-                "RGBPPRGP",
+                "RGBBRRGP",
                 "GPYPPYPP",
                 "RGRPPRGB",
 

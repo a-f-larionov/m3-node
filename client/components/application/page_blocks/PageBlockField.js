@@ -307,15 +307,11 @@ PageBlockField = function PageBlockField() {
 
     this.firstShow = function () {
         let data;
-        console.log('first');
         elementField.unlock();
         elementField.run();
         data = DataPoints.getById(DataPoints.getPlayedId());
         PBZDialogs.dialogGoals.setGoals(data.goals);
         PBZDialogs.dialogGoals.showDialog();
-        setTimeout(function () {
-            PBZDialogs.dialogGoals.closeDialog();
-        }, Config.OnIdle.second * 4);
         noMoreGoals = false;
         LogicWizard.onFieldFirstShow();
     };

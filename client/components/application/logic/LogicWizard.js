@@ -8,8 +8,8 @@ LogicWizard = function LogicWizard() {
     this.TAG_PLAY_BUTTON = 2;
 
     this.onClick = dymmyFunc;
-
     this.onDestroyLine = dymmyFunc;
+    this.onShowDialog = dymmyFunc;
 
     this.onAuthorizeSuccess = function () {
         if (LogicUser.getCurrentUser().nextPointId === 1) {
@@ -27,6 +27,7 @@ LogicWizard = function LogicWizard() {
         PBWizard.finish();
         self.onClick = wizard.onClick ? wizard.onClick : dymmyFunc;
         self.onDestroyLine = wizard.onDestroyLine ? wizard.onDestroyLine : dymmyFunc;
+        self.onShowDialog = wizard.onShowDialog ? wizard.onShowDialog : dymmyFunc;
         wizard.init();
     };
 };

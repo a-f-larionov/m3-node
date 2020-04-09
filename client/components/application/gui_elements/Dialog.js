@@ -13,17 +13,12 @@ Dialog = function () {
 
     this.dialogShowed = false;
 
-    /**
-     * Координата X картинки.
-     * @type {number}
-     */
-    this.x = 0;
-
+    this.onShowComplete = null;
     /**
      * Координата Y картинки.
      * @type {number}
      */
-    this.y = 0;
+    this.startPosition = -500;
 
     /**
      * Ширина картинки.
@@ -51,8 +46,6 @@ Dialog = function () {
 
     this.pointer = undefined;
 
-    let dom;
-
     /**
      * Массив всех элементов страницы.
      * @type {Array}
@@ -65,30 +58,14 @@ Dialog = function () {
      * Создадим дом и настроем его.
      */
     this.init = function () {
-        self = this;
+        let dom;
         dom = GUI.createDom(undefined, {
             width: self.width,
             height: self.height,
             backgroundImage: self.src,
-            animTracks: [
-                [
-                    {type: GUI.ANIM_TYPE_MOVE, vX: 0, vY: 15, duration: 38},
-                    {
-                        type: GUI.ANIM_TYPE_STOP, callback: function () {
-                            console.log('callbacl');
-                        }
-                    },
-
-                    {type: GUI.ANIM_TYPE_MOVE, vX: 0, vY: -15, duration: 38},
-                    {
-                        type: GUI.ANIM_TYPE_STOP, callback: onCloseFinished
-                    }
-                ]
-            ]
         });
-        self.x = (document.getElementById('appArea').clientWidth / 2)
-            - self.width / 2;
-        self.y = -500;
+        dom.x = (document.getElementById('appArea').clientWidth / 2) - self.width / 2;
+        dom.y = self.startPosition;
 
         self.dom = dom;
     };
@@ -99,10 +76,10 @@ Dialog = function () {
     this.show = function () {
         if (showed) return;
         showed = true;
-        dom.show();
-        for (let i in self.elements) {
-            self.elements[i].show();
-        }
+        self.dom.show();
+        self.elements.forEach(function (el) {
+            el.show();
+        });
         self.redraw();
     };
 
@@ -112,10 +89,10 @@ Dialog = function () {
     this.hide = function () {
         if (!showed) return;
         showed = false;
-        dom.hide();
-        for (let i in self.elements) {
-            self.elements[i].hide();
-        }
+        self.dom.hide();
+        self.elements.forEach(function (el) {
+            el.hide();
+        });
     };
 
     /**
@@ -124,20 +101,18 @@ Dialog = function () {
     this.redraw = function () {
         if (!showed) return;
         if (!self.dialogShowed) {
-            dom.x = self.x;
-            dom.y = self.y;
-            dom.title = self.title;
-            dom.pointer = self.pointer;
-            dom.redraw();
+            self.dom.title = self.title;
+            self.dom.pointer = self.pointer;
+            self.dom.redraw();
         }
 
-        for (let i in self.elements) {
-            self.elements[i].redraw();
-        }
+        self.elements = function (el) {
+            el.redraw();
+        };
     };
 
     /**
-     * Show dialog!
+     * Show dialog! only queue
      */
     this.showDialog = function (afterDialog) {
         /**
@@ -151,19 +126,22 @@ Dialog = function () {
         if (self.dialogShowed) return;
         self.show();
         self.dialogShowed = true;
-        dom.animData[0].frameN = 0;
-        dom.animPlayed = true;
+        Animate.anim(animShowDialog, {
+            dom: self.dom, redraw: function () {
+                if (self.onShowComplete) self.onShowComplete();
+                LogicWizard.onShowDialog();
+            }
+        });
         self.redraw();
     };
 
     this.closeDialog = function () {
         /** - Запуск прятания диалога */
-        dom.animData[0].frameN = 2;
-        dom.animPlayed = true;
+        console.log('closeDialog', self);
+        Animate.anim(animHideDialog, {dom: self.dom, redraw: onCloseFinished})
     };
 
     let onCloseFinished = function () {
-        console.log('finidhed');
         self.dialogShowed = false;
         /**
          * Показать диалог из очереди
@@ -178,9 +156,7 @@ Dialog = function () {
     };
 
     this.reset = function (redraw) {
-        dom.x = self.x;
-        dom.y = self.y;
-        dom.animData[0].frameN = 0;
+        self.dom.y = self.startPosition;
         self.dialogShowed = false;
         if (redraw) {
             self.redraw();

@@ -8,6 +8,8 @@ DialogGoals = function () {
 
     this.init = function () {
         this.__proto__.init.call(this);
+        this.__proto__.onShowComplete = this.onShowComplete;
+
         GUI.pushParent(self.dom);
         /** Заголовок */
         GUI.createElement(ElementText, {
@@ -49,6 +51,12 @@ DialogGoals = function () {
         GUI.popParent();
     };
 
+    this.onShowComplete = function () {
+        setTimeout(function () {
+            self.closeDialog();
+        }, Config.OnIdle.second * 1.5);
+    };
+
     this.setGoals = function (goals) {
         let offsetX, startX;
         for (let i in this.elements) {
@@ -70,8 +78,8 @@ DialogGoals = function () {
             offsetX += DataPoints.BLOCK_WIDTH + 5;
         }
         for (let i in this.elements) {
-            this.elements[i].redraw();
             this.elements[i].show();
+            this.elements[i].redraw();
         }
     };
 };
