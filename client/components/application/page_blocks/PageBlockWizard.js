@@ -32,8 +32,10 @@ PageBlockWizard = function PageBlockWizard() {
         /** Canvas */
         canvas = document.getElementById('wizardArea');
 
-        canvas.width = DataCross.application.width * window.devicePixelRatio;
-        canvas.height = DataCross.application.height * window.devicePixelRatio;
+        console.log(canvas);
+
+        canvas.width = DataCross.application.width;// * window.devicePixelRatio;
+        canvas.height = DataCross.application.height;// * window.devicePixelRatio;
         canvas.style.display = 'none';
         cntx = canvas.getContext('2d');
 

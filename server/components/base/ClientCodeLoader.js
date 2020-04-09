@@ -156,47 +156,59 @@ ClientCodeLoader = function () {
         callback('<pre>' + "Reload Client Code executed!" + new Date().getTime() + '</pre>');
     };
 
-    let generateClientCodeVK = function () {
-        let code;
-        Logs.log("Generate vk client code.");
-        //@todo сделать тут HTML5
-        code = "";
-        code += "<html style=\"background:white;\">\r\n";
-        code += "<head>\r\n";
-        code += "<meta charset='utf-8' />\r\n";
-
-        code += '';
+    let getClientCodeCommonPart = function (socNetCode) {
+        let code = '', getParams = '';
 
         let demension = IMAGE_SIZE('../public/images/sprite.png');
+
+        code += "<!doctype html>";
+        code += "<html style=\"background:white;\">\r\n";
+        code += "<head>\r\n";
+        code += "<style type='text/css'>*{padding:0px;margin:0px;}</style>";
+        code += "<meta charset='utf-8' />\r\n";
         code += "<style> body div { background-size: "
             + translate2X(demension.width / 2) + "px "
             + translate2X(demension.height / 2) + "px; " +
             "}</style>";
-        code += "<script src='//vk.com/js/api/xd_connection.js?2' type='text/javascript'></script>\r\n";
-        code += "<script>window.PLATFORM_ID = 'VK';</script>";
-        code += "<script type='text/javascript' src=" + projectPrefix + "/js/MainClientCode.js?t=" + (new Date().getTime()).toString() + "'></script>\r\n";
-        code += "</HEAD><BODY style='margin:0px;'>\r\n";
-        code += getClientImageCode();
-        /** application div */
+        code += "<script>window.PLATFORM_ID = '" + socNetCode + "';</script>";
+        getParams += Config.Project.develop ? "?" : "?t=" + (new Date().getTime()).toString();
+        code += "<script type='text/javascript' src=" + projectPrefix + "/js/client.js" + getParams + "'></script>\r\n";
+        code += "</head>";
+        code += "<body>";
+        /** Application div */
         code += "<div style='" +
             "height:" + DataCross.application.height + "px;" +
             "width:" + DataCross.application.width + "px;" +
             "position:absolute;" +
             "top:0px;' " +
             "id='applicationArea' ></div>\r\n";
+        /** Wizard div */
         code += "<canvas style='" +
             "height:" + DataCross.application.height + "px;" +
             "width:" + DataCross.application.width + "px;" +
             "position:absolute;" +
             "top:0px;' " +
             "id='wizardArea' ></canvas>\r\n";
+        code += getClientImageCode();
 
-        /** comments div */
-        code += "<div id='vk_comments' style='top:" + DataCross.application.height + "px;position:absolute;'>";
-        code += "<iframe src='" + projectPrefix + "/service/VKCommentsWidget' style='border:none; height: " + (Config.VKCommentWidget.height + 44) + "px; width:" + Config.VKCommentWidget.width + ";'></iframe>";
-        code += "</div>\r\n";
-        code += "</BODY></HTML>";
-        clientCodeVK = code;
+        if (socNetCode === 'VK') {
+            /** @see https://vk.com/dev/Javascript_SDK */
+            code += "<script src='//vk.com/js/api/xd_connection.js?2' type='text/javascript'></script>\r\n";
+
+            /** comments div */
+            code += "<div id='vk_comments' style='top:" + DataCross.application.height + "px;position:absolute;'>";
+            code += "<iframe src='" + projectPrefix + "/service/VKCommentsWidget' style='border:none; height: " + (Config.VKCommentWidget.height + 44) + "px; width:" + Config.VKCommentWidget.width + ";'></iframe>";
+            code += "</div>\r\n";
+        }
+
+        code += "</body>";
+        code += "</html>";
+        return code;
+    };
+
+    let generateClientCodeVK = function () {
+        Logs.log("Load VK client code.");
+        clientCodeVK = getClientCodeCommonPart('VK');
     };
 
     /**
@@ -204,34 +216,7 @@ ClientCodeLoader = function () {
      */
     let loadClientCodeStandalone = function () {
         Logs.log("Load standalone client code.");
-        let code;
-        code = "";
-        code += "<!doctype html>";
-        code += "<html style=\"background:white;\">";
-        code += "<head>";
-        code += "<style type='text/css'>*{padding:0px;margin:0px;}</style>";
-        code += "<meta charset='utf-8' />";
-        code += "<script>window.PLATFORM_ID = 'STANDALONE';</script>";
-        code += "<script src='" + projectPrefix + "/js/MainClientCode.js?t=" + (new Date().getTime()).toString() + "'></script>\r\n";
-        code += "</head>";
-        code += "<body>";
-        code += "<div style='" +
-            "height:" + DataCross.application.height + "px;" +
-            "width:" + DataCross.application.width + "px;" +
-            "position:absolute;' " +
-            "id='applicationArea' ></div>\r\n";
-        code += "<canvas style='" +
-            "height:" + DataCross.application.height + "px;" +
-            "width:" + DataCross.application.width + "px;" +
-            "position:absolute;" +
-            "top:0px;' " +
-            "id='wizardArea' ></canvas>\r\n";
-
-        code += getClientImageCode();
-        code += "</body>";
-        code += "</html>";
-
-        clientCodeStandalone = code;
+        clientCodeStandalone = getClientCodeCommonPart('STANDALONE');
     };
 
     /**
@@ -253,7 +238,7 @@ ClientCodeLoader = function () {
             }
         }
         //@todo path to JS move to Config file
-        FS.writeFileSync(CONST_DIR_ROOT + '/public/js/MainClientCode.js', mainClientJSCode);
+        FS.writeFileSync(CONST_DIR_ROOT + '/public/js/client.js', mainClientJSCode);
         Logs.log("Main client code writed", Logs.LEVEL_DETAIL);
     };
 
@@ -296,7 +281,7 @@ ClientCodeLoader = function () {
             return cwd.pop();
         })();
         clientConfigPath = clientCodePath + 'config.' + hostname + '.' + parentFolderName + '.js';
-        Logs.log("Generate client code(MainClientCode). The config file: " + clientConfigPath, Logs.LEVEL_NOTIFY);
+        Logs.log("Generate client code(client). The config file: " + clientConfigPath, Logs.LEVEL_NOTIFY);
         jsFiles.push(clientConfigPath);
         jsFiles.push(clientCodePath + '/run.js');
         code = clientCodePrepareCode(jsFiles);
