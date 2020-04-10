@@ -33,28 +33,34 @@ GUI = function () {
     this.EVENT_MOUSE_CLICK = 3;
 
     /**
+     * Событие движения мышы
+     * @type {number}
+     */
+    this.EVENT_MOUSE_MOVE = 4;
+
+    /**
      * Событие попадания курсора мыши в фокус
      * @type {number}
      */
-    this.EVENT_MOUSE_OVER = 4;
+    this.EVENT_MOUSE_OVER = 5;
 
     /**
      * Событие ухода курсора мыши из фокуса.
      * @type {number}
      */
-    this.EVENT_MOUSE_OUT = 5;
+    this.EVENT_MOUSE_OUT = 6;
 
     /**
      * Событие опускание клавиши.
      * @type {number}
      */
-    this.EVENT_KEY_DOWN = 6;
+    this.EVENT_KEY_DOWN = 100;
 
     /**
      * Событие отпускания клавиши.
      * @type {number}
      */
-    this.EVENT_KEY_UP = 7;
+    this.EVENT_KEY_UP = 101;
 
     /**
      * Указатель мыши: "Рука".
@@ -72,6 +78,7 @@ GUI = function () {
     this.eventNames[this.EVENT_MOUSE_MOUSE_UP] = 'mouseup';
     this.eventNames[this.EVENT_MOUSE_CLICK] = 'click';
     this.eventNames[this.EVENT_MOUSE_OVER] = 'mouseover';
+    this.eventNames[this.EVENT_MOUSE_MOVE] = 'mousemove';
     this.eventNames[this.EVENT_MOUSE_OUT] = 'mouseout';
     this.eventNames[this.EVENT_KEY_DOWN] = 'keydown';
     this.eventNames[this.EVENT_KEY_UP] = 'keyup';

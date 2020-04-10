@@ -46,8 +46,8 @@ SocNetStandalone = function () {
         info.id = id;
         info.first_name = 'firstName';
         info.last_name = 'lastName';
-        info.photo_50 = '/images/not-found.png';
-        info.photo_100 = '/images/not-found.png';
+        info.photo_50 = '/images/field-octopus.png';
+        info.photo_100 = '/images/field-octopus.png';
         info.sex = SocNet.SEX_UNKNOWN;
         callback([info]);
     };

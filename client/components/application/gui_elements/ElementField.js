@@ -57,30 +57,9 @@ ElementField = function () {
      * @type {function}
      */
     this.onDestroyLine = null;
-    /**
-     * Каллбек
-     * @type {function}
-     */
-    this.onBarrelFloor = null;
-    /**
-     * Каллбек
-     * @type {function}
-     */
-    this.onSpiderKilled = null;
-    /**
-     * Каллбек
-     * @type {function}
-     */
-    this.onTreasuresDestroy = null;
-    /**
-     * Каллбек
-     * @type {function}
-     */
-    this.onOctopusDestroy = null;
-    /**
-     *
-     * @type {function}
-     */
+
+    this.onDestroyThing = null;
+
     this.beforeStuffUse = null;
     /**
      * Каллбек
@@ -108,8 +87,9 @@ ElementField = function () {
         container.bind(GUI.EVENT_MOUSE_CLICK, onGemClick, container);
         container.bind(GUI.EVENT_MOUSE_MOUSE_DOWN, onGemMouseDown, container);
         container.bind(GUI.EVENT_MOUSE_MOUSE_UP, onGemMouseUp, container);
-        container.bind(GUI.EVENT_MOUSE_OVER, onGemMouseOver, container);
-        container.bind(GUI.EVENT_MOUSE_OUT, onGemMouseOut, container);
+        //container.bind(GUI.EVENT_MOUSE_OVER, onGemMouseOver, container);
+        //container.bind(GUI.EVENT_MOUSE_OUT, onGemMouseOut, container);
+        container.bind(GUI.EVENT_MOUSE_MOVE, onGemMouseMove, container);
 
         /**
          * Create mask layer cells
@@ -348,14 +328,32 @@ ElementField = function () {
     };
 
     let stopPolyColorAnim = false;
+
+    let lastMouseMoveP;
+
+    let onGemMouseMove = function (event) {
+        let p;
+        p = pointFromEvent(event);
+        if (lastMouseMoveP && (lastMouseMoveP.x !== p.x || lastMouseMoveP.y !== p.y)) {
+            onGemMouseOut(event);
+            onGemMouseOver(event);
+        }
+        lastMouseMoveP = p;
+    };
+
     let onGemMouseOver = function (event) {
         let p, mousedCell, pList;
+        console.log('onGemMouesOver');
+        console.log(0);
         if (polyColorCell) {
             p = pointFromEvent(event);
             mousedCell = Field.getCell(p);
+            console.log(1);
             if (Field.isNear(p, gemFramed) && mousedCell.isVisible && mousedCell.object.isGem && mousedCell.object.isCanMoved) {
+                console.log(2);
                 if (stopHint) stopHint();
                 if (stopPolyColorAnim === false) {
+                    console.log(3);
                     pList = [];
                     Field.eachCell(function (x, y, cell, object) {
                         if (cell.isVisible && object.isGem && object.objectId === mousedCell.object.objectId && cell.object.isCanMoved) {
@@ -374,6 +372,7 @@ ElementField = function () {
     };
 
     let onGemMouseOut = function (event) {
+        console.log('onGemMouseOut');
         if (polyColorCell) {
             if (stopPolyColorAnim) {
                 stopPolyColorAnim();
@@ -454,7 +453,7 @@ ElementField = function () {
                 /**
                  * Draw any
                  */
-                if (cell.isVisible && (object.isGem || object.isSpider || object.isBarrel || object.isPolyColor)) {
+                if (cell.isVisible && (object.isGem || object.isSpiderRed || object.isBarrel || object.isPolyColor)) {
                     drawCell(gemDom, x, y, object.objectId, '')
                 } else {
                     gemDom.hide();
@@ -470,14 +469,12 @@ ElementField = function () {
                     }
                 }
 
-                /** Spider health */
-                if (cell.isVisible && object.isSpider) {
+                /** Spider red health */
+                if (cell.isVisible && object.isSpiderRed) {
                     specDom = specDoms2[spec2Index++];
                     specDom.backgroundImage = DataPoints.healthImages[object.health];
-                    drawCell(specDom, x, y, '');
+                    drawCell(specDom, x, y, '', '');
                     gemDom.bindedDoms = specDom;
-                } else {
-                    gemDom.bindedDoms = null;
                 }
 
                 /** Box */
@@ -502,10 +499,8 @@ ElementField = function () {
                 /** Spider green */
                 if (cell.isVisible && object.withOctopus) {
                     specDom = specDoms2[spec2Index++];
-                    drawCell(specDom, x, y, DataObjects.OBJECT_OCTOPUS, '');
+                    drawCell(specDom, x, y, DataObjects.OBJECT_SPIDER_GREEN, '');
                     gemDom.bindedDoms = specDom;
-                } else {
-                    gemDom.bindedDoms = null;
                 }
             }
         );
@@ -617,8 +612,9 @@ ElementField = function () {
     let stopHint;
 
     let tryShowHint = function () {
+        window.jkl = tryShowHint;
         setTimeout(function () {
-            console.log('try hint');
+            console.log('try hint', self.isFieldSilent(), !lock, showed, !stopHint, !stopPolyColorAnim, !lockHint);
             if (self.isFieldSilent() && !lock && showed && !stopHint && !stopPolyColorAnim && !lockHint) {
                 let allTurns = Field.countTurns();
                 if (allTurns.length) {
@@ -664,9 +660,9 @@ ElementField = function () {
                 if (Field.isVisible({x: x, y: y})) animate(animGemFader, {x: x, y: y});
             }
             if (cell.isVisible && cell.object.isBarrel && !Field.isVisible({x: x, y: y + 1})) {
+                self.onDestroyThing(cell);
                 Field.setObject({x: x, y: y}, DataObjects.OBJECT_HOLE, false);
                 cell.object.isBarrel = false;
-                self.onBarrelFloor();
                 //@todo animBarrelGoOut
                 animate(animHummerDestroy, {x: x, y: y});
             }
@@ -709,7 +705,7 @@ ElementField = function () {
      * Уничтожение лений 3+ длинной.
      */
     this.destroyLines = function () {
-        let lines, p, actGem;
+        let lines, actGem;
         lines = Field.findLines();
 
         lines.forEach(function (line) {
@@ -787,18 +783,19 @@ ElementField = function () {
         }
 
         if (cell.isVisible && (cell.object.isGem || cell.object.isPolyColor) && cell.object.isCanMoved) {
+            self.onDestroyThing(cell);
             Field.setObject(p, DataObjects.OBJECT_HOLE, false);
             animate(animHummerDestroy, p);
 
             if (cell.withTreasures) {
+                self.onDestroyThing(cell);
                 cell.withTreasures = false;
-                self.onTreasuresDestroy();
                 animate(animHummerDestroy, p);
             }
 
-            if (cell.object.withOctopus) {
+            if (cell.object.withSpiderGreen) {
+                self.onDestroyThing(cell);
                 cell.object.withOctopus = false;
-                self.onOctopusDestroy();
                 animate(animHummerDestroy, p);
             }
 
@@ -806,13 +803,13 @@ ElementField = function () {
             Field.eachNears(p, function (nearP, nearCell) {
                 //@todo animSpiderAtacked
                 //@todo animSpiderKilled
-                if (nearCell.object.isSpider) {
+                if (nearCell.object.isSpiderRed) {
                     nearCell.object.health--;
                     if (nearCell.object.health) {
                         animate(animHummerDestroy, nearP);
                     } else {
+                        self.onDestroyThing(nearCell);
                         Field.setObject(nearP, DataObjects.OBJECT_HOLE);
-                        self.onSpiderKilled();
                         animate(animHummerDestroy, nearP);
                     }
                 }
@@ -827,6 +824,8 @@ ElementField = function () {
         return {
             x: self.x + (visibleOffsetX) * DataPoints.BLOCK_WIDTH,
             y: self.y + (visibleOffsetY - 1) * DataPoints.BLOCK_HEIGHT,
+            cellX: visibleOffsetX,
+            cellY: visibleOffsetY,
         }
     };
 
@@ -839,7 +838,6 @@ ElementField = function () {
         lockHint = false;
         if (stopHint) {
             stopHint();
-            stopHint = false;
             tryShowHint();
         }
     };
@@ -847,7 +845,12 @@ ElementField = function () {
     this.showHint = function (pList) {
         console.log(pList);
         if (stopHint) stopHint();
-        stopHint = animate(animHint, pList);
+        let stopFunc = animate(animHint, pList);
+        stopHint = function () {
+            stopHint = null;
+            stopFunc();
+        };
+        return stopHint;
     };
 
     let animate = function (animClass) {
@@ -855,15 +858,18 @@ ElementField = function () {
 
         args = Array.from(arguments);
         args.shift();
-        // insert context
+        /** Insert context */
         args.unshift({
             gemDoms: gemDoms,
             specDoms2: specDoms2,
             animDoms: animDoms,
-            redraw: self.redraw,
-            run: self.run
+            onFinish: function () {
+                if (animClass.name === animHint.name && stopHint) stopHint();
+                self.redraw();
+                self.run();
+            }
         });
-        // insert animClass back
+        /** Insert animClass back */
         args.unshift(animClass);
 
         return Animate.anim.apply(null, args);

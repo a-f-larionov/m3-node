@@ -224,12 +224,12 @@ let animShuffle = function () {
     }
 };
 
-let animHint = function () {
+let animHint = function animHint() {
     let doms;
 
-    this.init = function (pList) {
-        this.noAnimLock = true;
-        console.log('start anim');
+    this.init = function (pList, doNotStopValue) {
+        Animate.hintActive = true;
+        this.skipAnimLock = true;
         doms = [];
         pList.forEach(function (p) {
             doms.push(this.gemDoms[p.x][p.y]);
@@ -237,16 +237,23 @@ let animHint = function () {
     };
 
     this.iterate = function (counter) {
+        //console.log('anim hint iteration', counter, doms);
+        //console.log(doms[0].y);
         doms.forEach(function (dom) {
             dom.y += Math.cos(Math.PI / 10 * counter);
             dom.redraw();
+            if (dom.bindedDoms) {
+                dom.bindedDoms.x = dom.x;
+                dom.bindedDoms.y = dom.y;
+                dom.bindedDoms.redraw();
+            }
         });
         return !AnimLocker.busy();
     };
 
     this.finish = function () {
-        console.log(arguments);
-        console.log('finish hint', AnimLocker.busy());
+        Animate.hintActive = false;
+        console.log('anim finish');
     }
 };
 

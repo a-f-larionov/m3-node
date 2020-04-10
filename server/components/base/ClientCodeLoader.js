@@ -44,19 +44,19 @@ ClientCodeLoader = function () {
      * Client code VK.
      * @type {string}
      */
-    let clientCodeVK = '';
+    let codeVK = '';
 
     /**
      * Client code Standalone.
      * @type {string}
      */
-    let clientCodeStandalone = '';
+    let codeStandalone = '';
 
     /**
      * Client code for images
      * @type {string}
      */
-    let clientImageCode = '';
+    let codeImages = '';
 
     let imagesPath;
     /**
@@ -108,22 +108,22 @@ ClientCodeLoader = function () {
 
     }
 
-    this.getClientCodeVK = function (callback) {
+    this.getClientVK = function (callback) {
         if (Config.Project.maintance) return callback(htmlMaintaince);
         if (reloadClientCodeEveryRequest) {
             generateClientCodeVK();
             reloadMainClientCode();
         }
-        callback(clientCodeVK);
+        callback(codeVK);
     };
 
-    this.getClientCodeStandalone = function (callback) {
+    this.getClientStandalone = function (callback) {
         if (Config.Project.maintance) return callback(htmlMaintaince);
         if (reloadClientCodeEveryRequest) {
             loadClientCodeStandalone();
             reloadMainClientCode();
         }
-        callback(clientCodeStandalone);
+        callback(codeStandalone);
     };
 
     this.getVKCommentsWidget = function (callback) {
@@ -143,7 +143,7 @@ ClientCodeLoader = function () {
         callback(VKCommentsWidgetCode);
     };
 
-    this.reloadClientCode = function (callback) {
+    this.reloadClient = function (callback) {
         reloadMainClientCode();
         generateClientCodeVK();
         loadClientCodeStandalone();
@@ -201,7 +201,7 @@ ClientCodeLoader = function () {
 
     let generateClientCodeVK = function () {
         Logs.log("Load VK client code.");
-        clientCodeVK = getClientCodeCommonPart('VK');
+        codeVK = getClientCodeCommonPart('VK');
     };
 
     /**
@@ -209,7 +209,7 @@ ClientCodeLoader = function () {
      */
     let loadClientCodeStandalone = function () {
         Logs.log("Load standalone client code.");
-        clientCodeStandalone = getClientCodeCommonPart('STANDALONE');
+        codeStandalone = getClientCodeCommonPart('STANDALONE');
     };
 
     /**
@@ -295,8 +295,8 @@ ClientCodeLoader = function () {
     let getImageCodeSprited = function () {
         let imageCode, path, timePostfix;
         let spriteJsonPath = '../public/images/sprite.png.json';
-        if (!reloadClientImageCodeEveryRequest && clientImageCode) {
-            return clientImageCode;
+        if (!reloadClientImageCodeEveryRequest && codeImages) {
+            return codeImages;
         }
         if (generateImageSpriteResult === true) {
             imageCode = FS.readFileSync(spriteJsonPath);
@@ -319,7 +319,7 @@ ClientCodeLoader = function () {
             imageCode += "</div>";
             FS.writeFileSync(spriteJsonPath, imageCode);
             // cache it
-            clientImageCode = imageCode;
+            codeImages = imageCode;
         }
         return imageCode;
     };
@@ -329,8 +329,8 @@ ClientCodeLoader = function () {
      */
     let getImageCodeList = function () {
         let imageFiles, imageCode, path, timePostfix, demension;
-        if (!reloadClientImageCodeEveryRequest && clientImageCode) {
-            return clientImageCode;
+        if (!reloadClientImageCodeEveryRequest && codeImages) {
+            return codeImages;
         }
         imageFiles = getFileListRecursive(imagesPath);
         imageCode = "<script>";
@@ -354,7 +354,7 @@ ClientCodeLoader = function () {
         }
         imageCode += "</div>";
         // cache it
-        clientImageCode = imageCode;
+        codeImages = imageCode;
         return imageCode;
     };
 

@@ -64,9 +64,10 @@ DialogStuffShop = function () {
     };
 
     this.showDialog = function (newStuffId) {
+        this.__proto__.showDialog.call(this);
         stuffId = newStuffId;
         self.redraw();
-        this.__proto__.showDialog.call(this);
+        console.log('show dialg and redraw');
     };
 
     this.redraw = function () {
@@ -84,10 +85,12 @@ DialogStuffShop = function () {
                     break;
             }
             /** Обновить картинки товаров */
+            console.log('update images');
             for (let i = 0; i < 3; i++) {
                 items[i].srcRest = data[i].imageSrc;
                 items[i].srcHover = data[i].imageSrc;
                 items[i].srcActive = data[i].imageSrc;
+                items[i].redraw();
             }
         }
         this.__proto__.redraw.call(this);

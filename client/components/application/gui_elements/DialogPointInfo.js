@@ -55,7 +55,6 @@ DialogPointInfo = function () {
         elUserPhotoScore.show();
 
         /** Кнопка играть */
-        GUI.setTagId(LogicWizard.TAG_PLAY_BUTTON);
         elButtonPlay = GUI.createElement(ElementButton, {
             x: 178, y: 240,
             srcRest: '/images/button-red-rest.png',
@@ -78,7 +77,6 @@ DialogPointInfo = function () {
             title: 'ИГРАТЬ'
         });
         elButtonPlay.show();
-        GUI.setTagId(null);
 
         /** Кнопка закрыть */
         GUI.createElement(ElementButton, {

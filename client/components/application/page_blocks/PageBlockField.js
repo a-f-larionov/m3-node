@@ -51,10 +51,8 @@ PageBlockField = function PageBlockField() {
             centerX: 388.5, centerY: 250,
 
             onDestroyLine: self.onDestroyLine,
-            onBarrelFloor: self.onBarrelFloor,
-            onSpiderKilled: self.onSpiderKilled,
-            onOctopusDestroy: self.onOctopusDestroy,
-            onTreasuresDestroy: self.onTreasuresDestroy,
+
+            onDestroyThing: self.onDestroyThing,
 
             beforeTurnUse: self.beforeTurnUse,
             beforeStuffUse: self.beforeStuffUse,
@@ -65,7 +63,7 @@ PageBlockField = function PageBlockField() {
 
         /** Кнопка выхода */
         el = GUI.createElement(ElementButton, {
-            x: 720, y: 0,
+            x: 730, y: 10,
             srcRest: '/images/button-quit-rest.png',
             srcHover: '/images/button-quit-hover.png',
             srcActive: '/images/button-quit-active.png',
@@ -348,27 +346,24 @@ PageBlockField = function PageBlockField() {
 
     let noMoreGoals;
 
-    this.onBarrelFloor = function () {
-        decreaseGoal(DataObjects.OBJECT_BARREL, 1);
-    };
+    this.onDestroyThing = function (cell) {
+        /** Goals */
+        decreaseGoal(cell.object.objectId, 1);
+        if (cell.withBox) decreaseGoal(DataObjects.OBJECT_BOX, 1);
+        if (cell.withChain) decreaseGoal(DataObjects.OBJECT_CHAIN, 1);
+        if (cell.withTreasures) decreaseGoal(DataObjects.OBJECT_TREASURES, 1);
+        if (cell.object.withSpiderGreen) decreaseGoal(DataObjects.OBJECT_SPIDER_GREEN, 1);
 
-    this.onSpiderKilled = function () {
-        decreaseGoal(DataObjects.OBJECT_SPIDER, 1);
-    };
+        /** Score */
+        if (cell.object.isGem) {
+            score += 10;
+            //@todo animate score here
+        }
 
-    this.onOctopusDestroy = function () {
-        decreaseGoal(DataObjects.OBJECT_OCTOPUS, 1);
-    };
-
-    this.onTreasuresDestroy = function () {
-        decreaseGoal(DataObjects.OBJECT_TREASURES, 1);
+        LogicWizard.onDestroyThing(cell);
     };
 
     this.onDestroyLine = function (line) {
-        score += line.coords.length * 10;
-
-        decreaseGoal(line.gemId, line.coords.length);
-
         LogicWizard.onDestroyLine(line);
     };
 
@@ -385,7 +380,7 @@ PageBlockField = function PageBlockField() {
     };
 
     this.onFieldSilent = function () {
-        //console.log('silent', noMoreGoals);
+        LogicWizard.onFieldSilent();
         if (noMoreGoals) {
             elementField.lock();
             noMoreGoals = false;

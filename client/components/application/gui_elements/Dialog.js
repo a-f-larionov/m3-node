@@ -127,7 +127,7 @@ Dialog = function () {
         self.show();
         self.dialogShowed = true;
         Animate.anim(animShowDialog, {
-            dom: self.dom, redraw: function () {
+            dom: self.dom, onFinish: function () {
                 if (self.onShowComplete) self.onShowComplete();
                 LogicWizard.onShowDialog();
             }
@@ -137,8 +137,8 @@ Dialog = function () {
 
     this.closeDialog = function () {
         /** - Запуск прятания диалога */
-        console.log('closeDialog', self);
-        Animate.anim(animHideDialog, {dom: self.dom, redraw: onCloseFinished})
+        LogicWizard.onHideDialog(true);
+        Animate.anim(animHideDialog, {dom: self.dom, onFinish: onCloseFinished})
     };
 
     let onCloseFinished = function () {
@@ -147,6 +147,7 @@ Dialog = function () {
          * Показать диалог из очереди
          */
         Dialog.removeDialog();
+        LogicWizard.onHideDialog(false);
     };
 
     this.createElement = function (element, params) {

@@ -1,17 +1,16 @@
 WizardFirstStart_1 = {
+
     init: function () {
         PBWizard.begin();
-        PBWizard.updateText('НАЖМИ НА КРАСНЫЙ КРУЖОК ЧТО БЫ НАЧАТЬ ИГРАТЬ');
+        PBWizard.updateText('Нажми на красный кружок, что ыб начать играть.');
         PBWizard.showDialog(400, 360, 4);
-        PBWizard.draw(function (unlockByImage) {
-            let pnt = DataPoints.getPointsCoords()[0];
-            unlockByImage('/images/wizard-point-circle.png',
-                pnt.x - Images.getWidth('/images/wizard-point-circle.png') / 2
-                + Images.getWidth('/images/map-way-point-red.png') / 2,
-                pnt.y - Images.getHeight('/images/wizard-point-circle.png') / 2
-                + Images.getHeight('/images/map-way-point-red.png') / 2,
-            );
-        });
+        let pnt = DataPoints.getPointsCoords()[0];
+        PBWizard.unlockByImg('/images/wizard-point-circle.png',
+            pnt.x - Images.getWidth('/images/wizard-point-circle.png') / 2
+            + Images.getWidth('/images/map-way-point-red.png') / 2,
+            pnt.y - Images.getHeight('/images/wizard-point-circle.png') / 2
+            + Images.getHeight('/images/map-way-point-red.png') / 2,
+        );
     },
 
     onClick: function (el) {
@@ -22,55 +21,47 @@ WizardFirstStart_1 = {
 };
 
 WizardFirstStart_2 = {
+
     init: function () {
         PBWizard.begin();
     },
 
     onShowDialog: function () {
-        PBWizard.updateText('НАЖМИ КНОПКУ ИГРАТЬ');
+        PBWizard.updateText('Нажми кнопку играть.');
         PBWizard.showDialog(400, 380, 30);
-        PBWizard.draw(function (drawImage) {
-            drawImage('/images/wizard-button.png',
-                390 - Images.getWidth('/images/wizard-button.png') / 2,
-                80 + 240 - 12,
-            );
-        });
+        PBWizard.unlockByImg('/images/wizard-button.png',
+            390 - Images.getWidth('/images/wizard-button.png') / 2,
+            80 + 240 - 12,
+        );
     },
-
-    onClick: function (el) {
-        if (el.tagId === LogicWizard.TAG_PLAY_BUTTON) {
+    onHideDialog: function (onStart) {
+        if (onStart) {
+            PBWizard.begin();
+        } else {
             LogicWizard.start(WizardFirstStart_3);
         }
     }
 };
 
 WizardFirstStart_3 = {
+    dialogCounter: 0,
     init: function () {
         PBWizard.begin();
-        PBWizard.updateText(
-            'ПОМЕНЯЙ СОСЕДНИЕ КАМНИ МЕСТАМИ, ЧТОБЫ СОБРАТЬ КАМНИ КРАСНОГО ЦВЕТА');
-        PBWizard.draw(function (unlockByImage, showByImage) {
-            //@todo show goals dialog
-        });
-        setTimeout(function () {
-            PBWizard.showHint([{x: 1, y: 3}, {x: 2, y: 3}]);
-            PBWizard.showDialog(210, 380, 5, 20);
-            PBWizard.draw(function (unlockByImg, showByImg) {
-                let coords = PageBlockField.getElementField().getCoords();
-                unlockByImg('/images/wizard-diamond-cell.png',
-                    coords.x + DataPoints.BLOCK_WIDTH,
-                    coords.y + DataPoints.BLOCK_HEIGHT);
-                unlockByImg('/images/wizard-diamond-cell.png',
-                    coords.x + DataPoints.BLOCK_WIDTH * 2,
-                    coords.y + DataPoints.BLOCK_HEIGHT);
-                showByImg('/images/wizard-diamond-cell.png',
-                    coords.x + DataPoints.BLOCK_WIDTH * 3,
-                    coords.y + DataPoints.BLOCK_HEIGHT);
-                showByImg('/images/wizard-diamond-cell.png',
-                    coords.x + DataPoints.BLOCK_WIDTH * 4,
-                    coords.y + DataPoints.BLOCK_HEIGHT);
-            });
-        }, Config.OnIdle.second * 5.1);
+    },
+    onHideDialog: function (onStart) {
+        if (onStart) return;
+        if (!onStart) this.dialogCounter++;
+        console.log(this.dialogCounter);
+        if (this.dialogCounter === 1) return;
+        PBWizard.updateText('Поменяй соседние камни местами, чтобы собрать камни красного цвета.');
+        PBWizard.showDialog(210, 380, 20, 20);
+        PBWizard.showHint([{x: 1, y: 0}, {x: 2, y: 0}]);
+        PBWizard.highlightCells([
+            {x: 1, y: 0, unlock: true},
+            {x: 2, y: 0, unlock: true},
+            {x: 3, y: 0, unlock: false},
+            {x: 4, y: 0, unlock: false},
+        ]);
     },
     onDestroyLine: function (line) {
         LogicWizard.start(WizardFirstStart_4);
@@ -80,30 +71,19 @@ WizardFirstStart_3 = {
 WizardFirstStart_4 = {
     init: function () {
         PBWizard.begin();
-        PBWizard.updateText(
-            'У ТЕБЯ ПОЛУЧИЛОСЬ. ДАВАЙ ЕЩЁ!'
-        );
         setTimeout(function () {
-            PBWizard.showHint([{x: 3, y: 5}, {x: 3, y: 6}]);
-            PBWizard.showDialog(210, 380, 15, 21);
-            PBWizard.draw(function (unlockByImg, showByImg) {
-                let coords = PageBlockField.getElementField().getCoords();
-                showByImg('/images/wizard-diamond-cell.png',
-                    coords.x + DataPoints.BLOCK_WIDTH * 2,
-                    coords.y + DataPoints.BLOCK_HEIGHT * 3);
-                unlockByImg('/images/wizard-diamond-cell.png',
-                    coords.x + DataPoints.BLOCK_WIDTH * 3,
-                    coords.y + DataPoints.BLOCK_HEIGHT * 3);
-                showByImg('/images/wizard-diamond-cell.png',
-                    coords.x + DataPoints.BLOCK_WIDTH * 4,
-                    coords.y + DataPoints.BLOCK_HEIGHT * 3);
-                unlockByImg('/images/wizard-diamond-cell.png',
-                    coords.x + DataPoints.BLOCK_WIDTH * 3,
-                    coords.y + DataPoints.BLOCK_HEIGHT * 4);
-            });
+            PBWizard.updateText('У тебя получилось. давай ещё!');
+            PBWizard.showDialog(210, 380, 25, 21);
+            PBWizard.showHint([{x: 3, y: 2}, {x: 3, y: 3}]);
+            PBWizard.highlightCells([
+                {x: 2, y: 2, unlock: false},
+                {x: 3, y: 2, unlock: true},
+                {x: 3, y: 3, unlock: true},
+                {x: 4, y: 2, unlock: false},
+            ]);
         }, Config.OnIdle.second * 1.500);
     },
     onDestroyLine: function (line) {
-        PBWizard.finish();
+        LogicWizard.finish();
     }
 };

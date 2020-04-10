@@ -107,7 +107,7 @@ PageBlockPanel = function PageBlockPanel() {
 
         /** Кнопка звука **/
         elSoundsButton = GUI.createElement(ElementButton, {
-            x: 660, y: 10,
+            x: 650, y: 10,
             srcRest: '/images/button-sound-off.png',
             srcHover: '/images/button-sound-active.png',
             srcActive: '/images/button-sound-active.png',
@@ -121,7 +121,7 @@ PageBlockPanel = function PageBlockPanel() {
 
         /** Кнопка фулскрин **/
         elFSButton = GUI.createElement(ElementButton, {
-            x: 690, y: 0,
+            x: 690, y: 10,
             srcRest: '/images/button-fs-on-rest.png',
             srcHover: '/images/button-fs-on-hover.png',
             srcActive: '/images/button-fs-on-active.png',

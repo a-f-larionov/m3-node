@@ -16,7 +16,7 @@ Animate = {
 
         animObj.init.apply(animObj, args);
 
-        if (!animObj.noAnimLock) AnimLocker.lock();
+        if (!animObj.skipAnimLock) AnimLocker.lock();
 
         let iterate = function () {
             if (animObj.iterate(counter++)) {
@@ -27,18 +27,12 @@ Animate = {
         };
         let stopAnim = function () {
             clearTimeout(timerId);
-
             if (animObj.finish) animObj.finish();
-
-            if (!animObj.noAnimLock) {
-                AnimLocker.release();
-                if (AnimLocker.free()) {
-                    if (context.redraw) context.redraw();
-                    if (context.run) context.run();
-                }
+            if (animObj.skipAnimLock) {
             } else {
-                if (context.redraw) context.redraw();
+                AnimLocker.release();
             }
+            if (context.onFinish) context.onFinish();
         };
 
         iterate();

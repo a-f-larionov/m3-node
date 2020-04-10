@@ -1,12 +1,12 @@
 let animShowDialog = function () {
     let
-        velocity = 15,
+        velocity = 20,
         startPosition = -500,
-        endPosition = 80
+        endPosition = 70
     ;
 
     this.init = function () {
-        this.noAnimLock = true;
+        this.skipAnimLock = true;
     };
 
     this.iterate = function (counter) {
@@ -16,19 +16,20 @@ let animShowDialog = function () {
     };
 
     this.finish = function () {
-
+        this.dom.y = endPosition;
+        this.dom.redraw();
     };
 };
 
 let animHideDialog = function () {
     let
-        velocity = 15,
-        startPosition = 80,
+        velocity = 20,
+        startPosition = 70,
         endPosition = -500
     ;
 
     this.init = function () {
-        this.noAnimLock = true;
+        this.skipAnimLock = true;
         startPosition = this.dom.y;
     };
 
@@ -39,6 +40,7 @@ let animHideDialog = function () {
     };
 
     this.finish = function () {
-
+        this.dom.y = endPosition;
+        this.dom.redraw();
     };
 };

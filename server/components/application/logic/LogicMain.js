@@ -35,10 +35,10 @@ LogicMain = function () {
 
         WebSocketServer.setMap({
             '/service/vk_buy': LogicPayments.VKbuy,
-            '/service/clientCodeVK': ClientCodeLoader.getClientCodeVK,
-            '/service/clientCodeStandalone': ClientCodeLoader.getClientCodeStandalone,
-            '/service/reloadClientCode': ClientCodeLoader.reloadClientCode,
-            '/service/VKCommentsWidget': ClientCodeLoader.getVKCommentsWidget,
+            '/service/client-vk': ClientCodeLoader.getClientVK,
+            '/service/client-standalone': ClientCodeLoader.getClientStandalone,
+            '/service/reloadClientCode': ClientCodeLoader.reloadClient,
+            '/service/vk-comments-widget': ClientCodeLoader.getVKCommentsWidget,
 
             '/service/--profiler': LogicSystemRequests.getProfiler,
             '/service/--log': LogicSystemRequests.getLog,
@@ -54,7 +54,7 @@ LogicMain = function () {
                     "--logsSetNotify<br>" +
                     "--help<br>" +
                     "<br>" +
-                    "reloadClientCode<br>" +
+                    "reloadClient<br>" +
                     "clientCodeVK<br>" +
                     "clientCodeStandalone?socNetUserId={socNetUserId}<br>");
             }
@@ -72,7 +72,7 @@ LogicMain = function () {
 
     this.setDeInitCallbacks = function () {
 
-        /* set deinit callbacks */
+        /** Set deinit callbacks */
         addDeInitCallback(Statistic.flushCache);
     };
 };
