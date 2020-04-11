@@ -31,7 +31,7 @@ WizardFirstStart_2 = {
         PBWizard.showDialog(400, 380, 30);
         PBWizard.unlockByImg('/images/wizard-button.png',
             390 - Images.getWidth('/images/wizard-button.png') / 2,
-            80 + 240 - 12,
+            80 + 240 - 13,
         );
     },
     onHideDialog: function (onStart) {

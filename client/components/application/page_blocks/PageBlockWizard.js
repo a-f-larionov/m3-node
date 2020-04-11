@@ -157,6 +157,7 @@ PageBlockWizard = function PageBlockWizard() {
     };
 
     this.begin = function () {
+        console.log('wizard begin');
         PageBlockField.getElementField().lockHint();
         canvas.style.display = '';
         canvas.isActive = true;
@@ -164,6 +165,7 @@ PageBlockWizard = function PageBlockWizard() {
     };
 
     this.finish = function () {
+        console.log('wizard finissh');
         canvas.isActive = false;
         canvas.style.display = 'none';
         elDialog.hide();

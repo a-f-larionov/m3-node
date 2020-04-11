@@ -361,13 +361,10 @@ PageBlockField = function PageBlockField() {
 
     this.onDestroyThing = function (objectId, cell) {
         /** Goals */
-        console.log('destroy');
         decreaseGoal(objectId, 1);
 
         if (objectScores[objectId]) {
-            console.log('score up', score);
             score += objectScores[objectId];
-            console.log('score up', score);
             //@todo animate score here
         } else {
             console.log('score up no');

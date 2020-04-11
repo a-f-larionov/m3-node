@@ -186,7 +186,7 @@ DataPoints = function () {
                 "RBYYGYPBB",
 
                 "RBYYGPPBB",
-                "PPRPRG PRG",
+                "PPRPRGPRG",
                 "BRGYRBBGB",
                 "RBYYPPPBB",
                 "GPRBGRPRG",
@@ -211,20 +211,21 @@ DataPoints = function () {
 
     wayPoints[5] = {
         id: 5,
-        turns: 20,
-        score1: 100,
-        score2: 200,
-        score3: 300,
+        turns: 15,
+        score1: 500,
+        score2: 1000,
+        score3: 2000,
         goals: [
             {
-                id: DataObjects.OBJECT_RED,
-                count: 7
+                id: DataObjects.OBJECT_TREASURES,
+                count: 6
             }
         ],
         layers: {
             mask: [
                 "      ",
-                "□□□□□□",
+                "      ",
+
                 "□□□□□□",
                 "□□□□□□",
                 "□□□□□□",
@@ -234,25 +235,27 @@ DataPoints = function () {
                 "□□□□□□",
             ],
             gems: [
-                "??????",
-                "??????",
-                "??????",
-                "??????",
-                "??????",
-                "??????",
-                "??????",
-                "??????",
-                "??????",
+                "GPRBGG",
+                "GRPPBP",
+
+                "BGBYPG",
+                "RBYYGY",
+                "RBYYGP",
+                "PPRPRG",
+                "BRGYRB",
+                "RBYYPP",
+                "GPRBGR",
             ],
             special: [
                 "******",
                 "      ",
+
                 "      ",
+                " $  $ ",
                 "      ",
+                " $  $ ",
                 "      ",
-                "      ",
-                "      ",
-                "      ",
+                " $  $ ",
                 "      ",
             ],
         }
