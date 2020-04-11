@@ -79,14 +79,14 @@ PageBlockPanel = function PageBlockPanel() {
         });
         self.elements.push(el);
 
-        /** жизни - сердца */
+        /** Жизни - сердца */
         el = GUI.createElement(ElementHealthIndicator, {
             x: pHX + 9,
             y: -1
         });
         self.elements.push(el);
 
-        /** жизни - таймер */
+        /** Жизни - таймер */
         el = GUI.createElement(ElementHealthTimer, {
             x: pHX + 111, y: 10,
             healthIndicator: el,

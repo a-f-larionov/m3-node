@@ -334,7 +334,8 @@ PageBlockMaps = function PageBlockMaps() {
             pointEl.setGamers(
                 LogicUser.getFriendIdsByMapIdAndPointIdWithScore(
                     DataMap.getCurent().id,
-                    pointId, true)
+                    pointId,
+                    true)
             );
         }
     };

@@ -6,14 +6,10 @@
 SocNetStandalone = function () {
 
     this.init = function () {
-        //do something here
     };
 
     this.getAuthParams = function () {
-        //@todo
-        return {
-            //some params
-        };
+        return {};
     };
 
     this.getUserProfileUrl = function () {
@@ -28,7 +24,7 @@ SocNetStandalone = function () {
 
     this.getSocNetUserId = function () {
         let socNetUserId;
-        socNetUserId = getQueryVariable('soc-net-user-id');
+        socNetUserId = parseInt(getQueryVariable('soc-net-user-id'));
         if (!socNetUserId) {
             Logs.log("TODO Me. SocNetStandlaone.getSocNetUesrId and ... guset mode :)", Logs.LEVEL_WARNING);
             socNetUserId = 111; // is it guest!!!
@@ -36,19 +32,43 @@ SocNetStandalone = function () {
         return socNetUserId;
     };
 
+    let friends = [];
+    for (let i = 0; i < 10000; i++) {
+        friends.push(i);
+    }
     this.getFriendIds = function (callback) {
-        let friends = [];
         callback(friends);
     };
 
     this.getUserInfo = function (id, callback) {
+        let randomName = [
+            'Носков Людвиг Романович /images/field-octopus.png',
+            'Кириллов Юрий Валериевич /images/field-barrel.png',
+            'Пахомов Александр Григорьевич /images/field-box.png',
+            'Наумов Людвиг Артёмович /images/field-blue.png',
+            'Негода Устин Леонидович /images/field-red.png',
+            'Грабчак Роман Андреевич /images/field-green.png',
+            'Симонов Игнатий Васильевич /images/field-purple.png',
+            'Харитонов Яромир Александрович /images/field-yellow.png',
+            'Крюков Марк Романович /images/field-poly-color.png',
+            'Киранов Марат Романович /images/field-treasures.png',
+            'Пушкин Александр Сергеевич /images/field-poly-color.png',
+        ];
         let info = {};
+        if (id === this.getSocNetUserId() && false) {
+            info.first_name = 'Админ';
+            info.last_name = 'Админов';
+            info.photo_50 = '/images/button-shuffle-rest.png';
+            info.photo_100 = '/images/button-shuffle-rest.png';
+        } else {
+            info.first_name = randomName[id % randomName.length].split(' ')[0];
+            info.last_name = randomName[id % randomName.length].split(' ')[1];
+            info.photo_50 = randomName[id % randomName.length].split(' ')[3];
+            info.photo_100 = randomName[id % randomName.length].split(' ')[3];
+        }
         info.id = id;
-        info.first_name = 'firstName';
-        info.last_name = 'lastName';
-        info.photo_50 = '/images/field-octopus.png';
-        info.photo_100 = '/images/field-octopus.png';
         info.sex = SocNet.SEX_UNKNOWN;
+        console.log(info);
         callback([info]);
     };
 

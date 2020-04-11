@@ -256,7 +256,7 @@ ElementPoint = function () {
 
     let redrawPhotos = function () {
         let offsetX = (self.pointWidth / 2 - photoSize / 2) - 2;
-        // half of Y
+        /** H   alf of Y */
         let offsetY, offsetCenterY;
         let friendIndex = 0;
         let doms = [dPhoto1, dPhoto2, dPhoto3];
@@ -281,12 +281,15 @@ ElementPoint = function () {
         dPhoto3.x = self.x + 19 + offsetX;
         dPhoto3.y = self.y + offsetY;
 
+        if (self.pointId >= 8) {
+            console.log(gamers);
+        }
         gamers.forEach(function (user) {
 
             if (!user) doms[friendIndex].hide();
             else {
                 if (user && user.photo50
-                    //  && user.nextPointId === self.pointId
+                    ////  && user.nextPointId === self.pointId
                 ) {
                     doms[friendIndex].backgroundImage = user.photo50;
                     doms[friendIndex].show();
@@ -297,12 +300,6 @@ ElementPoint = function () {
             }
             friendIndex++;
         });
-        //debug
-        // doms.forEach(function (dom) {
-        //     dom.backgroundImage = LogicUser.getCurrentUser().photo50;
-        //     dom.show();
-        //     dom.redraw();
-        // });
     };
 
     /**
@@ -352,11 +349,14 @@ ElementPoint = function () {
      * @param newData
      */
     this.setGamers = function (newData) {
+        if (self.pointId >= 8) {
+            console.log('newData', newData);
+        }
         newData = newData.filter(function (user) {
             return user.nextPointId === self.pointId;
         });
         gamers = newData.slice(0, 3);
-        // центрируем если игрок только один
+        /** Центрируем если игрок только один */
         if (gamers.length === 1) gamers.unshift(null);
         while (gamers.length < 3) gamers.push(null);
     }

@@ -82,7 +82,7 @@ PageBlockField = function PageBlockField() {
          */
         {
             /** Панель */
-            oX = 10;
+            oX = 640;
             oY = 80;
             el = GUI.createElement(ElementImage, {
                 x: oX, y: oY, src: '/images/panel-score.png'
@@ -119,7 +119,7 @@ PageBlockField = function PageBlockField() {
          * ПАНЕЛЬ ХОДОВ
          */
         {
-            oX = 640;
+            oX = 10;
             oY = 80;
             /** Панель */
             el = GUI.createElement(ElementImage, {
@@ -366,8 +366,6 @@ PageBlockField = function PageBlockField() {
         if (objectScores[objectId]) {
             score += objectScores[objectId];
             //@todo animate score here
-        } else {
-            console.log('score up no');
         }
         self.redraw();
         LogicWizard.onDestroyThing(cell);

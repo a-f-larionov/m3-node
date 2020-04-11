@@ -214,22 +214,31 @@ LogicUser = function () {
      * @returns {Array|Uint8Array|BigInt64Array|*[]|Float64Array|Int8Array|Float32Array|Int32Array|Uint32Array|Uint8ClampedArray|BigUint64Array|Int16Array|Uint16Array}
      */
     this.getFriendIdsByMapIdAndPointIdWithScore = function (mapId, pointId, widthCurrentUser) {
-        let ids, users, gamers;
+        let ids, users, gamers, currentUserId;
         //return LogicUser.getList([1,2,3]);
         gamers = [];
         ids = LogicUser.getFriendIdsByMapId(mapId);
-        if (widthCurrentUser) ids.push(LogicUser.getCurrentUser().id);
+        currentUserId = LogicUser.getCurrentUser().id;
+        if (widthCurrentUser) {
+            ids.push(currentUserId);
+        }
         if (ids) {
             users = LogicUser.getList(ids);
         }
         if (users) {
-            gamers = users.filter(function (user) {
-                return user.nextPointId >= pointId;
-            }).sort(function (a, b) {
-                return b.lastLoginTimestamp - a.lastLoginTimestamp;
-            }).map(function (user) {
-                return user;
-            });
+            gamers = users
+                .filter(function (user, i) {
+                    if (!widthCurrentUser && currentUserId === user.id) return false;
+                    /** Remove duplicates */
+                    if (users.indexOf(user) !== i) return false;
+                    return user.nextPointId >= pointId;
+                })
+                .sort(function (a, b) {
+                    return b.lastLoginTimestamp - a.lastLoginTimestamp;
+                })
+                .map(function (user) {
+                    return user;
+                });
         }
         return gamers;
     };

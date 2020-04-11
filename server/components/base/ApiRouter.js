@@ -28,7 +28,7 @@ ApiRouter = new (function () {
 
     /**
      * Process requests.
-     * @param packet {string} пакет данных, фомат:JSON, {group:string, method:string, args:[...]}
+     * @param packet {string} пакет данных, формат:JSON, {group:string, method:string, args:[...]}
      * @param id {Number} id соединения.
      */
     this.onData = function (packet, id) {
@@ -80,20 +80,18 @@ ApiRouter = new (function () {
             Logs.log("Wrong data: method not found " + method, Logs.LEVEL_WARNING, packet);
             return;
         }
-        // добавим к аргументам контекст соединения.
-        args.unshift(connections[id]);
-        // выполним запрашиваемый метод.
-        let connectionsKey;
-        connectionsKey = '';
-        if (id) connectionsKey = id;
 
         if (CONST_IS_SERVER_SIDE) {
+            /** Server */
             Logs.log(id + " " + ">> " + group + "." + method, Logs.LEVEL_DETAIL, args);
         } else {
+            /** Client */
             Logs.log(group + "." + method, Logs.LEVEL_DETAIL, args);
         }
 
-        /* group_method.counter ++ */
+        /** Добавим к аргументам контекст соединения. */
+        args.unshift(connections[id]);
+        /** Group_method.counter ++ **/
         map[group][method].apply(self, args);
     };
 
@@ -114,20 +112,20 @@ ApiRouter = new (function () {
 
     this.executeRequest = function (group, method, args, cntxList) {
         let connectionsKey, i;
-        /* Convert object to array. */
+        /** Convert object to array. */
         args = Array.prototype.slice.call(args);
 
-        if (!cntxList) {
-            cntxList = [{connectionId: null}];
-        }
+        if (!cntxList) cntxList = [{connectionId: null}];
+
         connectionsKey = '';
-        for (i in cntxList) {
-            connectionsKey += cntxList[i].connectionId;
-        }
+        for (i in cntxList) connectionsKey += cntxList[i].connectionId;
+
         if (CONST_IS_SERVER_SIDE) {
+            /** Server */
             Logs.log(connectionsKey + " " + "<< " + group + "." + method + ':' + args.join(','), Logs.LEVEL_DETAIL);
         } else {
-            Logs.log(group + "." + method + (args.length ? ' ' + args.join(',') : ''), Logs.LEVEL_DETAIL);
+            /** Client */
+            Logs.log(group + "." + method, Logs.LEVEL_DETAIL, args);
         }
 
         let packet = {
