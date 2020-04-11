@@ -93,10 +93,10 @@ CAPIMap = function () {
 
             'ᨔ' : DataObjects.OBJECT_POLY_COLOR,
             'ᥩ' : DataObjects.OBJECT_BARREL,
-            'ȫ' : DataObjects.OBJECT_SPIDER_RED,
+            'ȫ' : DataObjects.OBJECT_RED_SPIDER,
 
 
-            'ᴥ' : DataObjects.OBJECT_SPIDER_GREEN,
+            'ᴥ' : DataObjects.OBJECT_GREEN_SPIDER,
             'ɨ' : DataObjects.OBJECT_ICE,
             '$' : DataObjects.OBJECT_TREASURES,
             '■' : DataObjects.OBJECT_BOX,

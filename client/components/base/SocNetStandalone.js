@@ -28,7 +28,7 @@ SocNetStandalone = function () {
 
     this.getSocNetUserId = function () {
         let socNetUserId;
-        socNetUserId = getQueryVariable('socNetUserId');
+        socNetUserId = getQueryVariable('soc-net-user-id');
         if (!socNetUserId) {
             Logs.log("TODO Me. SocNetStandlaone.getSocNetUesrId and ... guset mode :)", Logs.LEVEL_WARNING);
             socNetUserId = 111; // is it guest!!!

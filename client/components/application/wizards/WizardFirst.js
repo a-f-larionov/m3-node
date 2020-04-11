@@ -49,10 +49,7 @@ WizardFirstStart_3 = {
         PBWizard.begin();
     },
     onHideDialog: function (onStart) {
-        if (onStart) return;
-        if (!onStart) this.dialogCounter++;
-        console.log(this.dialogCounter);
-        if (this.dialogCounter === 1) return;
+        if (this.dialogCounter++ < 3) return;
         PBWizard.updateText('Поменяй соседние камни местами, чтобы собрать камни красного цвета.');
         PBWizard.showDialog(210, 380, 20, 20);
         PBWizard.showHint([{x: 1, y: 0}, {x: 2, y: 0}]);

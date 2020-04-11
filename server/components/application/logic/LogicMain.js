@@ -55,8 +55,8 @@ LogicMain = function () {
                     "--help<br>" +
                     "<br>" +
                     "reloadClient<br>" +
-                    "clientCodeVK<br>" +
-                    "clientCodeStandalone?socNetUserId={socNetUserId}<br>");
+                    "client-vk<br>" +
+                    "client-standalone?soc-net-user-id={socNetUserId}<br>");
             }
         });
     };

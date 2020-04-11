@@ -343,17 +343,12 @@ ElementField = function () {
 
     let onGemMouseOver = function (event) {
         let p, mousedCell, pList;
-        console.log('onGemMouesOver');
-        console.log(0);
         if (polyColorCell) {
             p = pointFromEvent(event);
             mousedCell = Field.getCell(p);
-            console.log(1);
             if (Field.isNear(p, gemFramed) && mousedCell.isVisible && mousedCell.object.isGem && mousedCell.object.isCanMoved) {
-                console.log(2);
                 if (stopHint) stopHint();
                 if (stopPolyColorAnim === false) {
-                    console.log(3);
                     pList = [];
                     Field.eachCell(function (x, y, cell, object) {
                         if (cell.isVisible && object.isGem && object.objectId === mousedCell.object.objectId && cell.object.isCanMoved) {
@@ -372,7 +367,6 @@ ElementField = function () {
     };
 
     let onGemMouseOut = function (event) {
-        console.log('onGemMouseOut');
         if (polyColorCell) {
             if (stopPolyColorAnim) {
                 stopPolyColorAnim();
@@ -399,7 +393,6 @@ ElementField = function () {
      * Спрячем картинку.
      */
     this.hide = function () {
-        //console.log('hide it');
         if (showed === false) return;
         showed = false;
         container.hide();
@@ -453,7 +446,7 @@ ElementField = function () {
                 /**
                  * Draw any
                  */
-                if (cell.isVisible && (object.isGem || object.isSpiderRed || object.isBarrel || object.isPolyColor)) {
+                if (cell.isVisible && (object.isGem || object.isRedSpider || object.isBarrel || object.isPolyColor)) {
                     drawCell(gemDom, x, y, object.objectId, '')
                 } else {
                     gemDom.hide();
@@ -470,7 +463,7 @@ ElementField = function () {
                 }
 
                 /** Spider red health */
-                if (cell.isVisible && object.isSpiderRed) {
+                if (cell.isVisible && object.isRedSpider) {
                     specDom = specDoms2[spec2Index++];
                     specDom.backgroundImage = DataPoints.healthImages[object.health];
                     drawCell(specDom, x, y, '', '');
@@ -499,7 +492,7 @@ ElementField = function () {
                 /** Spider green */
                 if (cell.isVisible && object.withOctopus) {
                     specDom = specDoms2[spec2Index++];
-                    drawCell(specDom, x, y, DataObjects.OBJECT_SPIDER_GREEN, '');
+                    drawCell(specDom, x, y, DataObjects.OBJECT_GREEN_SPIDER, '');
                     gemDom.bindedDoms = specDom;
                 }
             }
@@ -541,7 +534,6 @@ ElementField = function () {
         layers.special.forEach(function (specLayer) {
             specialLayers.push(copyLayer(specLayer));
         });
-        //console.log('set layers special', specialLayers);
         Field.setLayers(
             copyLayer(layers.mask),
             copyLayer(layers.gems, function (value) {
@@ -594,7 +586,6 @@ ElementField = function () {
 
     this.run = function () {
         if (AnimLocker.busy()) return;
-        //console.log('run');
 
         if (self.hasProcesSpecialLayer()) return self.processSpecialLayer();
         if (self.hasFall()) return self.fall();
@@ -604,7 +595,6 @@ ElementField = function () {
     };
 
     let onFieldSilent = function () {
-        //console.log('on field silent');
         self.onFieldSilent();
         tryShowHint();
     };
@@ -612,9 +602,7 @@ ElementField = function () {
     let stopHint;
 
     let tryShowHint = function () {
-        window.jkl = tryShowHint;
         setTimeout(function () {
-            console.log('try hint', self.isFieldSilent(), !lock, showed, !stopHint, !stopPolyColorAnim, !lockHint);
             if (self.isFieldSilent() && !lock && showed && !stopHint && !stopPolyColorAnim && !lockHint) {
                 let allTurns = Field.countTurns();
                 if (allTurns.length) {
@@ -630,13 +618,6 @@ ElementField = function () {
     };
 
     this.isFieldSilent = function () {
-        /*console.log(
-            ' b=' + Number(AnimLocker.busy()) +
-            ' dl=' + Number(self.hasDestroyLines()) +
-            ' f=' + Number(self.hasFall()) +
-            ' pl=' + Number(self.hasProcesSpecialLayer()) +
-            ' ntrns=' + Number(self.hasNoTurns())
-        );*/
         return !(AnimLocker.busy() ||
             self.hasDestroyLines() ||
             self.hasFall() ||
@@ -660,7 +641,8 @@ ElementField = function () {
                 if (Field.isVisible({x: x, y: y})) animate(animGemFader, {x: x, y: y});
             }
             if (cell.isVisible && cell.object.isBarrel && !Field.isVisible({x: x, y: y + 1})) {
-                self.onDestroyThing(cell);
+                /** Destroy barrel */
+                self.onDestroyThing(DataObjects.OBJECT_BARREL, cell);
                 Field.setObject({x: x, y: y}, DataObjects.OBJECT_HOLE, false);
                 cell.object.isBarrel = false;
                 //@todo animBarrelGoOut
@@ -709,7 +691,6 @@ ElementField = function () {
         lines = Field.findLines();
 
         lines.forEach(function (line) {
-            //console.log('length', line, line.coords.length);
             actGem = null;
             if (line.coords.length > 3) {
                 if (lastExchangeGems && Field.lineCrossing([line], lastExchangeGems.a.x, lastExchangeGems.a.y)) {
@@ -773,7 +754,7 @@ ElementField = function () {
     this.cellAttack = function (p, cell) {
         let lightningId;
         cell = cell ? cell : Field.getCell(p);
-        //console.log('destroy gem', cell, p);
+
         lightningId = cell.object.lightningId;
 
         if (cell.isVisible && cell.object.isGem && !cell.object.isCanMoved) {
@@ -783,18 +764,21 @@ ElementField = function () {
         }
 
         if (cell.isVisible && (cell.object.isGem || cell.object.isPolyColor) && cell.object.isCanMoved) {
-            self.onDestroyThing(cell);
+            /** Destroy any gem */
+            self.onDestroyThing(cell.object.objectId, cell);
             Field.setObject(p, DataObjects.OBJECT_HOLE, false);
             animate(animHummerDestroy, p);
 
             if (cell.withTreasures) {
-                self.onDestroyThing(cell);
+                /** Destroy treasures */
+                self.onDestroyThing(DataObjects.OBJECT_TREASURES, cell);
                 cell.withTreasures = false;
                 animate(animHummerDestroy, p);
             }
 
-            if (cell.object.withSpiderGreen) {
-                self.onDestroyThing(cell);
+            if (cell.object.withGreenSpider) {
+                /** Destroy green spider */
+                self.onDestroyThing(DataObjects.OBJECT_GREEN_SPIDER, cell);
                 cell.object.withOctopus = false;
                 animate(animHummerDestroy, p);
             }
@@ -803,12 +787,13 @@ ElementField = function () {
             Field.eachNears(p, function (nearP, nearCell) {
                 //@todo animSpiderAtacked
                 //@todo animSpiderKilled
-                if (nearCell.object.isSpiderRed) {
+                if (nearCell.object.isRedSpider) {
                     nearCell.object.health--;
                     if (nearCell.object.health) {
                         animate(animHummerDestroy, nearP);
                     } else {
-                        self.onDestroyThing(nearCell);
+                        /** Destoy red spider */
+                        self.onDestroyThing(DataObjects.OBJECT_RED_SPIDER, nearCell);
                         Field.setObject(nearP, DataObjects.OBJECT_HOLE);
                         animate(animHummerDestroy, nearP);
                     }
@@ -843,7 +828,6 @@ ElementField = function () {
     };
 
     this.showHint = function (pList) {
-        console.log(pList);
         if (stopHint) stopHint();
         let stopFunc = animate(animHint, pList);
         stopHint = function () {

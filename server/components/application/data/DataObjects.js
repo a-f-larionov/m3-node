@@ -62,12 +62,12 @@ DataObjects = function () {
      * Рыба
      * @type {number}
      */
-    this.OBJECT_SPIDER_RED = 150;
+    this.OBJECT_RED_SPIDER = 150;
     /**
      * Осминог
      * @type {number}
      */
-    this.OBJECT_SPIDER_GREEN = 160;
+    this.OBJECT_GREEN_SPIDER = 160;
     /**
      * Лёд
      * @type {number}

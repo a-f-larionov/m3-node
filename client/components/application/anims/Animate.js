@@ -3,7 +3,6 @@ Animate = {
         let args, animObj, counter, timerId;
         counter = 0;
         animObj = new animClass();
-        log(animObj);
         for (let name in context) {
             if (context.hasOwnProperty(name)) {
                 animObj[name] = context[name];

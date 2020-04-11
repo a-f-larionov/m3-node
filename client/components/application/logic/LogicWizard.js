@@ -20,12 +20,12 @@ LogicWizard = function LogicWizard() {
     };
 
     this.onFieldFirstShow = function () {
-        if (LogicUser.getCurrentUser().nextPointId === 2 && DataPoints.getPlayedId() === 2) {
-            self.start(WizardLevel2_1);
-        }
-        if (LogicUser.getCurrentUser().nextPointId === 3 && DataPoints.getPlayedId() === 3) {
-            self.start(WizardLevel3_1);
-        }
+        let nextPointId = LogicUser.getCurrentUser().nextPointId,
+            playedId = DataPoints.getPlayedId();
+        if (nextPointId === 2 && playedId === 2) self.start(WizardLevel2_1);
+        if (nextPointId === 3 && playedId === 3) self.start(WizardLevel3_1);
+        if (nextPointId === 4 && playedId === 4) self.start(WizardLevel4_1);
+
     };
 
     this.start = function (wizard) {

@@ -253,7 +253,6 @@ let animHint = function animHint() {
 
     this.finish = function () {
         Animate.hintActive = false;
-        console.log('anim finish');
     }
 };
 

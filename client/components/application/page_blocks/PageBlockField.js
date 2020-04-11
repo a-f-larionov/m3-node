@@ -346,20 +346,33 @@ PageBlockField = function PageBlockField() {
 
     let noMoreGoals;
 
-    this.onDestroyThing = function (cell) {
+    let objectScores = {};
+    objectScores[DataObjects.OBJECT_RED] = 10;
+    objectScores[DataObjects.OBJECT_GREEN] = 10;
+    objectScores[DataObjects.OBJECT_BLUE] = 10;
+    objectScores[DataObjects.OBJECT_YELLOW] = 10;
+    objectScores[DataObjects.OBJECT_PURPLE] = 10;
+    objectScores[DataObjects.OBJECT_RED_SPIDER] = 100;
+    objectScores[DataObjects.OBJECT_GREEN_SPIDER] = 100;
+    objectScores[DataObjects.OBJECT_POLY_COLOR] = 300;
+    objectScores[DataObjects.OBJECT_TREASURES] = 300;
+    objectScores[DataObjects.OBJECT_BARREL] = 100;
+    objectScores[DataObjects.OBJECT_BOX] = 100;
+
+    this.onDestroyThing = function (objectId, cell) {
         /** Goals */
-        decreaseGoal(cell.object.objectId, 1);
-        if (cell.withBox) decreaseGoal(DataObjects.OBJECT_BOX, 1);
-        if (cell.withChain) decreaseGoal(DataObjects.OBJECT_CHAIN, 1);
-        if (cell.withTreasures) decreaseGoal(DataObjects.OBJECT_TREASURES, 1);
-        if (cell.object.withSpiderGreen) decreaseGoal(DataObjects.OBJECT_SPIDER_GREEN, 1);
+        console.log('destroy');
+        decreaseGoal(objectId, 1);
 
-        /** Score */
-        if (cell.object.isGem) {
-            score += 10;
+        if (objectScores[objectId]) {
+            console.log('score up', score);
+            score += objectScores[objectId];
+            console.log('score up', score);
             //@todo animate score here
+        } else {
+            console.log('score up no');
         }
-
+        self.redraw();
         LogicWizard.onDestroyThing(cell);
     };
 

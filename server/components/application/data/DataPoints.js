@@ -109,10 +109,10 @@ DataPoints = function () {
 
     wayPoints[3] = {
         id: 3,
-        turns: 15,
+        turns: 8,
         score1: 100,
         score2: 200,
-        score3: 400,
+        score3: 600,
         goals: [
             {
                 id: DataObjects.OBJECT_GREEN,
@@ -153,45 +153,60 @@ DataPoints = function () {
 
     wayPoints[4] = {
         id: 4,
-        turns: 20,
-        score1: 100,
-        score2: 200,
-        score3: 300,
+        turns: 10,
+        score1: 500,
+        score2: 1500,
+        score3: 2000,
         goals: [
             {
-                id: DataObjects.OBJECT_RED,
-                count: 7
+                id: DataObjects.OBJECT_TREASURES,
+                count: 4
             }
         ],
         layers: {
             mask: [
-                "      ",
+                "",
+                "",
+                "",
+                "",
+                "",
+
                 "□□□□□□",
                 "□□□□□□",
                 "□□□□□□",
                 "□□□□□□",
                 "□□□□□□",
-                "□□□□□□",
+
             ],
             gems: [
-                "??????",
-                "??????",
-                "??????",
-                "??????",
-                "??????",
-                "??????",
-                "??????",
+                "BRGYRBBGB",
+                "GPRBGGPRG",
+                "GRPPBPPGR",
+                "BGBYPGYPG",
+                "RBYYGYPBB",
+
+                "RBYYGPPBB",
+                "PPRPRG PRG",
+                "BRGYRBBGB",
+                "RBYYPPPBB",
+                "GPRBGRPRG",
             ],
-            special: [
-                "******",
+            special: [[
+                "********",
+            ], [
+                "",
+                "",
+                "",
+                "",
+                "",
+
                 "      ",
+                " $  $ ",
                 "      ",
+                " $  $ ",
                 "      ",
-                "      ",
-                "      ",
-                "      ",
-            ],
-        }
+            ]],
+        },
     };
 
     wayPoints[5] = {

@@ -28,7 +28,7 @@ LogicField = function () {
 
         DataObjects.OBJECT_POLY_COLOR,
         DataObjects.OBJECT_BARREL,
-        DataObjects.OBJECT_SPIDER_RED
+        DataObjects.OBJECT_RED_SPIDER
     ];
 
     this.getCell = function (p) {
@@ -230,13 +230,13 @@ LogicField = function () {
 
         object.isPolyColor = (id === DataObjects.OBJECT_POLY_COLOR);
         object.isBarrel = (id === DataObjects.OBJECT_BARREL);
-        object.isSpiderRed = (id === DataObjects.OBJECT_SPIDER_RED);
+        object.isRedSpider = (id === DataObjects.OBJECT_RED_SPIDER);
 
         self.updateIsCanMoved(object);
     };
 
     this.updateIsCanMoved = function (object) {
-        object.isCanMoved = (object.isGem || object.isBarrel || object.isPolyColor || object.isSpiderRed) && !object.withBox && !object.withChain;
+        object.isCanMoved = (object.isGem || object.isBarrel || object.isPolyColor || object.isRedSpider) && !object.withBox && !object.withChain;
     };
 
     this.getGemId = function (p) {
@@ -265,13 +265,13 @@ LogicField = function () {
                 cell.isVisible = mask[x] && mask[x][y] && mask[x][y] === DataObjects.CELL_VISIBLE;
                 cell.isEmitter = specIds.indexOf(DataObjects.IS_EMITTER) !== -1;
 
-                if (objectId === DataObjects.OBJECT_SPIDER_RED) object.health = 3;
+                if (objectId === DataObjects.OBJECT_RED_SPIDER) object.health = 3;
 
                 cell.withTreasures = specIds.indexOf(DataObjects.OBJECT_TREASURES) !== -1;
 
                 object.withBox = specIds.indexOf(DataObjects.OBJECT_BOX) !== -1;
                 object.withChain = specIds.indexOf(DataObjects.OBJECT_CHAIN) !== -1;
-                object.withSpiderGreen = specIds.indexOf(DataObjects.OBJECT_SPIDER_GREEN) !== -1;
+                object.withGreenSpider = specIds.indexOf(DataObjects.OBJECT_GREEN_SPIDER) !== -1;
 
                 self.setObject({x: x, y: y}, objectId, lightningId)
             }
