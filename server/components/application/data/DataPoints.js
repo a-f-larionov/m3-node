@@ -318,57 +318,63 @@ DataPoints = function () {
 
     wayPoints[7] = {
         id: 7,
-        turns: 20,
+        turns: 15,
         score1: 100,
-        score2: 200,
-        score3: 300,
+        score2: 1000,
+        score3: 5000,
         goals: [
             {
+                id: DataObjects.OBJECT_TREASURES,
+                count: 12
+            },
+            {
+                id: DataObjects.OBJECT_RED,
+                count: 10
+            },
+            {
                 id: DataObjects.OBJECT_GREEN,
-                count: 20
-            },
-            {
-                id: DataObjects.OBJECT_BLUE,
-                count: 20
-            },
-            {
-                id: DataObjects.OBJECT_YELLOW,
-                count: 14
+                count: 10
             }
         ],
         layers: {
             mask: [
-                "        ",
-                "   □□   ",
+                "",
+                "",
+                "",
+
                 "  □□□□  ",
                 " □□□□□□ ",
                 "□□□□□□□□",
                 "□□□□□□□□",
                 "□□□□□□□□",
-                " □□□□□□ ",
+                "  □□□□  ",
                 "  □□□□  ",
             ],
             gems: [
-                "????????",
-                "????????",
-                "????????",
-                "????????",
-                "????????",
-                "????????",
-                "????????",
-                "????????",
-                "????????",
+                "GPRBGGGR",
+                "GRPPBPGB",
+                "BGBYPGRG",
+
+                "BRGYRBRG",
+                "RBYYPPYB",
+                "RBYYGPBY",
+                "PPRPRGPG",
+                "GPRBGRYR",
+                "RBYYPPYG",
+                "RBYYGYGP",
             ],
             special: [
-                "********",
-                "        ",
-                "        ",
-                "        ",
-                "        ",
-                "        ",
-                "        ",
-                "        ",
-                "        ",
+                "*********",
+                "",
+                "",
+
+                "       ",
+                "  $$$$ ",
+                "  $  $ ",
+                "  $  $ ",
+                "  $$$$ ",
+                "       ",
+                "       ",
             ],
         }
     };
@@ -377,12 +383,12 @@ DataPoints = function () {
         id: 8,
         turns: 25,
         score1: 100,
-        score2: 200,
-        score3: 300,
+        score2: 3000,
+        score3: 5000,
         goals: [
             {
-                id: DataObjects.OBJECT_YELLOW,
-                count: 16
+                id: DataObjects.OBJECT_TREASURES,
+                count: 9
             },
             {
                 id: DataObjects.OBJECT_RED,
@@ -391,36 +397,44 @@ DataPoints = function () {
         ],
         layers: {
             mask: [
-                "        ",
-                "   □□   ",
-                "  □□□□  ",
-                " □□□□□□ ",
-                "□□□□□□□□",
-                "□□□□□□□□",
-                " □□□□□□ ",
-                "  □□□□  ",
-                "  □□□□  ",
+                "",
+                "",
+                "",
+
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
             ],
             gems: [
-                "????????",
-                "????????",
-                "????????",
-                "????????",
-                "????????",
-                "????????",
-                "????????",
-                "????????",
-                "????????",
+                "GPRBGGGR",
+                "GRPPBPGB",
+                "BGBYPGRG",
+
+                "BRBYYPPY",
+                "BRGYRBRG",
+                "RBYGGPBY",
+                "PPRPRGPG",
+                "GPRBGRYR",
+                "RBYYPPYG",
+                "RBYYGYGP",
             ],
             special: [
-                "********",
+                "*********",
+                "",
+
+
                 "        ",
                 "        ",
-                "        ",
-                "        ",
-                "        ",
-                "        ",
-                "        ",
+                "   $    ",
+                "   $    ",
+                " $$$$$  ",
+                "   $    ",
+                "   $    ",
                 "        ",
             ],
         }
