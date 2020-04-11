@@ -196,10 +196,23 @@ PageBlockWizard = function PageBlockWizard() {
         self.redraw();
     };
 
-    this.showDialog = function (x, y, textOffsetY, fontSize) {
+    this.showDialog = function (x, y, lines, fontSize) {
+        let textOffsetY;
         if (!x) x = 400;
         if (!y) y = 360;
-        if (!textOffsetY) textOffsetY = 0;
+        switch (lines) {
+            default:
+            case 1:
+                textOffsetY = 30;
+                break;
+            case 2:
+                textOffsetY = 19;
+                break;
+            case 1:
+                textOffsetY = 20;
+                break;
+        }
+        if (!lines) textOffsetY = lines * 15;
         if (!fontSize) fontSize = 21;
         elDialog.x = x;
         elDialog.y = y;
@@ -209,6 +222,11 @@ PageBlockWizard = function PageBlockWizard() {
         elDialog.show();
         elText.show();
         self.redraw();
+    };
+
+    this.hideDialog = function () {
+        elDialog.hide();
+        elText.hide();
     };
 
     this.draw = function (callback) {

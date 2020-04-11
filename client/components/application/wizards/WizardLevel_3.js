@@ -2,16 +2,14 @@ WizardLevel3_1 = {
 
     init: function () {
         PBWizard.begin();
-        PBWizard.updateText(
-            'Собрав ряд из 5ёх камней, получаешь звезду.'
-        );
+        PBWizard.updateText('Собрав ряд из 5-ти камней, получаешь звезду.');
     },
     dialogCounter: 0,
     onHideDialog: function () {
         console.log(WizardLevel3_1.dialogCounter);
         if (WizardLevel3_1.dialogCounter++ < 2) return;
         PBWizard.showHint([{x: 4, y: 2}, {x: 4, y: 3}]);
-        PBWizard.showDialog(210, 400, 18, 20);
+        PBWizard.showDialog(210, 400, 2, 20);
         PBWizard.highlightCells([
             {x: 2, y: 2, unlock: false},
             {x: 3, y: 2, unlock: false},
@@ -36,7 +34,7 @@ WizardLevel3_2 = {
     dialogCounter: 0,
     onFieldSilent: function () {
         PBWizard.updateText('Выбери цвет, что бы убрать все камни этого цвета.');
-        PBWizard.showDialog(230, 50, 12, 20);
+        PBWizard.showDialog(230, 50, 2, 20);
         PBWizard.showHint([{x: 4, y: 2}, {x: 5, y: 2}]);
         PBWizard.highlightCells([
             {x: 4, y: 2, unlock: true},
