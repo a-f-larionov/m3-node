@@ -157,7 +157,6 @@ PageBlockWizard = function PageBlockWizard() {
     };
 
     this.begin = function () {
-        console.log('wizard begin');
         PageBlockField.getElementField().lockHint();
         canvas.style.display = '';
         canvas.isActive = true;
@@ -165,7 +164,11 @@ PageBlockWizard = function PageBlockWizard() {
     };
 
     this.finish = function () {
-        console.log('wizard finissh');
+        self.reset();
+        PageBlockField.onWizardFinish();
+    };
+
+    this.reset = function () {
         canvas.isActive = false;
         canvas.style.display = 'none';
         elDialog.hide();
@@ -206,19 +209,19 @@ PageBlockWizard = function PageBlockWizard() {
                 textOffsetY = 30;
                 break;
             case 2:
-                textOffsetY = 19;
+                textOffsetY = 15;
                 break;
-            case 1:
-                textOffsetY = 20;
+            case 3:
+                textOffsetY = 2;
                 break;
         }
         if (!lines) textOffsetY = lines * 15;
-        if (!fontSize) fontSize = 21;
+        if (!fontSize) fontSize = '';
         elDialog.x = x;
         elDialog.y = y;
         elText.x = x + dialogBorder;
         elText.y = y + dialogBorder + textOffsetY;
-        elText.fontSize = fontSize;
+        //elText.fontSize = fontSize;
         elDialog.show();
         elText.show();
         self.redraw();

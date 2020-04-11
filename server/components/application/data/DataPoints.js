@@ -153,7 +153,7 @@ DataPoints = function () {
 
     wayPoints[4] = {
         id: 4,
-        turns: 10,
+        turns: 6,
         score1: 500,
         score2: 1500,
         score3: 2000,

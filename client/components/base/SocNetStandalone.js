@@ -68,7 +68,6 @@ SocNetStandalone = function () {
         }
         info.id = id;
         info.sex = SocNet.SEX_UNKNOWN;
-        console.log(info);
         callback([info]);
     };
 

@@ -131,7 +131,7 @@ ElementPoint = function () {
 
         elText = GUI.createElement(ElementText, {
             width: 33, height: 20,
-            fontSize: 13, bold: true,
+            fontSize: 15, bold: true,
             pointer: GUI.POINTER_HAND
         }, dom);
 
@@ -281,9 +281,6 @@ ElementPoint = function () {
         dPhoto3.x = self.x + 19 + offsetX;
         dPhoto3.y = self.y + offsetY;
 
-        if (self.pointId >= 8) {
-            console.log(gamers);
-        }
         gamers.forEach(function (user) {
 
             if (!user) doms[friendIndex].hide();
@@ -349,9 +346,6 @@ ElementPoint = function () {
      * @param newData
      */
     this.setGamers = function (newData) {
-        if (self.pointId >= 8) {
-            console.log('newData', newData);
-        }
         newData = newData.filter(function (user) {
             return user.nextPointId === self.pointId;
         });

@@ -256,8 +256,8 @@ GUI = function () {
 
     /**
      * Создаёт дом, инициализирует его и возвращает на него ссылку.
-     * @param parent {GUIDom} родитель, в который будет добавлен дом.
-     * @param params {Object} параметры присваиваемые дому, нпример: {x: 123, y: 345}.
+     * @param [parent] {GUIDom} родитель, в который будет добавлен дом.
+     * @param [params] {Object} параметры присваиваемые дому, нпример: {x: 123, y: 345}.
      * @returns {GUIDom}
      */
     this.createDom = function (parent, params) {

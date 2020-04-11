@@ -54,7 +54,7 @@ WizardFirstStart_3 = {
     onHideDialog: function (onStart) {
         if (this.dialogCounter++ < 3) return;
         PBWizard.updateText('Поменяй соседние камни местами, чтобы собрать камни красного цвета.');
-        PBWizard.showDialog(210, 380, 2);
+        PBWizard.showDialog(210, 380, 3);
         PBWizard.showHint([{x: 1, y: 0}, {x: 2, y: 0}]);
         PBWizard.highlightCells([
             {x: 1, y: 0, unlock: true},
@@ -73,7 +73,7 @@ WizardFirstStart_4 = {
         PBWizard.begin();
         setTimeout(function () {
             PBWizard.updateText('У тебя получилось. Давай ещё!');
-            PBWizard.showDialog(210, 380, 1, 21);
+            PBWizard.showDialog(210, 380, 2, 21);
             PBWizard.showHint([{x: 3, y: 2}, {x: 3, y: 3}]);
             PBWizard.highlightCells([
                 {x: 2, y: 2, unlock: false},

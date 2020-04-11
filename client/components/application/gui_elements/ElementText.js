@@ -88,15 +88,13 @@ ElementText = function () {
      * Создадим дом и настроем его.
      */
     this.init = function () {
-        dom = GUI.createDom();
-        dom.x = this.x;
-        dom.y = this.y;
-        dom.width = this.width;
-        dom.height = this.height;
-        dom.color = "rgba(68, 62, 0, 0.7)";
-        dom.fontSize = self.fontSize;
-        dom.background = this.background;
-        dom.fontFamily = '"Marvin",Tahoma,"Geneva CY",sans-serif';
+        dom = GUI.createDom(undefined, {
+            height: this.height,
+            color: "rgba(68, 62, 0, 0.7)",
+            background: this.background,
+            fontFamily: '"Marvin",Tahoma,"Geneva CY",sans-serif',
+        });
+
         dom.__dom.style.zIndex = this.zIndex;
 //        dom.textShadow = '1px 1px black';
         GUI.bind(dom, GUI.EVENT_MOUSE_CLICK, onMouseClick, self);

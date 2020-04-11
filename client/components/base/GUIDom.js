@@ -326,7 +326,7 @@ GUIDom = function () {
         dom.style.fontWeight = self.fontWeight;
     };
     let redrawFontSize = function () {
-        dom.style.fontSize = self.fontSize;
+        dom.style.fontSize = self.fontSize + 'px';
     };
     let redrawFontFamily = function () {
         dom.style.fontFamily = self.fontFamily;

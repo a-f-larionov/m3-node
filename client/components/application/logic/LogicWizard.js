@@ -29,7 +29,7 @@ LogicWizard = function LogicWizard() {
     };
 
     this.start = function (wizard) {
-        PBWizard.finish();
+        PBWizard.reset();
         self.onClick = wizard.onClick ? wizard.onClick : dymmyFunc;
         self.onDestroyThing = wizard.onDestroyThing ? wizard.onDestroyThing : dymmyFunc;
         self.onDestroyLine = wizard.onDestroyLine ? wizard.onDestroyLine : dymmyFunc;

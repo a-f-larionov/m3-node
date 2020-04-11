@@ -2,7 +2,7 @@ DataCross = {};
 
 DataCross.user = {
     maxHealth: 5,
-    healthRecoveryTime: 10,
+    healthRecoveryTime: 45,
 };
 
 DataCross.app = {

@@ -22,6 +22,13 @@ PageBlockField = function PageBlockField() {
 
     let elementTurns = null;
 
+    /**
+     *
+     * @type {ElementText}
+     */
+    let elText = null;
+    let elTextShadow = null;
+
     let stuffMode = null;
 
     let domStuff = null;
@@ -234,6 +241,21 @@ PageBlockField = function PageBlockField() {
         domStuff = GUI.createDom(null, {x: 190, y: 10});
         domStuff.__dom.style.zIndex = 10000;
 
+        elText = GUI.createElement(ElementText, {
+            x: DataCross.app.width / 2 - DataCross.app.width / 1.5 / 2,
+            y: DataCross.app.height / 2 - 40 * 2 / 2,
+            width: DataCross.app.width / 1.5,
+            height: 20 * 2,
+            fontSize: 36,
+            alignCenter: true
+        });
+
+        elTextShadow = GUI.createDom(undefined, {
+            x: 0, y: 0, width: DataCross.app.width, height: DataCross.app.height,
+            background: "black",
+            opacity: 0.3,
+        });
+
         GUI.bind(domStuff, GUI.EVENT_MOUSE_CLICK, function (event, dom) {
             let el;
             /** Передаем клик дальше, теоретически после анимации */
@@ -393,6 +415,8 @@ PageBlockField = function PageBlockField() {
             elementField.lock();
             noMoreGoals = false;
             setTimeout(self.finishLevel, Config.OnIdle.animateInterval * 15);
+        } else if (turns === 0) {
+            PBZDialogs.dialogTurnsLoose.showDialog();
         }
     };
 
@@ -424,11 +448,8 @@ PageBlockField = function PageBlockField() {
 
     this.beforeTurnUse = function () {
         turns--;
-        // and goals
-        if (turns === 0 && !noMoreGoals) {
-            elementField.lock();
-            PBZDialogs.dialogTurnsLoose.showDialog();
-        }
+        if (turns === 0 && !noMoreGoals) elementField.lock();
+        if (turns === 5) showText('Осталось 5 ходов!');
         self.redraw();
     };
 
@@ -483,6 +504,21 @@ PageBlockField = function PageBlockField() {
 
     this.getElementField = function () {
         return elementField;
+    };
+
+    this.onWizardFinish = function () {
+        showText('Теперь сами!');
+    };
+
+    let showText = function (text) {
+        elTextShadow.show();
+        elText.setText(text);
+        elText.show();
+        elText.redraw();
+        setTimeout(function () {
+            elTextShadow.hide();
+            elText.hide();
+        }, Config.OnIdle.second * 1.1);
     }
 };
 

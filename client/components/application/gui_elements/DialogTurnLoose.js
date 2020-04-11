@@ -1,6 +1,5 @@
-DialogTurnLoose = function () {
+DialogTurnLoose = function DialogTurnLoose() {
     let self = this;
-    self.__name = "DialogTurnLoose";
     this.__proto__ = new Dialog();
 
     /**
@@ -30,14 +29,13 @@ DialogTurnLoose = function () {
         self.elements.push(el);
 
         el = GUI.createElement(ElementText, {
-            x: 50, y: 100, fontSize: 24, bold: true, alignCenter: true,
-            width: 400
+            x: 50, y: 150, fontSize: 24, bold: true, alignCenter: true, width: 400
         });
-        el.setText("БОЛЬШЕ ХОДОВ НЕТ!");
+        el.setText("Больше ходов нет! Ты потерял жизнь :(");
 
         self.elements.push(el);
 
-        // номер точки\заголовок
+        /** Номер точки\заголовок */
         elTitle = GUI.createElement(ElementText, {
             x: 135, y: 12, width: 230, height: 40, text: 'ПРОИГРЫШ'
         });

@@ -1,6 +1,5 @@
 DialogStuffShop = function () {
     let self = this;
-    self.__name = "DialogStuffShop";
     this.__proto__ = new Dialog();
 
     let stuffId = null;
