@@ -43,30 +43,16 @@ ElementPanelItems = function () {
      */
     this.init = function () {
         let el;
-        elPanel1 = GUI.createElement(ElementImage, {
-            x: self.x, y: self.y, src: '/images/panel-goals-1.png'
-        });
-        elPanel2 = GUI.createElement(ElementImage, {
-            x: self.x, y: self.y, src: '/images/panel-goals-2.png'
-        });
-        elPanel3 = GUI.createElement(ElementImage, {
-            x: self.x, y: self.y, src: '/images/panel-goals-3.png'
-        });
+        elPanel1 = GUI.createElement(ElementImage, {x: self.x, y: self.y, src: '/images/panel-goals-1.png'});
+        elPanel2 = GUI.createElement(ElementImage, {x: self.x, y: self.y, src: '/images/panel-goals-2.png'});
+        elPanel3 = GUI.createElement(ElementImage, {x: self.x, y: self.y, src: '/images/panel-goals-3.png'});
         /** Текст : заголовок */
-        elTitle = GUI.createElement(ElementText, {
-            x: self.x + 15, y: self.y + 10, width: 80, text: self.title
-        });
+        elTitle = GUI.createElement(ElementText, {x: self.x + 15, y: self.y + 10, width: 80, text: self.title, fontSize: self.fontSize});
 
         for (let id in DataPoints.objectImages) {
-            el = GUI.createElement(ElementImage, {
-                width: 50, height: 50,
-                src: DataPoints.objectImages[id]
-            });
+            el = GUI.createElement(ElementImage, {width: 50, height: 50, src: DataPoints.objectImages[id]});
             imagesEls[id] = el;
-            el = GUI.createElement(ElementText, {
-                width: DataPoints.BLOCK_WIDTH,
-                alignRight: true
-            });
+            el = GUI.createElement(ElementText, {width: DataPoints.BLOCK_WIDTH, alignRight: true});
             countersEls[id] = el;
         }
     };
@@ -140,18 +126,17 @@ ElementPanelItems = function () {
         let offsetY;
         offsetY = 0;
 
-        for (let i in self.items) {
+        self.items.forEach(function (item) {
+            imagesEls[item.id].x = self.x + 20;
+            imagesEls[item.id].y = self.y + 50 + offsetY;
+            imagesEls[item.id].show();
 
-            imagesEls[self.items[i].id].x = self.x + 20;
-            imagesEls[self.items[i].id].y = self.y + 50 + offsetY;
-            imagesEls[self.items[i].id].show();
-
-            countersEls[self.items[i].id].x = self.x + 2 + DataPoints.BLOCK_WIDTH;
-            countersEls[self.items[i].id].y = self.y + 50 + DataPoints.BLOCK_HEIGHT / 2 - 10 + offsetY;
-            countersEls[self.items[i].id].setText(self.items[i].count);
-            countersEls[self.items[i].id].show();
+            countersEls[item.id].x = self.x + 2 + DataPoints.BLOCK_WIDTH;
+            countersEls[item.id].y = self.y + 50 + DataPoints.BLOCK_HEIGHT / 2 - 10 + offsetY;
+            countersEls[item.id].setText(item.count);
+            countersEls[item.id].show();
 
             offsetY += DataPoints.BLOCK_HEIGHT + 5;
-        }
+        });
     };
 };

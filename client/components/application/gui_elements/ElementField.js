@@ -217,7 +217,15 @@ ElementField = function () {
             if (Field.findLines().length) break;
             funcShuffleField();
         }
-        animate(animShuffle, visibleWidth * DataPoints.BLOCK_WIDTH / 2, visibleHeight * DataPoints.BLOCK_HEIGHT / 2);
+        console.log(self);
+        console.log({
+            visibleHeight: visibleHeight,
+            visibleOffsetY: visibleOffsetY
+        });
+        animate(animShuffle,
+            self.x - (visibleOffsetX * DataPoints.BLOCK_WIDTH),
+            self.centerY
+        );
     };
 
     let funcShuffleField = function () {
@@ -404,9 +412,20 @@ ElementField = function () {
         if (stopHint) stopHint();
     };
 
-    let drawCell = function (dom, x, y, objectId, opacity) {
-        dom.x = x * DataPoints.BLOCK_WIDTH;
-        dom.y = y * DataPoints.BLOCK_HEIGHT;
+    let drawDom = function (p, dom, objectId, opacity) {
+        dom.x = p.x * DataPoints.BLOCK_WIDTH;
+        dom.y = p.y * DataPoints.BLOCK_HEIGHT;
+        let borderRadius = '';
+        let nV = function (p) {
+            return !Field.isVisible(p);
+        };
+        //dom.borderRadius = '10px 10px 10px 10px';
+        borderRadius += (nV({x: p.x - 1, y: p.y}) && nV({x: p.x, y: p.y - 1})) ? '8px ' : '0px ';
+        borderRadius += (nV({x: p.x, y: p.y - 1}) && nV({x: p.x + 1, y: p.y})) ? '8px ' : '0px ';
+        borderRadius += (nV({x: p.x + 1, y: p.y}) && nV({x: p.x, y: p.y + 1})) ? '8px ' : '0px ';
+        borderRadius += (nV({x: p.x, y: p.y + 1}) && nV({x: p.x - 1, y: p.y})) ? '8px ' : '0px ';
+        //borderRadius = '8px 8px 8px 8px';
+        dom.borderRadius = borderRadius;
         if (DataPoints.objectImages[objectId]) dom.backgroundImage = DataPoints.objectImages[objectId];
         if (DataPoints.objectAnims[objectId]) {
             dom.animPlayed = true;
@@ -440,14 +459,14 @@ ElementField = function () {
 
                 /** Layer.mask redraw */
                 cell.isVisible ?
-                    drawCell(maskDom, x, y, DataObjects.CELL_VISIBLE) :
+                    drawDom({x: x, y: y}, maskDom, DataObjects.CELL_VISIBLE) :
                     maskDom.hide();
 
                 /**
                  * Draw any
                  */
                 if (cell.isVisible && (object.isGem || object.isRedSpider || object.isBarrel || object.isPolyColor)) {
-                    drawCell(gemDom, x, y, object.objectId, '')
+                    drawDom({x: x, y: y}, gemDom, object.objectId, '')
                 } else {
                     gemDom.hide();
                 }
@@ -457,7 +476,7 @@ ElementField = function () {
                     /** Lightning */
                     if (object.lightningId) {
                         specDom = specDoms2[spec2Index++];
-                        drawCell(specDom, x, y, object.lightningId, 0.5);
+                        drawDom({x: x, y: y}, specDom, object.lightningId, 0.5);
                         gemDom.bindedDoms = specDom;
                     }
                 }
@@ -466,33 +485,33 @@ ElementField = function () {
                 if (cell.isVisible && object.isRedSpider) {
                     specDom = specDoms2[spec2Index++];
                     specDom.backgroundImage = DataPoints.healthImages[object.health];
-                    drawCell(specDom, x, y, '', '');
+                    drawDom({x: x, y: y}, specDom, '', '');
                     gemDom.bindedDoms = specDom;
                 }
 
                 /** Box */
                 if (cell.isVisible && object.withBox) {
                     specDom = specDoms2[spec2Index++];
-                    drawCell(specDom, x, y, DataObjects.OBJECT_BOX, '');
+                    drawDom({x: x, y: y}, specDom, DataObjects.OBJECT_BOX, '');
                     gemDom.hide();
                 }
 
                 /** Chain */
                 if (cell.isVisible && object.withChain) {
                     specDom = specDoms2[spec2Index++];
-                    drawCell(specDom, x, y, DataObjects.OBJECT_CHAIN, '');
+                    drawDom({x: x, y: y}, specDom, DataObjects.OBJECT_CHAIN, '');
                 }
 
                 /** Treasure */
                 if (cell.isVisible && cell.withTreasures) {
                     specDom = specDoms1[spec1Index++];
-                    drawCell(specDom, x, y, DataObjects.OBJECT_TREASURES, '');
+                    drawDom({x: x, y: y}, specDom, DataObjects.OBJECT_TREASURES, '');
                 }
 
                 /** Spider green */
                 if (cell.isVisible && object.withOctopus) {
                     specDom = specDoms2[spec2Index++];
-                    drawCell(specDom, x, y, DataObjects.OBJECT_GREEN_SPIDER, '');
+                    drawDom({x: x, y: y}, specDom, DataObjects.OBJECT_GREEN_SPIDER, '');
                     gemDom.bindedDoms = specDom;
                 }
             }
@@ -507,7 +526,7 @@ ElementField = function () {
         }
 
         if (gemFramed) {
-            drawCell(domFrame, gemFramed.x, gemFramed.y);
+            drawDom({x: gemFramed.x, y: gemFramed.y}, domFrame);
         } else {
             domFrame.hide();
         }
@@ -603,6 +622,7 @@ ElementField = function () {
 
     let tryShowHint = function () {
         setTimeout(function () {
+            console.log('tryShowHint', self.isFieldSilent(), !lock, showed, !stopHint, !stopPolyColorAnim, !lockHint);
             if (self.isFieldSilent() && !lock && showed && !stopHint && !stopPolyColorAnim && !lockHint) {
                 let allTurns = Field.countTurns();
                 if (allTurns.length) {
@@ -816,7 +836,10 @@ ElementField = function () {
 
     this.lockHint = function () {
         lockHint = true;
-        if (stopHint) stopHint();
+        if (stopHint) {
+            stopHint();
+            tryShowHint();
+        }
     };
 
     this.unlockHint = function () {

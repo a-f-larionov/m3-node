@@ -201,6 +201,8 @@ let animShuffle = function () {
     let dom;
 
     this.init = function (x, y) {
+        console.log(arguments);
+        console.log(x, x - Images.getWidth('/images/anim-shuffle-1.png'));
         dom = this.animDoms.pop();
         dom.x = x - Images.getWidth('/images/anim-shuffle-1.png') / 2;
         dom.y = y + DataPoints.BLOCK_HEIGHT / 2 - Images.getHeight('/images/anim-shuffle-1.png') / 2;

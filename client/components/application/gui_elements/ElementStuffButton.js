@@ -156,8 +156,8 @@ ElementStuffButton = function () {
         }
         dom.x = self.x;
         dom.y = self.y;
-        counter.x = self.x + 60;
-        counter.y = self.y + 60;
+        counter.x = self.x + 70;
+        counter.y = self.y + 40;
         counter.setText(LogicStuff.getStuff(self.fieldName));
         dom.redraw();
         counter.redraw();

@@ -5,7 +5,8 @@ let animShowDialog = function () {
         endPosition = 70
     ;
 
-    this.init = function () {
+    this.init = function (bottomPosition) {
+        endPosition = bottomPosition;
         this.skipAnimLock = true;
     };
 
@@ -28,7 +29,8 @@ let animHideDialog = function () {
         endPosition = -500
     ;
 
-    this.init = function () {
+    this.init = function (bottomPosition) {
+        startPosition = bottomPosition;
         this.skipAnimLock = true;
         startPosition = this.dom.y;
     };

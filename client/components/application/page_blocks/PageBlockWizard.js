@@ -177,7 +177,6 @@ PageBlockWizard = function PageBlockWizard() {
         clearInterval(hintIntervalId);
     };
 
-    let stopHint = null;
     let hintIntervalId = null;
 
     this.showHint = function (pList) {

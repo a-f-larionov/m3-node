@@ -90,11 +90,10 @@ ElementText = function () {
     this.init = function () {
         dom = GUI.createDom(undefined, {
             height: this.height,
-            color: "rgba(68, 62, 0, 0.7)",
+            color: this.color ? this.color : "rgba(68, 62, 0, 0.7)",
             background: this.background,
             fontFamily: '"Marvin",Tahoma,"Geneva CY",sans-serif',
         });
-
         dom.__dom.style.zIndex = this.zIndex;
 //        dom.textShadow = '1px 1px black';
         GUI.bind(dom, GUI.EVENT_MOUSE_CLICK, onMouseClick, self);

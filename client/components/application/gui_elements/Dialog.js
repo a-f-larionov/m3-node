@@ -2,7 +2,7 @@
  * Элемент картинки.
  * @constructor
  */
-Dialog = function () {
+Dialog = function (src) {
     let self = this;
 
     /**
@@ -36,7 +36,9 @@ Dialog = function () {
      * Ссылка на картинку.
      * @type {string}
      */
-    this.src = '/images/window-2.png';
+    this.src = src ? src : '/images/window-2.png';
+
+    this.bottomPosition = 70;
 
     /**
      * Дом картинки.
@@ -58,6 +60,8 @@ Dialog = function () {
      * Создадим дом и настроем его.
      */
     this.init = function () {
+        console.log(this);
+        console.log(this.width);
         let dom;
         dom = GUI.createDom(undefined, {
             width: self.width,
@@ -131,14 +135,14 @@ Dialog = function () {
                 if (self.onShowComplete) self.onShowComplete();
                 LogicWizard.onShowDialog();
             }
-        });
+        }, self.bottomPosition);
         self.redraw();
     };
 
     this.closeDialog = function () {
         /** - Запуск прятания диалога */
         LogicWizard.onHideDialog(true);
-        Animate.anim(animHideDialog, {dom: self.dom, onFinish: onCloseFinished})
+        Animate.anim(animHideDialog, {dom: self.dom, onFinish: onCloseFinished}, self.bottomPosition)
     };
 
     let onCloseFinished = function () {

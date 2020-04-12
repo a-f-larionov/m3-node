@@ -232,7 +232,7 @@ PageBlockMaps = function PageBlockMaps() {
         }
 
         self.preset();
-        elFriendsPanel.setFriends(LogicUser.getList(LogicUser.getFriendIds(5)));
+        elFriendsPanel.setFriends(LogicUser.getList(LogicUser.getFriendIds(6)));
         self.elements.forEach(function (element) {
             element.redraw();
         });
