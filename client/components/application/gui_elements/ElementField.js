@@ -509,7 +509,7 @@ ElementField = function () {
                 }
 
                 /** Spider green */
-                if (cell.isVisible && object.withOctopus) {
+                if (cell.isVisible && object.withGreenSpider) {
                     specDom = specDoms2[spec2Index++];
                     drawDom({x: x, y: y}, specDom, DataObjects.OBJECT_GREEN_SPIDER, '');
                     gemDom.bindedDoms = specDom;
@@ -799,7 +799,7 @@ ElementField = function () {
             if (cell.object.withGreenSpider) {
                 /** Destroy green spider */
                 self.onDestroyThing(DataObjects.OBJECT_GREEN_SPIDER, cell);
-                cell.object.withOctopus = false;
+                cell.object.withGreenSpider = false;
                 animate(animHummerDestroy, p);
             }
 

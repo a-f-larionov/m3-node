@@ -38,7 +38,7 @@ Dialog = function (src) {
      */
     this.src = src ? src : '/images/window-2.png';
 
-    this.bottomPosition = 70;
+    this.bottomPosition = 90;
 
     /**
      * Дом картинки.
