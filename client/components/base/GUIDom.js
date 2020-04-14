@@ -278,9 +278,11 @@ GUIDom = function () {
     };
     let redrawWidth = function () {
         dom.style.width = self.width + 'px';
+        if (self.backgroundImage) redrawBackgroundImage();
     };
     let redrawHeight = function () {
         dom.style.height = self.height + 'px';
+        if (self.backgroundImage) redrawBackgroundImage();
     };
     let redrawBackgroundImage = function () {
         let path;

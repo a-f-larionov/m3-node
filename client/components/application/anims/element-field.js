@@ -225,11 +225,13 @@ let animShuffle = function () {
 };
 
 let animHint = function animHint() {
-    let doms;
+    let doms, forEver;
 
-    this.init = function (pList, doNotStopValue) {
+    this.init = function (pList, forEverValue) {
         Animate.hintActive = true;
         this.skipAnimLock = true;
+        forEver = forEverValue;
+
         doms = [];
         pList.forEach(function (p) {
             doms.push(this.gemDoms[p.x][p.y]);
@@ -246,7 +248,32 @@ let animHint = function animHint() {
                 dom.bindedDoms.redraw();
             }
         });
-        return !AnimLocker.busy();
+        return forEver || !AnimLocker.busy();
+    };
+
+    this.finish = function () {
+        Animate.hintActive = false;
+    }
+};
+
+let animHintArrow = function animHint() {
+    let imgs, offset;
+
+    this.init = function (dom) {
+        this.skipAnimLock = true;
+        imgs = [dom];
+    };
+
+    this.iterate = function (counter) {
+        offset = Math.cos(Math.PI / 15 * counter) * 4;
+        imgs.forEach(function (img) {
+            img.x = img.p.x + offset / 2 - 4;
+            img.y = img.p.y + offset / 2 - 4;
+            img.dom.width = 58 - offset;
+            img.dom.height = 58 - offset;
+            img.redraw();
+        });
+        return true;
     };
 
     this.finish = function () {

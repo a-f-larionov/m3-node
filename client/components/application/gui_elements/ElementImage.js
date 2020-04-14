@@ -55,7 +55,8 @@ ElementImage = function () {
 
     this.pointer = undefined;
 
-    let dom;
+    /** @type {GUIDom} */
+    let dom = null;
 
     this.title = undefined;
 
@@ -101,7 +102,6 @@ ElementImage = function () {
     this.redraw = function () {
         if (!showed) return;
         dom.backgroundImage = self.src;
-        dom.redraw();
         if (self.opacity != null) {
             dom.opacity = self.opacity;
         }
@@ -109,5 +109,6 @@ ElementImage = function () {
         dom.y = self.y;
         dom.title = self.title;
         dom.pointer = self.pointer;
+        dom.redraw();
     };
 };

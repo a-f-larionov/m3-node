@@ -29,38 +29,25 @@ DialogGoalsReached = function () {
         this.__proto__.init.call(this);
         GUI.pushParent(self.dom);
 
-        // Номер точки\заголовок
-        elTitle = GUI.createElement(ElementText, {
-            x: 135, y: 12, width: 230, height: 40,
-            text: ''
-        });
+        /** Номер точки\заголовок */
+        elTitle = GUI.createElement(ElementText, {x: 135, y: 12, width: 230, height: 40, text: ''});
         elTitle.show();
 
-        // Кол-во звёзд
-        elStarOne = GUI.createElement(ElementImage, {
-            x: 100, y: 40, src: '/images/star-off-big.png'
-        });
+        /** Кол-во звёзд */
+        elStarOne = GUI.createElement(ElementImage, {x: 100, y: 40, src: '/images/star-off-big.png'});
         elStarOne.show();
-        elStarTwo = GUI.createElement(ElementImage, {
-            x: 200, y: 40, src: '/images/star-off-big.png'
-        });
+        elStarTwo = GUI.createElement(ElementImage, {x: 200, y: 40, src: '/images/star-off-big.png'});
         elStarTwo.show();
-        elStarThree = GUI.createElement(ElementImage, {
-            x: 300, y: 40, src: '/images/star-off-big.png'
-        });
+        elStarThree = GUI.createElement(ElementImage, {x: 300, y: 40, src: '/images/star-off-big.png'});
         elStarThree.show();
 
         for (let i = 0; i < 3; i++) {
             friendsPanel[i] = {
-                elPhotoScore: GUI.createElement(ElementUserScorePhoto, {
-                    x: 75 + 75 * i + 15, y: 155
-                }),
+                elPhotoScore: GUI.createElement(ElementUserScorePhoto, {x: 75 + 75 * i + 15, y: 155}),
             }
         }
 
-        elUserPhotoScore = GUI.createElement(ElementUserScorePhoto, {
-            x: 75 + 75 * 3 + 55, y: 155
-        });
+        elUserPhotoScore = GUI.createElement(ElementUserScorePhoto, {x: 75 + 75 * 3 + 55, y: 155});
         elUserPhotoScore.show();
 
         /** Кнопка играть */
