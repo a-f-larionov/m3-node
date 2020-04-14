@@ -60,8 +60,6 @@ Dialog = function (src) {
      * Создадим дом и настроем его.
      */
     this.init = function () {
-        console.log(this);
-        console.log(this.width);
         let dom;
         dom = GUI.createDom(undefined, {
             width: self.width,

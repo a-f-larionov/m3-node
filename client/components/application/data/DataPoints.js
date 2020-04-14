@@ -23,10 +23,11 @@ DataPoints = function () {
     this.objectImages[DataObjects.OBJECT_BARREL] = '/images/field-barrel.png';
     this.objectImages[DataObjects.OBJECT_POLY_COLOR] = '/images/field-poly-color.png';
     this.objectImages[DataObjects.OBJECT_ICE] = '/images/field-ice.png';
-    this.objectImages[DataObjects.OBJECT_TREASURES] = '/images/field-treasures.png';
+    this.objectImages[DataObjects.OBJECT_GOLD] = '/images/field-gold.png';
     this.objectImages[DataObjects.OBJECT_GREEN_SPIDER] = '/images/field-octopus.png';
     this.objectImages[DataObjects.OBJECT_RED_SPIDER] = '/images/field-fish.png';
-    this.objectImages[DataObjects.OBJECT_CHAIN] = '/images/field-chain.png';
+    this.objectImages[DataObjects.OBJECT_CHAIN_A] = '/images/field-chain-a.png';
+    this.objectImages[DataObjects.OBJECT_CHAIN_B] = '/images/field-chain-b.png';
     this.objectImages[DataObjects.OBJECT_BOX] = '/images/field-box.png';
 
     /** Gem-lightning images */

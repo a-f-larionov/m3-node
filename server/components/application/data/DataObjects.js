@@ -77,7 +77,7 @@ DataObjects = function () {
      * Драгоцености
      * @type {number}
      */
-    this.OBJECT_TREASURES = 180;
+    this.OBJECT_GOLD = 180;
     /**
      * Ящик
      * @type {number}
@@ -87,7 +87,12 @@ DataObjects = function () {
      * Цепь
      * @type {number}
      */
-    this.OBJECT_CHAIN = 200;
+    this.OBJECT_CHAIN_A = 200;
+    /**
+     * Цепь
+     * @type {number}
+     */
+    this.OBJECT_CHAIN_B = 210;
     /**
      * Эмитер камней
      * @type {number}

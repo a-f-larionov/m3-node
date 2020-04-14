@@ -36,7 +36,6 @@ WizardFirstStart_2 = {
             80 + 240 - 13,
         );
     },
-    dialogCounter: 0,
     onHideDialog: function () {
         WizardFirstStart_2.dialogCounter++;
         console.log(WizardFirstStart_2.dialogCounter);
@@ -47,7 +46,6 @@ WizardFirstStart_2 = {
 };
 
 WizardFirstStart_3 = {
-    dialogCounter: 0,
     init: function () {
         PBWizard.begin();
     },

@@ -5,7 +5,6 @@ WizardLevel9_1 = {
         PBWizard.updateText('Взорви камни рядом с ящиком.');
     },
 
-    dialogCounter: 0,
     onHideDialog: function () {
         if (WizardLevel9_1.dialogCounter++ < 2) return;
         PBWizard.showHint([{x: 2, y: 1}, {x: 3, y: 1}]);

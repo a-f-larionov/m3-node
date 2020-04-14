@@ -4,7 +4,6 @@ WizardLevel3_1 = {
         PBWizard.begin();
         PBWizard.updateText('Собрав ряд из 5-ти камней, получаешь звезду.');
     },
-    dialogCounter: 0,
     onHideDialog: function () {
         console.log(WizardLevel3_1.dialogCounter);
         if (WizardLevel3_1.dialogCounter++ < 2) return;
@@ -31,7 +30,6 @@ WizardLevel3_2 = {
         console.log(1);
         PBWizard.begin();
     },
-    dialogCounter: 0,
     onFieldSilent: function () {
         PBWizard.updateText('Выбери цвет, что бы убрать все камни этого цвета.');
         PBWizard.showDialog(230, 50, 2, 20);

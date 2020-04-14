@@ -166,7 +166,7 @@ LogicField = function () {
         let gemId, line, cell;
         cell = self.getCell({x: x, y: y});
         gemId = cell.object.objectId;
-        if (!cell.isVisible || !cell.object.isCanMoved) return false;
+        if (!cell.isVisible || !cell.object.isLineForming) return false;
 
         line = {
             orientation: orientation,
@@ -176,7 +176,7 @@ LogicField = function () {
         let checkCell = function (p) {
             cell = self.getCell(p);
             if (cell && cell.isVisible &&
-                cell.object.isCanMoved &&
+                cell.object.isLineForming &&
                 cell.object.objectId === gemId)
                 return line.coords.push(p);
             return false;
@@ -232,11 +232,12 @@ LogicField = function () {
         object.isBarrel = (id === DataObjects.OBJECT_BARREL);
         object.isRedSpider = (id === DataObjects.OBJECT_RED_SPIDER);
 
-        self.updateIsCanMoved(object);
+        self.updateSomeFlags(object);
     };
 
-    this.updateIsCanMoved = function (object) {
+    this.updateSomeFlags = function (object) {
         object.isCanMoved = (object.isGem || object.isBarrel || object.isPolyColor || object.isRedSpider) && !object.withBox && !object.withChain;
+        object.isLineForming = (object.isGem) && !object.withBox;
     };
 
     this.getGemId = function (p) {
@@ -250,7 +251,6 @@ LogicField = function () {
             cells[x] = [];
             for (let y = 0; y < DataPoints.FIELD_MAX_HEIGHT; y++) {
                 specIds = getSpecIds({x: x, y: y}, specials);
-
                 lightningId = false;
                 if (specIds.indexOf(DataObjects.WITH_LIGHTNING_HORIZONTAL) !== -1) lightningId = DataObjects.WITH_LIGHTNING_HORIZONTAL;
                 if (specIds.indexOf(DataObjects.WITH_LIGHTNING_VERTICAL) !== -1) lightningId = DataObjects.WITH_LIGHTNING_VERTICAL;
@@ -267,10 +267,12 @@ LogicField = function () {
 
                 if (objectId === DataObjects.OBJECT_RED_SPIDER) object.health = 3;
 
-                cell.withTreasures = specIds.indexOf(DataObjects.OBJECT_TREASURES) !== -1;
+                cell.withGold = specIds.indexOf(DataObjects.OBJECT_GOLD) !== -1;
 
                 object.withBox = specIds.indexOf(DataObjects.OBJECT_BOX) !== -1;
-                object.withChain = specIds.indexOf(DataObjects.OBJECT_CHAIN) !== -1;
+                object.withChainA = specIds.indexOf(DataObjects.OBJECT_CHAIN_A) !== -1;
+                object.withChainB = specIds.indexOf(DataObjects.OBJECT_CHAIN_B) !== -1;
+                object.withChain = object.withChainA || object.withChainB;
                 object.withGreenSpider = specIds.indexOf(DataObjects.OBJECT_GREEN_SPIDER) !== -1;
 
                 self.setObject({x: x, y: y}, objectId, lightningId)
@@ -293,12 +295,9 @@ LogicField = function () {
     };
 
     let getSpecIds = function (p, specials) {
-        let specIds = [];
-        specials.forEach(function (level) {
-            if (level[p.x] && level[p.x][p.y])
-                specIds.push(level[p.x][p.y]);
-        });
-        return specIds;
+        if (!specials[p.x]) return [];
+        if (!specials[p.x][p.y]) return [];
+        return specials[p.x][p.y];
     };
 
     this.isLinePossiblyDestroy = function (pA, pB) {

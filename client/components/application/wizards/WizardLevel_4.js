@@ -5,7 +5,6 @@ WizardLevel4_1 = {
         PBWizard.updateText('Взорви камень, под которым есть золото.');
     },
 
-    dialogCounter: 0,
     onHideDialog: function () {
         if (WizardLevel3_1.dialogCounter++ < 2) return;
         PBWizard.showHint([{x: 2, y: 1}, {x: 3, y: 1}]);
@@ -28,7 +27,6 @@ WizardLevel4_2 = {
         PBWizard.begin();
     },
 
-    dialogCounter: 0,
     onFieldSilent: function () {
         PBWizard.updateText('Собери еще золота!');
         PBWizard.showDialog(450, 250, 1, 20);

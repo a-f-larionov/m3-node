@@ -24,12 +24,13 @@ CAPIUser = function () {
     };
 
     this.gotFriendsIds = function (cntx, ids) {
+        //@todo got userIds for that map
         LogicUser.setFriendIds(ids);
     };
 
     /**
      * @param cntx {Object}
-     * @param value {bool}
+     * @param value {boolean}
      */
     this.setOneHealthHide = function (cntx, value) {
         PageBlockPanel.oneHealthHide = value;

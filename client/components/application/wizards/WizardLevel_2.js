@@ -5,7 +5,6 @@ WizardLevel2_1 = {
         PBWizard.updateText('Собрав ряд из 4-ех камней, получишь камень с молнией.');
     },
 
-    dialogCounter: 0,
     onHideDialog: function (onStart) {
         if (WizardLevel2_1.dialogCounter++ < 2) return;
         PBWizard.showDialog(210, 400, 3, 20);

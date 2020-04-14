@@ -51,7 +51,7 @@ SocNetStandalone = function () {
             'Симонов Игнатий Васильевич /images/field-purple.png',
             'Харитонов Яромир Александрович /images/field-yellow.png',
             'Крюков Марк Романович /images/field-poly-color.png',
-            'Киранов Марат Романович /images/field-treasures.png',
+            'Киранов Марат Романович /images/field-gold.png',
             'Пушкин Александр Сергеевич /images/field-poly-color.png',
         ];
         let info = {};

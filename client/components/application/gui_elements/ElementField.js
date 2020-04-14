@@ -217,11 +217,6 @@ ElementField = function () {
             if (Field.findLines().length) break;
             funcShuffleField();
         }
-        console.log(self);
-        console.log({
-            visibleHeight: visibleHeight,
-            visibleOffsetY: visibleOffsetY
-        });
         animate(animShuffle,
             self.x - (visibleOffsetX * DataPoints.BLOCK_WIDTH),
             self.centerY
@@ -489,23 +484,10 @@ ElementField = function () {
                     gemDom.bindedDoms = specDom;
                 }
 
-                /** Box */
-                if (cell.isVisible && object.withBox) {
-                    specDom = specDoms2[spec2Index++];
-                    drawDom({x: x, y: y}, specDom, DataObjects.OBJECT_BOX, '');
-                    gemDom.hide();
-                }
-
-                /** Chain */
-                if (cell.isVisible && object.withChain) {
-                    specDom = specDoms2[spec2Index++];
-                    drawDom({x: x, y: y}, specDom, DataObjects.OBJECT_CHAIN, '');
-                }
-
-                /** Treasure */
-                if (cell.isVisible && cell.withTreasures) {
+                /** Gold */
+                if (cell.isVisible && cell.withGold) {
                     specDom = specDoms1[spec1Index++];
-                    drawDom({x: x, y: y}, specDom, DataObjects.OBJECT_TREASURES, '');
+                    drawDom({x: x, y: y}, specDom, DataObjects.OBJECT_GOLD, '');
                 }
 
                 /** Spider green */
@@ -513,6 +495,24 @@ ElementField = function () {
                     specDom = specDoms2[spec2Index++];
                     drawDom({x: x, y: y}, specDom, DataObjects.OBJECT_GREEN_SPIDER, '');
                     gemDom.bindedDoms = specDom;
+                }
+
+                /** Box */
+                if (cell.isVisible && object.withBox) {
+                    specDom = specDoms2[spec2Index++];
+                    drawDom({x: x, y: y}, specDom, DataObjects.OBJECT_BOX, '');
+                    gemDom.hide();
+                }
+                /** Chain a & b */
+                if (cell.isVisible && object.withChain) {
+                    if (object.withChainA) {
+                        specDom = specDoms2[spec2Index++];
+                        drawDom({x: x, y: y}, specDom, DataObjects.OBJECT_CHAIN_A, '');
+                    }
+                    if (object.withChainB) {
+                        specDom = specDoms2[spec2Index++];
+                        drawDom({x: x, y: y}, specDom, DataObjects.OBJECT_CHAIN_B, '');
+                    }
                 }
             }
         );
@@ -537,7 +537,9 @@ ElementField = function () {
      * @param layers {Object}
      */
     this.setLayers = function (layers) {
+        console.log(layers);
         let copyLayer = function (source, callback) {
+            console.log(source);
             let out;
             out = [];
             source.forEach(function (row, x) {
@@ -707,30 +709,35 @@ ElementField = function () {
      * Уничтожение лений 3+ длинной.
      */
     this.destroyLines = function () {
-        let lines, actGem;
+        let lines, actGem, actObjectId;
         lines = Field.findLines();
 
         lines.forEach(function (line) {
             actGem = null;
+
+            if (lastExchangeGems && Field.lineCrossing([line], lastExchangeGems.a.x, lastExchangeGems.a.y)) {
+                actGem = lastExchangeGems.a;
+            }
+            if (lastExchangeGems && Field.lineCrossing([line], lastExchangeGems.b.x, lastExchangeGems.b.y)) {
+                actGem = lastExchangeGems.b;
+            }
+            if (actGem) {
+                actObjectId = Field.getCell(actGem).object.objectId;
+            }
+
+            line.coords.forEach(function (p) {
+                self.cellAttack(p);
+            });
+
             if (line.coords.length > 3) {
-                if (lastExchangeGems && Field.lineCrossing([line], lastExchangeGems.a.x, lastExchangeGems.a.y)) {
-                    actGem = lastExchangeGems.a;
-                }
-                if (lastExchangeGems && Field.lineCrossing([line], lastExchangeGems.b.x, lastExchangeGems.b.y)) {
-                    actGem = lastExchangeGems.b;
-                }
                 if (actGem && line.coords.length === 4) {
-                    Field.setObject(actGem, Field.getCell(actGem).object.objectId, line.orientation);
+                    Field.setObject(actGem, actObjectId, line.orientation);
                 }
                 if (actGem && line.coords.length === 5) {
                     Field.setObject(actGem, DataObjects.OBJECT_POLY_COLOR, false);
                 }
             }
-
-            line.coords.forEach(function (p) {
-                if (actGem && p.x === actGem.x && p.y === actGem.y) return;
-                self.cellAttack(p);
-            });
+            //if (actGem && p.x === actGem.x && p.y === actGem.y) return;
             self.onDestroyLine(line);
         });
 
@@ -756,43 +763,50 @@ ElementField = function () {
         self.redraw();
     };
 
-    let removeBlock = function (nearP, nearCell) {
+    let attackNearCell = function (nearP, nearCell) {
         //@todo animBoxDetroyed
         if (nearCell.object.withBox && !nearCell.object.withChain) {
             nearCell.object.withBox = false;
-            Field.updateIsCanMoved(nearCell.object);
+            self.onDestroyThing(DataObjects.OBJECT_BOX, nearCell);
+            Field.updateSomeFlags(nearCell.object);
             animate(animHummerDestroy, nearP);
         }
         //@todo animChainDestroyd
-        if (nearCell.object.withChain) {
+        if (false && nearCell.object.withChain) {
             nearCell.object.withChain = false;
-            Field.updateIsCanMoved(nearCell.object);
+            Field.updateSomeFlags(nearCell.object);
             animate(animHummerDestroy, nearP);
         }
     };
 
     this.cellAttack = function (p, cell) {
-        let lightningId;
+        let lightningId, object;
         cell = cell ? cell : Field.getCell(p);
+        object = cell.object;
 
-        lightningId = cell.object.lightningId;
+        lightningId = object.lightningId;
 
-        if (cell.isVisible && cell.object.isGem && !cell.object.isCanMoved) {
-            //@todo
-            // problem with lightgning!
-            //removeBlock(p, cell);
+        if (cell.isVisible && (object.isGem || object.isPolyColor) && object.isLineForming && object.withChain) {
+            if (object.withChainA && object.withChainB) {
+                object.withChainB = false;
+            } else {
+                object.withChain = false;
+                Field.updateSomeFlags(object);
+            }
+            animate(animHummerDestroy, p);
+            return;
         }
 
-        if (cell.isVisible && (cell.object.isGem || cell.object.isPolyColor) && cell.object.isCanMoved) {
+        if (cell.isVisible && (object.isGem || object.isPolyColor) && object.isLineForming && !object.withChain) {
             /** Destroy any gem */
             self.onDestroyThing(cell.object.objectId, cell);
             Field.setObject(p, DataObjects.OBJECT_HOLE, false);
             animate(animHummerDestroy, p);
 
-            if (cell.withTreasures) {
+            if (cell.withGold) {
                 /** Destroy treasures */
-                self.onDestroyThing(DataObjects.OBJECT_TREASURES, cell);
-                cell.withTreasures = false;
+                self.onDestroyThing(DataObjects.OBJECT_GOLD, cell);
+                cell.withGold = false;
                 animate(animHummerDestroy, p);
             }
 
@@ -800,6 +814,14 @@ ElementField = function () {
                 /** Destroy green spider */
                 self.onDestroyThing(DataObjects.OBJECT_GREEN_SPIDER, cell);
                 cell.object.withGreenSpider = false;
+                animate(animHummerDestroy, p);
+            }
+
+            if (cell.object.withChain) {
+                /** Destroy green spider */
+                self.onDestroyThing(DataObjects.OBJECT_CHAIN_A, cell);
+                cell.object.withChain = false;
+                Field.updateSomeFlags(object);
                 animate(animHummerDestroy, p);
             }
 
@@ -818,7 +840,7 @@ ElementField = function () {
                         animate(animHummerDestroy, nearP);
                     }
                 }
-                removeBlock(nearP, nearCell);
+                attackNearCell(nearP, nearCell);
             });
 
             if (lightningId) lightningDo(p, lightningId);

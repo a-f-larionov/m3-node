@@ -385,7 +385,8 @@ PageBlockField = function PageBlockField() {
     objectScores[DataObjects.OBJECT_RED_SPIDER] = 100;
     objectScores[DataObjects.OBJECT_GREEN_SPIDER] = 100;
     objectScores[DataObjects.OBJECT_POLY_COLOR] = 300;
-    objectScores[DataObjects.OBJECT_TREASURES] = 300;
+    objectScores[DataObjects.OBJECT_GOLD] = 300;
+    objectScores[DataObjects.OBJECT_BOX] = 5;
     objectScores[DataObjects.OBJECT_BARREL] = 100;
     objectScores[DataObjects.OBJECT_BOX] = 100;
 
