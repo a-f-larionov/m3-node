@@ -13,6 +13,8 @@ PageBlockMaps = function PageBlockMaps() {
 
     let elPreloader = false;
 
+    let pArrowNext = {x: 714, y: 500 / 2 - 50 / 2};
+
     let elArrowPrev = false;
 
     let elArrowNext = false;
@@ -42,8 +44,7 @@ PageBlockMaps = function PageBlockMaps() {
     let chestsEls = [];
 
     /** @type {ElementImage} */
-    let hintArrow = null;
-    let stopHintArrow = null;
+    let elArrowHint = null;
 
     /**
      * Массив всех элементов страницы.
@@ -74,8 +75,12 @@ PageBlockMaps = function PageBlockMaps() {
          - 2 on showMap(1) -> set Map picture, show elements on current map
          */
 
+        elArrowHint = GUI.createElement(ElementImage, {x: 0, y: 0, width: 50, height: 50, p: {}, src: '/images/hint-arrow.png'});
+        self.elements.push(elArrowHint);
+        Animate.anim(animHintArrow, {}, elArrowHint);
+
         elArrowPrev = GUI.createElement(ElementButton, {
-            x: 0, y: 220,
+            x: 0, y: pArrowNext.y,
             srcRest: '/images/map-arrow-left-rest.png',
             srcHover: '/images/map-arrow-left-hover.png',
             srcActive: '/images/map-arrow-left-active.png',
@@ -84,17 +89,13 @@ PageBlockMaps = function PageBlockMaps() {
         self.elements.push(elArrowPrev);
 
         elArrowNext = GUI.createElement(ElementButton, {
-            x: 714, y: 220,
+            x: pArrowNext.x, y: pArrowNext.y,
             srcRest: '/images/map-arrow-right-rest.png',
             srcHover: '/images/map-arrow-right-hover.png',
             srcActive: '/images/map-arrow-right-active.png',
             onClick: LogicMap.onArrowNextClick
         });
         self.elements.push(elArrowNext);
-
-        hintArrow = GUI.createElement(ElementImage, {x: 0, y: 0, width: 50, height: 50, p: {}, src: '/images/hint-arrow.png'});
-        self.elements.push(hintArrow);
-        stopHintArrow = Animate.anim(animHintArrow, {}, hintArrow);
 
         /** Points */
         DataPoints.getPointsCoords().forEach(function (coords) {
@@ -204,6 +205,7 @@ PageBlockMaps = function PageBlockMaps() {
             self.elements[i].hide();
         }
         this.mapElsHide();
+        //elArrowPrev.hide();
     };
 
     /**
@@ -219,11 +221,17 @@ PageBlockMaps = function PageBlockMaps() {
         lastPointId = DataMap.getLastPointId();
         if (nextPointId >= firstPointId && nextPointId <= lastPointId) {
             let p = DataPoints.getPointsCoords()[DataMap.getNumberFromPointId(nextPointId) - 1];
-            hintArrow.x = p.x;
-            hintArrow.y = p.y;
-            hintArrow.width = 50;
-            hintArrow.height = 50;
-            hintArrow.p = p;
+            elArrowHint.src = '/images/hint-arrow.png';
+            elArrowHint.p = p;
+            elArrowHint.show();
+        } else {
+            if (nextPointId > lastPointId) {
+                elArrowHint.show();
+                elArrowHint.p = pArrowNext;
+                elArrowHint.src = '/images/map-arrow-right-rest.png';
+            } else {
+                elArrowHint.hide();
+            }
         }
     };
 
@@ -243,6 +251,8 @@ PageBlockMaps = function PageBlockMaps() {
             element.redraw();
         });
         this.mapElsRedraw();
+        
+        elArrowPrev.redraw();
     };
 
     this.mapElsCreateIfNotExits = function () {

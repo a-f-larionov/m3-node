@@ -77,6 +77,7 @@ CAPIMap = function () {
         usersInfo.forEach(function (info) {
             DataPoints.setPointUserScore(info.userId, info.pointId, info.score);
         });
+        PageController.redraw();
     };
 
     /**

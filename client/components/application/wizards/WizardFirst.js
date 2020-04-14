@@ -27,13 +27,14 @@ WizardFirstStart_2 = {
     },
 
     onShowDialog: function () {
+        //@todo got real button coords
         WizardFirstStart_2.dialogCounter++;
         if (WizardFirstStart_2.dialogCounter > 1) return;
         PBWizard.updateText('Нажми кнопку играть.');
         PBWizard.showDialog(400, 380, 1);
         PBWizard.unlockByImg('/images/wizard-button.png',
             390 - Images.getWidth('/images/wizard-button.png') / 2,
-            80 + 240 - 13,
+            80 + 240 + 8,
         );
     },
     onHideDialog: function () {
