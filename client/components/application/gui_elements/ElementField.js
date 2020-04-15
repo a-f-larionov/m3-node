@@ -639,7 +639,7 @@ ElementField = function () {
         Field.eachCell(function (x, y, cell) {
             if (cell.isEmitter && Field.isHole({x: x, y: y})) {
                 Field.setObject({x: x, y: y}, Field.getRandomGemId());
-                if (Field.isVisible({x: x, y: y})) animate(animGemFader, {x: x, y: y});
+                if (Field.isVisible({x: x, y: y})) animate(animGemEmitFader, {x: x, y: y});
             }
             if (cell.isVisible && cell.object.isBarrel && !Field.isVisible({x: x, y: y + 1})) {
                 /** Destroy barrel */
@@ -677,7 +677,7 @@ ElementField = function () {
                 Field.isVisible({x: x, y: y}) ||
                 Field.isVisible({x: x, y: y - 1}) ||
                 Field.isVisible({x: x, y: y + 1}))
-                fallDoms.push(gemDoms[x][y]);
+                fallDoms.push({from: {x: x, y: y}, to: holeToFall});
 
         });
         if (fallDoms.length) animate(animFallGems, fallDoms);

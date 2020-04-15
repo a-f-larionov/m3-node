@@ -219,24 +219,25 @@ PageBlockField = function PageBlockField() {
             srcHover: '/images/field-red.png',
             srcActive: '/images/field-red.png',
             onClick: function () {
-                let standard = 33.33;
-                switch (Config.OnIdle.animateInterval) {
+                let standard = 1;
+                switch (Config.OnIdle.animStep) {
                     case standard * 5:
                         buttonChangeSpeed.srcRest = '/images/field-yellow.png';
-                        Config.OnIdle.animateInterval = standard;
+                        Config.OnIdle.animStep = standard;
                         break;
                     case standard :
                         buttonChangeSpeed.srcRest = '/images/field-red.png';
-                        Config.OnIdle.animateInterval = standard / 20;
+                        Config.OnIdle.animStep = standard / 10;
                         break;
-                    case standard / 20:
+                    case standard / 10:
                         buttonChangeSpeed.srcRest = '/images/field-green.png';
-                        Config.OnIdle.animateInterval = standard * 5;
+                        Config.OnIdle.animStep = standard * 5;
                         break;
                     default:
-                        Config.OnIdle.animateInterval = standard;
+                        Config.OnIdle.animStep = standard;
                         break;
                 }
+                console.log(Config.OnIdle);
                 buttonChangeSpeed.redraw();
             }
         });

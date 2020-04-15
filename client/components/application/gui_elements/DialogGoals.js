@@ -36,8 +36,8 @@ DialogGoals = function DialogGoals() {
         }
 
         /** Кнопка закрыть */
-        /*GUI.createElement(ElementButton, {
-                x: 452, y: 3,
+        GUI.createElement(ElementButton, {
+                x: 195, y: 0,
                 srcRest: '/images/button-close-rest.png',
                 srcHover: '/images/button-close-hover.png',
                 srcActive: '/images/button-close-active.png',
@@ -46,7 +46,7 @@ DialogGoals = function DialogGoals() {
                 }
             }, this.dom
         ).show();
-        */
+
 
         GUI.popParent();
     };
@@ -54,7 +54,7 @@ DialogGoals = function DialogGoals() {
     this.onShowComplete = function () {
         setTimeout(function () {
             self.closeDialog();
-        }, Config.OnIdle.second * 1.5);
+        }, Config.OnIdle.second * 1.2);
     };
 
     this.setGoals = function (goals) {

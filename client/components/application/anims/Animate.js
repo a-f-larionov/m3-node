@@ -20,7 +20,7 @@ Animate = {
         let iterate = function () {
             position += Config.OnIdle.animStep;
             if (animObj.iterate(position)) {
-               // timerId = setTimeout(iterate, Config.OnIdle.animateInterval);
+                // timerId = setTimeout(iterate, Config.OnIdle.animateInterval);
                 requestId = requestAnimationFrame(iterate);//, Config.OnIdle.animateInterval);
             } else {
                 stopAnim();
@@ -40,5 +40,9 @@ Animate = {
         return function () {
             stopAnim();
         };
+    },
+
+    getUrl: function (urlStart, position, max) {
+        return urlStart + (Math.floor((position) % max) + 1) + '.png';
     }
 };

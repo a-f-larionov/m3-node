@@ -28,6 +28,8 @@ let animChangeAndBack = function () {
 
 let animLightning = function () {
     let dom;
+    let velocity = 0.5;
+
     this.init = function (p, specId) {
         dom = this.animDoms.pop();
         let lineData = Field.getVisibleLength(p, specId);
@@ -52,11 +54,10 @@ let animLightning = function () {
         dom.redraw();
     };
 
-    this.iterate = function (counter) {
-        dom.backgroundImage =
-            '/images/anim-light-' + ((counter - Math.floor(counter / 5) * 5) + 1) + '.png';
+    this.iterate = function (position) {
+        dom.backgroundImage = Animate.getUrl('/images/anim-light-', position * velocity, 5);
         dom.redraw();
-        if (counter < 15) return true;
+        if (position < 15) return true;
     };
 
     this.finish = function () {
@@ -84,7 +85,7 @@ let animHummerDestroy = function () {
     };
 
     this.iterate = function (position) {
-        dom.backgroundImage = '/images/anim-hd-' + (Math.floor((position * velocity) % 15) + 1) + '.png';
+        dom.backgroundImage = Animate.getUrl('/images/anim-hd-', position * velocity, 15);
         dom.redraw();
         return position < 15;
     };
@@ -118,43 +119,54 @@ let animChangeAndDestroy = function () {
     };
 };
 
-let animGemFader = function () {
+let animGemEmitFader = function () {
     let dom;
+    let velocity = 8;
+
     this.init = function (p) {
         dom = this.gemDoms[p.x][p.y];
         dom.x = p.x * DataPoints.BLOCK_WIDTH;
         dom.y = p.y * DataPoints.BLOCK_HEIGHT;
+
+        dom.backgroundPositionY = DataPoints.BLOCK_HEIGHT;
+        dom.height = 0;
+        dom.width = DataPoints.BLOCK_WIDTH;
         dom.backgroundImage = DataPoints.objectImages[Field.getGemId(p)];
-        dom.width = null;//DataPoints.BLOCK_WIDTH;
-        dom.height = null;//DataPoints.BLOCK_HEIGHT;
         dom.redraw();
         dom.show();
     };
-    this.iterate = function (counter) {
-        dom.opacity = (counter / 10);
+    this.iterate = function (position) {
+        //dom.opacity = (counter / 10);
+        dom.height = velocity * position;
+        dom.backgroundPositionY = DataPoints.BLOCK_HEIGHT - velocity * position;
         dom.redraw();
-        return counter < 10;
+        return dom.height < DataPoints.BLOCK_HEIGHT;
     };
 };
 
 let animFallGems = function () {
-    let fallDoms;
+    let doms, dom, self = this;
     let velocity = 8;
 
-    this.init = function (doms) {
-        fallDoms = doms;
-        fallDoms.forEach(function (dom) {
+    this.init = function (list) {
+        doms = [];
+        list.forEach(function (data) {
+            dom = self.gemDoms[data.from.x][data.from.y];
+            doms.push(dom);
             dom.fallMode = 'just';
 
-            if (Field.isVisible({x: dom.p.x, y: dom.p.y + 1}) &&
-                !Field.isVisible(dom.p)) dom.fallMode = 'to-show';
-            if (!Field.isVisible({x: dom.p.x, y: dom.p.y + 1}) &&
-                Field.isVisible(dom.p)) dom.fallMode = 'to-hide';
+            dom.startY = (data.to.y - 1) * DataPoints.BLOCK_HEIGHT;
+            //@todo who to-hide on from point, if to.y == from.y+2
+            if (!Field.isVisible({x: data.to.x, y: data.to.y - 1}) && Field.isVisible({x: data.to.x, y: data.to.y}))
+                dom.fallMode = 'to-show';
+            if (Field.isVisible({x: data.to.x, y: data.to.y - 1}) && !Field.isVisible({x: data.to.x, y: data.to.y}))
+                dom.fallMode = 'to-hide';
 
             if (dom.fallMode === 'to-show') {
-                /** Его уже ранее спустили  */
+                /** Спускаем его заранее  */
                 dom.x = dom.p.x * DataPoints.BLOCK_WIDTH;
-                dom.y = (dom.p.y + 1) * DataPoints.BLOCK_HEIGHT;
+                //dom.startY = (data.to.y + 3) * DataPoints.BLOCK_HEIGHT;
+                dom.y = (data.to.y) * DataPoints.BLOCK_HEIGHT;
                 dom.height = 0;
                 dom.width = DataPoints.BLOCK_WIDTH;
                 dom.backgroundImage = DataPoints.objectImages[Field.getGemId({x: dom.p.x, y: dom.p.y + 1})];
@@ -162,14 +174,14 @@ let animFallGems = function () {
                 dom.backgroundPositionY = DataPoints.BLOCK_HEIGHT;
                 dom.show();
             }
-            dom.startY = dom.y;
+            dom.redraw();
         });
     };
 
     this.iterate = function (position) {
         let go;
         go = false;
-        fallDoms.forEach(function (dom) {
+        doms.forEach(function (dom) {
             switch (dom.fallMode) {
                 case 'to-hide':
                     dom.y = dom.startY + velocity * position;
@@ -197,7 +209,7 @@ let animFallGems = function () {
     };
 
     this.finish = function () {
-        fallDoms.forEach(function (dom) {
+        doms.forEach(function (dom) {
             dom.backgroundPositionY = 0;
             dom.height = DataPoints.BLOCK_HEIGHT;
             dom.redraw();

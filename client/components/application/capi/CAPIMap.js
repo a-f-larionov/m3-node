@@ -34,6 +34,7 @@ CAPIMap = function () {
             'ᴥ': DataObjects.OBJECT_GREEN_SPIDER,
             'ɨ': DataObjects.OBJECT_ICE,
             '$': DataObjects.OBJECT_GOLD,
+            'b': DataObjects.OBJECT_BOX,
             '■': DataObjects.OBJECT_BOX,
             '╲': DataObjects.OBJECT_CHAIN_A,
             '╱': DataObjects.OBJECT_CHAIN_B,
@@ -48,12 +49,18 @@ CAPIMap = function () {
         };
         DataMap.setMapById(mapId, map);
         points.forEach(function (point) {
-            if (!point.layers.gems) {
-                point.layers.gems = getRandomGems();
-            }
+            if (!point.layers.gems) point.layers.gems = getRandomGems();
+
+            if (typeof point.layers.special[0] === 'string') point.layers.special = [point.layers.special];
+            point.layers.special.unshift(getEmitterSpecial());
+            point.layers.mask.unshift('');
+            //          point.layers.gems.unshift('');
+
             point.layers.mask = convertLayers(point.layers.mask, false);
             point.layers.gems = convertLayers(point.layers.gems, false);
             point.layers.special = convertLayers(point.layers.special, true);
+
+
             DataPoints.setPointData(point);
         });
         chests.forEach(function (chest) {
@@ -83,12 +90,20 @@ CAPIMap = function () {
         PageController.redraw();
     };
 
+    let getEmitterSpecial = function () {
+        let row = '';
+        for (let x = 0; x < DataPoints.FIELD_MAX_WIDTH; x++) {
+            row += '*';
+        }
+        return [row];
+    };
+
     let getRandomGems = function () {
         let gems = [];
         for (let x = 0; x < DataPoints.FIELD_MAX_HEIGHT; x++) {
             gems[x] = '';
             for (let y = 0; y < DataPoints.FIELD_MAX_HEIGHT; y++) {
-                gems[x]  += '?';
+                gems[x] += '?';
             }
         }
         return gems;

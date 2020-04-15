@@ -1,7 +1,7 @@
 DataPoints = function () {
 
     this.FIELD_MAX_WIDTH = 10;
-    this.FIELD_MAX_HEIGHT = 10;
+    this.FIELD_MAX_HEIGHT = 11;
 
     this.BLOCK_WIDTH = 50;
     this.BLOCK_HEIGHT = 50;
@@ -30,10 +30,7 @@ DataPoints = function () {
         score2: 200,
         score3: 300,
         goals: [
-            {
-                id: DataObjects.OBJECT_RED,
-                count: 9
-            }
+            {id: DataObjects.OBJECT_RED, count: 9}
         ],
         layers: {
             mask: [
@@ -57,9 +54,6 @@ DataPoints = function () {
                 "RPRBR",
                 "YRBRB",
             ],
-            special: [
-                "*****",
-            ],
         }
     };
 
@@ -70,10 +64,7 @@ DataPoints = function () {
         score2: 200,
         score3: 300,
         goals: [
-            {
-                id: DataObjects.OBJECT_PURPLE,
-                count: 12
-            }
+            {id: DataObjects.OBJECT_PURPLE, count: 12}
         ],
         layers: {
             mask: [
@@ -102,10 +93,7 @@ DataPoints = function () {
                 "RPPBGPGR",
                 "GPYPPYPG",
                 "BYPGPPBB",
-            ],
-            special: [[
-                "********",
-            ]],
+            ]
         }
     };
 
@@ -116,10 +104,7 @@ DataPoints = function () {
         score2: 200,
         score3: 600,
         goals: [
-            {
-                id: DataObjects.OBJECT_GREEN,
-                count: 12
-            },
+            {id: DataObjects.OBJECT_GREEN, count: 12},
         ],
         layers: {
             mask: [
@@ -147,10 +132,7 @@ DataPoints = function () {
                 "GRPPBPPGR",
                 "BGBYPGYPG",
                 "RBYYGYPBB",
-            ],
-            special: [
-                "********",
-            ],
+            ]
         },
     };
 
@@ -161,10 +143,7 @@ DataPoints = function () {
         score2: 1500,
         score3: 2000,
         goals: [
-            {
-                id: DataObjects.OBJECT_GOLD,
-                count: 4
-            }
+            {id: DataObjects.OBJECT_GOLD, count: 4}
         ],
         layers: {
             mask: [
@@ -195,9 +174,7 @@ DataPoints = function () {
                 "RBYYPPPBB",
                 "GPRBGRPRG",
             ],
-            special: [[
-                "********",
-            ], [
+            special: [
                 "",
                 "",
                 "",
@@ -209,7 +186,7 @@ DataPoints = function () {
                 "      ",
                 " $  $ ",
                 "      ",
-            ]],
+            ],
         },
     };
 
@@ -220,10 +197,7 @@ DataPoints = function () {
         score2: 1000,
         score3: 2000,
         goals: [
-            {
-                id: DataObjects.OBJECT_GOLD,
-                count: 6
-            }
+            {id: DataObjects.OBJECT_GOLD, count: 6}
         ],
         layers: {
             mask: [
@@ -251,7 +225,7 @@ DataPoints = function () {
                 "GPRBGR",
             ],
             special: [
-                "******",
+                "",
                 "      ",
 
                 "      ",
@@ -305,7 +279,7 @@ DataPoints = function () {
                 "RBYYPPY",
             ],
             special: [
-                "*********",
+                "",
                 "      ",
                 "      ",
 
@@ -368,7 +342,7 @@ DataPoints = function () {
                 "RBYYGYGP",
             ],
             special: [
-                "*********",
+                "",
                 "",
                 "",
 
@@ -428,7 +402,7 @@ DataPoints = function () {
                 "RBYYGYGP",
             ],
             special: [
-                "*********",
+                "",
                 "",
 
 
@@ -485,8 +459,6 @@ DataPoints = function () {
                 "GPBRPB",
             ],
             special: [[
-                "*********"
-            ], [
                 "",
                 "",
                 "",
@@ -510,8 +482,7 @@ DataPoints = function () {
                 " $$$$ ",
                 "",
                 "",
-            ],
-            ]
+            ]]
         }
     };
 
@@ -559,8 +530,6 @@ DataPoints = function () {
                 "GBRBRBP",
             ],
             special: [[
-                "*********"
-            ], [
                 "",
                 "",
 
@@ -583,8 +552,7 @@ DataPoints = function () {
                 " ",
                 "",
                 "",
-            ],
-            ]
+            ]]
         }
     };
 
@@ -636,8 +604,6 @@ DataPoints = function () {
                 "GBPBYBP",
             ],
             special: [[
-                "*********"
-            ], [
                 "",
                 "",
 
@@ -649,8 +615,7 @@ DataPoints = function () {
                 " ■■■■■ ",
                 "",
                 "",
-            ],
-            ]
+            ]]
         }
     };
 
@@ -690,8 +655,6 @@ DataPoints = function () {
                 "BGRYPRR",
             ],
             special: [[
-                "*********"
-            ], [
                 "",
                 "",
 
@@ -701,8 +664,7 @@ DataPoints = function () {
                 " ᴥ ᴥ",
                 "",
                 "",
-            ],
-            ]
+            ]]
         }
     };
 
@@ -744,8 +706,6 @@ DataPoints = function () {
                 "GBGBGBG",
             ],
             special: [[
-                "*********"
-            ], [
                 "",
                 "",
 
@@ -756,8 +716,7 @@ DataPoints = function () {
                 "",
                 "",
                 "ᴥ ᴥ ᴥ ᴥ",
-            ],
-            ]
+            ]]
         }
     };
 
@@ -803,7 +762,7 @@ DataPoints = function () {
                 "GBGBGBG",
                 "GRPRYPG",
             ],
-            special: [["*********"], [
+            special: [[
                 "",
                 "",
 
@@ -836,8 +795,7 @@ DataPoints = function () {
                 "       ",
                 "  $$$  ",
                 "       ",
-            ],
-            ]
+            ]]
         }
     };
 
@@ -879,8 +837,6 @@ DataPoints = function () {
                 "PPBRBPY",
             ],
             special: [[
-                "*****"
-            ], [
                 "",
                 "",
 
@@ -902,8 +858,7 @@ DataPoints = function () {
                 " ╱ ╲  ",
                 "       ",
                 "       ",
-            ],
-            ]
+            ]]
         }
     };
 
@@ -949,8 +904,6 @@ DataPoints = function () {
                 "GRPRYPG",
             ],
             special: [[
-                "*********"
-            ], [
                 "",
                 "",
 
@@ -983,8 +936,7 @@ DataPoints = function () {
                 "        ",
                 " ╱   ╲  ",
                 "        ",
-            ],
-            ]
+            ]]
         }
     };
 
@@ -1030,8 +982,6 @@ DataPoints = function () {
                 "PPBRBPY",
             ],
             special: [[
-                "*********"
-            ], [
                 "",
                 "",
 
@@ -1064,8 +1014,7 @@ DataPoints = function () {
                 "       ",
                 "       ",
                 "       ",
-            ],
-            ]
+            ]]
         }
     };
 
@@ -1111,8 +1060,6 @@ DataPoints = function () {
                 "◇⨀◇△⨀◇▭",
             ],
             special: [[
-                "*********"
-            ], [
                 "",
                 "",
 
@@ -1134,8 +1081,7 @@ DataPoints = function () {
                 "       ",
                 "       ",
                 "       ",
-            ],
-            ]
+            ],]
         }
     };
 
@@ -1146,50 +1092,27 @@ DataPoints = function () {
         score2: 1000,
         score3: 1500,
         goals: [
-            {
-                id: DataObjects.OBJECT_GOLD,
-                count: 8
-            }
+            {id: DataObjects.OBJECT_GOLD, count: 8}
         ],
         layers: {
             mask: [
-                "",
-                "",
-
                 "□□□□□□□",
                 " □□□□□ ",
                 "□□□□□□□",
-                " □□□□□ ",
+                "□□□□□□□ ",
                 "□□□□□□□",
-                " □□□□□ ",
+                "□□□□□□□ ",
                 "□□□□□□□",
-            ],
-            gems__: null,
-            s: [
-                "GBRPYPY",
-                "GPBRPBG",
-
-                "GRGYGPG",
-                "YRPRYPP",
-                "PPBRBPY",
-                "BGRYPRR",
-                "GBGBGBG",
-                "YPYGPYB",
-                "GRPRYPG",
             ],
             special: [[
-                "*********"
-            ], [
-                "",
-                "",
-
                 "       ",
                 "       ",
                 "       ",
-                "       ",
-                "       ",
-                "       ",
-                "       ",
+                "bbbbbbb",
+                "b     b",
+                "b     b",
+                "b     b",
+                "bbbbbbb",
             ],
             ]
         }
@@ -1233,8 +1156,6 @@ DataPoints = function () {
                 "GRPRYPG",
             ],
             special: [[
-                "*********"
-            ], [
                 "",
                 "",
 
@@ -1245,8 +1166,7 @@ DataPoints = function () {
                 "       ",
                 "       ",
                 "       ",
-            ],
-            ]
+            ]]
         }
     };
 
@@ -1288,8 +1208,6 @@ DataPoints = function () {
                 "GRPRYPG",
             ],
             special: [[
-                "*********"
-            ], [
                 "",
                 "",
 
@@ -1343,8 +1261,6 @@ DataPoints = function () {
                 "GRPRYPG",
             ],
             special: [[
-                "*********"
-            ], [
                 "",
                 "",
 
@@ -1355,8 +1271,7 @@ DataPoints = function () {
                 "       ",
                 "       ",
                 "       ",
-            ],
-            ]
+            ]]
         }
     };
 
@@ -1398,8 +1313,6 @@ DataPoints = function () {
                 "GRPRYPG",
             ],
             special: [[
-                "*********"
-            ], [
                 "",
                 "",
 
@@ -1453,8 +1366,6 @@ DataPoints = function () {
                 "GRPRYPG",
             ],
             special: [[
-                "*********"
-            ], [
                 "",
                 "",
 
@@ -1508,8 +1419,6 @@ DataPoints = function () {
                 "GRPRYPG",
             ],
             special: [[
-                "*********"
-            ], [
                 "",
                 "",
 
@@ -1563,8 +1472,6 @@ DataPoints = function () {
                 "GRPRYPG",
             ],
             special: [[
-                "*********"
-            ], [
                 "",
                 "",
 
@@ -1618,8 +1525,6 @@ DataPoints = function () {
                 "GRPRYPG",
             ],
             special: [[
-                "*********"
-            ], [
                 "",
                 "",
 
@@ -1673,8 +1578,6 @@ DataPoints = function () {
                 "GRPRYPG",
             ],
             special: [[
-                "*********"
-            ], [
                 "",
                 "",
 
@@ -1728,8 +1631,6 @@ DataPoints = function () {
                 "GRPRYPG",
             ],
             special: [[
-                "*********"
-            ], [
                 "",
                 "",
 
@@ -1783,8 +1684,6 @@ DataPoints = function () {
                 "GRPRYPG",
             ],
             special: [[
-                "*********"
-            ], [
                 "",
                 "",
 

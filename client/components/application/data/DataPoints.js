@@ -1,7 +1,7 @@
 DataPoints = function () {
 
     this.FIELD_MAX_WIDTH = 10;
-    this.FIELD_MAX_HEIGHT = 10;
+    this.FIELD_MAX_HEIGHT = 11;
 
     this.BLOCK_WIDTH = 50;
     this.BLOCK_HEIGHT = 50;
