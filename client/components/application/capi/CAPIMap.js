@@ -27,6 +27,7 @@ CAPIMap = function () {
             '⨀': DataObjects.OBJECT_PURPLE,
 
             'ᨔ': DataObjects.OBJECT_POLY_COLOR,
+            'S': DataObjects.OBJECT_POLY_COLOR,
             'ᥩ': DataObjects.OBJECT_BARREL,
             'ȫ': DataObjects.OBJECT_RED_SPIDER,
 
@@ -51,10 +52,17 @@ CAPIMap = function () {
         points.forEach(function (point) {
             if (!point.layers.gems) point.layers.gems = getRandomGems();
 
+            if (point.layers.special === undefined) point.layers.special = [];
+            if (point.layers.special[0] === undefined) point.layers.special[0] = [];
             if (typeof point.layers.special[0] === 'string') point.layers.special = [point.layers.special];
-            point.layers.special.unshift(getEmitterSpecial());
+            point.layers.special.forEach(function (layer) {
+                layer.unshift('');
+            });
             point.layers.mask.unshift('');
-            //          point.layers.gems.unshift('');
+            point.layers.gems.unshift('');
+
+            point.layers.special.unshift(getEmitterSpecialLayer());
+
 
             point.layers.mask = convertLayers(point.layers.mask, false);
             point.layers.gems = convertLayers(point.layers.gems, false);
@@ -90,7 +98,7 @@ CAPIMap = function () {
         PageController.redraw();
     };
 
-    let getEmitterSpecial = function () {
+    let getEmitterSpecialLayer = function () {
         let row = '';
         for (let x = 0; x < DataPoints.FIELD_MAX_WIDTH; x++) {
             row += '*';

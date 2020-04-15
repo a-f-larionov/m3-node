@@ -227,9 +227,9 @@ PageBlockField = function PageBlockField() {
                         break;
                     case standard :
                         buttonChangeSpeed.srcRest = '/images/field-red.png';
-                        Config.OnIdle.animStep = standard / 10;
+                        Config.OnIdle.animStep = standard / 5;
                         break;
-                    case standard / 10:
+                    case standard / 5:
                         buttonChangeSpeed.srcRest = '/images/field-green.png';
                         Config.OnIdle.animStep = standard * 5;
                         break;
@@ -237,7 +237,6 @@ PageBlockField = function PageBlockField() {
                         Config.OnIdle.animStep = standard;
                         break;
                 }
-                console.log(Config.OnIdle);
                 buttonChangeSpeed.redraw();
             }
         });

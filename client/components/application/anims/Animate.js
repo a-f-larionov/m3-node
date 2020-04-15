@@ -1,6 +1,6 @@
 Animate = {
     anim: function (animClass, context) {
-        let args, animObj, position, timerId;
+        let args, animObj, position, requestId;
         position = 0;
         animObj = new animClass();
         for (let name in context) {
@@ -20,14 +20,13 @@ Animate = {
         let iterate = function () {
             position += Config.OnIdle.animStep;
             if (animObj.iterate(position)) {
-                // timerId = setTimeout(iterate, Config.OnIdle.animateInterval);
-                requestId = requestAnimationFrame(iterate);//, Config.OnIdle.animateInterval);
+                requestId = requestAnimationFrame(iterate);
             } else {
                 stopAnim();
             }
         };
         let stopAnim = function () {
-            clearTimeout(timerId);
+            cancelAnimationFrame(requestId);
             if (animObj.finish) animObj.finish();
             if (animObj.skipAnimLock) {
             } else {
@@ -37,9 +36,7 @@ Animate = {
         };
 
         iterate();
-        return function () {
-            stopAnim();
-        };
+        return stopAnim;
     },
 
     getUrl: function (urlStart, position, max) {

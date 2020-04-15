@@ -36,6 +36,10 @@ LogicField = function () {
         return cells[p.x][p.y];
     };
 
+    this.getObject = function (p) {
+        return this.getCell(p).object;
+    };
+
     this.isGem = function (p) {
         if (!cells[p.x] || !cells[p.x][p.y]) return false;
         return cells[p.x][p.y].object.isGem;
@@ -64,10 +68,11 @@ LogicField = function () {
     };
 
     let getHole = function (p) {
-        for (let y = 0, cell; y < DataPoints.FIELD_MAX_HEIGHT; y++) {
+        for (let y = 0, cell, object; y < DataPoints.FIELD_MAX_HEIGHT; y++) {
             p.y++;
             cell = self.getCell(p);
-            if (cell && cell.object.isHole && !cell.object.isCanMoved) {
+            object = cell && cell.object;
+            if (cell && cell.isVisible && object.isHole) {
                 return p;
             }
         }
@@ -111,14 +116,19 @@ LogicField = function () {
         return allLines;
     };
 
-    this.exchangeObjects = function (a, b) {
+    this.exchangeObjects = function (a, b, onlyGems) {
         let tmp;
         if (self.isOut(a) || self.isOut(b)) return false;
 
-        tmp = cells[b.x][b.y].object;
-        cells[b.x][b.y].object = cells[a.x][a.y].object;
-        cells[a.x][a.y].object = tmp;
-
+        if (onlyGems) {
+            tmp = cells[b.x][b.y].object.objectId;
+            cells[b.x][b.y].object.objectId = cells[a.x][a.y].object.objectId;
+            cells[a.x][a.y].object.objectId = tmp;
+        } else {
+            tmp = cells[b.x][b.y].object;
+            cells[b.x][b.y].object = cells[a.x][a.y].object;
+            cells[a.x][a.y].object = tmp;
+        }
         return true;
     };
 
@@ -236,7 +246,9 @@ LogicField = function () {
     };
 
     this.updateSomeFlags = function (object) {
-        object.isCanMoved = (object.isGem || object.isBarrel || object.isPolyColor || object.isRedSpider) && !object.withBox && !object.withChain;
+        object.withChain = object.withChainA || object.withChainB;
+        object.isCanMoved = (object.isGem || object.isBarrel || object.isPolyColor || object.isRedSpider)
+            && !object.withBox && !object.withChain;
         object.isLineForming = (object.isGem) && !object.withBox;
     };
 
@@ -257,6 +269,7 @@ LogicField = function () {
                 if (specIds.indexOf(DataObjects.WITH_LIGHTNING_CROSS) !== -1) lightningId = DataObjects.WITH_LIGHTNING_CROSS;
 
                 objectId = objects[x] && objects[x][y];
+                if (!objectId) objectId = Field.getRandomGemId();
 
                 let cell, object;
                 object = {};
@@ -272,14 +285,13 @@ LogicField = function () {
                 object.withBox = specIds.indexOf(DataObjects.OBJECT_BOX) !== -1;
                 object.withChainA = specIds.indexOf(DataObjects.OBJECT_CHAIN_A) !== -1;
                 object.withChainB = specIds.indexOf(DataObjects.OBJECT_CHAIN_B) !== -1;
-                object.withChain = object.withChainA || object.withChainB;
                 object.withGreenSpider = specIds.indexOf(DataObjects.OBJECT_GREEN_SPIDER) !== -1;
 
                 self.setObject({x: x, y: y}, objectId, lightningId)
             }
         }
         if (Field.findLines().length) {
-            Field.shuffle();
+            Field.shuffle(true);
         }
     };
 
@@ -367,7 +379,7 @@ LogicField = function () {
         }
     };
 
-    this.shuffle = function () {
+    this.shuffle = function (onlyGems) {
         let funcShuffleField = function () {
             let p1, p2, cell2;
             Field.eachCell(function (x1, y1, cell1) {
@@ -378,13 +390,13 @@ LogicField = function () {
                 };
                 cell2 = Field.getCell(p2);
                 if (cell1.isVisible && cell1.object.isCanMoved && cell2.isVisible && cell2.object.isCanMoved) {
-                    Field.exchangeObjects(p1, p2)
+                    Field.exchangeObjects(p1, p2, onlyGems)
                 }
             });
         };
         funcShuffleField();
         /** Еще попытки, если не получилось */
-        for (let i = 0; i < 500; i++) {
+        for (let i = 0; i < 2500; i++) {
             if (!Field.findLines().length) break;
             funcShuffleField();
         }

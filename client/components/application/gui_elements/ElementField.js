@@ -214,8 +214,8 @@ ElementField = function () {
         Field.shuffle();
 
         animate(animShuffle,
-            self.x - (visibleOffsetX * DataPoints.BLOCK_WIDTH),
-            self.centerY
+            ((visibleOffsetX + visibleWidth / 2) * DataPoints.BLOCK_WIDTH),
+            ((visibleOffsetY + visibleHeight / 2) * DataPoints.BLOCK_HEIGHT),
         );
     };
 
@@ -274,6 +274,7 @@ ElementField = function () {
                     self.cellAttack(p, p.cell);
                 });
                 stopPolyColorAnim();
+                stopPolyColorAnim = false;
                 polyColorCell = false;
                 gemA = gemB = gemFramed = null;
                 return;
@@ -442,7 +443,7 @@ ElementField = function () {
                  * Draw any
                  */
                 if (cell.isVisible && (object.isGem || object.isRedSpider || object.isBarrel || object.isPolyColor)) {
-                    drawDom({x: x, y: y}, gemDom, object.objectId, '')
+                    drawDom({x: x, y: y}, gemDom, object.objectId, '');
                 } else {
                     gemDom.hide();
                 }
@@ -478,11 +479,11 @@ ElementField = function () {
                     gemDom.bindedDoms = specDom;
                 }
 
-                /** Box */
+                /** Draw Box */
                 if (cell.isVisible && object.withBox) {
                     specDom = specDoms2[spec2Index++];
                     drawDom({x: x, y: y}, specDom, DataObjects.OBJECT_BOX, '');
-                    gemDom.hide();
+                    //gemDom.hide();
                 }
                 /** Chain a & b */
                 if (cell.isVisible && object.withChain) {
@@ -636,6 +637,7 @@ ElementField = function () {
     };
 
     this.processSpecialLayer = function () {
+        console.log('sprec-layers');
         Field.eachCell(function (x, y, cell) {
             if (cell.isEmitter && Field.isHole({x: x, y: y})) {
                 Field.setObject({x: x, y: y}, Field.getRandomGemId());
@@ -661,6 +663,7 @@ ElementField = function () {
     };
 
     this.fall = function () {
+        console.log('fall');
         let holeToFall;
         if (AnimLocker.busy()) return;
 
@@ -673,14 +676,18 @@ ElementField = function () {
             if (!holeToFall) return;
             Field.exchangeObjects({x: x, y: y}, holeToFall);
 
-            if (
+            if (true||
                 Field.isVisible({x: x, y: y}) ||
                 Field.isVisible({x: x, y: y - 1}) ||
-                Field.isVisible({x: x, y: y + 1}))
+                Field.isVisible({x: x, y: y + 1})
+            )
                 fallDoms.push({from: {x: x, y: y}, to: holeToFall});
 
         });
-        if (fallDoms.length) animate(animFallGems, fallDoms);
+        if (fallDoms.length) animate(animFallGems, fallDoms); else {
+            self.run();
+            self.redraw();
+        }
     };
 
     this.hasDestroyLines = function () {
@@ -747,19 +754,24 @@ ElementField = function () {
         self.redraw();
     };
 
-    let attackNearCell = function (nearP, nearCell) {
+    let attackNearCell = function (p, cell) {
         //@todo animBoxDetroyed
-        if (nearCell.object.withBox && !nearCell.object.withChain) {
-            nearCell.object.withBox = false;
-            self.onDestroyThing(DataObjects.OBJECT_BOX, nearCell);
-            Field.updateSomeFlags(nearCell.object);
-            animate(animHummerDestroy, nearP);
+        if (cell.object.withBox && !cell.object.withChain) {
+            cell.object.withBox = false;
+            self.onDestroyThing(DataObjects.OBJECT_BOX, cell);
+            Field.updateSomeFlags(cell.object);
+            animate(animHummerDestroy, p);
         }
         //@todo animChainDestroyd
-        if (false && nearCell.object.withChain) {
-            nearCell.object.withChain = false;
-            Field.updateSomeFlags(nearCell.object);
-            animate(animHummerDestroy, nearP);
+        if (cell.object.withChain) {
+            if (cell.object.withChainA && cell.object.withChainB) {
+                cell.object.withChainB = false;
+            } else {
+                cell.object.withChainA = false;
+                cell.object.withChainB = false;
+            }
+            Field.updateSomeFlags(cell.object);
+            animate(animHummerDestroy, p);
         }
     };
 
@@ -774,14 +786,21 @@ ElementField = function () {
             if (object.withChainA && object.withChainB) {
                 object.withChainB = false;
             } else {
-                object.withChain = false;
+                object.withChainA = false;
+                object.withChainB = false;
                 Field.updateSomeFlags(object);
             }
             animate(animHummerDestroy, p);
             return;
         }
 
-        if (cell.isVisible && (object.isGem || object.isPolyColor) && object.isLineForming && !object.withChain) {
+        if (cell.object.isPolyColor) {
+            self.onDestroyThing(DataObjects.OBJECT_POLY_COLOR);
+            Field.setObject(p, DataObjects.OBJECT_HOLE, false);
+            animate(animHummerDestroy, p);
+        }
+
+        if (cell.isVisible && (object.isGem) && object.isLineForming && !object.withChain) {
             /** Destroy any gem */
             self.onDestroyThing(cell.object.objectId, cell);
             Field.setObject(p, DataObjects.OBJECT_HOLE, false);
@@ -798,14 +817,6 @@ ElementField = function () {
                 /** Destroy green spider */
                 self.onDestroyThing(DataObjects.OBJECT_GREEN_SPIDER, cell);
                 cell.object.withGreenSpider = false;
-                animate(animHummerDestroy, p);
-            }
-
-            if (cell.object.withChain) {
-                /** Destroy green spider */
-                self.onDestroyThing(DataObjects.OBJECT_CHAIN_A, cell);
-                cell.object.withChain = false;
-                Field.updateSomeFlags(object);
                 animate(animHummerDestroy, p);
             }
 

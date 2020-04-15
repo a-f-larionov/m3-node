@@ -56,13 +56,13 @@ let STR_PAD_RIGHT = 2;
 let STR_PAD_BOTH = 3;
 
 let str_pad = function (str, len, pad, dir) {
-    if (typeof(len) == "undefined") {
+    if (typeof (len) == "undefined") {
         let len = 0;
     }
-    if (typeof(pad) == "undefined") {
+    if (typeof (pad) == "undefined") {
         let pad = ' ';
     }
-    if (typeof(dir) == "undefined") {
+    if (typeof (dir) == "undefined") {
         let dir = STR_PAD_RIGHT;
     }
     if (len + 1 >= str.length) {
@@ -117,20 +117,23 @@ let getQueryVariable = function (variable) {
  * @author paulirish / http://paulirish.com/
  */
 
-if ( !window.requestAnimationFrame ) {
-
-    window.requestAnimationFrame = ( function() {
+if (!window.requestAnimationFrame) {
+    window.requestAnimationFrame = (function () {
 
         return window.webkitRequestAnimationFrame ||
             window.mozRequestAnimationFrame ||
             window.oRequestAnimationFrame ||
             window.msRequestAnimationFrame ||
-            function( /* function FrameRequestCallback */ callback, /* DOMElement Element */ element ) {
-
-                window.setTimeout( callback, 1000 / 60 );
-
+            function ( /* function FrameRequestCallback */ callback, /* DOMElement Element */ element) {
+                return window.setTimeout(callback, 1000 / 60);
             };
 
-    } )();
+    })();
+}
 
+if (!window.cancelAnimationFrame) {
+    window.cancelAnimationFrame =
+        window.mozCancelAnimationFrame ||
+        window.webkitCancelAnimationFrame ||
+        window.msCancelAnimationFrame;
 }

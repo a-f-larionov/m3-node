@@ -156,23 +156,27 @@ let animFallGems = function () {
             dom.fallMode = 'just';
 
             dom.startY = (data.to.y - 1) * DataPoints.BLOCK_HEIGHT;
+
+            dom.backgroundImage = DataPoints.objectImages[Field.getGemId({x: data.to.x, y: data.to.y})];
+            dom.x = data.to.x * DataPoints.BLOCK_WIDTH;
+            dom.y = data.to.y * DataPoints.BLOCK_HEIGHT;
+            dom.show();
+
+
             //@todo who to-hide on from point, if to.y == from.y+2
-            if (!Field.isVisible({x: data.to.x, y: data.to.y - 1}) && Field.isVisible({x: data.to.x, y: data.to.y}))
+            if (!Field.isVisible({x: data.to.x, y: data.to.y - 1}) && Field.isVisible(data.to))
                 dom.fallMode = 'to-show';
-            if (Field.isVisible({x: data.to.x, y: data.to.y - 1}) && !Field.isVisible({x: data.to.x, y: data.to.y}))
+            if (Field.isVisible({x: data.to.x, y: data.to.y - 1}) && !Field.isVisible(data.to))
                 dom.fallMode = 'to-hide';
 
             if (dom.fallMode === 'to-show') {
                 /** Спускаем его заранее  */
-                dom.x = dom.p.x * DataPoints.BLOCK_WIDTH;
-                //dom.startY = (data.to.y + 3) * DataPoints.BLOCK_HEIGHT;
                 dom.y = (data.to.y) * DataPoints.BLOCK_HEIGHT;
-                dom.height = 0;
+                dom.height = 25;
                 dom.width = DataPoints.BLOCK_WIDTH;
-                dom.backgroundImage = DataPoints.objectImages[Field.getGemId({x: dom.p.x, y: dom.p.y + 1})];
+                //dom.backgroundImage = DataPoints.objectImages[Field.getGemId({x: dom.from.x, y: dom.p.y + 1})];
                 /** Перерисовка backgroundPositionY это хитрый хак и костыль :) */
                 dom.backgroundPositionY = DataPoints.BLOCK_HEIGHT;
-                dom.show();
             }
             dom.redraw();
         });
@@ -219,11 +223,12 @@ let animFallGems = function () {
 
 let animShuffle = function () {
     let dom;
+    let velocity = 20;
 
     this.init = function (x, y) {
         dom = this.animDoms.pop();
         dom.x = x - Images.getWidth('/images/anim-shuffle-1.png') / 2;
-        dom.y = y + DataPoints.BLOCK_HEIGHT / 2 - Images.getHeight('/images/anim-shuffle-1.png') / 2;
+        dom.y = y - Images.getHeight('/images/anim-shuffle-1.png') / 2;
         dom.width = Images.getWidth('/images/anim-shuffle-1.png');
         dom.height = Images.getHeight('/images/anim-shuffle-1.png');
         dom.backgroundImage = '/images/anim-shuffle-1.png';
@@ -232,10 +237,10 @@ let animShuffle = function () {
         dom.show();
     };
 
-    this.iterate = function (counter) {
-        dom.rotate += 10 * 2;
+    this.iterate = function (position) {
+        dom.rotate = position * velocity;
         dom.redraw();
-        return counter < 36 / 2;
+        return position < 36 / 2;
     };
 
     this.finish = function () {
