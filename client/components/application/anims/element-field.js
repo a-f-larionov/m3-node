@@ -68,6 +68,8 @@ let animLightning = function () {
 let animHummerDestroy = function () {
     let dom, imageUrl = '/images/anim-hd-1.png';
 
+    let velocity = 1.0;
+
     this.init = function (p) {
         dom = this.animDoms.pop();
         dom.x = p.x * DataPoints.BLOCK_WIDTH
@@ -81,10 +83,10 @@ let animHummerDestroy = function () {
         dom.redraw();
     };
 
-    this.iterate = function (counter) {
-        dom.backgroundImage = '/images/anim-hd-' + (counter + 1) + '.png';
+    this.iterate = function (position) {
+        dom.backgroundImage = '/images/anim-hd-' + (Math.floor((position * velocity) % 15) + 1) + '.png';
         dom.redraw();
-        return counter < 15 - 1;
+        return position < 15;
     };
 
     this.finish = function () {
@@ -137,7 +139,7 @@ let animGemFader = function () {
 
 let animFallGems = function () {
     let fallDoms;
-    let velocity = 10;
+    let velocity = 8;
 
     this.init = function (doms) {
         fallDoms = doms;
@@ -160,22 +162,28 @@ let animFallGems = function () {
                 dom.backgroundPositionY = DataPoints.BLOCK_HEIGHT;
                 dom.show();
             }
+            dom.startY = dom.y;
         });
     };
 
-    this.iterate = function (counter) {
+    this.iterate = function (position) {
+        let go;
+        go = false;
         fallDoms.forEach(function (dom) {
             switch (dom.fallMode) {
                 case 'to-hide':
-                    dom.y += velocity;
-                    dom.height -= velocity;
+                    dom.y = dom.startY + velocity * position;
+                    dom.height = DataPoints.BLOCK_HEIGHT - velocity * position;
+                    go |= (dom.y < dom.startY + DataPoints.BLOCK_HEIGHT);
                     break;
                 case 'to-show':
-                    dom.height += velocity;
-                    dom.backgroundPositionY -= velocity;
+                    dom.height = velocity * position;
+                    dom.backgroundPositionY = DataPoints.BLOCK_HEIGHT - velocity * position;
+                    go |= (dom.height < DataPoints.BLOCK_HEIGHT);
                     break;
                 case 'just':
-                    dom.y += velocity;
+                    dom.y = dom.startY + velocity * position;
+                    go |= (dom.y < dom.startY + DataPoints.BLOCK_HEIGHT);
                     break;
             }
             if (dom.bindedDoms) {
@@ -185,13 +193,13 @@ let animFallGems = function () {
             }
             dom.redraw();
         });
-        return counter + 1 < DataPoints.BLOCK_HEIGHT / velocity;
+        return go;
     };
 
     this.finish = function () {
         fallDoms.forEach(function (dom) {
             dom.backgroundPositionY = 0;
-            dom.height = DataPoints.BLOCK_WIDTH;
+            dom.height = DataPoints.BLOCK_HEIGHT;
             dom.redraw();
         });
     }

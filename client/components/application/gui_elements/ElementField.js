@@ -661,7 +661,7 @@ ElementField = function () {
     };
 
     this.fall = function () {
-        let hole;
+        let holeToFall;
         if (AnimLocker.busy()) return;
 
         let fallDoms = [];
@@ -669,11 +669,16 @@ ElementField = function () {
         /** Собираем камни и меняем поле */
         Field.eachCell(function (x, y) {
             y = DataPoints.FIELD_MAX_HEIGHT - y - 1;
-            hole = Field.mayFall(x, y);
-            if (!hole) return;
-            Field.exchangeObjects({x: x, y: y}, hole);
+            holeToFall = Field.mayFall(x, y);
+            if (!holeToFall) return;
+            Field.exchangeObjects({x: x, y: y}, holeToFall);
 
-            fallDoms.push(gemDoms[x][y]);
+            if (
+                Field.isVisible({x: x, y: y}) ||
+                Field.isVisible({x: x, y: y - 1}) ||
+                Field.isVisible({x: x, y: y + 1}))
+                fallDoms.push(gemDoms[x][y]);
+
         });
         if (fallDoms.length) animate(animFallGems, fallDoms);
     };
