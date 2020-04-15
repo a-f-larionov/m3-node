@@ -251,7 +251,7 @@ PageBlockMaps = function PageBlockMaps() {
             element.redraw();
         });
         this.mapElsRedraw();
-        
+
         elArrowPrev.redraw();
     };
 
