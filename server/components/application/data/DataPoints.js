@@ -1065,9 +1065,9 @@ DataPoints = function () {
         ],
         layers: {
             mask: [
-                "□□□  □ □□□",
-                "□□□  □ □□□",
-                "□□□  □ □□□",
+                "□□□□□□□□□",
+                "□□□□□□□□□",
+                "□□□□□□□□□",
                 "□□□□ □□□□",
                 "□□□□ □□□□",
                 "□□□□ □□□□",
@@ -1139,7 +1139,8 @@ DataPoints = function () {
 
     wayPoints[24] = {
         id: 24, turns: 15, score1: 500, score2: 1000, score3: 1500,
-        goals: [{id: DataObjects.OBJECT_GOLD, count: 8}
+        goals: [
+            {id: DataObjects.OBJECT_GOLD, count: 8}
         ],
         layers: {
             mask: [
