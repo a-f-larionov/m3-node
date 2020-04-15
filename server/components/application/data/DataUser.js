@@ -42,13 +42,14 @@ DataUser = function () {
      * @param socNetUserIds
      * @param callback
      */
-    this.getUserIdsBySocNet = function (socNetTypeId, socNetUserIds, callback) {
+    this.getUserIdsBySocNet = function (socNetTypeId, socNetUserIds, limit, callback) {
         let query;
         if (socNetUserIds.length === 0) return callback([]);
         query = "SELECT id FROM " + tableName + " WHERE ";
         query += " socNetTypeId = " + DB.escape(socNetTypeId);
         query += " AND socNetUserId IN ( " + DB.escape(socNetUserIds) + " ) ";
-        query += " ORDER BY nextPointId DESC";
+        query += " ORDER BY nextPointId DESC ";
+        if (limit) query += " LIMIT " + DB.escape(limit);
 
         DB.query(query, function (rows) {
             let ids = [];
@@ -75,6 +76,27 @@ DataUser = function () {
         }, function (rows) {
             cache[userId] = fromDBToData(rows[0]) || null;
             callback(cache[userId]);
+        });
+    };
+
+    /**
+     * Вернуть пользователя по id.
+     * @param ids внутрений id пользовтаеля.
+     * @param callback
+     */
+    this.getList = function (ids, callback) {
+        if (!ids.length) return callback([]);
+
+        DB.queryWhere(tableName, {
+            id: [ids, DB.WHERE_IN]
+        }, function (rows) {
+            if (!rows) return callback([]);
+            rows.forEach(function (row, i) {
+                //console.log(row);
+                cache[row.id] = fromDBToData(row) || null;
+                rows[i] = cache[row.id];
+            });
+            callback(rows);
         });
     };
 
@@ -155,7 +177,7 @@ DataUser = function () {
         if (cache[userId]) {
             cache[userId] = null;
         }
-        DB.query("UPDATE " + tableName + " SET lastLogoutTimestamp = " + (new Date().getTime()) + " WHERE id = " + userId, function () {
+        DB.query("UPDATE " + tableName + " SET lastLogoutTimestamp = " + LogicTimeServer.getTime() + " WHERE id = " + userId, function () {
         });
     };
 

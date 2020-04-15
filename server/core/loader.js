@@ -195,7 +195,7 @@ function Loader() {
 
         path = PATH.resolve(path);
         //@todo is it detail level
-        log("Include component:" + /*getComponentNameFromPath(path) +*/ '(' + path + ')');
+        //log("Include component:" + /*getComponentNameFromPath(path) +*/ '(' + path + ')');
         require(path);
         validateComponent(path);
         global[getComponentNameFromPath(path)].__path = path;

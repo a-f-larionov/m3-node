@@ -39,7 +39,6 @@ WizardFirstStart_2 = {
     },
     onHideDialog: function () {
         WizardFirstStart_2.dialogCounter++;
-        console.log(WizardFirstStart_2.dialogCounter);
         if (WizardFirstStart_2.dialogCounter === 2) PBWizard.hideDialog();
         if (WizardFirstStart_2.dialogCounter === 2) PBWizard.begin();
         if (WizardFirstStart_2.dialogCounter === 5) LogicWizard.start(WizardFirstStart_3);

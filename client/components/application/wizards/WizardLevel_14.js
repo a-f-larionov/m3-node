@@ -6,7 +6,6 @@ WizardLevel14_1 = {
     },
 
     onHideDialog: function () {
-        console.log(WizardLevel14_1.dialogCounter);
         if (WizardLevel14_1.dialogCounter++ < 2) return;
         PBWizard.showHint([{x: 2, y: 1}, {x: 2, y: 0}]);
         PBWizard.showDialog(210, 400, 2, 20);

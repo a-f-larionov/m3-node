@@ -1,7 +1,7 @@
 Animate = {
     anim: function (animClass, context) {
-        let args, animObj, counter, timerId;
-        counter = 0;
+        let args, animObj, position, timerId;
+        position = 0;
         animObj = new animClass();
         for (let name in context) {
             if (context.hasOwnProperty(name)) {
@@ -18,8 +18,10 @@ Animate = {
         if (!animObj.skipAnimLock) AnimLocker.lock();
 
         let iterate = function () {
-            if (animObj.iterate(counter++)) {
-                timerId = setTimeout(iterate, Config.OnIdle.animateInterval);
+            position += Config.OnIdle.animStep;
+            if (animObj.iterate(position)) {
+               // timerId = setTimeout(iterate, Config.OnIdle.animateInterval);
+                requestId = requestAnimationFrame(iterate);//, Config.OnIdle.animateInterval);
             } else {
                 stopAnim();
             }

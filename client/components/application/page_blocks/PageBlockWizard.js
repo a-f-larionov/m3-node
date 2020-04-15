@@ -181,7 +181,6 @@ PageBlockWizard = function PageBlockWizard() {
 
     this.showHint = function (pList) {
         let coords = PageBlockField.getElementField().getCoords();
-        console.log('show hint wizard');
         pList.forEach(function (p) {
             p.x += coords.cellX;
             p.y += coords.cellY;

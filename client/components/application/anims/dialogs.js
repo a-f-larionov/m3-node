@@ -11,9 +11,9 @@ let animShowDialog = function () {
     };
 
     this.iterate = function (counter) {
-        this.dom.y += velocity;
+        this.dom.y = startPosition + velocity * counter;
         this.dom.redraw();
-        return counter + 2 <= (endPosition - (startPosition)) / velocity;
+        return this.dom.y < endPosition;
     };
 
     this.finish = function () {
@@ -24,7 +24,7 @@ let animShowDialog = function () {
 
 let animHideDialog = function () {
     let
-        velocity = 20,
+        velocity = -20,
         startPosition = 70,
         endPosition = -500
     ;
@@ -36,9 +36,9 @@ let animHideDialog = function () {
     };
 
     this.iterate = function (counter) {
-        this.dom.y -= velocity;
+        this.dom.y = startPosition + velocity * counter;
         this.dom.redraw();
-        return counter + 2 <= Math.abs((endPosition - (startPosition))) / velocity;
+        return this.dom.y > endPosition;
     };
 
     this.finish = function () {

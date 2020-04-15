@@ -23,6 +23,14 @@ CAPIUser = function () {
         LogicUser.updateUserInfo(user);
     };
 
+    this.updateUserListInfo = function (cntx, userList) {
+        PageController.pendingData(true);
+        userList.forEach(function (user) {
+            CAPIUser.updateUserInfo(cntx, user);
+        });
+        PageController.pendingData(false);
+    };
+
     this.gotFriendsIds = function (cntx, ids) {
         //@todo got userIds for that map
         LogicUser.setFriendIds(ids);

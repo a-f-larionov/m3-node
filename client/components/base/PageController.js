@@ -68,10 +68,31 @@ PageController = function () {
         self.redraw();
     };
 
+    let pendingData = false;
+
+    this.redrawCount = 0;
+
+    this.pendingData = function (value) {
+        pendingData = value;
+    };
+
+    let redrawTimer = null;
     /**
      * Redraw all page-blocks(include hidden)
      */
     this.redraw = function () {
+        if (pendingData) {
+            if (!redrawTimer) {
+                redrawTimer = setTimeout(PageController.redraw, 1000);
+            }
+            return;
+        }
+        redrawTimer = null;
+        PageController.redrawCount++;
+        /*blocks.forEach(function(block){
+            block.block.redraw();
+        });
+        */
         for (let i in blocks) {
             blocks[i].block.redraw();
         }

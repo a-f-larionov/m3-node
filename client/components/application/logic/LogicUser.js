@@ -40,7 +40,7 @@ LogicUser = function () {
      */
     this.authorizeSuccess = function (userId) {
         authorizedUserId = userId;
-        waitForLoadingUser = [];
+        pendingIds = {};
         LogicMain.onAuthorizeSuccess();
     };
 
@@ -76,9 +76,21 @@ LogicUser = function () {
     };
 
     this.getList = function (ids) {
-        let out;
+        let out, toLoadIds;
         out = [];
-        if (!ids) return out;
+        if (!ids || !ids.length) return out;
+        toLoadIds = [];
+        ids.forEach(function (id) {
+            if (!users[id] && !pendingIds[id]) {
+                pendingIds[id] = true;
+                users[id] = false;
+                toLoadIds.push(id);
+            }
+        });
+        if (toLoadIds.length) {
+            SAPIUser.sendMeUserListInfo(toLoadIds);
+        }
+
         ids.forEach(function (id) {
             if (self.getById(id).photo50) {
                 out.push(self.getById(id));
@@ -96,9 +108,9 @@ LogicUser = function () {
 
     /**
      * Запомним, чьи загрузки мы уже ждём, что бы не повторять лишних запросов.
-     * @type {Array}
+     * @type {Object}
      */
-    let waitForLoadingUser = [];
+    let pendingIds = {};
 
     /**
      * Загрузить данные о пользователе.
@@ -108,8 +120,8 @@ LogicUser = function () {
         if (authorizedUserId === null) {
             return;
         }
-        if (!waitForLoadingUser[userId]) {
-            waitForLoadingUser[userId] = true;
+        if (!pendingIds[userId]) {
+            pendingIds[userId] = true;
             SAPIUser.sendMeUserInfo(userId);
         }
     };
@@ -121,7 +133,7 @@ LogicUser = function () {
      * @param user {Object}
      */
     this.updateUserInfo = function (user) {
-        waitForLoadingUser[user.id] = false;
+        pendingIds[user.id] = false;
         if (!users[user.id]) {
             users[user.id] = getDummy();
         }
@@ -140,10 +152,7 @@ LogicUser = function () {
         PageController.redraw();
     };
 
-    this.isFriendIdsLoaded = false;
-
     this.setFriendIds = function (ids) {
-        self.isFriendIdsLoaded = true;
         friendIds = ids;
         PageController.redraw();
     };
@@ -151,11 +160,12 @@ LogicUser = function () {
     let friendIdsLoading = false;
 
     this.getFriendIds = function (limit) {
+        //@todo only panel, sorted by score
         if (!friendIds && !friendIdsLoading) {
-            //  - запросить друзей у ВК
+            /** Запросить друзей у ВК */
             friendIdsLoading = true;
             SocNet.getFriendIds(function (ids) {
-                SAPIUser.sendMeUserIdsBySocNet(ids);
+                SAPIUser.sendMeUserIdsBySocNet(ids/*,limit*/);
             });
             return null;
         }
@@ -192,6 +202,7 @@ LogicUser = function () {
         if (this.getFriendIds()) {
             fpid = DataMap.getFirstPointId();
             lpid = DataMap.getLastPointId();
+            // get every friendIds
             ids = this.getList(friendIds)
                 .filter(function (user) {
                     return user.nextPointId >= fpid && user.nextPointId <= lpid;
@@ -242,7 +253,8 @@ LogicUser = function () {
         }
         return gamers;
     };
-};
+}
+;
 
 /**
  * Статичный класс.

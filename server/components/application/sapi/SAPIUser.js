@@ -68,15 +68,34 @@ SAPIUser = function () {
     };
 
     /**
+     * Отправяел информацию о пользователи в текущие соединение.
+     * @param cntx object
+     * @param ids [number]
+     */
+    this.sendMeUserListInfo = function (cntx, ids) {
+        if (!cntx.isAuthorized) return Logs.log(arguments.callee.name + " not authorized", Logs.LEVEL_WARNING, cntx);
+        if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
+        if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
+
+        if (!ids || typeof ids !== 'object') {
+            Logs.log(arguments.callee.name + ": must have ids", Logs.LEVEL_WARNING, ids);
+            return;
+        }
+        LogicUser.sendUserListInfo(ids, cntx.userId);
+    };
+
+    /**
      * Отправляет внутрение id пользователей по их socNetUserId.
      * Тип социальной сети определяется по cntx.user
      * @param cntx {Object}
      * @param userIds
+     * @param limit
      */
-    this.sendMeUserIdsBySocNet = function (cntx, userIds) {
+    this.sendMeUserIdsBySocNet = function (cntx, userIds, limit) {
         if (!cntx.isAuthorized) return Logs.log(arguments.callee.name + " not authorized", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
+        //if (!limit) return Logs.log(arguments.callee.name + " limit not found", Logs.LEVEL_WARNING, cntx);
 
         // @Todo validate userIds
         if (typeof userIds !== 'object' || !userIds.length) return Logs.log(arguments.callee.name + " wrong params", Logs.LEVEL_WARNING, {
@@ -84,7 +103,7 @@ SAPIUser = function () {
         });
 
         DataUser.getById(cntx.user.id, function (user) {
-            DataUser.getUserIdsBySocNet(user.socNetTypeId, userIds, function (ids) {
+            DataUser.getUserIdsBySocNet(user.socNetTypeId, userIds, limit, function (ids) {
                 CAPIUser.gotFriendsIds(cntx.user.id, ids);
             });
         });

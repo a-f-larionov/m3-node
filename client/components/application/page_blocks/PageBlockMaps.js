@@ -104,8 +104,8 @@ PageBlockMaps = function PageBlockMaps() {
                 x: coords.x, y: coords.y,
                 friends: [],
                 stateId: ElementPoint.STATE_CLOSE,
-                number: coords.number,
-                pointId: coords.number,
+                number: null,
+                pointId: null,
                 onClick: function (event, dom, element) {
                     PBZDialogs.dialogPointInfo.showDialog(element.pointId);
                 }
@@ -192,6 +192,7 @@ PageBlockMaps = function PageBlockMaps() {
 
         this.mapElsCreateIfNotExits();
         this.mapElsShow();
+        self.preset();
         self.redraw();
     };
 
@@ -205,7 +206,7 @@ PageBlockMaps = function PageBlockMaps() {
             self.elements[i].hide();
         }
         this.mapElsHide();
-        //elArrowPrev.hide();
+        elArrowPrev.hide();
     };
 
     /**
@@ -237,16 +238,11 @@ PageBlockMaps = function PageBlockMaps() {
 
     this.redraw = function () {
         if (!showed) return;
-
-        if (isWaiting()) {
-            domLoader.show();
-            return;
-        } else {
-            domLoader.hide();
-        }
+        if (isWaiting()) return;
 
         self.preset();
         elFriendsPanel.setFriends(LogicUser.getList(LogicUser.getFriendIds(6)));
+        elFriendsPanel.redraw();
         self.elements.forEach(function (element) {
             element.redraw();
         });
@@ -306,14 +302,14 @@ PageBlockMaps = function PageBlockMaps() {
         if (!map) return;
 
         elMap.src = map.src;
-        elMap.redraw();
+        //   elMap.redraw();
 
         if (mapIdOld !== map.id) {
             this.mapElsShow();
         }
 
         for (let i in elMapElements[map.id]) {
-            elMapElements[map.id][i].redraw();
+            //        elMapElements[map.id][i].redraw();
         }
     };
 
@@ -321,7 +317,7 @@ PageBlockMaps = function PageBlockMaps() {
      * Обновление данных перед отрисовкой точек
      */
     this.presetPoints = function () {
-        let user, pointId, point, pointEl, userPoint, map;
+        let user, pointId, point, elPoint, userPoint, map;
         user = LogicUser.getCurrentUser();
         map = DataMap.getCurent();
         if (!map) return;
@@ -330,24 +326,26 @@ PageBlockMaps = function PageBlockMaps() {
         // DataPoints
         for (let number = 1; number <= DataMap.POINTS_PER_MAP; number++) {
             pointId = DataMap.getPointIdFromPointNumber(number);
-            pointEl = pointsEls[number];
-            pointEl.pointId = pointId;
+            elPoint = pointsEls[number];
+            elPoint.pointId = pointId;
             point = DataPoints.getById(pointId);
 
             if (!point) continue;
 
-            pointEl = pointsEls[number];
+            elPoint = pointsEls[number];
 
-            if (point.id === user.nextPointId) pointEl.stateId = ElementPoint.STATE_CURRENT;
-            if (point.id < user.nextPointId) pointEl.stateId = ElementPoint.STATE_FINISHED;
-            if (point.id > user.nextPointId) pointEl.stateId = ElementPoint.STATE_CLOSE;
+            if (point.id === user.nextPointId) elPoint.stateId = ElementPoint.STATE_CURRENT;
+            if (point.id < user.nextPointId) elPoint.stateId = ElementPoint.STATE_FINISHED;
+            if (point.id > user.nextPointId) elPoint.stateId = ElementPoint.STATE_CLOSE;
 
             if (userPoint[pointId])
-                pointEl.userScore = userPoint[pointId][user.id] ? userPoint[pointId][user.id].score : 0;
+                elPoint.userScore = userPoint[pointId][user.id] ? userPoint[pointId][user.id].score : 0;
             else
-                pointEl.userScore = 0;
+                elPoint.userScore = 0;
 
-            pointEl.setGamers(
+            //console.log(elPoint);
+
+            elPoint.setGamers(
                 LogicUser.getFriendIdsByMapIdAndPointIdWithScore(
                     DataMap.getCurent().id,
                     pointId,
@@ -380,7 +378,7 @@ PageBlockMaps = function PageBlockMaps() {
         waiting = false;
 
         map = DataMap.getCurent();
-        fids = LogicUser.getFriendIds(5);
+        fids = LogicUser.getFriendIds(6);
         if (map) mfids = LogicUser.getFriendIdsByMapId(map.id);
         if (fids) flist = LogicUser.getList(fids);
         if (mfids) mflist = LogicUser.getList(mfids);
@@ -395,6 +393,11 @@ PageBlockMaps = function PageBlockMaps() {
         // } else {
         //     Logs.log('PageBlockMaps::No Wating');
         // }
+        if (waiting) {
+            domLoader.show();
+        } else {
+            domLoader.hide();
+        }
         return waiting;
     }
 };

@@ -278,6 +278,9 @@ LogicField = function () {
                 self.setObject({x: x, y: y}, objectId, lightningId)
             }
         }
+        if (Field.findLines().length) {
+            Field.shuffle();
+        }
     };
 
     this.eachNears = function (p, callback) {
@@ -362,7 +365,30 @@ LogicField = function () {
                 }
                 return {lower: leftX, higher: rightX, length: rightX - leftX + 1};
         }
-    }
+    };
+
+    this.shuffle = function () {
+        let funcShuffleField = function () {
+            let p1, p2, cell2;
+            Field.eachCell(function (x1, y1, cell1) {
+                p1 = {x: x1, y: y1};
+                p2 = {
+                    x: Math.floor(Math.random() * DataPoints.FIELD_MAX_WIDTH),
+                    y: Math.floor(Math.random() * DataPoints.FIELD_MAX_HEIGHT)
+                };
+                cell2 = Field.getCell(p2);
+                if (cell1.isVisible && cell1.object.isCanMoved && cell2.isVisible && cell2.object.isCanMoved) {
+                    Field.exchangeObjects(p1, p2)
+                }
+            });
+        };
+        funcShuffleField();
+        /** Еще попытки, если не получилось */
+        for (let i = 0; i < 500; i++) {
+            if (!Field.findLines().length) break;
+            funcShuffleField();
+        }
+    };
 };
 
 /** @type {LogicField} */

@@ -46,6 +46,7 @@ DataPoints = function () {
                 "□□□□□",
                 "□□□□□",
             ],
+            //WizardFirstStart_1
             gems: [
                 "RRGRR",
                 "GBRBG",
@@ -88,6 +89,7 @@ DataPoints = function () {
                 "□□□□□□□□",
                 " □□□□□□ ",
             ],
+            //WIZARD
             gems: [
                 "BRGPPBGR",
                 "RGBPPRGP",
@@ -133,6 +135,7 @@ DataPoints = function () {
                 "□□□□□□□□□",
 
             ],
+            //WIZARD
             gems: [
                 "RBYYYPPBB",
                 "GPRBGRPRG",
@@ -178,6 +181,7 @@ DataPoints = function () {
                 "□□□□□□",
 
             ],
+            //WIZARD
             gems: [
                 "BRGYRBBGB",
                 "GPRBGGPRG",
@@ -234,7 +238,7 @@ DataPoints = function () {
                 "□□□□□□",
                 "□□□□□□",
             ],
-            gems: [
+            gems__: [
                 "GPRBGG",
                 "GRPPBP",
 
@@ -287,7 +291,7 @@ DataPoints = function () {
                 "□□□□□□□",
                 "□□□□□□□",
             ],
-            gems: [
+            gems__: [
                 "GPRBGGG",
                 "GRPPBPG",
 
@@ -350,7 +354,7 @@ DataPoints = function () {
                 "  □□□□  ",
                 "  □□□□  ",
             ],
-            gems: [
+            gems__: [
                 "GPRBGGGR",
                 "GRPPBPGB",
                 "BGBYPGRG",
@@ -410,7 +414,7 @@ DataPoints = function () {
                 "□□□□□□□",
                 "□□□□□□□",
             ],
-            gems: [
+            gems__: [
                 "GPRBGGGR",
                 "GRPPBPGB",
                 "BGBYPGRG",
@@ -466,6 +470,7 @@ DataPoints = function () {
                 "□□□□□□",
                 "□□□□□□",
             ],
+            //WIZARD
             gems: [
                 "RGBYPG",
                 "GBRPYP",
@@ -540,7 +545,7 @@ DataPoints = function () {
                 "□ □□□ □ ",
                 "□□□□□□□ ",
             ],
-            gems: [
+            gems__: [
                 "GBRPYPY",
                 "GPBRPBG",
 
@@ -617,7 +622,7 @@ DataPoints = function () {
                 "□     □ ",
                 "□□□□□□□ ",
             ],
-            gems: [
+            gems__: [
                 "GBRPYPY",
                 "GPBRPBG",
 
@@ -672,6 +677,7 @@ DataPoints = function () {
                 "□□□□□",
                 "□□□□□",
             ],
+            //WIZARD
             gems: [
                 "GBRPYPY",
                 "GPBRPBG",
@@ -725,7 +731,7 @@ DataPoints = function () {
                 "□□□□□□□",
                 "□ □ □ □",
             ],
-            gems: [
+            gems__: [
                 "GBRPYPY",
                 "GPBRPBG",
 
@@ -784,6 +790,7 @@ DataPoints = function () {
                 "□□□□□□□",
                 "  □□□  ",
             ],
+            //WIZARD
             gems: [
                 "GBRPYPY",
                 "GPBRPBG",
@@ -859,7 +866,7 @@ DataPoints = function () {
                 "□□□□□",
                 "",
             ],
-            gems: [
+            gems__: [
                 "GBRPYPY",
                 "GPBRPBG",
 
@@ -929,7 +936,7 @@ DataPoints = function () {
                 "□□□□□□□",
                 "□□□□□□□",
             ],
-            gems: [
+            gems__: [
                 "GBRPYPY",
                 "GPBRPBG",
 
@@ -1010,7 +1017,7 @@ DataPoints = function () {
                 "□□□□□□□",
                 " □□ □□",
             ],
-            gems: [
+            gems__: [
                 "GBRPYPY",
                 "GPBRPBG",
 
@@ -1091,7 +1098,7 @@ DataPoints = function () {
                 "□□□□□□□",
                 "□□□□□□□",
             ],
-            gems: [
+            gems__: [
                 "△⨀▭◆⨀▭△",
                 "△▭◆▭◇⨀◇",
 
@@ -1140,7 +1147,7 @@ DataPoints = function () {
         score3: 1500,
         goals: [
             {
-                id: DataObjects.OBJECT_GREEN_SPIDER,
+                id: DataObjects.OBJECT_GOLD,
                 count: 8
             }
         ],
@@ -1150,23 +1157,24 @@ DataPoints = function () {
                 "",
 
                 "□□□□□□□",
+                " □□□□□ ",
                 "□□□□□□□",
+                " □□□□□ ",
                 "□□□□□□□",
-                "□□□□□□□",
-                "□□□□□□□",
-                "□□□□□□□",
+                " □□□□□ ",
                 "□□□□□□□",
             ],
-            gems: [
+            gems__: null,
+            s: [
                 "GBRPYPY",
                 "GPBRPBG",
 
                 "GRGYGPG",
                 "YRPRYPP",
-                "GBGBGBG",
-                "BGRYPRR",
-                "YPYGPYB",
                 "PPBRBPY",
+                "BGRYPRR",
+                "GBGBGBG",
+                "YPYGPYB",
                 "GRPRYPG",
             ],
             special: [[
@@ -1195,7 +1203,7 @@ DataPoints = function () {
         score3: 1500,
         goals: [
             {
-                id: DataObjects.OBJECT_GREEN_SPIDER,
+                id: DataObjects.OBJECT_GOLD,
                 count: 8
             }
         ],
@@ -1212,7 +1220,7 @@ DataPoints = function () {
                 "□□□□□□□",
                 "□□□□□□□",
             ],
-            gems: [
+            gems__: [
                 "GBRPYPY",
                 "GPBRPBG",
 
@@ -1244,655 +1252,662 @@ DataPoints = function () {
 
     wayPoints[21] = {
         id: 21,
-        turns: 30,
-        score1: 100,
-        score2: 200,
-        score3: 300,
+        turns: 15,
+        score1: 500,
+        score2: 1000,
+        score3: 1500,
         goals: [
             {
-                id: DataObjects.OBJECT_GREEN,
-                count: 18
-            },
-            {
-                id: DataObjects.OBJECT_RED,
-                count: 18
-            },
-            {
-                id: DataObjects.OBJECT_YELLOW,
-                count: 18
-            },
+                id: DataObjects.OBJECT_GOLD,
+                count: 8
+            }
         ],
         layers: {
             mask: [
-                "        ",
-                " □□  □□ ",
-                " □□□□□□ ",
-                "□□□□□□□□",
-                "□□□□□□□□",
-                "□□□□□□□□",
-                "□□□□□□□□",
-                " □□□□□□ ",
-                "  □□□□  ",
+                "",
+                "",
+
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
             ],
-            gems: [
-                "????????",
-                "????????",
-                "????????",
-                "????????",
-                "????????",
-                "????????",
-                "????????",
-                "????????",
-                "????????",
+            gems__: [
+                "GBRPYPY",
+                "GPBRPBG",
+
+                "GRGYGPG",
+                "YRPRYPP",
+                "GBGBGBG",
+                "BGRYPRR",
+                "YPYGPYB",
+                "PPBRBPY",
+                "GRPRYPG",
             ],
-            special: [
-                "********",
-                "        ",
-                "        ",
-                "        ",
-                "        ",
-                "        ",
-                "        ",
-                "        ",
-                "        ",
+            special: [[
+                "*********"
+            ], [
+                "",
+                "",
+
+                "       ",
+                "       ",
+                "       ",
+                "       ",
+                "       ",
+                "       ",
+                "       ",
             ],
+            ]
         }
     };
 
     wayPoints[22] = {
         id: 22,
-        turns: 30,
-        score1: 100,
-        score2: 200,
-        score3: 300,
+        turns: 15,
+        score1: 500,
+        score2: 1000,
+        score3: 1500,
         goals: [
             {
-                id: DataObjects.OBJECT_GREEN,
-                count: 18
-            },
-            {
-                id: DataObjects.OBJECT_RED,
-                count: 18
-            },
-            {
-                id: DataObjects.OBJECT_YELLOW,
-                count: 18
-            },
+                id: DataObjects.OBJECT_GOLD,
+                count: 8
+            }
         ],
         layers: {
             mask: [
-                "        ",
-                " □□  □□ ",
-                " □□□□□□ ",
-                "□□□□□□□□",
-                "□□□□□□□□",
-                "□□□□□□□□",
-                "□□□□□□□□",
-                " □□□□□□ ",
-                "  □□□□  ",
+                "",
+                "",
+
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
             ],
-            gems: [
-                "????????",
-                "????????",
-                "????????",
-                "????????",
-                "????????",
-                "????????",
-                "????????",
-                "????????",
-                "????????",
+            gems__: [
+                "GBRPYPY",
+                "GPBRPBG",
+
+                "GRGYGPG",
+                "YRPRYPP",
+                "GBGBGBG",
+                "BGRYPRR",
+                "YPYGPYB",
+                "PPBRBPY",
+                "GRPRYPG",
             ],
-            special: [
-                "********",
-                "        ",
-                "        ",
-                "        ",
-                "        ",
-                "        ",
-                "        ",
-                "        ",
-                "        ",
+            special: [[
+                "*********"
+            ], [
+                "",
+                "",
+
+                "       ",
+                "       ",
+                "       ",
+                "       ",
+                "       ",
+                "       ",
+                "       ",
             ],
+            ]
         }
     };
 
     wayPoints[23] = {
         id: 23,
-        turns: 30,
-        score1: 100,
-        score2: 200,
-        score3: 300,
+        turns: 15,
+        score1: 500,
+        score2: 1000,
+        score3: 1500,
         goals: [
             {
-                id: DataObjects.OBJECT_GREEN,
-                count: 18
-            },
-            {
-                id: DataObjects.OBJECT_RED,
-                count: 18
-            },
-            {
-                id: DataObjects.OBJECT_YELLOW,
-                count: 18
-            },
+                id: DataObjects.OBJECT_GOLD,
+                count: 8
+            }
         ],
         layers: {
             mask: [
-                "        ",
-                " □□  □□ ",
-                " □□□□□□ ",
-                "□□□□□□□□",
-                "□□□□□□□□",
-                "□□□□□□□□",
-                "□□□□□□□□",
-                " □□□□□□ ",
-                "  □□□□  ",
+                "",
+                "",
+
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
             ],
-            gems: [
-                "????????",
-                "????????",
-                "????????",
-                "????????",
-                "????????",
-                "????????",
-                "????????",
-                "????????",
-                "????????",
+            gems__: [
+                "GBRPYPY",
+                "GPBRPBG",
+
+                "GRGYGPG",
+                "YRPRYPP",
+                "GBGBGBG",
+                "BGRYPRR",
+                "YPYGPYB",
+                "PPBRBPY",
+                "GRPRYPG",
             ],
-            special: [
-                "********",
-                "        ",
-                "        ",
-                "        ",
-                "        ",
-                "        ",
-                "        ",
-                "        ",
-                "        ",
+            special: [[
+                "*********"
+            ], [
+                "",
+                "",
+
+                "       ",
+                "       ",
+                "       ",
+                "       ",
+                "       ",
+                "       ",
+                "       ",
             ],
+            ]
         }
     };
 
     wayPoints[24] = {
         id: 24,
-        turns: 30,
-        score1: 100,
-        score2: 200,
-        score3: 300,
+        turns: 15,
+        score1: 500,
+        score2: 1000,
+        score3: 1500,
         goals: [
             {
-                id: DataObjects.OBJECT_GREEN,
-                count: 18
-            },
-            {
-                id: DataObjects.OBJECT_RED,
-                count: 18
-            },
-            {
-                id: DataObjects.OBJECT_YELLOW,
-                count: 18
-            },
+                id: DataObjects.OBJECT_GOLD,
+                count: 8
+            }
         ],
         layers: {
             mask: [
-                "        ",
-                " □□  □□ ",
-                " □□□□□□ ",
-                "□□□□□□□□",
-                "□□□□□□□□",
-                "□□□□□□□□",
-                "□□□□□□□□",
-                " □□□□□□ ",
-                "  □□□□  ",
+                "",
+                "",
+
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
             ],
-            gems: [
-                "????????",
-                "????????",
-                "????????",
-                "????????",
-                "????????",
-                "????????",
-                "????????",
-                "????????",
-                "????????",
+            gems__: [
+                "GBRPYPY",
+                "GPBRPBG",
+
+                "GRGYGPG",
+                "YRPRYPP",
+                "GBGBGBG",
+                "BGRYPRR",
+                "YPYGPYB",
+                "PPBRBPY",
+                "GRPRYPG",
             ],
-            special: [
-                "********",
-                "        ",
-                "        ",
-                "        ",
-                "        ",
-                "        ",
-                "        ",
-                "        ",
-                "        ",
+            special: [[
+                "*********"
+            ], [
+                "",
+                "",
+
+                "       ",
+                "       ",
+                "       ",
+                "       ",
+                "       ",
+                "       ",
+                "       ",
             ],
+            ]
         }
     };
 
     wayPoints[25] = {
         id: 25,
-        turns: 30,
-        score1: 100,
-        score2: 200,
-        score3: 300,
+        turns: 15,
+        score1: 500,
+        score2: 1000,
+        score3: 1500,
         goals: [
             {
-                id: DataObjects.OBJECT_GREEN,
-                count: 18
-            },
-            {
-                id: DataObjects.OBJECT_RED,
-                count: 18
-            },
-            {
-                id: DataObjects.OBJECT_YELLOW,
-                count: 18
-            },
+                id: DataObjects.OBJECT_GOLD,
+                count: 8
+            }
         ],
         layers: {
             mask: [
-                "        ",
-                " □□  □□ ",
-                " □□□□□□ ",
-                "□□□□□□□□",
-                "□□□□□□□□",
-                "□□□□□□□□",
-                "□□□□□□□□",
-                " □□□□□□ ",
-                "  □□□□  ",
+                "",
+                "",
+
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
             ],
-            gems: [
-                "????????",
-                "????????",
-                "????????",
-                "????????",
-                "????????",
-                "????????",
-                "????????",
-                "????????",
-                "????????",
+            gems__: [
+                "GBRPYPY",
+                "GPBRPBG",
+
+                "GRGYGPG",
+                "YRPRYPP",
+                "GBGBGBG",
+                "BGRYPRR",
+                "YPYGPYB",
+                "PPBRBPY",
+                "GRPRYPG",
             ],
-            special: [
-                "********",
-                "        ",
-                "        ",
-                "        ",
-                "        ",
-                "        ",
-                "        ",
-                "        ",
-                "        ",
+            special: [[
+                "*********"
+            ], [
+                "",
+                "",
+
+                "       ",
+                "       ",
+                "       ",
+                "       ",
+                "       ",
+                "       ",
+                "       ",
             ],
+            ]
         }
     };
 
     wayPoints[26] = {
         id: 26,
-        turns: 30,
-        score1: 100,
-        score2: 200,
-        score3: 300,
+        turns: 15,
+        score1: 500,
+        score2: 1000,
+        score3: 1500,
         goals: [
             {
-                id: DataObjects.OBJECT_GREEN,
-                count: 18
-            },
-            {
-                id: DataObjects.OBJECT_RED,
-                count: 18
-            },
-            {
-                id: DataObjects.OBJECT_YELLOW,
-                count: 18
-            },
+                id: DataObjects.OBJECT_GOLD,
+                count: 8
+            }
         ],
         layers: {
             mask: [
-                "        ",
-                " □□  □□ ",
-                " □□□□□□ ",
-                "□□□□□□□□",
-                "□□□□□□□□",
-                "□□□□□□□□",
-                "□□□□□□□□",
-                " □□□□□□ ",
-                "  □□□□  ",
+                "",
+                "",
+
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
             ],
-            gems: [
-                "????????",
-                "????????",
-                "????????",
-                "????????",
-                "????????",
-                "????????",
-                "????????",
-                "????????",
-                "????????",
+            gems__: [
+                "GBRPYPY",
+                "GPBRPBG",
+
+                "GRGYGPG",
+                "YRPRYPP",
+                "GBGBGBG",
+                "BGRYPRR",
+                "YPYGPYB",
+                "PPBRBPY",
+                "GRPRYPG",
             ],
-            special: [
-                "********",
-                "        ",
-                "        ",
-                "        ",
-                "        ",
-                "        ",
-                "        ",
-                "        ",
-                "        ",
+            special: [[
+                "*********"
+            ], [
+                "",
+                "",
+
+                "       ",
+                "       ",
+                "       ",
+                "       ",
+                "       ",
+                "       ",
+                "       ",
             ],
+            ]
         }
     };
 
     wayPoints[27] = {
         id: 27,
-        turns: 30,
-        score1: 100,
-        score2: 200,
-        score3: 300,
+        turns: 15,
+        score1: 500,
+        score2: 1000,
+        score3: 1500,
         goals: [
             {
-                id: DataObjects.OBJECT_GREEN,
-                count: 18
-            },
-            {
-                id: DataObjects.OBJECT_RED,
-                count: 18
-            },
-            {
-                id: DataObjects.OBJECT_YELLOW,
-                count: 18
-            },
+                id: DataObjects.OBJECT_GOLD,
+                count: 8
+            }
         ],
         layers: {
             mask: [
-                "□□□       ",
-                "□□□       ",
-                "□□□       ",
-                "          ",
-                "          ",
-                "          ",
-                "          ",
-                "          ",
-                "          ",
-                "          ",
+                "",
+                "",
+
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
             ],
-            gems: [
-                "R?R?????",
-                "?R??????",
-                "????????",
-                "????????",
-                "????????",
-                "????????",
-                "????????",
-                "????????",
-                "????????",
+            gems__: [
+                "GBRPYPY",
+                "GPBRPBG",
+
+                "GRGYGPG",
+                "YRPRYPP",
+                "GBGBGBG",
+                "BGRYPRR",
+                "YPYGPYB",
+                "PPBRBPY",
+                "GRPRYPG",
             ],
-            special: [
-                "********",
-                "        ",
-                "        ",
-                "        ",
-                "        ",
-                "        ",
-                "        ",
-                "        ",
-                "        ",
+            special: [[
+                "*********"
+            ], [
+                "",
+                "",
+
+                "       ",
+                "       ",
+                "       ",
+                "       ",
+                "       ",
+                "       ",
+                "       ",
             ],
+            ]
         }
     };
 
     wayPoints[28] = {
         id: 28,
-        turns: 30,
-        score1: 100,
-        score2: 200,
-        score3: 300,
+        turns: 15,
+        score1: 500,
+        score2: 1000,
+        score3: 1500,
         goals: [
             {
-                id: DataObjects.OBJECT_GREEN,
-                count: 18
-            },
-            {
-                id: DataObjects.OBJECT_RED,
-                count: 18
-            },
-            {
-                id: DataObjects.OBJECT_YELLOW,
-                count: 18
-            },
+                id: DataObjects.OBJECT_GOLD,
+                count: 8
+            }
         ],
         layers: {
             mask: [
-                "        ",
-                " □□  □□ ",
-                " □□□□□□ ",
-                "□□□□□□□□",
-                "□□□□□□□□",
-                "□□□□□□□□",
-                "□□□□□□□□",
-                " □□□□□□ ",
-                "  □□□□  ",
+                "",
+                "",
+
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
             ],
-            gems: [
-                "????????",
-                "????????",
-                "????????",
-                "????????",
-                "????????",
-                "????????",
-                "????????",
-                "????????",
-                "????????",
+            gems__: [
+                "GBRPYPY",
+                "GPBRPBG",
+
+                "GRGYGPG",
+                "YRPRYPP",
+                "GBGBGBG",
+                "BGRYPRR",
+                "YPYGPYB",
+                "PPBRBPY",
+                "GRPRYPG",
             ],
-            special: [
-                "********",
-                "        ",
-                "        ",
-                "        ",
-                "   ⭤⭥   ",
-                "        ",
+            special: [[
+                "*********"
+            ], [
+                "",
+                "",
+
                 "       ",
-                "        ",
-                "        ",
+                "       ",
+                "       ",
+                "       ",
+                "       ",
+                "       ",
+                "       ",
             ],
+            ]
         }
     };
 
     wayPoints[29] = {
         id: 29,
-        turns: 30,
-        score1: 100,
-        score2: 200,
-        score3: 300,
-        layers: {
-            mask: [
-                "          ",
-                "□□□□□□□□□□",
-                " □□□□□□□□□",
-                "□□□□□□□□□□",
-                "□■■□□□□□□■",
-                "□□□□□□□□□■",
-                "□□□□□□□□□■",
-                "□□□□□□□□□■",
-                "□□□□□□□□□□",
-            ],
-            gems: [
-                "□□□□□□□□□□",
-                "□□□□□□□□□□",
-                " □□□□□□□□□",
-                "□□□□□□□□□□",
-                "□□□□□□□□□□",
-                "□□□□□□□□□□",
-                "□□□□□□□□□□",
-                "□□□□□□□□□□",
-                "□□□□□□□□□□",
-            ],
-            special: [
-                "**********",
-                "          ",
-                "*         ",
-                "          ",
-                "          ",
-                "          ",
-                "          ",
-                "          ",
-                "          ",
-            ],
-        },
+        turns: 15,
+        score1: 500,
+        score2: 1000,
+        score3: 1500,
         goals: [
             {
-                id: DataObjects.OBJECT_GREEN,
-                count: 1
+                id: DataObjects.OBJECT_GOLD,
+                count: 8
             }
         ],
+        layers: {
+            mask: [
+                "",
+                "",
+
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
+            ],
+            gems__: [
+                "GBRPYPY",
+                "GPBRPBG",
+
+                "GRGYGPG",
+                "YRPRYPP",
+                "GBGBGBG",
+                "BGRYPRR",
+                "YPYGPYB",
+                "PPBRBPY",
+                "GRPRYPG",
+            ],
+            special: [[
+                "*********"
+            ], [
+                "",
+                "",
+
+                "       ",
+                "       ",
+                "       ",
+                "       ",
+                "       ",
+                "       ",
+                "       ",
+            ],
+            ]
+        }
     };
 
     wayPoints[30] = {
         id: 30,
-        turns: 30,
-        score1: 100,
-        score2: 200,
-        score3: 300,
-        layers: {
-            mask: [
-                "          ",
-                "□□□□□□□□□□",
-                " □□□□□□□□□",
-                "□□□□□□□□□□",
-                "□■■□□□□□□■",
-                "□□□□□□□□□■",
-                "□□□□□□□□□■",
-                "□□□□□□□□□■",
-                "□□□□□□□□□□",
-            ],
-            gems: [
-                "□□□□□□□□□□",
-                "□□□□□□□□□□",
-                " □□□□□□□□□",
-                "□□□□□□□□□□",
-                "□□□□□□□□□□",
-                "□□□□□□□□□□",
-                "□□□□□□□□□□",
-                "□□□□□□□□□□",
-                "□□□□□□□□□□",
-            ],
-            special: [
-                "**********",
-                "          ",
-                "*         ",
-                "          ",
-                "          ",
-                "          ",
-                "          ",
-                "          ",
-                "          ",
-            ],
-        },
+        turns: 15,
+        score1: 500,
+        score2: 1000,
+        score3: 1500,
         goals: [
             {
-                id: DataObjects.OBJECT_GREEN,
-                count: 1
+                id: DataObjects.OBJECT_GOLD,
+                count: 8
             }
         ],
+        layers: {
+            mask: [
+                "",
+                "",
+
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
+            ],
+            gems__: [
+                "GBRPYPY",
+                "GPBRPBG",
+
+                "GRGYGPG",
+                "YRPRYPP",
+                "GBGBGBG",
+                "BGRYPRR",
+                "YPYGPYB",
+                "PPBRBPY",
+                "GRPRYPG",
+            ],
+            special: [[
+                "*********"
+            ], [
+                "",
+                "",
+
+                "       ",
+                "       ",
+                "       ",
+                "       ",
+                "       ",
+                "       ",
+                "       ",
+            ],
+            ]
+        }
     };
 
     wayPoints[31] = {
         id: 31,
-        turns: 30,
-        score1: 100,
-        score2: 200,
-        score3: 300,
-        layers: {
-            mask: [
-                "          ",
-                "□□□□□□□□□□",
-                " □□□□□□□□□",
-                "□□□□□□□□□□",
-                "□■■□□□□□□■",
-                "□□□□□□□□□■",
-                "□□□□□□□□□■",
-                "□□□□□□□□□■",
-                "□□□□□□□□□□",
-            ],
-            gems: [
-                "□□□□□□□□□□",
-                "□□□□□□□□□□",
-                " □□□□□□□□□",
-                "□□□□□□□□□□",
-                "□□□□□□□□□□",
-                "□□□□□□□□□□",
-                "□□□□□□□□□□",
-                "□□□□□□□□□□",
-                "□□□□□□□□□□",
-            ],
-            special: [
-                "**********",
-                "          ",
-                "*         ",
-                "          ",
-                "          ",
-                "          ",
-                "          ",
-                "          ",
-                "          ",
-            ],
-        },
+        turns: 15,
+        score1: 500,
+        score2: 1000,
+        score3: 1500,
         goals: [
             {
-                id: DataObjects.OBJECT_GREEN,
-                count: 1
+                id: DataObjects.OBJECT_GOLD,
+                count: 8
             }
         ],
+        layers: {
+            mask: [
+                "",
+                "",
+
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
+            ],
+            gems__: [
+                "GBRPYPY",
+                "GPBRPBG",
+
+                "GRGYGPG",
+                "YRPRYPP",
+                "GBGBGBG",
+                "BGRYPRR",
+                "YPYGPYB",
+                "PPBRBPY",
+                "GRPRYPG",
+            ],
+            special: [[
+                "*********"
+            ], [
+                "",
+                "",
+
+                "       ",
+                "       ",
+                "       ",
+                "       ",
+                "       ",
+                "       ",
+                "       ",
+            ],
+            ]
+        }
     };
 
     wayPoints[32] = {
         id: 32,
-        turns: 30,
-        score1: 100,
-        score2: 200,
-        score3: 300,
-        layers: {
-            mask: [
-                "          ",
-                "□□□□□□□□□□",
-                " □□□□□□□□□",
-                "□□□□□□□□□□",
-                "□■■□□□□□□■",
-                "□□□□□□□□□■",
-                "□□□□□□□□□■",
-                "□□□□□□□□□■",
-                "□□□□□□□□□□",
-            ],
-            gems: [
-                "□□□□□□□□□□",
-                "□□□□□□□□□□",
-                " □□□□□□□□□",
-                "□□□□□□□□□□",
-                "□□□□□□□□□□",
-                "□□□□□□□□□□",
-                "□□□□□□□□□□",
-                "□□□□□□□□□□",
-                "□□□□□□□□□□",
-            ],
-            special: [
-                "**********",
-                "          ",
-                "*         ",
-                "          ",
-                "          ",
-                "          ",
-                "          ",
-                "          ",
-                "          ",
-            ],
-        },
+        turns: 15,
+        score1: 500,
+        score2: 1000,
+        score3: 1500,
         goals: [
             {
-                id: DataObjects.OBJECT_GREEN,
-                count: 1
+                id: DataObjects.OBJECT_GOLD,
+                count: 8
             }
         ],
+        layers: {
+            mask: [
+                "",
+                "",
+
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
+                "□□□□□□□",
+            ],
+            gems__: [
+                "GBRPYPY",
+                "GPBRPBG",
+
+                "GRGYGPG",
+                "YRPRYPP",
+                "GBGBGBG",
+                "BGRYPRR",
+                "YPYGPYB",
+                "PPBRBPY",
+                "GRPRYPG",
+            ],
+            special: [[
+                "*********"
+            ], [
+                "",
+                "",
+
+                "       ",
+                "       ",
+                "       ",
+                "       ",
+                "       ",
+                "       ",
+                "       ",
+            ],
+            ]
+        }
     };
 
     wayPoints[33] = {
@@ -1913,7 +1928,7 @@ DataPoints = function () {
                 "□□□□□□□□□■",
                 "□□□□□□□□□□",
             ],
-            gems: [
+            gems__: [
                 "□□□□□□□□□□",
                 "□□□□□□□□□□",
                 " □□□□□□□□□",
@@ -1962,7 +1977,7 @@ DataPoints = function () {
                 "□□□□□□□□□■",
                 "□□□□□□□□□□",
             ],
-            gems: [
+            gems__: [
                 "□□□□□□□□□□",
                 "□□□□□□□□□□",
                 " □□□□□□□□□",
@@ -2011,7 +2026,7 @@ DataPoints = function () {
                 "□□□□□□□□□■",
                 "□□□□□□□□□□",
             ],
-            gems: [
+            gems__: [
                 "□□□□□□□□□□",
                 "□□□□□□□□□□",
                 " □□□□□□□□□",
@@ -2060,7 +2075,7 @@ DataPoints = function () {
                 "□□□□□□□□□■",
                 "□□□□□□□□□□",
             ],
-            gems: [
+            gems__: [
                 "□□□□□□□□□□",
                 "□□□□□□□□□□",
                 " □□□□□□□□□",
@@ -2109,7 +2124,7 @@ DataPoints = function () {
                 "□□□□□□□□□■",
                 "□□□□□□□□□□",
             ],
-            gems: [
+            gems__: [
                 "□□□□□□□□□□",
                 "□□□□□□□□□□",
                 " □□□□□□□□□",
@@ -2158,7 +2173,7 @@ DataPoints = function () {
                 "□□□□□□□□□■",
                 "□□□□□□□□□□",
             ],
-            gems: [
+            gems__: [
                 "□□□□□□□□□□",
                 "□□□□□□□□□□",
                 " □□□□□□□□□",
@@ -2207,7 +2222,7 @@ DataPoints = function () {
                 "□□□□□□□□□■",
                 "□□□□□□□□□□",
             ],
-            gems: [
+            gems__: [
                 "□□□□□□□□□□",
                 "□□□□□□□□□□",
                 " □□□□□□□□□",
@@ -2256,7 +2271,7 @@ DataPoints = function () {
                 "□□□□□□□□□■",
                 "□□□□□□□□□□",
             ],
-            gems: [
+            gems__: [
                 "□□□□□□□□□□",
                 "□□□□□□□□□□",
                 " □□□□□□□□□",
@@ -2305,7 +2320,7 @@ DataPoints = function () {
                 "□□□□□□□□□■",
                 "□□□□□□□□□□",
             ],
-            gems: [
+            gems__: [
                 "□□□□□□□□□□",
                 "□□□□□□□□□□",
                 " □□□□□□□□□",
@@ -2354,7 +2369,7 @@ DataPoints = function () {
                 "□□□□□□□□□■",
                 "□□□□□□□□□□",
             ],
-            gems: [
+            gems__: [
                 "□□□□□□□□□□",
                 "□□□□□□□□□□",
                 " □□□□□□□□□",
@@ -2403,7 +2418,7 @@ DataPoints = function () {
                 "□□□□□□□□□■",
                 "□□□□□□□□□□",
             ],
-            gems: [
+            gems__: [
                 "□□□□□□□□□□",
                 "□□□□□□□□□□",
                 " □□□□□□□□□",
@@ -2452,7 +2467,7 @@ DataPoints = function () {
                 "□□□□□□□□□■",
                 "□□□□□□□□□□",
             ],
-            gems: [
+            gems__: [
                 "□□□□□□□□□□",
                 "□□□□□□□□□□",
                 " □□□□□□□□□",
@@ -2501,7 +2516,7 @@ DataPoints = function () {
                 "□□□□□□□□□■",
                 "□□□□□□□□□□",
             ],
-            gems: [
+            gems__: [
                 "□□□□□□□□□□",
                 "□□□□□□□□□□",
                 " □□□□□□□□□",

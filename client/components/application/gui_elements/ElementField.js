@@ -211,31 +211,12 @@ ElementField = function () {
     };
 
     let shuffleDo = function () {
-        funcShuffleField();
-        /** Еще попытки, если не получилось */
-        for (let i = 0; i < 500; i++) {
-            if (Field.findLines().length) break;
-            funcShuffleField();
-        }
+        Field.shuffle();
+
         animate(animShuffle,
             self.x - (visibleOffsetX * DataPoints.BLOCK_WIDTH),
             self.centerY
         );
-    };
-
-    let funcShuffleField = function () {
-        let p1, p2, cell2;
-        Field.eachCell(function (x1, y1, cell1) {
-            p1 = {x: x1, y: y1};
-            p2 = {
-                x: Math.floor(Math.random() * DataPoints.FIELD_MAX_WIDTH),
-                y: Math.floor(Math.random() * DataPoints.FIELD_MAX_HEIGHT)
-            };
-            cell2 = Field.getCell(p2);
-            if (cell1.isVisible && cell1.object.isCanMoved && cell2.isVisible && cell2.object.isCanMoved) {
-                Field.exchangeObjects(p1, p2)
-            }
-        });
     };
 
     let lightningAct = function (p, orientation) {
@@ -537,9 +518,7 @@ ElementField = function () {
      * @param layers {Object}
      */
     this.setLayers = function (layers) {
-        console.log(layers);
         let copyLayer = function (source, callback) {
-            console.log(source);
             let out;
             out = [];
             source.forEach(function (row, x) {

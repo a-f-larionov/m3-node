@@ -46,15 +46,16 @@ LogicMain = function () {
     };
 
     this.onAuthorizeSuccess = function () {
-        SAPITimeServer.sendMeTime();
-        LogicStuff.loadStuff();
-
         /** Установить текущую карту игрока */
         DataMap.setCurrentMapId(
             DataMap.getMapIdFromPointId(
                 LogicUser.getCurrentUser().nextPointId
             )
         );
+
+        SAPITimeServer.sendMeTime();
+        LogicStuff.loadStuff();
+
 
         /** Первый показ игры: Главная страница */
         PageController.showPage(PageMain);

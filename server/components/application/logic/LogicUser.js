@@ -260,6 +260,21 @@ LogicUser = function () {
             }
         });
     };
+
+    /**
+     * Отправка информации о пользователе.
+     * @param toUserId {Number} кому отправляем.
+     * @param ids {Number} данные о каком пользователе.
+     */
+    this.sendUserListInfo = function (ids, toUserId) {
+        DataUser.getList(ids, function (list) {
+            if (list) {
+                CAPIUser.updateUserListInfo(toUserId, list);
+            } else {
+                Logs.log(arguments.callee.name + " Users not found: id=" + ids, Logs.LEVEL_WARNING);
+            }
+        });
+    };
 };
 
 /**

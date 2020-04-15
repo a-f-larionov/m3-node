@@ -48,6 +48,9 @@ CAPIMap = function () {
         };
         DataMap.setMapById(mapId, map);
         points.forEach(function (point) {
+            if (!point.layers.gems) {
+                point.layers.gems = getRandomGems();
+            }
             point.layers.mask = convertLayers(point.layers.mask, false);
             point.layers.gems = convertLayers(point.layers.gems, false);
             point.layers.special = convertLayers(point.layers.special, true);
@@ -78,6 +81,17 @@ CAPIMap = function () {
             DataPoints.setPointUserScore(info.userId, info.pointId, info.score);
         });
         PageController.redraw();
+    };
+
+    let getRandomGems = function () {
+        let gems = [];
+        for (let x = 0; x < DataPoints.FIELD_MAX_HEIGHT; x++) {
+            gems[x] = '';
+            for (let y = 0; y < DataPoints.FIELD_MAX_HEIGHT; y++) {
+                gems[x]  += '?';
+            }
+        }
+        return gems;
     };
 
     /**
@@ -145,7 +159,8 @@ CAPIMap = function () {
 
         return out;
     };
-};
+}
+;
 
 /** @type {CAPIMap} */
 CAPIMap = new CAPIMap();
