@@ -22,7 +22,7 @@ LogicSystemRequests = function () {
     this.reloadLevels = function (callback) {
         delete require.cache[require.resolve('/var/www/tri-base/server/components/application/data/DataPoints.js')];
         loader.includeComponentByPath('/var/www/tri-base/server/components/application/data/DataPoints.js');
-        callback('OK!');
+        if (callback) callback('OK!');
     };
 
     this.logsSetDetail = function (callback) {

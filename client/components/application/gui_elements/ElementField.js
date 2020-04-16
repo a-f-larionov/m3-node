@@ -211,6 +211,7 @@ ElementField = function () {
     };
 
     let shuffleDo = function () {
+        console.log('s');
         Field.shuffle();
 
         animate(animShuffle,

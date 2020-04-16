@@ -203,9 +203,13 @@ PageBlockField = function PageBlockField() {
             srcHover: '/images/button-reload-field-hover.png',
             srcActive: '/images/button-reload-field-active.png',
             onClick: function () {
+                AnimLocker.lock();
+
                 CAPIMap.setCallbackOnMapsInfo(function () {
                     PageController.showPage(PageMain);
                     PageController.showPage(PageField);
+                    AnimLocker.release();
+                    PageController.redraw();
                 });
                 SAPIMap.reloadLevels();
                 SAPIMap.sendMeMapInfo(DataMap.getCurent().id);

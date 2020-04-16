@@ -4,6 +4,16 @@ CAPIMap = function () {
 
     this.onMapInfoCallback = null;
 
+    /**
+     * ╱ ╲ ■ □ ᥩ ȫ ᴥ
+     * @param ctnx
+     * @param mapId
+     * @param map
+     * @param points
+     * @param userPoints
+     * @param chests
+     * @param userChests
+     */
     this.gotMapsInfo = function (ctnx, mapId, map, points, userPoints, chests, userChests) {
         if (!mapping) mapping = {
             /** Layer mask */
@@ -49,6 +59,7 @@ CAPIMap = function () {
             '*': DataObjects.IS_EMITTER,
         };
         DataMap.setMapById(mapId, map);
+
         points.forEach(function (point) {
             if (!point.layers.gems) point.layers.gems = getRandomGems();
 
@@ -59,15 +70,14 @@ CAPIMap = function () {
                 layer.unshift('');
             });
             point.layers.mask.unshift('');
+
             point.layers.gems.unshift('');
 
             point.layers.special.unshift(getEmitterSpecialLayer());
 
-
             point.layers.mask = convertLayers(point.layers.mask, false);
             point.layers.gems = convertLayers(point.layers.gems, false);
             point.layers.special = convertLayers(point.layers.special, true);
-
 
             DataPoints.setPointData(point);
         });
@@ -151,12 +161,11 @@ CAPIMap = function () {
      * 黄 - желтый
      *
      * @param layers
-     * @param isSpec
+     * @param isSpecialLayer
      */
-    let convertLayers = function (layers, isSpec) {
+    let convertLayers = function (layers, isSpecialLayer) {
 
         let out;
-
         out = [];
         if (typeof layers[0] === 'string') layers = [layers];
         layers.forEach(function (layer) {
@@ -168,11 +177,10 @@ CAPIMap = function () {
                     }
 
                     if (!out[x]) out[x] = [];
-                    if (isSpec) {
+                    if (isSpecialLayer) {
                         if (!out[x][y]) out[x][y] = [];
                         //@todo move to mapping prepare
-                        if (!mapping[ceil].length) mapping[ceil] = [mapping[ceil]];
-                        out[x][y] = out[x][y].concat(mapping[ceil]);
+                        out[x][y] = out[x][y].concat(mapping[ceil].length ? mapping[ceil] : [mapping[ceil]]);
                     } else {
                         out[x][y] = mapping[ceil];
                     }

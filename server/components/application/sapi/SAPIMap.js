@@ -5,16 +5,15 @@ SAPIMap = function () {
         if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
 
-
-        let user;
         DataUser.getById(cntx.user.id, function (user) {
             if (!
                 (user.id === 1 || user.socNetUserId === 1)
             ) {
                 Logs.log("ERROR", Logs.LEVEL_ERROR);
+                return;
             }
-            LogicSystemRequests.reloadLevels(function () {
-            });
+
+            LogicSystemRequests.reloadLevels();
         });
     };
 
@@ -52,7 +51,6 @@ SAPIMap = function () {
         if (!cntx.isAuthorized) return Logs.log(arguments.callee.name + " not authorized", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
-
 
         if (!DataMap.existsMap(mapId)) {
             Logs.log("no map found:" + mapId, Logs.LEVEL_WARNING, cntx);
