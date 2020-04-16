@@ -1129,7 +1129,7 @@ DataPoints = function () {
     };
 
     wayPoints[24] = {
-        id: 24, turns: 28, score1: 500, score2: 2500, score3: 5500,
+        id: 24, turns: 28 - 12, score1: 500, score2: 2500, score3: 2700,
         goals: [
             {id: DataObjects.OBJECT_GREEN_SPIDER, count: 10},
             {id: DataObjects.OBJECT_RED_SPIDER, count: 5},
@@ -1158,7 +1158,7 @@ DataPoints = function () {
     };
 
     wayPoints[25] = {
-        id: 25, turns: 31, score1: 500, score2: 2500, score3: 5500,
+        id: 25, turns: 31 - 8, score1: 500, score2: 1500, score3: 5000,
         goals: [
             {id: DataObjects.OBJECT_YELLOW, count: 30},
             {id: DataObjects.OBJECT_PURPLE, count: 30},
@@ -1196,7 +1196,7 @@ DataPoints = function () {
     };
 
     wayPoints[26] = {
-        id: 26, turns: 10, score1: 500, score2: 2500, score3: 5500,
+        id: 26, turns: 10, score1: 100, score2: 200, score3: 400,
         goals: [
             {id: DataObjects.OBJECT_BARREL, count: 2},
         ],
@@ -1233,7 +1233,7 @@ DataPoints = function () {
     };
 
     wayPoints[27] = {
-        id: 27, turns: 24, score1: 500, score2: 2500, score3: 5500,
+        id: 27, turns: 24-8, score1: 500, score2: 1500, score3: 2500,
         goals: [
             {id: DataObjects.OBJECT_BARREL, count: 2},
         ],
@@ -1264,7 +1264,7 @@ DataPoints = function () {
     };
 
     wayPoints[28] = {
-        id: 28, turns: 35, score1: 500, score2: 2500, score3: 5500,
+        id: 28, turns: 30, score1: 1000, score2: 1500, score3: 2700,
         goals: [
             {id: DataObjects.OBJECT_BARREL, count: 4},
             {id: DataObjects.OBJECT_RED_SPIDER, count: 6},
@@ -1295,7 +1295,7 @@ DataPoints = function () {
     };
 
     wayPoints[29] = {
-        id: 29, turns: 35, score1: 500, score2: 2500, score3: 5500,
+        id: 29, turns: 21, score1: 500, score2: 1000, score3: 1500,
         goals: [
             {id: DataObjects.OBJECT_RED_SPIDER, count: 2},
             {id: DataObjects.OBJECT_BARREL, count: 4},
@@ -1327,7 +1327,7 @@ DataPoints = function () {
     };
 
     wayPoints[30] = {
-        id: 30, turns: 30, score1: 500, score2: 2500, score3: 5500,
+        id: 30, turns: 20, score1: 500, score2: 2500, score3: 3000,
         goals: [
             {id: DataObjects.OBJECT_GREEN_SPIDER, count: 18},
             {id: DataObjects.OBJECT_RED_SPIDER, count: 2},
@@ -1361,7 +1361,7 @@ DataPoints = function () {
     };
 
     wayPoints[31] = {
-        id: 31, turns: 32, score1: 500, score2: 2500, score3: 5500,
+        id: 31, turns: 26, score1: 500, score2: 2500, score3: 3300,
         goals: [
             {id: DataObjects.OBJECT_GREEN_SPIDER, count: 8},
             {id: DataObjects.OBJECT_RED_SPIDER, count: 4},
@@ -1406,7 +1406,7 @@ DataPoints = function () {
     };
 
     wayPoints[32] = {
-        id: 32, turns: 30, score1: 500, score2: 2500, score3: 5500,
+        id: 32, turns: 30, score1: 500, score2: 5500, score3: 6000,
         goals: [
             {id: DataObjects.OBJECT_GREEN_SPIDER, count: 28},
             {id: DataObjects.OBJECT_RED_SPIDER, count: 8},
@@ -1450,7 +1450,7 @@ DataPoints = function () {
     };
 
     wayPoints[33] = {
-        id: 33, turns: 36, score1: 500, score2: 2500, score3: 5500,
+        id: 33, turns: 35, score1: 500, score2: 8500, score3: 9000,
         goals: [
             {id: DataObjects.OBJECT_GREEN_SPIDER, count: 9},
             {id: DataObjects.OBJECT_GOLD, count: 15},
