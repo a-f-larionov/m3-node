@@ -677,7 +677,7 @@ ElementField = function () {
             if (!holeToFall) return;
             Field.exchangeObjects({x: x, y: y}, holeToFall);
 
-            if (true||
+            if (true ||
                 Field.isVisible({x: x, y: y}) ||
                 Field.isVisible({x: x, y: y - 1}) ||
                 Field.isVisible({x: x, y: y + 1})
@@ -755,7 +755,19 @@ ElementField = function () {
         self.redraw();
     };
 
-    let attackNearCell = function (p, cell) {
+    let getAtackNearCell = function (p, cell) {
+
+        if (cell.object.isRedSpider) {
+            cell.object.health--;
+            if (cell.object.health) {
+                animate(animHummerDestroy, p);
+            } else {
+                /** Destoy red spider */
+                self.onDestroyThing(DataObjects.OBJECT_RED_SPIDER, cell);
+                Field.setObject(p, DataObjects.OBJECT_HOLE);
+                animate(animHummerDestroy, p);
+            }
+        }
         //@todo animBoxDetroyed
         if (cell.object.withBox && !cell.object.withChain) {
             cell.object.withBox = false;
@@ -764,7 +776,7 @@ ElementField = function () {
             animate(animHummerDestroy, p);
         }
         //@todo animChainDestroyd
-        if (cell.object.withChain) {
+        if (cell.object.withBox && cell.object.withChain) {
             if (cell.object.withChainA && cell.object.withChainB) {
                 cell.object.withChainB = false;
             } else {
@@ -825,18 +837,7 @@ ElementField = function () {
             Field.eachNears(p, function (nearP, nearCell) {
                 //@todo animSpiderAtacked
                 //@todo animSpiderKilled
-                if (nearCell.object.isRedSpider) {
-                    nearCell.object.health--;
-                    if (nearCell.object.health) {
-                        animate(animHummerDestroy, nearP);
-                    } else {
-                        /** Destoy red spider */
-                        self.onDestroyThing(DataObjects.OBJECT_RED_SPIDER, nearCell);
-                        Field.setObject(nearP, DataObjects.OBJECT_HOLE);
-                        animate(animHummerDestroy, nearP);
-                    }
-                }
-                attackNearCell(nearP, nearCell);
+                getAtackNearCell(nearP, nearCell);
             });
 
             if (lightningId) lightningDo(p, lightningId);

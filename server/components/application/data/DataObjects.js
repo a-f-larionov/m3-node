@@ -44,6 +44,11 @@ DataObjects = function () {
      */
     this.OBJECT_PURPLE = 106;
     /**
+     * Камень белый
+     * @type {number}
+     */
+    this.OBJECT_WHITE = 107;
+    /**
      * Нет камня
      * @type {number}
      */
@@ -54,25 +59,35 @@ DataObjects = function () {
      */
     this.OBJECT_BARREL = 130;
     /**
+     * Блок
+     * @type {number}
+     */
+    this.OBJECT_BLOCK = 135;
+    /**
      * Многоцветный камень
      * @type {number}
      */
     this.OBJECT_POLY_COLOR = 140;
     /**
-     * Рыба
+     * Монстр-1
      * @type {number}
      */
     this.OBJECT_RED_SPIDER = 150;
     /**
-     * Осминог
+     * Монстр-2
      * @type {number}
      */
     this.OBJECT_GREEN_SPIDER = 160;
     /**
-     * Лёд
+     * Монстр-3
      * @type {number}
      */
-    this.OBJECT_ICE = 170;
+    this.OBJECT_GREEN_SPIDER_2 = 161;
+    /**
+     * Плитка
+     * @type {number}
+     */
+    this.OBJECT_GOLD_TILE = 170;
     /**
      * Драгоцености
      * @type {number}

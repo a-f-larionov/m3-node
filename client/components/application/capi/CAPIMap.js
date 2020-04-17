@@ -29,6 +29,7 @@ CAPIMap = function () {
             'B': DataObjects.OBJECT_BLUE,
             'Y': DataObjects.OBJECT_YELLOW,
             'P': DataObjects.OBJECT_PURPLE,
+            'W': DataObjects.OBJECT_WHITE,
 
             '△': DataObjects.OBJECT_RED,
             '◆': DataObjects.OBJECT_GREEN,
@@ -38,12 +39,16 @@ CAPIMap = function () {
 
             'ᨔ': DataObjects.OBJECT_POLY_COLOR,
             'S': DataObjects.OBJECT_POLY_COLOR,
+
             'ᥩ': DataObjects.OBJECT_BARREL,
+            '‖': DataObjects.OBJECT_BLOCK,
             'ȫ': DataObjects.OBJECT_RED_SPIDER,
+            'Ξ': DataObjects.OBJECT_GOLD_TILE,
 
 
             'ᴥ': DataObjects.OBJECT_GREEN_SPIDER,
-            'ɨ': DataObjects.OBJECT_ICE,
+            'β': DataObjects.OBJECT_GREEN_SPIDER_2,
+
             '$': DataObjects.OBJECT_GOLD,
             'b': DataObjects.OBJECT_BOX,
             '■': DataObjects.OBJECT_BOX,
