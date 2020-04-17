@@ -13,6 +13,20 @@ LogicField = function () {
         DataObjects.OBJECT_BLUE,
         DataObjects.OBJECT_YELLOW,
         DataObjects.OBJECT_PURPLE,
+
+        DataObjects.OBJECT_SAND,
+    ];
+
+    /**
+     * Список случайных камней
+     * @type {number[]}
+     */
+    let randomGems = [
+        DataObjects.OBJECT_RED,
+        DataObjects.OBJECT_GREEN,
+        DataObjects.OBJECT_BLUE,
+        DataObjects.OBJECT_YELLOW,
+        DataObjects.OBJECT_PURPLE,
     ];
 
     /**
@@ -26,9 +40,11 @@ LogicField = function () {
         DataObjects.OBJECT_YELLOW,
         DataObjects.OBJECT_PURPLE,
 
+        DataObjects.OBJECT_SAND,
+
         DataObjects.OBJECT_POLY_COLOR,
         DataObjects.OBJECT_BARREL,
-        DataObjects.OBJECT_RED_SPIDER
+        DataObjects.OBJECT_SPIDER_ALPHA,
     ];
 
     this.getCell = function (p) {
@@ -80,7 +96,7 @@ LogicField = function () {
     };
 
     this.getRandomGemId = function () {
-        return gems[Math.floor(Math.random() * gems.length)];
+        return randomGems[Math.floor(Math.random() * randomGems.length)];
     };
 
     this.isVisible = function (p) {
@@ -240,7 +256,8 @@ LogicField = function () {
 
         object.isPolyColor = (id === DataObjects.OBJECT_POLY_COLOR);
         object.isBarrel = (id === DataObjects.OBJECT_BARREL);
-        object.isRedSpider = (id === DataObjects.OBJECT_RED_SPIDER);
+        object.isBlock = (id === DataObjects.OBJECT_BLOCK);
+        object.isSpiderAlpha = (id === DataObjects.OBJECT_SPIDER_ALPHA);
 
         self.updateSomeFlags(object);
     };
@@ -271,7 +288,9 @@ LogicField = function () {
 
                 objectId = objects[x] && objects[x][y];
                 if (specIds.indexOf(DataObjects.OBJECT_BARREL) !== -1) objectId = DataObjects.OBJECT_BARREL;
-                if (specIds.indexOf(DataObjects.OBJECT_RED_SPIDER) !== -1) objectId = DataObjects.OBJECT_RED_SPIDER;
+                if (specIds.indexOf(DataObjects.OBJECT_SPIDER_ALPHA) !== -1) objectId = DataObjects.OBJECT_SPIDER_ALPHA;
+                if (specIds.indexOf(DataObjects.OBJECT_SAND) !== -1) objectId = DataObjects.OBJECT_SAND;
+                if (specIds.indexOf(DataObjects.OBJECT_BLOCK) !== -1) objectId = DataObjects.OBJECT_BLOCK;
                 if (!objectId) objectId = Field.getRandomGemId();
 
                 let cell, object;
@@ -281,14 +300,16 @@ LogicField = function () {
                 cell.isVisible = mask[x] && mask[x][y] && mask[x][y] === DataObjects.CELL_VISIBLE;
                 cell.isEmitter = specIds.indexOf(DataObjects.IS_EMITTER) !== -1;
 
-                if (objectId === DataObjects.OBJECT_RED_SPIDER) object.health = 3;
+                if (objectId === DataObjects.OBJECT_SPIDER_ALPHA) object.health = 3;
 
                 cell.withGold = specIds.indexOf(DataObjects.OBJECT_GOLD) !== -1;
+                cell.withTile = specIds.indexOf(DataObjects.OBJECT_TILE) !== -1;
 
                 object.withBox = specIds.indexOf(DataObjects.OBJECT_BOX) !== -1;
                 object.withChainA = specIds.indexOf(DataObjects.OBJECT_CHAIN_A) !== -1;
                 object.withChainB = specIds.indexOf(DataObjects.OBJECT_CHAIN_B) !== -1;
-                object.withGreenSpider = specIds.indexOf(DataObjects.OBJECT_GREEN_SPIDER) !== -1;
+                object.withSpiderBeta = specIds.indexOf(DataObjects.OBJECT_SPIDER_BETA) !== -1;
+                object.withSpiderGamma = specIds.indexOf(DataObjects.OBJECT_SPIDER_GAMMA) !== -1;
 
                 self.setObject({x: x, y: y}, objectId, lightningId)
             }
@@ -396,8 +417,11 @@ LogicField = function () {
                     y: Math.floor(Math.random() * DataPoints.FIELD_MAX_HEIGHT)
                 };
                 cell2 = Field.getCell(p2);
-                if (cell1.isVisible && cell1.object.isCanMoved && !cell1.object.isBarrel &&
-                    cell2.isVisible && cell2.object.isCanMoved && !cell2.object.isBarrel) {
+                let o1, b2;
+                o1 = cell1.object;
+                o2 = cell2.object;
+                if (cell1.isVisible && o1.isCanMoved && !o1.isBarrel && o1.objectId !== DataObjects.OBJECT_SAND &&
+                    cell2.isVisible && o2.isCanMoved && !o2.isBarrel && o2.objectId !== DataObjects.OBJECT_SAND) {
                     Field.exchangeObjects(p1, p2, beforePlay)
                 }
             });
@@ -410,24 +434,17 @@ LogicField = function () {
             if (Field.findLines().length === 0) break;
             funcShuffleField();
         }
-        i = 0;
 
+        i = 0;
         if (Field.findLines().length > 0 && beforePlay && shuffleCounter++ < 1000) {
             while (i++ < 50) {
                 Field.eachCell(function (x, y, cell) {
-                    if (cell.isVisible && cell.object.isGem && !cell.object.isBarrel) {
+                    if (cell.isVisible && cell.object.isGem &&
+                        cell.object.objectId !== DataObjects.OBJECT_SAND) {
                         cell.object.objectId = self.getRandomGemId();
                     }
                 });
                 if (Field.findLines().length === 0) break;
-                let gc = 0;
-                Field.eachCell(function (x, y, cell) {
-                    if (cell.isVisible && cell.object.isGem && !cell.object.isBarrel) {
-                        if (Field.getGemId({x: x, y: y}) === DataObjects.OBJECT_GREEN) {
-                            gc++;
-                        }
-                    }
-                });
             }
             self.shuffle(true);
             return;

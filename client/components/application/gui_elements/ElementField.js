@@ -439,11 +439,10 @@ ElementField = function () {
                 cell.isVisible ?
                     drawDom({x: x, y: y}, maskDom, DataObjects.CELL_VISIBLE) :
                     maskDom.hide();
-
                 /**
                  * Draw any
                  */
-                if (cell.isVisible && (object.isGem || object.isRedSpider || object.isBarrel || object.isPolyColor)) {
+                if (cell.isVisible && (object.isGem || object.isSpiderAlpha || object.isBarrel || object.isPolyColor || object.isBlock)) {
                     drawDom({x: x, y: y}, gemDom, object.objectId, '');
                 } else {
                     gemDom.hide();
@@ -458,9 +457,9 @@ ElementField = function () {
                         gemDom.bindedDoms = specDom;
                     }
                 }
-
+                
                 /** Spider red health */
-                if (cell.isVisible && object.isRedSpider) {
+                if (cell.isVisible && object.isSpiderAlpha) {
                     specDom = specDoms2[spec2Index++];
                     specDom.backgroundImage = DataPoints.healthImages[object.health];
                     drawDom({x: x, y: y}, specDom, '', '');
@@ -473,10 +472,23 @@ ElementField = function () {
                     drawDom({x: x, y: y}, specDom, DataObjects.OBJECT_GOLD, '');
                 }
 
-                /** Spider green */
-                if (cell.isVisible && object.withGreenSpider) {
+                /** Tile */
+                if (cell.isVisible && cell.withTile) {
+                    specDom = specDoms1[spec1Index++];
+                    drawDom({x: x, y: y}, specDom, DataObjects.OBJECT_TILE, '');
+                }
+
+                /** Creature beta */
+                if (cell.isVisible && object.withSpiderBeta) {
                     specDom = specDoms2[spec2Index++];
-                    drawDom({x: x, y: y}, specDom, DataObjects.OBJECT_GREEN_SPIDER, '');
+                    drawDom({x: x, y: y}, specDom, DataObjects.OBJECT_SPIDER_BETA, '');
+                    gemDom.bindedDoms = specDom;
+                }
+
+                /** Creature beta */
+                if (cell.isVisible && object.withSpiderGamma) {
+                    specDom = specDoms2[spec2Index++];
+                    drawDom({x: x, y: y}, specDom, DataObjects.OBJECT_SPIDER_GAMMA, '');
                     gemDom.bindedDoms = specDom;
                 }
 
@@ -484,7 +496,7 @@ ElementField = function () {
                 if (cell.isVisible && object.withBox) {
                     specDom = specDoms2[spec2Index++];
                     drawDom({x: x, y: y}, specDom, DataObjects.OBJECT_BOX, '');
-                    //gemDom.hide();
+                    gemDom.hide();
                 }
                 /** Chain a & b */
                 if (cell.isVisible && object.withChain) {
@@ -638,7 +650,6 @@ ElementField = function () {
     };
 
     this.processSpecialLayer = function () {
-        console.log('sprec-layers');
         Field.eachCell(function (x, y, cell) {
             if (cell.isEmitter && Field.isHole({x: x, y: y})) {
                 Field.setObject({x: x, y: y}, Field.getRandomGemId());
@@ -757,13 +768,13 @@ ElementField = function () {
 
     let getAtackNearCell = function (p, cell) {
 
-        if (cell.object.isRedSpider) {
+        if (cell.object.isSpiderAlpha) {
             cell.object.health--;
             if (cell.object.health) {
                 animate(animHummerDestroy, p);
             } else {
                 /** Destoy red spider */
-                self.onDestroyThing(DataObjects.OBJECT_RED_SPIDER, cell);
+                self.onDestroyThing(DataObjects.OBJECT_SPIDER_ALPHA, cell);
                 Field.setObject(p, DataObjects.OBJECT_HOLE);
                 animate(animHummerDestroy, p);
             }
@@ -826,10 +837,25 @@ ElementField = function () {
                 animate(animHummerDestroy, p);
             }
 
-            if (cell.object.withGreenSpider) {
+            if (cell.withTile) {
+                /** Destroy treasures */
+                self.onDestroyThing(DataObjects.OBJECT_TILE, cell);
+                cell.withTile = false;
+                animate(animHummerDestroy, p);
+            }
+
+
+            if (cell.object.withSpiderBeta) {
                 /** Destroy green spider */
-                self.onDestroyThing(DataObjects.OBJECT_GREEN_SPIDER, cell);
-                cell.object.withGreenSpider = false;
+                self.onDestroyThing(DataObjects.OBJECT_SPIDER_BETA, cell);
+                cell.object.withSpiderBeta = false;
+                animate(animHummerDestroy, p);
+            }
+
+            if (cell.object.withSpiderGamma) {
+                /** Destroy green spider */
+                self.onDestroyThing(DataObjects.OBJECT_SPIDER_GAMMA, cell);
+                cell.object.withSpiderGamma = false;
                 animate(animHummerDestroy, p);
             }
 

@@ -14,20 +14,27 @@ DataPoints = function () {
     /** Gem images */
     this.objectImages[DataObjects.OBJECT_HOLE] = '/images/field-none-2.png';
     this.objectImages[DataObjects.OBJECT_RANDOM] = '/images/field-none.png';
+
     this.objectImages[DataObjects.OBJECT_RED] = '/images/field-red.png';
     this.objectImages[DataObjects.OBJECT_GREEN] = '/images/field-green.png';
     this.objectImages[DataObjects.OBJECT_BLUE] = '/images/field-blue.png';
     this.objectImages[DataObjects.OBJECT_YELLOW] = '/images/field-yellow.png';
     this.objectImages[DataObjects.OBJECT_PURPLE] = '/images/field-purple.png';
+    this.objectImages[DataObjects.OBJECT_SAND] = '/images/field-sand.png';
 
     this.objectImages[DataObjects.OBJECT_BARREL] = '/images/field-barrel.png';
+    this.objectImages[DataObjects.OBJECT_BLOCK] = '/images/field-block.png';
     this.objectImages[DataObjects.OBJECT_POLY_COLOR] = '/images/field-poly-color.png';
     this.objectImages[DataObjects.OBJECT_GOLD] = '/images/field-gold.png';
-    this.objectImages[DataObjects.OBJECT_GREEN_SPIDER] = '/images/field-octopus.png';
-    this.objectImages[DataObjects.OBJECT_RED_SPIDER] = '/images/field-fish.png';
+    this.objectImages[DataObjects.OBJECT_TILE] = '/images/field-tile.png';
+
+    this.objectImages[DataObjects.OBJECT_SPIDER_ALPHA] = '/images/field-alpha.png';
+    this.objectImages[DataObjects.OBJECT_SPIDER_BETA] = '/images/field-beta.png';
+    this.objectImages[DataObjects.OBJECT_SPIDER_GAMMA] = '/images/field-gamma.png';
+
+    this.objectImages[DataObjects.OBJECT_BOX] = '/images/field-box.png';
     this.objectImages[DataObjects.OBJECT_CHAIN_A] = '/images/field-chain-a.png';
     this.objectImages[DataObjects.OBJECT_CHAIN_B] = '/images/field-chain-b.png';
-    this.objectImages[DataObjects.OBJECT_BOX] = '/images/field-box.png';
 
     /** Gem-lightning images */
     this.objectImages[DataObjects.WITH_LIGHTNING_VERTICAL] = '/images/spec-light-ver-1.png';

@@ -7,8 +7,6 @@ LogicStuff = function () {
     this.STUFF_LIGHTNING = 2;
     this.STUFF_SHUFFLE = 3;
 
-    this.STUFF_GOLD = 100;
-
     this.loadStuff = function () {
         SAPIStuff.sendMeStuff();
     };

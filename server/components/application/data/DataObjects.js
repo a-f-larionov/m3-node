@@ -47,7 +47,7 @@ DataObjects = function () {
      * Камень белый
      * @type {number}
      */
-    this.OBJECT_WHITE = 107;
+    this.OBJECT_SAND = 107;
     /**
      * Нет камня
      * @type {number}
@@ -72,22 +72,22 @@ DataObjects = function () {
      * Монстр-1
      * @type {number}
      */
-    this.OBJECT_RED_SPIDER = 150;
+    this.OBJECT_SPIDER_ALPHA = 150;
     /**
      * Монстр-2
      * @type {number}
      */
-    this.OBJECT_GREEN_SPIDER = 160;
+    this.OBJECT_SPIDER_BETA = 160;
     /**
      * Монстр-3
      * @type {number}
      */
-    this.OBJECT_GREEN_SPIDER_2 = 161;
+    this.OBJECT_SPIDER_GAMMA = 161;
     /**
      * Плитка
      * @type {number}
      */
-    this.OBJECT_GOLD_TILE = 170;
+    this.OBJECT_TILE = 170;
     /**
      * Драгоцености
      * @type {number}

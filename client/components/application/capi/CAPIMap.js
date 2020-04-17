@@ -5,7 +5,7 @@ CAPIMap = function () {
     this.onMapInfoCallback = null;
 
     /**
-     * ╱ ╲ ■ □ ᥩ ȫ ᴥ
+     * ╱ ╲ ■ □ ᥩ α β
      * @param ctnx
      * @param mapId
      * @param map
@@ -29,7 +29,7 @@ CAPIMap = function () {
             'B': DataObjects.OBJECT_BLUE,
             'Y': DataObjects.OBJECT_YELLOW,
             'P': DataObjects.OBJECT_PURPLE,
-            'W': DataObjects.OBJECT_WHITE,
+            'S': DataObjects.OBJECT_SAND,
 
             '△': DataObjects.OBJECT_RED,
             '◆': DataObjects.OBJECT_GREEN,
@@ -38,18 +38,17 @@ CAPIMap = function () {
             '⨀': DataObjects.OBJECT_PURPLE,
 
             'ᨔ': DataObjects.OBJECT_POLY_COLOR,
-            'S': DataObjects.OBJECT_POLY_COLOR,
 
             'ᥩ': DataObjects.OBJECT_BARREL,
-            '‖': DataObjects.OBJECT_BLOCK,
-            'ȫ': DataObjects.OBJECT_RED_SPIDER,
-            'Ξ': DataObjects.OBJECT_GOLD_TILE,
-
-
-            'ᴥ': DataObjects.OBJECT_GREEN_SPIDER,
-            'β': DataObjects.OBJECT_GREEN_SPIDER_2,
-
             '$': DataObjects.OBJECT_GOLD,
+            't': DataObjects.OBJECT_TILE,
+            'α': DataObjects.OBJECT_SPIDER_ALPHA,
+            '‖': DataObjects.OBJECT_BLOCK,
+
+
+            'β': DataObjects.OBJECT_SPIDER_BETA,
+            'γ': DataObjects.OBJECT_SPIDER_GAMMA,
+
             'b': DataObjects.OBJECT_BOX,
             '■': DataObjects.OBJECT_BOX,
             '╲': DataObjects.OBJECT_CHAIN_A,
@@ -134,7 +133,7 @@ CAPIMap = function () {
 
     /**
      * @returns {*[]}
-     * ⬍⬌⭥⭤⯐↔↕       ʘ¤ïĦȪ ȫ ȯ ɷ ɵ ʆ ʭ ʬ ʚ ░▒▓∏∩≡▀ ϔ∎
+     * ⬍⬌⭥⭤⯐↔↕       ʘ¤ïĦα α ȯ ɷ ɵ ʆ ʭ ʬ ʚ ░▒▓∏∩≡▀ ϔ∎
      *
      * https://pixelplus.ru/samostoyatelno/stati/vnutrennie-faktory/tablica-simvolov-unicode.html
      * https://unicode-table.com/ru/
@@ -143,8 +142,8 @@ CAPIMap = function () {
      * RGBPY - камни цветные
      * ⯐↔↕ - молния, вертикальная, горизонтальная, кросовая
      *
-     * ȫ - рыба
-     * ᴥ - осминог
+     * α - рыба
+     * β - осминог
      * ᥩ - бочка
      * ɨ - лёд
      * $ - драгоценности
