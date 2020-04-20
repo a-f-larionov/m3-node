@@ -1813,36 +1813,49 @@ DataPoints = function () {
     };
 
     wayPoints[43] = {
-        id: 43, turns: 100, score1: 500, score2: 2500, score3: 5500,
+        id: 43, turns: 25, score1: 500, score2: 2500, score3: 2980,
         goals: [
-            {id: DataObjects.OBJECT_BARREL, count: 6},
+            {id: DataObjects.OBJECT_BARREL, count: 2},
         ],
         layers: {
             mask: [
-                "□□ □□ □□  ",
-                "□□□□□□□□ ",
-                "□□□□□□□□",
-                "□□□□□□□□",
-                " □□□□□□  ",
-                " □□  □□  ",
-            ],
-            special: [[
-                "ᥩᥩ ᥩᥩ ᥩᥩ",
-                "□□□□□□□□",
-                "□□□□□□□□",
-                "□□□‖‖□□□",
-                " □□□□□□ ",
-                " □□  □□ ",
+                "  □    □  ",
+                " □□□□□□□□",
+                //  "□□□□□□□□",
+                " □□□□□□□□",
+                " □□□□□□□□",
+                " □□□□□□□□",
+                " □□□□□□□□",
+                " □□□□□□□□",
+                "□□□□□□□□□□  ",
+            ], special: [[
+                "  ᥩ    ᥩ",
+                "",
+                //"□□□□□□□□",
+                "",
+                " ‖□‖  ‖□‖",
+                "",
+                "",
+                "",
                 /** α β γ ■ ╱ ╲ Ξ ᥩ ‖ */
-            ],
-            ]
+            ], ["        ",
+                "",
+                //     "□□□□□□□□",
+                "",
+                "",
+                " * *  * *",
+                "",
+                "",
+                "",
+            ]]
         }
-    };
+    }
+    ;
 
     wayPoints[44] = {
-        id: 44, turns: 100, score1: 500, score2: 2500, score3: 5500,
+        id: 44, turns: 30, score1: 500, score2: 2500, score3: 2400,
         goals: [
-            {id: DataObjects.OBJECT_BARREL, count: 4},
+            {id: DataObjects.OBJECT_BARREL, count: 5},
         ],
         layers: {
             mask: [
@@ -1853,9 +1866,8 @@ DataPoints = function () {
                 "□□□□□□□□□",
                 "□□□□□□□□□",
                 "□□□□□□□□□",
-            ],
-            special: [[
-                "  ᥩᥩ□ᥩᥩ  ",
+            ], special: [[
+                "  ᥩᥩᥩᥩᥩ  ",
                 "  □□□□□ ",
                 "□□□ □ □□□",
                 "□□□□□□□□□",
@@ -1863,42 +1875,40 @@ DataPoints = function () {
                 "□□□□□□□□□",
                 "□□□□□□□□□",
                 /** α β γ ■ ╱ ╲ Ξ ᥩ ‖ */
-            ],
-            ]
+            ],]
         }
     };
 
     wayPoints[45] = {
-        id: 45, turns: 100, score1: 500, score2: 2500, score3: 5500,
+        id: 45, turns: 15, score1: 500, score2: 2500, score3: 1000,
         goals: [
             {id: DataObjects.OBJECT_BARREL, count: 2},
         ],
         layers: {
             mask: [
-                "□□□□□□",
-                "□□□□□□",
-                "□□□□□□",
-                "□□□□□□",
-                "□□□□□□",
-                "□□□□□□",
+                " □□□□□□",
+                "□□□□□□□□",
+                "□□□□□□□□",
+                "□□□□□□□□",
+                "□□□□□□□□",
+                "□□□□□□□□",
             ],
             special: [[
-                "ᥩ□□□□ᥩ",
-                "□□□□□□",
-                "□□□□□□",
-                "□□□□□□",
-                "□□□□□□",
-                "‖□□□□‖",
+                " ᥩ□□□□ᥩ",
+                "‖      ‖",
+                "*      *",
+                "‖      ‖",
+                "*      *",
+                "‖      ‖",
                 /** α β γ ■ ╱ ╲ Ξ ᥩ ‖ */
-            ],
-            ]
+            ],]
         }
     };
 
     wayPoints[46] = {
-        id: 46, turns: 100, score1: 500, score2: 2500, score3: 5500,
+        id: 46, turns: 5, score1: 500, score2: 2500, score3: 200,
         goals: [
-            {id: DataObjects.OBJECT_SAND, count: 9},
+            {id: DataObjects.OBJECT_SAND, count: 6},
         ],
         layers: {
             mask: [
@@ -1909,32 +1919,48 @@ DataPoints = function () {
                 "□□□□□□",
                 "□□□□□□",
             ], gems: [
-                "RSGSGR",
-                "RGBYPR",
+                "RYGSGR",
+                "YRSBYP",
+                "RGRSBY",
+                "GRRBSR",
+                "YPYSBY",
+                "PRSYRG",
             ],
         }
     };
 
     wayPoints[47] = {
-        id: 47, turns: 100, score1: 500, score2: 2500, score3: 5500,
+        id: 47, turns: 40, score1: 500, score2: 2500, score3: 3300,
         goals: [
-            {id: DataObjects.OBJECT_SAND, count: 25},
+            {id: DataObjects.OBJECT_SAND, count: 9},
             {id: DataObjects.OBJECT_GREEN, count: 25},
         ],
         layers: {
             mask: [
-                " □□  □□ ",
-                " □□  □□ ",
-                " □□  □□ ",
-                "□□□□□□□□",
-                "□□□□□□□□",
-                "  □□□□  ",
+                " □□□ □□□ ",
+                " □□□ □□□ ",
+                " □□□□□□□ ",
+                "□□□□□□□□□",
+                "□□□□□□□□□",
+                "□□□□□□□□□",
+                "  □□□□□  ",
+            ],
+            gems: [
+                " PRS SPS ",
+                " SBG RRP ",
+                " BPSBGSG ",
+                "YPRBRSPPY",
+                "YPRGSYPSG",
+                "YPGBRBPPY",
+                //"PRBSPRGB",
+                //"RBSBSGBP",
+                "  GBRRG  ",
             ]
         }
     };
 
     wayPoints[48] = {
-        id: 48, turns: 100, score1: 500, score2: 2500, score3: 5500,
+        id: 48, turns: 20, score1: 500, score2: 2500, score3: 1000,
         goals: [
             {id: DataObjects.OBJECT_RED, count: 18},
             {id: DataObjects.OBJECT_BLUE, count: 18},
@@ -1963,7 +1989,7 @@ DataPoints = function () {
     };
 
     wayPoints[49] = {
-        id: 49, turns: 100, score1: 500, score2: 2500, score3: 5500,
+        id: 49, turns: 30, score1: 500, score2: 2500, score3: 1200,
         goals: [
             {id: DataObjects.OBJECT_PURPLE, count: 20},
             {id: DataObjects.OBJECT_YELLOW, count: 20},
@@ -1973,27 +1999,30 @@ DataPoints = function () {
             mask: [
                 " □□□□□□ ",
                 "□□□□□□□□",
+                "□□□□□□□□",
                 "□□□  □□□",
                 "□□□  □□□",
+                "□□□□□□□□",
                 "□□□□□□□□",
                 " □□□□□□",
-            ], special: [[
-                " □□□□□□ ",
-                "□□□□□□□□",
-                "□□□  □□□",
-                "□□□  □□□",
-                "□□□□□□□□",
-                " □□□□□□",
+            ], gems: [
+                "????????",
+                "S?S?S?S?",
+                "????????",
+                "S?S?S?S?",
+                "????????",
+                "S?S?S?S?",
+                "????????",
+                "S?S?S?S?",
                 /** α β γ ■ ╱ ╲ Ξ ᥩ ‖ */
-            ],
             ]
         }
     };
 
     wayPoints[50] = {
-        id: 50, turns: 100, score1: 500, score2: 2500, score3: 5500,
+        id: 50, turns: 30, score1: 500, score2: 2500, score3: 4100,
         goals: [
-            {id: DataObjects.OBJECT_SAND, count: 25},
+            {id: DataObjects.OBJECT_SAND, count: 8},
             {id: DataObjects.OBJECT_SPIDER_BETA, count: 12},
             {id: DataObjects.OBJECT_BOX, count: 12},
         ],
@@ -2022,6 +2051,14 @@ DataPoints = function () {
                 "□β□□β□ ",
                 "□ββββ  ",
                 "□□□□   ",
+            ], [
+                "   S□S□",
+                "  □□S□□",
+                " □□SS□□",
+                "S□SSS□",
+                "S□SS□□ ",
+                "□S□□  ",
+                "S□S□  ",
             ],
             ]
             /** α β γ ■ ╱ ╲ Ξ ᥩ ‖ */
@@ -2029,7 +2066,7 @@ DataPoints = function () {
     };
 
     wayPoints[51] = {
-        id: 51, turns: 100, score1: 500, score2: 2500, score3: 5500,
+        id: 51, turns: 10, score1: 500, score2: 2500, score3: 500,
         goals: [
             {id: DataObjects.OBJECT_SPIDER_GAMMA, count: 4},
         ],
@@ -2042,11 +2079,12 @@ DataPoints = function () {
                 "□□□□□□",
                 "□□□□□□",
             ], gems: [            //WIZARD GREEN-SPIDER-2
-                "     ",
-                "     ",
-                "     ",
-                "     ",
-                "     ",
+                "RGBRYP",
+                "PYRBGY",
+                "PYPPGP",
+                "YGYYRP",
+                "PPYRPG",
+                "RGBGRP",
             ], special: [[
                 "□□□□□□",
                 "□□□□□□",
@@ -2061,7 +2099,7 @@ DataPoints = function () {
     };
 
     wayPoints[52] = {
-        id: 52, turns: 100, score1: 500, score2: 2500, score3: 5500,
+        id: 52, turns: 40, score1: 500, score2: 2500, score3: 3100,
         goals: [
             {id: DataObjects.OBJECT_SPIDER_GAMMA, count: 14},
             {id: DataObjects.OBJECT_BARREL, count: 2},
@@ -2069,7 +2107,7 @@ DataPoints = function () {
         layers: {
             mask: [
                 "□□□□□□□",
-                "□□ □ □□",
+                "□□□□□□□",
                 "□□□□□□□",
                 "□□□□□□□",
                 "□□   □□",
@@ -2077,19 +2115,18 @@ DataPoints = function () {
                 "□□□□□□□",
             ], special: [[
                 "□□ᥩ□ᥩ□□",
-                "□□ □ □□",
+                "□□‖□‖□□",
+                "γγ*γ*γγ",
+                "γ□   □γ",
                 "γγγγγγγ",
-                "□□   □□",
-                "γγγγγγγ",
-                "□□□□□□□□",
+                "□□□□□□□",
                 /** α β γ ■ ╱ ╲ Ξ ᥩ ‖ */
-            ],
-            ]
+            ],]
         }
     };
 
     wayPoints[53] = {
-        id: 53, turns: 100, score1: 500, score2: 2500, score3: 5500,
+        id: 53, turns: 40, score1: 500, score2: 2500, score3: 5000,
         goals: [
             {id: DataObjects.OBJECT_SPIDER_GAMMA, count: 25},
             {id: DataObjects.OBJECT_BARREL, count: 4},
@@ -2120,7 +2157,7 @@ DataPoints = function () {
     };
 
     wayPoints[54] = {
-        id: 54, turns: 100, score1: 500, score2: 2500, score3: 5500,
+        id: 54, turns: 25, score1: 500, score2: 2500, score3: 3000,
         goals: [
             {id: DataObjects.OBJECT_SPIDER_GAMMA, count: 20},
             {id: DataObjects.OBJECT_PURPLE, count: 20},
@@ -2307,26 +2344,12 @@ DataPoints = function () {
     wayPoints[61] = {
         id: 61, turns: 100, score1: 100, score2: 200, score3: 300,
         goals: [
-            {
-                id: DataObjects.OBJECT_GREEN, count: 1
-            }
+            {id: DataObjects.OBJECT_GREEN, count: 1},
         ],
         layers: {
             mask: [
-                "          ",
-                "□□□□□□□□□□",
-                " □□□□□□□□□",
-                "□□□□□□□□□□",
-                "□■■□□□□□□■",
-                "□□□□□□□□□■",
-                "□□□□□□□□□■",
-                "□□□□□□□□□■",
-                "□□□□□□□□□□",
-            ],
-            gems: [
                 "□□□□□□□□□□",
                 "□□□□□□□□□□",
-                " □□□□□□□□□",
                 "□□□□□□□□□□",
                 "□□□□□□□□□□",
                 "□□□□□□□□□□",
@@ -2334,16 +2357,24 @@ DataPoints = function () {
                 "□□□□□□□□□□",
                 "□□□□□□□□□□",
             ],
-            special: [
-                "**********",
-                "          ",
-                "*         ",
-                "          ",
-                "          ",
-                "          ",
-                "          ",
-                "          ",
-                "          ",
+        }
+    };
+
+    wayPoints[62] = {
+        id: 62, turns: 100, score1: 100, score2: 200, score3: 300,
+        goals: [
+            {id: DataObjects.OBJECT_GREEN, count: 1},
+        ],
+        layers: {
+            mask: [
+                "□□□□□□□□□□",
+                "□□□□□□□□□□",
+                "□□□□□□□□□□",
+                "□□□□□□□□□□",
+                "□□□□□□□□□□",
+                "□□□□□□□□□□",
+                "□□□□□□□□□□",
+                "□□□□□□□□□□",
             ],
         }
     };

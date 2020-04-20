@@ -88,7 +88,7 @@ LogicField = function () {
             p.y++;
             cell = self.getCell(p);
             object = cell && cell.object;
-            if (cell && cell.isVisible && !object.isHole) {
+            if (cell && cell.isVisible && !object.isHole && !object.withBox) {
                 break;
             }
             if (cell && cell.isVisible && object.isHole) {

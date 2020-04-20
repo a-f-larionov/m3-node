@@ -29,7 +29,9 @@ LogicWizard = function LogicWizard() {
         if (nextPointId === 12 && playedId === 12) self.start(WizardLevel12_1);
         if (nextPointId === 15 && playedId === 15) self.start(WizardLevel14_1);
         if (nextPointId === 23 && playedId === 23) self.start(WizardLevel23_1);
-        if (nextPointId === 42 && playedId === 41) self.start(WizardLevel41_1);
+        if (nextPointId === 41 && playedId === 41) self.start(WizardLevel41_1);
+        if (nextPointId === 46 && playedId === 46) self.start(WizardLevel46_1);
+        if (nextPointId === 51 && playedId === 51) self.start(WizardLevel51_1);
     };
 
     this.start = function (wizard) {

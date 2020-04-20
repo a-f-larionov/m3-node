@@ -42,6 +42,7 @@ CAPIMap = function () {
             'ᥩ': DataObjects.OBJECT_BARREL,
             '$': DataObjects.OBJECT_GOLD,
             't': DataObjects.OBJECT_TILE,
+            'Ξ': DataObjects.OBJECT_TILE,
             'α': DataObjects.OBJECT_SPIDER_ALPHA,
             '‖': DataObjects.OBJECT_BLOCK,
 
