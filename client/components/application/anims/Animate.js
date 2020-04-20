@@ -39,7 +39,11 @@ Animate = {
         return stopAnim;
     },
 
-    getUrl: function (urlStart, position, max) {
+    getFrameUrl: function (urlStart, position, max) {
         return urlStart + (Math.floor((position) % max) + 1) + '.png';
     }
+};
+
+Animate.settings = {
+    fallVelocity: 5
 };

@@ -88,6 +88,9 @@ LogicField = function () {
             p.y++;
             cell = self.getCell(p);
             object = cell && cell.object;
+            if (cell && cell.isVisible && !object.isHole) {
+                break;
+            }
             if (cell && cell.isVisible && object.isHole) {
                 return p;
             }
@@ -291,6 +294,12 @@ LogicField = function () {
                 if (specIds.indexOf(DataObjects.OBJECT_SPIDER_ALPHA) !== -1) objectId = DataObjects.OBJECT_SPIDER_ALPHA;
                 if (specIds.indexOf(DataObjects.OBJECT_SAND) !== -1) objectId = DataObjects.OBJECT_SAND;
                 if (specIds.indexOf(DataObjects.OBJECT_BLOCK) !== -1) objectId = DataObjects.OBJECT_BLOCK;
+                gems.forEach(function (gemId) {
+                    if (specIds.indexOf(gemId) !== -1) {
+                        objectId = gemId;
+                        console.log(gemId);
+                    }
+                });
                 if (!objectId) objectId = Field.getRandomGemId();
 
                 let cell, object;
@@ -417,7 +426,7 @@ LogicField = function () {
                     y: Math.floor(Math.random() * DataPoints.FIELD_MAX_HEIGHT)
                 };
                 cell2 = Field.getCell(p2);
-                let o1, b2;
+                let o1, o2;
                 o1 = cell1.object;
                 o2 = cell2.object;
                 if (cell1.isVisible && o1.isCanMoved && !o1.isBarrel && o1.objectId !== DataObjects.OBJECT_SAND &&

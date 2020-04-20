@@ -446,6 +446,7 @@ ElementField = function () {
                     drawDom({x: x, y: y}, gemDom, object.objectId, '');
                 } else {
                     gemDom.hide();
+                    //drawDom({x: x, y: y}, gemDom, object.objectId, '');
                 }
 
                 /** Gems */
@@ -457,7 +458,7 @@ ElementField = function () {
                         gemDom.bindedDoms = specDom;
                     }
                 }
-                
+
                 /** Spider red health */
                 if (cell.isVisible && object.isSpiderAlpha) {
                     specDom = specDoms2[spec2Index++];
@@ -675,7 +676,6 @@ ElementField = function () {
     };
 
     this.fall = function () {
-        console.log('fall');
         let holeToFall;
         if (AnimLocker.busy()) return;
 
@@ -688,18 +688,27 @@ ElementField = function () {
             if (!holeToFall) return;
             Field.exchangeObjects({x: x, y: y}, holeToFall);
 
+            //@todo some strange moment here
+            if (gemDoms[x][y].bindedDoms) {
+                if (gemDoms[holeToFall.x][holeToFall.y]) {
+                    gemDoms[holeToFall.x][holeToFall.y].bindedDoms = gemDoms[x][y].bindedDoms;
+                }
+                gemDoms[x][y].bindedDoms = null;
+            };
+
             if (true ||
                 Field.isVisible({x: x, y: y}) ||
                 Field.isVisible({x: x, y: y - 1}) ||
                 Field.isVisible({x: x, y: y + 1})
             )
                 fallDoms.push({from: {x: x, y: y}, to: holeToFall});
-
         });
+
         if (fallDoms.length) animate(animFallGems, fallDoms); else {
             self.run();
             self.redraw();
         }
+        self.processSpecialLayer();
     };
 
     this.hasDestroyLines = function () {

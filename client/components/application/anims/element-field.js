@@ -1,28 +1,31 @@
 let animChangeAndBack = function () {
-    let dom, v, velocity, counterHalf, counterStop;
+    let dom, v, velocity, tMiddle, tFinish, startP;
     velocity = 5;
-    counterStop = Math.floor(100 / velocity);
-    counterHalf = Math.floor(counterStop / 2);
+    tFinish = Math.floor(100 / velocity);
+    tMiddle = Math.floor(tFinish / 2);
 
     this.init = function (a, b) {
         v = {x: (b.x - a.x) * velocity, y: (b.y - a.y) * velocity};
         dom = this.gemDoms[a.x][a.y];
+        startP = {x: dom.x, y: dom.y};
     };
 
-    this.iterate = function (counter) {
-        if (counter === counterHalf) {
-            v.x = -v.x;
-            v.y = -v.y;
+    this.iterate = function (t) {
+        if (t > tMiddle) {
+            dom.x = startP.x + (tMiddle * v.x) - v.x * (t - tMiddle);
+            dom.y = startP.y + (tMiddle * v.y) - v.y * (t - tMiddle);
+        } else {
+            dom.x = startP.x + v.x * t;
+            dom.y = startP.y + v.y * t;
         }
-        dom.x += v.x;
-        dom.y += v.y;
+
         dom.redraw();
         if (dom.bindedDoms) {
             dom.bindedDoms.x = dom.x;
             dom.bindedDoms.y = dom.y;
             dom.bindedDoms.redraw();
         }
-        return counter + 1 < counterStop;
+        return t + 1 < tFinish;
     };
 };
 
@@ -55,7 +58,7 @@ let animLightning = function () {
     };
 
     this.iterate = function (position) {
-        dom.backgroundImage = Animate.getUrl('/images/anim-light-', position * velocity, 5);
+        dom.backgroundImage = Animate.getFrameUrl('/images/anim-light-', position * velocity, 5);
         dom.redraw();
         if (position < 15) return true;
     };
@@ -85,7 +88,7 @@ let animHummerDestroy = function () {
     };
 
     this.iterate = function (position) {
-        dom.backgroundImage = Animate.getUrl('/images/anim-hd-', position * velocity, 15);
+        dom.backgroundImage = Animate.getFrameUrl('/images/anim-hd-', position * velocity, 15);
         dom.redraw();
         return position < 15;
     };
@@ -100,28 +103,29 @@ let animChangeAndDestroy = function () {
     let dom, v, velocity, counterStop;
     velocity = 5;
     counterStop = Math.floor(50 / velocity) - 1;
-
+    let startP;
     this.init = function (a, b) {
         v = {x: (b.x - a.x) * velocity, y: (b.y - a.y) * velocity};
         dom = this.gemDoms[a.x][a.y];
+        startP = {x: dom.x, y: dom.y};
     };
 
-    this.iterate = function (counter) {
-        dom.x += v.x;
-        dom.y += v.y;
+    this.iterate = function (position) {
+        dom.x = startP.x + v.x * position;
+        dom.y = startP.y + v.y * position;
         dom.redraw();
         if (dom.bindedDoms) {
             dom.bindedDoms.x = dom.x;
             dom.bindedDoms.y = dom.y;
             dom.bindedDoms.redraw();
         }
-        return counter < counterStop;
+        return position < counterStop;
     };
 };
 
 let animGemEmitFader = function () {
     let dom;
-    let velocity = 8;
+    let velocity = Animate.settings.fallVelocity;
 
     this.init = function (p) {
         dom = this.gemDoms[p.x][p.y];
@@ -146,12 +150,13 @@ let animGemEmitFader = function () {
 
 let animFallGems = function () {
     let doms, dom, self = this;
-    let velocity = 8;
+    let velocity = Animate.settings.fallVelocity;
 
     this.init = function (list) {
         doms = [];
         list.forEach(function (data) {
-            dom = self.gemDoms[data.from.x][data.from.y];
+            self.gemDoms[data.from.x][data.from.y].hide();
+            dom = self.gemDoms[data.to.x][data.to.y];
             doms.push(dom);
             dom.fallMode = 'just';
 
