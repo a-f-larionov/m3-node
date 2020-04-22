@@ -151,10 +151,7 @@ PageBlockMaps = function PageBlockMaps() {
             chestsEls[coord.number] = el;
         });
 
-        elFriendsPanel = GUI.createElement(ElementFriendsPanel, {
-            x: 213,
-            y: 450 - 15
-        });
+        elFriendsPanel = GUI.createElement(ElementFriendsPanel, {x: 213, y: 450 - 15});
         self.elements.push(elFriendsPanel);
 
         el = GUI.createElement(ElementButton, {
@@ -168,16 +165,11 @@ PageBlockMaps = function PageBlockMaps() {
         });
         self.elements.push(el);
 
-        el = GUI.createElement(ElementImage, {
-            x: 650, y: 370,
-            src: '/images/wind-rose.png'
-        });
+        el = GUI.createElement(ElementImage, {x: 650, y: 370, opacity: 0.7, src: '/images/wind-rose.png'});
         self.elements.push(el);
 
         //@todo preloader
-        domLoader = GUI.createDom(undefined, {
-            x: 0, y: 0, backgroundImage: '/images/not-found.png'
-        });
+        domLoader = GUI.createDom(undefined, {x: 0, y: 0, backgroundImage: '/images/not-found.png'});
     };
 
     /**

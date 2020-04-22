@@ -42,17 +42,20 @@ SocNetStandalone = function () {
 
     this.getUserInfo = function (id, callback) {
         let randomName = [
-            'Носков Людвиг Романович /images/field-octopus.png',
             'Кириллов Юрий Валериевич /images/field-barrel.png',
             'Пахомов Александр Григорьевич /images/field-box.png',
-            'Наумов Людвиг Артёмович /images/field-blue.png',
             'Негода Устин Леонидович /images/field-red.png',
             'Грабчак Роман Андреевич /images/field-green.png',
+            'Наумов Людвиг Артёмович /images/field-blue.png',
             'Симонов Игнатий Васильевич /images/field-purple.png',
             'Харитонов Яромир Александрович /images/field-yellow.png',
+            'Носков Людвиг Романович /images/field-sand.png',
             'Крюков Марк Романович /images/field-poly-color.png',
             'Киранов Марат Романович /images/field-gold.png',
-            'Пушкин Александр Сергеевич /images/field-poly-color.png',
+            'Чубайк Николай Викторович /images/field-poly-color.png',
+            'Пушкин Александр Сергеевич /images/field-alpha.png',
+            'Билл Гейтс Ибнабабн /images/field-beta.png',
+            'Стив Джоб Jobs /images/field-gamma.png',
         ];
         let info = {};
         if (id === this.getSocNetUserId() && false) {

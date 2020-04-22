@@ -1,4 +1,4 @@
-WizardLevel41_1 = {
+WizardLevel_41_1 = {
 
     init: function () {
         PBWizard.begin();
@@ -6,7 +6,7 @@ WizardLevel41_1 = {
     },
 
     onHideDialog: function () {
-        if (WizardLevel41_1.dialogCounter++ < 2) return;
+        if (WizardLevel_41_1.dialogCounter++ < 2) return;
         PBWizard.showHint([{x: 1, y: 4}, {x: 2, y: 4}]);
         PBWizard.showDialog(340, 390, 2);
         PBWizard.highlightCells([

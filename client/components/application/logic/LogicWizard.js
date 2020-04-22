@@ -24,12 +24,12 @@ LogicWizard = function LogicWizard() {
             playedId = DataPoints.getPlayedId();
         if (nextPointId === 2 && playedId === 2) self.start(WizardLevel2_1);
         if (nextPointId === 3 && playedId === 3) self.start(WizardLevel3_1);
-        if (nextPointId === 4 && playedId === 4) self.start(WizardLevel4_1);
+        if (nextPointId === 4 && playedId === 4) self.start(WizardLevel_4_1);
         if (nextPointId === 9 && playedId === 9) self.start(WizardLevel9_1);
         if (nextPointId === 12 && playedId === 12) self.start(WizardLevel12_1);
         if (nextPointId === 15 && playedId === 15) self.start(WizardLevel14_1);
         if (nextPointId === 23 && playedId === 23) self.start(WizardLevel23_1);
-        if (nextPointId === 41 && playedId === 41) self.start(WizardLevel41_1);
+        if (nextPointId === 41 && playedId === 41) self.start(WizardLevel_41_1);
         if (nextPointId === 46 && playedId === 46) self.start(WizardLevel46_1);
         if (nextPointId === 51 && playedId === 51) self.start(WizardLevel51_1);
     };

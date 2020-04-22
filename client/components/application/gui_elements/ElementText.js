@@ -88,9 +88,10 @@ ElementText = function () {
      * Создадим дом и настроем его.
      */
     this.init = function () {
+        //this.color = "rgba(255,0,0,0.5)";
         dom = GUI.createDom(undefined, {
             height: this.height,
-            color: this.color ? this.color : "rgba(68, 62, 0, 0.7)",
+            color: this.color ? this.color : "rgba(103, 77, 56, 1.0)",
             background: this.background,
             fontFamily: '"Marvin",Tahoma,"Geneva CY",sans-serif',
         });

@@ -127,11 +127,11 @@ ElementPanelItems = function () {
         offsetY = 0;
 
         self.items.forEach(function (item) {
-            imagesEls[item.id].x = self.x + 20;
+            imagesEls[item.id].x = self.x + 15;
             imagesEls[item.id].y = self.y + 50 + offsetY;
             imagesEls[item.id].show();
 
-            countersEls[item.id].x = self.x + 2 + DataPoints.BLOCK_WIDTH;
+            countersEls[item.id].x = self.x - 5 + DataPoints.BLOCK_WIDTH;
             countersEls[item.id].y = self.y + 50 + DataPoints.BLOCK_HEIGHT / 2 - 10 + offsetY;
             countersEls[item.id].setText(item.count);
             countersEls[item.id].show();

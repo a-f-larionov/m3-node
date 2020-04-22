@@ -828,7 +828,7 @@ ElementField = function () {
         }
 
         if (cell.object.isPolyColor) {
-            self.onDestroyThing(DataObjects.OBJECT_POLY_COLOR);
+            self.onDestroyThing(DataObjects.OBJECT_POLY_COLOR, cell);
             Field.setObject(p, DataObjects.OBJECT_HOLE, false);
             animate(animHummerDestroy, p);
         }
