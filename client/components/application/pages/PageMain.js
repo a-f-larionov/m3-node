@@ -1,4 +1,4 @@
-PageMain = function () {
+let PageMain = function () {
     let self = this;
     this.blocks = [];
 

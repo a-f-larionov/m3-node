@@ -1,4 +1,4 @@
-DialogTurnLoose = function DialogTurnLoose() {
+let DialogTurnLoose = function DialogTurnLoose() {
     let self = this;
     this.__proto__ = new Dialog();
 

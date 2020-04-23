@@ -7,7 +7,7 @@
  * width : number ширина поля
  * height : number высота поля
  */
-ElementHealthTimer = function () {
+let ElementHealthTimer = function () {
     let self = this;
 
     /**

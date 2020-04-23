@@ -2,7 +2,7 @@
  * Основной блок страницы игры.
  * @constructor
  */
-PageBlockMaps = function PageBlockMaps() {
+let PageBlockMaps = function PageBlockMaps() {
     let self = this;
 
     /**

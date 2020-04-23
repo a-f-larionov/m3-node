@@ -1,6 +1,5 @@
-DialogGoals = function DialogGoals() {
+let DialogGoals = function DialogGoals() {
     let self = this;
-
     this.__proto__ = new Dialog();
 
     let goalsImagesEls = {};

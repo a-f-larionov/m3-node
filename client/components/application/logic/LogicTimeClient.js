@@ -1,4 +1,4 @@
-LogicTimeClient = function () {
+let LogicTimeClient = function () {
 
     /**
      * Server time

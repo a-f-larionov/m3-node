@@ -1,4 +1,4 @@
-DialogChestNeedStars = function () {
+let DialogChestNeedStars = function () {
     let self = this;
     this.__proto__ = new Dialog();
 

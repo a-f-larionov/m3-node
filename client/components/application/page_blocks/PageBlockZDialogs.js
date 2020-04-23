@@ -2,7 +2,7 @@
  * Блок диалогов
  * @constructor
  */
-PageBlockZDialogs = function PageBlockZDialogs() {
+let PageBlockZDialogs = function PageBlockZDialogs() {
     let self = this;
 
     /**

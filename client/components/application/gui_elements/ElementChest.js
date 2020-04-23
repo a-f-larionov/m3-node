@@ -4,7 +4,7 @@
  * @property x
  * @property y
  */
-ElementChest = function () {
+let ElementChest = function () {
     let self = this;
 
     /**

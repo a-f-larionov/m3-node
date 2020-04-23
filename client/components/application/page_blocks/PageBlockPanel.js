@@ -2,7 +2,7 @@
  * Блок общих.
  * @constructor
  */
-PageBlockPanel = function PageBlockPanel() {
+let PageBlockPanel = function PageBlockPanel() {
     let self = this;
 
     /**

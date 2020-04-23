@@ -2,7 +2,7 @@
  * Элемент картинки.
  * @constructor
  */
-Dialog = function (src) {
+let Dialog = function (src) {
     let self = this;
 
     /**

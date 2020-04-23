@@ -1,4 +1,4 @@
-DataChests = function () {
+let DataChests = function () {
 
     let chestCoords = [
         {

@@ -1,4 +1,4 @@
-PageField = function () {
+let PageField = function () {
     let self = this;
     this.blocks = [];
 

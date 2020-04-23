@@ -2,7 +2,7 @@
  * Элемент картинки.
  * @constructor
  */
-ElementImage = function () {
+let ElementImage = function () {
     let self = this;
 
     /**

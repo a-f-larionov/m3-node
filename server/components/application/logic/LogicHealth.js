@@ -1,4 +1,4 @@
-LogicHealth = function () {
+let LogicHealth = function () {
 
     let getTime = function () {
         return typeof LogicTimeClient !== 'undefined' ?
@@ -61,3 +61,9 @@ LogicHealth = function () {
 
 /** @type {LogicHealth} */
 LogicHealth = new LogicHealth();
+
+
+/** Для кросс-сайдных компонент */
+if (CONST_IS_SERVER_SIDE) {
+    global['LogicHealth'] = LogicHealth;
+}

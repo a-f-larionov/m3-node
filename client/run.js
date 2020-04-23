@@ -1,7 +1,7 @@
 window.onload = function () {
     /** Эмуляция совместимости клиентского и серверного кода. */
-    global = window;
-    process = {};
+    let global = window;
+    let process = {};
     process.exit = function () {
         console.log("Unexpected termination of work!");
         document.body.innerHTML = 'server is broken!';

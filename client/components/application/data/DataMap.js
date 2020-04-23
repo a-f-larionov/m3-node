@@ -1,4 +1,4 @@
-DataMap = function () {
+let DataMap = function () {
 
     let currentMapId = 1;
 
@@ -115,7 +115,7 @@ DataMap = function () {
 };
 
 /** @Todo super mega crunch */
-GUI = {};
+/*GUI = {};
 
 GUI.ANIM_TYPE_ROTATE = 10;
 GUI.ANIM_TYPE_MOVE = 20;
@@ -123,7 +123,8 @@ GUI.ANIM_TYPE_GOTO = 30;
 GUI.ANIM_TYPE_MOVIE = 40;
 GUI.ANIM_TYPE_PAUSE = 50;
 GUI.ANIM_TYPE_STOP = 60;
-
+*/
+//@Todonow
 /** @type {DataMap} */
 DataMap = new DataMap();
 

@@ -2,7 +2,7 @@
  * Страница бэкграудна.
  * @constructor
  */
-PageBlockBackground = function PageBlockBackground() {
+let PageBlockBackground = function PageBlockBackground() {
     let self = this;
 
     /**

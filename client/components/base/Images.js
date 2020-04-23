@@ -1,4 +1,4 @@
-Images = function () {
+let Images = function () {
     /**
      * Заранее загруженные картинки, но с timestamp-ом.
      * timestamp вставлять везде сложно, проще сделать это в одном месте.

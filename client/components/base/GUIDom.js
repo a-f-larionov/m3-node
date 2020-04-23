@@ -36,7 +36,7 @@
  * @property textDecoration {String}
  * @property rotate {Int}
  */
-GUIDom = function () {
+let GUIDom = function () {
     let self = this;
 
     this.__id = ++GUIDom.lastId;

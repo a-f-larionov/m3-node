@@ -1,4 +1,4 @@
-CAPIStuff = function () {
+let CAPIStuff = function () {
 
     this.gotStuff = function (cntx, stuff) {
         LogicStuff.updateStuff(stuff);

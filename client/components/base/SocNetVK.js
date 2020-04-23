@@ -3,7 +3,7 @@
  * @constructor
  */
 
-SocNetVK = function () {
+let SocNetVK = function () {
 
     let self = this;
     let getParams = {};

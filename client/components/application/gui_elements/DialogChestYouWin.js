@@ -1,4 +1,4 @@
-DialogChestYouWin = function () {
+let DialogChestYouWin = function () {
     let self = this;
     this.__proto__ = new Dialog();
 

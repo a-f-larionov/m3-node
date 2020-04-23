@@ -2,7 +2,7 @@
  * Блок Визарда
  * @constructor
  */
-PageBlockWizard = function PageBlockWizard() {
+let PageBlockWizard = function PageBlockWizard() {
     let self = this;
 
     /**

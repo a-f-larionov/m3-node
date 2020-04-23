@@ -1,4 +1,4 @@
-DataPrizes = function () {
+let DataPrizes = function () {
     let self = this;
 
     this.giveOutPrizes = function (prizes) {

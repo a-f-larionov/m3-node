@@ -10,7 +10,7 @@
  * fontSize: string размер шрифта, 21 по умолчанию
  * alignCenter : bool
  */
-ElementText = function () {
+let ElementText = function () {
     let self = this;
 
     /**

@@ -1,4 +1,4 @@
-DialogStuffShop = function () {
+let DialogStuffShop = function () {
     let self = this;
     this.__proto__ = new Dialog();
 

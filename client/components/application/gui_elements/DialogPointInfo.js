@@ -1,6 +1,5 @@
-DialogPointInfo = function () {
+let DialogPointInfo = function () {
     let self = this;
-    self.__name = "DialogPointInfo";
     this.__proto__ = new Dialog();
 
     /**

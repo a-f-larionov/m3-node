@@ -2,7 +2,7 @@
  * Page controller
  * @constructor
  */
-PageController = function () {
+let PageController = function () {
     let self = this;
 
     let currentPage;

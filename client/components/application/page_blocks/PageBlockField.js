@@ -2,7 +2,7 @@
  * Страница с игровым полем
  * @constructor
  */
-PageBlockField = function PageBlockField() {
+let PageBlockField = function PageBlockField() {
     let self = this;
 
     /**

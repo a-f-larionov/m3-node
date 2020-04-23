@@ -2,7 +2,7 @@
  * Элемент панель целей.
  * @constructor
  */
-ElementPanelItems = function () {
+let ElementPanelItems = function () {
     let self = this;
 
     /**

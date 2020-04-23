@@ -9,7 +9,7 @@ if (CONST_IS_SERVER_SIDE) {
  * Cross-side component.
  * @constructor
  */
-ApiRouter = new (function () {
+let ApiRouter = new (function () {
     let self = this;
 
     let map;
@@ -341,3 +341,8 @@ ApiRouter = new (function () {
         }
     };
 })();
+
+/** Для кросс-сайдных компонент */
+if (CONST_IS_SERVER_SIDE) {
+    global['ApiRouter'] = ApiRouter;
+}

@@ -1,4 +1,4 @@
-CAPIMap = function () {
+let CAPIMap = function () {
     let self = this;
     let mapping;
 

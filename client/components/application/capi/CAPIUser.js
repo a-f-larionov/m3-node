@@ -1,4 +1,4 @@
-CAPIUser = function () {
+let CAPIUser = function () {
 
     /**
      * Авторизация успешна.

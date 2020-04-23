@@ -8,7 +8,7 @@
  * @property srcActive
  *
  */
-ElementButton = function () {
+let ElementButton = function () {
     let self = this;
 
     /**

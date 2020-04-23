@@ -3,7 +3,7 @@
  * @constructor
  */
 
-SocNetStandalone = function () {
+let SocNetStandalone = function () {
 
     this.init = function () {
     };

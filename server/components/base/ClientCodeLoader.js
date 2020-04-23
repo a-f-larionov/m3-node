@@ -170,7 +170,9 @@ ClientCodeLoader = function () {
              "}</style>";
          */
         code += "<script>window.PLATFORM_ID = '" + socNetCode + "';</script>";
-        code += "<script type='text/javascript' src='/js/client.js" + getTimeKey() + "'></script>\r\n";
+        code += "<script type='text/javascript' src='/js/client." +
+            (Config.WebSocketServer.compressCode ? 'min' : 'source') +
+            ".js" + getTimeKey() + "'></script>\r\n";
         code += "</head>";
         code += "<body>";
 
@@ -202,16 +204,16 @@ ClientCodeLoader = function () {
     };
 
     let reloadHTMLVK = function () {
-        Logs.log("Load VK client code.");
         codeVK = getClientHTML('VK');
+        Logs.log("Load VK client code. Size:" + codeVK.length);
     };
 
     /**
      * Загрузка клиенсткого кода для стэндэлон версии.
      */
     let reloadHTMLStandalone = function () {
-        Logs.log("Load standalone client code.");
         codeStandalone = getClientHTML('STANDALONE');
+        Logs.log("Load standalone client code. Size: " + codeStandalone.length);
     };
 
     /**
@@ -222,16 +224,18 @@ ClientCodeLoader = function () {
         js = getClientJS();
 
         FS.writeFileSync(CONST_DIR_ROOT + '/public/js/client.source.js', js);
-        Logs.log("ClientJS source code writed", Logs.LEVEL_DETAIL);
+        Logs.log("ClientJS source code writed. Size: " + js.length, Logs.LEVEL_DETAIL);
 
         //@todo LogicClintCodeloader.config?
         if (true || Config.WebSocketServer.compressCode) {
-            js = 'function ___(){ ' + js + ' };___();';
+            js = 'function _(window){ ' + js + ' };' +
+                '_(window);' +
+                '';
             let result = UGLIFYJS.minify(js);
             if (result.code) {
                 js = result.code;
                 FS.writeFileSync(CONST_DIR_ROOT + '/public/js/client.min.js', js);
-                Logs.log("ClientJS miniifed success(writen)", Logs.LEVEL_DETAIL);
+                Logs.log("ClientJS minified success(writen). Size: " + js.length, Logs.LEVEL_DETAIL);
             } else {
                 Logs.log("ClientJS minified [FAILED], because some error.", Logs.LEVEL_ERROR, result);
             }
@@ -379,8 +383,9 @@ ClientCodeLoader = function () {
         let list;
 
         if (!useSprite) {
-            Logs.log("SPRITESMITH DOES NOT USED", Logs.LEVEL_NOTIFY);
+            Logs.log("SPRITESMITH [SKIPPED]", Logs.LEVEL_NOTIFY);
             callback();
+            return;
         }
 
         Logs.log("SPRITESMITH BEGIN", Logs.LEVEL_NOTIFY);
@@ -401,17 +406,16 @@ ClientCodeLoader = function () {
             //'../public/images/buttons/addFriendHover.png': { x: 150, y: 1353, width
             if (FS.existsSync(spritePathPhysic)) FS.unlink(spritePathPhysic);
 
-            console.log(1);
             fsResult = FS.writeFileSync(spritePathPhysic, result.image, 'binary');
             Logs.log("SPRITESMITH Complete `" + spritePathPhysic + "`", Logs.LEVEL_NOTIFY);
-            spriteExists = true;
-            if (useSprite) callback();
+            spriteExists = fsResult;
+            callback();
         });
     };
 
     let getGUIGeneratedCode = function () {
 
-        /*
+        /**
          1 - get PageBlock folder files
          2 - for each generate add block code
          */

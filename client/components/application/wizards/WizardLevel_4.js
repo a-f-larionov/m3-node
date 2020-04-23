@@ -1,4 +1,4 @@
-WizardLevel_4_1 = {
+let WizardLevel_4_1 = {
 
     init: function () {
         PBWizard.begin();

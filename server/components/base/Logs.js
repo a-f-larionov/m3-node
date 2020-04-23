@@ -7,7 +7,7 @@ if (CONST_IS_SERVER_SIDE) {
  * Компонент логирования.
  * Клиент-серверный компонент!
  */
-Logs = function () {
+let Logs = function () {
     let self = this;
 
     /**
@@ -178,3 +178,8 @@ Logs.CHANNEL_VK_STUFF = 2;
 Logs.CHANNEL_VK_HEALTH = 3;
 
 Logs.depends = [];
+
+/** Для кросс-сайдных компонент */
+if (CONST_IS_SERVER_SIDE) {
+    global['Logs'] = Logs;
+}

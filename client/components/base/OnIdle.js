@@ -1,4 +1,4 @@
-OnIdle = function () {
+let OnIdle = function () {
     let self = this;
 
     this.stack = [];

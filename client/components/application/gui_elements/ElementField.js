@@ -2,7 +2,7 @@
  * Элемент игрового поля.
  * @constructor
  */
-ElementField = function () {
+let ElementField = function () {
     let self = this;
 
     let lock = true;

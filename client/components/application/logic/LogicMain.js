@@ -1,9 +1,11 @@
-LogicMain = function () {
+let LogicMain = function () {
 
     this.main = function () {
         /**@todo show preloader */
         Logs.init(function () {
         });
+
+        DataPoints.init();
 
         /** init some components */
         SocNet.init();

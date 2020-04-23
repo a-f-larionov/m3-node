@@ -1,4 +1,4 @@
-LogicWizard = function LogicWizard() {
+let LogicWizard = function LogicWizard() {
     let self = this;
 
     let dymmyFunc = function () {

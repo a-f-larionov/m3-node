@@ -1,4 +1,4 @@
-LogicStuff = function () {
+let LogicStuff = function () {
     let self = this;
 
     let stuff = {};

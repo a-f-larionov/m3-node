@@ -4,7 +4,7 @@
  * @property x
  * @property y
  */
-ElementPoint = function () {
+let ElementPoint = function () {
     let self = this;
 
     /**

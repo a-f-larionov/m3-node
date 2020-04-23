@@ -1,4 +1,4 @@
-LogicField = function () {
+let LogicField = function () {
     let self = this;
 
     let cells = null;

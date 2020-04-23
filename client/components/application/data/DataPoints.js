@@ -1,4 +1,4 @@
-DataPoints = function () {
+let DataPoints = function () {
 
     this.FIELD_MAX_WIDTH = 10;
     this.FIELD_MAX_HEIGHT = 11;
@@ -49,49 +49,6 @@ DataPoints = function () {
     this.healthImages[3] = '/images/creature-health-3.png';
 
     this.objectAnims = {};
-
-    this.objectAnims[DataObjects.WITH_LIGHTNING_HORIZONTAL] = [[{
-        type: GUI.ANIM_TYPE_MOVIE,
-        images: [
-            '/images/spec-light-hor-1.png',
-            '/images/spec-light-hor-2.png',
-            '/images/spec-light-hor-3.png',
-            '/images/spec-light-hor-4.png',
-            '/images/spec-light-hor-5.png',
-        ],
-        duration: 5,
-    }, {
-        type: GUI.ANIM_TYPE_GOTO,
-        pos: 0
-    }]];
-    this.objectAnims[DataObjects.WITH_LIGHTNING_VERTICAL] = [[{
-        type: GUI.ANIM_TYPE_MOVIE,
-        images: [
-            '/images/spec-light-ver-1.png',
-            '/images/spec-light-ver-2.png',
-            '/images/spec-light-ver-3.png',
-            '/images/spec-light-ver-4.png',
-            '/images/spec-light-ver-5.png',
-        ],
-        duration: 5,
-    }, {
-        type: GUI.ANIM_TYPE_GOTO,
-        pos: 0
-    }]];
-    this.objectAnims[DataObjects.WITH_LIGHTNING_CROSS] = [[{
-        type: GUI.ANIM_TYPE_MOVIE,
-        images: [
-            '/images/spec-light-cross-1.png',
-            '/images/spec-light-cross-2.png',
-            '/images/spec-light-cross-3.png',
-            '/images/spec-light-cross-4.png',
-            '/images/spec-light-cross-5.png',
-        ],
-        duration: 5,
-    }, {
-        type: GUI.ANIM_TYPE_GOTO,
-        pos: 0
-    }]];
 
     let pointsCoords = [
         {
@@ -285,6 +242,53 @@ DataPoints = function () {
         }
         return goalsNew;
     };
+
+    this.init = function () {
+
+        this.objectAnims[DataObjects.WITH_LIGHTNING_HORIZONTAL] = [[{
+            type: GUI.ANIM_TYPE_MOVIE,
+            images: [
+                '/images/spec-light-hor-1.png',
+                '/images/spec-light-hor-2.png',
+                '/images/spec-light-hor-3.png',
+                '/images/spec-light-hor-4.png',
+                '/images/spec-light-hor-5.png',
+            ],
+            duration: 5,
+        }, {
+            type: GUI.ANIM_TYPE_GOTO,
+            pos: 0
+        }]];
+        this.objectAnims[DataObjects.WITH_LIGHTNING_VERTICAL] = [[{
+            type: GUI.ANIM_TYPE_MOVIE,
+            images: [
+                '/images/spec-light-ver-1.png',
+                '/images/spec-light-ver-2.png',
+                '/images/spec-light-ver-3.png',
+                '/images/spec-light-ver-4.png',
+                '/images/spec-light-ver-5.png',
+            ],
+            duration: 5,
+        }, {
+            type: GUI.ANIM_TYPE_GOTO,
+            pos: 0
+        }]];
+        this.objectAnims[DataObjects.WITH_LIGHTNING_CROSS] = [[{
+            type: GUI.ANIM_TYPE_MOVIE,
+            images: [
+                '/images/spec-light-cross-1.png',
+                '/images/spec-light-cross-2.png',
+                '/images/spec-light-cross-3.png',
+                '/images/spec-light-cross-4.png',
+                '/images/spec-light-cross-5.png',
+            ],
+            duration: 5,
+        }, {
+            type: GUI.ANIM_TYPE_GOTO,
+            pos: 0
+        }]];
+    }
+    ;
 };
 
 DataPoints = new DataPoints;

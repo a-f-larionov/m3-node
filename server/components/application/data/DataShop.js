@@ -1,4 +1,4 @@
-DataShop = function () {
+let DataShop = function () {
 
     this.getGoldProductByPrice = function (price) {
         let product;
@@ -84,3 +84,8 @@ DataShop.lightning = [
 ];
 
 DataShop.healthPrice = 100;
+
+/** Для кросс-сайдных компонент */
+if (CONST_IS_SERVER_SIDE) {
+    global['DataShop'] = DataShop;
+}

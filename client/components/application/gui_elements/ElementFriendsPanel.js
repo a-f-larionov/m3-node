@@ -2,7 +2,7 @@
  * Элемент панель друзей.
  * @constructor
  */
-ElementFriendsPanel = function () {
+let ElementFriendsPanel = function () {
     let self = this;
 
     /**

@@ -3,7 +3,7 @@
  * @constructor
  */
 
-SocNet = function () {
+let SocNet = function () {
 
     let self = this;
     let socNetTypeId = null;

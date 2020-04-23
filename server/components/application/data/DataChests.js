@@ -4,7 +4,7 @@ DataChests = function () {
 
     let wayChests = [];
 
-    this.init = function(afterInitCallback){
+    this.init = function (afterInitCallback) {
 
         wayChests[1] = {
             id: 1,
@@ -131,8 +131,8 @@ DataChests = function () {
         let query;
         query = "INSERT IGNORE INTO users_chests (userId, chestId) " +
             " VALUES (" + userId + "," + chestId + ") ";
-            //"ON DUPLICATE KEY " +
-            //"UPDATE chestId = chestId ";
+        //"ON DUPLICATE KEY " +
+        //"UPDATE chestId = chestId ";
         DB.query(query, callback);
     };
 };
@@ -140,3 +140,8 @@ DataChests = function () {
 DataChests = new DataChests;
 
 DataChests.depends = ['Logs', 'DB', 'DataPrizes'];
+
+/** Для кросс-сайдных компонент */
+if (CONST_IS_SERVER_SIDE) {
+    global[DataChests] = DataChests;
+}

@@ -1,4 +1,4 @@
-WizardFirstStart_1 = {
+let WizardFirstStart_1 = {
 
     init: function () {
         PBWizard.begin();

@@ -1,4 +1,4 @@
-AnimLocker = {
+let AnimLocker = {
     locks: 0,
     lock: function () {
         AnimLocker.locks++;

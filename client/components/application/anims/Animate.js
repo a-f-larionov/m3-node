@@ -1,4 +1,4 @@
-Animate = {
+let Animate = {
     anim: function (animClass, context) {
         let args, animObj, position, requestId;
         position = 0;

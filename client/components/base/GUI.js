@@ -3,7 +3,7 @@
  * Все запросы к гуи должны быть реализованы тут. и тут: GUIDom
  * @constructor
  */
-GUI = function () {
+let GUI = function () {
     let self = this;
 
     let isFSMode = false;

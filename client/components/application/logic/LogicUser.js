@@ -1,4 +1,4 @@
-LogicUser = function () {
+let LogicUser = function () {
     let self = this;
 
     /**

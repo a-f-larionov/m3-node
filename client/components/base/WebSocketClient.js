@@ -2,7 +2,7 @@
  * Компонент обеспечивающий соединение с сервером.
  * @constructor
  */
-WebSocketClient = function () {
+let WebSocketClient = function () {
     let self = this;
 
     /**

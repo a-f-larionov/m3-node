@@ -1,5 +1,5 @@
-var AsyncLock = require('async-lock');
-var LOCK = new AsyncLock();
+let AsyncLock = require('async-lock');
+let LOCK = new AsyncLock();
 
 DataStuff = function () {
 

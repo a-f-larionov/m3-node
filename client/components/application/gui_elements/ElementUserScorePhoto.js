@@ -2,7 +2,7 @@
  * Элемент фото пользователя и очки
  * @constructor
  */
-ElementUserScorePhoto = function () {
+let ElementUserScorePhoto = function () {
     let self = this;
 
     /**

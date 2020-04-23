@@ -1,4 +1,4 @@
-Sounds = function () {
+let Sounds = function () {
     let self = this;
 
     let cache = {};

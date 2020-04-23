@@ -1,4 +1,4 @@
-CAPITimeServer = function () {
+let CAPITimeServer = function () {
 
     /**
      * Got a serverTime time

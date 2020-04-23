@@ -1,4 +1,4 @@
-DataObjects = function () {
+let DataObjects = function () {
     /**
      * Не видна игроку.
      * @type {number}
@@ -134,3 +134,9 @@ DataObjects = function () {
 
 /** @type {DataObjects} */
 DataObjects = new DataObjects();
+
+
+/** Для кросс-сайдных компонент */
+if (CONST_IS_SERVER_SIDE) {
+    global['DataObjects'] = DataObjects;
+}

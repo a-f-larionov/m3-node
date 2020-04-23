@@ -2,7 +2,7 @@
  * Element Sprite.
  * @constructor
  */
-ElementSprite = function () {
+let ElementSprite = function () {
     let self = this;
 
     /**

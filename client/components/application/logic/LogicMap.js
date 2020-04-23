@@ -1,4 +1,4 @@
-LogicMap = function () {
+let LogicMap = function () {
     let self = this;
 
     this.onArrowPrevClick = function () {

@@ -2,7 +2,7 @@
  * Элемент индикатор сердец.
  * @constructor
  */
-ElementHealthIndicator = function () {
+let ElementHealthIndicator = function () {
     let self = this;
 
     /**
