@@ -131,7 +131,7 @@ ElementPoint = function () {
 
         elText = GUI.createElement(ElementText, {
             width: 33, height: 20,
-            fontSize: 15, bold: true,
+            fontSize: 15,
             pointer: GUI.POINTER_HAND
         }, dom);
 
@@ -220,7 +220,7 @@ ElementPoint = function () {
         dom.y = self.y;
 
         elText.x = 9;
-        elText.y = 15;
+        elText.y = 16.5;
         elText.text = self.pointId ? self.pointId.toString() : '';
 
         redrawStars();

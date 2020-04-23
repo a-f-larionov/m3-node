@@ -71,7 +71,7 @@ ElementImage = function () {
         dom.height = self.height;
         dom.backgroundImage = self.src;
         if (this.photoBorder) {
-            dom.border = '3px solid rgba(68, 62, 0, 0.7)';
+            dom.border = '2px solid rgba(68, 62, 0, 0.7)';
             dom.borderRadius = '8px';
         }
         self.dom = dom;

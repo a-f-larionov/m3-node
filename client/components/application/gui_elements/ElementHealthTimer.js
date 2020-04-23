@@ -16,8 +16,6 @@ ElementHealthTimer = function () {
      */
     let showed = false;
 
-    let healthBefore = false;
-
     /**
      * Координата X текста.
      * @type {number}

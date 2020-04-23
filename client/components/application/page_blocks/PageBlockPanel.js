@@ -31,15 +31,12 @@ PageBlockPanel = function PageBlockPanel() {
          * @type {number}
          */
         pMX = 110;//110 идеальный уентр
-        el = GUI.createElement(ElementImage, {
-            x: pMX, y: 0,
-            src: '/images/panel-money.png'
-        });
+        el = GUI.createElement(ElementImage, {x: pMX, y: 0, src: '/images/panel-money.png'});
         self.elements.push(el);
 
-        /** деньги - монета */
+        /** Деньги - монета */
         el = GUI.createElement(ElementButton, {
-            x: pMX + 5, y: -2,
+            x: pMX + 5, y: -3,
             srcRest: '/images/button-money-rest.png',
             srcHover: '/images/button-money-hover.png',
             srcActive: '/images/button-money-active.png',
@@ -48,16 +45,16 @@ PageBlockPanel = function PageBlockPanel() {
             }
         });
         self.elements.push(el);
-        /** деньги - текст */
+
+        /** Деньги - текст */
         moneyText = GUI.createElement(ElementText, {
-            x: pMX + 58, y: 9, width: 70,
-            alignCenter: true, bold: true
+            x: pMX + 58, y: 11, width: 70, alignCenter: true
         });
         self.elements.push(moneyText);
 
         /** Деньги кнопка плюс */
         el = GUI.createElement(ElementButton, {
-            x: pMX + 122, y: -2,
+            x: pMX + 122, y: -3,
             srcRest: '/images/button-add-rest.png',
             srcHover: '/images/button-add-hover.png',
             srcActive: '/images/button-add-active.png',
@@ -72,30 +69,21 @@ PageBlockPanel = function PageBlockPanel() {
          * @type {number}
          */
         pHX = 463 - 15 - 50; //463 идеальный центр
-        /** жизни - панель */
-        el = GUI.createElement(ElementImage, {
-            x: pHX, y: 0,
-            src: '/images/panel-hearth.png'
-        });
+        /** Жизни - панель */
+        el = GUI.createElement(ElementImage, {x: pHX, y: 0, src: '/images/panel-hearth.png'});
         self.elements.push(el);
 
         /** Жизни - сердца */
-        el = GUI.createElement(ElementHealthIndicator, {
-            x: pHX + 9,
-            y: -1
-        });
+        el = GUI.createElement(ElementHealthIndicator, {x: pHX + 9, y: -1});
         self.elements.push(el);
 
         /** Жизни - таймер */
-        el = GUI.createElement(ElementHealthTimer, {
-            x: pHX + 111, y: 10,
-            healthIndicator: el,
-        });
+        el = GUI.createElement(ElementHealthTimer, {x: pHX + 111, y: 10, healthIndicator: el});
         self.elements.push(el);
 
         /** Жизни - кнопка плюс */
         el = GUI.createElement(ElementButton, {
-            x: pHX + 190, y: -2,
+            x: pHX + 190, y: -4,
             srcRest: '/images/button-add-rest.png',
             srcHover: '/images/button-add-hover.png',
             srcActive: '/images/button-add-active.png',

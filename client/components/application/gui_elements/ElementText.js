@@ -65,13 +65,14 @@ ElementText = function () {
      * Размер шрифта, по умолчанию 21.
      * @type {number}
      */
-    this.fontSize = 21;
+    this.fontSize = 18;
 
     /**
      * Жирный ли шрифт?
      * @type {boolean}
      */
     this.bold = true;
+
 
     /**
      * Выравнивать по правой стороне.
@@ -93,7 +94,7 @@ ElementText = function () {
             height: this.height,
             color: this.color ? this.color : "rgba(103, 77, 56, 1.0)",
             background: this.background,
-            fontFamily: '"Marvin",Tahoma,"Geneva CY",sans-serif',
+            fontFamily: 'arial,sans-serif,"Marvin",Tahoma,"Geneva CY",sans-serif',
         });
         dom.__dom.style.zIndex = this.zIndex;
 //        dom.textShadow = '1px 1px black';

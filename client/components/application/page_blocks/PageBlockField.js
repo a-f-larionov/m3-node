@@ -52,7 +52,8 @@ PageBlockField = function PageBlockField() {
      * Создадим тут все элементы страницы.
      */
     this.init = function () {
-        let el, oX, oY;
+        let el, oX, oY,panelTextOffsetY;
+        panelTextOffsetY = 37;
 
         /** Игровое поле */
         elementField = GUI.createElement(ElementField, {
@@ -95,10 +96,10 @@ PageBlockField = function PageBlockField() {
             el = GUI.createElement(ElementImage, {x: oX, y: oY, src: '/images/panel-turns.png'});
             self.elements.push(el);
             /** Надпись */
-            el = GUI.createElement(ElementText, {x: oX, y: oY + 8, width: 112, text: 'УРОВЕНЬ', alignCenter: true, fontSize: 18});
+            el = GUI.createElement(ElementText, {x: oX, y: oY + 6, width: 112, text: 'УРОВЕНЬ', alignCenter: true});
             self.elements.push(el);
             /** Текст */
-            elLevel = GUI.createElement(ElementText, {x: oX, y: oY + 40, width: 112, alignCenter: true});
+            elLevel = GUI.createElement(ElementText, {x: oX, y: oY + panelTextOffsetY, width: 112, alignCenter: true});
             self.elements.push(elLevel);
         }
 
@@ -108,23 +109,23 @@ PageBlockField = function PageBlockField() {
         {
             /** Панель */
             oX = 15;
-            oY = 150;
+            oY = 160;
             el = GUI.createElement(ElementImage, {x: oX, y: oY, src: '/images/panel-score.png'});
             self.elements.push(el);
             /** Надпись */
-            el = GUI.createElement(ElementText, {x: oX, y: oY + 8, width: 112, text: 'ОЧКИ', alignCenter: true, fontSize: 18});
+            el = GUI.createElement(ElementText, {x: oX, y: oY + 6, width: 112, text: 'ОЧКИ', alignCenter: true});
             self.elements.push(el);
             /** Текст */
-            elScore = GUI.createElement(ElementText, {x: oX, y: oY + 40, width: 112, bold: true, alignCenter: true, fontSize: 18});
+            elScore = GUI.createElement(ElementText, {x: oX, y: oY + panelTextOffsetY, width: 112, alignCenter: true});
             self.elements.push(elScore);
             /** Звезда 1 */
-            elStar1 = GUI.createDom(undefined, {x: oX + 15, y: oY + 70});
+            elStar1 = GUI.createDom(undefined, {x: oX + 15, y: oY + 62});
             self.elements.push(elStar1);
             /** Звезда 2 */
-            elStar2 = GUI.createDom(undefined, {x: oX + 15 + 27, y: oY + 70});
+            elStar2 = GUI.createDom(undefined, {x: oX + 15 + 27, y: oY + 62});
             self.elements.push(elStar2);
             /** Звезда 3 */
-            elStar3 = GUI.createDom(undefined, {x: oX + 15 + 27 * 2, y: oY + 70});
+            elStar3 = GUI.createDom(undefined, {x: oX + 15 + 27 * 2, y: oY + 62});
             self.elements.push(elStar3);
         }
 
@@ -132,17 +133,16 @@ PageBlockField = function PageBlockField() {
          * ПАНЕЛЬ ХОДОВ
          */
         {
-            oX = 15
-            ;
-            oY = 65;
+            oX = 15;
+            oY = 65+10;
             /** Панель */
             el = GUI.createElement(ElementImage, {x: oX, y: oY, src: '/images/panel-turns.png'});
             self.elements.push(el);
             /** Надпись */
-            el = GUI.createElement(ElementText, {x: oX, y: oY + 8, width: 112, text: 'ХОДЫ', alignCenter: true, fontSize: 18});
+            el = GUI.createElement(ElementText, {x: oX, y: oY + 6, width: 112, text: 'ХОДЫ', alignCenter: true, fontSize5: 18});
             self.elements.push(el);
             /** Текст */
-            elTurns = GUI.createElement(ElementText, {x: oX, y: oY + 40, width: 112, alignCenter: true});
+            elTurns = GUI.createElement(ElementText, {x: oX, y: oY + panelTextOffsetY, width: 112, alignCenter: true});
             self.elements.push(elTurns);
         }
 

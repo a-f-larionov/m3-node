@@ -113,7 +113,7 @@ ElementButton = function () {
         if (self.title) {
             GUI.pushParent(dom);
             elText = GUI.createElement(ElementText, {
-                x: 0, y: 7, height: 25,
+                x: 0, y: 10, height: 25,
                 alignCenter: true,
                 text: self.title,
                 pointer: GUI.POINTER_HAND

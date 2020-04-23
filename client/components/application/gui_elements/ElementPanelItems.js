@@ -47,7 +47,7 @@ ElementPanelItems = function () {
         elPanel2 = GUI.createElement(ElementImage, {x: self.x, y: self.y, src: '/images/panel-goals-2.png'});
         elPanel3 = GUI.createElement(ElementImage, {x: self.x, y: self.y, src: '/images/panel-goals-3.png'});
         /** Текст : заголовок */
-        elTitle = GUI.createElement(ElementText, {x: self.x + 15, y: self.y + 10, width: 80, text: self.title, fontSize: self.fontSize});
+        elTitle = GUI.createElement(ElementText, {x: self.x + 15, y: self.y + 7, width: 80, text: self.title, fontSize: self.fontSize});
 
         for (let id in DataPoints.objectImages) {
             el = GUI.createElement(ElementImage, {width: 50, height: 50, src: DataPoints.objectImages[id]});
@@ -128,11 +128,11 @@ ElementPanelItems = function () {
 
         self.items.forEach(function (item) {
             imagesEls[item.id].x = self.x + 15;
-            imagesEls[item.id].y = self.y + 50 + offsetY;
+            imagesEls[item.id].y = self.y + 46 + offsetY;
             imagesEls[item.id].show();
 
-            countersEls[item.id].x = self.x - 5 + DataPoints.BLOCK_WIDTH;
-            countersEls[item.id].y = self.y + 50 + DataPoints.BLOCK_HEIGHT / 2 - 10 + offsetY;
+            countersEls[item.id].x = self.x - 7 + DataPoints.BLOCK_WIDTH;
+            countersEls[item.id].y = self.y + 46 + DataPoints.BLOCK_HEIGHT / 2 - 10 + offsetY;
             countersEls[item.id].setText(item.count);
             countersEls[item.id].show();
 
