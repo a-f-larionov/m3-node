@@ -41,15 +41,14 @@ Logs = function () {
      */
     this.log = function (message, level, details, channel) {
         let date, dateFormated, logText, levelTitle;
-        // если не передан уровень, то считаем его детальным.
-        if (!level) {
-            level = Logs.LEVEL_DETAIL;
-        }
-        // если уровень лога ниже уровня срабатывания ничего не делаем.
+        /** Если не передан уровень, то считаем его детальным. */
+        if (!level) level = Logs.LEVEL_DETAIL;
+
+        /** Если уровень лога ниже уровня срабатывания ничего не делаем. */
         if (level < trigger_level) return;
-        // сформируем сообщение лога.
+        /** Сформируем сообщение лога. */
         date = new Date();
-        // тут мы получим "01-01-2014 15:55:55"
+        /** Тут мы получим "01-01-2014 15:55:55" */
         let day, month, year, hour, minutes, seconds;
         year = date.getFullYear();
         day = str_pad(date.getDate());
@@ -68,10 +67,9 @@ Logs = function () {
         logText = dateFormated + ' [' + levelTitle + '] ' + message;
         if (!details) details = '';
         // добавим к тексту лога детали, если они были переданы
-        if (CONST_IS_SERVER_SIDE && channel) {
+        if (CONST_IS_SERVER_SIDE) {
             // превратим в строку переданные детали лога.
-            details = JSON.stringify(details);
-            if (details) logText += ' ' + details;
+            if (details) details = JSON.stringify(details);
         }
         // выведем на экран
         cache.push(logText);
@@ -91,15 +89,15 @@ Logs = function () {
                 }
                 break;
             case Logs.CHANNEL_VK_PAYMENTS:
-                FS.writeFile(CONST_DIR_SERVER + '/logs/vk_payments.log', logText + "\r\n", {flag: 'a'}, function () {
+                FS.writeFile(CONST_DIR_SERVER + '/logs/vk_payments.log', logText + details + "\r\n", {flag: 'a'}, function () {
                 });
                 break;
             case Logs.CHANNEL_VK_STUFF:
-                FS.writeFile(CONST_DIR_SERVER + '/logs/vk_stuff.log', logText + "\r\n", {flag: 'a'}, function () {
+                FS.writeFile(CONST_DIR_SERVER + '/logs/vk_stuff.log', logText + details + "\r\n", {flag: 'a'}, function () {
                 });
                 break;
             case Logs.CHANNEL_VK_HEALTH:
-                FS.writeFile(CONST_DIR_SERVER + '/logs/vk_health.log', logText + "\r\n", {flag: 'a'}, function () {
+                FS.writeFile(CONST_DIR_SERVER + '/logs/vk_health.log', logText + details + "\r\n", {flag: 'a'}, function () {
                 });
                 break;
         }

@@ -2,7 +2,7 @@ let FS = require('fs');
 let OS = require('os');
 let PATH = require('path');
 let IMAGE_SIZE = require('image-size');
-let UGLIFYJS = require('uglify-js');
+let UGLIFYJS = require('uglify-es');
 let SPRITESMITH = require('spritesmith');
 
 ClientCodeLoader = function () {
@@ -97,9 +97,9 @@ ClientCodeLoader = function () {
 
         /** Обновим клиентский код. */
         makeSprite(function () {
-            reloadMainClientCode();
-            generateClientCodeVK();
-            loadClientCodeStandalone();
+            reloadClientJS();
+            reloadHTMLVK();
+            reloadHTMLStandalone();
             callback();
         });
     };
@@ -111,8 +111,8 @@ ClientCodeLoader = function () {
     this.getClientVK = function (callback) {
         if (Config.Project.maintance) return callback(htmlMaintaince);
         if (!cacheCode) {
-            generateClientCodeVK();
-            reloadMainClientCode();
+            reloadHTMLVK();
+            reloadClientJS();
         }
         callback(codeVK);
     };
@@ -120,8 +120,8 @@ ClientCodeLoader = function () {
     this.getClientStandalone = function (callback) {
         if (Config.Project.maintance) return callback(htmlMaintaince);
         if (cacheCode) {
-            loadClientCodeStandalone();
-            reloadMainClientCode();
+            reloadHTMLStandalone();
+            reloadClientJS();
         }
         callback(codeStandalone);
     };
@@ -144,9 +144,9 @@ ClientCodeLoader = function () {
     };
 
     this.reloadClient = function (callback) {
-        reloadMainClientCode();
-        generateClientCodeVK();
-        loadClientCodeStandalone();
+        reloadClientJS();
+        reloadHTMLVK();
+        reloadHTMLStandalone();
         callback('<pre>' + "Reload Client Code executed!" + new Date().getTime() + '</pre>');
     };
 
@@ -154,7 +154,7 @@ ClientCodeLoader = function () {
         return Config.Project.develop ? "" : "?t=" + (new Date().getTime()).toString();
     };
 
-    let getMainCode = function (socNetCode) {
+    let getClientHTML = function (socNetCode) {
         let code = '';
 
         //let demension = IMAGE_SIZE(spritePathPhysic);
@@ -201,40 +201,41 @@ ClientCodeLoader = function () {
         return code;
     };
 
-    let generateClientCodeVK = function () {
+    let reloadHTMLVK = function () {
         Logs.log("Load VK client code.");
-        codeVK = getMainCode('VK');
+        codeVK = getClientHTML('VK');
     };
 
     /**
      * Загрузка клиенсткого кода для стэндэлон версии.
      */
-    let loadClientCodeStandalone = function () {
+    let reloadHTMLStandalone = function () {
         Logs.log("Load standalone client code.");
-        codeStandalone = getMainCode('STANDALONE');
+        codeStandalone = getClientHTML('STANDALONE');
     };
 
     /**
      * Перезагрузка основного кода клиента.
      */
-    let reloadMainClientCode = function () {
-        let mainClientJSCode;
-        mainClientJSCode = getMainClientJSCode();
-        //@todo path to JS move to Config file
+    let reloadClientJS = function () {
+        let js;
+        js = getClientJS();
+
+        FS.writeFileSync(CONST_DIR_ROOT + '/public/js/client.source.js', js);
+        Logs.log("ClientJS source code writed", Logs.LEVEL_DETAIL);
 
         //@todo LogicClintCodeloader.config?
-        if (Config.WebSocketServer.compressCode) {
-            mainClientJSCode = 'function ___(){ ' + mainClientJSCode + ' };___();';
-            let result = UGLIFYJS.minify(mainClientJSCode);
+        if (true || Config.WebSocketServer.compressCode) {
+            js = 'function ___(){ ' + js + ' };___();';
+            let result = UGLIFYJS.minify(js);
             if (result.code) {
-                mainClientJSCode = result.code;
+                js = result.code;
+                FS.writeFileSync(CONST_DIR_ROOT + '/public/js/client.min.js', js);
+                Logs.log("ClientJS miniifed success(writen)", Logs.LEVEL_DETAIL);
             } else {
-                Logs.log("no code minimized", Logs.LEVEL_WARNING);
+                Logs.log("ClientJS minified [FAILED], because some error.", Logs.LEVEL_ERROR, result);
             }
         }
-        //@todo path to JS move to Config file
-        FS.writeFileSync(CONST_DIR_ROOT + '/public/js/client.js', mainClientJSCode);
-        Logs.log("Main client code writed", Logs.LEVEL_DETAIL);
     };
 
     /**
@@ -250,24 +251,24 @@ ClientCodeLoader = function () {
                 path = path.replace(clientSource, '');
                 file_content = FS.readFileSync(path);
             }
-            code += "\r\n/* " + path + " */\r\n";
+            code += "\r\n/** " + path + " */\r\n";
             code += file_content;
             name = PATH.basename(path, '.js');
-            code += 'if(window["' + name + '"] != undefined){' + 'window["' + name + '"].__path="' + path + '"};\r\n';
+            code += 'if(window["' + name + '"] !== undefined){' + 'window["' + name + '"].__path="' + path + '"};\r\n';
         }
         return code;
     };
 
     /**
-     * Собирает основной JS код клиента.
+     * Собирает JS код клиента.
      * Этот код одинаков для всех социальных сетей(платформ).
      */
-    let getMainClientJSCode = function () {
+    let getClientJS = function () {
         let jsFiles, hostname, clientConfigPath, code;
         jsFiles = [];
         jsFiles = jsFiles.concat(getFileList(clientSource + 'core/'));
         jsFiles = jsFiles.concat(getFileList(clientSource + 'components/'));
-        /* Include Config file. */
+        /** Include Config file. */
         hostname = OS.hostname();
         let parentFolderName = (function () {
             let cwd;
@@ -280,18 +281,14 @@ ClientCodeLoader = function () {
         jsFiles.push(clientConfigPath);
         jsFiles.push(clientSource + '/run.js');
         code = clientCodePrepareCode(jsFiles);
-        /* generate sapi */
+        /** Generate sapi */
         code += ApiRouter.getSAPIJSCode();
         code += getGUIGeneratedCode();
         return code;
     };
 
     let getClientImageCode = function () {
-        if (useSprite) {
-            return getImageCodeSprited();
-        } else {
-            return getImageCodeList();
-        }
+        return useSprite ? getImageCodeSprited() : getImageCodeList();
     };
 
     let getImageCodeSprited = function () {
@@ -404,9 +401,10 @@ ClientCodeLoader = function () {
             //'../public/images/buttons/addFriendHover.png': { x: 150, y: 1353, width
             if (FS.existsSync(spritePathPhysic)) FS.unlink(spritePathPhysic);
 
+            console.log(1);
             fsResult = FS.writeFileSync(spritePathPhysic, result.image, 'binary');
-            Logs.log("SPRITESMITH Complete", Logs.LEVEL_NOTIFY);
-            spriteExists = useSprite;
+            Logs.log("SPRITESMITH Complete `" + spritePathPhysic + "`", Logs.LEVEL_NOTIFY);
+            spriteExists = true;
             if (useSprite) callback();
         });
     };
