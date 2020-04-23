@@ -26,9 +26,9 @@ let DialogJustQuit = function () {
         /** Кнопка выйти */
         element = GUI.createElement(ElementButton, {
                 x: 75, y: 220,
-                srcRest: '/images/button-red-rest.png',
-                srcHover: '/images/button-red-hover.png',
-                srcActive: '/images/button-red-active.png',
+                srcRest: 'button-red-rest.png',
+                srcHover: 'button-red-hover.png',
+                srcActive: 'button-red-active.png',
                 onClick: function () {
                     self.closeDialog();
                     PageBlockPanel.oneHealthHide = false;
@@ -43,9 +43,9 @@ let DialogJustQuit = function () {
         /** Кнопка вернуться в игру */
         element = GUI.createElement(ElementButton, {
                 x: 275, y: 220,
-                srcRest: '/images/button-green-rest.png',
-                srcHover: '/images/button-green-hover.png',
-                srcActive: '/images/button-green-active.png',
+                srcRest: 'button-green-rest.png',
+                srcHover: 'button-green-hover.png',
+                srcActive: 'button-green-active.png',
                 onClick: function () {
                     self.closeDialog();
                 },
@@ -57,9 +57,9 @@ let DialogJustQuit = function () {
         /** Кнопка закрыть */
         element = GUI.createElement(ElementButton, {
                 x: 452, y: 3,
-                srcRest: '/images/button-close-rest.png',
-                srcHover: '/images/button-close-hover.png',
-                srcActive: '/images/button-close-active.png',
+                srcRest: 'button-close-rest.png',
+                srcHover: 'button-close-hover.png',
+                srcActive: 'button-close-active.png',
                 onClick: function () {
                     self.closeDialog();
                 }

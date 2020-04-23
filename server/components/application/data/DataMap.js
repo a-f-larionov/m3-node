@@ -20,7 +20,7 @@ DataMap = function () {
     let maps = {
             '1': {
                 id: 1,
-                src: '/images/map-001.png',
+                src: 'map-001.png',
                 elements: [
                     /*{
                         name: 'ElementSprite',
@@ -28,21 +28,21 @@ DataMap = function () {
                         params: {
                             x: 50,
                             y: 50,
-                            src: '/images/man-01.png',
+                            src: 'man-01.png',
                             domInitParams: {
                                 animTracks: [
                                     [
                                         {
                                             type: GUI.ANIM_TYPE_MOVIE,
                                             images: [
-                                                '/images/man_right_1.png',
-                                                '/images/man_right_2.png',
-                                                '/images/man_right_3.png',
-                                                '/images/man_right_4.png',
-                                                '/images/man_right_5.png',
-                                                '/images/man_right_6.png',
-                                                '/images/man_right_7.png',
-                                                '/images/man_right_8.png'
+                                                'man_right_1.png',
+                                                'man_right_2.png',
+                                                'man_right_3.png',
+                                                'man_right_4.png',
+                                                'man_right_5.png',
+                                                'man_right_6.png',
+                                                'man_right_7.png',
+                                                'man_right_8.png'
                                             ]
                                             , duration: 8
                                         },
@@ -61,42 +61,42 @@ DataMap = function () {
             },
             '2': {
                 id: 2,
-                src: '/images/map-002.png'
+                src: 'map-002.png'
             }
             ,
             '3': {
                 id: 3,
-                src: '/images/map-003.png'
+                src: 'map-003.png'
             },
             '4': {
                 id: 4,
-                src: '/images/map-001.png',
+                src: 'map-001.png',
             },
             '5': {
                 id: 5,
-                src: '/images/map-002.png'
+                src: 'map-002.png'
             }
             ,
             '6': {
                 id: 6,
-                src: '/images/map-003.png'
+                src: 'map-003.png'
             },
             '7': {
                 id: 7,
-                src: '/images/map-001.png',
+                src: 'map-001.png',
             },
             '8': {
                 id: 8,
-                src: '/images/map-002.png'
+                src: 'map-002.png'
             }
             ,
             '9': {
                 id: 9,
-                src: '/images/map-003.png'
+                src: 'map-003.png'
             },
             '10': {
                 id: 10,
-                src: '/images/map-003.png'
+                src: 'map-003.png'
             },
         }
     ;

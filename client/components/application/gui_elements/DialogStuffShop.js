@@ -26,9 +26,9 @@ let DialogStuffShop = function () {
         for (let i = 0; i < 3; i++) {
             el = GUI.createElement(ElementButton, {
                 x: offsetX + stepX * i, y: offsetY,
-                srcRest: '/images/shop-hummer-2.png',
-                srcHover: '/images/shop-hummer-2.png',
-                srcActive: '/images/shop-hummer-2.png',
+                srcRest: 'shop-hummer-2.png',
+                srcHover: 'shop-hummer-2.png',
+                srcActive: 'shop-hummer-2.png',
                 onClick: function () {
                     self.buyStuff(i);
                 }
@@ -38,9 +38,9 @@ let DialogStuffShop = function () {
 
             el = GUI.createElement(ElementButton, {
                 x: offsetX + stepX * i + 45, y: offsetY + 150 - 25,
-                srcRest: '/images/button-add-rest.png',
-                srcHover: '/images/button-add-hover.png',
-                srcActive: '/images/button-add-active.png',
+                srcRest: 'button-add-rest.png',
+                srcHover: 'button-add-hover.png',
+                srcActive: 'button-add-active.png',
                 itemNumber: i,
                 onClick: function () {
                     self.buyStuff(i);
@@ -51,9 +51,9 @@ let DialogStuffShop = function () {
         /** Кнопка закрыть */
         GUI.createElement(ElementButton, {
             x: 452, y: 3,
-            srcRest: '/images/button-close-rest.png',
-            srcHover: '/images/button-close-hover.png',
-            srcActive: '/images/button-close-active.png',
+            srcRest: 'button-close-rest.png',
+            srcHover: 'button-close-hover.png',
+            srcActive: 'button-close-active.png',
             onClick: function () {
                 self.closeDialog();
             }

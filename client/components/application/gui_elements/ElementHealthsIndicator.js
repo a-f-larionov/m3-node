@@ -39,7 +39,7 @@ let ElementHealthIndicator = function () {
         for (let i = 0; i < 5; i++) {
             dom = GUI.createDom(null, {
                 x: this.x + i * step, y: this.y - 2,
-                width: width, height: height, backgroundImage: '/images/health-heart.png'
+                width: width, height: height, backgroundImage: 'health-heart.png'
             });
             doms.push(dom);
         }

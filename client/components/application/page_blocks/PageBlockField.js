@@ -73,9 +73,9 @@ let PageBlockField = function PageBlockField() {
         /** Кнопка выхода */
         el = GUI.createElement(ElementButton, {
             x: 730, y: 10,
-            srcRest: '/images/button-quit-rest.png',
-            srcHover: '/images/button-quit-hover.png',
-            srcActive: '/images/button-quit-active.png',
+            srcRest: 'button-quit-rest.png',
+            srcHover: 'button-quit-hover.png',
+            srcActive: 'button-quit-active.png',
             onClick: function () {
                 if (turns === 0) {
                     PBZDialogs.dialogTurnsLoose.reset();
@@ -93,7 +93,7 @@ let PageBlockField = function PageBlockField() {
             oX = 635;
             oY = 65 + 30;
             /** Панель */
-            el = GUI.createElement(ElementImage, {x: oX, y: oY, src: '/images/panel-turns.png'});
+            el = GUI.createElement(ElementImage, {x: oX, y: oY, src: 'panel-turns.png'});
             self.elements.push(el);
             /** Надпись */
             el = GUI.createElement(ElementText, {x: oX, y: oY + 6, width: 112, text: 'УРОВЕНЬ', alignCenter: true});
@@ -110,7 +110,7 @@ let PageBlockField = function PageBlockField() {
             /** Панель */
             oX = 15;
             oY = 160;
-            el = GUI.createElement(ElementImage, {x: oX, y: oY, src: '/images/panel-score.png'});
+            el = GUI.createElement(ElementImage, {x: oX, y: oY, src: 'panel-score.png'});
             self.elements.push(el);
             /** Надпись */
             el = GUI.createElement(ElementText, {x: oX, y: oY + 6, width: 112, text: 'ОЧКИ', alignCenter: true});
@@ -136,7 +136,7 @@ let PageBlockField = function PageBlockField() {
             oX = 15;
             oY = 65+10;
             /** Панель */
-            el = GUI.createElement(ElementImage, {x: oX, y: oY, src: '/images/panel-turns.png'});
+            el = GUI.createElement(ElementImage, {x: oX, y: oY, src: 'panel-turns.png'});
             self.elements.push(el);
             /** Надпись */
             el = GUI.createElement(ElementText, {x: oX, y: oY + 6, width: 112, text: 'ХОДЫ', alignCenter: true, fontSize5: 18});
@@ -161,9 +161,9 @@ let PageBlockField = function PageBlockField() {
         el = GUI.createElement(ElementStuffButton, {
             x: 650, y: oY,
             fieldName: 'hummerQty',
-            srcRest: '/images/button-hummer-rest.png',
-            srcHover: '/images/button-hummer-hover.png',
-            srcActive: '/images/button-hummer-active.png',
+            srcRest: 'button-hummer-rest.png',
+            srcHover: 'button-hummer-hover.png',
+            srcActive: 'button-hummer-active.png',
             onClick: function () {
                 self.setStuffMode(LogicStuff.STUFF_HUMMER);
             }
@@ -174,9 +174,9 @@ let PageBlockField = function PageBlockField() {
         el = GUI.createElement(ElementStuffButton, {
             x: 650, y: oY + 80,
             fieldName: 'lightningQty',
-            srcRest: '/images/button-lightning-rest.png',
-            srcHover: '/images/button-lightning-hover.png',
-            srcActive: '/images/button-lightning-active.png',
+            srcRest: 'button-lightning-rest.png',
+            srcHover: 'button-lightning-hover.png',
+            srcActive: 'button-lightning-active.png',
             onClick: function () {
                 self.setStuffMode(LogicStuff.STUFF_LIGHTNING);
             }
@@ -187,9 +187,9 @@ let PageBlockField = function PageBlockField() {
         el = GUI.createElement(ElementStuffButton, {
             x: 650, y: oY + 80 * 2,
             fieldName: 'shuffleQty',
-            srcRest: '/images/button-shuffle-rest.png',
-            srcHover: '/images/button-shuffle-hover.png',
-            srcActive: '/images/button-shuffle-active.png',
+            srcRest: 'button-shuffle-rest.png',
+            srcHover: 'button-shuffle-hover.png',
+            srcActive: 'button-shuffle-active.png',
             onClick: function () {
                 self.setStuffMode(LogicStuff.STUFF_SHUFFLE);
             }
@@ -199,9 +199,9 @@ let PageBlockField = function PageBlockField() {
         /** Кнопка обновить поле, для админов */
         buttonReloadField = GUI.createElement(ElementButton, {
             x: 312, y: 5, width: 25, height: 25,
-            srcRest: '/images/button-reload-field-rest.png',
-            srcHover: '/images/button-reload-field-hover.png',
-            srcActive: '/images/button-reload-field-active.png',
+            srcRest: 'button-reload-field-rest.png',
+            srcHover: 'button-reload-field-hover.png',
+            srcActive: 'button-reload-field-active.png',
             onClick: function () {
                 AnimLocker.lock();
 
@@ -219,22 +219,22 @@ let PageBlockField = function PageBlockField() {
         /** Кнопка обновить поле, для админов */
         buttonChangeSpeed = GUI.createElement(ElementButton, {
             x: 312 + 30, y: 5, width: 25, height: 25,
-            srcRest: '/images/field-red.png',
-            srcHover: '/images/field-red.png',
-            srcActive: '/images/field-red.png',
+            srcRest: 'field-red.png',
+            srcHover: 'field-red.png',
+            srcActive: 'field-red.png',
             onClick: function () {
                 let standard = 1;
                 switch (Config.OnIdle.animStep) {
                     case standard * 5:
-                        buttonChangeSpeed.srcRest = '/images/field-yellow.png';
+                        buttonChangeSpeed.srcRest = 'field-yellow.png';
                         Config.OnIdle.animStep = standard;
                         break;
                     case standard :
-                        buttonChangeSpeed.srcRest = '/images/field-red.png';
+                        buttonChangeSpeed.srcRest = 'field-red.png';
                         Config.OnIdle.animStep = standard / 5;
                         break;
                     case standard / 5:
-                        buttonChangeSpeed.srcRest = '/images/field-green.png';
+                        buttonChangeSpeed.srcRest = 'field-green.png';
                         Config.OnIdle.animStep = standard * 5;
                         break;
                     default:
@@ -351,12 +351,12 @@ let PageBlockField = function PageBlockField() {
         if (!showed) return;
 
         let countStars = DataPoints.countStars(null, null, score);
-        elStar1.backgroundImage = '/images/star-off-middle.png';
-        elStar2.backgroundImage = '/images/star-off-middle.png';
-        elStar3.backgroundImage = '/images/star-off-middle.png';
-        if (countStars >= 1) elStar1.backgroundImage = '/images/star-on-middle.png';
-        if (countStars >= 2) elStar2.backgroundImage = '/images/star-on-middle.png';
-        if (countStars >= 3) elStar3.backgroundImage = '/images/star-on-middle.png';
+        elStar1.backgroundImage = 'star-off-middle.png';
+        elStar2.backgroundImage = 'star-off-middle.png';
+        elStar3.backgroundImage = 'star-off-middle.png';
+        if (countStars >= 1) elStar1.backgroundImage = 'star-on-middle.png';
+        if (countStars >= 2) elStar2.backgroundImage = 'star-on-middle.png';
+        if (countStars >= 3) elStar3.backgroundImage = 'star-on-middle.png';
 
         elScore.setText(score.toString());
         elTurns.setText(turns.toString());
@@ -497,21 +497,21 @@ let PageBlockField = function PageBlockField() {
                     PBZDialogs.dialogStuffShop.showDialog(mode);
                     return;
                 }
-                domStuff.backgroundImage = '/images/button-hummer-active.png';
+                domStuff.backgroundImage = 'button-hummer-active.png';
                 break;
             case LogicStuff.STUFF_LIGHTNING:
                 if (LogicStuff.getStuff('lightningQty') < 1) {
                     PBZDialogs.dialogStuffShop.showDialog(mode);
                     return;
                 }
-                domStuff.backgroundImage = '/images/button-lightning-active.png';
+                domStuff.backgroundImage = 'button-lightning-active.png';
                 break;
             case LogicStuff.STUFF_SHUFFLE:
                 if (LogicStuff.getStuff('shuffleQty') < 1) {
                     PBZDialogs.dialogStuffShop.showDialog(mode);
                     return;
                 }
-                domStuff.backgroundImage = '/images/button-shuffle-active.png';
+                domStuff.backgroundImage = 'button-shuffle-active.png';
                 break;
         }
         stuffMode = mode;

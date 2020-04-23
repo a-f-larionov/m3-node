@@ -36,7 +36,7 @@ let Dialog = function (src) {
      * Ссылка на картинку.
      * @type {string}
      */
-    this.src = src ? src : '/images/window-2.png';
+    this.src = src ? src : 'window-2.png';
 
     this.bottomPosition = 90;
 

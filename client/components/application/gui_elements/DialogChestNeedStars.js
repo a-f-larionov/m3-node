@@ -11,9 +11,9 @@ let DialogChestNeedStars = function () {
         GUI.createElement(ElementButton, {
             x: 452, y: 3,
             width: 100, height: 40,
-            srcRest: '/images/button-close-rest.png',
-            srcHover: '/images/button-close-hover.png',
-            srcActive: '/images/button-close-active.png',
+            srcRest: 'button-close-rest.png',
+            srcHover: 'button-close-hover.png',
+            srcActive: 'button-close-active.png',
             onClick: function () {
                 self.closeDialog();
             }

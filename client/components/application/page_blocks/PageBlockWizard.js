@@ -83,15 +83,15 @@ let PageBlockWizard = function PageBlockWizard() {
         //canvas.onmousemove = proccesEvent;
 
         elDialog = GUI.createElement(ElementImage, {
-            x: 400, y: 360, src: '/images/wizard-dialog.png'
+            x: 400, y: 360, src: 'wizard-dialog.png'
         });
         elDialog.dom.__dom.style.zIndex = 20000;
         elDialog.hide();
 
         elText = GUI.createElement(ElementText, {
             x: 400 + dialogBorder, y: 360 + dialogBorder,
-            width: Images.getWidth('/images/wizard-dialog.png') - dialogBorder * 2,
-            height: Images.getHeight('/images/wizard-dialog.png'),
+            width: Images.getWidth('wizard-dialog.png') - dialogBorder * 2,
+            height: Images.getHeight('wizard-dialog.png'),
             alignCenter: true, zIndex: 20001,
             text: 'text'
         });
@@ -267,12 +267,12 @@ let PageBlockWizard = function PageBlockWizard() {
 
         pList.forEach(function (p) {
             if (p.unlock) {
-                unlockByImg('/images/wizard-diamond-cell.png',
+                unlockByImg('wizard-diamond-cell.png',
                     coords.x + DataPoints.BLOCK_WIDTH * p.x,
                     coords.y + DataPoints.BLOCK_HEIGHT * (p.y + 1)
                 );
             } else {
-                showByImg('/images/wizard-diamond-cell.png',
+                showByImg('wizard-diamond-cell.png',
                     coords.x + DataPoints.BLOCK_WIDTH * p.x,
                     coords.y + DataPoints.BLOCK_HEIGHT * (p.y + 1)
                 );

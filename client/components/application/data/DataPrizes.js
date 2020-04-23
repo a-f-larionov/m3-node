@@ -28,16 +28,16 @@ let DataPrizes = function () {
         let src;
         switch (prize.id) {
             case DataPrizes.PRIZE_STUFF_GOLD:
-                src = '/images/map-way-point-red.png';
+                src = 'map-way-point-red.png';
                 break;
             case DataPrizes.PRIZE_STUFF_HUMMER:
-                src = '/images/button-hummer-rest.png';
+                src = 'button-hummer-rest.png';
                 break;
             case DataPrizes.PRIZE_STUFF_SHUFFLE:
-                src = '/images/button-shuffle-rest.png';
+                src = 'button-shuffle-rest.png';
                 break;
             case DataPrizes.PRIZE_STUFF_LIGHTNING:
-                src = '/images/button-lightning-rest.png';
+                src = 'button-lightning-rest.png';
                 break;
         }
         return src;

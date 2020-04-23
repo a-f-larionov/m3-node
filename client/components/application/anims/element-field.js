@@ -37,12 +37,12 @@ let animLightning = function () {
         dom = this.animDoms.pop();
         let lineData = Field.getVisibleLength(p, specId);
         dom.width = lineData.length * DataPoints.BLOCK_WIDTH;
-        dom.height = Images.getHeight('/images/anim-light-1.png');
+        dom.height = Images.getHeight('anim-light-1.png');
         if (specId === DataObjects.WITH_LIGHTNING_VERTICAL) {
             dom.rotate = 90;
             dom.x = (p.x) * DataPoints.BLOCK_WIDTH;
             dom.y = (lineData.lower) * DataPoints.BLOCK_HEIGHT
-                - (Images.getHeight('/images/anim-light-1.png') - DataPoints.BLOCK_HEIGHT) / 2;
+                - (Images.getHeight('anim-light-1.png') - DataPoints.BLOCK_HEIGHT) / 2;
             /** Rotate from center like a cos&sin*/
             dom.x -= (dom.width - DataPoints.BLOCK_WIDTH) / 2;
             dom.y += (dom.width - DataPoints.BLOCK_WIDTH) / 2;
@@ -51,14 +51,14 @@ let animLightning = function () {
             dom.rotate = 0;
             dom.x = lineData.lower * DataPoints.BLOCK_WIDTH;
             dom.y = p.y * DataPoints.BLOCK_HEIGHT
-                - (Images.getHeight('/images/anim-light-1.png') - DataPoints.BLOCK_HEIGHT) / 2;
+                - (Images.getHeight('anim-light-1.png') - DataPoints.BLOCK_HEIGHT) / 2;
         }
         dom.show();
         dom.redraw();
     };
 
     this.iterate = function (position) {
-        dom.backgroundImage = Animate.getFrameUrl('/images/anim-light-', position * velocity, 5);
+        dom.backgroundImage = Animate.getFrameUrl('anim-light-', position * velocity, 5);
         dom.redraw();
         if (position < 15) return true;
     };
@@ -70,7 +70,7 @@ let animLightning = function () {
 };
 
 let animHummerDestroy = function () {
-    let dom, imageUrl = '/images/anim-hd-1.png';
+    let dom, imageUrl = 'anim-hd-1.png';
 
     let velocity = 1.0;
 
@@ -88,7 +88,7 @@ let animHummerDestroy = function () {
     };
 
     this.iterate = function (position) {
-        dom.backgroundImage = Animate.getFrameUrl('/images/anim-hd-', position * velocity, 15);
+        dom.backgroundImage = Animate.getFrameUrl('anim-hd-', position * velocity, 15);
         dom.redraw();
         return position < 15;
     };
@@ -232,11 +232,11 @@ let animShuffle = function () {
 
     this.init = function (x, y) {
         dom = this.animDoms.pop();
-        dom.x = x - Images.getWidth('/images/anim-shuffle-1.png') / 2;
-        dom.y = y - Images.getHeight('/images/anim-shuffle-1.png') / 2;
-        dom.width = Images.getWidth('/images/anim-shuffle-1.png');
-        dom.height = Images.getHeight('/images/anim-shuffle-1.png');
-        dom.backgroundImage = '/images/anim-shuffle-1.png';
+        dom.x = x - Images.getWidth('anim-shuffle-1.png') / 2;
+        dom.y = y - Images.getHeight('anim-shuffle-1.png') / 2;
+        dom.width = Images.getWidth('anim-shuffle-1.png');
+        dom.height = Images.getHeight('anim-shuffle-1.png');
+        dom.backgroundImage = 'anim-shuffle-1.png';
         dom.opacity = 0.7;
         dom.rotate = 0;
         dom.show();

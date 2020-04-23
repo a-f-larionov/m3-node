@@ -146,7 +146,7 @@ if (!window.cancelAnimationFrame) {
 }if(window["functions"] !== undefined){window["functions"].__path="../client/core/functions.js"};
 
 /** ../client/components/application/anims/AnimLocker.js */
-AnimLocker = {
+let AnimLocker = {
     locks: 0,
     lock: function () {
         AnimLocker.locks++;
@@ -163,7 +163,7 @@ AnimLocker = {
 };if(window["AnimLocker"] !== undefined){window["AnimLocker"].__path="../client/components/application/anims/AnimLocker.js"};
 
 /** ../client/components/application/anims/Animate.js */
-Animate = {
+let Animate = {
     anim: function (animClass, context) {
         let args, animObj, position, requestId;
         position = 0;
@@ -303,12 +303,12 @@ let animLightning = function () {
         dom = this.animDoms.pop();
         let lineData = Field.getVisibleLength(p, specId);
         dom.width = lineData.length * DataPoints.BLOCK_WIDTH;
-        dom.height = Images.getHeight('/images/anim-light-1.png');
+        dom.height = Images.getHeight('anim-light-1.png');
         if (specId === DataObjects.WITH_LIGHTNING_VERTICAL) {
             dom.rotate = 90;
             dom.x = (p.x) * DataPoints.BLOCK_WIDTH;
             dom.y = (lineData.lower) * DataPoints.BLOCK_HEIGHT
-                - (Images.getHeight('/images/anim-light-1.png') - DataPoints.BLOCK_HEIGHT) / 2;
+                - (Images.getHeight('anim-light-1.png') - DataPoints.BLOCK_HEIGHT) / 2;
             /** Rotate from center like a cos&sin*/
             dom.x -= (dom.width - DataPoints.BLOCK_WIDTH) / 2;
             dom.y += (dom.width - DataPoints.BLOCK_WIDTH) / 2;
@@ -317,14 +317,14 @@ let animLightning = function () {
             dom.rotate = 0;
             dom.x = lineData.lower * DataPoints.BLOCK_WIDTH;
             dom.y = p.y * DataPoints.BLOCK_HEIGHT
-                - (Images.getHeight('/images/anim-light-1.png') - DataPoints.BLOCK_HEIGHT) / 2;
+                - (Images.getHeight('anim-light-1.png') - DataPoints.BLOCK_HEIGHT) / 2;
         }
         dom.show();
         dom.redraw();
     };
 
     this.iterate = function (position) {
-        dom.backgroundImage = Animate.getFrameUrl('/images/anim-light-', position * velocity, 5);
+        dom.backgroundImage = Animate.getFrameUrl('anim-light-', position * velocity, 5);
         dom.redraw();
         if (position < 15) return true;
     };
@@ -336,7 +336,7 @@ let animLightning = function () {
 };
 
 let animHummerDestroy = function () {
-    let dom, imageUrl = '/images/anim-hd-1.png';
+    let dom, imageUrl = 'anim-hd-1.png';
 
     let velocity = 1.0;
 
@@ -354,7 +354,7 @@ let animHummerDestroy = function () {
     };
 
     this.iterate = function (position) {
-        dom.backgroundImage = Animate.getFrameUrl('/images/anim-hd-', position * velocity, 15);
+        dom.backgroundImage = Animate.getFrameUrl('anim-hd-', position * velocity, 15);
         dom.redraw();
         return position < 15;
     };
@@ -498,11 +498,11 @@ let animShuffle = function () {
 
     this.init = function (x, y) {
         dom = this.animDoms.pop();
-        dom.x = x - Images.getWidth('/images/anim-shuffle-1.png') / 2;
-        dom.y = y - Images.getHeight('/images/anim-shuffle-1.png') / 2;
-        dom.width = Images.getWidth('/images/anim-shuffle-1.png');
-        dom.height = Images.getHeight('/images/anim-shuffle-1.png');
-        dom.backgroundImage = '/images/anim-shuffle-1.png';
+        dom.x = x - Images.getWidth('anim-shuffle-1.png') / 2;
+        dom.y = y - Images.getHeight('anim-shuffle-1.png') / 2;
+        dom.width = Images.getWidth('anim-shuffle-1.png');
+        dom.height = Images.getHeight('anim-shuffle-1.png');
+        dom.backgroundImage = 'anim-shuffle-1.png';
         dom.opacity = 0.7;
         dom.rotate = 0;
         dom.show();
@@ -607,7 +607,7 @@ let animDestroyLines = function () {
 if(window["element-field"] !== undefined){window["element-field"].__path="../client/components/application/anims/element-field.js"};
 
 /** ../client/components/application/capi/CAPILog.js */
-CAPILog = function () {
+let CAPILog = function () {
 
     this.log = function (ctnx, message, data) {
         console.log(message, data);
@@ -618,7 +618,7 @@ CAPILog = function () {
 CAPILog = new CAPILog();if(window["CAPILog"] !== undefined){window["CAPILog"].__path="../client/components/application/capi/CAPILog.js"};
 
 /** ../client/components/application/capi/CAPIMap.js */
-CAPIMap = function () {
+let CAPIMap = function () {
     let self = this;
     let mapping;
 
@@ -823,7 +823,7 @@ CAPIMap = new CAPIMap();
 if(window["CAPIMap"] !== undefined){window["CAPIMap"].__path="../client/components/application/capi/CAPIMap.js"};
 
 /** ../client/components/application/capi/CAPIStuff.js */
-CAPIStuff = function () {
+let CAPIStuff = function () {
 
     this.gotStuff = function (cntx, stuff) {
         LogicStuff.updateStuff(stuff);
@@ -843,7 +843,7 @@ CAPIStuff = function () {
 CAPIStuff = new CAPIStuff();if(window["CAPIStuff"] !== undefined){window["CAPIStuff"].__path="../client/components/application/capi/CAPIStuff.js"};
 
 /** ../client/components/application/capi/CAPITimeServer.js */
-CAPITimeServer = function () {
+let CAPITimeServer = function () {
 
     /**
      * Got a serverTime time
@@ -863,7 +863,7 @@ CAPITimeServer = function () {
 CAPITimeServer = new CAPITimeServer();if(window["CAPITimeServer"] !== undefined){window["CAPITimeServer"].__path="../client/components/application/capi/CAPITimeServer.js"};
 
 /** ../client/components/application/capi/CAPIUser.js */
-CAPIUser = function () {
+let CAPIUser = function () {
 
     /**
      * Авторизация успешна.
@@ -917,7 +917,7 @@ CAPIUser = function () {
 CAPIUser = new CAPIUser();if(window["CAPIUser"] !== undefined){window["CAPIUser"].__path="../client/components/application/capi/CAPIUser.js"};
 
 /** ../client/components/application/data/DataChests.js */
-DataChests = function () {
+let DataChests = function () {
 
     let chestCoords = [
         {
@@ -962,7 +962,7 @@ DataChests = new DataChests;
 if(window["DataChests"] !== undefined){window["DataChests"].__path="../client/components/application/data/DataChests.js"};
 
 /** components/application/data/DataCross.js */
-DataCross = {};
+let DataCross = {};
 
 DataCross.user = {
     maxHealth: 5,
@@ -972,10 +972,15 @@ DataCross.user = {
 DataCross.app = {
     width: 777,
     height: 500
-};if(window["DataCross"] !== undefined){window["DataCross"].__path="components/application/data/DataCross.js"};
+};
+
+/** Для кросс-сайдных компонент */
+if (CONST_IS_SERVER_SIDE) {
+    global['DataCross'] = DataCross;
+}if(window["DataCross"] !== undefined){window["DataCross"].__path="components/application/data/DataCross.js"};
 
 /** ../client/components/application/data/DataMap.js */
-DataMap = function () {
+let DataMap = function () {
 
     let currentMapId = 1;
 
@@ -1092,7 +1097,7 @@ DataMap = function () {
 };
 
 /** @Todo super mega crunch */
-GUI = {};
+/*GUI = {};
 
 GUI.ANIM_TYPE_ROTATE = 10;
 GUI.ANIM_TYPE_MOVE = 20;
@@ -1100,7 +1105,8 @@ GUI.ANIM_TYPE_GOTO = 30;
 GUI.ANIM_TYPE_MOVIE = 40;
 GUI.ANIM_TYPE_PAUSE = 50;
 GUI.ANIM_TYPE_STOP = 60;
-
+*/
+//@Todonow
 /** @type {DataMap} */
 DataMap = new DataMap();
 
@@ -1111,7 +1117,7 @@ DataMap.POINTS_PER_MAP = 18;
 DataMap.CHESTS_PER_MAP = 2;if(window["DataMap"] !== undefined){window["DataMap"].__path="../client/components/application/data/DataMap.js"};
 
 /** components/application/data/DataObjects.js */
-DataObjects = function () {
+let DataObjects = function () {
     /**
      * Не видна игроку.
      * @type {number}
@@ -1246,10 +1252,16 @@ DataObjects = function () {
 };
 
 /** @type {DataObjects} */
-DataObjects = new DataObjects();if(window["DataObjects"] !== undefined){window["DataObjects"].__path="components/application/data/DataObjects.js"};
+DataObjects = new DataObjects();
+
+
+/** Для кросс-сайдных компонент */
+if (CONST_IS_SERVER_SIDE) {
+    global['DataObjects'] = DataObjects;
+}if(window["DataObjects"] !== undefined){window["DataObjects"].__path="components/application/data/DataObjects.js"};
 
 /** ../client/components/application/data/DataPoints.js */
-DataPoints = function () {
+let DataPoints = function () {
 
     this.FIELD_MAX_WIDTH = 10;
     this.FIELD_MAX_HEIGHT = 11;
@@ -1259,90 +1271,47 @@ DataPoints = function () {
 
     this.objectImages = {};
     /** Cell images */
-    this.objectImages[DataObjects.CELL_INVISIBLE] = '/images/field-none-2.png';
-    this.objectImages[DataObjects.CELL_VISIBLE] = '/images/field-cell.png';
+    this.objectImages[DataObjects.CELL_INVISIBLE] = 'field-none-2.png';
+    this.objectImages[DataObjects.CELL_VISIBLE] = 'field-cell.png';
 
     /** Gem images */
-    this.objectImages[DataObjects.OBJECT_HOLE] = '/images/field-none-2.png';
-    this.objectImages[DataObjects.OBJECT_RANDOM] = '/images/field-none.png';
+    this.objectImages[DataObjects.OBJECT_HOLE] = 'field-none-2.png';
+    this.objectImages[DataObjects.OBJECT_RANDOM] = 'field-none.png';
 
-    this.objectImages[DataObjects.OBJECT_RED] = '/images/field-red.png';
-    this.objectImages[DataObjects.OBJECT_GREEN] = '/images/field-green.png';
-    this.objectImages[DataObjects.OBJECT_BLUE] = '/images/field-blue.png';
-    this.objectImages[DataObjects.OBJECT_YELLOW] = '/images/field-yellow.png';
-    this.objectImages[DataObjects.OBJECT_PURPLE] = '/images/field-purple.png';
-    this.objectImages[DataObjects.OBJECT_SAND] = '/images/field-sand.png';
+    this.objectImages[DataObjects.OBJECT_RED] = 'field-red.png';
+    this.objectImages[DataObjects.OBJECT_GREEN] = 'field-green.png';
+    this.objectImages[DataObjects.OBJECT_BLUE] = 'field-blue.png';
+    this.objectImages[DataObjects.OBJECT_YELLOW] = 'field-yellow.png';
+    this.objectImages[DataObjects.OBJECT_PURPLE] = 'field-purple.png';
+    this.objectImages[DataObjects.OBJECT_SAND] = 'field-sand.png';
 
-    this.objectImages[DataObjects.OBJECT_BARREL] = '/images/field-barrel.png';
-    this.objectImages[DataObjects.OBJECT_BLOCK] = '/images/field-block.png';
-    this.objectImages[DataObjects.OBJECT_POLY_COLOR] = '/images/field-poly-color.png';
-    this.objectImages[DataObjects.OBJECT_GOLD] = '/images/field-gold.png';
-    this.objectImages[DataObjects.OBJECT_TILE] = '/images/field-tile.png';
+    this.objectImages[DataObjects.OBJECT_BARREL] = 'field-barrel.png';
+    this.objectImages[DataObjects.OBJECT_BLOCK] = 'field-block.png';
+    this.objectImages[DataObjects.OBJECT_POLY_COLOR] = 'field-poly-color.png';
+    this.objectImages[DataObjects.OBJECT_GOLD] = 'field-gold.png';
+    this.objectImages[DataObjects.OBJECT_TILE] = 'field-tile.png';
 
-    this.objectImages[DataObjects.OBJECT_SPIDER_ALPHA] = '/images/field-alpha.png';
-    this.objectImages[DataObjects.OBJECT_SPIDER_BETA] = '/images/field-beta.png';
-    this.objectImages[DataObjects.OBJECT_SPIDER_GAMMA] = '/images/field-gamma.png';
+    this.objectImages[DataObjects.OBJECT_SPIDER_ALPHA] = 'field-alpha.png';
+    this.objectImages[DataObjects.OBJECT_SPIDER_BETA] = 'field-beta.png';
+    this.objectImages[DataObjects.OBJECT_SPIDER_GAMMA] = 'field-gamma.png';
 
-    this.objectImages[DataObjects.OBJECT_BOX] = '/images/field-box.png';
-    this.objectImages[DataObjects.OBJECT_CHAIN_A] = '/images/field-chain-a.png';
-    this.objectImages[DataObjects.OBJECT_CHAIN_B] = '/images/field-chain-b.png';
+    this.objectImages[DataObjects.OBJECT_BOX] = 'field-box.png';
+    this.objectImages[DataObjects.OBJECT_CHAIN_A] = 'field-chain-a.png';
+    this.objectImages[DataObjects.OBJECT_CHAIN_B] = 'field-chain-b.png';
 
     /** Gem-lightning images */
-    this.objectImages[DataObjects.WITH_LIGHTNING_VERTICAL] = '/images/spec-light-ver-1.png';
-    this.objectImages[DataObjects.WITH_LIGHTNING_HORIZONTAL] = '/images/spec-light-hor-1.png';
-    this.objectImages[DataObjects.WITH_LIGHTNING_CROSS] = '/images/spec-light-cross-1.png';
+    this.objectImages[DataObjects.WITH_LIGHTNING_VERTICAL] = 'spec-light-ver-1.png';
+    this.objectImages[DataObjects.WITH_LIGHTNING_HORIZONTAL] = 'spec-light-hor-1.png';
+    this.objectImages[DataObjects.WITH_LIGHTNING_CROSS] = 'spec-light-cross-1.png';
 
     /** Spider healths */
     this.healthImages = {};
-    this.healthImages[0] = '/images/creature-health-0.png';
-    this.healthImages[1] = '/images/creature-health-1.png';
-    this.healthImages[2] = '/images/creature-health-2.png';
-    this.healthImages[3] = '/images/creature-health-3.png';
+    this.healthImages[0] = 'creature-health-0.png';
+    this.healthImages[1] = 'creature-health-1.png';
+    this.healthImages[2] = 'creature-health-2.png';
+    this.healthImages[3] = 'creature-health-3.png';
 
     this.objectAnims = {};
-
-    this.objectAnims[DataObjects.WITH_LIGHTNING_HORIZONTAL] = [[{
-        type: GUI.ANIM_TYPE_MOVIE,
-        images: [
-            '/images/spec-light-hor-1.png',
-            '/images/spec-light-hor-2.png',
-            '/images/spec-light-hor-3.png',
-            '/images/spec-light-hor-4.png',
-            '/images/spec-light-hor-5.png',
-        ],
-        duration: 5,
-    }, {
-        type: GUI.ANIM_TYPE_GOTO,
-        pos: 0
-    }]];
-    this.objectAnims[DataObjects.WITH_LIGHTNING_VERTICAL] = [[{
-        type: GUI.ANIM_TYPE_MOVIE,
-        images: [
-            '/images/spec-light-ver-1.png',
-            '/images/spec-light-ver-2.png',
-            '/images/spec-light-ver-3.png',
-            '/images/spec-light-ver-4.png',
-            '/images/spec-light-ver-5.png',
-        ],
-        duration: 5,
-    }, {
-        type: GUI.ANIM_TYPE_GOTO,
-        pos: 0
-    }]];
-    this.objectAnims[DataObjects.WITH_LIGHTNING_CROSS] = [[{
-        type: GUI.ANIM_TYPE_MOVIE,
-        images: [
-            '/images/spec-light-cross-1.png',
-            '/images/spec-light-cross-2.png',
-            '/images/spec-light-cross-3.png',
-            '/images/spec-light-cross-4.png',
-            '/images/spec-light-cross-5.png',
-        ],
-        duration: 5,
-    }, {
-        type: GUI.ANIM_TYPE_GOTO,
-        pos: 0
-    }]];
 
     let pointsCoords = [
         {
@@ -1536,13 +1505,60 @@ DataPoints = function () {
         }
         return goalsNew;
     };
+
+    this.init = function () {
+
+        this.objectAnims[DataObjects.WITH_LIGHTNING_HORIZONTAL] = [[{
+            type: GUI.ANIM_TYPE_MOVIE,
+            images: [
+                'spec-light-hor-1.png',
+                'spec-light-hor-2.png',
+                'spec-light-hor-3.png',
+                'spec-light-hor-4.png',
+                'spec-light-hor-5.png',
+            ],
+            duration: 5,
+        }, {
+            type: GUI.ANIM_TYPE_GOTO,
+            pos: 0
+        }]];
+        this.objectAnims[DataObjects.WITH_LIGHTNING_VERTICAL] = [[{
+            type: GUI.ANIM_TYPE_MOVIE,
+            images: [
+                'spec-light-ver-1.png',
+                'spec-light-ver-2.png',
+                'spec-light-ver-3.png',
+                'spec-light-ver-4.png',
+                'spec-light-ver-5.png',
+            ],
+            duration: 5,
+        }, {
+            type: GUI.ANIM_TYPE_GOTO,
+            pos: 0
+        }]];
+        this.objectAnims[DataObjects.WITH_LIGHTNING_CROSS] = [[{
+            type: GUI.ANIM_TYPE_MOVIE,
+            images: [
+                'spec-light-cross-1.png',
+                'spec-light-cross-2.png',
+                'spec-light-cross-3.png',
+                'spec-light-cross-4.png',
+                'spec-light-cross-5.png',
+            ],
+            duration: 5,
+        }, {
+            type: GUI.ANIM_TYPE_GOTO,
+            pos: 0
+        }]];
+    }
+    ;
 };
 
 DataPoints = new DataPoints;
 if(window["DataPoints"] !== undefined){window["DataPoints"].__path="../client/components/application/data/DataPoints.js"};
 
 /** ../client/components/application/data/DataPrizes.js */
-DataPrizes = function () {
+let DataPrizes = function () {
     let self = this;
 
     this.giveOutPrizes = function (prizes) {
@@ -1572,16 +1588,16 @@ DataPrizes = function () {
         let src;
         switch (prize.id) {
             case DataPrizes.PRIZE_STUFF_GOLD:
-                src = '/images/map-way-point-red.png';
+                src = 'map-way-point-red.png';
                 break;
             case DataPrizes.PRIZE_STUFF_HUMMER:
-                src = '/images/button-hummer-rest.png';
+                src = 'button-hummer-rest.png';
                 break;
             case DataPrizes.PRIZE_STUFF_SHUFFLE:
-                src = '/images/button-shuffle-rest.png';
+                src = 'button-shuffle-rest.png';
                 break;
             case DataPrizes.PRIZE_STUFF_LIGHTNING:
-                src = '/images/button-lightning-rest.png';
+                src = 'button-lightning-rest.png';
                 break;
         }
         return src;
@@ -1598,7 +1614,7 @@ DataPrizes.PRIZE_STUFF_GOLD = 100;
 if(window["DataPrizes"] !== undefined){window["DataPrizes"].__path="../client/components/application/data/DataPrizes.js"};
 
 /** components/application/data/DataShop.js */
-DataShop = function () {
+let DataShop = function () {
 
     this.getGoldProductByPrice = function (price) {
         let product;
@@ -1632,17 +1648,17 @@ DataShop.hummers = [
     {
         gold: 10,
         quantity: 3,
-        imageSrc: '/images/shop-hummer-1.png',
+        imageSrc: 'shop-hummer-1.png',
     },
     {
         gold: 15,
         quantity: 6,
-        imageSrc: '/images/shop-hummer-2.png',
+        imageSrc: 'shop-hummer-2.png',
     },
     {
         gold: 30,
         quantity: 9,
-        imageSrc: '/images/shop-hummer-3.png',
+        imageSrc: 'shop-hummer-3.png',
     }
 ];
 
@@ -1650,17 +1666,17 @@ DataShop.shuffle = [
     {
         gold: 10,
         quantity: 3,
-        imageSrc: '/images/shop-shuffle-1.png',
+        imageSrc: 'shop-shuffle-1.png',
     },
     {
         gold: 15,
         quantity: 6,
-        imageSrc: '/images/shop-shuffle-2.png',
+        imageSrc: 'shop-shuffle-2.png',
     },
     {
         gold: 30,
         quantity: 9,
-        imageSrc: '/images/shop-shuffle-3.png',
+        imageSrc: 'shop-shuffle-3.png',
     }
 ];
 
@@ -1669,28 +1685,33 @@ DataShop.lightning = [
     {
         gold: 10,
         quantity: 3,
-        imageSrc: '/images/shop-lightning-1.png',
+        imageSrc: 'shop-lightning-1.png',
     },
     {
         gold: 15,
         quantity: 6,
-        imageSrc: '/images/shop-lightning-2.png',
+        imageSrc: 'shop-lightning-2.png',
     },
     {
         gold: 30,
         quantity: 9,
-        imageSrc: '/images/shop-lightning-3.png',
+        imageSrc: 'shop-lightning-3.png',
     }
 ];
 
-DataShop.healthPrice = 100;if(window["DataShop"] !== undefined){window["DataShop"].__path="components/application/data/DataShop.js"};
+DataShop.healthPrice = 100;
+
+/** Для кросс-сайдных компонент */
+if (CONST_IS_SERVER_SIDE) {
+    global['DataShop'] = DataShop;
+}if(window["DataShop"] !== undefined){window["DataShop"].__path="components/application/data/DataShop.js"};
 
 /** ../client/components/application/gui_elements/Dialog.js */
 /**
  * Элемент картинки.
  * @constructor
  */
-Dialog = function (src) {
+let Dialog = function (src) {
     let self = this;
 
     /**
@@ -1724,7 +1745,7 @@ Dialog = function (src) {
      * Ссылка на картинку.
      * @type {string}
      */
-    this.src = src ? src : '/images/window-2.png';
+    this.src = src ? src : 'window-2.png';
 
     this.bottomPosition = 90;
 
@@ -1898,7 +1919,7 @@ Dialog.showDialog = function () {
 };if(window["Dialog"] !== undefined){window["Dialog"].__path="../client/components/application/gui_elements/Dialog.js"};
 
 /** ../client/components/application/gui_elements/DialogChestNeedStars.js */
-DialogChestNeedStars = function () {
+let DialogChestNeedStars = function () {
     let self = this;
     this.__proto__ = new Dialog();
 
@@ -1911,9 +1932,9 @@ DialogChestNeedStars = function () {
         GUI.createElement(ElementButton, {
             x: 452, y: 3,
             width: 100, height: 40,
-            srcRest: '/images/button-close-rest.png',
-            srcHover: '/images/button-close-hover.png',
-            srcActive: '/images/button-close-active.png',
+            srcRest: 'button-close-rest.png',
+            srcHover: 'button-close-hover.png',
+            srcActive: 'button-close-active.png',
             onClick: function () {
                 self.closeDialog();
             }
@@ -1956,7 +1977,7 @@ DialogChestNeedStars = function () {
 if(window["DialogChestNeedStars"] !== undefined){window["DialogChestNeedStars"].__path="../client/components/application/gui_elements/DialogChestNeedStars.js"};
 
 /** ../client/components/application/gui_elements/DialogChestYouWin.js */
-DialogChestYouWin = function () {
+let DialogChestYouWin = function () {
     let self = this;
     this.__proto__ = new Dialog();
 
@@ -1972,9 +1993,9 @@ DialogChestYouWin = function () {
         GUI.createElement(ElementButton, {
             x: 452, y: 3,
             width: 100, height: 40,
-            srcRest: '/images/button-close-rest.png',
-            srcHover: '/images/button-close-hover.png',
-            srcActive: '/images/button-close-active.png',
+            srcRest: 'button-close-rest.png',
+            srcHover: 'button-close-hover.png',
+            srcActive: 'button-close-active.png',
             onClick: function () {
                 self.closeDialog();
             }
@@ -2045,9 +2066,8 @@ DialogChestYouWin = function () {
 if(window["DialogChestYouWin"] !== undefined){window["DialogChestYouWin"].__path="../client/components/application/gui_elements/DialogChestYouWin.js"};
 
 /** ../client/components/application/gui_elements/DialogGoals.js */
-DialogGoals = function DialogGoals() {
+let DialogGoals = function DialogGoals() {
     let self = this;
-
     this.__proto__ = new Dialog();
 
     let goalsImagesEls = {};
@@ -2056,7 +2076,7 @@ DialogGoals = function DialogGoals() {
     this.init = function () {
         this.__proto__.width = 250;
         this.__proto__.height = 150;
-        this.__proto__.src = '/images/window-3.png';
+        this.__proto__.src = 'window-3.png';
         this.__proto__.bottomPosition = 100 + 172 / 2;
 
         this.__proto__.init.call(this);
@@ -2085,9 +2105,9 @@ DialogGoals = function DialogGoals() {
         /** Кнопка закрыть */
         GUI.createElement(ElementButton, {
                 x: 195, y: 0,
-                srcRest: '/images/button-close-rest.png',
-                srcHover: '/images/button-close-hover.png',
-                srcActive: '/images/button-close-active.png',
+                srcRest: 'button-close-rest.png',
+                srcHover: 'button-close-hover.png',
+                srcActive: 'button-close-active.png',
                 onClick: function () {
                     self.closeDialog();
                 }
@@ -2132,9 +2152,8 @@ DialogGoals = function DialogGoals() {
 };if(window["DialogGoals"] !== undefined){window["DialogGoals"].__path="../client/components/application/gui_elements/DialogGoals.js"};
 
 /** ../client/components/application/gui_elements/DialogGoalsReached.js */
-DialogGoalsReached = function () {
+let DialogGoalsReached = function () {
     let self = this;
-    self.__name = "DialogGoalsReached";
     this.__proto__ = new Dialog();
 
     /**
@@ -2168,11 +2187,11 @@ DialogGoalsReached = function () {
         elTitle.show();
 
         /** Кол-во звёзд */
-        elStarOne = GUI.createElement(ElementImage, {x: 100, y: 40, src: '/images/star-off-big.png'});
+        elStarOne = GUI.createElement(ElementImage, {x: 100, y: 40, src: 'star-off-big.png'});
         elStarOne.show();
-        elStarTwo = GUI.createElement(ElementImage, {x: 200, y: 40, src: '/images/star-off-big.png'});
+        elStarTwo = GUI.createElement(ElementImage, {x: 200, y: 40, src: 'star-off-big.png'});
         elStarTwo.show();
-        elStarThree = GUI.createElement(ElementImage, {x: 300, y: 40, src: '/images/star-off-big.png'});
+        elStarThree = GUI.createElement(ElementImage, {x: 300, y: 40, src: 'star-off-big.png'});
         elStarThree.show();
 
         for (let i = 0; i < 3; i++) {
@@ -2187,9 +2206,9 @@ DialogGoalsReached = function () {
         /** Кнопка играть */
         elButtonPlay = GUI.createElement(ElementButton, {
             x: 178, y: 240,
-            srcRest: '/images/button-red-rest.png',
-            srcHover: '/images/button-red-hover.png',
-            srcActive: '/images/button-red-active.png',
+            srcRest: 'button-red-rest.png',
+            srcHover: 'button-red-hover.png',
+            srcActive: 'button-red-active.png',
             onClick: function () {
                 self.closeDialog();
                 //PageBlockPanel.oneHealthHide = false;
@@ -2202,9 +2221,9 @@ DialogGoalsReached = function () {
         // Кнопка закрыть
         GUI.createElement(ElementButton, {
             x: 452, y: 3,
-            srcRest: '/images/button-close-rest.png',
-            srcHover: '/images/button-close-hover.png',
-            srcActive: '/images/button-close-active.png',
+            srcRest: 'button-close-rest.png',
+            srcHover: 'button-close-hover.png',
+            srcActive: 'button-close-active.png',
             onClick: function () {
                 self.closeDialog();
                 PageController.showPage(PageMain);
@@ -2244,17 +2263,17 @@ DialogGoalsReached = function () {
         elUserPhotoScore.score = DataPoints.getScore(point.id);
 
         elTitle.redraw();
-        elStarOne.src = '/images/star-off-big.png';
-        elStarTwo.src = '/images/star-off-big.png';
-        elStarThree.src = '/images/star-off-big.png';
+        elStarOne.src = 'star-off-big.png';
+        elStarTwo.src = 'star-off-big.png';
+        elStarThree.src = 'star-off-big.png';
 
         switch (DataPoints.countStars(point.id)) {
             case 3:
-                elStarThree.src = '/images/star-on-big.png';
+                elStarThree.src = 'star-on-big.png';
             case 2:
-                elStarTwo.src = '/images/star-on-big.png';
+                elStarTwo.src = 'star-on-big.png';
             case 1:
-                elStarOne.src = '/images/star-on-big.png';
+                elStarOne.src = 'star-on-big.png';
         }
         elStarOne.redraw();
         elStarTwo.redraw();
@@ -2280,9 +2299,8 @@ DialogGoalsReached = function () {
 };if(window["DialogGoalsReached"] !== undefined){window["DialogGoalsReached"].__path="../client/components/application/gui_elements/DialogGoalsReached.js"};
 
 /** ../client/components/application/gui_elements/DialogHealthShop.js */
-DialogHealthShop = function () {
+let  DialogHealthShop = function () {
     let self = this;
-    self.__name = "DialogHealthShop";
     this.__proto__ = new Dialog();
 
     let elHealth5 = null;
@@ -2306,9 +2324,9 @@ DialogHealthShop = function () {
 
         elHealth5 = GUI.createElement(ElementButton, {
             x: offsetX + stepX, y: offsetY,
-            srcRest: '/images/shop-health-1.png',
-            srcHover: '/images/shop-health-1.png',
-            srcActive: '/images/shop-health-1.png',
+            srcRest: 'shop-health-1.png',
+            srcHover: 'shop-health-1.png',
+            srcActive: 'shop-health-1.png',
             onClick: function () {
                 self.buyHealth5();
             }
@@ -2317,9 +2335,9 @@ DialogHealthShop = function () {
 
         el = GUI.createElement(ElementButton, {
             x: offsetX + stepX * 2, y: offsetY,
-            srcRest: '/images/shop-health-2.png',
-            srcHover: '/images/shop-health-2.png',
-            srcActive: '/images/shop-health-2.png',
+            srcRest: 'shop-health-2.png',
+            srcHover: 'shop-health-2.png',
+            srcActive: 'shop-health-2.png',
             onClick: function () {
                 SAPIUser.zeroLife();
             }
@@ -2329,9 +2347,9 @@ DialogHealthShop = function () {
         /** Кнопка закрыть */
         GUI.createElement(ElementButton, {
             x: 452, y: 3,
-            srcRest: '/images/button-close-rest.png',
-            srcHover: '/images/button-close-hover.png',
-            srcActive: '/images/button-close-active.png',
+            srcRest: 'button-close-rest.png',
+            srcHover: 'button-close-hover.png',
+            srcActive: 'button-close-active.png',
             onClick: function () {
                 self.closeDialog();
             }
@@ -2368,9 +2386,8 @@ DialogHealthShop = function () {
 };if(window["DialogHealthShop"] !== undefined){window["DialogHealthShop"].__path="../client/components/application/gui_elements/DialogHealthShop.js"};
 
 /** ../client/components/application/gui_elements/DialogJustQuit.js */
-DialogJustQuit = function () {
+let DialogJustQuit = function () {
     let self = this;
-    self.__name = "DialogJustQuit";
     this.__proto__ = new Dialog();
 
     this.init = function () {
@@ -2397,9 +2414,9 @@ DialogJustQuit = function () {
         /** Кнопка выйти */
         element = GUI.createElement(ElementButton, {
                 x: 75, y: 220,
-                srcRest: '/images/button-red-rest.png',
-                srcHover: '/images/button-red-hover.png',
-                srcActive: '/images/button-red-active.png',
+                srcRest: 'button-red-rest.png',
+                srcHover: 'button-red-hover.png',
+                srcActive: 'button-red-active.png',
                 onClick: function () {
                     self.closeDialog();
                     PageBlockPanel.oneHealthHide = false;
@@ -2414,9 +2431,9 @@ DialogJustQuit = function () {
         /** Кнопка вернуться в игру */
         element = GUI.createElement(ElementButton, {
                 x: 275, y: 220,
-                srcRest: '/images/button-green-rest.png',
-                srcHover: '/images/button-green-hover.png',
-                srcActive: '/images/button-green-active.png',
+                srcRest: 'button-green-rest.png',
+                srcHover: 'button-green-hover.png',
+                srcActive: 'button-green-active.png',
                 onClick: function () {
                     self.closeDialog();
                 },
@@ -2428,9 +2445,9 @@ DialogJustQuit = function () {
         /** Кнопка закрыть */
         element = GUI.createElement(ElementButton, {
                 x: 452, y: 3,
-                srcRest: '/images/button-close-rest.png',
-                srcHover: '/images/button-close-hover.png',
-                srcActive: '/images/button-close-active.png',
+                srcRest: 'button-close-rest.png',
+                srcHover: 'button-close-hover.png',
+                srcActive: 'button-close-active.png',
                 onClick: function () {
                     self.closeDialog();
                 }
@@ -2441,9 +2458,8 @@ DialogJustQuit = function () {
 };if(window["DialogJustQuit"] !== undefined){window["DialogJustQuit"].__path="../client/components/application/gui_elements/DialogJustQuit.js"};
 
 /** ../client/components/application/gui_elements/DialogMoneyShop.js */
-DialogMoneyShop = function () {
+let DialogMoneyShop = function () {
     let self = this;
-    self.__name = "DialogMoneyShop";
     this.__proto__ = new Dialog();
 
     this.init = function () {
@@ -2465,9 +2481,9 @@ DialogMoneyShop = function () {
         for (let i = 0; i < 3; i++) {
             el = GUI.createElement(ElementButton, {
                 x: offsetX + stepX * i, y: offsetY,
-                srcRest: '/images/money_' + (i + 1) + '.png',
-                srcHover: '/images/money_' + (i + 1) + '.png',
-                srcActive: '/images/money_' + (i + 1) + '.png',
+                srcRest: 'money_' + (i + 1) + '.png',
+                srcHover: 'money_' + (i + 1) + '.png',
+                srcActive: 'money_' + (i + 1) + '.png',
                 onClick: function () {
                     if (GUI.isFullScreen()) {
                         GUI.fsSwitch();
@@ -2480,9 +2496,9 @@ DialogMoneyShop = function () {
 
             el = GUI.createElement(ElementButton, {
                 x: offsetX + stepX * i + 45, y: offsetY + 150 - 45,
-                srcRest: '/images/button-add-rest.png',
-                srcHover: '/images/button-add-hover.png',
-                srcActive: '/images/button-add-active.png',
+                srcRest: 'button-add-rest.png',
+                srcHover: 'button-add-hover.png',
+                srcActive: 'button-add-active.png',
                 onClick: function () {
                     SocNet.openOrderDialog(DataShop.gold[i].votes);
                     self.closeDialog();
@@ -2493,9 +2509,9 @@ DialogMoneyShop = function () {
         /** кнопка закрыть */
         GUI.createElement(ElementButton, {
             x: 452, y: 3,
-            srcRest: '/images/button-close-rest.png',
-            srcHover: '/images/button-close-hover.png',
-            srcActive: '/images/button-close-active.png',
+            srcRest: 'button-close-rest.png',
+            srcHover: 'button-close-hover.png',
+            srcActive: 'button-close-active.png',
             onClick: function () {
                 self.closeDialog();
             }
@@ -2511,9 +2527,8 @@ DialogMoneyShop = function () {
 if(window["DialogMoneyShop"] !== undefined){window["DialogMoneyShop"].__path="../client/components/application/gui_elements/DialogMoneyShop.js"};
 
 /** ../client/components/application/gui_elements/DialogPointInfo.js */
-DialogPointInfo = function () {
+let DialogPointInfo = function () {
     let self = this;
-    self.__name = "DialogPointInfo";
     this.__proto__ = new Dialog();
 
     /**
@@ -2548,14 +2563,14 @@ DialogPointInfo = function () {
 
         /** Кол-во звёзд */
         elStarOne = GUI.createElement(ElementImage, {
-            x: 100, y: 40, src: '/images/star-off-big.png'
+            x: 100, y: 40, src: 'star-off-big.png'
         });
         elStarOne.show();
         elStarTwo = GUI.createElement(ElementImage, {
-            x: 200, y: 40, src: '/images/star-off-big.png'
+            x: 200, y: 40, src: 'star-off-big.png'
         });
         elStarTwo.show();
-        elStarThree = GUI.createElement(ElementImage, {x: 300, y: 40, src: '/images/star-off-big.png'});
+        elStarThree = GUI.createElement(ElementImage, {x: 300, y: 40, src: 'star-off-big.png'});
         elStarThree.show();
 
         [0, 1, 2].forEach(function (i) {
@@ -2570,9 +2585,9 @@ DialogPointInfo = function () {
         /** Кнопка играть */
         elButtonPlay = GUI.createElement(ElementButton, {
             x: 178, y: 240,
-            srcRest: '/images/button-red-rest.png',
-            srcHover: '/images/button-red-hover.png',
-            srcActive: '/images/button-red-active.png',
+            srcRest: 'button-red-rest.png',
+            srcHover: 'button-red-hover.png',
+            srcActive: 'button-red-active.png',
             onClick: function () {
                 self.closeDialog();
                 /** Предложить купить жизни */
@@ -2594,9 +2609,9 @@ DialogPointInfo = function () {
         /** Кнопка закрыть */
         GUI.createElement(ElementButton, {
             x: 452, y: 3,
-            srcRest: '/images/button-close-rest.png',
-            srcHover: '/images/button-close-hover.png',
-            srcActive: '/images/button-close-active.png',
+            srcRest: 'button-close-rest.png',
+            srcHover: 'button-close-hover.png',
+            srcActive: 'button-close-active.png',
             onClick: function () {
                 self.closeDialog();
             }
@@ -2641,17 +2656,17 @@ DialogPointInfo = function () {
         elUserPhotoScore.score = DataPoints.getScore(point.id);
 
         elTitle.redraw();
-        elStarOne.src = '/images/star-off-big.png';
-        elStarTwo.src = '/images/star-off-big.png';
-        elStarThree.src = '/images/star-off-big.png';
+        elStarOne.src = 'star-off-big.png';
+        elStarTwo.src = 'star-off-big.png';
+        elStarThree.src = 'star-off-big.png';
 
         switch (DataPoints.countStars(point.id)) {
             case 3:
-                elStarThree.src = '/images/star-on-big.png';
+                elStarThree.src = 'star-on-big.png';
             case 2:
-                elStarTwo.src = '/images/star-on-big.png';
+                elStarTwo.src = 'star-on-big.png';
             case 1:
-                elStarOne.src = '/images/star-on-big.png';
+                elStarOne.src = 'star-on-big.png';
         }
         elStarOne.redraw();
         elStarTwo.redraw();
@@ -2671,7 +2686,7 @@ DialogPointInfo = function () {
 };if(window["DialogPointInfo"] !== undefined){window["DialogPointInfo"].__path="../client/components/application/gui_elements/DialogPointInfo.js"};
 
 /** ../client/components/application/gui_elements/DialogStuffShop.js */
-DialogStuffShop = function () {
+let DialogStuffShop = function () {
     let self = this;
     this.__proto__ = new Dialog();
 
@@ -2699,9 +2714,9 @@ DialogStuffShop = function () {
         for (let i = 0; i < 3; i++) {
             el = GUI.createElement(ElementButton, {
                 x: offsetX + stepX * i, y: offsetY,
-                srcRest: '/images/shop-hummer-2.png',
-                srcHover: '/images/shop-hummer-2.png',
-                srcActive: '/images/shop-hummer-2.png',
+                srcRest: 'shop-hummer-2.png',
+                srcHover: 'shop-hummer-2.png',
+                srcActive: 'shop-hummer-2.png',
                 onClick: function () {
                     self.buyStuff(i);
                 }
@@ -2711,9 +2726,9 @@ DialogStuffShop = function () {
 
             el = GUI.createElement(ElementButton, {
                 x: offsetX + stepX * i + 45, y: offsetY + 150 - 25,
-                srcRest: '/images/button-add-rest.png',
-                srcHover: '/images/button-add-hover.png',
-                srcActive: '/images/button-add-active.png',
+                srcRest: 'button-add-rest.png',
+                srcHover: 'button-add-hover.png',
+                srcActive: 'button-add-active.png',
                 itemNumber: i,
                 onClick: function () {
                     self.buyStuff(i);
@@ -2724,9 +2739,9 @@ DialogStuffShop = function () {
         /** Кнопка закрыть */
         GUI.createElement(ElementButton, {
             x: 452, y: 3,
-            srcRest: '/images/button-close-rest.png',
-            srcHover: '/images/button-close-hover.png',
-            srcActive: '/images/button-close-active.png',
+            srcRest: 'button-close-rest.png',
+            srcHover: 'button-close-hover.png',
+            srcActive: 'button-close-active.png',
             onClick: function () {
                 self.closeDialog();
             }
@@ -2809,7 +2824,7 @@ DialogStuffShop = function () {
 if(window["DialogStuffShop"] !== undefined){window["DialogStuffShop"].__path="../client/components/application/gui_elements/DialogStuffShop.js"};
 
 /** ../client/components/application/gui_elements/DialogTurnLoose.js */
-DialogTurnLoose = function DialogTurnLoose() {
+let DialogTurnLoose = function DialogTurnLoose() {
     let self = this;
     this.__proto__ = new Dialog();
 
@@ -2826,9 +2841,9 @@ DialogTurnLoose = function DialogTurnLoose() {
 
         el = GUI.createElement(ElementButton, {
                 x: 452, y: 3,
-                srcRest: '/images/button-close-rest.png',
-                srcHover: '/images/button-close-hover.png',
-                srcActive: '/images/button-close-active.png',
+                srcRest: 'button-close-rest.png',
+                srcHover: 'button-close-hover.png',
+                srcActive: 'button-close-active.png',
                 onClick: function () {
                     self.closeDialog();
                     PageBlockPanel.oneHealthHide = false;
@@ -2851,9 +2866,9 @@ DialogTurnLoose = function DialogTurnLoose() {
         /** Кнопка играть */
         el = GUI.createElement(ElementButton, {
             x: 178, y: 240,
-            srcRest: '/images/button-red-rest.png',
-            srcHover: '/images/button-red-hover.png',
-            srcActive: '/images/button-red-active.png',
+            srcRest: 'button-red-rest.png',
+            srcHover: 'button-red-hover.png',
+            srcActive: 'button-red-active.png',
             onClick: function () {
                 self.closeDialog();
                 /** Предложить купить жизни */
@@ -2888,7 +2903,7 @@ DialogTurnLoose = function DialogTurnLoose() {
  * @property srcActive
  *
  */
-ElementButton = function () {
+let ElementButton = function () {
     let self = this;
 
     /**
@@ -3100,7 +3115,7 @@ ElementButton = function () {
  * @property x
  * @property y
  */
-ElementChest = function () {
+let ElementChest = function () {
     let self = this;
 
     /**
@@ -3135,8 +3150,8 @@ ElementChest = function () {
      */
     this.height = 0;
 
-    this.srcChestClose = '/images/chest-close.png';
-    this.srcChestOpen = '/images/chest-open.png';
+    this.srcChestClose = 'chest-close.png';
+    this.srcChestOpen = 'chest-open.png';
 
     /**
      * Будет вызываться при нажатии на кнопку.
@@ -3317,7 +3332,7 @@ if(window["ElementChest"] !== undefined){window["ElementChest"].__path="../clien
  * Элемент игрового поля.
  * @constructor
  */
-ElementField = function () {
+let ElementField = function () {
     let self = this;
 
     let lock = true;
@@ -3430,7 +3445,7 @@ ElementField = function () {
                 noScale: true,
                 height: DataPoints.BLOCK_HEIGHT,
                 width: DataPoints.BLOCK_WIDTH,
-                backgroundImage: '/images/field-none.png'
+                backgroundImage: 'field-none.png'
             });
             gemDoms[x][y] = dom;
         });
@@ -3445,7 +3460,7 @@ ElementField = function () {
             animDoms.push(GUI.createDom(undefined, {}));
         }
         /** Frame dom */
-        domFrame = GUI.createDom(undefined, {backgroundImage: '/images/field-frame.png'});
+        domFrame = GUI.createDom(undefined, {backgroundImage: 'field-frame.png'});
 
         GUI.popParent();
 
@@ -4257,7 +4272,7 @@ ElementField = function () {
  * Элемент панель друзей.
  * @constructor
  */
-ElementFriendsPanel = function () {
+let ElementFriendsPanel = function () {
     let self = this;
 
     /**
@@ -4373,7 +4388,7 @@ ElementFriendsPanel = function () {
                 card.backgroundImage = friends[i].photo50;
                 card.pointer = GUI.POINTER_ARROW;
             } else {
-                card.backgroundImage = '/images/friend-vacancy.png';
+                card.backgroundImage = 'friend-vacancy.png';
                 card.pointer = GUI.POINTER_HAND;
             }
             card.redraw();
@@ -4402,7 +4417,7 @@ ElementFriendsPanel = function () {
  * width : number ширина поля
  * height : number высота поля
  */
-ElementHealthTimer = function () {
+let ElementHealthTimer = function () {
     let self = this;
 
     /**
@@ -4517,7 +4532,7 @@ if(window["ElementHealthTimer"] !== undefined){window["ElementHealthTimer"].__pa
  * Элемент индикатор сердец.
  * @constructor
  */
-ElementHealthIndicator = function () {
+let ElementHealthIndicator = function () {
     let self = this;
 
     /**
@@ -4554,7 +4569,7 @@ ElementHealthIndicator = function () {
         for (let i = 0; i < 5; i++) {
             dom = GUI.createDom(null, {
                 x: this.x + i * step, y: this.y - 2,
-                width: width, height: height, backgroundImage: '/images/health-heart.png'
+                width: width, height: height, backgroundImage: 'health-heart.png'
             });
             doms.push(dom);
         }
@@ -4614,7 +4629,7 @@ ElementHealthIndicator = function () {
  * Элемент картинки.
  * @constructor
  */
-ElementImage = function () {
+let ElementImage = function () {
     let self = this;
 
     /**
@@ -4651,7 +4666,7 @@ ElementImage = function () {
      * Ссылка на картинку.
      * @type {string}
      */
-    this.src = '/images/not-found.png';
+    this.src = 'not-found.png';
 
     /**
      * Прозрачность картинки.
@@ -4730,7 +4745,7 @@ ElementImage = function () {
  * Элемент панель целей.
  * @constructor
  */
-ElementPanelItems = function () {
+let ElementPanelItems = function () {
     let self = this;
 
     /**
@@ -4771,9 +4786,9 @@ ElementPanelItems = function () {
      */
     this.init = function () {
         let el;
-        elPanel1 = GUI.createElement(ElementImage, {x: self.x, y: self.y, src: '/images/panel-goals-1.png'});
-        elPanel2 = GUI.createElement(ElementImage, {x: self.x, y: self.y, src: '/images/panel-goals-2.png'});
-        elPanel3 = GUI.createElement(ElementImage, {x: self.x, y: self.y, src: '/images/panel-goals-3.png'});
+        elPanel1 = GUI.createElement(ElementImage, {x: self.x, y: self.y, src: 'panel-goals-1.png'});
+        elPanel2 = GUI.createElement(ElementImage, {x: self.x, y: self.y, src: 'panel-goals-2.png'});
+        elPanel3 = GUI.createElement(ElementImage, {x: self.x, y: self.y, src: 'panel-goals-3.png'});
         /** Текст : заголовок */
         elTitle = GUI.createElement(ElementText, {x: self.x + 15, y: self.y + 7, width: 80, text: self.title, fontSize: self.fontSize});
 
@@ -4876,7 +4891,7 @@ ElementPanelItems = function () {
  * @property x
  * @property y
  */
-ElementPoint = function () {
+let ElementPoint = function () {
     let self = this;
 
     /**
@@ -4903,22 +4918,22 @@ ElementPoint = function () {
      * Ссылка на картинку при наведении фокуса(мыши).
      * @type {string}
      */
-    this.srcGrey = '/images/map-way-point-grey.png';
+    this.srcGrey = 'map-way-point-grey.png';
 
     /**
      * Ссылка на картинку при активации кнопки(клике).
      * @type {string}
      */
-    this.srcRed = '/images/map-way-point-red.png';
+    this.srcRed = 'map-way-point-red.png';
 
     /**
      * Ссылка на картинку в покое(ожидании/бездействии).
      * @type {string}
      */
-    this.srcYellow = '/images/map-way-point-yellow.png';
+    this.srcYellow = 'map-way-point-yellow.png';
 
-    this.srcStarOff = '/images/star-off.png';
-    this.srcStarOn = '/images/star-on.png';
+    this.srcStarOff = 'star-off.png';
+    this.srcStarOn = 'star-on.png';
 
     /**
      * Будет вызываться при нажатии на кнопку.
@@ -5238,7 +5253,7 @@ if(window["ElementPoint"] !== undefined){window["ElementPoint"].__path="../clien
  * Element Sprite.
  * @constructor
  */
-ElementSprite = function () {
+let ElementSprite = function () {
     let self = this;
 
     /**
@@ -5275,7 +5290,7 @@ ElementSprite = function () {
      * Ссылка на картинку.
      * @type {string}
      */
-    this.src = '/images/not-found.png';
+    this.src = 'not-found.png';
 
     /**
      * Прозрачность картинки.
@@ -5358,7 +5373,7 @@ if(window["ElementSprite"] !== undefined){window["ElementSprite"].__path="../cli
  * @property srcActive
  *
  */
-ElementStuffButton = function () {
+let ElementStuffButton = function () {
     let self = this;
 
     /**
@@ -5569,7 +5584,7 @@ ElementStuffButton = function () {
  * fontSize: string размер шрифта, 21 по умолчанию
  * alignCenter : bool
  */
-ElementText = function () {
+let ElementText = function () {
     let self = this;
 
     /**
@@ -5750,7 +5765,7 @@ if(window["ElementText"] !== undefined){window["ElementText"].__path="../client/
  * Элемент фото пользователя и очки
  * @constructor
  */
-ElementUserScorePhoto = function () {
+let ElementUserScorePhoto = function () {
     let self = this;
 
     /**
@@ -5835,7 +5850,7 @@ ElementUserScorePhoto = function () {
 };if(window["ElementUserScorePhoto"] !== undefined){window["ElementUserScorePhoto"].__path="../client/components/application/gui_elements/ElementUserScorePhoto.js"};
 
 /** ../client/components/application/logic/LogicField.js */
-LogicField = function () {
+let LogicField = function () {
     let self = this;
 
     let cells = null;
@@ -6305,7 +6320,7 @@ LogicField = new LogicField;
 Field = LogicField;if(window["LogicField"] !== undefined){window["LogicField"].__path="../client/components/application/logic/LogicField.js"};
 
 /** components/application/logic/LogicHealth.js */
-LogicHealth = function () {
+let LogicHealth = function () {
 
     let getTime = function () {
         return typeof LogicTimeClient !== 'undefined' ?
@@ -6367,15 +6382,23 @@ LogicHealth = function () {
 };
 
 /** @type {LogicHealth} */
-LogicHealth = new LogicHealth();if(window["LogicHealth"] !== undefined){window["LogicHealth"].__path="components/application/logic/LogicHealth.js"};
+LogicHealth = new LogicHealth();
+
+
+/** Для кросс-сайдных компонент */
+if (CONST_IS_SERVER_SIDE) {
+    global['LogicHealth'] = LogicHealth;
+}if(window["LogicHealth"] !== undefined){window["LogicHealth"].__path="components/application/logic/LogicHealth.js"};
 
 /** ../client/components/application/logic/LogicMain.js */
-LogicMain = function () {
+let LogicMain = function () {
 
     this.main = function () {
         /**@todo show preloader */
         Logs.init(function () {
         });
+
+        DataPoints.init();
 
         /** init some components */
         SocNet.init();
@@ -6439,7 +6462,7 @@ LogicMain = function () {
 if(window["LogicMain"] !== undefined){window["LogicMain"].__path="../client/components/application/logic/LogicMain.js"};
 
 /** ../client/components/application/logic/LogicMap.js */
-LogicMap = function () {
+let LogicMap = function () {
     let self = this;
 
     this.onArrowPrevClick = function () {
@@ -6461,7 +6484,7 @@ LogicMap = new LogicMap();
 if(window["LogicMap"] !== undefined){window["LogicMap"].__path="../client/components/application/logic/LogicMap.js"};
 
 /** ../client/components/application/logic/LogicStuff.js */
-LogicStuff = function () {
+let LogicStuff = function () {
     let self = this;
 
     let stuff = {};
@@ -6535,7 +6558,7 @@ LogicStuff = new LogicStuff();
 if(window["LogicStuff"] !== undefined){window["LogicStuff"].__path="../client/components/application/logic/LogicStuff.js"};
 
 /** ../client/components/application/logic/LogicTimeClient.js */
-LogicTimeClient = function () {
+let LogicTimeClient = function () {
 
     /**
      * Server time
@@ -6579,7 +6602,7 @@ LogicTimeClient = function () {
 LogicTimeClient = new LogicTimeClient();if(window["LogicTimeClient"] !== undefined){window["LogicTimeClient"].__path="../client/components/application/logic/LogicTimeClient.js"};
 
 /** ../client/components/application/logic/LogicUser.js */
-LogicUser = function () {
+let LogicUser = function () {
     let self = this;
 
     /**
@@ -6847,7 +6870,7 @@ LogicUser = new LogicUser();
 LU = LogicUser;if(window["LogicUser"] !== undefined){window["LogicUser"].__path="../client/components/application/logic/LogicUser.js"};
 
 /** ../client/components/application/logic/LogicWizard.js */
-LogicWizard = function LogicWizard() {
+let LogicWizard = function LogicWizard() {
     let self = this;
 
     let dymmyFunc = function () {
@@ -6914,7 +6937,7 @@ LogicWizard = new LogicWizard();if(window["LogicWizard"] !== undefined){window["
  * Страница бэкграудна.
  * @constructor
  */
-PageBlockBackground = function PageBlockBackground() {
+let PageBlockBackground = function PageBlockBackground() {
     let self = this;
 
     /**
@@ -6936,7 +6959,7 @@ PageBlockBackground = function PageBlockBackground() {
         el = GUI.createElement(ElementImage, {
             x: -15,
             y: -15,
-            src: '/images/fs-frame.png'
+            src: 'fs-frame.png'
         });
         self.elements.push(el);
 
@@ -6944,7 +6967,7 @@ PageBlockBackground = function PageBlockBackground() {
         el = GUI.createElement(ElementImage, {
             x: 0,
             y: 0,
-            src: '/images/old-paper.png'
+            src: 'old-paper.png'
         });
         self.elements.push(el);
 
@@ -6997,7 +7020,7 @@ PageBlockBackground = function PageBlockBackground() {
         let elBody, backgroundImage;
         elBody = document.getElementsByTagName('body')[0];
 
-        backgroundImage = "url('" + Images.getPath('/images/old-paper.png') + "')";
+        backgroundImage = "url('" + Images.getPath('old-paper.png') + "')";
 
         elBody.style.backgroundImage = backgroundImage;
         //elBody.style.backgroundSize = "777px 500px";
@@ -7015,7 +7038,7 @@ PageBlockBackground = new PageBlockBackground();if(window["PageBlockBackground"]
  * Страница с игровым полем
  * @constructor
  */
-PageBlockField = function PageBlockField() {
+let PageBlockField = function PageBlockField() {
     let self = this;
 
     /**
@@ -7086,9 +7109,9 @@ PageBlockField = function PageBlockField() {
         /** Кнопка выхода */
         el = GUI.createElement(ElementButton, {
             x: 730, y: 10,
-            srcRest: '/images/button-quit-rest.png',
-            srcHover: '/images/button-quit-hover.png',
-            srcActive: '/images/button-quit-active.png',
+            srcRest: 'button-quit-rest.png',
+            srcHover: 'button-quit-hover.png',
+            srcActive: 'button-quit-active.png',
             onClick: function () {
                 if (turns === 0) {
                     PBZDialogs.dialogTurnsLoose.reset();
@@ -7106,7 +7129,7 @@ PageBlockField = function PageBlockField() {
             oX = 635;
             oY = 65 + 30;
             /** Панель */
-            el = GUI.createElement(ElementImage, {x: oX, y: oY, src: '/images/panel-turns.png'});
+            el = GUI.createElement(ElementImage, {x: oX, y: oY, src: 'panel-turns.png'});
             self.elements.push(el);
             /** Надпись */
             el = GUI.createElement(ElementText, {x: oX, y: oY + 6, width: 112, text: 'УРОВЕНЬ', alignCenter: true});
@@ -7123,7 +7146,7 @@ PageBlockField = function PageBlockField() {
             /** Панель */
             oX = 15;
             oY = 160;
-            el = GUI.createElement(ElementImage, {x: oX, y: oY, src: '/images/panel-score.png'});
+            el = GUI.createElement(ElementImage, {x: oX, y: oY, src: 'panel-score.png'});
             self.elements.push(el);
             /** Надпись */
             el = GUI.createElement(ElementText, {x: oX, y: oY + 6, width: 112, text: 'ОЧКИ', alignCenter: true});
@@ -7149,7 +7172,7 @@ PageBlockField = function PageBlockField() {
             oX = 15;
             oY = 65+10;
             /** Панель */
-            el = GUI.createElement(ElementImage, {x: oX, y: oY, src: '/images/panel-turns.png'});
+            el = GUI.createElement(ElementImage, {x: oX, y: oY, src: 'panel-turns.png'});
             self.elements.push(el);
             /** Надпись */
             el = GUI.createElement(ElementText, {x: oX, y: oY + 6, width: 112, text: 'ХОДЫ', alignCenter: true, fontSize5: 18});
@@ -7174,9 +7197,9 @@ PageBlockField = function PageBlockField() {
         el = GUI.createElement(ElementStuffButton, {
             x: 650, y: oY,
             fieldName: 'hummerQty',
-            srcRest: '/images/button-hummer-rest.png',
-            srcHover: '/images/button-hummer-hover.png',
-            srcActive: '/images/button-hummer-active.png',
+            srcRest: 'button-hummer-rest.png',
+            srcHover: 'button-hummer-hover.png',
+            srcActive: 'button-hummer-active.png',
             onClick: function () {
                 self.setStuffMode(LogicStuff.STUFF_HUMMER);
             }
@@ -7187,9 +7210,9 @@ PageBlockField = function PageBlockField() {
         el = GUI.createElement(ElementStuffButton, {
             x: 650, y: oY + 80,
             fieldName: 'lightningQty',
-            srcRest: '/images/button-lightning-rest.png',
-            srcHover: '/images/button-lightning-hover.png',
-            srcActive: '/images/button-lightning-active.png',
+            srcRest: 'button-lightning-rest.png',
+            srcHover: 'button-lightning-hover.png',
+            srcActive: 'button-lightning-active.png',
             onClick: function () {
                 self.setStuffMode(LogicStuff.STUFF_LIGHTNING);
             }
@@ -7200,9 +7223,9 @@ PageBlockField = function PageBlockField() {
         el = GUI.createElement(ElementStuffButton, {
             x: 650, y: oY + 80 * 2,
             fieldName: 'shuffleQty',
-            srcRest: '/images/button-shuffle-rest.png',
-            srcHover: '/images/button-shuffle-hover.png',
-            srcActive: '/images/button-shuffle-active.png',
+            srcRest: 'button-shuffle-rest.png',
+            srcHover: 'button-shuffle-hover.png',
+            srcActive: 'button-shuffle-active.png',
             onClick: function () {
                 self.setStuffMode(LogicStuff.STUFF_SHUFFLE);
             }
@@ -7212,9 +7235,9 @@ PageBlockField = function PageBlockField() {
         /** Кнопка обновить поле, для админов */
         buttonReloadField = GUI.createElement(ElementButton, {
             x: 312, y: 5, width: 25, height: 25,
-            srcRest: '/images/button-reload-field-rest.png',
-            srcHover: '/images/button-reload-field-hover.png',
-            srcActive: '/images/button-reload-field-active.png',
+            srcRest: 'button-reload-field-rest.png',
+            srcHover: 'button-reload-field-hover.png',
+            srcActive: 'button-reload-field-active.png',
             onClick: function () {
                 AnimLocker.lock();
 
@@ -7232,22 +7255,22 @@ PageBlockField = function PageBlockField() {
         /** Кнопка обновить поле, для админов */
         buttonChangeSpeed = GUI.createElement(ElementButton, {
             x: 312 + 30, y: 5, width: 25, height: 25,
-            srcRest: '/images/field-red.png',
-            srcHover: '/images/field-red.png',
-            srcActive: '/images/field-red.png',
+            srcRest: 'field-red.png',
+            srcHover: 'field-red.png',
+            srcActive: 'field-red.png',
             onClick: function () {
                 let standard = 1;
                 switch (Config.OnIdle.animStep) {
                     case standard * 5:
-                        buttonChangeSpeed.srcRest = '/images/field-yellow.png';
+                        buttonChangeSpeed.srcRest = 'field-yellow.png';
                         Config.OnIdle.animStep = standard;
                         break;
                     case standard :
-                        buttonChangeSpeed.srcRest = '/images/field-red.png';
+                        buttonChangeSpeed.srcRest = 'field-red.png';
                         Config.OnIdle.animStep = standard / 5;
                         break;
                     case standard / 5:
-                        buttonChangeSpeed.srcRest = '/images/field-green.png';
+                        buttonChangeSpeed.srcRest = 'field-green.png';
                         Config.OnIdle.animStep = standard * 5;
                         break;
                     default:
@@ -7364,12 +7387,12 @@ PageBlockField = function PageBlockField() {
         if (!showed) return;
 
         let countStars = DataPoints.countStars(null, null, score);
-        elStar1.backgroundImage = '/images/star-off-middle.png';
-        elStar2.backgroundImage = '/images/star-off-middle.png';
-        elStar3.backgroundImage = '/images/star-off-middle.png';
-        if (countStars >= 1) elStar1.backgroundImage = '/images/star-on-middle.png';
-        if (countStars >= 2) elStar2.backgroundImage = '/images/star-on-middle.png';
-        if (countStars >= 3) elStar3.backgroundImage = '/images/star-on-middle.png';
+        elStar1.backgroundImage = 'star-off-middle.png';
+        elStar2.backgroundImage = 'star-off-middle.png';
+        elStar3.backgroundImage = 'star-off-middle.png';
+        if (countStars >= 1) elStar1.backgroundImage = 'star-on-middle.png';
+        if (countStars >= 2) elStar2.backgroundImage = 'star-on-middle.png';
+        if (countStars >= 3) elStar3.backgroundImage = 'star-on-middle.png';
 
         elScore.setText(score.toString());
         elTurns.setText(turns.toString());
@@ -7510,21 +7533,21 @@ PageBlockField = function PageBlockField() {
                     PBZDialogs.dialogStuffShop.showDialog(mode);
                     return;
                 }
-                domStuff.backgroundImage = '/images/button-hummer-active.png';
+                domStuff.backgroundImage = 'button-hummer-active.png';
                 break;
             case LogicStuff.STUFF_LIGHTNING:
                 if (LogicStuff.getStuff('lightningQty') < 1) {
                     PBZDialogs.dialogStuffShop.showDialog(mode);
                     return;
                 }
-                domStuff.backgroundImage = '/images/button-lightning-active.png';
+                domStuff.backgroundImage = 'button-lightning-active.png';
                 break;
             case LogicStuff.STUFF_SHUFFLE:
                 if (LogicStuff.getStuff('shuffleQty') < 1) {
                     PBZDialogs.dialogStuffShop.showDialog(mode);
                     return;
                 }
-                domStuff.backgroundImage = '/images/button-shuffle-active.png';
+                domStuff.backgroundImage = 'button-shuffle-active.png';
                 break;
         }
         stuffMode = mode;
@@ -7560,7 +7583,7 @@ PageBlockField = new PageBlockField;if(window["PageBlockField"] !== undefined){w
  * Основной блок страницы игры.
  * @constructor
  */
-PageBlockMaps = function PageBlockMaps() {
+let PageBlockMaps = function PageBlockMaps() {
     let self = this;
 
     /**
@@ -7617,15 +7640,15 @@ PageBlockMaps = function PageBlockMaps() {
         let el;
 
         //@todo preloader
-        elPreloader = GUI.createElement(ElementImage, {x: 0, y: 0, width: 777, height: 500, src: '/images/not-found.png'});
+        elPreloader = GUI.createElement(ElementImage, {x: 0, y: 0, width: 777, height: 500, src: 'not-found.png'});
 
-        elOldPaper = GUI.createElement(ElementImage, {x: 0, y: 0, width: 777, height: 500, src: '/images/old-paper.png'});
+        elOldPaper = GUI.createElement(ElementImage, {x: 0, y: 0, width: 777, height: 500, src: 'old-paper.png'});
         self.elements.push(elOldPaper);
 
-        elMapWay = GUI.createElement(ElementImage, {x: 0, y: 0, width: 777, height: 500, src: '/images/way-line.png'});
+        elMapWay = GUI.createElement(ElementImage, {x: 0, y: 0, width: 777, height: 500, src: 'way-line.png'});
         self.elements.push(elMapWay);
 
-        elMap = GUI.createElement(ElementImage, {x: 0, y: 0, width: 777, height: 500, src: '/images/map-001.png'});
+        elMap = GUI.createElement(ElementImage, {x: 0, y: 0, width: 777, height: 500, src: 'map-001.png'});
         self.elements.push(elMap);
 
         /**
@@ -7633,24 +7656,24 @@ PageBlockMaps = function PageBlockMaps() {
          - 2 on showMap(1) -> set Map picture, show elements on current map
          */
 
-        elArrowHint = GUI.createElement(ElementImage, {x: 0, y: 0, width: 50, height: 50, p: {}, src: '/images/hint-arrow.png'});
+        elArrowHint = GUI.createElement(ElementImage, {x: 0, y: 0, width: 50, height: 50, p: {}, src: 'hint-arrow.png'});
         self.elements.push(elArrowHint);
         Animate.anim(animHintArrow, {}, elArrowHint);
 
         elArrowPrev = GUI.createElement(ElementButton, {
             x: 0, y: pArrowNext.y,
-            srcRest: '/images/map-arrow-left-rest.png',
-            srcHover: '/images/map-arrow-left-hover.png',
-            srcActive: '/images/map-arrow-left-active.png',
+            srcRest: 'map-arrow-left-rest.png',
+            srcHover: 'map-arrow-left-hover.png',
+            srcActive: 'map-arrow-left-active.png',
             onClick: LogicMap.onArrowPrevClick
         });
         self.elements.push(elArrowPrev);
 
         elArrowNext = GUI.createElement(ElementButton, {
             x: pArrowNext.x, y: pArrowNext.y,
-            srcRest: '/images/map-arrow-right-rest.png',
-            srcHover: '/images/map-arrow-right-hover.png',
-            srcActive: '/images/map-arrow-right-active.png',
+            srcRest: 'map-arrow-right-rest.png',
+            srcHover: 'map-arrow-right-hover.png',
+            srcActive: 'map-arrow-right-active.png',
             onClick: LogicMap.onArrowNextClick
         });
         self.elements.push(elArrowNext);
@@ -7714,20 +7737,20 @@ PageBlockMaps = function PageBlockMaps() {
 
         el = GUI.createElement(ElementButton, {
             x: 165, y: 438,
-            srcRest: '/images/button-add-rest.png',
-            srcHover: '/images/button-add-hover.png',
-            srcActive: '/images/button-add-active.png',
+            srcRest: 'button-add-rest.png',
+            srcHover: 'button-add-hover.png',
+            srcActive: 'button-add-active.png',
             onClick: function () {
                 SocNet.openInviteFriendDialog();
             }
         });
         self.elements.push(el);
 
-        el = GUI.createElement(ElementImage, {x: 650, y: 370, opacity: 0.7, src: '/images/wind-rose.png'});
+        el = GUI.createElement(ElementImage, {x: 650, y: 370, opacity: 0.7, src: 'wind-rose.png'});
         self.elements.push(el);
 
         //@todo preloader
-        domLoader = GUI.createDom(undefined, {x: 0, y: 0, backgroundImage: '/images/not-found.png'});
+        domLoader = GUI.createDom(undefined, {x: 0, y: 0, backgroundImage: 'not-found.png'});
     };
 
     /**
@@ -7772,14 +7795,14 @@ PageBlockMaps = function PageBlockMaps() {
         lastPointId = DataMap.getLastPointId();
         if (nextPointId >= firstPointId && nextPointId <= lastPointId) {
             let p = DataPoints.getPointsCoords()[DataMap.getNumberFromPointId(nextPointId) - 1];
-            elArrowHint.src = '/images/hint-arrow.png';
+            elArrowHint.src = 'hint-arrow.png';
             elArrowHint.p = p;
             elArrowHint.show();
         } else {
             if (nextPointId > lastPointId) {
                 elArrowHint.show();
                 elArrowHint.p = pArrowNext;
-                elArrowHint.src = '/images/map-arrow-right-rest.png';
+                elArrowHint.src = 'map-arrow-right-rest.png';
             } else {
                 elArrowHint.hide();
             }
@@ -7963,7 +7986,7 @@ PageBlockMaps = new PageBlockMaps;if(window["PageBlockMaps"] !== undefined){wind
  * Блок общих.
  * @constructor
  */
-PageBlockPanel = function PageBlockPanel() {
+let PageBlockPanel = function PageBlockPanel() {
     let self = this;
 
     /**
@@ -7992,15 +8015,15 @@ PageBlockPanel = function PageBlockPanel() {
          * @type {number}
          */
         pMX = 110;//110 идеальный уентр
-        el = GUI.createElement(ElementImage, {x: pMX, y: 0, src: '/images/panel-money.png'});
+        el = GUI.createElement(ElementImage, {x: pMX, y: 0, src: 'panel-money.png'});
         self.elements.push(el);
 
         /** Деньги - монета */
         el = GUI.createElement(ElementButton, {
             x: pMX + 5, y: -3,
-            srcRest: '/images/button-money-rest.png',
-            srcHover: '/images/button-money-hover.png',
-            srcActive: '/images/button-money-active.png',
+            srcRest: 'button-money-rest.png',
+            srcHover: 'button-money-hover.png',
+            srcActive: 'button-money-active.png',
             onClick: function () {
                 PBZDialogs.dialogMoneyShop.showDialog();
             }
@@ -8016,9 +8039,9 @@ PageBlockPanel = function PageBlockPanel() {
         /** Деньги кнопка плюс */
         el = GUI.createElement(ElementButton, {
             x: pMX + 122, y: -3,
-            srcRest: '/images/button-add-rest.png',
-            srcHover: '/images/button-add-hover.png',
-            srcActive: '/images/button-add-active.png',
+            srcRest: 'button-add-rest.png',
+            srcHover: 'button-add-hover.png',
+            srcActive: 'button-add-active.png',
             onClick: function () {
                 PBZDialogs.dialogMoneyShop.showDialog();
             }
@@ -8031,7 +8054,7 @@ PageBlockPanel = function PageBlockPanel() {
          */
         pHX = 463 - 15 - 50; //463 идеальный центр
         /** Жизни - панель */
-        el = GUI.createElement(ElementImage, {x: pHX, y: 0, src: '/images/panel-hearth.png'});
+        el = GUI.createElement(ElementImage, {x: pHX, y: 0, src: 'panel-hearth.png'});
         self.elements.push(el);
 
         /** Жизни - сердца */
@@ -8045,9 +8068,9 @@ PageBlockPanel = function PageBlockPanel() {
         /** Жизни - кнопка плюс */
         el = GUI.createElement(ElementButton, {
             x: pHX + 190, y: -4,
-            srcRest: '/images/button-add-rest.png',
-            srcHover: '/images/button-add-hover.png',
-            srcActive: '/images/button-add-active.png',
+            srcRest: 'button-add-rest.png',
+            srcHover: 'button-add-hover.png',
+            srcActive: 'button-add-active.png',
             onClick: function () {
                 PBZDialogs.dialogHealthShop.showDialog();
             }
@@ -8057,9 +8080,9 @@ PageBlockPanel = function PageBlockPanel() {
         /** Кнопка звука **/
         elSoundsButton = GUI.createElement(ElementButton, {
             x: 650, y: 10,
-            srcRest: '/images/button-sound-off.png',
-            srcHover: '/images/button-sound-active.png',
-            srcActive: '/images/button-sound-active.png',
+            srcRest: 'button-sound-off.png',
+            srcHover: 'button-sound-active.png',
+            srcActive: 'button-sound-active.png',
             onClick: function () {
                 Sounds.toggle();
                 Sounds.play(Sounds.PATH_CHALK);
@@ -8071,9 +8094,9 @@ PageBlockPanel = function PageBlockPanel() {
         /** Кнопка фулскрин **/
         elFSButton = GUI.createElement(ElementButton, {
             x: 690, y: 10,
-            srcRest: '/images/button-fs-on-rest.png',
-            srcHover: '/images/button-fs-on-hover.png',
-            srcActive: '/images/button-fs-on-active.png',
+            srcRest: 'button-fs-on-rest.png',
+            srcHover: 'button-fs-on-hover.png',
+            srcActive: 'button-fs-on-active.png',
             onClick: onFullScreenButtonClick
         });
         self.elements.push(elFSButton);
@@ -8108,9 +8131,9 @@ PageBlockPanel = function PageBlockPanel() {
      */
     this.preset = function () {
         if (Sounds.isEnabled()) {
-            elSoundsButton.srcRest = '/images/button-sound-on.png';
+            elSoundsButton.srcRest = 'button-sound-on.png';
         } else {
-            elSoundsButton.srcRest = '/images/button-sound-off.png';
+            elSoundsButton.srcRest = 'button-sound-off.png';
         }
         if (LogicStuff.getStuff().goldQty !== undefined) {
             moneyText.setText(LogicStuff.getStuff('goldQty'))
@@ -8131,13 +8154,13 @@ PageBlockPanel = function PageBlockPanel() {
     let onFullScreenButtonClick = function () {
         GUI.fsSwitch();
         if (GUI.isFullScreen()) {
-            elFSButton.srcRest = '/images/button-fs-on-rest.png';
-            elFSButton.srcHover = '/images/button-fs-on-rest.png';
-            elFSButton.srcActive = '/images/button-fs-on-rest.png';
+            elFSButton.srcRest = 'button-fs-on-rest.png';
+            elFSButton.srcHover = 'button-fs-on-rest.png';
+            elFSButton.srcActive = 'button-fs-on-rest.png';
         } else {
-            elFSButton.srcRest = '/images/button-fs-off-rest.png';
-            elFSButton.srcHover = '/images/button-fs-off-rest.png';
-            elFSButton.srcActive = '/images/button-fs-off-rest.png';
+            elFSButton.srcRest = 'button-fs-off-rest.png';
+            elFSButton.srcHover = 'button-fs-off-rest.png';
+            elFSButton.srcActive = 'button-fs-off-rest.png';
         }
     };
 
@@ -8152,7 +8175,7 @@ PageBlockPanel = new PageBlockPanel();if(window["PageBlockPanel"] !== undefined)
  * Блок Визарда
  * @constructor
  */
-PageBlockWizard = function PageBlockWizard() {
+let PageBlockWizard = function PageBlockWizard() {
     let self = this;
 
     /**
@@ -8233,15 +8256,15 @@ PageBlockWizard = function PageBlockWizard() {
         //canvas.onmousemove = proccesEvent;
 
         elDialog = GUI.createElement(ElementImage, {
-            x: 400, y: 360, src: '/images/wizard-dialog.png'
+            x: 400, y: 360, src: 'wizard-dialog.png'
         });
         elDialog.dom.__dom.style.zIndex = 20000;
         elDialog.hide();
 
         elText = GUI.createElement(ElementText, {
             x: 400 + dialogBorder, y: 360 + dialogBorder,
-            width: Images.getWidth('/images/wizard-dialog.png') - dialogBorder * 2,
-            height: Images.getHeight('/images/wizard-dialog.png'),
+            width: Images.getWidth('wizard-dialog.png') - dialogBorder * 2,
+            height: Images.getHeight('wizard-dialog.png'),
             alignCenter: true, zIndex: 20001,
             text: 'text'
         });
@@ -8417,12 +8440,12 @@ PageBlockWizard = function PageBlockWizard() {
 
         pList.forEach(function (p) {
             if (p.unlock) {
-                unlockByImg('/images/wizard-diamond-cell.png',
+                unlockByImg('wizard-diamond-cell.png',
                     coords.x + DataPoints.BLOCK_WIDTH * p.x,
                     coords.y + DataPoints.BLOCK_HEIGHT * (p.y + 1)
                 );
             } else {
-                showByImg('/images/wizard-diamond-cell.png',
+                showByImg('wizard-diamond-cell.png',
                     coords.x + DataPoints.BLOCK_WIDTH * p.x,
                     coords.y + DataPoints.BLOCK_HEIGHT * (p.y + 1)
                 );
@@ -8445,7 +8468,7 @@ PBWizard = PageBlockWizard;if(window["PageBlockWizard"] !== undefined){window["P
  * Блок диалогов
  * @constructor
  */
-PageBlockZDialogs = function PageBlockZDialogs() {
+let PageBlockZDialogs = function PageBlockZDialogs() {
     let self = this;
 
     /**
@@ -8574,7 +8597,7 @@ PageBlockZDialogs = new PageBlockZDialogs();
 PBZDialogs = PageBlockZDialogs;if(window["PageBlockZDialogs"] !== undefined){window["PageBlockZDialogs"].__path="../client/components/application/page_blocks/PageBlockZDialogs.js"};
 
 /** ../client/components/application/pages/PageField.js */
-PageField = function () {
+let PageField = function () {
     let self = this;
     this.blocks = [];
 
@@ -8590,7 +8613,7 @@ PageField = function () {
 PageField = new PageField;if(window["PageField"] !== undefined){window["PageField"].__path="../client/components/application/pages/PageField.js"};
 
 /** ../client/components/application/pages/PageMain.js */
-PageMain = function () {
+let PageMain = function () {
     let self = this;
     this.blocks = [];
 
@@ -8607,18 +8630,18 @@ PageMain = function () {
 PageMain = new PageMain;if(window["PageMain"] !== undefined){window["PageMain"].__path="../client/components/application/pages/PageMain.js"};
 
 /** ../client/components/application/wizards/WizardFirst.js */
-WizardFirstStart_1 = {
+let WizardFirstStart_1 = {
 
     init: function () {
         PBWizard.begin();
         PBWizard.updateText('Нажми на красный кружок, что бы начать играть.');
         PBWizard.showDialog(400, 360, 2);
         let pnt = DataPoints.getPointsCoords()[0];
-        PBWizard.unlockByImg('/images/wizard-point-circle.png',
-            pnt.x - Images.getWidth('/images/wizard-point-circle.png') / 2
-            + Images.getWidth('/images/map-way-point-red.png') / 2,
-            pnt.y - Images.getHeight('/images/wizard-point-circle.png') / 2
-            + Images.getHeight('/images/map-way-point-red.png') / 2,
+        PBWizard.unlockByImg('wizard-point-circle.png',
+            pnt.x - Images.getWidth('wizard-point-circle.png') / 2
+            + Images.getWidth('map-way-point-red.png') / 2,
+            pnt.y - Images.getHeight('wizard-point-circle.png') / 2
+            + Images.getHeight('map-way-point-red.png') / 2,
         );
     },
 
@@ -8641,8 +8664,8 @@ WizardFirstStart_2 = {
         if (WizardFirstStart_2.dialogCounter > 1) return;
         PBWizard.updateText('Нажми кнопку играть.');
         PBWizard.showDialog(400, 380, 1);
-        PBWizard.unlockByImg('/images/wizard-button.png',
-            390 - Images.getWidth('/images/wizard-button.png') / 2,
+        PBWizard.unlockByImg('wizard-button.png',
+            390 - Images.getWidth('wizard-button.png') / 2,
             80 + 240 + 8,
         );
     },
@@ -8696,7 +8719,7 @@ WizardFirstStart_4 = {
 };if(window["WizardFirst"] !== undefined){window["WizardFirst"].__path="../client/components/application/wizards/WizardFirst.js"};
 
 /** ../client/components/application/wizards/WizardLevel_12.js */
-WizardLevel12_1 = {
+let WizardLevel12_1 = {
 
     init: function () {
         PBWizard.begin();
@@ -8720,7 +8743,7 @@ WizardLevel12_1 = {
 };if(window["WizardLevel_12"] !== undefined){window["WizardLevel_12"].__path="../client/components/application/wizards/WizardLevel_12.js"};
 
 /** ../client/components/application/wizards/WizardLevel_14.js */
-WizardLevel14_1 = {
+let WizardLevel14_1 = {
 
     init: function () {
         PBWizard.begin();
@@ -8744,7 +8767,7 @@ WizardLevel14_1 = {
 };if(window["WizardLevel_14"] !== undefined){window["WizardLevel_14"].__path="../client/components/application/wizards/WizardLevel_14.js"};
 
 /** ../client/components/application/wizards/WizardLevel_2.js */
-WizardLevel2_1 = {
+let WizardLevel2_1 = {
 
     init: function () {
         PBWizard.begin();
@@ -8797,7 +8820,7 @@ WizardLevel2_2 = {
 if(window["WizardLevel_2"] !== undefined){window["WizardLevel_2"].__path="../client/components/application/wizards/WizardLevel_2.js"};
 
 /** ../client/components/application/wizards/WizardLevel_23.js */
-WizardLevel23_1 = {
+let WizardLevel23_1 = {
 
     init: function () {
         PBWizard.begin();
@@ -8822,7 +8845,7 @@ WizardLevel23_1 = {
 };if(window["WizardLevel_23"] !== undefined){window["WizardLevel_23"].__path="../client/components/application/wizards/WizardLevel_23.js"};
 
 /** ../client/components/application/wizards/WizardLevel_3.js */
-WizardLevel3_1 = {
+let WizardLevel3_1 = {
 
     init: function () {
         PBWizard.begin();
@@ -8870,7 +8893,7 @@ WizardLevel3_2 = {
 if(window["WizardLevel_3"] !== undefined){window["WizardLevel_3"].__path="../client/components/application/wizards/WizardLevel_3.js"};
 
 /** ../client/components/application/wizards/WizardLevel_4.js */
-WizardLevel_4_1 = {
+let WizardLevel_4_1 = {
 
     init: function () {
         PBWizard.begin();
@@ -8919,7 +8942,7 @@ WizardLevel4_2 = {
 if(window["WizardLevel_4"] !== undefined){window["WizardLevel_4"].__path="../client/components/application/wizards/WizardLevel_4.js"};
 
 /** ../client/components/application/wizards/WizardLevel_41.js */
-WizardLevel_41_1 = {
+let WizardLevel_41_1 = {
 
     init: function () {
         PBWizard.begin();
@@ -8971,7 +8994,7 @@ WizardLevel41_2 = {
 };if(window["WizardLevel_41"] !== undefined){window["WizardLevel_41"].__path="../client/components/application/wizards/WizardLevel_41.js"};
 
 /** ../client/components/application/wizards/WizardLevel_46.js */
-WizardLevel46_1 = {
+let WizardLevel46_1 = {
 
     init: function () {
         PBWizard.begin();
@@ -8995,7 +9018,7 @@ WizardLevel46_1 = {
 };if(window["WizardLevel_46"] !== undefined){window["WizardLevel_46"].__path="../client/components/application/wizards/WizardLevel_46.js"};
 
 /** ../client/components/application/wizards/WizardLevel_51.js */
-WizardLevel51_1 = {
+let WizardLevel51_1 = {
 
     init: function () {
         PBWizard.begin();
@@ -9020,7 +9043,7 @@ WizardLevel51_1 = {
 };if(window["WizardLevel_51"] !== undefined){window["WizardLevel_51"].__path="../client/components/application/wizards/WizardLevel_51.js"};
 
 /** ../client/components/application/wizards/WizardLevel_9.js */
-WizardLevel9_1 = {
+let WizardLevel9_1 = {
 
     init: function () {
         PBWizard.begin();
@@ -9055,7 +9078,7 @@ if (CONST_IS_SERVER_SIDE) {
  * Cross-side component.
  * @constructor
  */
-ApiRouter = new (function () {
+let ApiRouter = new (function () {
     let self = this;
 
     let map;
@@ -9386,7 +9409,12 @@ ApiRouter = new (function () {
             FS.writeFileSync(CONST_DIR_COMPONENTS + 'generated/' + groupName + '.js', code);
         }
     };
-})();if(window["ApiRouter"] !== undefined){window["ApiRouter"].__path="components/base/ApiRouter.js"};
+})();
+
+/** Для кросс-сайдных компонент */
+if (CONST_IS_SERVER_SIDE) {
+    global['ApiRouter'] = ApiRouter;
+}if(window["ApiRouter"] !== undefined){window["ApiRouter"].__path="components/base/ApiRouter.js"};
 
 /** ../client/components/base/GUI.js */
 /**
@@ -9394,7 +9422,7 @@ ApiRouter = new (function () {
  * Все запросы к гуи должны быть реализованы тут. и тут: GUIDom
  * @constructor
  */
-GUI = function () {
+let GUI = function () {
     let self = this;
 
     let isFSMode = false;
@@ -9838,7 +9866,7 @@ GUI.ANIM_TYPE_STOP = 60;if(window["GUI"] !== undefined){window["GUI"].__path="..
  * @property textDecoration {String}
  * @property rotate {Int}
  */
-GUIDom = function () {
+let GUIDom = function () {
     let self = this;
 
     this.__id = ++GUIDom.lastId;
@@ -10319,7 +10347,11 @@ GUIDom = function () {
 GUIDom.lastId = 0;if(window["GUIDom"] !== undefined){window["GUIDom"].__path="../client/components/base/GUIDom.js"};
 
 /** ../client/components/base/Images.js */
-Images = function () {
+/**
+ * @type{Images}
+ * @constructor
+ */
+let Images = function () {
     /**
      * Заранее загруженные картинки, но с timestamp-ом.
      * timestamp вставлять везде сложно, проще сделать это в одном месте.
@@ -10364,7 +10396,7 @@ Images = function () {
     this.getMeta = function (url) {
         /** Абсолютный url, используем без изменений, т.к. это внешний url */
         if (url && url.indexOf('https://') === 0 || url.indexOf('http://') === 0) {
-            notFoundImg.path = '';
+            notFoundImg.path = url;
             return notFoundImg;
         }
         if (!url || !window.imagesData[url]) {
@@ -10391,7 +10423,7 @@ if (CONST_IS_SERVER_SIDE) {
  * Компонент логирования.
  * Клиент-серверный компонент!
  */
-Logs = function () {
+let Logs = function () {
     let self = this;
 
     /**
@@ -10562,10 +10594,14 @@ Logs.CHANNEL_VK_STUFF = 2;
 Logs.CHANNEL_VK_HEALTH = 3;
 
 Logs.depends = [];
-if(window["Logs"] !== undefined){window["Logs"].__path="components/base/Logs.js"};
+
+/** Для кросс-сайдных компонент */
+if (CONST_IS_SERVER_SIDE) {
+    global['Logs'] = Logs;
+}if(window["Logs"] !== undefined){window["Logs"].__path="components/base/Logs.js"};
 
 /** ../client/components/base/OnIdle.js */
-OnIdle = function () {
+let OnIdle = function () {
     let self = this;
 
     this.stack = [];
@@ -10596,7 +10632,7 @@ OnIdle = new OnIdle;if(window["OnIdle"] !== undefined){window["OnIdle"].__path="
  * Page controller
  * @constructor
  */
-PageController = function () {
+let PageController = function () {
     let self = this;
 
     let currentPage;
@@ -10726,7 +10762,7 @@ PageController = new PageController();if(window["PageController"] !== undefined)
  * Dummy.
  * @constructor
  */
-Profiler = function () {
+let Profiler = function () {
     let self = this;
 
     this.start = function (id) {
@@ -10770,7 +10806,7 @@ Profiler = new Profiler();if(window["Profiler"] !== undefined){window["Profiler"
  * @constructor
  */
 
-SocNet = function () {
+let SocNet = function () {
 
     let self = this;
     let socNetTypeId = null;
@@ -10852,7 +10888,7 @@ if(window["SocNet"] !== undefined){window["SocNet"].__path="../client/components
  * @constructor
  */
 
-SocNetStandalone = function () {
+let SocNetStandalone = function () {
 
     this.init = function () {
     };
@@ -10891,27 +10927,27 @@ SocNetStandalone = function () {
 
     this.getUserInfo = function (id, callback) {
         let randomName = [
-            'Кириллов Юрий Валериевич /images/field-barrel.png',
-            'Пахомов Александр Григорьевич /images/field-box.png',
-            'Негода Устин Леонидович /images/field-red.png',
-            'Грабчак Роман Андреевич /images/field-green.png',
-            'Наумов Людвиг Артёмович /images/field-blue.png',
-            'Симонов Игнатий Васильевич /images/field-purple.png',
-            'Харитонов Яромир Александрович /images/field-yellow.png',
-            'Носков Людвиг Романович /images/field-sand.png',
-            'Крюков Марк Романович /images/field-poly-color.png',
-            'Киранов Марат Романович /images/field-gold.png',
-            'Чубайк Николай Викторович /images/field-poly-color.png',
-            'Пушкин Александр Сергеевич /images/field-alpha.png',
-            'Билл Гейтс Ибнабабн /images/field-beta.png',
-            'Стив Джоб Jobs /images/field-gamma.png',
+            'Кириллов Юрий Валериевич field-barrel.png',
+            'Пахомов Александр Григорьевич field-box.png',
+            'Негода Устин Леонидович field-red.png',
+            'Грабчак Роман Андреевич field-green.png',
+            'Наумов Людвиг Артёмович field-blue.png',
+            'Симонов Игнатий Васильевич field-purple.png',
+            'Харитонов Яромир Александрович field-yellow.png',
+            'Носков Людвиг Романович field-sand.png',
+            'Крюков Марк Романович field-poly-color.png',
+            'Киранов Марат Романович field-gold.png',
+            'Чубайк Николай Викторович field-poly-color.png',
+            'Пушкин Александр Сергеевич field-alpha.png',
+            'Билл Гейтс Ибнабабн field-beta.png',
+            'Стив Джоб Jobs field-gamma.png',
         ];
         let info = {};
         if (id === this.getSocNetUserId() && false) {
             info.first_name = 'Админ';
             info.last_name = 'Админов';
-            info.photo_50 = '/images/button-shuffle-rest.png';
-            info.photo_100 = '/images/button-shuffle-rest.png';
+            info.photo_50 = 'button-shuffle-rest.png';
+            info.photo_100 = 'button-shuffle-rest.png';
         } else {
             info.first_name = randomName[id % randomName.length].split(' ')[0];
             info.last_name = randomName[id % randomName.length].split(' ')[1];
@@ -10956,7 +10992,7 @@ SocNetStandalone = new SocNetStandalone();if(window["SocNetStandalone"] !== unde
  * @constructor
  */
 
-SocNetVK = function () {
+let SocNetVK = function () {
 
     let self = this;
     let getParams = {};
@@ -11079,7 +11115,7 @@ SocNetVK = new SocNetVK();
 if(window["SocNetVK"] !== undefined){window["SocNetVK"].__path="../client/components/base/SocNetVK.js"};
 
 /** ../client/components/base/Sounds.js */
-Sounds = function () {
+let Sounds = function () {
     let self = this;
 
     let cache = {};
@@ -11133,7 +11169,7 @@ Sounds = new Sounds;if(window["Sounds"] !== undefined){window["Sounds"].__path="
  * Компонент обеспечивающий соединение с сервером.
  * @constructor
  */
-WebSocketClient = function () {
+let WebSocketClient = function () {
     let self = this;
 
     /**
@@ -11374,8 +11410,8 @@ if(window["config.local.host.tri-base"] !== undefined){window["config.local.host
 /** ../client//run.js */
 window.onload = function () {
     /** Эмуляция совместимости клиентского и серверного кода. */
-    global = window;
-    process = {};
+    let global = window;
+    let process = {};
     process.exit = function () {
         console.log("Unexpected termination of work!");
         document.body.innerHTML = 'server is broken!';

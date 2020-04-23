@@ -24,7 +24,7 @@ let PageBlockBackground = function PageBlockBackground() {
         el = GUI.createElement(ElementImage, {
             x: -15,
             y: -15,
-            src: '/images/fs-frame.png'
+            src: 'fs-frame.png'
         });
         self.elements.push(el);
 
@@ -32,7 +32,7 @@ let PageBlockBackground = function PageBlockBackground() {
         el = GUI.createElement(ElementImage, {
             x: 0,
             y: 0,
-            src: '/images/old-paper.png'
+            src: 'old-paper.png'
         });
         self.elements.push(el);
 
@@ -85,7 +85,7 @@ let PageBlockBackground = function PageBlockBackground() {
         let elBody, backgroundImage;
         elBody = document.getElementsByTagName('body')[0];
 
-        backgroundImage = "url('" + Images.getPath('/images/old-paper.png') + "')";
+        backgroundImage = "url('" + Images.getPath('old-paper.png') + "')";
 
         elBody.style.backgroundImage = backgroundImage;
         //elBody.style.backgroundSize = "777px 500px";

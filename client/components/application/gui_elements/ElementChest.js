@@ -39,8 +39,8 @@ let ElementChest = function () {
      */
     this.height = 0;
 
-    this.srcChestClose = '/images/chest-close.png';
-    this.srcChestOpen = '/images/chest-open.png';
+    this.srcChestClose = 'chest-close.png';
+    this.srcChestOpen = 'chest-open.png';
 
     /**
      * Будет вызываться при нажатии на кнопку.

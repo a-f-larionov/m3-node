@@ -59,15 +59,15 @@ let PageBlockMaps = function PageBlockMaps() {
         let el;
 
         //@todo preloader
-        elPreloader = GUI.createElement(ElementImage, {x: 0, y: 0, width: 777, height: 500, src: '/images/not-found.png'});
+        elPreloader = GUI.createElement(ElementImage, {x: 0, y: 0, width: 777, height: 500, src: 'not-found.png'});
 
-        elOldPaper = GUI.createElement(ElementImage, {x: 0, y: 0, width: 777, height: 500, src: '/images/old-paper.png'});
+        elOldPaper = GUI.createElement(ElementImage, {x: 0, y: 0, width: 777, height: 500, src: 'old-paper.png'});
         self.elements.push(elOldPaper);
 
-        elMapWay = GUI.createElement(ElementImage, {x: 0, y: 0, width: 777, height: 500, src: '/images/way-line.png'});
+        elMapWay = GUI.createElement(ElementImage, {x: 0, y: 0, width: 777, height: 500, src: 'way-line.png'});
         self.elements.push(elMapWay);
 
-        elMap = GUI.createElement(ElementImage, {x: 0, y: 0, width: 777, height: 500, src: '/images/map-001.png'});
+        elMap = GUI.createElement(ElementImage, {x: 0, y: 0, width: 777, height: 500, src: 'map-001.png'});
         self.elements.push(elMap);
 
         /**
@@ -75,24 +75,24 @@ let PageBlockMaps = function PageBlockMaps() {
          - 2 on showMap(1) -> set Map picture, show elements on current map
          */
 
-        elArrowHint = GUI.createElement(ElementImage, {x: 0, y: 0, width: 50, height: 50, p: {}, src: '/images/hint-arrow.png'});
+        elArrowHint = GUI.createElement(ElementImage, {x: 0, y: 0, width: 50, height: 50, p: {}, src: 'hint-arrow.png'});
         self.elements.push(elArrowHint);
         Animate.anim(animHintArrow, {}, elArrowHint);
 
         elArrowPrev = GUI.createElement(ElementButton, {
             x: 0, y: pArrowNext.y,
-            srcRest: '/images/map-arrow-left-rest.png',
-            srcHover: '/images/map-arrow-left-hover.png',
-            srcActive: '/images/map-arrow-left-active.png',
+            srcRest: 'map-arrow-left-rest.png',
+            srcHover: 'map-arrow-left-hover.png',
+            srcActive: 'map-arrow-left-active.png',
             onClick: LogicMap.onArrowPrevClick
         });
         self.elements.push(elArrowPrev);
 
         elArrowNext = GUI.createElement(ElementButton, {
             x: pArrowNext.x, y: pArrowNext.y,
-            srcRest: '/images/map-arrow-right-rest.png',
-            srcHover: '/images/map-arrow-right-hover.png',
-            srcActive: '/images/map-arrow-right-active.png',
+            srcRest: 'map-arrow-right-rest.png',
+            srcHover: 'map-arrow-right-hover.png',
+            srcActive: 'map-arrow-right-active.png',
             onClick: LogicMap.onArrowNextClick
         });
         self.elements.push(elArrowNext);
@@ -156,20 +156,20 @@ let PageBlockMaps = function PageBlockMaps() {
 
         el = GUI.createElement(ElementButton, {
             x: 165, y: 438,
-            srcRest: '/images/button-add-rest.png',
-            srcHover: '/images/button-add-hover.png',
-            srcActive: '/images/button-add-active.png',
+            srcRest: 'button-add-rest.png',
+            srcHover: 'button-add-hover.png',
+            srcActive: 'button-add-active.png',
             onClick: function () {
                 SocNet.openInviteFriendDialog();
             }
         });
         self.elements.push(el);
 
-        el = GUI.createElement(ElementImage, {x: 650, y: 370, opacity: 0.7, src: '/images/wind-rose.png'});
+        el = GUI.createElement(ElementImage, {x: 650, y: 370, opacity: 0.7, src: 'wind-rose.png'});
         self.elements.push(el);
 
         //@todo preloader
-        domLoader = GUI.createDom(undefined, {x: 0, y: 0, backgroundImage: '/images/not-found.png'});
+        domLoader = GUI.createDom(undefined, {x: 0, y: 0, backgroundImage: 'not-found.png'});
     };
 
     /**
@@ -214,14 +214,14 @@ let PageBlockMaps = function PageBlockMaps() {
         lastPointId = DataMap.getLastPointId();
         if (nextPointId >= firstPointId && nextPointId <= lastPointId) {
             let p = DataPoints.getPointsCoords()[DataMap.getNumberFromPointId(nextPointId) - 1];
-            elArrowHint.src = '/images/hint-arrow.png';
+            elArrowHint.src = 'hint-arrow.png';
             elArrowHint.p = p;
             elArrowHint.show();
         } else {
             if (nextPointId > lastPointId) {
                 elArrowHint.show();
                 elArrowHint.p = pArrowNext;
-                elArrowHint.src = '/images/map-arrow-right-rest.png';
+                elArrowHint.src = 'map-arrow-right-rest.png';
             } else {
                 elArrowHint.hide();
             }

@@ -15,9 +15,9 @@ let DialogTurnLoose = function DialogTurnLoose() {
 
         el = GUI.createElement(ElementButton, {
                 x: 452, y: 3,
-                srcRest: '/images/button-close-rest.png',
-                srcHover: '/images/button-close-hover.png',
-                srcActive: '/images/button-close-active.png',
+                srcRest: 'button-close-rest.png',
+                srcHover: 'button-close-hover.png',
+                srcActive: 'button-close-active.png',
                 onClick: function () {
                     self.closeDialog();
                     PageBlockPanel.oneHealthHide = false;
@@ -40,9 +40,9 @@ let DialogTurnLoose = function DialogTurnLoose() {
         /** Кнопка играть */
         el = GUI.createElement(ElementButton, {
             x: 178, y: 240,
-            srcRest: '/images/button-red-rest.png',
-            srcHover: '/images/button-red-hover.png',
-            srcActive: '/images/button-red-active.png',
+            srcRest: 'button-red-rest.png',
+            srcHover: 'button-red-hover.png',
+            srcActive: 'button-red-active.png',
             onClick: function () {
                 self.closeDialog();
                 /** Предложить купить жизни */

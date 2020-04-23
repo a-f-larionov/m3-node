@@ -5,11 +5,11 @@ let WizardFirstStart_1 = {
         PBWizard.updateText('Нажми на красный кружок, что бы начать играть.');
         PBWizard.showDialog(400, 360, 2);
         let pnt = DataPoints.getPointsCoords()[0];
-        PBWizard.unlockByImg('/images/wizard-point-circle.png',
-            pnt.x - Images.getWidth('/images/wizard-point-circle.png') / 2
-            + Images.getWidth('/images/map-way-point-red.png') / 2,
-            pnt.y - Images.getHeight('/images/wizard-point-circle.png') / 2
-            + Images.getHeight('/images/map-way-point-red.png') / 2,
+        PBWizard.unlockByImg('wizard-point-circle.png',
+            pnt.x - Images.getWidth('wizard-point-circle.png') / 2
+            + Images.getWidth('map-way-point-red.png') / 2,
+            pnt.y - Images.getHeight('wizard-point-circle.png') / 2
+            + Images.getHeight('map-way-point-red.png') / 2,
         );
     },
 
@@ -32,8 +32,8 @@ WizardFirstStart_2 = {
         if (WizardFirstStart_2.dialogCounter > 1) return;
         PBWizard.updateText('Нажми кнопку играть.');
         PBWizard.showDialog(400, 380, 1);
-        PBWizard.unlockByImg('/images/wizard-button.png',
-            390 - Images.getWidth('/images/wizard-button.png') / 2,
+        PBWizard.unlockByImg('wizard-button.png',
+            390 - Images.getWidth('wizard-button.png') / 2,
             80 + 240 + 8,
         );
     },

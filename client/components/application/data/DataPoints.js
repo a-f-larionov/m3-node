@@ -8,45 +8,45 @@ let DataPoints = function () {
 
     this.objectImages = {};
     /** Cell images */
-    this.objectImages[DataObjects.CELL_INVISIBLE] = '/images/field-none-2.png';
-    this.objectImages[DataObjects.CELL_VISIBLE] = '/images/field-cell.png';
+    this.objectImages[DataObjects.CELL_INVISIBLE] = 'field-none-2.png';
+    this.objectImages[DataObjects.CELL_VISIBLE] = 'field-cell.png';
 
     /** Gem images */
-    this.objectImages[DataObjects.OBJECT_HOLE] = '/images/field-none-2.png';
-    this.objectImages[DataObjects.OBJECT_RANDOM] = '/images/field-none.png';
+    this.objectImages[DataObjects.OBJECT_HOLE] = 'field-none-2.png';
+    this.objectImages[DataObjects.OBJECT_RANDOM] = 'field-none.png';
 
-    this.objectImages[DataObjects.OBJECT_RED] = '/images/field-red.png';
-    this.objectImages[DataObjects.OBJECT_GREEN] = '/images/field-green.png';
-    this.objectImages[DataObjects.OBJECT_BLUE] = '/images/field-blue.png';
-    this.objectImages[DataObjects.OBJECT_YELLOW] = '/images/field-yellow.png';
-    this.objectImages[DataObjects.OBJECT_PURPLE] = '/images/field-purple.png';
-    this.objectImages[DataObjects.OBJECT_SAND] = '/images/field-sand.png';
+    this.objectImages[DataObjects.OBJECT_RED] = 'field-red.png';
+    this.objectImages[DataObjects.OBJECT_GREEN] = 'field-green.png';
+    this.objectImages[DataObjects.OBJECT_BLUE] = 'field-blue.png';
+    this.objectImages[DataObjects.OBJECT_YELLOW] = 'field-yellow.png';
+    this.objectImages[DataObjects.OBJECT_PURPLE] = 'field-purple.png';
+    this.objectImages[DataObjects.OBJECT_SAND] = 'field-sand.png';
 
-    this.objectImages[DataObjects.OBJECT_BARREL] = '/images/field-barrel.png';
-    this.objectImages[DataObjects.OBJECT_BLOCK] = '/images/field-block.png';
-    this.objectImages[DataObjects.OBJECT_POLY_COLOR] = '/images/field-poly-color.png';
-    this.objectImages[DataObjects.OBJECT_GOLD] = '/images/field-gold.png';
-    this.objectImages[DataObjects.OBJECT_TILE] = '/images/field-tile.png';
+    this.objectImages[DataObjects.OBJECT_BARREL] = 'field-barrel.png';
+    this.objectImages[DataObjects.OBJECT_BLOCK] = 'field-block.png';
+    this.objectImages[DataObjects.OBJECT_POLY_COLOR] = 'field-poly-color.png';
+    this.objectImages[DataObjects.OBJECT_GOLD] = 'field-gold.png';
+    this.objectImages[DataObjects.OBJECT_TILE] = 'field-tile.png';
 
-    this.objectImages[DataObjects.OBJECT_SPIDER_ALPHA] = '/images/field-alpha.png';
-    this.objectImages[DataObjects.OBJECT_SPIDER_BETA] = '/images/field-beta.png';
-    this.objectImages[DataObjects.OBJECT_SPIDER_GAMMA] = '/images/field-gamma.png';
+    this.objectImages[DataObjects.OBJECT_SPIDER_ALPHA] = 'field-alpha.png';
+    this.objectImages[DataObjects.OBJECT_SPIDER_BETA] = 'field-beta.png';
+    this.objectImages[DataObjects.OBJECT_SPIDER_GAMMA] = 'field-gamma.png';
 
-    this.objectImages[DataObjects.OBJECT_BOX] = '/images/field-box.png';
-    this.objectImages[DataObjects.OBJECT_CHAIN_A] = '/images/field-chain-a.png';
-    this.objectImages[DataObjects.OBJECT_CHAIN_B] = '/images/field-chain-b.png';
+    this.objectImages[DataObjects.OBJECT_BOX] = 'field-box.png';
+    this.objectImages[DataObjects.OBJECT_CHAIN_A] = 'field-chain-a.png';
+    this.objectImages[DataObjects.OBJECT_CHAIN_B] = 'field-chain-b.png';
 
     /** Gem-lightning images */
-    this.objectImages[DataObjects.WITH_LIGHTNING_VERTICAL] = '/images/spec-light-ver-1.png';
-    this.objectImages[DataObjects.WITH_LIGHTNING_HORIZONTAL] = '/images/spec-light-hor-1.png';
-    this.objectImages[DataObjects.WITH_LIGHTNING_CROSS] = '/images/spec-light-cross-1.png';
+    this.objectImages[DataObjects.WITH_LIGHTNING_VERTICAL] = 'spec-light-ver-1.png';
+    this.objectImages[DataObjects.WITH_LIGHTNING_HORIZONTAL] = 'spec-light-hor-1.png';
+    this.objectImages[DataObjects.WITH_LIGHTNING_CROSS] = 'spec-light-cross-1.png';
 
     /** Spider healths */
     this.healthImages = {};
-    this.healthImages[0] = '/images/creature-health-0.png';
-    this.healthImages[1] = '/images/creature-health-1.png';
-    this.healthImages[2] = '/images/creature-health-2.png';
-    this.healthImages[3] = '/images/creature-health-3.png';
+    this.healthImages[0] = 'creature-health-0.png';
+    this.healthImages[1] = 'creature-health-1.png';
+    this.healthImages[2] = 'creature-health-2.png';
+    this.healthImages[3] = 'creature-health-3.png';
 
     this.objectAnims = {};
 
@@ -248,11 +248,11 @@ let DataPoints = function () {
         this.objectAnims[DataObjects.WITH_LIGHTNING_HORIZONTAL] = [[{
             type: GUI.ANIM_TYPE_MOVIE,
             images: [
-                '/images/spec-light-hor-1.png',
-                '/images/spec-light-hor-2.png',
-                '/images/spec-light-hor-3.png',
-                '/images/spec-light-hor-4.png',
-                '/images/spec-light-hor-5.png',
+                'spec-light-hor-1.png',
+                'spec-light-hor-2.png',
+                'spec-light-hor-3.png',
+                'spec-light-hor-4.png',
+                'spec-light-hor-5.png',
             ],
             duration: 5,
         }, {
@@ -262,11 +262,11 @@ let DataPoints = function () {
         this.objectAnims[DataObjects.WITH_LIGHTNING_VERTICAL] = [[{
             type: GUI.ANIM_TYPE_MOVIE,
             images: [
-                '/images/spec-light-ver-1.png',
-                '/images/spec-light-ver-2.png',
-                '/images/spec-light-ver-3.png',
-                '/images/spec-light-ver-4.png',
-                '/images/spec-light-ver-5.png',
+                'spec-light-ver-1.png',
+                'spec-light-ver-2.png',
+                'spec-light-ver-3.png',
+                'spec-light-ver-4.png',
+                'spec-light-ver-5.png',
             ],
             duration: 5,
         }, {
@@ -276,11 +276,11 @@ let DataPoints = function () {
         this.objectAnims[DataObjects.WITH_LIGHTNING_CROSS] = [[{
             type: GUI.ANIM_TYPE_MOVIE,
             images: [
-                '/images/spec-light-cross-1.png',
-                '/images/spec-light-cross-2.png',
-                '/images/spec-light-cross-3.png',
-                '/images/spec-light-cross-4.png',
-                '/images/spec-light-cross-5.png',
+                'spec-light-cross-1.png',
+                'spec-light-cross-2.png',
+                'spec-light-cross-3.png',
+                'spec-light-cross-4.png',
+                'spec-light-cross-5.png',
             ],
             duration: 5,
         }, {

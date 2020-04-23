@@ -31,22 +31,22 @@ let ElementPoint = function () {
      * Ссылка на картинку при наведении фокуса(мыши).
      * @type {string}
      */
-    this.srcGrey = '/images/map-way-point-grey.png';
+    this.srcGrey = 'map-way-point-grey.png';
 
     /**
      * Ссылка на картинку при активации кнопки(клике).
      * @type {string}
      */
-    this.srcRed = '/images/map-way-point-red.png';
+    this.srcRed = 'map-way-point-red.png';
 
     /**
      * Ссылка на картинку в покое(ожидании/бездействии).
      * @type {string}
      */
-    this.srcYellow = '/images/map-way-point-yellow.png';
+    this.srcYellow = 'map-way-point-yellow.png';
 
-    this.srcStarOff = '/images/star-off.png';
-    this.srcStarOn = '/images/star-on.png';
+    this.srcStarOff = 'star-off.png';
+    this.srcStarOn = 'star-on.png';
 
     /**
      * Будет вызываться при нажатии на кнопку.

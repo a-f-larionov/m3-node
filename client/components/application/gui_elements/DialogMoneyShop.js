@@ -21,9 +21,9 @@ let DialogMoneyShop = function () {
         for (let i = 0; i < 3; i++) {
             el = GUI.createElement(ElementButton, {
                 x: offsetX + stepX * i, y: offsetY,
-                srcRest: '/images/money_' + (i + 1) + '.png',
-                srcHover: '/images/money_' + (i + 1) + '.png',
-                srcActive: '/images/money_' + (i + 1) + '.png',
+                srcRest: 'money_' + (i + 1) + '.png',
+                srcHover: 'money_' + (i + 1) + '.png',
+                srcActive: 'money_' + (i + 1) + '.png',
                 onClick: function () {
                     if (GUI.isFullScreen()) {
                         GUI.fsSwitch();
@@ -36,9 +36,9 @@ let DialogMoneyShop = function () {
 
             el = GUI.createElement(ElementButton, {
                 x: offsetX + stepX * i + 45, y: offsetY + 150 - 45,
-                srcRest: '/images/button-add-rest.png',
-                srcHover: '/images/button-add-hover.png',
-                srcActive: '/images/button-add-active.png',
+                srcRest: 'button-add-rest.png',
+                srcHover: 'button-add-hover.png',
+                srcActive: 'button-add-active.png',
                 onClick: function () {
                     SocNet.openOrderDialog(DataShop.gold[i].votes);
                     self.closeDialog();
@@ -49,9 +49,9 @@ let DialogMoneyShop = function () {
         /** кнопка закрыть */
         GUI.createElement(ElementButton, {
             x: 452, y: 3,
-            srcRest: '/images/button-close-rest.png',
-            srcHover: '/images/button-close-hover.png',
-            srcActive: '/images/button-close-active.png',
+            srcRest: 'button-close-rest.png',
+            srcHover: 'button-close-hover.png',
+            srcActive: 'button-close-active.png',
             onClick: function () {
                 self.closeDialog();
             }

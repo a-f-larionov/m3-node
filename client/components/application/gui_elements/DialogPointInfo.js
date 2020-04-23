@@ -34,14 +34,14 @@ let DialogPointInfo = function () {
 
         /** Кол-во звёзд */
         elStarOne = GUI.createElement(ElementImage, {
-            x: 100, y: 40, src: '/images/star-off-big.png'
+            x: 100, y: 40, src: 'star-off-big.png'
         });
         elStarOne.show();
         elStarTwo = GUI.createElement(ElementImage, {
-            x: 200, y: 40, src: '/images/star-off-big.png'
+            x: 200, y: 40, src: 'star-off-big.png'
         });
         elStarTwo.show();
-        elStarThree = GUI.createElement(ElementImage, {x: 300, y: 40, src: '/images/star-off-big.png'});
+        elStarThree = GUI.createElement(ElementImage, {x: 300, y: 40, src: 'star-off-big.png'});
         elStarThree.show();
 
         [0, 1, 2].forEach(function (i) {
@@ -56,9 +56,9 @@ let DialogPointInfo = function () {
         /** Кнопка играть */
         elButtonPlay = GUI.createElement(ElementButton, {
             x: 178, y: 240,
-            srcRest: '/images/button-red-rest.png',
-            srcHover: '/images/button-red-hover.png',
-            srcActive: '/images/button-red-active.png',
+            srcRest: 'button-red-rest.png',
+            srcHover: 'button-red-hover.png',
+            srcActive: 'button-red-active.png',
             onClick: function () {
                 self.closeDialog();
                 /** Предложить купить жизни */
@@ -80,9 +80,9 @@ let DialogPointInfo = function () {
         /** Кнопка закрыть */
         GUI.createElement(ElementButton, {
             x: 452, y: 3,
-            srcRest: '/images/button-close-rest.png',
-            srcHover: '/images/button-close-hover.png',
-            srcActive: '/images/button-close-active.png',
+            srcRest: 'button-close-rest.png',
+            srcHover: 'button-close-hover.png',
+            srcActive: 'button-close-active.png',
             onClick: function () {
                 self.closeDialog();
             }
@@ -127,17 +127,17 @@ let DialogPointInfo = function () {
         elUserPhotoScore.score = DataPoints.getScore(point.id);
 
         elTitle.redraw();
-        elStarOne.src = '/images/star-off-big.png';
-        elStarTwo.src = '/images/star-off-big.png';
-        elStarThree.src = '/images/star-off-big.png';
+        elStarOne.src = 'star-off-big.png';
+        elStarTwo.src = 'star-off-big.png';
+        elStarThree.src = 'star-off-big.png';
 
         switch (DataPoints.countStars(point.id)) {
             case 3:
-                elStarThree.src = '/images/star-on-big.png';
+                elStarThree.src = 'star-on-big.png';
             case 2:
-                elStarTwo.src = '/images/star-on-big.png';
+                elStarTwo.src = 'star-on-big.png';
             case 1:
-                elStarOne.src = '/images/star-on-big.png';
+                elStarOne.src = 'star-on-big.png';
         }
         elStarOne.redraw();
         elStarTwo.redraw();

@@ -31,15 +31,15 @@ let PageBlockPanel = function PageBlockPanel() {
          * @type {number}
          */
         pMX = 110;//110 идеальный уентр
-        el = GUI.createElement(ElementImage, {x: pMX, y: 0, src: '/images/panel-money.png'});
+        el = GUI.createElement(ElementImage, {x: pMX, y: 0, src: 'panel-money.png'});
         self.elements.push(el);
 
         /** Деньги - монета */
         el = GUI.createElement(ElementButton, {
             x: pMX + 5, y: -3,
-            srcRest: '/images/button-money-rest.png',
-            srcHover: '/images/button-money-hover.png',
-            srcActive: '/images/button-money-active.png',
+            srcRest: 'button-money-rest.png',
+            srcHover: 'button-money-hover.png',
+            srcActive: 'button-money-active.png',
             onClick: function () {
                 PBZDialogs.dialogMoneyShop.showDialog();
             }
@@ -55,9 +55,9 @@ let PageBlockPanel = function PageBlockPanel() {
         /** Деньги кнопка плюс */
         el = GUI.createElement(ElementButton, {
             x: pMX + 122, y: -3,
-            srcRest: '/images/button-add-rest.png',
-            srcHover: '/images/button-add-hover.png',
-            srcActive: '/images/button-add-active.png',
+            srcRest: 'button-add-rest.png',
+            srcHover: 'button-add-hover.png',
+            srcActive: 'button-add-active.png',
             onClick: function () {
                 PBZDialogs.dialogMoneyShop.showDialog();
             }
@@ -70,7 +70,7 @@ let PageBlockPanel = function PageBlockPanel() {
          */
         pHX = 463 - 15 - 50; //463 идеальный центр
         /** Жизни - панель */
-        el = GUI.createElement(ElementImage, {x: pHX, y: 0, src: '/images/panel-hearth.png'});
+        el = GUI.createElement(ElementImage, {x: pHX, y: 0, src: 'panel-hearth.png'});
         self.elements.push(el);
 
         /** Жизни - сердца */
@@ -84,9 +84,9 @@ let PageBlockPanel = function PageBlockPanel() {
         /** Жизни - кнопка плюс */
         el = GUI.createElement(ElementButton, {
             x: pHX + 190, y: -4,
-            srcRest: '/images/button-add-rest.png',
-            srcHover: '/images/button-add-hover.png',
-            srcActive: '/images/button-add-active.png',
+            srcRest: 'button-add-rest.png',
+            srcHover: 'button-add-hover.png',
+            srcActive: 'button-add-active.png',
             onClick: function () {
                 PBZDialogs.dialogHealthShop.showDialog();
             }
@@ -96,9 +96,9 @@ let PageBlockPanel = function PageBlockPanel() {
         /** Кнопка звука **/
         elSoundsButton = GUI.createElement(ElementButton, {
             x: 650, y: 10,
-            srcRest: '/images/button-sound-off.png',
-            srcHover: '/images/button-sound-active.png',
-            srcActive: '/images/button-sound-active.png',
+            srcRest: 'button-sound-off.png',
+            srcHover: 'button-sound-active.png',
+            srcActive: 'button-sound-active.png',
             onClick: function () {
                 Sounds.toggle();
                 Sounds.play(Sounds.PATH_CHALK);
@@ -110,9 +110,9 @@ let PageBlockPanel = function PageBlockPanel() {
         /** Кнопка фулскрин **/
         elFSButton = GUI.createElement(ElementButton, {
             x: 690, y: 10,
-            srcRest: '/images/button-fs-on-rest.png',
-            srcHover: '/images/button-fs-on-hover.png',
-            srcActive: '/images/button-fs-on-active.png',
+            srcRest: 'button-fs-on-rest.png',
+            srcHover: 'button-fs-on-hover.png',
+            srcActive: 'button-fs-on-active.png',
             onClick: onFullScreenButtonClick
         });
         self.elements.push(elFSButton);
@@ -147,9 +147,9 @@ let PageBlockPanel = function PageBlockPanel() {
      */
     this.preset = function () {
         if (Sounds.isEnabled()) {
-            elSoundsButton.srcRest = '/images/button-sound-on.png';
+            elSoundsButton.srcRest = 'button-sound-on.png';
         } else {
-            elSoundsButton.srcRest = '/images/button-sound-off.png';
+            elSoundsButton.srcRest = 'button-sound-off.png';
         }
         if (LogicStuff.getStuff().goldQty !== undefined) {
             moneyText.setText(LogicStuff.getStuff('goldQty'))
@@ -170,13 +170,13 @@ let PageBlockPanel = function PageBlockPanel() {
     let onFullScreenButtonClick = function () {
         GUI.fsSwitch();
         if (GUI.isFullScreen()) {
-            elFSButton.srcRest = '/images/button-fs-on-rest.png';
-            elFSButton.srcHover = '/images/button-fs-on-rest.png';
-            elFSButton.srcActive = '/images/button-fs-on-rest.png';
+            elFSButton.srcRest = 'button-fs-on-rest.png';
+            elFSButton.srcHover = 'button-fs-on-rest.png';
+            elFSButton.srcActive = 'button-fs-on-rest.png';
         } else {
-            elFSButton.srcRest = '/images/button-fs-off-rest.png';
-            elFSButton.srcHover = '/images/button-fs-off-rest.png';
-            elFSButton.srcActive = '/images/button-fs-off-rest.png';
+            elFSButton.srcRest = 'button-fs-off-rest.png';
+            elFSButton.srcHover = 'button-fs-off-rest.png';
+            elFSButton.srcActive = 'button-fs-off-rest.png';
         }
     };
 

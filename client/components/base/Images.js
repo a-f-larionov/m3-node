@@ -1,3 +1,7 @@
+/**
+ * @type{Images}
+ * @constructor
+ */
 let Images = function () {
     /**
      * Заранее загруженные картинки, но с timestamp-ом.
@@ -43,7 +47,7 @@ let Images = function () {
     this.getMeta = function (url) {
         /** Абсолютный url, используем без изменений, т.к. это внешний url */
         if (url && url.indexOf('https://') === 0 || url.indexOf('http://') === 0) {
-            notFoundImg.path = '';
+            notFoundImg.path = url;
             return notFoundImg;
         }
         if (!url || !window.imagesData[url]) {

@@ -227,7 +227,7 @@ ClientCodeLoader = function () {
         Logs.log("ClientJS source code writed. Size: " + js.length, Logs.LEVEL_DETAIL);
 
         //@todo LogicClintCodeloader.config?
-        if (true || Config.WebSocketServer.compressCode) {
+        if (Config.WebSocketServer.compressCode) {
             js = 'function _(window){ ' + js + ' };' +
                 '_(window);' +
                 '';
@@ -296,34 +296,34 @@ ClientCodeLoader = function () {
     };
 
     let getImageCodeSprited = function () {
-        let imgJson, path;
-        let imgJsonPath = spritePathPhysic + '.json';
+        let imgData, path;
+        let imgJsonPath = spritePathPhysic + '.cache.json';
         if (cacheImages && codeImages) return codeImages;
 
         if (spriteExists === true) {
-            imgJson = FS.readFileSync(imgJsonPath);
+            imgData = FS.readFileSync(imgJsonPath);
         } else {
-            imgJson = "<script>";
-            imgJson += "imagesData = {};";
+            imgData = "<script>";
+            imgData += "imagesData = {};";
             for (let i in spriteExists.coordinates) {
-                path = i.replace('../public', '');
-                imgJson += "\r\nimagesData['" + path + "']={" + "" +
-                    "path:'/images/sprite.png" + getTimeKey() + "'," +
+                path = i.replace('../public/images/', '');
+                imgData += "\r\nimagesData['" + path + "']={" + "" +
                     "w:" + translate2X(spriteExists.coordinates[i].width) + "," +
                     "h:" + translate2X(spriteExists.coordinates[i].height) + "," +
                     "x:" + translate2X(spriteExists.coordinates[i].x) + "," +
                     "y:" + translate2X(spriteExists.coordinates[i].y) + "" +
                     "};";
             }
-            imgJson += "</script>";
-            imgJson += "<div style='display:none;'>";
-            imgJson += "<img src='/images/sprite.png" + getTimeKey() + "'>";
-            imgJson += "</div>";
-            FS.writeFileSync(imgJsonPath, imgJson);
+            imgData += "for(let i in imagesData){ imagesData[i].path = '/images/sprite.png" + getTimeKey() + "';};";
+            imgData += "</script>";
+            imgData += "<div style='display:none;'>";
+            imgData += "<img src='/images/sprite.png" + getTimeKey() + "'>";
+            imgData += "</div>";
+            FS.writeFileSync(imgJsonPath, imgData);
             // cache it
-            codeImages = imgJson;
+            codeImages = imgData;
         }
-        return imgJson;
+        return imgData;
     };
 
     /**
@@ -338,15 +338,18 @@ ClientCodeLoader = function () {
         imageCode += "imagesData = {};";
         for (let i in imageFiles) {
             path = imagesPrefix + imageFiles[i].substr(imagesPath.length);
+            path = path.replace('/images/', '');
+
             demension = IMAGE_SIZE(imageFiles[i]);
             imageCode += "\r\nimagesData['" + path + "']=" +
-                "{path:'" + path + getTimeKey() + "'" +
-                ",w:" + translate2X(demension.width) +
-                ",h:" + translate2X(demension.height) +
-                ",x:" + 0 +
-                ",y:" + 0 +
-                "};";
+                "{w:" + translate2X(demension.width) +
+                ",h:" + translate2X(demension.height) + "};";
         }
+        imageCode += "for(let i in imagesData){ " +
+            "   imagesData[i].path = '/images/' + i + '" + getTimeKey() + "';" +
+            "   imagesData[i].x = 0;" +
+            "   imagesData[i].y = 0;" +
+            "};";
         imageCode += "</script>";
         imageCode += "<div style='display:none;'>";
         for (let i in imageFiles) {
@@ -402,8 +405,8 @@ ClientCodeLoader = function () {
             // result.coordinates; // Object mapping filename to {x, y, width, height} of image
             // result.properties; // Object with metadata about spritesheet {width, height}
             if (err) console.log(err);
-            // coordinates: ['../public/images/buttons/addFriendActive.png': { x: 75, y: 1353, width: 75, height: 80 },
-            //'../public/images/buttons/addFriendHover.png': { x: 150, y: 1353, width
+            // coordinates: ['../publicbuttons/addFriendActive.png': { x: 75, y: 1353, width: 75, height: 80 },
+            //'../publicbuttons/addFriendHover.png': { x: 150, y: 1353, width
             if (FS.existsSync(spritePathPhysic)) FS.unlink(spritePathPhysic);
 
             fsResult = FS.writeFileSync(spritePathPhysic, result.image, 'binary');

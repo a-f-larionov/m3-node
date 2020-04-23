@@ -39,7 +39,7 @@ let ElementSprite = function () {
      * Ссылка на картинку.
      * @type {string}
      */
-    this.src = '/images/not-found.png';
+    this.src = 'not-found.png';
 
     /**
      * Прозрачность картинки.

@@ -118,7 +118,7 @@ let ElementFriendsPanel = function () {
                 card.backgroundImage = friends[i].photo50;
                 card.pointer = GUI.POINTER_ARROW;
             } else {
-                card.backgroundImage = '/images/friend-vacancy.png';
+                card.backgroundImage = 'friend-vacancy.png';
                 card.pointer = GUI.POINTER_HAND;
             }
             card.redraw();

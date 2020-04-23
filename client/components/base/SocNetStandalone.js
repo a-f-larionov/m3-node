@@ -42,27 +42,27 @@ let SocNetStandalone = function () {
 
     this.getUserInfo = function (id, callback) {
         let randomName = [
-            'Кириллов Юрий Валериевич /images/field-barrel.png',
-            'Пахомов Александр Григорьевич /images/field-box.png',
-            'Негода Устин Леонидович /images/field-red.png',
-            'Грабчак Роман Андреевич /images/field-green.png',
-            'Наумов Людвиг Артёмович /images/field-blue.png',
-            'Симонов Игнатий Васильевич /images/field-purple.png',
-            'Харитонов Яромир Александрович /images/field-yellow.png',
-            'Носков Людвиг Романович /images/field-sand.png',
-            'Крюков Марк Романович /images/field-poly-color.png',
-            'Киранов Марат Романович /images/field-gold.png',
-            'Чубайк Николай Викторович /images/field-poly-color.png',
-            'Пушкин Александр Сергеевич /images/field-alpha.png',
-            'Билл Гейтс Ибнабабн /images/field-beta.png',
-            'Стив Джоб Jobs /images/field-gamma.png',
+            'Кириллов Юрий Валериевич field-barrel.png',
+            'Пахомов Александр Григорьевич field-box.png',
+            'Негода Устин Леонидович field-red.png',
+            'Грабчак Роман Андреевич field-green.png',
+            'Наумов Людвиг Артёмович field-blue.png',
+            'Симонов Игнатий Васильевич field-purple.png',
+            'Харитонов Яромир Александрович field-yellow.png',
+            'Носков Людвиг Романович field-sand.png',
+            'Крюков Марк Романович field-poly-color.png',
+            'Киранов Марат Романович field-gold.png',
+            'Чубайк Николай Викторович field-poly-color.png',
+            'Пушкин Александр Сергеевич field-alpha.png',
+            'Билл Гейтс Ибнабабн field-beta.png',
+            'Стив Джоб Jobs field-gamma.png',
         ];
         let info = {};
         if (id === this.getSocNetUserId() && false) {
             info.first_name = 'Админ';
             info.last_name = 'Админов';
-            info.photo_50 = '/images/button-shuffle-rest.png';
-            info.photo_100 = '/images/button-shuffle-rest.png';
+            info.photo_50 = 'button-shuffle-rest.png';
+            info.photo_100 = 'button-shuffle-rest.png';
         } else {
             info.first_name = randomName[id % randomName.length].split(' ')[0];
             info.last_name = randomName[id % randomName.length].split(' ')[1];

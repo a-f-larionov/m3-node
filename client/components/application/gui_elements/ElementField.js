@@ -115,7 +115,7 @@ let ElementField = function () {
                 noScale: true,
                 height: DataPoints.BLOCK_HEIGHT,
                 width: DataPoints.BLOCK_WIDTH,
-                backgroundImage: '/images/field-none.png'
+                backgroundImage: 'field-none.png'
             });
             gemDoms[x][y] = dom;
         });
@@ -130,7 +130,7 @@ let ElementField = function () {
             animDoms.push(GUI.createDom(undefined, {}));
         }
         /** Frame dom */
-        domFrame = GUI.createDom(undefined, {backgroundImage: '/images/field-frame.png'});
+        domFrame = GUI.createDom(undefined, {backgroundImage: 'field-frame.png'});
 
         GUI.popParent();
 

@@ -8,7 +8,7 @@ let DialogGoals = function DialogGoals() {
     this.init = function () {
         this.__proto__.width = 250;
         this.__proto__.height = 150;
-        this.__proto__.src = '/images/window-3.png';
+        this.__proto__.src = 'window-3.png';
         this.__proto__.bottomPosition = 100 + 172 / 2;
 
         this.__proto__.init.call(this);
@@ -37,9 +37,9 @@ let DialogGoals = function DialogGoals() {
         /** Кнопка закрыть */
         GUI.createElement(ElementButton, {
                 x: 195, y: 0,
-                srcRest: '/images/button-close-rest.png',
-                srcHover: '/images/button-close-hover.png',
-                srcActive: '/images/button-close-active.png',
+                srcRest: 'button-close-rest.png',
+                srcHover: 'button-close-hover.png',
+                srcActive: 'button-close-active.png',
                 onClick: function () {
                     self.closeDialog();
                 }

@@ -32,17 +32,17 @@ DataShop.hummers = [
     {
         gold: 10,
         quantity: 3,
-        imageSrc: '/images/shop-hummer-1.png',
+        imageSrc: 'shop-hummer-1.png',
     },
     {
         gold: 15,
         quantity: 6,
-        imageSrc: '/images/shop-hummer-2.png',
+        imageSrc: 'shop-hummer-2.png',
     },
     {
         gold: 30,
         quantity: 9,
-        imageSrc: '/images/shop-hummer-3.png',
+        imageSrc: 'shop-hummer-3.png',
     }
 ];
 
@@ -50,17 +50,17 @@ DataShop.shuffle = [
     {
         gold: 10,
         quantity: 3,
-        imageSrc: '/images/shop-shuffle-1.png',
+        imageSrc: 'shop-shuffle-1.png',
     },
     {
         gold: 15,
         quantity: 6,
-        imageSrc: '/images/shop-shuffle-2.png',
+        imageSrc: 'shop-shuffle-2.png',
     },
     {
         gold: 30,
         quantity: 9,
-        imageSrc: '/images/shop-shuffle-3.png',
+        imageSrc: 'shop-shuffle-3.png',
     }
 ];
 
@@ -69,17 +69,17 @@ DataShop.lightning = [
     {
         gold: 10,
         quantity: 3,
-        imageSrc: '/images/shop-lightning-1.png',
+        imageSrc: 'shop-lightning-1.png',
     },
     {
         gold: 15,
         quantity: 6,
-        imageSrc: '/images/shop-lightning-2.png',
+        imageSrc: 'shop-lightning-2.png',
     },
     {
         gold: 30,
         quantity: 9,
-        imageSrc: '/images/shop-lightning-3.png',
+        imageSrc: 'shop-lightning-3.png',
     }
 ];
 
