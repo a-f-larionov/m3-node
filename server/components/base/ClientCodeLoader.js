@@ -16,13 +16,13 @@ ClientCodeLoader = function () {
     /**
      * @type {boolean}
      */
-    let reloadClientCodeEveryRequest = null;
+    let cacheCode = null;
 
     /**
-     * Перезагружать ли код картинок каждый раз.
+     * Кэшировать картинки(код).
      * @type {boolean}
      */
-    let reloadClientImageCodeEveryRequest = null;
+    let cacheImages = true;
 
     /**
      * Use Sprite image by SpriteSmith
@@ -40,6 +40,13 @@ ClientCodeLoader = function () {
             <div style="text-align:center;">Игра на техническом обслуживании, пожалуйста зайдите немного позже.</div>\
             </body>\
             </html>';
+
+    /**
+     * Sprite.PNG image path
+     * @type {string}
+     */
+    let spritePathPublic = '/images/sprite.png';
+    let spritePathPhysic = '../public/' + spritePathPublic;
     /**
      * Client code VK.
      * @type {string}
@@ -63,30 +70,23 @@ ClientCodeLoader = function () {
      * Инитиализация
      * @type {string}
      */
-    let clientCodePath = null;
+    let clientSource = null;
 
-    let generateImageSpriteResult = null;
-
-    /**
-     * Учитвая что SSL Сертификат это тот еще геморой, легче использовать один домен
-     * @type {string}
-     */
-    let projectPrefix = '';
+    let spriteExists = false;
 
     this.init = function (callback) {
-        projectPrefix = Config.Project.name ? '/' + Config.Project.name : '';
-        reloadClientCodeEveryRequest = Config.WebSocketServer.reloadClientCodeEveryRequest;
-        reloadClientImageCodeEveryRequest = Config.WebSocketServer.reloadClientImageCodeEveryRequest;
-        clientCodePath = Config.WebSocketServer.clientCodePath;
         //@todo is it no WebSocketServer config , but is it LogicClientCodeLoader component config.
+        cacheCode = Config.WebSocketServer.cacheCode;
+        cacheImages = Config.WebSocketServer.cacheImages;
+        clientSource = Config.WebSocketServer.clientSource;
         imagesPath = Config.WebSocketServer.imagesPath;
         useSprite = Config.WebSocketServer.useSprite;
         // check before after init
-        if (typeof reloadClientCodeEveryRequest !== 'boolean') {
-            Logs.log("reloadClientCodeEveryRequest given by .setup, must be boolean", Logs.LEVEL_FATAL_ERROR, reloadClientCodeEveryRequest);
+        if (typeof cacheCode !== 'boolean') {
+            Logs.log("cacheCode given by .setup, must be boolean", Logs.LEVEL_FATAL_ERROR, cacheCode);
         }
-        if (typeof clientCodePath !== 'string') {
-            Logs.log("clientCodePath given by .setup, must be string", Logs.LEVEL_FATAL_ERROR, clientCodePath);
+        if (typeof clientSource !== 'string') {
+            Logs.log("clientSource given by .setup, must be string", Logs.LEVEL_FATAL_ERROR, clientSource);
         }
         if (typeof imagesPath !== 'string') {
             Logs.log("imagesPath given by .setup, must be string", Logs.LEVEL_FATAL_ERROR, imagesPath);
@@ -94,9 +94,9 @@ ClientCodeLoader = function () {
         if (typeof useSprite !== 'boolean') {
             Logs.log("useSprite given by .setup, must be boolean", Logs.LEVEL_FATAL_ERROR, useSprite);
         }
-        /* Обновим клиентский код. */
-        generateImageSprite(function (result) {
-            generateImageSpriteResult = result;
+
+        /** Обновим клиентский код. */
+        makeSprite(function () {
             reloadMainClientCode();
             generateClientCodeVK();
             loadClientCodeStandalone();
@@ -110,7 +110,7 @@ ClientCodeLoader = function () {
 
     this.getClientVK = function (callback) {
         if (Config.Project.maintance) return callback(htmlMaintaince);
-        if (reloadClientCodeEveryRequest) {
+        if (!cacheCode) {
             generateClientCodeVK();
             reloadMainClientCode();
         }
@@ -119,7 +119,7 @@ ClientCodeLoader = function () {
 
     this.getClientStandalone = function (callback) {
         if (Config.Project.maintance) return callback(htmlMaintaince);
-        if (reloadClientCodeEveryRequest) {
+        if (cacheCode) {
             loadClientCodeStandalone();
             reloadMainClientCode();
         }
@@ -154,24 +154,26 @@ ClientCodeLoader = function () {
         return Config.Project.develop ? "" : "?t=" + (new Date().getTime()).toString();
     };
 
-    let getClientCodeCommonPart = function (socNetCode) {
+    let getMainCode = function (socNetCode) {
         let code = '';
 
-        let demension = IMAGE_SIZE('../public/images/sprite.png');
+        //let demension = IMAGE_SIZE(spritePathPhysic);
 
         code += "<!doctype html>";
         code += "<html style=\"background:white;\">\r\n";
         code += "<head>\r\n";
         code += "<style type='text/css'>*{padding:0px;margin:0px;}</style>";
         code += "<meta charset='utf-8' />\r\n";
-        code += "<style> body div { background-size: "
-            + translate2X(demension.width / 2) + "px "
-            + translate2X(demension.height / 2) + "px; " +
-            "}</style>";
+        /* code += "<style> body div { background-size: "
+             + translate2X(demension.width / 2) + "px "
+             + translate2X(demension.height / 2) + "px; " +
+             "}</style>";
+         */
         code += "<script>window.PLATFORM_ID = '" + socNetCode + "';</script>";
-        code += "<script type='text/javascript' src='" + projectPrefix + "/js/client.js" + getTimeKey() + "'></script>\r\n";
+        code += "<script type='text/javascript' src='/js/client.js" + getTimeKey() + "'></script>\r\n";
         code += "</head>";
         code += "<body>";
+
         /** Application div */
         code += "<div style='" +
             "height:" + DataCross.app.height + "px;" + "width:" + DataCross.app.width + "px;" +
@@ -188,9 +190,9 @@ ClientCodeLoader = function () {
             /** @see https://vk.com/dev/Javascript_SDK */
             code += "<script src='//vk.com/js/api/xd_connection.js?2' type='text/javascript'></script>\r\n";
 
-            /** comments div */
+            /** Сomments div */
             code += "<div id='vk_comments' style='top:" + DataCross.app.height + "px;position:absolute;'>";
-            code += "<iframe src='" + projectPrefix + "/service/VKCommentsWidget' style='border:none; height: " + (Config.VKCommentWidget.height + 44) + "px; width:" + Config.VKCommentWidget.width + ";'></iframe>";
+            code += "<iframe src='/service/VKCommentsWidget' style='border:none; height: " + (Config.VKCommentWidget.height + 44) + "px; width:" + Config.VKCommentWidget.width + ";'></iframe>";
             code += "</div>\r\n";
         }
 
@@ -201,7 +203,7 @@ ClientCodeLoader = function () {
 
     let generateClientCodeVK = function () {
         Logs.log("Load VK client code.");
-        codeVK = getClientCodeCommonPart('VK');
+        codeVK = getMainCode('VK');
     };
 
     /**
@@ -209,7 +211,7 @@ ClientCodeLoader = function () {
      */
     let loadClientCodeStandalone = function () {
         Logs.log("Load standalone client code.");
-        codeStandalone = getClientCodeCommonPart('STANDALONE');
+        codeStandalone = getMainCode('STANDALONE');
     };
 
     /**
@@ -221,7 +223,7 @@ ClientCodeLoader = function () {
         //@todo path to JS move to Config file
 
         //@todo LogicClintCodeloader.config?
-        if (Config.WebSocketServer.compressJSClientCode) {
+        if (Config.WebSocketServer.compressCode) {
             mainClientJSCode = 'function ___(){ ' + mainClientJSCode + ' };___();';
             let result = UGLIFYJS.minify(mainClientJSCode);
             if (result.code) {
@@ -245,7 +247,7 @@ ClientCodeLoader = function () {
             path = files[i];
             file_content = FS.readFileSync(path);
             if (file_content == 'ClientServerCompliant') {
-                path = path.replace(clientCodePath, '');
+                path = path.replace(clientSource, '');
                 file_content = FS.readFileSync(path);
             }
             code += "\r\n/* " + path + " */\r\n";
@@ -263,8 +265,8 @@ ClientCodeLoader = function () {
     let getMainClientJSCode = function () {
         let jsFiles, hostname, clientConfigPath, code;
         jsFiles = [];
-        jsFiles = jsFiles.concat(getFileListRecursive(clientCodePath + 'core/'));
-        jsFiles = jsFiles.concat(getFileListRecursive(clientCodePath + 'components/'));
+        jsFiles = jsFiles.concat(getFileList(clientSource + 'core/'));
+        jsFiles = jsFiles.concat(getFileList(clientSource + 'components/'));
         /* Include Config file. */
         hostname = OS.hostname();
         let parentFolderName = (function () {
@@ -273,10 +275,10 @@ ClientCodeLoader = function () {
             cwd.pop();
             return cwd.pop();
         })();
-        clientConfigPath = clientCodePath + 'config.' + hostname + '.' + parentFolderName + '.js';
+        clientConfigPath = clientSource + 'config.' + hostname + '.' + parentFolderName + '.js';
         Logs.log("Generate client code(client). The config file: " + clientConfigPath, Logs.LEVEL_NOTIFY);
         jsFiles.push(clientConfigPath);
-        jsFiles.push(clientCodePath + '/run.js');
+        jsFiles.push(clientSource + '/run.js');
         code = clientCodePrepareCode(jsFiles);
         /* generate sapi */
         code += ApiRouter.getSAPIJSCode();
@@ -293,53 +295,51 @@ ClientCodeLoader = function () {
     };
 
     let getImageCodeSprited = function () {
-        let imageCode, path, timePostfix;
-        let spriteJsonPath = '../public/images/sprite.png.json';
-        if (!reloadClientImageCodeEveryRequest && codeImages) {
-            return codeImages;
-        }
-        if (generateImageSpriteResult === true) {
-            imageCode = FS.readFileSync(spriteJsonPath);
+        let imgJson, path;
+        let imgJsonPath = spritePathPhysic + '.json';
+        if (cacheImages && codeImages) return codeImages;
+
+        if (spriteExists === true) {
+            imgJson = FS.readFileSync(imgJsonPath);
         } else {
-            imageCode = "<script>";
-            imageCode += "imagesData = {};";
-            for (let i in generateImageSpriteResult.coordinates) {
+            imgJson = "<script>";
+            imgJson += "imagesData = {};";
+            for (let i in spriteExists.coordinates) {
                 path = i.replace('../public', '');
-                imageCode += "\r\nimagesData['" + path + "']={" + "" +
-                    "path:'" + projectPrefix + '/images/sprite.png' + getTimeKey() + "'," +
-                    "w:" + translate2X(generateImageSpriteResult.coordinates[i].width) + "," +
-                    "h:" + translate2X(generateImageSpriteResult.coordinates[i].height) + "," +
-                    "x:" + translate2X(generateImageSpriteResult.coordinates[i].x) + "," +
-                    "y:" + translate2X(generateImageSpriteResult.coordinates[i].y) + "" +
+                imgJson += "\r\nimagesData['" + path + "']={" + "" +
+                    "path:'/images/sprite.png" + getTimeKey() + "'," +
+                    "w:" + translate2X(spriteExists.coordinates[i].width) + "," +
+                    "h:" + translate2X(spriteExists.coordinates[i].height) + "," +
+                    "x:" + translate2X(spriteExists.coordinates[i].x) + "," +
+                    "y:" + translate2X(spriteExists.coordinates[i].y) + "" +
                     "};";
             }
-            imageCode += "</script>";
-            imageCode += "<div style='display:none;'>";
-            imageCode += "<img src='" + projectPrefix + '/images/sprite.png' + getTimeKey() + "'>";
-            imageCode += "</div>";
-            FS.writeFileSync(spriteJsonPath, imageCode);
+            imgJson += "</script>";
+            imgJson += "<div style='display:none;'>";
+            imgJson += "<img src='/images/sprite.png" + getTimeKey() + "'>";
+            imgJson += "</div>";
+            FS.writeFileSync(imgJsonPath, imgJson);
             // cache it
-            codeImages = imageCode;
+            codeImages = imgJson;
         }
-        return imageCode;
+        return imgJson;
     };
 
     /**
      * Формирует Js-код картинок.
      */
     let getImageCodeList = function () {
-        let imageFiles, imageCode, path, timePostfix, demension;
-        if (!reloadClientImageCodeEveryRequest && codeImages) {
-            return codeImages;
-        }
-        imageFiles = getFileListRecursive(imagesPath);
+        let imageFiles, imageCode, path, demension;
+        if (cacheImages && codeImages) return codeImages;
+
+        imageFiles = getFileList(imagesPath);
         imageCode = "<script>";
         imageCode += "imagesData = {};";
         for (let i in imageFiles) {
             path = imagesPrefix + imageFiles[i].substr(imagesPath.length);
             demension = IMAGE_SIZE(imageFiles[i]);
             imageCode += "\r\nimagesData['" + path + "']=" +
-                "{path:'" + projectPrefix + path + getTimeKey() + "'" +
+                "{path:'" + path + getTimeKey() + "'" +
                 ",w:" + translate2X(demension.width) +
                 ",h:" + translate2X(demension.height) +
                 ",x:" + 0 +
@@ -350,7 +350,7 @@ ClientCodeLoader = function () {
         imageCode += "<div style='display:none;'>";
         for (let i in imageFiles) {
             path = imagesPrefix + imageFiles[i].substr(imagesPath.length);
-            imageCode += "\r\n<img src='" + projectPrefix + path + getTimeKey() + "'>";
+            imageCode += "\r\n<img src='" + path + getTimeKey() + "'>";
         }
         imageCode += "</div>";
         // cache it
@@ -358,7 +358,7 @@ ClientCodeLoader = function () {
         return imageCode;
     };
 
-    let getFileListRecursive = function (basePath) {
+    let getFileList = function (basePath) {
         let dirList, path, files;
         files = [];
         dirList = FS.readdirSync(basePath);
@@ -370,7 +370,7 @@ ClientCodeLoader = function () {
             if (dirList[i] === 'sprite.png.json') continue;
             path = basePath + dirList[i];
             if (FS.statSync(path).isDirectory()) {
-                files = files.concat(getFileListRecursive(path + '/'));
+                files = files.concat(getFileList(path + '/'));
             } else {
                 files.push(path);
             }
@@ -378,46 +378,36 @@ ClientCodeLoader = function () {
         return files;
     };
 
-    let generateImageSpriteLoaded = false;
+    let makeSprite = function (callback) {
+        let list;
 
-    let generateImageSprite = function (callback) {
-        let sprites, spritePath;
-
-        if (generateImageSpriteLoaded) return;
-        generateImageSpriteLoaded = true;
-        spritePath = '../public/images/sprite.png';
-
-        sprites = getFileListRecursive(imagesPath);
-
-        if (!Config.WebSocketServer.useSprite) {
-            Logs.log("SPRITESMITH SKIP", Logs.LEVEL_NOTIFY);
-            callback(false);
-            return;
+        if (!useSprite) {
+            Logs.log("SPRITESMITH DOES NOT USED", Logs.LEVEL_NOTIFY);
+            callback();
         }
 
         Logs.log("SPRITESMITH BEGIN", Logs.LEVEL_NOTIFY);
-
         /**
          *@todo
          * Calculate hash, if no changes - skip it!
          */
 
-        SPRITESMITH.run({src: sprites}, function handleResult(err, result) {
+        list = getFileList(imagesPath);
+
+        SPRITESMITH.run({src: list}, function handleResult(err, result) {
+            let fsResult;
             // result.image; // Buffer representation of image
             // result.coordinates; // Object mapping filename to {x, y, width, height} of image
             // result.properties; // Object with metadata about spritesheet {width, height}
-            if (err) {
-                console.log(err);
-            }
+            if (err) console.log(err);
             // coordinates: ['../public/images/buttons/addFriendActive.png': { x: 75, y: 1353, width: 75, height: 80 },
             //'../public/images/buttons/addFriendHover.png': { x: 150, y: 1353, width
-            if (FS.existsSync(spritePath)) {
-                FS.unlink(spritePath);
-            }
+            if (FS.existsSync(spritePathPhysic)) FS.unlink(spritePathPhysic);
 
-            let fsResult = FS.writeFileSync(spritePath, result.image, 'binary');
+            fsResult = FS.writeFileSync(spritePathPhysic, result.image, 'binary');
             Logs.log("SPRITESMITH Complete", Logs.LEVEL_NOTIFY);
-            callback(result);
+            spriteExists = useSprite;
+            if (useSprite) callback();
         });
     };
 
@@ -432,7 +422,7 @@ ClientCodeLoader = function () {
         guiCode += 'GUI.init();' + "\r\n";
         pageBlocks = [];
         // page-blocks
-        files = getFileListRecursive(clientCodePath + 'components/application/page_blocks/');
+        files = getFileList(clientSource + 'components/application/page_blocks/');
         files.forEach(function (filePath) {
             name = PATH.basename(filePath, '.js');
             if (name.substr(0, 9) === 'PageBlock') {
@@ -441,7 +431,7 @@ ClientCodeLoader = function () {
         });
         guiCode += ' PageController.addBlocks([' + pageBlocks.join(',') + ']);' + "\r\n";
         // pages
-        files = getFileListRecursive(clientCodePath + 'components/application/pages/');
+        files = getFileList(clientSource + 'components/application/pages/');
         files.forEach(function (filePath) {
             name = PATH.basename(filePath, '.js');
             if (name.substr(0, 4) === 'Page') {

@@ -42,21 +42,15 @@ Images = function () {
      */
     this.getMeta = function (url) {
         /** Абсолютный url, используем без изменений, т.к. это внешний url */
-        if (!url) {
-            if (notfounds.indexOf(url) !== -1) return notFoundImg;
-            notfounds.push(url);
-            Logs.log("Url not found:" + url, Logs.LEVEL_ERROR);
+        if (url && url.indexOf('https://') === 0 || url.indexOf('http://') === 0) {
+            notFoundImg.path = '';
             return notFoundImg;
         }
-        if (url.indexOf('https://') === 0 || url.indexOf('http://') === 0) {
-            notFoundImg.path = url;
-            return notFoundImg;
-        }
-        if (!window.imagesData[url]) {
+        if (!url || !window.imagesData[url]) {
             if (notfounds.indexOf(url) !== -1) return notFoundImg;
             notfounds.push(url);
             Logs.log("Image url not found for: " + url, Logs.LEVEL_ERROR);
-            notFoundImg.path = url;
+            notFoundImg.path = '';
             return notFoundImg;
         }
         return window.imagesData[url];
