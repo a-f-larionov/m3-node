@@ -52,7 +52,7 @@ let PageBlockField = function PageBlockField() {
      * Создадим тут все элементы страницы.
      */
     this.init = function () {
-        let el, oX, oY,panelTextOffsetY;
+        let el, oX, oY, panelTextOffsetY;
         panelTextOffsetY = 37;
 
         /** Игровое поле */
@@ -72,10 +72,7 @@ let PageBlockField = function PageBlockField() {
 
         /** Кнопка выхода */
         el = GUI.createElement(ElementButton, {
-            x: 730, y: 10,
-            srcRest: 'button-quit-rest.png',
-            srcHover: 'button-quit-hover.png',
-            srcActive: 'button-quit-active.png',
+            x: 730, y: 10, srcRest: 'button-quit-rest.png',
             onClick: function () {
                 if (turns === 0) {
                     PBZDialogs.dialogTurnsLoose.reset();
@@ -134,7 +131,7 @@ let PageBlockField = function PageBlockField() {
          */
         {
             oX = 15;
-            oY = 65+10;
+            oY = 65 + 10;
             /** Панель */
             el = GUI.createElement(ElementImage, {x: oX, y: oY, src: 'panel-turns.png'});
             self.elements.push(el);
@@ -200,8 +197,6 @@ let PageBlockField = function PageBlockField() {
         buttonReloadField = GUI.createElement(ElementButton, {
             x: 312, y: 5, width: 25, height: 25,
             srcRest: 'button-reload-field-rest.png',
-            srcHover: 'button-reload-field-hover.png',
-            srcActive: 'button-reload-field-active.png',
             onClick: function () {
                 AnimLocker.lock();
 
@@ -220,8 +215,6 @@ let PageBlockField = function PageBlockField() {
         buttonChangeSpeed = GUI.createElement(ElementButton, {
             x: 312 + 30, y: 5, width: 25, height: 25,
             srcRest: 'field-red.png',
-            srcHover: 'field-red.png',
-            srcActive: 'field-red.png',
             onClick: function () {
                 let standard = 1;
                 switch (Config.OnIdle.animStep) {

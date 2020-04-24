@@ -36,10 +36,7 @@ let PageBlockPanel = function PageBlockPanel() {
 
         /** Деньги - монета */
         el = GUI.createElement(ElementButton, {
-            x: pMX + 5, y: -3,
-            srcRest: 'button-money-rest.png',
-            srcHover: 'button-money-hover.png',
-            srcActive: 'button-money-active.png',
+            x: pMX + 5, y: -3, srcRest: 'button-money-rest.png',
             onClick: function () {
                 PBZDialogs.dialogMoneyShop.showDialog();
             }
@@ -54,10 +51,7 @@ let PageBlockPanel = function PageBlockPanel() {
 
         /** Деньги кнопка плюс */
         el = GUI.createElement(ElementButton, {
-            x: pMX + 122, y: -3,
-            srcRest: 'button-add-rest.png',
-            srcHover: 'button-add-hover.png',
-            srcActive: 'button-add-active.png',
+            x: pMX + 122, y: -3, srcRest: 'button-add-rest.png',
             onClick: function () {
                 PBZDialogs.dialogMoneyShop.showDialog();
             }
@@ -83,10 +77,7 @@ let PageBlockPanel = function PageBlockPanel() {
 
         /** Жизни - кнопка плюс */
         el = GUI.createElement(ElementButton, {
-            x: pHX + 190, y: -4,
-            srcRest: 'button-add-rest.png',
-            srcHover: 'button-add-hover.png',
-            srcActive: 'button-add-active.png',
+            x: pHX + 190, y: -4, srcRest: 'button-add-rest.png',
             onClick: function () {
                 PBZDialogs.dialogHealthShop.showDialog();
             }
@@ -109,10 +100,7 @@ let PageBlockPanel = function PageBlockPanel() {
 
         /** Кнопка фулскрин **/
         elFSButton = GUI.createElement(ElementButton, {
-            x: 690, y: 10,
-            srcRest: 'button-fs-on-rest.png',
-            srcHover: 'button-fs-on-hover.png',
-            srcActive: 'button-fs-on-active.png',
+            x: 690, y: 10, srcRest: 'button-fs-on-rest.png',
             onClick: onFullScreenButtonClick
         });
         self.elements.push(elFSButton);

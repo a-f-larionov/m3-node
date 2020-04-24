@@ -15,8 +15,6 @@ let DialogChestYouWin = function () {
             x: 452, y: 3,
             width: 100, height: 40,
             srcRest: 'button-close-rest.png',
-            srcHover: 'button-close-hover.png',
-            srcActive: 'button-close-active.png',
             onClick: function () {
                 self.closeDialog();
             }

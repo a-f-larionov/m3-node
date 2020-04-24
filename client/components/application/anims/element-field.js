@@ -33,12 +33,12 @@ let animLightning = function () {
     let dom;
     let velocity = 0.5;
 
-    this.init = function (p, specId) {
+    this.init = function (p, orientationId) {
         dom = this.animDoms.pop();
-        let lineData = Field.getVisibleLength(p, specId);
+        let lineData = Field.getVisibleLength(p, orientationId);
         dom.width = lineData.length * DataPoints.BLOCK_WIDTH;
         dom.height = Images.getHeight('anim-light-1.png');
-        if (specId === DataObjects.WITH_LIGHTNING_VERTICAL) {
+        if (orientationId === DataObjects.WITH_LIGHTNING_VERTICAL) {
             dom.rotate = 90;
             dom.x = (p.x) * DataPoints.BLOCK_WIDTH;
             dom.y = (lineData.lower) * DataPoints.BLOCK_HEIGHT
@@ -47,7 +47,7 @@ let animLightning = function () {
             dom.x -= (dom.width - DataPoints.BLOCK_WIDTH) / 2;
             dom.y += (dom.width - DataPoints.BLOCK_WIDTH) / 2;
         }
-        if (specId === DataObjects.WITH_LIGHTNING_HORIZONTAL) {
+        if (orientationId === DataObjects.WITH_LIGHTNING_HORIZONTAL) {
             dom.rotate = 0;
             dom.x = lineData.lower * DataPoints.BLOCK_WIDTH;
             dom.y = p.y * DataPoints.BLOCK_HEIGHT
@@ -57,10 +57,10 @@ let animLightning = function () {
         dom.redraw();
     };
 
-    this.iterate = function (position) {
-        dom.backgroundImage = Animate.getFrameUrl('anim-light-', position * velocity, 5);
+    this.iterate = function (t) {
+        dom.backgroundImage = Animate.getFrameUrl('anim-light-', t * velocity, 5);
         dom.redraw();
-        if (position < 15) return true;
+        if (t < 15) return true;
     };
 
     this.finish = function () {

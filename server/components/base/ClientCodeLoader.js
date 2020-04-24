@@ -16,7 +16,7 @@ ClientCodeLoader = function () {
     /**
      * @type {boolean}
      */
-    let cacheCode = null;
+    let cacheCode = true;
 
     /**
      * Кэшировать картинки(код).
@@ -72,7 +72,7 @@ ClientCodeLoader = function () {
      */
     let clientSource = null;
 
-    let spriteExists = false;
+    let spriteMap = false;
 
     this.init = function (callback) {
         //@todo is it no WebSocketServer config , but is it LogicClientCodeLoader component config.
@@ -119,7 +119,7 @@ ClientCodeLoader = function () {
 
     this.getClientStandalone = function (callback) {
         if (Config.Project.maintance) return callback(htmlMaintaince);
-        if (cacheCode) {
+        if (!cacheCode) {
             reloadHTMLStandalone();
             reloadClientJS();
         }
@@ -157,19 +157,26 @@ ClientCodeLoader = function () {
     let getClientHTML = function (socNetCode) {
         let code = '';
 
-        //let demension = IMAGE_SIZE(spritePathPhysic);
+        let demension = IMAGE_SIZE(imagesPath + '/sprite.png');
 
         code += "<!doctype html>";
         code += "<html style=\"background:white;\">\r\n";
         code += "<head>\r\n";
         code += "<style type='text/css'>*{padding:0px;margin:0px;}</style>";
         code += "<meta charset='utf-8' />\r\n";
-        /* code += "<style> body div { background-size: "
-             + translate2X(demension.width / 2) + "px "
-             + translate2X(demension.height / 2) + "px; " +
-             "}</style>";
-         */
+        code += "<style> body span { background-size: "
+            + translate2X(demension.width) + "px "
+            + translate2X(demension.height) + "px; " +
+            "}</style>";
+
         code += "<script>window.PLATFORM_ID = '" + socNetCode + "';</script>";
+        code += "<script>window.useSprite = " + Config.WebSocketServer.useSprite + ";</script>";
+        if (Config.WebSocketServer.useSprite) {
+            code += "<script>window.spriteSize = {" +
+                "width: " + translate2X(demension.width) + ", " +
+                "height:" + translate2X(demension.height) + "" +
+                "};</script>";
+        }
         code += "<script type='text/javascript' src='/js/client." +
             (Config.WebSocketServer.compressCode ? 'min' : 'source') +
             ".js" + getTimeKey() + "'></script>\r\n";
@@ -297,21 +304,21 @@ ClientCodeLoader = function () {
 
     let getImageCodeSprited = function () {
         let imgData, path;
-        let imgJsonPath = spritePathPhysic + '.cache.json';
+        let imgJsonPath = spritePathPhysic + '.cache.js';
         if (cacheImages && codeImages) return codeImages;
 
-        if (spriteExists === true) {
+        if (cacheImages && FS.existsSync(imgJsonPath)) {
             imgData = FS.readFileSync(imgJsonPath);
         } else {
             imgData = "<script>";
             imgData += "imagesData = {};";
-            for (let i in spriteExists.coordinates) {
+            for (let i in spriteMap.coordinates) {
                 path = i.replace('../public/images/', '');
                 imgData += "\r\nimagesData['" + path + "']={" + "" +
-                    "w:" + translate2X(spriteExists.coordinates[i].width) + "," +
-                    "h:" + translate2X(spriteExists.coordinates[i].height) + "," +
-                    "x:" + translate2X(spriteExists.coordinates[i].x) + "," +
-                    "y:" + translate2X(spriteExists.coordinates[i].y) + "" +
+                    "w:" + translate2X(spriteMap.coordinates[i].width) + "," +
+                    "h:" + translate2X(spriteMap.coordinates[i].height) + "," +
+                    "x:" + translate2X(spriteMap.coordinates[i].x) + "," +
+                    "y:" + translate2X(spriteMap.coordinates[i].y) + "" +
                     "};";
             }
             imgData += "for(let i in imagesData){ imagesData[i].path = '/images/sprite.png" + getTimeKey() + "';};";
@@ -319,6 +326,7 @@ ClientCodeLoader = function () {
             imgData += "<div style='display:none;'>";
             imgData += "<img src='/images/sprite.png" + getTimeKey() + "'>";
             imgData += "</div>";
+            Logs.log("Write img data cache", Logs.LEVEL_DETAIL);
             FS.writeFileSync(imgJsonPath, imgData);
             // cache it
             codeImages = imgData;
@@ -371,7 +379,9 @@ ClientCodeLoader = function () {
             if (dirList[i] === '.gitkeep') continue;
             if (dirList[i] === '.gitignore') continue;
             if (dirList[i] === 'sprite.png') continue;
-            if (dirList[i] === 'sprite.png.json') continue;
+            if (dirList[i] === 'sprite.png.js') continue;
+            if (dirList[i] === 'sprite.png.cache.js') continue;
+            if (dirList[i].indexOf('tmp$$') !== -1) continue;
             path = basePath + dirList[i];
             if (FS.statSync(path).isDirectory()) {
                 files = files.concat(getFileList(path + '/'));
@@ -407,11 +417,12 @@ ClientCodeLoader = function () {
             if (err) console.log(err);
             // coordinates: ['../publicbuttons/addFriendActive.png': { x: 75, y: 1353, width: 75, height: 80 },
             //'../publicbuttons/addFriendHover.png': { x: 150, y: 1353, width
-            if (FS.existsSync(spritePathPhysic)) FS.unlink(spritePathPhysic);
-
-            fsResult = FS.writeFileSync(spritePathPhysic, result.image, 'binary');
+            if (!err) {
+                if (FS.existsSync(spritePathPhysic)) FS.unlinkSync(spritePathPhysic);
+                fsResult = FS.writeFileSync(spritePathPhysic, result.image, 'binary');
+            }
             Logs.log("SPRITESMITH Complete `" + spritePathPhysic + "`", Logs.LEVEL_NOTIFY);
-            spriteExists = fsResult;
+            spriteMap = result;
             callback();
         });
     };

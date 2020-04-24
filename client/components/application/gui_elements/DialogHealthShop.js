@@ -24,8 +24,6 @@ let  DialogHealthShop = function () {
         elHealth5 = GUI.createElement(ElementButton, {
             x: offsetX + stepX, y: offsetY,
             srcRest: 'shop-health-1.png',
-            srcHover: 'shop-health-1.png',
-            srcActive: 'shop-health-1.png',
             onClick: function () {
                 self.buyHealth5();
             }
@@ -35,8 +33,6 @@ let  DialogHealthShop = function () {
         el = GUI.createElement(ElementButton, {
             x: offsetX + stepX * 2, y: offsetY,
             srcRest: 'shop-health-2.png',
-            srcHover: 'shop-health-2.png',
-            srcActive: 'shop-health-2.png',
             onClick: function () {
                 SAPIUser.zeroLife();
             }
@@ -47,8 +43,6 @@ let  DialogHealthShop = function () {
         GUI.createElement(ElementButton, {
             x: 452, y: 3,
             srcRest: 'button-close-rest.png',
-            srcHover: 'button-close-hover.png',
-            srcActive: 'button-close-active.png',
             onClick: function () {
                 self.closeDialog();
             }

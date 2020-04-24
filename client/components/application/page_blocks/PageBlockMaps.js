@@ -82,8 +82,6 @@ let PageBlockMaps = function PageBlockMaps() {
         elArrowPrev = GUI.createElement(ElementButton, {
             x: 0, y: pArrowNext.y,
             srcRest: 'map-arrow-left-rest.png',
-            srcHover: 'map-arrow-left-hover.png',
-            srcActive: 'map-arrow-left-active.png',
             onClick: LogicMap.onArrowPrevClick
         });
         self.elements.push(elArrowPrev);
@@ -91,8 +89,6 @@ let PageBlockMaps = function PageBlockMaps() {
         elArrowNext = GUI.createElement(ElementButton, {
             x: pArrowNext.x, y: pArrowNext.y,
             srcRest: 'map-arrow-right-rest.png',
-            srcHover: 'map-arrow-right-hover.png',
-            srcActive: 'map-arrow-right-active.png',
             onClick: LogicMap.onArrowNextClick
         });
         self.elements.push(elArrowNext);
@@ -155,10 +151,7 @@ let PageBlockMaps = function PageBlockMaps() {
         self.elements.push(elFriendsPanel);
 
         el = GUI.createElement(ElementButton, {
-            x: 165, y: 438,
-            srcRest: 'button-add-rest.png',
-            srcHover: 'button-add-hover.png',
-            srcActive: 'button-add-active.png',
+            x: 165, y: 438, srcRest: 'button-add-rest.png',
             onClick: function () {
                 SocNet.openInviteFriendDialog();
             }

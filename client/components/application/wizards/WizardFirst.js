@@ -5,7 +5,7 @@ let WizardFirstStart_1 = {
         PBWizard.updateText('Нажми на красный кружок, что бы начать играть.');
         PBWizard.showDialog(400, 360, 2);
         let pnt = DataPoints.getPointsCoords()[0];
-        PBWizard.unlockByImg('wizard-point-circle.png',
+        PBWizard.unlockByImg(Images.getPath('wizard-point-circle.png'),
             pnt.x - Images.getWidth('wizard-point-circle.png') / 2
             + Images.getWidth('map-way-point-red.png') / 2,
             pnt.y - Images.getHeight('wizard-point-circle.png') / 2

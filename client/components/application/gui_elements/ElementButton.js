@@ -7,6 +7,7 @@
  * @property srcHover
  * @property srcActive
  *
+ * @type {ElementButton}
  */
 let ElementButton = function () {
     let self = this;
@@ -45,19 +46,19 @@ let ElementButton = function () {
      * Ссылка на картинку при наведении фокуса(мыши).
      * @type {string}
      */
-    this.srcHover = '/path/to/image/hover.png';
+    this.srcHover = '';
 
     /**
      * Ссылка на картинку при активации кнопки(клике).
      * @type {string}
      */
-    this.srcActive = '/path/to/image/active.png';
+    this.srcActive = '';
 
     /**
      * Ссылка на картинку в покое(ожидании/бездействии).
      * @type {string}
      */
-    this.srcRest = 'path/to/image/rest2.png';
+    this.srcRest = '';
 
     /**
      * Будет вызываться при нажатии на кнопку.
@@ -69,7 +70,7 @@ let ElementButton = function () {
      * Подсказка кнопки.
      * @type {String}
      */
-    this.title;
+    this.title = '';
 
     /**
      * Активна ли кнопка.
@@ -146,12 +147,45 @@ let ElementButton = function () {
      * Перерисуем кнопку.
      */
     this.redraw = function () {
-        let src;
+        let src, mode, w, h;
         if (!showed) return;
         src = self.srcRest;
-        if (mouseStateFocused) src = self.srcHover;
-        if (mouseStateFocused && mouseStateDown) src = self.srcActive;
-        if (!mouseStateFocused && mouseStateDown) src = self.srcRest;
+
+        if (mouseStateFocused) mode = 'hover';
+        if (mouseStateFocused && mouseStateDown) mode = 'active';
+        if (!mouseStateFocused && mouseStateDown) mode = 'rest';
+
+        w = self.width ? self.width : Images.getWidth(self.srcRest);
+        h = self.height ? self.height : Images.getHeight(self.srcRest);
+
+        dom.x = self.x;
+        dom.y = self.y;
+
+        dom.width = w;
+        dom.height = h;
+        src = self.srcRest;
+
+        switch (mode) {
+            case 'rest':
+                break;
+            case 'hover':
+                if (self.srcHover) src = self.srcHover; else {
+                    dom.width = w * 1.05;
+                    dom.height = h * 1.05;
+                    dom.x = self.x - w * 0.025;
+                    dom.y = self.y - h * 0.025;
+                }
+                break;
+            case 'active':
+                if (self.srcHover) src = self.srcActive; else {
+                    dom.width = Images.getWidth(self.srcRest) * 1.1;
+                    dom.height = Images.getHeight(self.srcRest) * 1.1;
+                    dom.x = self.x - w * 0.05;
+                    dom.y = self.y - h * 0.05;
+                }
+                break;
+        }
+
         dom.backgroundImage = src;
         if (self.title) {
             dom.title = self.title;
@@ -165,8 +199,7 @@ let ElementButton = function () {
             dom.pointer = GUI.POINTER_ARROW;
             dom.opacity = 0.5;
         }
-        dom.x = self.x;
-        dom.y = self.y;
+
         dom.redraw();
     };
 
@@ -203,7 +236,7 @@ let ElementButton = function () {
      * @param dom {Element}
      */
     let onMouseClick = function (mouseEvent, dom) {
-        /* Да, тут мы останавливаем дальнейшие течение клика. */
+        /** Да, тут мы останавливаем дальнейшие течение клика. */
         mouseEvent.stopPropagation();
         if (!self.enabled) return;
         mouseStateDown = false;

@@ -6,6 +6,7 @@ if (CONST_IS_SERVER_SIDE) {
 /**
  * Компонент логирования.
  * Клиент-серверный компонент!
+ * @type {Logs}
  */
 let Logs = function () {
     let self = this;

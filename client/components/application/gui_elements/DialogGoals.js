@@ -38,8 +38,6 @@ let DialogGoals = function DialogGoals() {
         GUI.createElement(ElementButton, {
                 x: 195, y: 0,
                 srcRest: 'button-close-rest.png',
-                srcHover: 'button-close-hover.png',
-                srcActive: 'button-close-active.png',
                 onClick: function () {
                     self.closeDialog();
                 }

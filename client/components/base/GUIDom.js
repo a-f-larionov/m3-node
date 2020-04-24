@@ -285,17 +285,17 @@ let GUIDom = function () {
         if (self.backgroundImage) redrawBackgroundImage();
     };
     let redrawBackgroundImage = function () {
-        let path;
-        path = Images.getPath(self.backgroundImage);
+        let meta;
+        meta = Images.getMeta(self.backgroundImage);
         /** Если размер не задан, пробуем задать его автоматически. */
-        if (!self.width && !self.height && Images.getPath(self.backgroundImage)) {
-            self.width = Images.getWidth(self.backgroundImage);
-            self.height = Images.getHeight(self.backgroundImage);
+        if (!self.width && !self.height && meta.path) {
+            self.width = meta.w;
+            self.height = meta.h;
             props.height.call();
             props.width.call();
         }
 
-        dom.style.backgroundImage = 'url(' + path + ')';
+        dom.style.backgroundImage = 'url(' + meta.path + ')';
         self.backgroundPositionY = self.backgroundPositionY ? self.backgroundPositionY : 0;
         dom.style.backgroundPositionX = '-' + Images.getX(self.backgroundImage) + 'px';
         dom.style.backgroundPositionY = '-' + (Images.getY(self.backgroundImage) + self.backgroundPositionY) + 'px';
@@ -303,13 +303,22 @@ let GUIDom = function () {
         if (self.noScale) {
             // double if no sprite...
             dom.style.backgroundSize =
-                (Images.getWidth(self.backgroundImage)) + 'px' + ' ' +
-                (Images.getHeight(self.backgroundImage)) + 'px';
-
+                (meta.w) + 'px' + ' ' +
+                (meta.h) + 'px';
         } else {
-            dom.style.backgroundSize =
-                (self.width) + 'px' + ' ' +
-                (self.height) + 'px';
+            if (window.useSprite && self.width && self.height) {
+                dom.style.backgroundPositionX =
+                    parseInt(dom.style.backgroundPositionX) * self.width / meta.w + 'px';
+                dom.style.backgroundPositionY =
+                    parseInt(dom.style.backgroundPositionY) * self.height / meta.h + 'px';
+                dom.style.backgroundSize =
+                    (window.spriteSize.width * self.width / meta.w) + 'px ' +
+                    (window.spriteSize.height * self.height / meta.h) + 'px ';
+            } else {
+                dom.style.backgroundSize =
+                    (self.width) + 'px' + ' ' +
+                    (self.height) + 'px';
+            }
         }
     };
     let redrawBackgroundSize = function () {

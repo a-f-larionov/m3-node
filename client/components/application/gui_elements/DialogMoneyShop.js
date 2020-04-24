@@ -37,8 +37,6 @@ let DialogMoneyShop = function () {
             el = GUI.createElement(ElementButton, {
                 x: offsetX + stepX * i + 45, y: offsetY + 150 - 45,
                 srcRest: 'button-add-rest.png',
-                srcHover: 'button-add-hover.png',
-                srcActive: 'button-add-active.png',
                 onClick: function () {
                     SocNet.openOrderDialog(DataShop.gold[i].votes);
                     self.closeDialog();
