@@ -42,20 +42,20 @@ let SocNetStandalone = function () {
 
     this.getUserInfo = function (id, callback) {
         let randomName = [
-            'Кириллов Юрий Валериевич field-barrel.png',
-            'Пахомов Александр Григорьевич field-box.png',
-            'Негода Устин Леонидович field-red.png',
-            'Грабчак Роман Андреевич field-green.png',
-            'Наумов Людвиг Артёмович field-blue.png',
-            'Симонов Игнатий Васильевич field-purple.png',
-            'Харитонов Яромир Александрович field-yellow.png',
-            'Носков Людвиг Романович field-sand.png',
-            'Крюков Марк Романович field-poly-color.png',
-            'Киранов Марат Романович field-gold.png',
-            'Чубайк Николай Викторович field-poly-color.png',
-            'Пушкин Александр Сергеевич field-alpha.png',
-            'Билл Гейтс Ибнабабн field-beta.png',
-            'Стив Джоб Jobs field-gamma.png',
+            'Кириллов Юрий Валериевич https://sun9-66.userapi.com/c850720/v850720693/aa731/OfJz30MgPwk.jpg?ava=1',
+            'Пахомов Александр Григорьевич https://sun9-14.userapi.com/c638221/v638221218/2ef4b/_aHYzcPLBCg.jpg?ava=1',
+            'Негода Устин Леонидович https://sun1-22.userapi.com/RmZXykSdi9zj13kzngIYEqOfID_hx6orUlfJlA/MMMD8qmZ_Xw.jpg?ava=1',
+            'Грабчак Роман Андреевич https://sun1-21.userapi.com/y5VqHemrzxItmMMqaFLOgs8zICBGDnLsQSgAxQ/vCEOyLcrgd0.jpg?ava=1',
+            'Наумов Людвиг Артёмович https://sun1-17.userapi.com/dqr7J__INZrCV_sz-q_FjD3QZZ2teSTYvc1tnQ/jnfGgShVuX8.jpg?ava=1',
+            'Симонов Игнатий Васильевич https://sun1-89.userapi.com/XbvESSpRKkZTVrKVoPaLsvxi8VeAt2F3bnBSjw/CXlmEGL1hLA.jpg?ava=1',
+            'Харитонов Яромир Александрович https://sun9-23.userapi.com/c852020/v852020728/2517a/KgfXYhVKZqc.jpg?ava=1',
+            'Носков Людвиг Романович https://sun9-46.userapi.com/c856128/v856128757/17a84c/jVZi7Qhn8J0.jpg?ava=1',
+            'Крюков Марк Романович https://sun9-25.userapi.com/c129/u3798851/d_c8272907.jpg?ava=1',
+            'Киранов Марат Романович https://sun9-21.userapi.com/c856128/v856128316/2231ac/YlxmsBfJmRo.jpg?ava=1',
+            'Чубайк Николай Викторович https://sun9-24.userapi.com/c855236/v855236720/1fc41b/30CK4PHZdbA.jpg?ava=1',
+            'Пушкин Александр Сергеевич https://sun9-71.userapi.com/c857324/v857324568/1766c5/-0YaEO72vRE.jpg?ava=1',
+            'Билл Гейтс Ибнабабн https://sun9-9.userapi.com/c857324/v857324365/129750/UE54E0SgDaU.jpg?ava=1',
+            'Стив Джоб Jobs https://sun9-45.userapi.com/c845420/v845420707/eff82/P3Mvr9Zp4qI.jpg?ava=1',
         ];
         let info = {};
         if (id === this.getSocNetUserId() && false) {
