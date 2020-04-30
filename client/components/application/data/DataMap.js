@@ -1,3 +1,7 @@
+/**
+ * @type {DataMap}
+ * @constructor
+ */
 let DataMap = function () {
 
     let currentMapId = 1;

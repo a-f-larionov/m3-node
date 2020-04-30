@@ -228,10 +228,11 @@ let PageBlockMaps = function PageBlockMaps() {
         self.preset();
         elFriendsPanel.setFriends(LogicUser.getList(LogicUser.getFriendIds(6)));
         elFriendsPanel.redraw();
+        this.mapElsRedraw();
+
         self.elements.forEach(function (element) {
             element.redraw();
         });
-        this.mapElsRedraw();
 
         elArrowPrev.redraw();
     };

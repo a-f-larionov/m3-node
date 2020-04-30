@@ -16,8 +16,6 @@ let DialogTurnLoose = function DialogTurnLoose() {
         el = GUI.createElement(ElementButton, {
                 x: 452, y: 3,
                 srcRest: 'button-close-rest.png',
-                srcHover: 'button-close-hover.png',
-                srcActive: 'button-close-active.png',
                 onClick: function () {
                     self.closeDialog();
                     PageBlockPanel.oneHealthHide = false;

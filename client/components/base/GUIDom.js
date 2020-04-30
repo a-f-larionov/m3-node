@@ -284,11 +284,11 @@ let GUIDom = function () {
         dom.style.height = self.height + 'px';
         if (self.backgroundImage) redrawBackgroundImage();
     };
-    let redrawBackgroundImage = function () {
+    let  redrawBackgroundImage = function () {
         let meta;
         meta = Images.getMeta(self.backgroundImage);
         /** Если размер не задан, пробуем задать его автоматически. */
-        if (!self.width && !self.height && meta.path) {
+        if (!self.width && !self.height && meta.path && meta.w && meta.h) {
             self.width = meta.w;
             self.height = meta.h;
             props.height.call();

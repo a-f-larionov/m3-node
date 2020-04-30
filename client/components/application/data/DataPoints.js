@@ -1,3 +1,7 @@
+/**
+ * @type {DataPoints}
+ * @constructor
+ */
 let DataPoints = function () {
 
     this.FIELD_MAX_WIDTH = 10;
@@ -8,11 +12,11 @@ let DataPoints = function () {
 
     this.objectImages = {};
     /** Cell images */
-    this.objectImages[DataObjects.CELL_INVISIBLE] = 'field-none-2.png';
+    this.objectImages[DataObjects.CELL_INVISIBLE] = 'field-none.png';
     this.objectImages[DataObjects.CELL_VISIBLE] = 'field-cell.png';
 
     /** Gem images */
-    this.objectImages[DataObjects.OBJECT_HOLE] = 'field-none-2.png';
+    this.objectImages[DataObjects.OBJECT_HOLE] = 'field-none.png';
     this.objectImages[DataObjects.OBJECT_RANDOM] = 'field-none.png';
 
     this.objectImages[DataObjects.OBJECT_RED] = 'field-red.png';
@@ -244,6 +248,8 @@ let DataPoints = function () {
     };
 
     this.init = function () {
+
+        this.objectAnims[DataObjects.WITH_LIGHTNING_VERTICAL] = animGemLightning;
 
         this.objectAnims[DataObjects.WITH_LIGHTNING_HORIZONTAL] = [[{
             type: GUI.ANIM_TYPE_MOVIE,

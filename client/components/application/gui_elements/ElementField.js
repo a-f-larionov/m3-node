@@ -429,89 +429,87 @@ let ElementField = function () {
         let spec1Index = 0;
         let spec2Index = 0;
         Field.eachCell(function (x, y, cell, object) {
-                let maskDom, gemDom, specDom;
-                maskDom = maskDoms[x][y];
-                gemDom = gemDoms[x][y];
+            let maskDom, gemDom, specDom;
+            maskDom = maskDoms[x][y];
+            gemDom = gemDoms[x][y];
 
-                gemDom.bindedDoms = null;
+            gemDom.bindedDoms = null;
 
-                /** Layer.mask redraw */
-                cell.isVisible ?
-                    drawDom({x: x, y: y}, maskDom, DataObjects.CELL_VISIBLE) :
-                    maskDom.hide();
-                /**
-                 * Draw any
-                 */
-                if (cell.isVisible && (object.isGem || object.isSpiderAlpha || object.isBarrel || object.isPolyColor || object.isBlock)) {
-                    drawDom({x: x, y: y}, gemDom, object.objectId, '');
-                } else {
-                    gemDom.hide();
-                    //drawDom({x: x, y: y}, gemDom, object.objectId, '');
-                }
+            /** Layer.mask redraw */
+            cell.isVisible ?
+                drawDom({x: x, y: y}, maskDom, DataObjects.CELL_VISIBLE) :
+                maskDom.hide();
+            /**
+             * Draw any
+             */
+            if (cell.isVisible && (object.isGem || object.isSpiderAlpha || object.isBarrel || object.isPolyColor || object.isBlock)) {
+                drawDom({x: x, y: y}, gemDom, object.objectId, '');
+            } else {
+                gemDom.hide();
+            }
 
-                /** Gems */
-                if (cell.isVisible && object.isGem) {
-                    /** Lightning */
-                    if (object.lightningId) {
-                        specDom = specDoms2[spec2Index++];
-                        drawDom({x: x, y: y}, specDom, object.lightningId, 0.5);
-                        gemDom.bindedDoms = specDom;
-                    }
-                }
-
-                /** Spider red health */
-                if (cell.isVisible && object.isSpiderAlpha) {
+            /** Gems lighting */
+            if (cell.isVisible && object.isGem) {
+                /** Lightning */
+                if (object.lightningId) {
                     specDom = specDoms2[spec2Index++];
-                    specDom.backgroundImage = DataPoints.healthImages[object.health];
-                    drawDom({x: x, y: y}, specDom, '', '');
+                    drawDom({x: x, y: y}, specDom, object.lightningId, 0.5);
                     gemDom.bindedDoms = specDom;
-                }
-
-                /** Gold */
-                if (cell.isVisible && cell.withGold) {
-                    specDom = specDoms1[spec1Index++];
-                    drawDom({x: x, y: y}, specDom, DataObjects.OBJECT_GOLD, '');
-                }
-
-                /** Tile */
-                if (cell.isVisible && cell.withTile) {
-                    specDom = specDoms1[spec1Index++];
-                    drawDom({x: x, y: y}, specDom, DataObjects.OBJECT_TILE, '');
-                }
-
-                /** Creature beta */
-                if (cell.isVisible && object.withSpiderBeta) {
-                    specDom = specDoms2[spec2Index++];
-                    drawDom({x: x, y: y}, specDom, DataObjects.OBJECT_SPIDER_BETA, '');
-                    gemDom.bindedDoms = specDom;
-                }
-
-                /** Creature beta */
-                if (cell.isVisible && object.withSpiderGamma) {
-                    specDom = specDoms2[spec2Index++];
-                    drawDom({x: x, y: y}, specDom, DataObjects.OBJECT_SPIDER_GAMMA, '');
-                    gemDom.bindedDoms = specDom;
-                }
-
-                /** Draw Box */
-                if (cell.isVisible && object.withBox) {
-                    specDom = specDoms2[spec2Index++];
-                    drawDom({x: x, y: y}, specDom, DataObjects.OBJECT_BOX, '');
-                    gemDom.hide();
-                }
-                /** Chain a & b */
-                if (cell.isVisible && object.withChain) {
-                    if (object.withChainA) {
-                        specDom = specDoms2[spec2Index++];
-                        drawDom({x: x, y: y}, specDom, DataObjects.OBJECT_CHAIN_A, '');
-                    }
-                    if (object.withChainB) {
-                        specDom = specDoms2[spec2Index++];
-                        drawDom({x: x, y: y}, specDom, DataObjects.OBJECT_CHAIN_B, '');
-                    }
                 }
             }
-        );
+
+            /** Spider red health */
+            if (cell.isVisible && object.isSpiderAlpha) {
+                specDom = specDoms2[spec2Index++];
+                specDom.backgroundImage = DataPoints.healthImages[object.health];
+                drawDom({x: x, y: y}, specDom, '', '');
+                gemDom.bindedDoms = specDom;
+            }
+
+            /** Gold */
+            if (cell.isVisible && cell.withGold) {
+                specDom = specDoms1[spec1Index++];
+                drawDom({x: x, y: y}, specDom, DataObjects.OBJECT_GOLD, '');
+            }
+
+            /** Tile */
+            if (cell.isVisible && cell.withTile) {
+                specDom = specDoms1[spec1Index++];
+                drawDom({x: x, y: y}, specDom, DataObjects.OBJECT_TILE, '');
+            }
+
+            /** Creature beta */
+            if (cell.isVisible && object.withSpiderBeta) {
+                specDom = specDoms2[spec2Index++];
+                drawDom({x: x, y: y}, specDom, DataObjects.OBJECT_SPIDER_BETA, '');
+                gemDom.bindedDoms = specDom;
+            }
+
+            /** Creature beta */
+            if (cell.isVisible && object.withSpiderGamma) {
+                specDom = specDoms2[spec2Index++];
+                drawDom({x: x, y: y}, specDom, DataObjects.OBJECT_SPIDER_GAMMA, '');
+                gemDom.bindedDoms = specDom;
+            }
+
+            /** Draw Box */
+            if (cell.isVisible && object.withBox) {
+                specDom = specDoms2[spec2Index++];
+                drawDom({x: x, y: y}, specDom, DataObjects.OBJECT_BOX, '');
+                gemDom.hide();
+            }
+            /** Chain a & b */
+            if (cell.isVisible && object.withChain) {
+                if (object.withChainA) {
+                    specDom = specDoms2[spec2Index++];
+                    drawDom({x: x, y: y}, specDom, DataObjects.OBJECT_CHAIN_A, '');
+                }
+                if (object.withChainB) {
+                    specDom = specDoms2[spec2Index++];
+                    drawDom({x: x, y: y}, specDom, DataObjects.OBJECT_CHAIN_B, '');
+                }
+            }
+        });
 
         /** Спрячем не используемые специальные домы */
         for (let i = spec1Index; i < specDomsLimit; i++) {
@@ -694,7 +692,8 @@ let ElementField = function () {
                     gemDoms[holeToFall.x][holeToFall.y].bindedDoms = gemDoms[x][y].bindedDoms;
                 }
                 gemDoms[x][y].bindedDoms = null;
-            };
+            }
+            ;
 
             if (true ||
                 Field.isVisible({x: x, y: y}) ||

@@ -1,3 +1,7 @@
+/**
+ * @type {DataPoints}
+ * @constructor
+ */
 DataPoints = function () {
 
     this.FIELD_MAX_WIDTH = 10;
@@ -143,9 +147,7 @@ DataPoints = function () {
                 "□□□□□□",
                 "□□□□□□",
 
-            ],
-            //WIZARD
-            gems: [
+            ], gems: [  //WIZARD
                 "BRGYRBBGB",
                 "GPRBGGPRG",
                 "GRPPBPPGR",
@@ -167,12 +169,13 @@ DataPoints = function () {
 
                 "      ",
                 " $  $ ",
-                "      ",
+                "   ⭥  ",
                 " $  $ ",
                 "      ",
             ],
         },
-    };
+    }
+    ;
 
     wayPoints[5] = {
         id: 5, turns: 15, score1: 500, score2: 1000, score3: 2000,
@@ -2417,7 +2420,9 @@ DataPoints = function () {
             "UPDATE score = " + score;
         DB.query(query, callback);
     };
-}
-;
+};
 
+/**
+ * @type {DataPoints}
+ */
 DataPoints = new DataPoints;

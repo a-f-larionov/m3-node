@@ -96,7 +96,7 @@ DataMap = function () {
             },
             '10': {
                 id: 10,
-                src: 'map-003.png'
+                src: 'map-001.png'
             },
         }
     ;

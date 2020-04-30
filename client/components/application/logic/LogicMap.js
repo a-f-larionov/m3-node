@@ -1,5 +1,8 @@
+/**
+ * @type {LogicMap}
+ * @constructor
+ */
 let LogicMap = function () {
-    let self = this;
 
     this.onArrowPrevClick = function () {
         DataMap.setPrevMap();

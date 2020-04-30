@@ -69,6 +69,21 @@ let animLightning = function () {
     }
 };
 
+let animGemLightning = function () {
+    let dom;
+
+    this.init = function () {
+        // get
+    };
+
+    this.iterate = function () {
+
+    };
+
+    this.finish = function () {
+    };
+};
+
 let animHummerDestroy = function () {
     let dom, imageUrl = 'anim-hd-1.png';
 
