@@ -1,3 +1,7 @@
+/**
+ * @type {DataObjects}
+ * @constructor
+ */
 let DataObjects = function () {
     /**
      * Не видна игроку.

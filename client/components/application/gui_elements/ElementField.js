@@ -413,6 +413,9 @@ let ElementField = function () {
             dom.animPlayed = false;
         }
         if (opacity !== undefined) dom.opacity = opacity;
+        if (objectId === DataObjects.OBJECT_SPIDER_BETA) {
+            dom.y -= 10;
+        }
         dom.show();
         dom.redraw();
     };
@@ -458,11 +461,11 @@ let ElementField = function () {
                 }
             }
 
-            /** Spider red health */
+            /** Alpha health */
             if (cell.isVisible && object.isSpiderAlpha) {
                 specDom = specDoms2[spec2Index++];
                 specDom.backgroundImage = DataPoints.healthImages[object.health];
-                drawDom({x: x, y: y}, specDom, '', '');
+                drawDom({x: x, y: y}, specDom, '', 0.9);
                 gemDom.bindedDoms = specDom;
             }
 
@@ -485,7 +488,7 @@ let ElementField = function () {
                 gemDom.bindedDoms = specDom;
             }
 
-            /** Creature beta */
+            /** Creature gamma */
             if (cell.isVisible && object.withSpiderGamma) {
                 specDom = specDoms2[spec2Index++];
                 drawDom({x: x, y: y}, specDom, DataObjects.OBJECT_SPIDER_GAMMA, '');
