@@ -234,47 +234,43 @@ let PageBlockWizard = function PageBlockWizard() {
         callback(cntx);
     };
 
-    let unlockByImg = function (url, x, y) {
-        cntx.globalAlpha = 1;
-        cntx.globalCompositeOperation = 'destination-out';
-        if (!images[url]) {
+    let drawSome = function (url, x, y, unlock, skipload) {
+        //@todo some strange
+        if (!skipload || !images[url]) {
             images[url] = new Image();
             images[url].onload = function () {
-                unlockByImg(url, x, y);
+                drawSome(url, x, y, unlock, true);
             };
-            images[url].src = url;
+            images[url].src = Images.getPath(url);
             return;
         }
+        cntx.globalAlpha = unlock ? 1 : 0.99;
+        cntx.globalCompositeOperation = 'destination-out';
         cntx.drawImage(images[url], x, y, Images.getWidth(url), Images.getHeight(url));
+    };
+
+    let unlockByImg = function (url, x, y) {
+        drawSome(url, x, y, true);
     };
 
     let showByImg = function (url, x, y) {
-        cntx.globalAlpha = 0.99;
-        cntx.globalCompositeOperation = 'destination-out';
-        if (!images[url]) {
-            images[url] = new Image();
-            images[url].onload = function () {
-                showByImg(url, x, y);
-            };
-            images[url].src = url;
-            return;
-        }
-        cntx.drawImage(images[url], x, y, Images.getWidth(url), Images.getHeight(url));
+        drawSome(url, x, y, false);
     };
 
     let highlightCells = function (pList) {
-        let coords = PageBlockField.getElementField().getCoords();
+        let f = PageBlockField.getElementField().getCoords();
 
         pList.forEach(function (p) {
+            console.log(p);
             if (p.unlock) {
                 unlockByImg('w-cell.png',
-                    coords.x + DataPoints.BLOCK_WIDTH * p.x,
-                    coords.y + DataPoints.BLOCK_HEIGHT * (p.y + 1)
+                    f.x + DataPoints.BLOCK_WIDTH * p.x,
+                    f.y + DataPoints.BLOCK_HEIGHT * (p.y + 1)
                 );
             } else {
                 showByImg('w-cell.png',
-                    coords.x + DataPoints.BLOCK_WIDTH * p.x,
-                    coords.y + DataPoints.BLOCK_HEIGHT * (p.y + 1)
+                    f.x + DataPoints.BLOCK_WIDTH * p.x,
+                    f.y + DataPoints.BLOCK_HEIGHT * (p.y + 1)
                 );
             }
         });

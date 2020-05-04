@@ -1,5 +1,6 @@
 /**
  * Страница с игровым полем
+ * @type {PageBlockField}
  * @constructor
  */
 let PageBlockField = function PageBlockField() {
@@ -517,6 +518,7 @@ let PageBlockField = function PageBlockField() {
     };
 
     this.onWizardFinish = function () {
+        //@Todo get sex and : Дальше ты сам(а)!
         showText('Теперь сами!');
     };
 
