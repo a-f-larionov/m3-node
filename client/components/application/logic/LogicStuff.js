@@ -59,7 +59,7 @@ let LogicStuff = function () {
 
     this.giveAHealth = function (quantity) {
         let user;
-        user = LogicUser.getCurrentUser();
+        user = LogicUser.getCurrent();
         LogicHealth.decrementHealth(user, -quantity);
     };
 };

@@ -56,7 +56,7 @@ let LogicUser = function () {
      * Возвращает текущего(авторизованного пользователя).
      * @returns {null|Object}
      */
-    this.getCurrentUser = function () {
+    this.getCurrent = function () {
         return this.getById(authorizedUserId);
     };
 
@@ -229,7 +229,7 @@ let LogicUser = function () {
         //return LogicUser.getList([1,2,3]);
         gamers = [];
         ids = LogicUser.getFriendIdsByMapId(mapId);
-        currentUserId = LogicUser.getCurrentUser().id;
+        currentUserId = LogicUser.getCurrent().id;
         if (widthCurrentUser) {
             ids.push(currentUserId);
         }

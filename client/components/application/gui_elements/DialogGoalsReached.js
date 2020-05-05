@@ -1,10 +1,14 @@
+/**
+ * @type {DialogGoalsReached}
+ * @constructor
+ */
 let DialogGoalsReached = function () {
     let self = this;
     this.__proto__ = new Dialog();
 
     /**
      * Номер точки
-     * @type {null}
+     * @type {ElementText}
      */
     let elTitle = null;
 
@@ -16,6 +20,11 @@ let DialogGoalsReached = function () {
     let elUserPhotoScore = null;
 
     let elButtonPlay = null;
+
+    let elShare = null;
+
+    let share = true;
+    let score = null;
 
     /**
      * Точка с которой нажали.
@@ -29,7 +38,7 @@ let DialogGoalsReached = function () {
         GUI.pushParent(self.dom);
 
         /** Номер точки\заголовок */
-        elTitle = GUI.createElement(ElementText, {x: 135, y: 12, width: 230, height: 40, text: ''});
+        elTitle = GUI.createElement(ElementText, {x: 135, y: 16, width: 230, height: 40, text: ''});
         elTitle.show();
 
         /** Кол-во звёзд */
@@ -74,9 +83,22 @@ let DialogGoalsReached = function () {
             }
         }).show();
 
+        GUI.createElement(ElementText, {x: 335, y: 254, text: 'ПОДЕЛИТЬСЯ', fontSize: 11}).show();
+
+        elShare = GUI.createElement(ElementButton, {
+            x: 418, y: 242,
+            srcRest: 'check-set.png',
+            srcHover: 'check-clear.png',
+            srcActive: 'check-clear.png',
+        });
+        elShare.onClick = function () {
+            share = !share;
+            PageController.redraw();
+        };
+        elShare.show();
+
         GUI.popParent();
     };
-
 
     this.redraw = function () {
         let user, point, friend, score;
@@ -84,9 +106,9 @@ let DialogGoalsReached = function () {
 
         if (!this.dialogShowed) return;
 
-        user = LogicUser.getCurrentUser();
+        user = LogicUser.getCurrent();
         point = DataPoints.getById(pointId);
-        elTitle.text = 'ПРОЙДЕН ' + pointId;
+        elTitle.text = 'ПРОЙДЕН';// + pointId;
 
         for (let i = 0; i < 3; i++) {
             if ((friend = friends[i]) && friend.id) {
@@ -103,7 +125,7 @@ let DialogGoalsReached = function () {
                 friendsPanel[i].elPhotoScore.hide();
             }
         }
-        elUserPhotoScore.user = LogicUser.getCurrentUser();
+        elUserPhotoScore.user = LogicUser.getCurrent();
         elUserPhotoScore.score = DataPoints.getScore(point.id);
 
         elTitle.redraw();
@@ -129,15 +151,40 @@ let DialogGoalsReached = function () {
         } else {
             elButtonPlay.show();
         }
+
+        elShare.srcRest = share ? 'check-set.png' : 'check-clear.png';
+        elShare.srcHover = share ? 'check-clear.png' : 'check-set.png';
+        elShare.srcActive = elShare.srcHover;
     };
 
-    this.showDialog = function (pId) {
+    this.showDialog = function (pId, fieldScore) {
         let mapId;
         pointId = pId;
         /** @todo mapId from pointId */
-        mapId = DataMap.getCurent().id;
+        mapId = DataMap.getCurrent().id;
         friends = LogicUser.getFriendIdsByMapIdAndPointIdWithScore(mapId, pId);
         this.__proto__.showDialog.call(this);
+        score = fieldScore;
         self.redraw();
-    }
+    };
+
+    let phrases = [
+        'Ты сможешь обогнать меня?',
+        'Заходи в игру!',
+        'Ты сможешь обогнать меня?',
+    ];
+
+    this.closeDialog = function () {
+        if (share) {
+            SocNet.post({
+                //@todo url app move to config
+                userId: LogicUser.getCurrent().socNetUserId,
+                message: 'Я набрал ' + score + " " +
+                    declination(score, ['очко', 'очка', 'очков'])
+                    + '! Ты сможешь обогнать меня? ' +
+                    'https://vk.com/app7389878'
+            });
+        }
+        this.__proto__.closeDialog();
+    };
 };

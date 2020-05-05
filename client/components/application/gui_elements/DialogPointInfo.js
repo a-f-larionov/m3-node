@@ -62,7 +62,7 @@ let DialogPointInfo = function () {
             onClick: function () {
                 self.closeDialog();
                 /** Предложить купить жизни */
-                if (LogicHealth.getHealths(LogicUser.getCurrentUser()) === 0) {
+                if (LogicHealth.getHealths(LogicUser.getCurrent()) === 0) {
                     PBZDialogs.dialogHealthShop.showDialog();
                     self.showDialog(pointId);
                 } else {
@@ -121,7 +121,7 @@ let DialogPointInfo = function () {
                 friendsPanel[i].elPhotoScore.hide();
             }
         }
-        elUserPhotoScore.user = LogicUser.getCurrentUser();
+        elUserPhotoScore.user = LogicUser.getCurrent();
         elUserPhotoScore.score = DataPoints.getScore(point.id);
 
         elTitle.redraw();
@@ -147,7 +147,7 @@ let DialogPointInfo = function () {
         let mapId;
         pointId = pId;
         //@todo mapId from pointId
-        mapId = DataMap.getCurent().id;
+        mapId = DataMap.getCurrent().id;
         friends = LogicUser.getFriendIdsByMapIdAndPointIdWithScore(mapId, pId, false);
         this.__proto__.showDialog.call(this);
         self.redraw();

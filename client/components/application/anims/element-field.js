@@ -283,6 +283,12 @@ let animHint = function animHint() {
                 startY: this.gemDoms[p.x][p.y].y,
                 dom: this.gemDoms[p.x][p.y]
             });
+            if (this.gemDoms[p.x][p.y].bindedDoms) {
+                list.push({
+                    startY: this.gemDoms[p.x][p.y].bindedDoms.y,
+                    dom: this.gemDoms[p.x][p.y].bindedDoms
+                });
+            }
         }, this);
     };
 

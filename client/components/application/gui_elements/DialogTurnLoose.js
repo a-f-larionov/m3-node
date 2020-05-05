@@ -44,7 +44,7 @@ let DialogTurnLoose = function DialogTurnLoose() {
             onClick: function () {
                 self.closeDialog();
                 /** Предложить купить жизни */
-                if (LogicHealth.getHealths(LogicUser.getCurrentUser()) === 0) {
+                if (LogicHealth.getHealths(LogicUser.getCurrent()) === 0) {
                     PBZDialogs.dialogHealthShop.showDialog();
                     self.showDialog(pointId);
                 } else {

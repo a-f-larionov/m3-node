@@ -224,14 +224,10 @@ DataPoints = function () {
 
     wayPoints[6] = {
         id: 6, turns: 18, score1: 1000, score2: 1500, score3: 8000,
-        goals: [{id: DataObjects.OBJECT_GOLD, count: 17}
-        ],
-        layers: {
+        goals: [
+            {id: DataObjects.OBJECT_GOLD, count: 17}
+        ], layers: {
             mask: [
-                "",
-                "",
-
-                "",
                 "□□□□□□□",
                 "□□□□□□□",
                 "□□□□□□□",
@@ -239,25 +235,7 @@ DataPoints = function () {
                 "□□□□□□□",
                 "□□□□□□□",
                 "□□□□□□□",
-            ],
-            gems__: [
-                "GPRBGGG",
-                "GRPPBPG",
-
-                "BGBYPGR",
-                "RBYYGYG",
-                "RBYYGPB",
-                "PPRPRGP",
-                "BRGYRBR",
-                "RBYYPPY",
-                "GPRBGRY",
-                "RBYYPPY",
-            ],
-            special: [
-                "",
-                "      ",
-                "      ",
-
+            ], special: [
                 "$     $",
                 " $ $ $ ",
                 "   $   ",
@@ -1363,7 +1341,7 @@ DataPoints = function () {
         id: 30, turns: 20, score1: 500, score2: 2500, score3: 3000,
         goals: [
             {id: DataObjects.OBJECT_BARREL, count: 3},
-            {id: DataObjects.OBJECT_SPIDER_GAMMA, count: 3},
+            {id: DataObjects.OBJECT_GAMMA, count: 3},
             {id: DataObjects.OBJECT_TILE, count: 3},],
         layers: {
             mask: [
@@ -2071,7 +2049,7 @@ DataPoints = function () {
     wayPoints[51] = {
         id: 51, turns: 10, score1: 500, score2: 2500, score3: 500,
         goals: [
-            {id: DataObjects.OBJECT_SPIDER_GAMMA, count: 4},
+            {id: DataObjects.OBJECT_GAMMA, count: 4},
         ],
         layers: {
             mask: [
@@ -2104,7 +2082,7 @@ DataPoints = function () {
     wayPoints[52] = {
         id: 52, turns: 40, score1: 500, score2: 2500, score3: 3100,
         goals: [
-            {id: DataObjects.OBJECT_SPIDER_GAMMA, count: 14},
+            {id: DataObjects.OBJECT_GAMMA, count: 14},
             {id: DataObjects.OBJECT_BARREL, count: 2},
         ],
         layers: {
@@ -2131,7 +2109,7 @@ DataPoints = function () {
     wayPoints[53] = {
         id: 53, turns: 40, score1: 500, score2: 2500, score3: 5000,
         goals: [
-            {id: DataObjects.OBJECT_SPIDER_GAMMA, count: 25},
+            {id: DataObjects.OBJECT_GAMMA, count: 25},
             {id: DataObjects.OBJECT_BARREL, count: 4},
         ],
         layers: {
@@ -2162,7 +2140,7 @@ DataPoints = function () {
     wayPoints[54] = {
         id: 54, turns: 25, score1: 500, score2: 2500, score3: 3000,
         goals: [
-            {id: DataObjects.OBJECT_SPIDER_GAMMA, count: 20},
+            {id: DataObjects.OBJECT_GAMMA, count: 20},
             {id: DataObjects.OBJECT_PURPLE, count: 20},
         ],
         layers: {
@@ -2188,7 +2166,7 @@ DataPoints = function () {
     wayPoints[55] = {
         id: 55, turns: 100, score1: 500, score2: 2500, score3: 5500,
         goals: [
-            {id: DataObjects.OBJECT_SPIDER_GAMMA, count: 20},
+            {id: DataObjects.OBJECT_GAMMA, count: 20},
             {id: DataObjects.OBJECT_BLUE, count: 20},
         ],
         layers: {
@@ -2213,7 +2191,7 @@ DataPoints = function () {
     wayPoints[56] = {
         id: 56, turns: 100, score1: 500, score2: 2500, score3: 5500,
         goals: [
-            {id: DataObjects.OBJECT_SPIDER_GAMMA, count: 20},
+            {id: DataObjects.OBJECT_GAMMA, count: 20},
             {id: DataObjects.OBJECT_SAND, count: 5},
         ], layers: {
             mask: [

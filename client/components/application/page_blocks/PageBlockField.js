@@ -208,7 +208,7 @@ let PageBlockField = function PageBlockField() {
                     PageController.redraw();
                 });
                 SAPIMap.reloadLevels();
-                SAPIMap.sendMeMapInfo(DataMap.getCurent().id);
+                SAPIMap.sendMeMapInfo(DataMap.getCurrent().id);
             }
         });
 
@@ -290,8 +290,8 @@ let PageBlockField = function PageBlockField() {
         self.firstShow();
         if (false
             || SocNet.getType() === SocNet.TYPE_STANDALONE
-            || LogicUser.getCurrentUser().id === 1
-            || LogicUser.getCurrentUser().socNetUserId === 1
+            || LogicUser.getCurrent().id === 1
+            || LogicUser.getCurrent().socNetUserId === 1
         ) {
             buttonReloadField.show();
             buttonChangeSpeed.show();
@@ -384,7 +384,7 @@ let PageBlockField = function PageBlockField() {
 
     objectScores[DataObjects.OBJECT_SPIDER_ALPHA] = 100;
     objectScores[DataObjects.OBJECT_SPIDER_BETA] = 100;
-    objectScores[DataObjects.OBJECT_SPIDER_GAMMA] = 100;
+    objectScores[DataObjects.OBJECT_GAMMA] = 100;
     objectScores[DataObjects.OBJECT_POLY_COLOR] = 300;
     objectScores[DataObjects.OBJECT_GOLD] = 300;
     objectScores[DataObjects.OBJECT_TILE] = 300;
@@ -435,7 +435,7 @@ let PageBlockField = function PageBlockField() {
         let pointId, user, lastScore;
         stuffMode = null;
         Logs.log("finishLevel()", Logs.LEVEL_DETAIL);
-        user = LogicUser.getCurrentUser();
+        user = LogicUser.getCurrent();
         pointId = DataPoints.getPlayedId();
         lastScore = DataPoints.getScore(pointId);
         if (user.nextPointId < pointId + 1) {
@@ -453,7 +453,7 @@ let PageBlockField = function PageBlockField() {
         //@todo
         SAPIUser.onPlayFinish();
         //PageBlockPanel.oneHealthHide =false;
-        PBZDialogs.dialogGoalsReached.showDialog(pointId);
+        PBZDialogs.dialogGoalsReached.showDialog(pointId, score);
         PageController.redraw();
     };
 

@@ -51,7 +51,7 @@ let LogicMain = function () {
         /** Установить текущую карту игрока */
         DataMap.setCurrentMapId(
             DataMap.getMapIdFromPointId(
-                LogicUser.getCurrentUser().nextPointId
+                LogicUser.getCurrent().nextPointId
             )
         );
 

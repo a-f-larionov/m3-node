@@ -86,7 +86,7 @@ let DataObjects = function () {
      * Монстр-3
      * @type {number}
      */
-    this.OBJECT_SPIDER_GAMMA = 161;
+    this.OBJECT_GAMMA = 161;
     /**
      * Плитка
      * @type {number}

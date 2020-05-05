@@ -27,7 +27,7 @@ let DataMap = function () {
         PageController.redraw();
     };
 
-    this.getCurent = function () {
+    this.getCurrent = function () {
         if (!maps[currentMapId]) {
             loadMap();
         }
@@ -59,7 +59,7 @@ let DataMap = function () {
     };
 
     this.getMapIdFromPointId = function (pointId) {
-        return Math.ceil(LogicUser.getCurrentUser().nextPointId / DataMap.POINTS_PER_MAP);
+        return Math.ceil(LogicUser.getCurrent().nextPointId / DataMap.POINTS_PER_MAP);
     };
 
     this.getFirstPointId = function () {
@@ -95,7 +95,7 @@ let DataMap = function () {
         if (!mapId) mapId = currentMapId;
 
         mapStars = 0;
-        user = LogicUser.getCurrentUser();
+        user = LogicUser.getCurrent();
         if (!user) return 0;
         pointUsersInfo = DataPoints.getPointUserScore(mapId, [user.id]);
 

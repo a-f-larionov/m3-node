@@ -14,13 +14,13 @@ let LogicWizard = function LogicWizard() {
     this.onFieldSilent = dymmyFunc;
 
     this.onAuthorizeSuccess = function () {
-        if (LogicUser.getCurrentUser().nextPointId === 1) {
+        if (LogicUser.getCurrent().nextPointId === 1) {
             self.start(WizardFirstStart_1);
         }
     };
 
     this.onFieldFirstShow = function () {
-        let nextPointId = LogicUser.getCurrentUser().nextPointId,
+        let nextPointId = LogicUser.getCurrent().nextPointId,
             playedId = DataPoints.getPlayedId();
         if (nextPointId === 2 && playedId === 2) self.start(WizardLevel2_1);
         if (nextPointId === 3 && playedId === 3) self.start(WizardLevel3_1);

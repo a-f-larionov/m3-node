@@ -1,3 +1,7 @@
+/**
+ * @type {Sounds}
+ * @constructor
+ */
 let Sounds = function () {
     let self = this;
 

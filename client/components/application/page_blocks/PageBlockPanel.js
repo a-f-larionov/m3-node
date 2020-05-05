@@ -91,6 +91,7 @@ let PageBlockPanel = function PageBlockPanel() {
             srcHover: 'button-sound-active.png',
             srcActive: 'button-sound-active.png',
             onClick: function () {
+                SocNet.postOne();
                 Sounds.toggle();
                 Sounds.play(Sounds.PATH_CHALK);
                 PageController.redraw();

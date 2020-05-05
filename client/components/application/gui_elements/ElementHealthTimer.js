@@ -83,7 +83,7 @@ let ElementHealthTimer = function () {
         let user;
         if (!showed) return;
 
-        user = LogicUser.getCurrentUser();
+        user = LogicUser.getCurrent();
         if (PageBlockPanel.oneHealthHide) user.fullRecoveryTime -= LogicHealth.getHealthRecoveryTime();
 
         if (LogicHealth.isMaxHealths(user)) {

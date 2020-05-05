@@ -1,8 +1,8 @@
 /**
  * Компонент для работы с социальной сетью.
+ * @type {SocNetVK}
  * @constructor
  */
-
 let SocNetVK = function () {
 
     let self = this;
@@ -70,7 +70,7 @@ let SocNetVK = function () {
     };
 
     this.openOrderDialog = function (votes) {
-        VK.callMethod('showOrderBox',{
+        VK.callMethod('showOrderBox', {
             type: 'votes',
             votes: votes
         });
@@ -89,6 +89,23 @@ let SocNetVK = function () {
         }, function (data) {
             callback(data.response);
         });
+    };
+
+    /**
+     * Права доступа: wall
+     * @see wall.post
+     */
+    this.post = function (params) {
+        console.log(params);
+        VK.api('wall.post',
+            {
+                owner_id: params.userId,
+                message: params.message,
+                attachments: 'photo-194995832_457239017'
+
+            }, function () {
+                console.log(arguments);
+            });
     };
 
     /**

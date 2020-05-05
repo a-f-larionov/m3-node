@@ -489,9 +489,9 @@ let ElementField = function () {
             }
 
             /** Creature gamma */
-            if (cell.isVisible && object.withSpiderGamma) {
+            if (cell.isVisible && object.withGamma) {
                 specDom = specDoms2[spec2Index++];
-                drawDom({x: x, y: y}, specDom, DataObjects.OBJECT_SPIDER_GAMMA, '');
+                drawDom({x: x, y: y}, specDom, DataObjects.OBJECT_GAMMA, '');
                 gemDom.bindedDoms = specDom;
             }
 
@@ -863,10 +863,10 @@ let ElementField = function () {
                 animate(animHummerDestroy, p);
             }
 
-            if (cell.object.withSpiderGamma) {
+            if (cell.object.withGamma) {
                 /** Destroy green spider */
-                self.onDestroyThing(DataObjects.OBJECT_SPIDER_GAMMA, cell);
-                cell.object.withSpiderGamma = false;
+                self.onDestroyThing(DataObjects.OBJECT_GAMMA, cell);
+                cell.object.withGamma = false;
                 animate(animHummerDestroy, p);
             }
 

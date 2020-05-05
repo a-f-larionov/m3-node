@@ -74,7 +74,7 @@ let ElementHealthIndicator = function () {
     this.redraw = function () {
         let health, step, i, user;
         if (!showed) return;
-        user = LogicUser.getCurrentUser();
+        user = LogicUser.getCurrent();
         if (PageBlockPanel.oneHealthHide) user.fullRecoveryTime -= LogicHealth.getHealthRecoveryTime();
         i = 1;
 

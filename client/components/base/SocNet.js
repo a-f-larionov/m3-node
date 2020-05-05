@@ -1,8 +1,8 @@
 /**
  * Компонент для работы с социальной сетью.
+ * @type {SocNet}
  * @constructor
  */
-
 let SocNet = function () {
 
     let self = this;

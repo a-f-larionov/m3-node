@@ -668,7 +668,7 @@ let CAPIMap = function () {
 
 
             'β': DataObjects.OBJECT_SPIDER_BETA,
-            'γ': DataObjects.OBJECT_SPIDER_GAMMA,
+            'γ': DataObjects.OBJECT_GAMMA,
 
             'b': DataObjects.OBJECT_BOX,
             '■': DataObjects.OBJECT_BOX,
@@ -1005,7 +1005,7 @@ let DataMap = function () {
         PageController.redraw();
     };
 
-    this.getCurent = function () {
+    this.getCurrent = function () {
         if (!maps[currentMapId]) {
             loadMap();
         }
@@ -1037,7 +1037,7 @@ let DataMap = function () {
     };
 
     this.getMapIdFromPointId = function (pointId) {
-        return Math.ceil(LogicUser.getCurrentUser().nextPointId / DataMap.POINTS_PER_MAP);
+        return Math.ceil(LogicUser.getCurrent().nextPointId / DataMap.POINTS_PER_MAP);
     };
 
     this.getFirstPointId = function () {
@@ -1073,7 +1073,7 @@ let DataMap = function () {
         if (!mapId) mapId = currentMapId;
 
         mapStars = 0;
-        user = LogicUser.getCurrentUser();
+        user = LogicUser.getCurrent();
         if (!user) return 0;
         pointUsersInfo = DataPoints.getPointUserScore(mapId, [user.id]);
 
@@ -1201,7 +1201,7 @@ let DataObjects = function () {
      * Монстр-3
      * @type {number}
      */
-    this.OBJECT_SPIDER_GAMMA = 161;
+    this.OBJECT_GAMMA = 161;
     /**
      * Плитка
      * @type {number}
@@ -1293,7 +1293,7 @@ let DataPoints = function () {
 
     this.objectImages[DataObjects.OBJECT_SPIDER_ALPHA] = 'field-alpha.png';
     this.objectImages[DataObjects.OBJECT_SPIDER_BETA] = 'field-beta.png';
-    this.objectImages[DataObjects.OBJECT_SPIDER_GAMMA] = 'field-gamma.png';
+    this.objectImages[DataObjects.OBJECT_GAMMA] = 'field-gamma.png';
 
     this.objectImages[DataObjects.OBJECT_BOX] = 'field-box.png';
     this.objectImages[DataObjects.OBJECT_CHAIN_A] = 'field-chain-a.png';
@@ -1464,7 +1464,7 @@ let DataPoints = function () {
     };
 
     this.getScore = function (pointId, userId) {
-        if (!userId) userId = LogicUser.getCurrentUser().id;
+        if (!userId) userId = LogicUser.getCurrent().id;
         if (!userId) return null;
         if (!pointUserScore[pointId]) {
             pointUserScore[pointId] = {};
@@ -1482,7 +1482,7 @@ let DataPoints = function () {
     this.countStars = function (pointId, userId, userScore) {
         let point;
         if (!pointId) pointId = DataPoints.getPlayedId();
-        if (!userId) userId = LogicUser.getCurrentUser().id;
+        if (!userId) userId = LogicUser.getCurrent().id;
         if (!userId || !pointId) return null;
         if (isNaN(userScore)) userScore = DataPoints.getScore(pointId);
         point = DataPoints.getById(pointId);
@@ -2240,7 +2240,7 @@ let DialogGoalsReached = function () {
 
         if (!this.dialogShowed) return;
 
-        user = LogicUser.getCurrentUser();
+        user = LogicUser.getCurrent();
         point = DataPoints.getById(pointId);
         elTitle.text = 'ПРОЙДЕН ' + pointId;
 
@@ -2259,7 +2259,7 @@ let DialogGoalsReached = function () {
                 friendsPanel[i].elPhotoScore.hide();
             }
         }
-        elUserPhotoScore.user = LogicUser.getCurrentUser();
+        elUserPhotoScore.user = LogicUser.getCurrent();
         elUserPhotoScore.score = DataPoints.getScore(point.id);
 
         elTitle.redraw();
@@ -2291,7 +2291,7 @@ let DialogGoalsReached = function () {
         let mapId;
         pointId = pId;
         /** @todo mapId from pointId */
-        mapId = DataMap.getCurent().id;
+        mapId = DataMap.getCurrent().id;
         friends = LogicUser.getFriendIdsByMapIdAndPointIdWithScore(mapId, pId);
         this.__proto__.showDialog.call(this);
         self.redraw();
@@ -2360,7 +2360,7 @@ let  DialogHealthShop = function () {
 
     this.redraw = function () {
         let user;
-        user = LogicUser.getCurrentUser();
+        user = LogicUser.getCurrent();
         elHealth5.enabled = LogicHealth.getHealths(user) === 0;
         this.__proto__.redraw.call(this);
     };
@@ -2368,7 +2368,7 @@ let  DialogHealthShop = function () {
     this.buyHealth5 = function () {
         let gold, user;
         gold = LogicStuff.getStuff('goldQty');
-        user = LogicUser.getCurrentUser();
+        user = LogicUser.getCurrent();
 
         if (LogicHealth.getHealths(user) > 0) return;
 
@@ -2591,7 +2591,7 @@ let DialogPointInfo = function () {
             onClick: function () {
                 self.closeDialog();
                 /** Предложить купить жизни */
-                if (LogicHealth.getHealths(LogicUser.getCurrentUser()) === 0) {
+                if (LogicHealth.getHealths(LogicUser.getCurrent()) === 0) {
                     PBZDialogs.dialogHealthShop.showDialog();
                     self.showDialog(pointId);
                 } else {
@@ -2652,7 +2652,7 @@ let DialogPointInfo = function () {
                 friendsPanel[i].elPhotoScore.hide();
             }
         }
-        elUserPhotoScore.user = LogicUser.getCurrentUser();
+        elUserPhotoScore.user = LogicUser.getCurrent();
         elUserPhotoScore.score = DataPoints.getScore(point.id);
 
         elTitle.redraw();
@@ -2678,7 +2678,7 @@ let DialogPointInfo = function () {
         let mapId;
         pointId = pId;
         //@todo mapId from pointId
-        mapId = DataMap.getCurent().id;
+        mapId = DataMap.getCurrent().id;
         friends = LogicUser.getFriendIdsByMapIdAndPointIdWithScore(mapId, pId, false);
         this.__proto__.showDialog.call(this);
         self.redraw();
@@ -2872,7 +2872,7 @@ let DialogTurnLoose = function DialogTurnLoose() {
             onClick: function () {
                 self.closeDialog();
                 /** Предложить купить жизни */
-                if (LogicHealth.getHealths(LogicUser.getCurrentUser()) === 0) {
+                if (LogicHealth.getHealths(LogicUser.getCurrent()) === 0) {
                     PBZDialogs.dialogHealthShop.showDialog();
                     self.showDialog(pointId);
                 } else {
@@ -3817,9 +3817,9 @@ let ElementField = function () {
                 }
 
                 /** Creature beta */
-                if (cell.isVisible && object.withSpiderGamma) {
+                if (cell.isVisible && object.withGamma) {
                     specDom = specDoms2[spec2Index++];
-                    drawDom({x: x, y: y}, specDom, DataObjects.OBJECT_SPIDER_GAMMA, '');
+                    drawDom({x: x, y: y}, specDom, DataObjects.OBJECT_GAMMA, '');
                     gemDom.bindedDoms = specDom;
                 }
 
@@ -4191,10 +4191,10 @@ let ElementField = function () {
                 animate(animHummerDestroy, p);
             }
 
-            if (cell.object.withSpiderGamma) {
+            if (cell.object.withGamma) {
                 /** Destroy green spider */
-                self.onDestroyThing(DataObjects.OBJECT_SPIDER_GAMMA, cell);
-                cell.object.withSpiderGamma = false;
+                self.onDestroyThing(DataObjects.OBJECT_GAMMA, cell);
+                cell.object.withGamma = false;
                 animate(animHummerDestroy, p);
             }
 
@@ -4493,7 +4493,7 @@ let ElementHealthTimer = function () {
         let user;
         if (!showed) return;
 
-        user = LogicUser.getCurrentUser();
+        user = LogicUser.getCurrent();
         if (PageBlockPanel.oneHealthHide) user.fullRecoveryTime -= LogicHealth.getHealthRecoveryTime();
 
         if (LogicHealth.isMaxHealths(user)) {
@@ -4604,7 +4604,7 @@ let ElementHealthIndicator = function () {
     this.redraw = function () {
         let health, step, i, user;
         if (!showed) return;
-        user = LogicUser.getCurrentUser();
+        user = LogicUser.getCurrent();
         if (PageBlockPanel.oneHealthHide) user.fullRecoveryTime -= LogicHealth.getHealthRecoveryTime();
         i = 1;
 
@@ -6170,7 +6170,7 @@ let LogicField = function () {
                 object.withChainA = specIds.indexOf(DataObjects.OBJECT_CHAIN_A) !== -1;
                 object.withChainB = specIds.indexOf(DataObjects.OBJECT_CHAIN_B) !== -1;
                 object.withSpiderBeta = specIds.indexOf(DataObjects.OBJECT_SPIDER_BETA) !== -1;
-                object.withSpiderGamma = specIds.indexOf(DataObjects.OBJECT_SPIDER_GAMMA) !== -1;
+                object.withGamma = specIds.indexOf(DataObjects.OBJECT_GAMMA) !== -1;
 
                 self.setObject({x: x, y: y}, objectId, lightningId)
             }
@@ -6444,7 +6444,7 @@ let LogicMain = function () {
         /** Установить текущую карту игрока */
         DataMap.setCurrentMapId(
             DataMap.getMapIdFromPointId(
-                LogicUser.getCurrentUser().nextPointId
+                LogicUser.getCurrent().nextPointId
             )
         );
 
@@ -6545,7 +6545,7 @@ let LogicStuff = function () {
 
     this.giveAHealth = function (quantity) {
         let user;
-        user = LogicUser.getCurrentUser();
+        user = LogicUser.getCurrent();
         LogicHealth.decrementHealth(user, -quantity);
     };
 };
@@ -6660,7 +6660,7 @@ let LogicUser = function () {
      * Возвращает текущего(авторизованного пользователя).
      * @returns {null|Object}
      */
-    this.getCurrentUser = function () {
+    this.getCurrent = function () {
         return this.getById(authorizedUserId);
     };
 
@@ -6833,7 +6833,7 @@ let LogicUser = function () {
         //return LogicUser.getList([1,2,3]);
         gamers = [];
         ids = LogicUser.getFriendIdsByMapId(mapId);
-        currentUserId = LogicUser.getCurrentUser().id;
+        currentUserId = LogicUser.getCurrent().id;
         if (widthCurrentUser) {
             ids.push(currentUserId);
         }
@@ -6886,13 +6886,13 @@ let LogicWizard = function LogicWizard() {
     this.onFieldSilent = dymmyFunc;
 
     this.onAuthorizeSuccess = function () {
-        if (LogicUser.getCurrentUser().nextPointId === 1) {
+        if (LogicUser.getCurrent().nextPointId === 1) {
             self.start(WizardFirstStart_1);
         }
     };
 
     this.onFieldFirstShow = function () {
-        let nextPointId = LogicUser.getCurrentUser().nextPointId,
+        let nextPointId = LogicUser.getCurrent().nextPointId,
             playedId = DataPoints.getPlayedId();
         if (nextPointId === 2 && playedId === 2) self.start(WizardLevel2_1);
         if (nextPointId === 3 && playedId === 3) self.start(WizardLevel3_1);
@@ -7240,7 +7240,7 @@ let PageBlockField = function PageBlockField() {
                     PageController.redraw();
                 });
                 SAPIMap.reloadLevels();
-                SAPIMap.sendMeMapInfo(DataMap.getCurent().id);
+                SAPIMap.sendMeMapInfo(DataMap.getCurrent().id);
             }
         });
 
@@ -7324,8 +7324,8 @@ let PageBlockField = function PageBlockField() {
         self.firstShow();
         if (false
             || SocNet.getType() === SocNet.TYPE_STANDALONE
-            || LogicUser.getCurrentUser().id === 1
-            || LogicUser.getCurrentUser().socNetUserId === 1
+            || LogicUser.getCurrent().id === 1
+            || LogicUser.getCurrent().socNetUserId === 1
         ) {
             buttonReloadField.show();
             buttonChangeSpeed.show();
@@ -7418,7 +7418,7 @@ let PageBlockField = function PageBlockField() {
 
     objectScores[DataObjects.OBJECT_SPIDER_ALPHA] = 100;
     objectScores[DataObjects.OBJECT_SPIDER_BETA] = 100;
-    objectScores[DataObjects.OBJECT_SPIDER_GAMMA] = 100;
+    objectScores[DataObjects.OBJECT_GAMMA] = 100;
     objectScores[DataObjects.OBJECT_POLY_COLOR] = 300;
     objectScores[DataObjects.OBJECT_GOLD] = 300;
     objectScores[DataObjects.OBJECT_TILE] = 300;
@@ -7469,7 +7469,7 @@ let PageBlockField = function PageBlockField() {
         let pointId, user, lastScore;
         stuffMode = null;
         Logs.log("finishLevel()", Logs.LEVEL_DETAIL);
-        user = LogicUser.getCurrentUser();
+        user = LogicUser.getCurrent();
         pointId = DataPoints.getPlayedId();
         lastScore = DataPoints.getScore(pointId);
         if (user.nextPointId < pointId + 1) {
@@ -7782,7 +7782,7 @@ let PageBlockMaps = function PageBlockMaps() {
         this.presetPoints();
         this.presetChests();
         /** Set hint arrow */
-        nextPointId = LogicUser.getCurrentUser().nextPointId;
+        nextPointId = LogicUser.getCurrent().nextPointId;
         firstPointId = DataMap.getFirstPointId();
         lastPointId = DataMap.getLastPointId();
         if (nextPointId >= firstPointId && nextPointId <= lastPointId) {
@@ -7818,7 +7818,7 @@ let PageBlockMaps = function PageBlockMaps() {
 
     this.mapElsCreateIfNotExits = function () {
         let data, element;
-        data = DataMap.getCurent();
+        data = DataMap.getCurrent();
         if (!data) return;
         if (!elMapElements[data.id]) {
             elMapElements[data.id] = [];
@@ -7837,7 +7837,7 @@ let PageBlockMaps = function PageBlockMaps() {
 
     this.mapElsShow = function () {
         let data;
-        data = DataMap.getCurent();
+        data = DataMap.getCurrent();
         if (!data) return;
 
         for (let i in elMapElements[data.id]) {
@@ -7863,7 +7863,7 @@ let PageBlockMaps = function PageBlockMaps() {
 
     this.mapElsRedraw = function () {
         let map;
-        map = DataMap.getCurent();
+        map = DataMap.getCurrent();
         if (!map) return;
 
         elMap.src = map.src;
@@ -7883,8 +7883,8 @@ let PageBlockMaps = function PageBlockMaps() {
      */
     this.presetPoints = function () {
         let user, pointId, point, elPoint, userPoint, map;
-        user = LogicUser.getCurrentUser();
-        map = DataMap.getCurent();
+        user = LogicUser.getCurrent();
+        map = DataMap.getCurrent();
         if (!map) return;
         userPoint = DataPoints.getPointUserScore(map.id, [user.id]);
 
@@ -7912,7 +7912,7 @@ let PageBlockMaps = function PageBlockMaps() {
 
             elPoint.setGamers(
                 LogicUser.getFriendIdsByMapIdAndPointIdWithScore(
-                    DataMap.getCurent().id,
+                    DataMap.getCurrent().id,
                     pointId,
                     true)
             );
@@ -7924,7 +7924,7 @@ let PageBlockMaps = function PageBlockMaps() {
      */
     this.presetChests = function () {
         let chestId, chest, chestEl, map;
-        map = DataMap.getCurent();
+        map = DataMap.getCurrent();
         if (!map) return;
         for (let number = 1; number <= DataMap.CHESTS_PER_MAP; number++) {
             chestId = DataMap.getChestIdFromChestNumber(number);
@@ -7942,7 +7942,7 @@ let PageBlockMaps = function PageBlockMaps() {
         let waiting, map, fids, mfids, flist, mflist;
         waiting = false;
 
-        map = DataMap.getCurent();
+        map = DataMap.getCurrent();
         fids = LogicUser.getFriendIds(6);
         if (map) mfids = LogicUser.getFriendIdsByMapId(map.id);
         if (fids) flist = LogicUser.getList(fids);
@@ -11511,7 +11511,8 @@ ApiRouter.map2 = {
 	SAPIMap : SAPIMap,
 	SAPIStuff : SAPIStuff,
 	SAPITimeServer : SAPITimeServer,
-	SAPIUser : SAPIUser,};
+	SAPIUser : SAPIUser,
+};
 document.addEventListener("DOMContentLoaded", function() {GUI.init();
  PageController.addBlocks([PageBlockBackground,PageBlockField,PageBlockMaps,PageBlockPanel,PageBlockWizard,PageBlockZDialogs]);
  PageField.init();

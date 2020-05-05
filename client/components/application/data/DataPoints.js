@@ -34,7 +34,7 @@ let DataPoints = function () {
 
     this.objectImages[DataObjects.OBJECT_SPIDER_ALPHA] = 'field-alpha.png';
     this.objectImages[DataObjects.OBJECT_SPIDER_BETA] = 'field-beta.png';
-    this.objectImages[DataObjects.OBJECT_SPIDER_GAMMA] = 'field-gamma.png';
+    this.objectImages[DataObjects.OBJECT_GAMMA] = 'field-gamma.png';
 
     this.objectImages[DataObjects.OBJECT_BOX] = 'field-box.png';
     this.objectImages[DataObjects.OBJECT_CHAIN_A] = 'field-chain-a.png';
@@ -205,7 +205,7 @@ let DataPoints = function () {
     };
 
     this.getScore = function (pointId, userId) {
-        if (!userId) userId = LogicUser.getCurrentUser().id;
+        if (!userId) userId = LogicUser.getCurrent().id;
         if (!userId) return null;
         if (!pointUserScore[pointId]) {
             pointUserScore[pointId] = {};
@@ -223,7 +223,7 @@ let DataPoints = function () {
     this.countStars = function (pointId, userId, userScore) {
         let point;
         if (!pointId) pointId = DataPoints.getPlayedId();
-        if (!userId) userId = LogicUser.getCurrentUser().id;
+        if (!userId) userId = LogicUser.getCurrent().id;
         if (!userId || !pointId) return null;
         if (isNaN(userScore)) userScore = DataPoints.getScore(pointId);
         point = DataPoints.getById(pointId);

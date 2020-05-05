@@ -202,7 +202,7 @@ let PageBlockMaps = function PageBlockMaps() {
         this.presetPoints();
         this.presetChests();
         /** Set hint arrow */
-        nextPointId = LogicUser.getCurrentUser().nextPointId;
+        nextPointId = LogicUser.getCurrent().nextPointId;
         firstPointId = DataMap.getFirstPointId();
         lastPointId = DataMap.getLastPointId();
         if (nextPointId >= firstPointId && nextPointId <= lastPointId) {
@@ -239,7 +239,7 @@ let PageBlockMaps = function PageBlockMaps() {
 
     this.mapElsCreateIfNotExits = function () {
         let data, element;
-        data = DataMap.getCurent();
+        data = DataMap.getCurrent();
         if (!data) return;
         if (!elMapElements[data.id]) {
             elMapElements[data.id] = [];
@@ -258,7 +258,7 @@ let PageBlockMaps = function PageBlockMaps() {
 
     this.mapElsShow = function () {
         let data;
-        data = DataMap.getCurent();
+        data = DataMap.getCurrent();
         if (!data) return;
 
         for (let i in elMapElements[data.id]) {
@@ -284,7 +284,7 @@ let PageBlockMaps = function PageBlockMaps() {
 
     this.mapElsRedraw = function () {
         let map;
-        map = DataMap.getCurent();
+        map = DataMap.getCurrent();
         if (!map) return;
 
         elMap.src = map.src;
@@ -304,8 +304,8 @@ let PageBlockMaps = function PageBlockMaps() {
      */
     this.presetPoints = function () {
         let user, pointId, point, elPoint, userPoint, map;
-        user = LogicUser.getCurrentUser();
-        map = DataMap.getCurent();
+        user = LogicUser.getCurrent();
+        map = DataMap.getCurrent();
         if (!map) return;
         userPoint = DataPoints.getPointUserScore(map.id, [user.id]);
 
@@ -333,7 +333,7 @@ let PageBlockMaps = function PageBlockMaps() {
 
             elPoint.setGamers(
                 LogicUser.getFriendIdsByMapIdAndPointIdWithScore(
-                    DataMap.getCurent().id,
+                    DataMap.getCurrent().id,
                     pointId,
                     true)
             );
@@ -345,7 +345,7 @@ let PageBlockMaps = function PageBlockMaps() {
      */
     this.presetChests = function () {
         let chestId, chest, chestEl, map;
-        map = DataMap.getCurent();
+        map = DataMap.getCurrent();
         if (!map) return;
         for (let number = 1; number <= DataMap.CHESTS_PER_MAP; number++) {
             chestId = DataMap.getChestIdFromChestNumber(number);
@@ -363,7 +363,7 @@ let PageBlockMaps = function PageBlockMaps() {
         let waiting, map, fids, mfids, flist, mflist;
         waiting = false;
 
-        map = DataMap.getCurent();
+        map = DataMap.getCurrent();
         fids = LogicUser.getFriendIds(6);
         if (map) mfids = LogicUser.getFriendIdsByMapId(map.id);
         if (fids) flist = LogicUser.getList(fids);

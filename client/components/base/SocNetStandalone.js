@@ -2,7 +2,10 @@
  * Компонет для работы с социальной сетью(платформой): сайтом http://krestiki-noliki.xyz/
  * @constructor
  */
-
+/**
+ * @type {SocNetStandalone}
+ * @constructor
+ */
 let SocNetStandalone = function () {
 
     this.init = function () {
@@ -83,6 +86,11 @@ let SocNetStandalone = function () {
             //https://local.host/service/standalone_buy
             //do something here
         }
+    };
+
+    this.postOne = function () {
+        console.log(arguments);
+        alert('Возможно не сейчас!');
     };
 
     /**

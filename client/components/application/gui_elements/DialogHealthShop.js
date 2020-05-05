@@ -53,7 +53,7 @@ let  DialogHealthShop = function () {
 
     this.redraw = function () {
         let user;
-        user = LogicUser.getCurrentUser();
+        user = LogicUser.getCurrent();
         elHealth5.enabled = LogicHealth.getHealths(user) === 0;
         this.__proto__.redraw.call(this);
     };
@@ -61,7 +61,7 @@ let  DialogHealthShop = function () {
     this.buyHealth5 = function () {
         let gold, user;
         gold = LogicStuff.getStuff('goldQty');
-        user = LogicUser.getCurrentUser();
+        user = LogicUser.getCurrent();
 
         if (LogicHealth.getHealths(user) > 0) return;
 

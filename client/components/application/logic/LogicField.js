@@ -279,7 +279,6 @@ let LogicField = function () {
     this.setLayers = function (mask, objects, specials) {
         let specIds, lightningId, objectId;
         cells = [];
-        console.log(objects);
         for (let x = 0; x < DataPoints.FIELD_MAX_WIDTH; x++) {
             cells[x] = [];
             for (let y = 0; y < DataPoints.FIELD_MAX_HEIGHT; y++) {
@@ -318,12 +317,11 @@ let LogicField = function () {
                 object.withChainA = specIds.indexOf(DataObjects.OBJECT_CHAIN_A) !== -1;
                 object.withChainB = specIds.indexOf(DataObjects.OBJECT_CHAIN_B) !== -1;
                 object.withSpiderBeta = specIds.indexOf(DataObjects.OBJECT_SPIDER_BETA) !== -1;
-                object.withSpiderGamma = specIds.indexOf(DataObjects.OBJECT_SPIDER_GAMMA) !== -1;
+                object.withGamma = specIds.indexOf(DataObjects.OBJECT_GAMMA) !== -1;
 
                 self.setObject({x: x, y: y}, objectId, lightningId)
             }
         }
-        console.log('find lines', Field.findLines().length);
         if (Field.findLines().length) {
             Field.shuffle(true);
         }

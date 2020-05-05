@@ -48,7 +48,7 @@ let CAPIMap = function () {
 
 
             'β': DataObjects.OBJECT_SPIDER_BETA,
-            'γ': DataObjects.OBJECT_SPIDER_GAMMA,
+            'γ': DataObjects.OBJECT_GAMMA,
 
             'b': DataObjects.OBJECT_BOX,
             '■': DataObjects.OBJECT_BOX,
