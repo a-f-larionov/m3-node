@@ -142,8 +142,8 @@ WebSocketServer = function () {
      * @returns {boolean}
      */
     let onHTTPRequest = function (request, response) {
-        let path, requestUrlParts;
-        /* Запрашивается клинетский код? */
+        let requestUrlParts;
+        /** Запрашивается клинетский код? **/
         for (let path in map) {
             requestUrlParts = URL.parse(request.url, true);
             if (requestUrlParts.pathname === path) {
@@ -154,7 +154,7 @@ WebSocketServer = function () {
                 return true;
             }
         }
-        /* Во всех других случаях ошибка 404(Not found) */
+        /** Во всех других случаях ошибка 404 (Not found) **/
         response.writeHead(404, {'Content-Type': 'text/html'});
         response.end('File:`' + request.url + ' `not found.');
         return true;

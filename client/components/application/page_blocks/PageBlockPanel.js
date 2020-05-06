@@ -1,5 +1,6 @@
 /**
  * Блок общих.
+ * @type {PageBlockPanel}
  * @constructor
  */
 let PageBlockPanel = function PageBlockPanel() {

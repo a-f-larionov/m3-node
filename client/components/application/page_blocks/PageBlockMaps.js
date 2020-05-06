@@ -1,5 +1,6 @@
 /**
  * Основной блок страницы игры.
+ * @type {PageBlockMaps}
  * @constructor
  */
 let PageBlockMaps = function PageBlockMaps() {

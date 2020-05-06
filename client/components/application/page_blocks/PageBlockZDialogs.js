@@ -1,5 +1,6 @@
 /**
  * Блок диалогов
+ * @type {PageBlockZDialogs}
  * @constructor
  */
 let PageBlockZDialogs = function PageBlockZDialogs() {
@@ -128,4 +129,7 @@ let PageBlockZDialogs = function PageBlockZDialogs() {
  */
 PageBlockZDialogs = new PageBlockZDialogs();
 
-PBZDialogs = PageBlockZDialogs;
+/**
+ * @type {PageBlockZDialogs}
+ */
+let PBZDialogs = PageBlockZDialogs;

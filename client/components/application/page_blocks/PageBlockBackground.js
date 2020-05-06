@@ -1,5 +1,6 @@
 /**
  * Страница бэкграудна.
+ * @type {PageBlockBackground}
  * @constructor
  */
 let PageBlockBackground = function PageBlockBackground() {

@@ -1,5 +1,6 @@
 /**
  * Блок Визарда
+ * @type {PageBlockWizard}
  * @constructor
  */
 let PageBlockWizard = function PageBlockWizard() {
