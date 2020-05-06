@@ -807,9 +807,6 @@ DataPoints = function () {
         ],
         layers: {
             mask: [
-                "",
-                "",
-
                 " □□ □□",
                 "□□□□□□□",
                 "□□□□□□□",
@@ -817,23 +814,7 @@ DataPoints = function () {
                 "□□□□□□□",
                 "□□□□□□□",
                 " □□ □□",
-            ],
-            gems__: [
-                "GBRPYPY",
-                "GPBRPBG",
-
-                "YBPRYPP",
-                "BGBYPRP",
-                "GBGBGBG",
-                "YPYGPYB",
-                "GRGYGPG",
-                "GRPRYBG",
-                "PPBRBPY",
-            ],
-            special: [[
-                "",
-                "",
-
+            ], special: [[
                 " ββ ββ ",
                 "β  β  β",
                 "       ",
@@ -842,9 +823,6 @@ DataPoints = function () {
                 "       ",
                 "       ",
             ], [
-                "",
-                "",
-
                 "       ",
                 "       ",
                 " ■■■■■",
@@ -853,11 +831,8 @@ DataPoints = function () {
                 "       ",
                 "       ",
             ], [
-                "",
-                "",
-
                 "       ",
-                "X  X  X",
+                "X  X  X",  
                 "       ",
                 "       ",
                 "       ",

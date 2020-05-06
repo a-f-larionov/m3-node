@@ -92,7 +92,7 @@ let LogicField = function () {
             p.y++;
             cell = self.getCell(p);
             object = cell && cell.object;
-            if (cell && cell.isVisible && !object.isHole && !object.withBox) {
+            if (cell && cell.isVisible && !object.isHole && !object.withBox && !object.withChain) {
                 break;
             }
             if (cell && cell.isVisible && object.isHole) {
