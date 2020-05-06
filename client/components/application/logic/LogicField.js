@@ -1,3 +1,7 @@
+/**
+ * @type {LogicField}
+ * @constructor
+ */
 let LogicField = function () {
     let self = this;
 
@@ -44,7 +48,7 @@ let LogicField = function () {
 
         DataObjects.OBJECT_POLY_COLOR,
         DataObjects.OBJECT_BARREL,
-        DataObjects.OBJECT_SPIDER_ALPHA,
+        DataObjects.OBJECT_ALPHA,
     ];
 
     this.getCell = function (p) {
@@ -260,14 +264,14 @@ let LogicField = function () {
         object.isPolyColor = (id === DataObjects.OBJECT_POLY_COLOR);
         object.isBarrel = (id === DataObjects.OBJECT_BARREL);
         object.isBlock = (id === DataObjects.OBJECT_BLOCK);
-        object.isSpiderAlpha = (id === DataObjects.OBJECT_SPIDER_ALPHA);
+        object.isAlpha = (id === DataObjects.OBJECT_ALPHA);
 
         self.updateSomeFlags(object);
     };
 
     this.updateSomeFlags = function (object) {
         object.withChain = object.withChainA || object.withChainB;
-        object.isCanMoved = (object.isGem || object.isBarrel || object.isPolyColor)
+        object.isCanMoved = (object.isGem || object.isBarrel || object.isPolyColor || object.isAlpha)
             && !object.withBox && !object.withChain;
         object.isLineForming = (object.isGem) && !object.withBox;
     };
@@ -290,7 +294,7 @@ let LogicField = function () {
 
                 objectId = objects[x] && objects[x][y];
                 if (specIds.indexOf(DataObjects.OBJECT_BARREL) !== -1) objectId = DataObjects.OBJECT_BARREL;
-                if (specIds.indexOf(DataObjects.OBJECT_SPIDER_ALPHA) !== -1) objectId = DataObjects.OBJECT_SPIDER_ALPHA;
+                if (specIds.indexOf(DataObjects.OBJECT_ALPHA) !== -1) objectId = DataObjects.OBJECT_ALPHA;
                 if (specIds.indexOf(DataObjects.OBJECT_SAND) !== -1) objectId = DataObjects.OBJECT_SAND;
                 if (specIds.indexOf(DataObjects.OBJECT_BLOCK) !== -1) objectId = DataObjects.OBJECT_BLOCK;
                 gems.forEach(function (gemId) {
@@ -308,7 +312,7 @@ let LogicField = function () {
                 cell.isVisible = mask[x] && mask[x][y] && mask[x][y] === DataObjects.CELL_VISIBLE;
                 cell.isEmitter = specIds.indexOf(DataObjects.IS_EMITTER) !== -1;
 
-                if (objectId === DataObjects.OBJECT_SPIDER_ALPHA) object.health = 3;
+                if (objectId === DataObjects.OBJECT_ALPHA) object.health = 3;
 
                 cell.withGold = specIds.indexOf(DataObjects.OBJECT_GOLD) !== -1;
                 cell.withTile = specIds.indexOf(DataObjects.OBJECT_TILE) !== -1;

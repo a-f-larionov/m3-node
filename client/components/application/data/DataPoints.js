@@ -32,7 +32,7 @@ let DataPoints = function () {
     this.objectImages[DataObjects.OBJECT_GOLD] = 'field-gold.png';
     this.objectImages[DataObjects.OBJECT_TILE] = 'field-tile.png';
 
-    this.objectImages[DataObjects.OBJECT_SPIDER_ALPHA] = 'field-alpha.png';
+    this.objectImages[DataObjects.OBJECT_ALPHA] = 'field-alpha.png';
     this.objectImages[DataObjects.OBJECT_SPIDER_BETA] = 'field-beta.png';
     this.objectImages[DataObjects.OBJECT_GAMMA] = 'field-gamma.png';
 

@@ -76,7 +76,7 @@ let DataObjects = function () {
      * Монстр-1
      * @type {number}
      */
-    this.OBJECT_SPIDER_ALPHA = 150;
+    this.OBJECT_ALPHA = 150;
     /**
      * Монстр-2
      * @type {number}

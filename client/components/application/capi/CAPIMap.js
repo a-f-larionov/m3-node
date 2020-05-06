@@ -43,7 +43,7 @@ let CAPIMap = function () {
             '$': DataObjects.OBJECT_GOLD,
             't': DataObjects.OBJECT_TILE,
             'Ξ': DataObjects.OBJECT_TILE,
-            'α': DataObjects.OBJECT_SPIDER_ALPHA,
+            'α': DataObjects.OBJECT_ALPHA,
             '‖': DataObjects.OBJECT_BLOCK,
 
 

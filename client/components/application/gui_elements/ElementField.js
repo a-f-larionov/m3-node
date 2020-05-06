@@ -445,7 +445,7 @@ let ElementField = function () {
             /**
              * Draw any
              */
-            if (cell.isVisible && (object.isGem || object.isSpiderAlpha || object.isBarrel || object.isPolyColor || object.isBlock)) {
+            if (cell.isVisible && (object.isGem || object.isAlpha || object.isBarrel || object.isPolyColor || object.isBlock)) {
                 drawDom({x: x, y: y}, gemDom, object.objectId, '');
             } else {
                 gemDom.hide();
@@ -462,7 +462,7 @@ let ElementField = function () {
             }
 
             /** Alpha health */
-            if (cell.isVisible && object.isSpiderAlpha) {
+            if (cell.isVisible && object.isAlpha) {
                 specDom = specDoms2[spec2Index++];
                 specDom.backgroundImage = DataPoints.healthImages[object.health];
                 drawDom({x: x, y: y}, specDom, '', 0.9);
@@ -782,13 +782,13 @@ let ElementField = function () {
 
     let getAtackNearCell = function (p, cell) {
 
-        if (cell.object.isSpiderAlpha) {
+        if (cell.object.isAlpha) {
             cell.object.health--;
             if (cell.object.health) {
                 animate(animHummerDestroy, p);
             } else {
                 /** Destoy red spider */
-                self.onDestroyThing(DataObjects.OBJECT_SPIDER_ALPHA, cell);
+                self.onDestroyThing(DataObjects.OBJECT_ALPHA, cell);
                 Field.setObject(p, DataObjects.OBJECT_HOLE);
                 animate(animHummerDestroy, p);
             }

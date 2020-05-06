@@ -663,7 +663,7 @@ let CAPIMap = function () {
             '$': DataObjects.OBJECT_GOLD,
             't': DataObjects.OBJECT_TILE,
             'Ξ': DataObjects.OBJECT_TILE,
-            'α': DataObjects.OBJECT_SPIDER_ALPHA,
+            'α': DataObjects.OBJECT_ALPHA,
             '‖': DataObjects.OBJECT_BLOCK,
 
 
@@ -1191,7 +1191,7 @@ let DataObjects = function () {
      * Монстр-1
      * @type {number}
      */
-    this.OBJECT_SPIDER_ALPHA = 150;
+    this.OBJECT_ALPHA = 150;
     /**
      * Монстр-2
      * @type {number}
@@ -1291,7 +1291,7 @@ let DataPoints = function () {
     this.objectImages[DataObjects.OBJECT_GOLD] = 'field-gold.png';
     this.objectImages[DataObjects.OBJECT_TILE] = 'field-tile.png';
 
-    this.objectImages[DataObjects.OBJECT_SPIDER_ALPHA] = 'field-alpha.png';
+    this.objectImages[DataObjects.OBJECT_ALPHA] = 'field-alpha.png';
     this.objectImages[DataObjects.OBJECT_SPIDER_BETA] = 'field-beta.png';
     this.objectImages[DataObjects.OBJECT_GAMMA] = 'field-gamma.png';
 
@@ -3772,7 +3772,7 @@ let ElementField = function () {
                 /**
                  * Draw any
                  */
-                if (cell.isVisible && (object.isGem || object.isSpiderAlpha || object.isBarrel || object.isPolyColor || object.isBlock)) {
+                if (cell.isVisible && (object.isGem || object.isAlpha || object.isBarrel || object.isPolyColor || object.isBlock)) {
                     drawDom({x: x, y: y}, gemDom, object.objectId, '');
                 } else {
                     gemDom.hide();
@@ -3790,7 +3790,7 @@ let ElementField = function () {
                 }
 
                 /** Spider red health */
-                if (cell.isVisible && object.isSpiderAlpha) {
+                if (cell.isVisible && object.isAlpha) {
                     specDom = specDoms2[spec2Index++];
                     specDom.backgroundImage = DataPoints.healthImages[object.health];
                     drawDom({x: x, y: y}, specDom, '', '');
@@ -4107,13 +4107,13 @@ let ElementField = function () {
 
     let getAtackNearCell = function (p, cell) {
 
-        if (cell.object.isSpiderAlpha) {
+        if (cell.object.isAlpha) {
             cell.object.health--;
             if (cell.object.health) {
                 animate(animHummerDestroy, p);
             } else {
                 /** Destoy red spider */
-                self.onDestroyThing(DataObjects.OBJECT_SPIDER_ALPHA, cell);
+                self.onDestroyThing(DataObjects.OBJECT_ALPHA, cell);
                 Field.setObject(p, DataObjects.OBJECT_HOLE);
                 animate(animHummerDestroy, p);
             }
@@ -5896,7 +5896,7 @@ let LogicField = function () {
 
         DataObjects.OBJECT_POLY_COLOR,
         DataObjects.OBJECT_BARREL,
-        DataObjects.OBJECT_SPIDER_ALPHA,
+        DataObjects.OBJECT_ALPHA,
     ];
 
     this.getCell = function (p) {
@@ -6112,7 +6112,7 @@ let LogicField = function () {
         object.isPolyColor = (id === DataObjects.OBJECT_POLY_COLOR);
         object.isBarrel = (id === DataObjects.OBJECT_BARREL);
         object.isBlock = (id === DataObjects.OBJECT_BLOCK);
-        object.isSpiderAlpha = (id === DataObjects.OBJECT_SPIDER_ALPHA);
+        object.isAlpha = (id === DataObjects.OBJECT_ALPHA);
 
         self.updateSomeFlags(object);
     };
@@ -6143,7 +6143,7 @@ let LogicField = function () {
 
                 objectId = objects[x] && objects[x][y];
                 if (specIds.indexOf(DataObjects.OBJECT_BARREL) !== -1) objectId = DataObjects.OBJECT_BARREL;
-                if (specIds.indexOf(DataObjects.OBJECT_SPIDER_ALPHA) !== -1) objectId = DataObjects.OBJECT_SPIDER_ALPHA;
+                if (specIds.indexOf(DataObjects.OBJECT_ALPHA) !== -1) objectId = DataObjects.OBJECT_ALPHA;
                 if (specIds.indexOf(DataObjects.OBJECT_SAND) !== -1) objectId = DataObjects.OBJECT_SAND;
                 if (specIds.indexOf(DataObjects.OBJECT_BLOCK) !== -1) objectId = DataObjects.OBJECT_BLOCK;
                 gems.forEach(function (gemId) {
@@ -6161,7 +6161,7 @@ let LogicField = function () {
                 cell.isVisible = mask[x] && mask[x][y] && mask[x][y] === DataObjects.CELL_VISIBLE;
                 cell.isEmitter = specIds.indexOf(DataObjects.IS_EMITTER) !== -1;
 
-                if (objectId === DataObjects.OBJECT_SPIDER_ALPHA) object.health = 3;
+                if (objectId === DataObjects.OBJECT_ALPHA) object.health = 3;
 
                 cell.withGold = specIds.indexOf(DataObjects.OBJECT_GOLD) !== -1;
                 cell.withTile = specIds.indexOf(DataObjects.OBJECT_TILE) !== -1;
@@ -7416,7 +7416,7 @@ let PageBlockField = function PageBlockField() {
     objectScores[DataObjects.OBJECT_PURPLE] = 10;
     objectScores[DataObjects.OBJECT_SAND] = 30;
 
-    objectScores[DataObjects.OBJECT_SPIDER_ALPHA] = 100;
+    objectScores[DataObjects.OBJECT_ALPHA] = 100;
     objectScores[DataObjects.OBJECT_SPIDER_BETA] = 100;
     objectScores[DataObjects.OBJECT_GAMMA] = 100;
     objectScores[DataObjects.OBJECT_POLY_COLOR] = 300;

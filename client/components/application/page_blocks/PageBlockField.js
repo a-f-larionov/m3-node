@@ -94,7 +94,7 @@ let PageBlockField = function PageBlockField() {
             el = GUI.createElement(ElementImage, {x: oX, y: oY, src: 'panel-turns.png'});
             self.elements.push(el);
             /** Надпись */
-            el = GUI.createElement(ElementText, {x: oX, y: oY + 6, width: 112, text: 'УРОВЕНЬ', alignCenter: true});
+            el = GUI.createElement(ElementText, {x: oX, y: oY + 8, width: 112, text: 'УРОВЕНЬ', alignCenter: true, fontSize: 14});
             self.elements.push(el);
             /** Текст */
             elLevel = GUI.createElement(ElementText, {x: oX, y: oY + panelTextOffsetY, width: 112, alignCenter: true});
@@ -111,7 +111,7 @@ let PageBlockField = function PageBlockField() {
             el = GUI.createElement(ElementImage, {x: oX, y: oY, src: 'panel-score.png'});
             self.elements.push(el);
             /** Надпись */
-            el = GUI.createElement(ElementText, {x: oX, y: oY + 6, width: 112, text: 'ОЧКИ', alignCenter: true});
+            el = GUI.createElement(ElementText, {x: oX, y: oY + 8, width: 112, text: 'ОЧКИ', alignCenter: true, fontSize: 14});
             self.elements.push(el);
             /** Текст */
             elScore = GUI.createElement(ElementText, {x: oX, y: oY + panelTextOffsetY, width: 112, alignCenter: true});
@@ -137,7 +137,7 @@ let PageBlockField = function PageBlockField() {
             el = GUI.createElement(ElementImage, {x: oX, y: oY, src: 'panel-turns.png'});
             self.elements.push(el);
             /** Надпись */
-            el = GUI.createElement(ElementText, {x: oX, y: oY + 6, width: 112, text: 'ХОДЫ', alignCenter: true, fontSize5: 18});
+            el = GUI.createElement(ElementText, {x: oX, y: oY + 8, width: 112, text: 'ХОДЫ', alignCenter: true, fontSize: 14});
             self.elements.push(el);
             /** Текст */
             elTurns = GUI.createElement(ElementText, {x: oX, y: oY + panelTextOffsetY, width: 112, alignCenter: true});
@@ -150,7 +150,7 @@ let PageBlockField = function PageBlockField() {
         {
             oX = 15;
             oY = 260;
-            elPanelGoals = GUI.createElement(ElementPanelItems, {x: oX, y: oY, title: 'ЦЕЛИ', fontSize: 18});
+            elPanelGoals = GUI.createElement(ElementPanelItems, {x: oX, y: oY , title: 'ЦЕЛИ', fontSize: 14});
             self.elements.push(elPanelGoals);
         }
 
@@ -382,7 +382,7 @@ let PageBlockField = function PageBlockField() {
     objectScores[DataObjects.OBJECT_PURPLE] = 10;
     objectScores[DataObjects.OBJECT_SAND] = 30;
 
-    objectScores[DataObjects.OBJECT_SPIDER_ALPHA] = 100;
+    objectScores[DataObjects.OBJECT_ALPHA] = 100;
     objectScores[DataObjects.OBJECT_SPIDER_BETA] = 100;
     objectScores[DataObjects.OBJECT_GAMMA] = 100;
     objectScores[DataObjects.OBJECT_POLY_COLOR] = 300;

@@ -1076,7 +1076,7 @@ DataPoints = function () {
     wayPoints[23] = {
         id: 23, turns: 15, score1: 500, score2: 1000, score3: 1500,
         goals: [
-            {id: DataObjects.OBJECT_SPIDER_ALPHA, count: 4},
+            {id: DataObjects.OBJECT_ALPHA, count: 4},
         ],
         layers: {
             mask: [
@@ -1113,7 +1113,7 @@ DataPoints = function () {
         id: 24, turns: 28 - 12, score1: 500, score2: 2500, score3: 2700,
         goals: [
             {id: DataObjects.OBJECT_SPIDER_BETA, count: 10},
-            {id: DataObjects.OBJECT_SPIDER_ALPHA, count: 5},
+            {id: DataObjects.OBJECT_ALPHA, count: 5},
         ],
         layers: {
             mask: [
@@ -1248,7 +1248,7 @@ DataPoints = function () {
         id: 28, turns: 30, score1: 1000, score2: 1500, score3: 2700,
         goals: [
             {id: DataObjects.OBJECT_BARREL, count: 4},
-            {id: DataObjects.OBJECT_SPIDER_ALPHA, count: 6},
+            {id: DataObjects.OBJECT_ALPHA, count: 6},
         ],
         layers: {
             mask: [
@@ -1278,7 +1278,7 @@ DataPoints = function () {
     wayPoints[29] = {
         id: 29, turns: 21, score1: 500, score2: 1000, score3: 1500,
         goals: [
-            {id: DataObjects.OBJECT_SPIDER_ALPHA, count: 2},
+            {id: DataObjects.OBJECT_ALPHA, count: 2},
             {id: DataObjects.OBJECT_BARREL, count: 4},
         ],
         layers: {
@@ -1311,7 +1311,7 @@ DataPoints = function () {
         id: 30, turns: 20, score1: 500, score2: 2500, score3: 3000,
         goals: [
             {id: DataObjects.OBJECT_SPIDER_BETA, count: 18},
-            {id: DataObjects.OBJECT_SPIDER_ALPHA, count: 2},],
+            {id: DataObjects.OBJECT_ALPHA, count: 2},],
         layers: {
             mask: [
                 "□□□□□□□□□",
@@ -1369,7 +1369,7 @@ DataPoints = function () {
         id: 31, turns: 26, score1: 500, score2: 2500, score3: 3300,
         goals: [
             {id: DataObjects.OBJECT_SPIDER_BETA, count: 8},
-            {id: DataObjects.OBJECT_SPIDER_ALPHA, count: 4},
+            {id: DataObjects.OBJECT_ALPHA, count: 4},
             {id: DataObjects.OBJECT_BARREL, count: 1},
         ],
         layers: {
@@ -1414,7 +1414,7 @@ DataPoints = function () {
         id: 32, turns: 30, score1: 500, score2: 5500, score3: 6000,
         goals: [
             {id: DataObjects.OBJECT_SPIDER_BETA, count: 28},
-            {id: DataObjects.OBJECT_SPIDER_ALPHA, count: 8},
+            {id: DataObjects.OBJECT_ALPHA, count: 8},
         ],
         layers: {
             mask: [
