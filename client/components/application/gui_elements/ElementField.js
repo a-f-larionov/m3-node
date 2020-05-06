@@ -414,7 +414,7 @@ let ElementField = function () {
         }
         if (opacity !== undefined) dom.opacity = opacity;
         if (objectId === DataObjects.OBJECT_SPIDER_BETA) {
-            dom.y -= 10;
+           // dom.y -= 10;
         }
         dom.show();
         dom.redraw();
@@ -456,7 +456,7 @@ let ElementField = function () {
                 /** Lightning */
                 if (object.lightningId) {
                     specDom = specDoms2[spec2Index++];
-                    drawDom({x: x, y: y}, specDom, object.lightningId, 0.5);
+                    drawDom({x: x, y: y}, specDom, object.lightningId, 1);
                     gemDom.bindedDoms = specDom;
                 }
             }
@@ -482,7 +482,7 @@ let ElementField = function () {
             }
 
             /** Creature beta */
-            if (cell.isVisible && object.withSpiderBeta) {
+            if (cell.isVisible && object.withBeta) {
                 specDom = specDoms2[spec2Index++];
                 drawDom({x: x, y: y}, specDom, DataObjects.OBJECT_SPIDER_BETA, '');
                 gemDom.bindedDoms = specDom;
@@ -737,6 +737,9 @@ let ElementField = function () {
             }
             if (actGem) {
                 actObjectId = Field.getCell(actGem).object.objectId;
+            } else {
+                actGem = (line.coords[0]);
+                actObjectId = Field.getCell(actGem).object.objectId;
             }
 
             line.coords.forEach(function (p) {
@@ -855,11 +858,10 @@ let ElementField = function () {
                 animate(animHummerDestroy, p);
             }
 
-
-            if (cell.object.withSpiderBeta) {
+            if (cell.object.withBeta) {
                 /** Destroy green spider */
                 self.onDestroyThing(DataObjects.OBJECT_SPIDER_BETA, cell);
-                cell.object.withSpiderBeta = false;
+                cell.object.withBeta = false;
                 animate(animHummerDestroy, p);
             }
 

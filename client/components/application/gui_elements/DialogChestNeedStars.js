@@ -7,19 +7,8 @@ let DialogChestNeedStars = function () {
     this.init = function () {
         this.__proto__.init.call(this);
         GUI.pushParent(self.dom);
-        /** Кнопка закрыть */
-        GUI.createElement(ElementButton, {
-            x: 452, y: 3,
-            width: 100, height: 40,
-            srcRest: 'button-close-rest.png',
-            onClick: function () {
-                self.closeDialog();
-            }
-        }).show();
 
-        elText = GUI.createElement(ElementText, {
-            x: 50, y: 70, width: 260, height: 80, text: ''
-        });
+        elText = GUI.createElement(ElementText, {x: 50, y: 70, width: 260, height: 80});
         elText.show();
 
         GUI.popParent();

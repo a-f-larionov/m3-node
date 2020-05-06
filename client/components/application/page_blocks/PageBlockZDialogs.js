@@ -48,6 +48,9 @@ let PageBlockZDialogs = function PageBlockZDialogs() {
     /** @type {DialogChestYouWin} */
     this.dialogChestYouWin = null;
 
+    /** @type {DialogMessage} */
+    this.dialogMessage = null;
+
     this.init = function () {
 
         this.dialogMoneyShop = GUI.createElement(DialogMoneyShop, {});
@@ -79,6 +82,9 @@ let PageBlockZDialogs = function PageBlockZDialogs() {
 
         this.dialogChestYouWin = GUI.createElement(DialogChestYouWin);
         self.elements.push(this.dialogChestYouWin);
+
+        this.dialogMessage = GUI.createElement(DialogMessage);
+        self.elements.push(this.dialogMessage);
     };
 
     /**
@@ -87,7 +93,6 @@ let PageBlockZDialogs = function PageBlockZDialogs() {
     this.show = function () {
         if (showed) return;
         showed = true;
-        self.preset();
         for (let i in self.elements) {
             self.elements[i].show();
         }
@@ -106,18 +111,10 @@ let PageBlockZDialogs = function PageBlockZDialogs() {
     };
 
     /**
-     * Настройка перед отрисовкой.
-     */
-    this.preset = function () {
-
-    };
-
-    /**
      * Обновляем онлайн индикатор и индикатор очков.
      */
     this.redraw = function () {
         if (!showed) return;
-        self.preset();
         self.elements.forEach(function (el) {
             el.redraw();
         });

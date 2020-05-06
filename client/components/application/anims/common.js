@@ -18,8 +18,10 @@ let animClouds = function () {
     this.cycleIt = function (t) {
 
         let rV;
-        rV = {x: Math.random() - 0.5, y: Math.random() - 0.5}
-
+        rV = {
+            x:  Math.random() - 0.5,
+            y:  Math.random() - 0.5
+        };
 
         clouds.forEach(function (cloud, i) {
             let sx, sy, s;

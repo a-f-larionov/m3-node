@@ -1,3 +1,7 @@
+/**
+ * @type {LogicUser}
+ * @constructor
+ */
 let LogicUser = function () {
     let self = this;
 
@@ -253,8 +257,13 @@ let LogicUser = function () {
         }
         return gamers;
     };
-}
-;
+
+    this.getUserLastMapId = function () {
+        return DataMap.getMapIdFromPointId(
+            LogicUser.getCurrent().nextPointId
+        );
+    };
+};
 
 /**
  * Статичный класс.

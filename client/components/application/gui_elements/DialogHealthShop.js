@@ -14,12 +14,7 @@ let  DialogHealthShop = function () {
 
         GUI.pushParent(self.dom);
 
-        /** Заголовок диалога */
-        el = GUI.createElement(ElementText, {
-            x: 135, y: 11, width: 230, height: 40,
-            text: 'МАГАЗИН'
-        });
-        self.elements.push(el);
+        this.setTitle('МАГАЗИН');
 
         elHealth5 = GUI.createElement(ElementButton, {
             x: offsetX + stepX, y: offsetY,
@@ -38,15 +33,6 @@ let  DialogHealthShop = function () {
             }
         });
         self.elements.push(el);
-
-        /** Кнопка закрыть */
-        GUI.createElement(ElementButton, {
-            x: 452, y: 3,
-            srcRest: 'button-close-rest.png',
-            onClick: function () {
-                self.closeDialog();
-            }
-        }).show();
 
         GUI.popParent();
     };

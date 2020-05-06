@@ -49,11 +49,7 @@ let LogicMain = function () {
 
     this.onAuthorizeSuccess = function () {
         /** Установить текущую карту игрока */
-        DataMap.setCurrentMapId(
-            DataMap.getMapIdFromPointId(
-                LogicUser.getCurrent().nextPointId
-            )
-        );
+        DataMap.setCurrentMapId(LogicUser.getUserLastMapId());
 
         SAPITimeServer.sendMeTime();
         LogicStuff.loadStuff();

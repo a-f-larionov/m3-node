@@ -3810,7 +3810,7 @@ let ElementField = function () {
                 }
 
                 /** Creature beta */
-                if (cell.isVisible && object.withSpiderBeta) {
+                if (cell.isVisible && object.withBeta) {
                     specDom = specDoms2[spec2Index++];
                     drawDom({x: x, y: y}, specDom, DataObjects.OBJECT_SPIDER_BETA, '');
                     gemDom.bindedDoms = specDom;
@@ -4184,10 +4184,10 @@ let ElementField = function () {
             }
 
 
-            if (cell.object.withSpiderBeta) {
+            if (cell.object.withBeta) {
                 /** Destroy green spider */
                 self.onDestroyThing(DataObjects.OBJECT_SPIDER_BETA, cell);
-                cell.object.withSpiderBeta = false;
+                cell.object.withBeta = false;
                 animate(animHummerDestroy, p);
             }
 
@@ -6169,7 +6169,7 @@ let LogicField = function () {
                 object.withBox = specIds.indexOf(DataObjects.OBJECT_BOX) !== -1;
                 object.withChainA = specIds.indexOf(DataObjects.OBJECT_CHAIN_A) !== -1;
                 object.withChainB = specIds.indexOf(DataObjects.OBJECT_CHAIN_B) !== -1;
-                object.withSpiderBeta = specIds.indexOf(DataObjects.OBJECT_SPIDER_BETA) !== -1;
+                object.withBeta = specIds.indexOf(DataObjects.OBJECT_SPIDER_BETA) !== -1;
                 object.withGamma = specIds.indexOf(DataObjects.OBJECT_GAMMA) !== -1;
 
                 self.setObject({x: x, y: y}, objectId, lightningId)

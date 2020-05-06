@@ -84,6 +84,17 @@ let PageBlockZClouds = function PageBlockZClouds() {
      */
     this.redraw = function () {
         if (!showed) return;
+        if (DataMap.getCurrent() &&
+            DataMap.getCurrent().id > LogicUser.getUserLastMapId()
+        ) {
+            self.elements.forEach(function (el) {
+                el.show();
+            });
+        } else {
+            self.elements.forEach(function (el) {
+                el.hide();
+            });
+        }
         self.elements.forEach(function (el) {
             el.redraw();
         });

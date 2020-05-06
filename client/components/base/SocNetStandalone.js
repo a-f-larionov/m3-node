@@ -88,7 +88,7 @@ let SocNetStandalone = function () {
         }
     };
 
-    this.postOne = function () {
+    this.post = function () {
         console.log(arguments);
         alert('Возможно не сейчас!');
     };

@@ -6,14 +6,7 @@ let DialogJustQuit = function () {
         this.__proto__.init.call(this);
         let element;
 
-        /** Заголовок */
-        element = GUI.createElement(ElementText, {
-            x: 150, y: 12, width: 200,
-            bold: true,
-            alignCenter: true,
-        }, this.dom);
-        element.setText("ВЫЙТИ?");
-        self.elements.push(element);
+        this.setTitle("ВЫЙТИ?");
 
         /** Надпись в центре */
         element = GUI.createElement(ElementText, {
@@ -50,17 +43,6 @@ let DialogJustQuit = function () {
                     self.closeDialog();
                 },
                 title: 'ИГРАТЬ'
-            }, this.dom
-        );
-        self.elements.push(element);
-
-        /** Кнопка закрыть */
-        element = GUI.createElement(ElementButton, {
-                x: 452, y: 3,
-                srcRest: 'button-close-rest.png',
-                onClick: function () {
-                    self.closeDialog();
-                }
             }, this.dom
         );
         self.elements.push(element);

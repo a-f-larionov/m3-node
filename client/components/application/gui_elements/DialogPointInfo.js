@@ -2,12 +2,6 @@ let DialogPointInfo = function () {
     let self = this;
     this.__proto__ = new Dialog();
 
-    /**
-     * Номер точки
-     * @type {null}
-     */
-    let elTitle = null;
-
     let elStarOne = null;
     let elStarTwo = null;
     let elStarThree = null;
@@ -27,10 +21,6 @@ let DialogPointInfo = function () {
     this.init = function () {
         this.__proto__.init.call(this);
         GUI.pushParent(self.dom);
-
-        /** Номер точки\заголовок */
-        elTitle = GUI.createElement(ElementText, {x: 135, y: 12, width: 230, height: 40, text: ''});
-        elTitle.show();
 
         /** Кол-во звёзд */
         elStarOne = GUI.createElement(ElementImage, {
@@ -104,7 +94,7 @@ let DialogPointInfo = function () {
         if (!this.dialogShowed) return;
 
         point = DataPoints.getById(pointId);
-        elTitle.text = 'УРОВЕНЬ  ' + pointId;
+        this.setTitle('УРОВЕНЬ  ' + pointId);
 
         for (let i = 0; i < 3; i++) {
             if ((friend = friends[i]) && friend.id) {
@@ -124,7 +114,6 @@ let DialogPointInfo = function () {
         elUserPhotoScore.user = LogicUser.getCurrent();
         elUserPhotoScore.score = DataPoints.getScore(point.id);
 
-        elTitle.redraw();
         elStarOne.src = 'star-off-big.png';
         elStarTwo.src = 'star-off-big.png';
         elStarThree.src = 'star-off-big.png';

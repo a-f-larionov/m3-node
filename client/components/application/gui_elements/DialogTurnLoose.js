@@ -2,12 +2,6 @@ let DialogTurnLoose = function DialogTurnLoose() {
     let self = this;
     this.__proto__ = new Dialog();
 
-    /**
-     * Номер точки
-     * @type {null}
-     */
-    let elTitle;
-
     this.init = function () {
         this.__proto__.init.call(this);
         GUI.pushParent(self.dom);
@@ -24,6 +18,8 @@ let DialogTurnLoose = function DialogTurnLoose() {
             }
         );
 
+        this.elButtonClose.hide();
+
         self.elements.push(el);
 
         el = GUI.createElement(ElementText, {x: 50, y: 150, fontSize: 24, bold: true, alignCenter: true, width: 400});
@@ -31,9 +27,6 @@ let DialogTurnLoose = function DialogTurnLoose() {
 
         self.elements.push(el);
 
-        /** Номер точки\заголовок */
-        elTitle = GUI.createElement(ElementText, {x: 135, y: 12, width: 230, height: 40, text: 'ПРОИГРЫШ'});
-        elTitle.show();
 
         /** Кнопка играть */
         el = GUI.createElement(ElementButton, {

@@ -45,7 +45,24 @@ let DataMap = function () {
     };
 
     this.setNextMap = function () {
+        /**
+         * 1 - При более чем текущая юзера +2 - писать Пройди уровни
+         * 2 - Прим максимум - писать
+         */
+        if (currentMapId >= LogicUser.getUserLastMapId() + 1) {
+            PBZDialogs.dialogMessage.showDialog(
+                'НЕ ДОСТУПНО',
+                ' ДОСТУП ПОЯВИТСЯ ПОСЛЕ \r\n \r\n ПРОХОЖДЕНИЯ УРОВНЕЙ \r\n\r\n ПРЕДЫДУЩЕЙ КАРТЫ. ',
+                5
+            );
+            return;
+        }
         if (currentMapId === DataMap.MAP_ID_MAX) {
+            PBZDialogs.dialogMessage.showDialog(
+                'СТРОИМ',
+                ' УРОВНИ СОЗДАЮТСЯ \r\n\r\n СЛЕДИ ЗА НОВОСТЯМИ В ГРУППЕ! \r\n\r\n И ВОЗВРАЩАЙСЯ В ИГРУ! ',
+                5
+            );
             return;
         }
         currentMapId++;
@@ -58,7 +75,7 @@ let DataMap = function () {
         currentMapId--;
     };
 
-    this.getMapIdFromPointId = function (pointId) {
+    this.getMapIdFromPointId = function () {
         return Math.ceil(LogicUser.getCurrent().nextPointId / DataMap.POINTS_PER_MAP);
     };
 
@@ -132,8 +149,8 @@ GUI.ANIM_TYPE_STOP = 60;
 /** @type {DataMap} */
 DataMap = new DataMap();
 
-/* server see */
+/** Server see */
 DataMap.MAP_ID_MIN = 1;
-DataMap.MAP_ID_MAX = 10;
+DataMap.MAP_ID_MAX = 3;
 DataMap.POINTS_PER_MAP = 18;
 DataMap.CHESTS_PER_MAP = 2;

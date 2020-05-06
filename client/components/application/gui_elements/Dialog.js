@@ -1,5 +1,6 @@
 /**
  * Элемент картинки.
+ * @type {Dialog}
  * @constructor
  */
 let Dialog = function (src) {
@@ -54,7 +55,9 @@ let Dialog = function (src) {
      */
     this.elements = [];
 
-    this.title = undefined;
+    this.elHeader = null;
+
+    this.elButtonClose = null;
 
     /**
      * Создадим дом и настроем его.
@@ -69,6 +72,20 @@ let Dialog = function (src) {
         dom.x = (document.getElementById('appArea').clientWidth / 2) - self.width / 2;
         dom.y = self.startPosition;
 
+        /** Заголовок диалога */
+        self.elHeader = GUI.createElement(ElementText,
+            {x: 135, y: 16, width: 230, height: 40},
+            dom);
+
+        /** Кнопка закрыть */
+        self.elButtonClose = GUI.createElement(ElementButton, {
+            x: 452, y: 3, srcRest: 'button-close-rest.png',
+            onClick: function () {
+                self.closeDialog();
+            }
+        }, dom);
+        self.elButtonClose.show();
+
         self.dom = dom;
     };
 
@@ -79,6 +96,7 @@ let Dialog = function (src) {
         if (showed) return;
         showed = true;
         self.dom.show();
+        self.elHeader.show();
         self.elements.forEach(function (el) {
             el.show();
         });
@@ -92,6 +110,7 @@ let Dialog = function (src) {
         if (!showed) return;
         showed = false;
         self.dom.hide();
+        self.elHeader.hide();
         self.elements.forEach(function (el) {
             el.hide();
         });
@@ -103,14 +122,14 @@ let Dialog = function (src) {
     this.redraw = function () {
         if (!showed) return;
         if (!self.dialogShowed) {
-            self.dom.title = self.title;
             self.dom.pointer = self.pointer;
             self.dom.redraw();
         }
-
-        self.elements = function (el) {
+        self.elements.forEach(function (el) {
             el.redraw();
-        };
+        });
+
+        self.elHeader.redraw();
     };
 
     /**
@@ -166,6 +185,11 @@ let Dialog = function (src) {
             self.hide();
         }
         Dialog.removeDialog();
+    };
+
+    this.setTitle = function (title) {
+        self.elHeader.setText(title);
+        self.elHeader.redraw();
     }
 };
 

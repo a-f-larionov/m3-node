@@ -16,12 +16,7 @@ let DialogStuffShop = function () {
 
         GUI.pushParent(self.dom);
 
-        /** Заголовок диалога */
-        el = GUI.createElement(ElementText, {
-            x: 135, y: 11, width: 230, height: 40,
-            text: 'МАГАЗИН'
-        });
-        self.elements.push(el);
+        this.setTitle('МАГАЗИН');
 
         for (let i = 0; i < 3; i++) {
             el = GUI.createElement(ElementButton, {
@@ -47,15 +42,6 @@ let DialogStuffShop = function () {
                 }
             });
         }
-
-        /** Кнопка закрыть */
-        GUI.createElement(ElementButton, {
-            x: 452, y: 3,
-            srcRest: 'button-close-rest.png',
-            onClick: function () {
-                self.closeDialog();
-            }
-        }).show();
 
         GUI.popParent();
     };

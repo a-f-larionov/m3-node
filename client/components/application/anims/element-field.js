@@ -31,7 +31,7 @@ let animChangeAndBack = function () {
 
 let animLightning = function () {
     let dom;
-    let velocity = 0.5;
+    let velocity = 0.4;
 
     this.init = function (p, orientationId) {
         dom = this.animDoms.pop();
@@ -60,7 +60,7 @@ let animLightning = function () {
     this.iterate = function (t) {
         dom.backgroundImage = Animate.getFrameUrl('anim-light-', t * velocity, 5);
         dom.redraw();
-        if (t < 15) return true;
+        if (t * velocity < 10) return true;
     };
 
     this.finish = function () {
@@ -87,7 +87,8 @@ let animGemLightning = function () {
 let animHummerDestroy = function () {
     let dom, imageUrl = 'anim-hd-1.png';
 
-    let velocity = 1.0;
+    let velocity = 0.6;
+    let frames = 12;
 
     this.init = function (p) {
         dom = this.animDoms.pop();
@@ -102,10 +103,10 @@ let animHummerDestroy = function () {
         dom.redraw();
     };
 
-    this.iterate = function (position) {
-        dom.backgroundImage = Animate.getFrameUrl('anim-hd-', position * velocity, 15);
+    this.iterate = function (t) {
+        dom.backgroundImage = Animate.getFrameUrl('anim-hd-', t * velocity, frames);
         dom.redraw();
-        return position < 15;
+        return t * velocity < frames;
     };
 
     this.finish = function () {
