@@ -1,3 +1,7 @@
+/**
+ * @type {CAPIMap}
+ * @constructor
+ */
 let CAPIMap = function () {
     let self = this;
     let mapping;
@@ -14,7 +18,7 @@ let CAPIMap = function () {
      * @param chests
      * @param userChests
      */
-    this.gotMapsInfo = function (ctnx, mapId, map, points, userPoints, chests, userChests) {
+    this.gotMapsInfo = function (ctnx, mapId, map, points, userPoints, userChests) {
         if (!mapping) mapping = {
             /** Layer mask */
             '□': DataObjects.CELL_VISIBLE,
@@ -86,9 +90,7 @@ let CAPIMap = function () {
 
             DataPoints.setPointData(point);
         });
-        chests.forEach(function (chest) {
-            DataChests.setData(chest);
-        });
+
         userPoints.forEach(function (info) {
             DataPoints.setPointUserScore(info.userId, info.pointId, info.score);
         });

@@ -42,9 +42,6 @@ let PageBlockZDialogs = function PageBlockZDialogs() {
     /** @type {DialogPointInfo} */
     this.dialogPointInfo = null;
 
-    /** @type {DialogChestNeedStars} */
-    this.dialogChestNeedStars = null;
-
     /** @type {DialogChestYouWin} */
     this.dialogChestYouWin = null;
 
@@ -76,9 +73,6 @@ let PageBlockZDialogs = function PageBlockZDialogs() {
 
         this.dialogPointInfo = GUI.createElement(DialogPointInfo);
         self.elements.push(this.dialogPointInfo);
-
-        this.dialogChestNeedStars = GUI.createElement(DialogChestNeedStars);
-        self.elements.push(this.dialogChestNeedStars);
 
         this.dialogChestYouWin = GUI.createElement(DialogChestYouWin);
         self.elements.push(this.dialogChestYouWin);

@@ -3,6 +3,7 @@
  * @constructor
  * @property x
  * @property y
+ * @type {ElementChest}
  */
 let ElementChest = function () {
     let self = this;
@@ -31,7 +32,7 @@ let ElementChest = function () {
      */
     this.width = 0;
 
-    this.goalStars = null;
+    this.number = -1;
 
     /**
      * Высота кноки.
@@ -39,44 +40,11 @@ let ElementChest = function () {
      */
     this.height = 0;
 
-    this.srcChestClose = 'chest-close.png';
-    this.srcChestOpen = 'chest-open.png';
 
-    /**
-     * Будет вызываться при нажатии на кнопку.
-     * @type {function}
-     */
-    this.onClick = null;
+    let elPit = null;
 
-    /**
-     * Дом картинки.
-     * @type {GUIDom}
-     */
-    let dom = null;
-
-    /**
-     * Текст показывающий кол-во собранных звёзд на этом сундуке.
-     * @type {null}
-     */
-    let elText = null;
-
-    /**
-     * Опущена ли мышка.
-     * @type {boolean}
-     */
-    let mouseStateDown = false;
-
-    /**
-     * Мышь в фокусе.
-     * @type {boolean}
-     */
-    let mouseStateFocused = false;
-
-    /**
-     * Состояние сундука: 1 - закрыт, 2 - открыт
-     * @type {number}
-     */
-    this.stateId = 1;
+    let elStar = null;
+    let elTxt = null;
 
     this.chestId = null;
 
@@ -84,21 +52,11 @@ let ElementChest = function () {
      * Создадим дом и настроем его.
      */
     this.init = function () {
-        elText = GUI.createElement(ElementText, {
-            width: 100,
-            height: 40,
-            text: ''
-        });
 
-        dom = GUI.createDom();
-        dom.width = self.width;
-        dom.height = self.height;
-        dom.backgroundImage = self.srcChestClose;
-        dom.pointer = GUI.POINTER_HAND;
-        GUI.bind(dom, GUI.EVENT_MOUSE_MOUSE_DOWN, onMouseDown, self);
-        GUI.bind(dom, GUI.EVENT_MOUSE_CLICK, onMouseClick, self);
-        GUI.bind(dom, GUI.EVENT_MOUSE_OVER, onMouseOver, self);
-        GUI.bind(dom, GUI.EVENT_MOUSE_OUT, onMouseOut, self);
+        elPit = GUI.createDom(undefined, {width: self.width, height: self.height});
+
+        elStar = GUI.createElement(ElementImage, {src: 'star-on.png'});
+        elTxt = GUI.createElement(ElementText, {width: 100, height: 14, fontSize: 14, bold: false});
     };
 
     /**
@@ -107,110 +65,55 @@ let ElementChest = function () {
     this.show = function () {
         if (showed) return;
         showed = true;
-        dom.show();
-        elText.show();
+
+        elPit.show();
+        elStar.show();
+        elTxt.show();
+
         self.redraw();
     };
 
     /**
-     * Спрячем кнопку.
+     * Спрячем.
      */
     this.hide = function () {
         if (!showed) return;
         showed = false;
-        elText.hide();
-        dom.hide();
+
+        elPit.hide();
+        elStar.hide();
+        elTxt.hide();
     };
 
     /**
      * Перерисуем кнопку.
      */
     this.redraw = function () {
+        let stars;
         if (!showed) return;
 
-        switch (this.stateId) {
-            case 1:
-                if (mouseStateFocused) {
-                    dom.backgroundImage = this.srcChestOpen;
-                } else {
-                    dom.backgroundImage = this.srcChestClose;
-                }
-                break;
-            case 2:
-                dom.backgroundImage = this.srcChestOpen;
-                break;
-        }
+        elPit.x = self.x;
+        elPit.y = self.y;
 
-        if (self.stateId === ElementChest.STATE_OPEN) {
-            dom.pointer = GUI.POINTER_ARROW;
+        elTxt.x = self.x + 10;
+        elTxt.y = self.y + 10;
+
+        stars = DataMap.countStarsByMapId();
+        let numberToStars = {1: 6 * 3, 2: 12 * 3, 3: 18 * 3};
+
+        elTxt.text = stars.toString() + '/' + numberToStars[self.number];
+
+        if (numberToStars[self.number] >= stars) {
+            elPit.backgroundImage = 'pit-close.png';
         } else {
-            dom.pointer = GUI.POINTER_HAND;
+            elPit.backgroundImage = 'pit-open.png';
         }
-        dom.x = self.x;
-        dom.y = self.y;
 
-        elText.x = self.x + 10;
-        elText.y = self.y + 60;
+        elStar.x = elTxt.x + 10;
+        elStar.y = elTxt.y - 5;
 
-        let isOpened = DataChests.isItOpened(self.chestId);
-
-        if (self.goalStars) {
-            if (self.stars > self.goalStars) {
-                elText.text = self.goalStars + '/' + self.goalStars;
-            } else {
-                elText.text = self.stars + '/' + self.goalStars;
-            }
-        } else {
-            elText.text = '';
-        }
-        elText.text += isOpened ? 'opened' : 'closed';
-        elText.redraw();
-        dom.redraw();
-    };
-
-    /**
-     * Обработка события фокуса мыши.
-     */
-    let onMouseOver = function () {
-        if (!self.enabled) return;
-        mouseStateFocused = true;
-        self.redraw();
-    };
-
-    /**
-     * Обработчик события на опускание мыши.
-     */
-    let onMouseDown = function () {
-        if (!self.enabled) return;
-        mouseStateDown = true;
-        self.redraw();
-    };
-
-    /**
-     * Обработка события выхода фокуса мыши.
-     */
-    let onMouseOut = function () {
-        if (!self.enabled) return;
-        mouseStateFocused = false;
-        self.redraw();
-    };
-
-    /**
-     * Обработка события на клик.
-     * @param mouseEvent {MouseEvent}
-     * @param dom {Element}
-     */
-    let onMouseClick = function (mouseEvent, dom) {
-        /* Да, тут мы останавливаем дальнейшие течение клика. */
-        mouseEvent.stopPropagation();
-        //if (self.stateId === ElementChest.STATE_CLOSE) return;
-        mouseStateDown = false;
-        mouseStateFocused = false;
-        self.redraw();
-        return self.onClick.call(null, mouseEvent, dom, this);
+        elPit.redraw();
+        elStar.redraw();
+        elTxt.redraw();
     };
 };
-
-ElementChest.STATE_CLOSE = 1;
-ElementChest.STATE_OPEN = 2;
-

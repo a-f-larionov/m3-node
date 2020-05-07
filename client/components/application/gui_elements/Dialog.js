@@ -68,6 +68,7 @@ let Dialog = function (src) {
             width: self.width,
             height: self.height,
             backgroundImage: self.src,
+            zIndex:1000
         });
         dom.x = (document.getElementById('appArea').clientWidth / 2) - self.width / 2;
         dom.y = self.startPosition;

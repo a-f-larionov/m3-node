@@ -26,6 +26,10 @@ let PageBlockMaps = function PageBlockMaps() {
 
     let elOldPaper = false;
 
+    let pitA = false;
+    let pitB = false;
+    let pitC = false;
+
     let elMapElements = {};
 
     /**
@@ -41,8 +45,6 @@ let PageBlockMaps = function PageBlockMaps() {
      * @type ElementPoint[]
      */
     let pointsEls = [];
-
-    let chestsEls = [];
 
     /** @type {ElementImage} */
     let elArrowHint = null;
@@ -112,41 +114,13 @@ let PageBlockMaps = function PageBlockMaps() {
             if (coords.number === 1) GUI.setTagId(null);
         });
 
-        /** Сундуки */
-        DataChests.getCoords().forEach(function (coord) {
-            el = GUI.createElement(ElementChest, {
-                x: coord.x, y: coord.y,
-                width: 71, height: 62,
-                number: coord.number,
-                enabled: true,
-                onClick: function (e, d, el) {
-                    let chestId, isItOpened, chest, goalStars, mapStars;
-                    chestId = el.chestId;
-                    isItOpened = DataChests.isItOpened(chestId);
-                    chest = DataChests.getById(chestId);
-                    goalStars = chest.goalStars;
-                    mapStars = DataMap.countStarsByMapId();
-                    if (isItOpened) {
-                        //console.log('уже открыт!');
-                    } else {
-                        if (mapStars < goalStars) {
-                            PBZDialogs.dialogChestNeedStars.mapStars = mapStars;
-                            PBZDialogs.dialogChestNeedStars.goalStars = goalStars;
-                            PBZDialogs.dialogChestNeedStars.showDialog();
-                            // если закрыт и не хватает звёзд - диалог с надписью: что бы открыть сундук , собери еще
-                        } else {
-                            SAPIChest.openChest(chestId);
-                            DataChests.setOpened(chestId);
-                            DataPrizes.giveOutPrizes(chest.prizes);
-                            PBZDialogs.dialogChestYouWin.chestId = chestId;
-                            PBZDialogs.dialogChestYouWin.showDialog();
-                            PageController.redraw();
-                        }
-                    }
-                }
-            });
-            chestsEls[coord.number] = el;
-        });
+
+        el = GUI.createElement(ElementChest, {x: 162, y: 304, number: 1});
+        self.elements.push(el);
+        el = GUI.createElement(ElementChest, {x: 309, y: 78, number: 2});
+        self.elements.push(el);
+        el = GUI.createElement(ElementChest, {x: 495, y: 304, number: 3});
+        self.elements.push(el);
 
         elFriendsPanel = GUI.createElement(ElementFriendsPanel, {x: 213, y: 450 - 15});
         self.elements.push(elFriendsPanel);
@@ -201,7 +175,6 @@ let PageBlockMaps = function PageBlockMaps() {
     this.preset = function () {
         let nextPointId, firstPointId, lastPointId;
         this.presetPoints();
-        this.presetChests();
         /** Set hint arrow */
         nextPointId = LogicUser.getCurrent().nextPointId;
         firstPointId = DataMap.getFirstPointId();
@@ -338,25 +311,6 @@ let PageBlockMaps = function PageBlockMaps() {
                     pointId,
                     true)
             );
-        }
-    };
-
-    /**
-     * Обновление данных перед отрисовкой сундуков
-     */
-    this.presetChests = function () {
-        let chestId, chest, chestEl, map;
-        map = DataMap.getCurrent();
-        if (!map) return;
-        for (let number = 1; number <= DataMap.CHESTS_PER_MAP; number++) {
-            chestId = DataMap.getChestIdFromChestNumber(number);
-            chest = DataChests.getById(chestId);
-            if (!chest) continue;
-
-            chestEl = chestsEls[number];
-            chestEl.chestId = chestId;
-            chestEl.goalStars = chest.goalStars;
-            chestEl.stars = DataMap.countStarsByMapId();
         }
     };
 

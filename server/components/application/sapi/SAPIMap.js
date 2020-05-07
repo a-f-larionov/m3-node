@@ -29,7 +29,7 @@ SAPIMap = function () {
         }
         map = DataMap.getMap(mapId);
         points = DataPoints.getPointsByMapId(mapId);
-        chests = DataChests.getChestsByMapId(mapId);
+        //chests = DataChests.getChestsByMapId(mapId);
         DataPoints.getUsersInfo(mapId, [cntx.userId], function (rows) {
             userPoints = rows;
             DataChests.getUsersInfo(mapId, [cntx.userId], function (rows) {
@@ -40,7 +40,7 @@ SAPIMap = function () {
                     map,
                     points,
                     userPoints,
-                    chests,
+                    //chests,
                     userChests
                 );
             });

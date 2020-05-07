@@ -147,17 +147,17 @@ let ElementPoint = function () {
         dPhoto1 = GUI.createDom(null, {
             height: photoSize, width: photoSize,
             border: '1px solid #715f4b',
-            borderRadius: '2px'
+            borderRadius: '2px', zIndex: 100
         });
         dPhoto2 = GUI.createDom(null, {
             height: photoSize, width: photoSize,
             border: '1px solid #715f4b',
-            borderRadius: '2px'
+            borderRadius: '2px', zIndex: 100
         });
         dPhoto3 = GUI.createDom(null, {
             height: photoSize, width: photoSize,
             border: '1px solid #715f4b',
-            borderRadius: '2px'
+            borderRadius: '2px', zIndex: 100
         });
     };
 
