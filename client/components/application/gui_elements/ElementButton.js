@@ -155,11 +155,11 @@ let ElementButton = function () {
         if (mouseStateFocused && mouseStateDown) mode = 'active';
         if (!mouseStateFocused && mouseStateDown) mode = 'rest';
 
-        w = self.width ? self.width : Images.getWidth(self.srcRest);
-        h = self.height ? self.height : Images.getHeight(self.srcRest);
-
         dom.x = self.x;
         dom.y = self.y;
+
+        w = self.width ? self.width : Images.getWidth(self.srcRest);
+        h = self.height ? self.height : Images.getHeight(self.srcRest);
 
         dom.width = w;
         dom.height = h;

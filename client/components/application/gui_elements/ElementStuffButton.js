@@ -118,7 +118,7 @@ let ElementStuffButton = function () {
      * Покажем кнопку.
      */
     this.show = function () {
-        if (showed == true) return;
+        if (showed === true) return;
         showed = true;
         dom.show();
         counter.show();
@@ -129,7 +129,7 @@ let ElementStuffButton = function () {
      * Спрячем кнопку.
      */
     this.hide = function () {
-        if (showed == false) return;
+        if (showed === false) return;
         showed = false;
         dom.hide();
         counter.hide();
@@ -139,13 +139,38 @@ let ElementStuffButton = function () {
      * Перерисуем кнопку.
      */
     this.redraw = function () {
-        let src;
+        let src, w, h;
         if (!showed) return;
+
+        dom.x = self.x;
+        dom.y = self.y;
+
         src = self.srcRest;
-        if (mouseStateFocused) src = self.srcHover;
-        if (mouseStateFocused && mouseStateDown) src = self.srcActive;
+        w = self.width ? self.width : Images.getWidth(self.srcRest);
+        h = self.height ? self.height : Images.getHeight(self.srcRest);
+
+        dom.width = w;
+        dom.height = h;
+
+        if (mouseStateFocused) {
+            if (self.srcHover) src = self.srcHover; else {
+                dom.width = w * 1.05;
+                dom.height = h * 1.05;
+                dom.x = self.x - w * 0.025;
+                dom.y = self.y - h * 0.025;
+            }
+        }
+        if (mouseStateFocused && mouseStateDown) {
+            if (self.srcHover) src = self.srcActive; else {
+                dom.width = Images.getWidth(self.srcRest) * 1.1;
+                dom.height = Images.getHeight(self.srcRest) * 1.1;
+                dom.x = self.x - w * 0.05;
+                dom.y = self.y - h * 0.05;
+            }
+        }
         if (!mouseStateFocused && mouseStateDown) src = self.srcRest;
         dom.backgroundImage = src;
+
         if (self.title) dom.title = self.title;
         if (self.enabled) {
             dom.pointer = GUI.POINTER_HAND;
@@ -154,8 +179,6 @@ let ElementStuffButton = function () {
             dom.pointer = GUI.POINTER_ARROW;
             dom.opacity = 0.5;
         }
-        dom.x = self.x;
-        dom.y = self.y;
         counter.x = self.x + 70;
         counter.y = self.y + 40;
         counter.setText(LogicStuff.getStuff(self.fieldName));
@@ -196,7 +219,7 @@ let ElementStuffButton = function () {
      * @param dom {Element}
      */
     let onMouseClick = function (mouseEvent, dom) {
-        /* Да, тут мы останавливаем дальнейшие течение клика. */
+        /** Да, тут мы останавливаем дальнейшие течение клика. */
         mouseEvent.stopPropagation();
         if (!self.enabled) return;
         mouseStateDown = false;
