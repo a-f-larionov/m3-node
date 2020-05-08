@@ -11,6 +11,9 @@ let DataChests = function () {
             id: 1,
             prizes: [
                 {id: DataObjects.STUFF_HUMMER, count: 1},
+                {id: DataObjects.STUFF_LIGHTNING, count: 2},
+                {id: DataObjects.STUFF_SHUFFLE, count: 3},
+                {id: DataObjects.OBJECT_RED, count: 4},
             ],
         };
     };

@@ -157,11 +157,8 @@ let PageBlockField = function PageBlockField() {
         oY = 200;
         /** Stuff hummer */
         el = GUI.createElement(ElementStuffButton, {
-            x: 650, y: oY,
-            fieldName: 'hummerQty',
+            x: 650, y: oY, fieldName: 'hummerQty',
             srcRest: 'button-hummer-rest.png',
-            srcHover: 'button-hummer-hover.png',
-            srcActive: 'button-hummer-active.png',
             onClick: function () {
                 self.setStuffMode(LogicStuff.STUFF_HUMMER);
             }
@@ -170,11 +167,8 @@ let PageBlockField = function PageBlockField() {
 
         /** Stuff lightning */
         el = GUI.createElement(ElementStuffButton, {
-            x: 650, y: oY + 80,
-            fieldName: 'lightningQty',
+            x: 650, y: oY + 80, fieldName: 'lightningQty',
             srcRest: 'button-lightning-rest.png',
-            srcHover: 'button-lightning-hover.png',
-            srcActive: 'button-lightning-active.png',
             onClick: function () {
                 self.setStuffMode(LogicStuff.STUFF_LIGHTNING);
             }
@@ -183,11 +177,8 @@ let PageBlockField = function PageBlockField() {
 
         /** Stuff shuffle */
         el = GUI.createElement(ElementStuffButton, {
-            x: 650, y: oY + 80 * 2,
-            fieldName: 'shuffleQty',
+            x: 650, y: oY + 80 * 2, fieldName: 'shuffleQty',
             srcRest: 'button-shuffle-rest.png',
-            srcHover: 'button-shuffle-hover.png',
-            srcActive: 'button-shuffle-active.png',
             onClick: function () {
                 self.setStuffMode(LogicStuff.STUFF_SHUFFLE);
             }

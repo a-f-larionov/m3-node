@@ -15,43 +15,48 @@ let DialogChestYouWin = function () {
 
         this.elHeader.setText('Ты нашел!');
 
-        elText = GUI.createElement(ElementText, {x: 40, y: 20, width: 240, height: 80});
+        elText = GUI.createElement(ElementText, {x: 10, y: 80, width: 480, height: 50});
+        elText.setText('Собраны все звезды! \r\nТы открыл сундук и нашел там:');
         elText.show();
 
-        for (let i = 0; i < 5; i++) {
-            imagesEls[i] = GUI.createElement(ElementImage,
-                {x: 40 + (i * 50), y: 90, src: ''});
+        for (let i = 0; i < 8; i++) {
+            imagesEls[i] = GUI.createElement(ElementImage, {y: 155, width: 50, height: 50});
 
-            countersEls[i] = GUI.createElement(ElementText,
-                {x: 60 + (i * 50), y: 80 + 60, width: 50});
+            countersEls[i] = GUI.createElement(ElementText, {y: 220, width: 50});
         }
         GUI.popParent();
     };
 
     this.redraw = function () {
-        let chest, prize;
+        let chest;
         this.__proto__.redraw.call(this);
         if (!this.dialogShowed) return;
         chest = DataChests.getById(chestId);
 
-        elText.setText('Собраны все звезды! Ты открыл сундук и нашел там:');
+        let sX;
+        sX = Images.getWidth('window-2.png') / 2
+            - ((chest.prizes.length) * 50) / 2
+            - (chest.prizes.length - 1) * 5 / 2;
 
-        for (let i = 0; i < 4; i++) {
-            prize = chest.prizes[i];
-            console.log(prize);
-            if (prize) {
-                imagesEls[i].src = DataObjects.images[prize.id];
-                countersEls[i].setText(prize.count);
+        chest.prizes.forEach(function (prize, i) {
+            let img = imagesEls[i];
+            let cnt = countersEls[i];
+            img.src = DataObjects.images[prize.id];
+            cnt.setText('x' + prize.count);
 
-                imagesEls[i].show();
-                countersEls[i].show();
-                countersEls[i].redraw();
-                imagesEls[i].redraw();
-            } else {
-                imagesEls[i].hide();
-                countersEls[i].hide();
-            }
-        }
+
+            img.x = sX + (i * 50) + (i) * 5;
+
+            cnt.x = img.x;
+
+            img.show();
+            cnt.show();
+
+            cnt.redraw();
+            img.redraw();
+        });
+        //imagesEls[i].hide();
+        //countersEls[i].hide();
 
         elText.redraw();
     };
