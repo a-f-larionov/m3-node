@@ -134,6 +134,52 @@ let DataObjects = function () {
      */
     this.WITH_LIGHTNING_CROSS = 1012;
 
+    this.STUFF_HUMMER = 2010;
+    this.STUFF_LIGHTNING = 2011;
+    this.STUFF_SHUFFLE = 2012;
+    this.STUFF_GOLD = 2013;
+
+
+    this.images = {};
+    /** Cell images */
+    this.images[this.CELL_INVISIBLE] = 'field-none.png';
+    this.images[this.CELL_VISIBLE] = 'field-cell.png';
+
+    /** Gem images */
+    this.images[this.OBJECT_HOLE] = 'field-none.png';
+    this.images[this.OBJECT_RANDOM] = 'field-none.png';
+
+    this.images[this.OBJECT_RED] = 'field-red.png';
+    this.images[this.OBJECT_GREEN] = 'field-green.png';
+    this.images[this.OBJECT_BLUE] = 'field-blue.png';
+    this.images[this.OBJECT_YELLOW] = 'field-yellow.png';
+    this.images[this.OBJECT_PURPLE] = 'field-purple.png';
+    this.images[this.OBJECT_SAND] = 'field-sand.png';
+
+    this.images[this.OBJECT_BARREL] = 'field-barrel.png';
+    this.images[this.OBJECT_BLOCK] = 'field-block.png';
+    this.images[this.OBJECT_POLY_COLOR] = 'field-poly-color.png';
+    this.images[this.OBJECT_GOLD] = 'field-gold.png';
+    this.images[this.OBJECT_TILE] = 'field-tile.png';
+
+    this.images[this.OBJECT_ALPHA] = 'field-alpha.png';
+    this.images[this.OBJECT_SPIDER_BETA] = 'field-beta.png';
+    this.images[this.OBJECT_GAMMA] = 'field-gamma.png';
+
+    this.images[this.OBJECT_BOX] = 'field-box.png';
+    this.images[this.OBJECT_CHAIN_A] = 'field-chain-a.png';
+    this.images[this.OBJECT_CHAIN_B] = 'field-chain-b.png';
+
+    /** Gem-lightning images */
+    this.images[this.WITH_LIGHTNING_VERTICAL] = 'spec-light-ver-1.png';
+    this.images[this.WITH_LIGHTNING_HORIZONTAL] = 'spec-light-hor-1.png';
+    this.images[this.WITH_LIGHTNING_CROSS] = 'spec-light-cross-1.png';
+
+    this.images[this.STUFF_HUMMER] = 'button-hummer-rest.png';
+    this.images[this.STUFF_LIGHTNING] = 'button-lightning-rest.png';
+    this.images[this.STUFF_SHUFFLE] = 'button-shuffle-rest.png';
+    this.images[this.STUFF_GOLD] = 'button-money-rest.png';
+
 };
 
 /** @type {DataObjects} */

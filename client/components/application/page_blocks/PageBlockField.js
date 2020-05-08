@@ -150,7 +150,7 @@ let PageBlockField = function PageBlockField() {
         {
             oX = 15;
             oY = 260;
-            elPanelGoals = GUI.createElement(ElementPanelItems, {x: oX, y: oY , title: 'ЦЕЛИ', fontSize: 14});
+            elPanelGoals = GUI.createElement(ElementPanelItems, {x: oX, y: oY, title: 'ЦЕЛИ', fontSize: 14});
             self.elements.push(elPanelGoals);
         }
 
@@ -444,15 +444,10 @@ let PageBlockField = function PageBlockField() {
         }
         if (score > lastScore) {
             SAPIMap.finishLevel(pointId, score);
-            DataPoints.setPointUserScore(
-                user.id,
-                pointId,
-                score
-            );
+            DataPoints.setPointUserScore(user.id, pointId, score);
         }
-        //@todo
+        LogicChests.onFinish(pointId, lastScore, score);
         SAPIUser.onPlayFinish();
-        //PageBlockPanel.oneHealthHide =false;
         PBZDialogs.dialogGoalsReached.showDialog(pointId, score);
         PageController.redraw();
     };

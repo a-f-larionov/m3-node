@@ -17,8 +17,7 @@ client.min.js       146 003
 client.min.js       133 482
 
 // убрали /images/
-sprite.png          2 776 374
+sprite.png          2 776 374 (95.11%)
 client.min.js       131 499       
-VK, Stand           11 058, 10 820
-Total: 2 918 931
-2 894 655 
+VK, Stand           11 058(v), 10 820(s)
+Total: 2 918 931(v),   2 894 655(s) 

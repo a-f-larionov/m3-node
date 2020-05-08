@@ -404,7 +404,7 @@ let ElementField = function () {
         borderRadius += (nV({x: p.x, y: p.y + 1}) && nV({x: p.x - 1, y: p.y})) ? '8px ' : '0px ';
         //borderRadius = '8px 8px 8px 8px';
         dom.borderRadius = borderRadius;
-        if (DataPoints.objectImages[objectId]) dom.backgroundImage = DataPoints.objectImages[objectId];
+        if (DataObjects.images[objectId]) dom.backgroundImage = DataObjects.images[objectId];
         if (DataPoints.objectAnims[objectId]) {
             dom.animPlayed = true;
             dom.animTracks = GUI.copyAnimTracks(DataPoints.objectAnims[objectId]);

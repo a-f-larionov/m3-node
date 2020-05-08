@@ -6,6 +6,7 @@ let LogicMain = function () {
         });
 
         DataPoints.init();
+        DataChests.init();
 
         /** init some components */
         SocNet.init();

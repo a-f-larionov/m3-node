@@ -26,10 +26,6 @@ let PageBlockMaps = function PageBlockMaps() {
 
     let elOldPaper = false;
 
-    let pitA = false;
-    let pitB = false;
-    let pitC = false;
-
     let elMapElements = {};
 
     /**

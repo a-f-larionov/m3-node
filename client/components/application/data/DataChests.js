@@ -5,19 +5,18 @@
 let DataChests = function () {
 
     let chests = {};
-    chests[1] = {
-        id: 1,
-        prized: [],
+
+    this.init = function () {
+        chests[1] = {
+            id: 1,
+            prizes: [
+                {id: DataObjects.STUFF_HUMMER, count: 1},
+            ],
+        };
     };
 
     this.getById = function (id) {
         return chests[id];
-    };
-
-    this.isItOpened = function (chestId) {
-        /**
-         *
-         */
     };
 };
 

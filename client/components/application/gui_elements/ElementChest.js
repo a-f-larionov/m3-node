@@ -89,7 +89,7 @@ let ElementChest = function () {
      * Перерисуем кнопку.
      */
     this.redraw = function () {
-        let stars;
+        let stars, starMax;
         if (!showed) return;
 
         elPit.x = self.x;
@@ -99,11 +99,13 @@ let ElementChest = function () {
         elTxt.y = self.y + 10;
 
         stars = DataMap.countStarsByMapId();
-        let numberToStars = {1: 6 * 3, 2: 12 * 3, 3: 18 * 3};
+        starMax = LogicChests.getStarsByNumber(self.number);
 
-        elTxt.text = stars.toString() + '/' + numberToStars[self.number];
+        stars = Math.min(stars, starMax);
 
-        if (numberToStars[self.number] >= stars) {
+        elTxt.text = stars.toString() + '/' + starMax;
+
+        if (starMax >= stars) {
             elPit.backgroundImage = 'pit-close.png';
         } else {
             elPit.backgroundImage = 'pit-open.png';

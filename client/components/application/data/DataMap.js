@@ -95,18 +95,6 @@ let DataMap = function () {
         return pointId - this.getFirstPointId() + 1;
     };
 
-    this.getFirstChestId = function () {
-        return DataMap.CHESTS_PER_MAP * (currentMapId - 1) + 1;
-    };
-
-    this.getLastChestId = function () {
-        return this.getFirstChestId() + DataMap.CHESTS_PER_MAP - 1;
-    };
-
-    this.getChestIdFromChestNumber = function (number) {
-        return this.getFirstChestId() + (number - 1);
-    };
-
     this.countStarsByMapId = function (mapId) {
         let mapStars, user, pointUsersInfo, pointId, point, stars;
         if (!mapId) mapId = currentMapId;
@@ -153,4 +141,3 @@ DataMap = new DataMap();
 DataMap.MAP_ID_MIN = 1;
 DataMap.MAP_ID_MAX = 3;
 DataMap.POINTS_PER_MAP = 18;
-DataMap.CHESTS_PER_MAP = 2;

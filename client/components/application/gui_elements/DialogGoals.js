@@ -19,12 +19,12 @@ let DialogGoals = function DialogGoals() {
         //GUI.createElement(ElementText, {x: 150, y: 13, width: 200, height: 40, text: 'ЦЕЛИ'}).show();
 
         /** Список целей */
-        for (let i in DataPoints.objectImages) {
+        for (let i in DataObjects.images) {
             /** Список целей - картинки */
             goalsImagesEls[i] = GUI.createElement(ElementImage, {
                 x: 200 + i * (DataPoints.BLOCK_WIDTH + 5),
                 y: 30,
-                src: DataPoints.objectImages[i]
+                src: DataObjects.images[i]
             });
             /** Список целей - кол-во */
             goalsCounterEls[i] = GUI.createElement(ElementText, {

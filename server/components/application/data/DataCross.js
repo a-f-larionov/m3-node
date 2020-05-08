@@ -1,13 +1,15 @@
-let DataCross = {};
-
-DataCross.user = {
-    maxHealth: 5,
-    healthRecoveryTime: 45,
-};
-
-DataCross.app = {
-    width: 777,
-    height: 500
+/**
+ * @type {DataCross}
+ */
+let DataCross = {
+    user: {
+        maxHealth: 5,
+        healthRecoveryTime: 45,
+    },
+    app: {
+        width: 777,
+        height: 500
+    }
 };
 
 /** Для кросс-сайдных компонент */

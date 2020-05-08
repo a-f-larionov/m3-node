@@ -1,3 +1,7 @@
+/**
+ * @type {DataShop}
+ * @constructor
+ */
 let DataShop = function () {
 
     this.getGoldProductByPrice = function (price) {

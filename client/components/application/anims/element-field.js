@@ -151,7 +151,7 @@ let animGemEmitFader = function () {
         dom.backgroundPositionY = DataPoints.BLOCK_HEIGHT;
         dom.height = 0;
         dom.width = DataPoints.BLOCK_WIDTH;
-        dom.backgroundImage = DataPoints.objectImages[Field.getGemId(p)];
+        dom.backgroundImage = DataObjects.images[Field.getGemId(p)];
         dom.redraw();
         dom.show();
     };
@@ -178,7 +178,7 @@ let animFallGems = function () {
 
             dom.startY = (data.to.y - 1) * DataPoints.BLOCK_HEIGHT;
 
-            dom.backgroundImage = DataPoints.objectImages[Field.getGemId({x: data.to.x, y: data.to.y})];
+            dom.backgroundImage = DataObjects.images[Field.getGemId({x: data.to.x, y: data.to.y})];
             dom.x = data.to.x * DataPoints.BLOCK_WIDTH;
             dom.y = data.to.y * DataPoints.BLOCK_HEIGHT;
             dom.show();
@@ -195,7 +195,7 @@ let animFallGems = function () {
                 dom.y = (data.to.y) * DataPoints.BLOCK_HEIGHT;
                 dom.height = 25;
                 dom.width = DataPoints.BLOCK_WIDTH;
-                //dom.backgroundImage = DataPoints.objectImages[Field.getGemId({x: dom.from.x, y: dom.p.y + 1})];
+                //dom.backgroundImage = DataObjects.objectImages[Field.getGemId({x: dom.from.x, y: dom.p.y + 1})];
                 /** Перерисовка backgroundPositionY это хитрый хак и костыль :) */
                 dom.backgroundPositionY = DataPoints.BLOCK_HEIGHT;
             }

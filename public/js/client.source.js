@@ -401,7 +401,7 @@ let animGemEmitFader = function () {
         dom.backgroundPositionY = DataPoints.BLOCK_HEIGHT;
         dom.height = 0;
         dom.width = DataPoints.BLOCK_WIDTH;
-        dom.backgroundImage = DataPoints.objectImages[Field.getGemId(p)];
+        dom.backgroundImage = DataObjects.objectImages[Field.getGemId(p)];
         dom.redraw();
         dom.show();
     };
@@ -428,7 +428,7 @@ let animFallGems = function () {
 
             dom.startY = (data.to.y - 1) * DataPoints.BLOCK_HEIGHT;
 
-            dom.backgroundImage = DataPoints.objectImages[Field.getGemId({x: data.to.x, y: data.to.y})];
+            dom.backgroundImage = DataObjects.objectImages[Field.getGemId({x: data.to.x, y: data.to.y})];
             dom.x = data.to.x * DataPoints.BLOCK_WIDTH;
             dom.y = data.to.y * DataPoints.BLOCK_HEIGHT;
             dom.show();
@@ -445,7 +445,7 @@ let animFallGems = function () {
                 dom.y = (data.to.y) * DataPoints.BLOCK_HEIGHT;
                 dom.height = 25;
                 dom.width = DataPoints.BLOCK_WIDTH;
-                //dom.backgroundImage = DataPoints.objectImages[Field.getGemId({x: dom.from.x, y: dom.p.y + 1})];
+                //dom.backgroundImage = DataObjects.objectImages[Field.getGemId({x: dom.from.x, y: dom.p.y + 1})];
                 /** Перерисовка backgroundPositionY это хитрый хак и костыль :) */
                 dom.backgroundPositionY = DataPoints.BLOCK_HEIGHT;
             }
@@ -2087,12 +2087,12 @@ let DialogGoals = function DialogGoals() {
         //GUI.createElement(ElementText, {x: 150, y: 13, width: 200, height: 40, text: 'ЦЕЛИ'}).show();
 
         /** Список целей */
-        for (let i in DataPoints.objectImages) {
+        for (let i in DataObjects.objectImages) {
             /** Список целей - картинки */
             goalsImagesEls[i] = GUI.createElement(ElementImage, {
                 x: 200 + i * (DataPoints.BLOCK_WIDTH + 5),
                 y: 30,
-                src: DataPoints.objectImages[i]
+                src: DataObjects.objectImages[i]
             });
             /** Список целей - кол-во */
             goalsCounterEls[i] = GUI.createElement(ElementText, {
@@ -3734,7 +3734,7 @@ let ElementField = function () {
         borderRadius += (nV({x: p.x, y: p.y + 1}) && nV({x: p.x - 1, y: p.y})) ? '8px ' : '0px ';
         //borderRadius = '8px 8px 8px 8px';
         dom.borderRadius = borderRadius;
-        if (DataPoints.objectImages[objectId]) dom.backgroundImage = DataPoints.objectImages[objectId];
+        if (DataObjects.objectImages[objectId]) dom.backgroundImage = DataObjects.objectImages[objectId];
         if (DataPoints.objectAnims[objectId]) {
             dom.animPlayed = true;
             dom.animTracks = GUI.copyAnimTracks(DataPoints.objectAnims[objectId]);
@@ -4792,8 +4792,8 @@ let ElementPanelItems = function () {
         /** Текст : заголовок */
         elTitle = GUI.createElement(ElementText, {x: self.x + 15, y: self.y + 7, width: 80, text: self.title, fontSize: self.fontSize});
 
-        for (let id in DataPoints.objectImages) {
-            el = GUI.createElement(ElementImage, {width: 50, height: 50, src: DataPoints.objectImages[id]});
+        for (let id in DataObjects.objectImages) {
+            el = GUI.createElement(ElementImage, {width: 50, height: 50, src: DataObjects.objectImages[id]});
             imagesEls[id] = el;
             el = GUI.createElement(ElementText, {width: DataPoints.BLOCK_WIDTH, alignRight: true});
             countersEls[id] = el;

@@ -1,6 +1,14 @@
-DataPrizes = function () {
+/**
+ * @type {DataPrizes}
+ * @constructor
+ */
+let DataPrizes = function () {
     let self = this;
 
+
+
+
+    /*
     this.giveOutPrizes = function (userId, prizes) {
         prizes.forEach(function (prize) {
             self.giveOutPrize(userId, prize);
@@ -23,12 +31,21 @@ DataPrizes = function () {
                 break;
         }
     };
+
+     */
 };
 
-DataPrizes = new DataPrizes;
+/** @type {DataPrizes} */
+DataPrizes = new DataPrizes();
 
-DataPrizes.PRIZE_STUFF_HUMMER = 1;
-DataPrizes.PRIZE_STUFF_SHUFFLE = 2;
-DataPrizes.PRIZE_STUFF_LIGHTNING = 3;
+DataPrizes.PRIZE_HUMMER = 1;
+DataPrizes.PRIZE_SHUFFLE = 2;
+DataPrizes.PRIZE_LIGHTNING = 3;
 
-DataPrizes.PRIZE_STUFF_GOLD = 100;
+DataPrizes.PRIZE_GOLD = 100;
+
+
+/** Для кросс-сайдных компонент */
+if (CONST_IS_SERVER_SIDE) {
+    global['DataPrizes'] = DataPrizes;
+}
