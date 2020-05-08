@@ -477,21 +477,21 @@ let PageBlockField = function PageBlockField() {
                     PBZDialogs.dialogStuffShop.showDialog(mode);
                     return;
                 }
-                domStuff.backgroundImage = 'button-hummer-active.png';
+                domStuff.backgroundImage = 'button-hummer-rest.png';
                 break;
             case LogicStuff.STUFF_LIGHTNING:
                 if (LogicStuff.getStuff('lightningQty') < 1) {
                     PBZDialogs.dialogStuffShop.showDialog(mode);
                     return;
                 }
-                domStuff.backgroundImage = 'button-lightning-active.png';
+                domStuff.backgroundImage = 'button-lightning-rest.png';
                 break;
             case LogicStuff.STUFF_SHUFFLE:
                 if (LogicStuff.getStuff('shuffleQty') < 1) {
                     PBZDialogs.dialogStuffShop.showDialog(mode);
                     return;
                 }
-                domStuff.backgroundImage = 'button-shuffle-active.png';
+                domStuff.backgroundImage = 'button-shuffle-rest.png';
                 break;
         }
         stuffMode = mode;

@@ -45,19 +45,19 @@ let ElementStuffButton = function () {
      * Ссылка на картинку при наведении фокуса(мыши).
      * @type {string}
      */
-    this.srcHover = '/path/to/image/hover.png';
+    this.srcHover = null;
 
     /**
      * Ссылка на картинку при активации кнопки(клике).
      * @type {string}
      */
-    this.srcActive = '/path/to/image/active.png';
+    this.srcActive = null;
 
     /**
      * Ссылка на картинку в покое(ожидании/бездействии).
      * @type {string}
      */
-    this.srcRest = 'path/to/image/rest1.png';
+    this.srcRest = null;
 
     /**
      * Будет вызываться при нажатии на кнопку.
@@ -154,18 +154,18 @@ let ElementStuffButton = function () {
 
         if (mouseStateFocused) {
             if (self.srcHover) src = self.srcHover; else {
-                dom.width = w * 1.05;
-                dom.height = h * 1.05;
-                dom.x = self.x - w * 0.025;
-                dom.y = self.y - h * 0.025;
+                dom.width = w * 1.1;
+                dom.height = h * 1.1;
+                dom.x = self.x - w * 0.05;
+                dom.y = self.y - h * 0.05;
             }
         }
         if (mouseStateFocused && mouseStateDown) {
             if (self.srcHover) src = self.srcActive; else {
-                dom.width = Images.getWidth(self.srcRest) * 1.1;
-                dom.height = Images.getHeight(self.srcRest) * 1.1;
-                dom.x = self.x - w * 0.05;
-                dom.y = self.y - h * 0.05;
+                dom.width = Images.getWidth(self.srcRest) * 1.2;
+                dom.height = Images.getHeight(self.srcRest) * 1.2;
+                dom.x = self.x - w * 0.1;
+                dom.y = self.y - h * 0.1;
             }
         }
         if (!mouseStateFocused && mouseStateDown) src = self.srcRest;

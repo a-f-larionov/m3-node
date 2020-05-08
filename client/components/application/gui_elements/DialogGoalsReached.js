@@ -154,10 +154,12 @@ let DialogGoalsReached = function () {
         elShare.srcRest = share ? 'check-set.png' : 'check-clear.png';
         elShare.srcHover = share ? 'check-clear.png' : 'check-set.png';
         elShare.srcActive = elShare.srcHover;
+        elShare.redraw();
     };
 
     this.showDialog = function (pId, fieldScore) {
         let mapId;
+        share = true;
         pointId = pId;
         /** @todo mapId from pointId */
         mapId = DataMap.getCurrent().id;
