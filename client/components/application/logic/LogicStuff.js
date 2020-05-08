@@ -1,3 +1,7 @@
+/**
+ * @type {LogicStuff}
+ * @constructor
+ */
 let LogicStuff = function () {
     let self = this;
 
@@ -13,6 +17,7 @@ let LogicStuff = function () {
 
     this.updateStuff = function (data) {
         stuff = data;
+        PageController.redraw();
     };
 
     this.getStuff = function (fieldName) {

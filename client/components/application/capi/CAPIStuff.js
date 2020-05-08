@@ -1,3 +1,7 @@
+/**
+ * @type {CAPIStuff}
+ * @constructor
+ */
 let CAPIStuff = function () {
 
     this.gotStuff = function (cntx, stuff) {

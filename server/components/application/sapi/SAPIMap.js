@@ -29,21 +29,9 @@ SAPIMap = function () {
         }
         map = DataMap.getMap(mapId);
         points = DataPoints.getPointsByMapId(mapId);
-        //chests = DataChests.getChestsByMapId(mapId);
-        DataPoints.getUsersInfo(mapId, [cntx.userId], function (rows) {
-            userPoints = rows;
-            DataChests.getUsersInfo(mapId, [cntx.userId], function (rows) {
-                userChests = rows;
-                CAPIMap.gotMapsInfo(
-                    cntx.userId,
-                    mapId,
-                    map,
-                    points,
-                    userPoints,
-                    //chests,
-                    userChests
-                );
-            });
+
+        DataPoints.getUsersInfo(mapId, [cntx.userId], function (usePoints) {
+            CAPIMap.gotMapsInfo(cntx.userId, mapId, map, points, usePoints);
         });
     };
 
@@ -73,20 +61,45 @@ SAPIMap = function () {
      * @param cntx
      * @param pointId
      * @param score
+     * @param chestId
      */
-    this.finishLevel = function (cntx, pointId, score) {
+    this.onFinish = function (cntx, pointId, score, chestId) {
         if (!cntx.isAuthorized) return Logs.log(arguments.callee.name + " not authorized", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
 
+        let tid = LogicTid.getOne();
+        /** Обновляем номер точки и очки на ней */
         DataPoints.updateUsersPoints(cntx.userId, pointId, score);
         DataUser.getById(cntx.userId, function (user) {
             if (user.nextPointId < pointId + 1) {
                 DataUser.updateNextPointId(cntx.userId, pointId + 1);
             }
         });
+        /** Откроем сундук, если возможно */
+            //@todo check map stars
+        let chest = DataChests.getById(chestId);
+
+        chest.prizes.forEach(function (prize) {
+            switch (prize.id) {
+                case DataObjects.STUFF_HUMMER:
+                    DataStuff.giveAHummer(cntx.userId, prize.count, tid);
+                    break;
+                case DataObjects.STUFF_LIGHTNING:
+                    DataStuff.giveALightning(cntx.userId, prize.count, tid);
+                    break;
+                case DataObjects.STUFF_SHUFFLE:
+                    DataStuff.giveAHummer(cntx.userId, prize.count, tid);
+                    break;
+                case DataObjects.STUFF_GOLD:
+                    DataStuff.giveAGold(cntx.userId, prize.count, tid);
+                    break;
+            }
+        });
+        DataStuff.getByUserId(cntx.userId, function (data) {
+            CAPIStuff.gotStuff(cntx.userId, data);
+        });
     };
-}
-;
+};
 
 SAPIMap = new SAPIMap();

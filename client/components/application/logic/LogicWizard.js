@@ -1,3 +1,7 @@
+/**
+ * @type {LogicWizard}
+ * @constructor
+ */
 let LogicWizard = function LogicWizard() {
     let self = this;
 

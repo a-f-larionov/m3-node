@@ -1,3 +1,7 @@
+/**
+ * @type {LogicTimeClient}
+ * @constructor
+ */
 let LogicTimeClient = function () {
 
     /**

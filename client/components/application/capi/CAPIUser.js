@@ -1,3 +1,7 @@
+/**
+ * @type {CAPIUser}
+ * @constructor
+ */
 let CAPIUser = function () {
 
     /**

@@ -1,3 +1,7 @@
+/**
+ * @type {CAPILog}
+ * @constructor
+ */
 let CAPILog = function () {
 
     this.log = function (ctnx, message, data) {

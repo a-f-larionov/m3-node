@@ -17,11 +17,8 @@ let LogicChests = function () {
     this.onFinish = function (pointId, lastScore, newScore, forceChest) {
         let oldPointStars, newPointStars,
             oldMapStars, newMapStars,
-            chestA, chestB, chestC;
-        /**
-         * если очков больше
-         *
-         */
+            chestA, chestB, chestC,
+            number, chestId;
 
         oldPointStars = DataPoints.countStars(null, null, lastScore);
         newPointStars = DataPoints.countStars(null, null, newScore);
@@ -33,15 +30,26 @@ let LogicChests = function () {
         chestB = LogicChests.getStarsByNumber(2);
         chestC = LogicChests.getStarsByNumber(3);
 
+        number = 0;
         if ((oldMapStars < chestA && chestA === newMapStars) || forceChest === 1) {
-            PBZDialogs.dialogChestYouWin.showDialog(LogicChests.getChestId(1));
+            number = 1;
         }
         if ((oldMapStars < chestB && chestB === newMapStars) || forceChest === 2) {
-            PBZDialogs.dialogChestYouWin.showDialog(LogicChests.getChestId(2));
+            number = 2;
         }
         if ((oldMapStars < chestC && chestC === newMapStars) || forceChest === 3) {
-            PBZDialogs.dialogChestYouWin.showDialog(LogicChests.getChestId(3));
+            number = 3;
         }
+        if (number) {
+            chestId = LogicChests.getChestId(number);
+            LogicChests.open(chestId);
+            return chestId;
+        }
+        return 0;
+    };
+
+    this.open = function (chestId) {
+        PBZDialogs.dialogChestYouWin.showDialog(chestId);
     };
 
     this.getChestId = function (number) {

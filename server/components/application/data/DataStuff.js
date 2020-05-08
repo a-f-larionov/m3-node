@@ -1,6 +1,10 @@
 let AsyncLock = require('async-lock');
 let LOCK = new AsyncLock();
 
+/**
+ * @type {DataStuff}
+ * @constructor
+ */
 DataStuff = function () {
 
     let tableName = 'users_stuff';
@@ -111,7 +115,7 @@ DataStuff = function () {
         incrementStuff('shuffleQty', userId, quantity, tid);
     };
 
-    this.giveAlightning = function (userId, quantity, tid) {
+    this.giveALightning = function (userId, quantity, tid) {
         incrementStuff('lightningQty', userId, quantity, tid);
     };
 };

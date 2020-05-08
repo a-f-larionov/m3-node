@@ -73,7 +73,7 @@ SAPIStuff = function () {
         let tid;
         DataStuff.usedGold(cntx.user.id, DataShop.lightning[itemIndex].gold, tid = LogicTid.getOne(), function (success) {
             if (success)
-                DataStuff.giveAlightning(cntx.user.id, DataShop.lightning[itemIndex].quantity, tid);
+                DataStuff.giveALightning(cntx.user.id, DataShop.lightning[itemIndex].quantity, tid);
         });
     };
 

@@ -114,11 +114,12 @@ SAPIUser = function () {
      * @param cntx {Object}
      * @returns {undefined}
      */
-    this.onPlayFinish = function (cntx) {
+    this.onFinish = function (cntx) {
         if (!cntx.isAuthorized) return Logs.log(arguments.callee.name + " not authorized", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
 
+        /** Возвращаем жизнь */
         LOCK.acquire(Keys.health(cntx.user.id), function (done) {
             setTimeout(done, 5 * 60 * 1000);
             DataUser.getById(cntx.user.id, function (user) {

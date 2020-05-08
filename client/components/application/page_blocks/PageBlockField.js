@@ -434,11 +434,11 @@ let PageBlockField = function PageBlockField() {
             LogicUser.updateUserInfo(user);
         }
         if (score > lastScore) {
-            SAPIMap.finishLevel(pointId, score);
+            chestId = LogicChests.onFinish(pointId, lastScore, score);
+            SAPIMap.onFinish(pointId, score, chestId);
             DataPoints.setPointUserScore(user.id, pointId, score);
         }
-        LogicChests.onFinish(pointId, lastScore, score);
-        SAPIUser.onPlayFinish();
+        SAPIUser.onFinish();
         PBZDialogs.dialogGoalsReached.showDialog(pointId, score);
         PageController.redraw();
     };

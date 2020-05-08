@@ -18,7 +18,7 @@ let CAPIMap = function () {
      * @param chests
      * @param userChests
      */
-    this.gotMapsInfo = function (ctnx, mapId, map, points, userPoints, userChests) {
+    this.gotMapsInfo = function (ctnx, mapId, map, points, userPoints) {
         if (!mapping) mapping = {
             /** Layer mask */
             '□': DataObjects.CELL_VISIBLE,
@@ -94,9 +94,7 @@ let CAPIMap = function () {
         userPoints.forEach(function (info) {
             DataPoints.setPointUserScore(info.userId, info.pointId, info.score);
         });
-        userChests.forEach(function (info) {
-            DataChests.setOpened(info.chestId);
-        });
+
         if (self.onMapInfoCallback) {
             self.onMapInfoCallback.call();
             self.onMapInfoCallback = null;

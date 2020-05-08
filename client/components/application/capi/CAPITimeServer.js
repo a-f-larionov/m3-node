@@ -1,3 +1,7 @@
+/**
+ * @type {CAPITimeServer}
+ * @constructor
+ */
 let CAPITimeServer = function () {
 
     /**

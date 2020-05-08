@@ -1,3 +1,7 @@
+/**
+ * @type {LogicMain}
+ * @constructor
+ */
 let LogicMain = function () {
 
     this.main = function () {
