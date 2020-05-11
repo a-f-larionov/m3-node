@@ -36,8 +36,6 @@ let DialogMessage = function () {
         this.elHeader.setText(header);
         elMessage.y = linesY[lines];
         elMessage.setText(message);
-        console.log(self.elements);
-        console.log(self.redraw);
         self.redraw();
     };
 };

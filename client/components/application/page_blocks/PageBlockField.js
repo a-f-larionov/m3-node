@@ -257,7 +257,10 @@ let PageBlockField = function PageBlockField() {
             /** Передаем клик дальше, теоретически после анимации */
             domStuff.hide();
             el = document.elementFromPoint(event.clientX, event.clientY);
-            el.dispatchEvent(new MouseEvent(event.type, event));
+            /** Передаем только на поле */
+            if (el.parentElement.__dom && el.parentElement.__dom.isFieldContainer) {
+                el.dispatchEvent(new MouseEvent(event.type, event));
+            }
             if (stuffMode) domStuff.show();
         });
 

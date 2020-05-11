@@ -262,7 +262,6 @@ let PageBlockWizard = function PageBlockWizard() {
         let f = PageBlockField.getElementField().getCoords();
 
         pList.forEach(function (p) {
-            console.log(p);
             if (p.unlock) {
                 unlockByImg('w-cell.png',
                     f.x + DataPoints.BLOCK_WIDTH * p.x,

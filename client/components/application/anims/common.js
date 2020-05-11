@@ -4,7 +4,6 @@ let animClouds = function () {
     let clouds;
 
     this.init = function (source) {
-        console.log(arguments, this);
         this.skipAnimLock = true;
         clouds = source;
         startP = [];
@@ -72,9 +71,7 @@ let animClouds = function () {
             this.cycleIt(t);
         clouds.forEach(function (cloud) {
             cloud.redraw();
-            //console.log(cloud.vx);
-            //console.log(cloud.x);
-        });
+                    });
 
         return true;
     };

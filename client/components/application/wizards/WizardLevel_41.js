@@ -19,7 +19,6 @@ let WizardLevel_41_1 = {
         ]);
     },
     onDestroyLine: function () {
-        console.log(1);
         LogicWizard.start(WizardLevel41_2);
     }
 };
@@ -28,10 +27,8 @@ WizardLevel41_2 = {
 
     init: function () {
         PBWizard.begin();
-        console.log(2);
         PBWizard.updateText('Бочка ещё не улетела, взорви ряд камней что бы переместить бочку.');
 
-        console.log(2);
         PBWizard.showDialog(360, 390, 3);
         PBWizard.showHint([{x: 2, y: 5}, {x: 3, y: 5}]);
 

@@ -225,25 +225,24 @@ let LogicUser = function () {
      * Возвращает id игроков-друзей на этой точке.
      * @param mapId
      * @param pointId
-     * @param widthCurrentUser
+     * @param withCurrentUser
      * @returns {Array|Uint8Array|BigInt64Array|*[]|Float64Array|Int8Array|Float32Array|Int32Array|Uint32Array|Uint8ClampedArray|BigUint64Array|Int16Array|Uint16Array}
      */
-    this.getFriendIdsByMapIdAndPointIdWithScore = function (mapId, pointId, widthCurrentUser) {
+    this.getFriendIdsByMapIdAndPointIdWithScore = function (mapId, pointId, withCurrentUser) {
         let ids, users, gamers, currentUserId;
         //return LogicUser.getList([1,2,3]);
         gamers = [];
         ids = LogicUser.getFriendIdsByMapId(mapId);
         currentUserId = LogicUser.getCurrent().id;
-        if (widthCurrentUser) {
-            ids.push(currentUserId);
-        }
+        if (withCurrentUser) ids.push(currentUserId);
+
         if (ids) {
             users = LogicUser.getList(ids);
         }
         if (users) {
             gamers = users
                 .filter(function (user, i) {
-                    if (!widthCurrentUser && currentUserId === user.id) return false;
+                    if (!withCurrentUser && currentUserId === user.id) return false;
                     /** Remove duplicates */
                     if (users.indexOf(user) !== i) return false;
                     return user.nextPointId >= pointId;

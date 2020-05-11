@@ -258,14 +258,9 @@ let PageBlockMaps = function PageBlockMaps() {
         if (!map) return;
 
         elMap.src = map.src;
-        //   elMap.redraw();
 
         if (mapIdOld !== map.id) {
             this.mapElsShow();
-        }
-
-        for (let i in elMapElements[map.id]) {
-            //        elMapElements[map.id][i].redraw();
         }
     };
 
@@ -298,8 +293,6 @@ let PageBlockMaps = function PageBlockMaps() {
                 elPoint.userScore = userPoint[pointId][user.id] ? userPoint[pointId][user.id].score : 0;
             else
                 elPoint.userScore = 0;
-
-            //console.log(elPoint);
 
             elPoint.setGamers(
                 LogicUser.getFriendIdsByMapIdAndPointIdWithScore(

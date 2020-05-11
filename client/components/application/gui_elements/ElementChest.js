@@ -105,10 +105,10 @@ let ElementChest = function () {
 
         elTxt.text = stars.toString() + '/' + starMax;
 
-        if (starMax >= stars) {
-            elPit.backgroundImage = 'pit-close.png';
-        } else {
+        if (starMax === stars) {
             elPit.backgroundImage = 'pit-open.png';
+        } else {
+            elPit.backgroundImage = 'pit-close.png';
         }
 
         elStar.x = elTxt.x + 10;

@@ -80,7 +80,8 @@ let ElementField = function () {
         container = GUI.createDom(undefined, {
             width: DataPoints.FIELD_MAX_WIDTH * DataPoints.BLOCK_WIDTH,
             height: DataPoints.FIELD_MAX_HEIGHT * DataPoints.BLOCK_HEIGHT,
-            overflow: 'visible'
+            overflow: 'visible',
+            isFieldContainer: true
         });
         GUI.pushParent(container);
 
@@ -211,7 +212,6 @@ let ElementField = function () {
     };
 
     let shuffleDo = function () {
-        console.log('s');
         Field.shuffle();
 
         animate(animShuffle,
@@ -414,7 +414,7 @@ let ElementField = function () {
         }
         if (opacity !== undefined) dom.opacity = opacity;
         if (objectId === DataObjects.OBJECT_SPIDER_BETA) {
-           // dom.y -= 10;
+            // dom.y -= 10;
         }
         dom.show();
         dom.redraw();
@@ -727,6 +727,7 @@ let ElementField = function () {
         lines = Field.findLines();
 
         lines.forEach(function (line) {
+
             actGem = null;
 
             if (lastExchangeGems && Field.lineCrossing([line], lastExchangeGems.a.x, lastExchangeGems.a.y)) {

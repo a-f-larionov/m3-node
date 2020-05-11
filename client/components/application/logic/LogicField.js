@@ -179,19 +179,27 @@ let LogicField = function () {
     };
 
     this.findLines = function () {
-        let line, lines;
-        lines = [];
-        for (let y = 0; y < DataPoints.FIELD_MAX_HEIGHT; y++) {
-            for (let x = 0; x < DataPoints.FIELD_MAX_WIDTH; x++) {
-                if (this.lineCrossing(lines, x, y)) continue;
+        let line, lines, vlines, hlines;
+        lines = vlines = hlines = [];
+        this.eachCell(function (x, y) {
 
-                line = this.findLine(x, y, DataObjects.WITH_LIGHTNING_VERTICAL);
-                if (line) lines.push(line);
-
-                line = this.findLine(x, y, DataObjects.WITH_LIGHTNING_HORIZONTAL);
-                if (line) lines.push(line);
+            if (!self.lineCrossing(vlines, x, y)) {
+                line = self.findLine(x, y, DataObjects.WITH_LIGHTNING_VERTICAL);
+                if (line) {
+                    lines.push(line);
+                    vlines.push(line);
+                }
             }
-        }
+
+            if (!self.lineCrossing(hlines, x, y)) {
+                line = self.findLine(x, y, DataObjects.WITH_LIGHTNING_HORIZONTAL);
+                if (line) {
+                    lines.push(line);
+                    hlines.push(line);
+                }
+            }
+        });
+
         return lines;
     };
 
@@ -231,17 +239,19 @@ let LogicField = function () {
 
 //@todo refactring
     this.lineCrossing = function (lines, x, y) {
-        for (let i in lines) {
-            for (let n in lines[i].coords) {
-                if (x === lines[i].coords[n].x &&
-                    y === lines[i].coords[n].y) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        let result = false;
+        lines.forEach(function (line) {
+            line.coords.forEach(function (p) {
+                if (x === p.x && y === p.y) result = true;
+            });
+        });
+        return result
     };
 
+    /**
+     *
+     * @param callback(x,y)
+     */
     this.eachCell = function (callback) {
         for (let y = 0; y < DataPoints.FIELD_MAX_HEIGHT; y++) {
             for (let x = 0; x < DataPoints.FIELD_MAX_WIDTH; x++) {
@@ -300,7 +310,6 @@ let LogicField = function () {
                 gems.forEach(function (gemId) {
                     if (specIds.indexOf(gemId) !== -1) {
                         objectId = gemId;
-                        console.log(gemId);
                     }
                 });
                 if (!objectId) objectId = Field.getRandomGemId();

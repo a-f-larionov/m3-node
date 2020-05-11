@@ -170,6 +170,7 @@ let DataPoints = function () {
     };
 
     this.getScore = function (pointId, userId) {
+        window.p = pointUserScore;
         if (!userId) userId = LogicUser.getCurrent().id;
         if (!userId) return null;
         if (!pointUserScore[pointId]) {
