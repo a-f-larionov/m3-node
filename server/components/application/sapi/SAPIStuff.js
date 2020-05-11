@@ -93,10 +93,10 @@ SAPIStuff = function () {
                     } else {
                         DataStuff.usedGold(cntx.user.id, DataShop.healthPrice, tid, function (success) {
                             if (!success) {
-                                Logs.log("Health tid:" + tid + "uid:" + user.id + " CANCEL", Logs.LEVEL_DETAIL, user, Logs.CHANNEL_VK_HEALTH);
+                                Logs.log("Health tid:" + tid + " uid:" + user.id + " CANCEL", Logs.LEVEL_DETAIL, user, Logs.CHANNEL_VK_HEALTH);
                                 done();
                             } else {
-                                Logs.log("Health tid:" + tid + "uid:" + user.id + " +" + LogicHealth.getMaxHealth() + " OK", Logs.LEVEL_DETAIL, user, Logs.CHANNEL_VK_HEALTH);
+                                Logs.log("Health tid:" + tid + " uid:" + user.id + " +" + LogicHealth.getMaxHealth() + " OK", Logs.LEVEL_DETAIL, user, Logs.CHANNEL_VK_HEALTH);
                                 LogicHealth.setMaxHealth(user);
                                 DataUser.updateHealthAndStartTime(user, function () {
                                         CAPIUser.updateUserInfo(cntx.user.id, user);
