@@ -180,7 +180,9 @@ let LogicField = function () {
 
     this.findLines = function () {
         let line, lines, vlines, hlines;
-        lines = vlines = hlines = [];
+        lines = [];
+        vlines = [];
+        hlines = [];
         this.eachCell(function (x, y) {
 
             if (!self.lineCrossing(vlines, x, y)) {
@@ -240,11 +242,13 @@ let LogicField = function () {
 //@todo refactring
     this.lineCrossing = function (lines, x, y) {
         let result = false;
+
         lines.forEach(function (line) {
             line.coords.forEach(function (p) {
                 if (x === p.x && y === p.y) result = true;
             });
         });
+
         return result
     };
 

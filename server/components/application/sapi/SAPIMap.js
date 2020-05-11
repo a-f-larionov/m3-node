@@ -77,28 +77,33 @@ SAPIMap = function () {
             }
         });
         /** Откроем сундук, если возможно */
-            //@todo check map stars
-        let chest = DataChests.getById(chestId);
+        //@todo check map stars
+        if (chestId) {
+            let chest = DataChests.getById(chestId);
 
-        chest.prizes.forEach(function (prize) {
-            switch (prize.id) {
-                case DataObjects.STUFF_HUMMER:
-                    DataStuff.giveAHummer(cntx.userId, prize.count, tid);
-                    break;
-                case DataObjects.STUFF_LIGHTNING:
-                    DataStuff.giveALightning(cntx.userId, prize.count, tid);
-                    break;
-                case DataObjects.STUFF_SHUFFLE:
-                    DataStuff.giveAHummer(cntx.userId, prize.count, tid);
-                    break;
-                case DataObjects.STUFF_GOLD:
-                    DataStuff.giveAGold(cntx.userId, prize.count, tid);
-                    break;
+            if (!chest) {
+                return Logs.log("no chest found for " + chestId, Logs.LEVEL_WARNING, arguments);
             }
-        });
-        DataStuff.getByUserId(cntx.userId, function (data) {
-            CAPIStuff.gotStuff(cntx.userId, data);
-        });
+            chest.prizes.forEach(function (prize) {
+                switch (prize.id) {
+                    case DataObjects.STUFF_HUMMER:
+                        DataStuff.giveAHummer(cntx.userId, prize.count, tid);
+                        break;
+                    case DataObjects.STUFF_LIGHTNING:
+                        DataStuff.giveALightning(cntx.userId, prize.count, tid);
+                        break;
+                    case DataObjects.STUFF_SHUFFLE:
+                        DataStuff.giveAHummer(cntx.userId, prize.count, tid);
+                        break;
+                    case DataObjects.STUFF_GOLD:
+                        DataStuff.giveAGold(cntx.userId, prize.count, tid);
+                        break;
+                }
+            });
+            DataStuff.getByUserId(cntx.userId, function (data) {
+                CAPIStuff.gotStuff(cntx.userId, data);
+            });
+        }
     };
 };
 

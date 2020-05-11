@@ -426,12 +426,13 @@ let PageBlockField = function PageBlockField() {
     };
 
     this.finishLevel = function () {
-        let pointId, user, lastScore;
+        let pointId, user, lastScore, chestId;
         stuffMode = null;
         Logs.log("finishLevel()", Logs.LEVEL_DETAIL);
         user = LogicUser.getCurrent();
         pointId = DataPoints.getPlayedId();
         lastScore = DataPoints.getScore(pointId);
+        console.log(pointId, lastScore, user, score);
         if (user.nextPointId < pointId + 1) {
             user.nextPointId = pointId + 1;
             LogicUser.updateUserInfo(user);

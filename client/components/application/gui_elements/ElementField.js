@@ -725,7 +725,7 @@ let ElementField = function () {
     this.destroyLines = function () {
         let lines, actGem, actObjectId;
         lines = Field.findLines();
-
+console.log(lines);
         lines.forEach(function (line) {
 
             actGem = null;
@@ -756,6 +756,7 @@ let ElementField = function () {
                 }
             }
             //if (actGem && p.x === actGem.x && p.y === actGem.y) return;
+            console.log('call on detroy');
             self.onDestroyLine(line);
         });
 

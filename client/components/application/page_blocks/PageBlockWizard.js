@@ -34,8 +34,6 @@ let PageBlockWizard = function PageBlockWizard() {
         /** Canvas */
         canvas = document.getElementById('wizardArea');
 
-        console.log(canvas);
-
         canvas.width = DataCross.app.width;
         canvas.height = DataCross.app.height;
 

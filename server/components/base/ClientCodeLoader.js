@@ -191,7 +191,7 @@ ClientCodeLoader = function () {
         /** Wizard canvas */
         code += "<canvas style='" +
             "height:" + DataCross.app.height + "px;" + "width:" + DataCross.app.width + "px;" +
-            "position:absolute;top:0px;' " +
+            "position:absolute;top:0px;z-index:2000;' " +
             "id='wizardArea' ></canvas>\r\n";
         code += getClientImageCode();
 
