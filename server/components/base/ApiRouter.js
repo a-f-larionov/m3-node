@@ -192,7 +192,7 @@ let ApiRouter = new (function ApiRouter() {
             }
         }
         for (group in pureData) {
-            code += "" + group + " = function(){\r\n";
+            code += "let " + group + " = function(){\r\n";
             for (method in pureData[group]) {
                 code += "\tthis." + method + " = function(){\r\n";
                 code += "\t\tApiRouter.executeRequest('" + group + "' ,'" + method + "', arguments);\r\n";

@@ -282,4 +282,4 @@ let PageBlockWizard = function PageBlockWizard() {
 /** @type {PageBlockWizard} */
 PageBlockWizard = new PageBlockWizard();
 
-PBWizard = PageBlockWizard;
+let PBWizard = PageBlockWizard;

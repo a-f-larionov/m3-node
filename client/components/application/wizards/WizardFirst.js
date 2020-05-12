@@ -20,7 +20,7 @@ let WizardFirstStart_1 = {
     }
 };
 
-WizardFirstStart_2 = {
+let WizardFirstStart_2 = {
 
     init: function () {
         PBWizard.begin();
@@ -45,7 +45,7 @@ WizardFirstStart_2 = {
     }
 };
 
-WizardFirstStart_3 = {
+let WizardFirstStart_3 = {
     init: function () {
         PBWizard.begin();
     },
@@ -66,7 +66,7 @@ WizardFirstStart_3 = {
     }
 };
 
-WizardFirstStart_4 = {
+let WizardFirstStart_4 = {
     init: function () {
         PBWizard.begin();
         setTimeout(function () {

@@ -66,8 +66,7 @@ let animClouds = function () {
 
 
     this.iterate = function (t) {
-        //if (t % 1 !== 0) return true;
-        for (i = 0; i < 1; i++)
+        for (let i = 0; i < 1; i++)
             this.cycleIt(t);
         clouds.forEach(function (cloud) {
             cloud.redraw();

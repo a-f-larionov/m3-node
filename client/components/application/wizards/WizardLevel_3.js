@@ -23,7 +23,7 @@ let WizardLevel3_1 = {
     }
 };
 
-WizardLevel3_2 = {
+let WizardLevel3_2 = {
 
     init: function () {
         PBWizard.begin();

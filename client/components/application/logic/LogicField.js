@@ -480,4 +480,4 @@ let LogicField = function () {
 /** @type {LogicField} */
 LogicField = new LogicField;
 /** Aliases */
-Field = LogicField;
+let Field = LogicField;

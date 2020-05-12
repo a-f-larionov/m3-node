@@ -1,5 +1,6 @@
 /**
  * Компонент обеспечивающий соединение с сервером.
+ * @type {WebSocketClient}
  * @constructor
  */
 let WebSocketClient = function () {

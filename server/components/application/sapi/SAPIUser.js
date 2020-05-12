@@ -147,12 +147,9 @@ SAPIUser = function () {
             //@todo auto LOCK timeout(with keys!)
             setTimeout(done, 5 * 60 * 1000);
             DataUser.getById(cntx.user.id, function (user) {
-                CAPILog.log(user.id, user.fullRecoveryTime);
                 if (LogicHealth.getHealths(user) > 0) {
-                    CAPILog.log(user.id, user.fullRecoveryTime);
                     LogicHealth.decrementHealth(user, 1);
                     DataUser.updateHealthAndStartTime(user, function () {
-                            CAPILog.log(user.id, user.fullRecoveryTime);
                             CAPIUser.updateUserInfo(user.id, user);
                             CAPIUser.setOneHealthHide(cntx.user.id, true);
                         }

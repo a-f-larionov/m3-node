@@ -271,4 +271,4 @@ let LogicUser = function () {
 LogicUser = new LogicUser();
 
 /** Alias **/
-LU = LogicUser;
+let LU = LogicUser;

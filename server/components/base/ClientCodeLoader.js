@@ -229,8 +229,9 @@ ClientCodeLoader = function () {
     let reloadClientJS = function () {
         let js;
         js = getClientJS();
-
+        js = '"use strict"   \r\n' + js;
         FS.writeFileSync(CONST_DIR_ROOT + '/public/js/client.source.js', js);
+
         Logs.log("ClientJS source code writed. Size: " + js.length, Logs.LEVEL_DETAIL);
 
         //@todo LogicClintCodeloader.config?

@@ -2,7 +2,7 @@
  * @type {LogicHealth}
  * @constructor
  */
-LogicHealth = function () {
+let LogicHealth = function () {
 
     let getTime = function () {
         return typeof LogicTimeClient !== 'undefined' ?
