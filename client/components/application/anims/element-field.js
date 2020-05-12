@@ -20,10 +20,12 @@ let animChangeAndBack = function () {
         }
 
         dom.redraw();
-        if (dom.bindedDoms) {
-            dom.bindedDoms.x = dom.x;
-            dom.bindedDoms.y = dom.y;
-            dom.bindedDoms.redraw();
+        if (dom.bindedDoms.length) {
+            dom.bindedDoms.forEach(function (bindedDom) {
+                bindedDom.x = dom.x;
+                bindedDom.y = dom.y;
+                bindedDom.redraw();
+            });
         }
         return t + 1 < tFinish;
     };
@@ -70,17 +72,33 @@ let animLightning = function () {
 };
 
 let animGemLightning = function () {
-    let dom;
+    let frames = 5, velocity = 0.5;
+
+    this.skipAnimLock = true;
 
     this.init = function () {
         // get
+        console.log('init-gem-anim');
+        switch (this.objectId) {
+            case DataObjects.WITH_LIGHTNING_VERTICAL:
+                this.dom.rotate = 0;
+                break;
+            case DataObjects.WITH_LIGHTNING_HORIZONTAL:
+                this.dom.rotate = 90;
+                break;
+        }
+        console.log('anim gem lig');
+        console.log(this, arguments);
     };
 
-    this.iterate = function () {
-
+    this.iterate = function (t) {
+        this.dom.backgroundImage = Animate.getFrameUrl('a-gem-light-', t * velocity, frames);
+        this.dom.redraw();
+        return true;
     };
 
     this.finish = function () {
+        this.dom.rotate = 0;
     };
 };
 
@@ -130,10 +148,12 @@ let animChangeAndDestroy = function () {
         dom.x = startP.x + v.x * position;
         dom.y = startP.y + v.y * position;
         dom.redraw();
-        if (dom.bindedDoms) {
-            dom.bindedDoms.x = dom.x;
-            dom.bindedDoms.y = dom.y;
-            dom.bindedDoms.redraw();
+        if (dom.bindedDoms.length) {
+            dom.bindedDoms.forEach(function (bindedDom) {
+                bindedDom.x = dom.x;
+                bindedDom.y = dom.y;
+                bindedDom.redraw();
+            });
         }
         return position < counterStop;
     };
@@ -223,10 +243,12 @@ let animFallGems = function () {
                     go |= (dom.y < dom.startY + DataPoints.BLOCK_HEIGHT);
                     break;
             }
-            if (dom.bindedDoms) {
-                dom.bindedDoms.x = dom.x;
-                dom.bindedDoms.y = dom.y;
-                dom.bindedDoms.redraw();
+            if (dom.bindedDoms.length) {
+                dom.bindedDoms.forEach(function (bindedDom) {
+                    bindedDom.x = dom.x;
+                    bindedDom.y = dom.y;
+                    bindedDom.redraw();
+                });
             }
             dom.redraw();
         });
@@ -284,10 +306,12 @@ let animHint = function animHint() {
                 startY: this.gemDoms[p.x][p.y].y,
                 dom: this.gemDoms[p.x][p.y]
             });
-            if (this.gemDoms[p.x][p.y].bindedDoms) {
-                list.push({
-                    startY: this.gemDoms[p.x][p.y].bindedDoms.y,
-                    dom: this.gemDoms[p.x][p.y].bindedDoms
+            if (this.gemDoms[p.x][p.y].bindedDoms.length) {
+                this.gemDoms[p.x][p.y].bindedDoms.forEach(function (bindedDom) {
+                    list.push({
+                        startY: bindedDom.y,
+                        dom: bindedDom
+                    });
                 });
             }
         }, this);
@@ -298,9 +322,11 @@ let animHint = function animHint() {
             el.dom.y = el.startY + Math.cos(Math.PI * position / 15) * 3;
             el.dom.redraw();
             if (el.dom.bindedDoms) {
-                el.dom.bindedDoms.x = el.x;
-                el.dom.bindedDoms.y = el.y;
-                el.dom.bindedDoms.redraw();
+                el.dom.bindedDoms.forEach(function (bindedDom) {
+                    bindedDom.x = el.x;
+                    bindedDom.y = el.y;
+                    bindedDom.redraw();
+                });
             }
         });
         return forEver || !AnimLocker.busy();

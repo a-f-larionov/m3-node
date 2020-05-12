@@ -244,30 +244,30 @@ let ApiRouter = new (function ApiRouter() {
      * @returns {*}
      */
     let getCAPIMap = function () {
-        let path, list, groupName, methodName, map, tmp;
+        let path, list, capiName, methodName, map, capiObject, file_content;
         path = CONST_DIR_CLIENT + 'components/application/capi/';
         list = FS.readdirSync(path);
         map = {};
-        for (let i in list) {
+        list.forEach(function (fileName) {
             /**@todo .js extenstion must be */
-            if (list[i] === '.gitkeep') continue;
-            if (list[i] === '.gitignore') continue;
-            groupName = getComponentNameFromPath(path + list[i]);
-            tmp = null;
-            if (global[groupName]) {
-                tmp = global[groupName];
-            }
-            require(path + list[i]);
-            map[groupName] = [];
-            for (methodName in global[groupName]) {
-                if (typeof global[groupName][methodName] === 'function') {
-                    map[groupName][methodName] = true;
+            if (fileName === '.gitkeep') return;
+            if (fileName === '.gitignore') return;
+            capiName = getComponentNameFromPath(path + fileName);
+
+            file_content = FS.readFileSync(path + fileName).toString();
+
+            capiObject = eval(file_content.toString());
+
+            map[capiName] = [];
+
+            for (let methodName in capiObject) {
+                if (!capiObject.hasOwnProperty(methodName)) return
+
+                if (typeof capiObject[methodName] === 'function') {
+                    map[capiName][methodName] = true;
                 }
             }
-            if (tmp) {
-                global[groupName] = tmp;
-            }
-        }
+        });
         return map;
     };
 
@@ -340,7 +340,8 @@ let ApiRouter = new (function ApiRouter() {
             FS.writeFileSync(CONST_DIR_COMPONENTS + 'generated/' + groupName + '.js', code);
         }
     };
-})();
+})
+();
 
 /** Для кросс-сайдных компонент */
 if (CONST_IS_SERVER_SIDE) {

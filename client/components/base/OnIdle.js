@@ -1,3 +1,7 @@
+/**
+ * @type {OnIdle}
+ * @constructor
+ */
 let OnIdle = function () {
     let self = this;
 

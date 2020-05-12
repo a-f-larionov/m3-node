@@ -266,7 +266,6 @@ ClientCodeLoader = function () {
             code += "\r\n/** " + path + " */\r\n";
             code += file_content;
             name = PATH.basename(path, '.js');
-            code += 'if(window["' + name + '"] !== undefined){' + 'window["' + name + '"].__path="' + path + '"};\r\n';
         }
         return code;
     };
@@ -422,7 +421,7 @@ ClientCodeLoader = function () {
                 if (FS.existsSync(spritePathPhysic)) FS.unlinkSync(spritePathPhysic);
                 fsResult = FS.writeFileSync(spritePathPhysic, result.image, 'binary');
             }
-            Logs.log("SPRITESMITH Complete `" + spritePathPhysic + "`", Logs.LEVEL_NOTIFY);
+            Logs.log("SPRITESMITH Complete `" + spritePathPhysic + "`" + result.image.length, Logs.LEVEL_NOTIFY);
             spriteMap = result;
             callback();
         });

@@ -1,6 +1,6 @@
 window.onload = function () {
     /** Эмуляция совместимости клиентского и серверного кода. */
-    let global = window;
+    //let global = window;
     let process = {};
     process.exit = function () {
         console.log("Unexpected termination of work!");

@@ -10,7 +10,7 @@ DataStuff = function () {
     this.STUFF_LIGTNING = 'lightningQty';
     this.STUFF_HUMMER = 'hummerQty';
     this.STUFF_SHUFFLE = 'shuffleQty';
-    this.STUFF_GOLD = 'goldgQty';
+    this.STUFF_GOLD = 'goldQty';
 
     let tableName = 'users_stuff';
 

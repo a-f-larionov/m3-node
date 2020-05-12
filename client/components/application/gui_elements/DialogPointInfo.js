@@ -1,3 +1,7 @@
+/**
+ * @type {DialogPointInfo}
+ * @constructor
+ */
 let DialogPointInfo = function () {
     let self = this;
     this.__proto__ = new Dialog();

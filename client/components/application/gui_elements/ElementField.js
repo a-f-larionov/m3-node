@@ -104,8 +104,6 @@ let ElementField = function () {
 
         for (let i = 0; i < specDomsLimit; i++) {
             dom = GUI.createDom(undefined, {width: DataPoints.BLOCK_WIDTH, height: DataPoints.BLOCK_HEIGHT});
-            //@todo shit it!
-            OnIdle.register(dom.animate);
             specDoms1.push(dom);
         }
 
@@ -122,8 +120,6 @@ let ElementField = function () {
         });
         for (let i = 0; i < specDomsLimit; i++) {
             dom = GUI.createDom(undefined, {width: DataPoints.BLOCK_WIDTH, height: DataPoints.BLOCK_HEIGHT});
-            //@todo shit it!
-            OnIdle.register(dom.animate);
             specDoms2.push(dom);
         }
         /** Anim Doms Pool */
@@ -390,6 +386,12 @@ let ElementField = function () {
         if (stopHint) stopHint();
     };
 
+    let specDomClear = function (dom, animId) {
+        if (dom.stopAnim) dom.stopAnim();
+        dom.animId = animId;
+        dom.hide();
+    };
+
     let drawDom = function (p, dom, objectId, opacity) {
         dom.x = p.x * DataPoints.BLOCK_WIDTH;
         dom.y = p.y * DataPoints.BLOCK_HEIGHT;
@@ -397,25 +399,21 @@ let ElementField = function () {
         let nV = function (p) {
             return !Field.isVisible(p);
         };
-        //dom.borderRadius = '10px 10px 10px 10px';
         borderRadius += (nV({x: p.x - 1, y: p.y}) && nV({x: p.x, y: p.y - 1})) ? '8px ' : '0px ';
         borderRadius += (nV({x: p.x, y: p.y - 1}) && nV({x: p.x + 1, y: p.y})) ? '8px ' : '0px ';
         borderRadius += (nV({x: p.x + 1, y: p.y}) && nV({x: p.x, y: p.y + 1})) ? '8px ' : '0px ';
         borderRadius += (nV({x: p.x, y: p.y + 1}) && nV({x: p.x - 1, y: p.y})) ? '8px ' : '0px ';
-        //borderRadius = '8px 8px 8px 8px';
         dom.borderRadius = borderRadius;
         if (DataObjects.images[objectId]) dom.backgroundImage = DataObjects.images[objectId];
         if (DataPoints.objectAnims[objectId]) {
-            dom.animPlayed = true;
-            dom.animTracks = GUI.copyAnimTracks(DataPoints.objectAnims[objectId]);
-            GUI.updateAnimTracks(dom);
+            if (dom.animId !== objectId) {
+                specDomClear(dom, objectId);
+                dom.stopAnim = Animate.anim(DataPoints.objectAnims[objectId], {dom: dom, objectId: objectId});
+            }
         } else {
-            dom.animPlayed = false;
+            specDomClear(dom);
         }
         if (opacity !== undefined) dom.opacity = opacity;
-        if (objectId === DataObjects.OBJECT_SPIDER_BETA) {
-            // dom.y -= 10;
-        }
         dom.show();
         dom.redraw();
     };
@@ -431,12 +429,13 @@ let ElementField = function () {
 
         let spec1Index = 0;
         let spec2Index = 0;
+
         Field.eachCell(function (x, y, cell, object) {
             let maskDom, gemDom, specDom;
             maskDom = maskDoms[x][y];
             gemDom = gemDoms[x][y];
 
-            gemDom.bindedDoms = null;
+            gemDom.bindedDoms = [];
 
             /** Layer.mask redraw */
             cell.isVisible ?
@@ -455,9 +454,23 @@ let ElementField = function () {
             if (cell.isVisible && object.isGem) {
                 /** Lightning */
                 if (object.lightningId) {
-                    specDom = specDoms2[spec2Index++];
-                    drawDom({x: x, y: y}, specDom, object.lightningId, 1);
-                    gemDom.bindedDoms = specDom;
+                    if (object.lightningId === DataObjects.WITH_LIGHTNING_CROSS) {
+
+                        specDom = specDoms2[spec2Index++];
+                        drawDom({x: x, y: y}, specDom, DataObjects.WITH_LIGHTNING_VERTICAL, 1);
+                        gemDom.bindedDoms.push(specDom);
+
+                        specDom = specDoms2[spec2Index++];
+                        drawDom({x: x, y: y}, specDom, DataObjects.WITH_LIGHTNING_HORIZONTAL, 1);
+                        gemDom.bindedDoms.push(specDom);
+
+                    } else {
+
+                        specDom = specDoms2[spec2Index++];
+                        drawDom({x: x, y: y}, specDom, object.lightningId, 1);
+                        gemDom.bindedDoms.push(specDom);
+
+                    }
                 }
             }
 
@@ -466,7 +479,7 @@ let ElementField = function () {
                 specDom = specDoms2[spec2Index++];
                 specDom.backgroundImage = DataPoints.healthImages[object.health];
                 drawDom({x: x, y: y}, specDom, '', 0.9);
-                gemDom.bindedDoms = specDom;
+                gemDom.bindedDoms.push(specDom);
             }
 
             /** Gold */
@@ -484,15 +497,15 @@ let ElementField = function () {
             /** Creature beta */
             if (cell.isVisible && object.withBeta) {
                 specDom = specDoms2[spec2Index++];
-                drawDom({x: x, y: y}, specDom, DataObjects.OBJECT_SPIDER_BETA, '');
-                gemDom.bindedDoms = specDom;
+                drawDom({x: x, y: y}, specDom, DataObjects.OBJECT_BETA, '');
+                gemDom.bindedDoms.push(specDom);
             }
 
             /** Creature gamma */
             if (cell.isVisible && object.withGamma) {
                 specDom = specDoms2[spec2Index++];
                 drawDom({x: x, y: y}, specDom, DataObjects.OBJECT_GAMMA, '');
-                gemDom.bindedDoms = specDom;
+                gemDom.bindedDoms.push(specDom);
             }
 
             /** Draw Box */
@@ -514,12 +527,12 @@ let ElementField = function () {
             }
         });
 
-        /** Спрячем не используемые специальные домы */
+        /** Спрячем не используемые  специальные домы */
         for (let i = spec1Index; i < specDomsLimit; i++) {
-            specDoms1[i].hide();
+            specDomClear(specDoms1[i]);
         }
         for (let i = spec2Index; i < specDomsLimit; i++) {
-            specDoms2[i].hide();
+            specDomClear(specDoms2[i]);
         }
 
         if (gemFramed) {
@@ -690,13 +703,12 @@ let ElementField = function () {
             Field.exchangeObjects({x: x, y: y}, holeToFall);
 
             //@todo some strange moment here
-            if (gemDoms[x][y].bindedDoms) {
+            if (gemDoms[x][y].bindedDoms.length) {
                 if (gemDoms[holeToFall.x][holeToFall.y]) {
                     gemDoms[holeToFall.x][holeToFall.y].bindedDoms = gemDoms[x][y].bindedDoms;
                 }
-                gemDoms[x][y].bindedDoms = null;
+                gemDoms[x][y].bindedDoms = [];
             }
-            ;
 
             if (true ||
                 Field.isVisible({x: x, y: y}) ||
@@ -725,7 +737,7 @@ let ElementField = function () {
     this.destroyLines = function () {
         let lines, actGem, actObjectId;
         lines = Field.findLines();
-console.log(lines);
+        console.log(lines);
         lines.forEach(function (line) {
 
             actGem = null;
@@ -861,14 +873,14 @@ console.log(lines);
             }
 
             if (cell.object.withBeta) {
-                /** Destroy green spider */
-                self.onDestroyThing(DataObjects.OBJECT_SPIDER_BETA, cell);
+                /** Destroy beta */
+                self.onDestroyThing(DataObjects.OBJECT_BETA, cell);
                 cell.object.withBeta = false;
                 animate(animHummerDestroy, p);
             }
 
             if (cell.object.withGamma) {
-                /** Destroy green spider */
+                /** Destroy gamma */
                 self.onDestroyThing(DataObjects.OBJECT_GAMMA, cell);
                 cell.object.withGamma = false;
                 animate(animHummerDestroy, p);

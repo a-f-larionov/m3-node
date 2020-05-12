@@ -522,7 +522,7 @@ DataPoints = function () {
     wayPoints[12] = {
         id: 12, turns: 15, score1: 100, score2: 500, score3: 800,
         goals: [
-            {id: DataObjects.OBJECT_SPIDER_BETA, count: 4},
+            {id: DataObjects.OBJECT_BETA, count: 4},
         ],
         layers: {
             mask: [
@@ -553,7 +553,7 @@ DataPoints = function () {
 
                 "",
                 " β β",
-                "",
+                "  ⭤⭥+",
                 " β β",
                 "",
                 "",
@@ -564,7 +564,7 @@ DataPoints = function () {
     wayPoints[13] = {
         id: 13, turns: 15, score1: 100, score2: 1000, score3: 1500,
         goals: [
-            {id: DataObjects.OBJECT_SPIDER_BETA, count: 8}
+            {id: DataObjects.OBJECT_BETA, count: 8}
         ],
         layers: {
             mask: [
@@ -609,7 +609,7 @@ DataPoints = function () {
     wayPoints[14] = {
         id: 14, turns: 15, score1: 500, score2: 1000, score3: 1500,
         goals: [
-            {id: DataObjects.OBJECT_SPIDER_BETA, count: 8},
+            {id: DataObjects.OBJECT_BETA, count: 8},
             {id: DataObjects.OBJECT_GOLD, count: 8},
         ],
         layers: {
@@ -678,7 +678,7 @@ DataPoints = function () {
     wayPoints[15] = {
         id: 15, turns: 15, score1: 200, score2: 400, score3: 700,
         goals: [
-            {id: DataObjects.OBJECT_SPIDER_BETA, count: 5},
+            {id: DataObjects.OBJECT_BETA, count: 5},
         ],
         layers: {
             mask: [
@@ -734,7 +734,7 @@ DataPoints = function () {
     wayPoints[16] = {
         id: 16, turns: 35, score1: 500, score2: 1000, score3: 2000,
         goals: [
-            {id: DataObjects.OBJECT_SPIDER_BETA, count: 5},
+            {id: DataObjects.OBJECT_BETA, count: 5},
             {id: DataObjects.OBJECT_GOLD, count: 8},
         ],
         layers: {
@@ -802,7 +802,7 @@ DataPoints = function () {
     wayPoints[17] = {
         id: 17, turns: 25, score1: 500, score2: 1000, score3: 1500,
         goals: [
-            {id: DataObjects.OBJECT_SPIDER_BETA, count: 7},
+            {id: DataObjects.OBJECT_BETA, count: 7},
             {id: DataObjects.OBJECT_BOX, count: 15}
         ],
         layers: {
@@ -832,7 +832,7 @@ DataPoints = function () {
                 "       ",
             ], [
                 "       ",
-                "X  X  X",  
+                "X  X  X",
                 "       ",
                 "       ",
                 "       ",
@@ -949,7 +949,7 @@ DataPoints = function () {
     wayPoints[20] = {
         id: 20, turns: 30, score1: 1000, score2: 2000, score3: 35000,
         goals: [
-            {id: DataObjects.OBJECT_SPIDER_BETA, count: 5},
+            {id: DataObjects.OBJECT_BETA, count: 5},
             {id: DataObjects.OBJECT_RED, count: 12},
             {id: DataObjects.OBJECT_GREEN, count: 12},
         ],
@@ -987,7 +987,7 @@ DataPoints = function () {
         id: 21, turns: 15, score1: 500, score2: 1000, score3: 3500,
         goals: [
             {id: DataObjects.OBJECT_GOLD, count: 8},
-            {id: DataObjects.OBJECT_SPIDER_BETA, count: 8}
+            {id: DataObjects.OBJECT_BETA, count: 8}
         ],
         layers: {
             mask: [
@@ -1016,7 +1016,7 @@ DataPoints = function () {
         id: 22, turns: 35, score1: 500, score2: 2500, score3: 5500,
         goals: [
             {id: DataObjects.OBJECT_GOLD, count: 8},
-            {id: DataObjects.OBJECT_SPIDER_BETA, count: 9},
+            {id: DataObjects.OBJECT_BETA, count: 9},
             {id: DataObjects.OBJECT_BOX, count: 3},
         ],
         layers: {
@@ -1087,7 +1087,7 @@ DataPoints = function () {
     wayPoints[24] = {
         id: 24, turns: 28 - 12, score1: 500, score2: 2500, score3: 2700,
         goals: [
-            {id: DataObjects.OBJECT_SPIDER_BETA, count: 10},
+            {id: DataObjects.OBJECT_BETA, count: 10},
             {id: DataObjects.OBJECT_ALPHA, count: 5},
         ],
         layers: {
@@ -1118,7 +1118,7 @@ DataPoints = function () {
         goals: [
             {id: DataObjects.OBJECT_YELLOW, count: 30},
             {id: DataObjects.OBJECT_PURPLE, count: 30},
-            {id: DataObjects.OBJECT_SPIDER_BETA, count: 30},
+            {id: DataObjects.OBJECT_BETA, count: 30},
         ],
         layers: {
             mask: [
@@ -1285,7 +1285,7 @@ DataPoints = function () {
     wayPoints[30] = {
         id: 30, turns: 20, score1: 500, score2: 2500, score3: 3000,
         goals: [
-            {id: DataObjects.OBJECT_SPIDER_BETA, count: 18},
+            {id: DataObjects.OBJECT_BETA, count: 18},
             {id: DataObjects.OBJECT_ALPHA, count: 2},],
         layers: {
             mask: [
@@ -1343,7 +1343,7 @@ DataPoints = function () {
     wayPoints[31] = {
         id: 31, turns: 26, score1: 500, score2: 2500, score3: 3300,
         goals: [
-            {id: DataObjects.OBJECT_SPIDER_BETA, count: 8},
+            {id: DataObjects.OBJECT_BETA, count: 8},
             {id: DataObjects.OBJECT_ALPHA, count: 4},
             {id: DataObjects.OBJECT_BARREL, count: 1},
         ],
@@ -1388,7 +1388,7 @@ DataPoints = function () {
     wayPoints[32] = {
         id: 32, turns: 30, score1: 500, score2: 5500, score3: 6000,
         goals: [
-            {id: DataObjects.OBJECT_SPIDER_BETA, count: 28},
+            {id: DataObjects.OBJECT_BETA, count: 28},
             {id: DataObjects.OBJECT_ALPHA, count: 8},
         ],
         layers: {
@@ -1432,7 +1432,7 @@ DataPoints = function () {
     wayPoints[33] = {
         id: 33, turns: 35, score1: 500, score2: 8500, score3: 9000,
         goals: [
-            {id: DataObjects.OBJECT_SPIDER_BETA, count: 9},
+            {id: DataObjects.OBJECT_BETA, count: 9},
             {id: DataObjects.OBJECT_GOLD, count: 15},
         ],
         layers: {
@@ -1979,7 +1979,7 @@ DataPoints = function () {
         id: 50, turns: 30, score1: 500, score2: 2500, score3: 4100,
         goals: [
             {id: DataObjects.OBJECT_SAND, count: 8},
-            {id: DataObjects.OBJECT_SPIDER_BETA, count: 12},
+            {id: DataObjects.OBJECT_BETA, count: 12},
             {id: DataObjects.OBJECT_BOX, count: 12},
         ],
         layers: {

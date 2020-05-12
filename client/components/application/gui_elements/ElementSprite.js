@@ -59,11 +59,6 @@ let ElementSprite = function () {
 
     this.title = undefined;
 
-    this.animPlay = function () {
-
-        dom.animPlayed = true;
-    };
-
     /**
      * Создадим дом и настроем его.
      */

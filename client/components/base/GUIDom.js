@@ -61,10 +61,6 @@ let GUIDom = function () {
      */
     let dom = null;
 
-    this.animTracks = [];
-    this.animData = [];
-    this.animPlayed = false;
-
     /**
      * Создается элемент браузера
      * Настраиваются минимальные параметры
@@ -137,102 +133,6 @@ let GUIDom = function () {
                 props[name].call();
                 oldProps[name] = self[name];
             }
-        }
-    };
-
-    /**
-     * id текущей запущенной анимации.
-     * если null - анимация отключается.
-     * @type {null}
-     */
-    let animateNowId = null;
-
-    /**
-     * Аргументы переданные при запуске анимации.
-     * @type {Array}
-     */
-    let animateArguments = [];
-
-    /**
-     * тайм-аут для анимации.
-     * @type {null}
-     */
-    let animateTimeout = null;
-
-    let ANIMATE_NOW_OPACITY_UP = 1;
-    let ANIMATE_NOW_OPACITY_DOWN = 2;
-
-    /**
-     * Остановить текущую анимацию.
-     */
-    this.animateStop = function () {
-        animateNowId = null;
-    };
-    /**
-     * Анимация прозрачности.
-     * @param target {Number}
-     */
-    this.animateOpacity = function (target, from, timeout) {
-        let direction;
-
-        if (from !== undefined) {
-            self.opacity = from;
-        }
-        if (!self.opacity) {
-            self.opacity = 0;
-        }
-        from = self.opacity;
-
-        if (from < target) {
-            animateNowId = ANIMATE_NOW_OPACITY_UP;
-        } else {
-            animateNowId = ANIMATE_NOW_OPACITY_DOWN;
-        }
-        animateArguments = [];
-        animateArguments.push(target);
-        animateArguments.push(from);
-        /* animateStep */
-        animateArguments.push(Math.abs((target - from) / 24));
-        animateTimeout = timeout;
-
-        animateNow();
-    };
-
-    let animateNow = function () {
-        switch (animateNowId) {
-            case ANIMATE_NOW_OPACITY_UP:
-                animateOpacityUp.apply(this, animateArguments);
-                break;
-            case ANIMATE_NOW_OPACITY_DOWN:
-                animateOpacityDown.apply(this, animateArguments);
-                break;
-            default:
-                /** Останавливаем анимацию. */
-                return;
-                break;
-        }
-
-        setTimeout(function () {
-            animateNow();
-            self.redraw();
-        }, animateTimeout);
-    };
-
-    let animateOpacityUp = function (target, from, step) {
-        if (self.opacity < target) {
-            self.opacity += step;
-        } else {
-            self.opacity = target;
-            animateNowId = null;
-        }
-    };
-
-    let animateOpacityDown = function (target, from, step) {
-        if (self.opacity > target) {
-            self.opacity -= step;
-        } else {
-            self.opacity = target;
-            animateNowId = null;
         }
     };
 
@@ -450,72 +350,6 @@ let GUIDom = function () {
         overflow: redrawOverflow,
         textDecoration: redrawTextDecoration,
         rotate: redrawRotate,
-    };
-
-    /**
-     * Animate
-     */
-    this.animate = function () {
-        if (!self.animPlayed) {
-            return;
-        }
-        if (!showed) {
-            return;
-        }
-        for (let t in self.animTracks) {
-            self.proccessTrack(t);
-        }
-    };
-
-    this.proccessTrack = function (tN) {
-        let frame;
-        frame = self.animTracks[tN][self.animData[tN].frameN];
-        switch (frame.type) {
-            case GUI.ANIM_TYPE_ROTATE:
-                if (frame.currentAngle >= 360) {
-                    frame.currentAngle = 0;
-                }
-                self.transform = 'rotate(' + (frame.currentAngle += frame.angle) + 'deg)';
-                self.redraw();
-                break;
-            case GUI.ANIM_TYPE_GOTO:
-                self.animData[tN].frameN = frame.pos;
-                break;
-            case GUI.ANIM_TYPE_MOVIE:
-                frame.imageN++;
-                if (frame.imageN === frame.images.length) {
-                    frame.imageN = 0;
-                }
-                self.backgroundImage = frame.images[frame.imageN];
-                self.redraw();
-                break;
-            case GUI.ANIM_TYPE_MOVE:
-                self.x += frame.vX;
-                self.y += frame.vY;
-                self.redraw();
-                break;
-            case GUI.ANIM_TYPE_PAUSE:
-                break;
-            case GUI.ANIM_TYPE_STOP:
-                self.animPlayed = false;
-                if (frame.callback) {
-                    frame.callback();
-                }
-                break;
-        }
-        self.animData[tN].counter++;
-        // if counter > duration => frameN++
-        if (frame.duration && self.animData[tN].counter > frame.duration) {
-            self.animData[tN].frameN++;
-            self.animData[tN].counter = 0;
-            if (self.animTracks[tN][self.animData[tN].frameN] === undefined) {
-                self.animPlayed = false;
-                self.animData[tN].frameN = 0;
-                if (frame.callback) {
-                    frame.callback();
-                }
-            }
-        }
     };
 };
 

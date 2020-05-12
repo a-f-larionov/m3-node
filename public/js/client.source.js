@@ -1,8 +1,8 @@
+"use strict"   
 
 /** ../client/core/constants.js */
-CONST_IS_SERVER_SIDE = false;
-CONST_IS_CLIENT_SIDE = true;
-if(window["constants"] !== undefined){window["constants"].__path="../client/core/constants.js"};
+let CONST_IS_SERVER_SIDE = false;
+let CONST_IS_CLIENT_SIDE = true;
 
 /** ../client/core/functions.js */
 /**
@@ -143,8 +143,16 @@ if (!window.cancelAnimationFrame) {
         window.mozCancelAnimationFrame ||
         window.webkitCancelAnimationFrame ||
         window.msCancelAnimationFrame;
-}if(window["functions"] !== undefined){window["functions"].__path="../client/core/functions.js"};
+}
 
+/**
+ * declination() склоняет числительные по разряду единиц указанного числа
+ * 'штука','штуки','штук'
+ */
+function declination(number, titles) {
+    let cases = [2, 0, 1, 1, 1, 2];
+    return titles[(number % 100 > 4 && number % 100 < 20) ? 2 : cases[(number % 10 < 5) ? number % 10 : 5]];
+}
 /** ../client/components/application/anims/AnimLocker.js */
 let AnimLocker = {
     locks: 0,
@@ -160,8 +168,7 @@ let AnimLocker = {
     busy: function () {
         return !AnimLocker.free();
     }
-};if(window["AnimLocker"] !== undefined){window["AnimLocker"].__path="../client/components/application/anims/AnimLocker.js"};
-
+};
 /** ../client/components/application/anims/Animate.js */
 let Animate = {
     anim: function (animClass, context) {
@@ -211,7 +218,89 @@ let Animate = {
 
 Animate.settings = {
     fallVelocity: 5
-};if(window["Animate"] !== undefined){window["Animate"].__path="../client/components/application/anims/Animate.js"};
+};
+/** ../client/components/application/anims/common.js */
+let animClouds = function () {
+
+    let startP;
+    let clouds;
+
+    this.init = function (source) {
+        this.skipAnimLock = true;
+        clouds = source;
+        startP = [];
+        clouds.forEach(function (cloud, i) {
+            cloud.vx = 0;
+            cloud.vy = 0;
+            startP[i] = {x: cloud.x, y: cloud.y};
+        });
+    };
+
+    this.cycleIt = function (t) {
+
+        let rV;
+        rV = {
+            x:  Math.random() - 0.5,
+            y:  Math.random() - 0.5
+        };
+
+        clouds.forEach(function (cloud, i) {
+            let sx, sy, s;
+            sx = sy = s = 0;
+
+            clouds.forEach(function (cloudfrom) {
+                sx = cloudfrom.x - cloud.x;
+                sy = cloudfrom.y - cloud.y;
+                if (Math.abs(sx) < 10 || Math.abs(sy) < 10) return;
+                s = Math.sqrt(Math.pow(sx, 2) + Math.pow(sy, 2));
+                //cloud.vx += 1 / s / sx;
+                //cloud.vy += 1 / s / sy;
+            });
+
+
+            //if (cloud.x + 200 > DataCross.app.width - 50) cloud.vx -= 3;
+            //if (cloud.x < 50) cloud.vx += 3;
+            //if (cloud.y + 100 > DataCross.app.height - 50) cloud.vy -= 3;
+            //if (cloud.y < 50) cloud.vy += 3;            cloud.vx += Math.random() - 0.5;
+            //             cloud.vy += Math.random() - 0.5;
+
+            if (t % 1000 === 1) {
+                cloud.vx += rV.x;
+                cloud.vy += rV.y;
+            }
+            cloud.vx += (Math.random() - 0.5) * 0.01;
+            cloud.vy += (Math.random() - 0.5) * 0.01;
+
+            let cR = 30;
+            sx = cloud.x - startP[i].x;
+            sy = cloud.y - startP[i].y;
+            if (sx > cR) cloud.vx -= 1;
+            if (sy > cR) cloud.vy -= 1;
+            if (sx < -cR) cloud.vx += 1;
+            if (sy < -cR) cloud.vy += 1;
+
+            cloud.vx *= 0.9999;
+            cloud.vy *= 0.95;
+            cloud.x += cloud.vx / 10;
+            cloud.y += cloud.vy / 10;
+        });
+    };
+
+
+    this.iterate = function (t) {
+        for (let i = 0; i < 1; i++)
+            this.cycleIt(t);
+        clouds.forEach(function (cloud) {
+            cloud.redraw();
+                    });
+
+        return true;
+    };
+
+    this.onFinish = function () {
+
+    }
+};
 
 /** ../client/components/application/anims/dialogs.js */
 let animShowDialog = function () {
@@ -261,8 +350,7 @@ let animHideDialog = function () {
         this.dom.y = endPosition;
         this.dom.redraw();
     };
-};if(window["dialogs"] !== undefined){window["dialogs"].__path="../client/components/application/anims/dialogs.js"};
-
+};
 /** ../client/components/application/anims/element-field.js */
 let animChangeAndBack = function () {
     let dom, v, velocity, tMiddle, tFinish, startP;
@@ -286,10 +374,12 @@ let animChangeAndBack = function () {
         }
 
         dom.redraw();
-        if (dom.bindedDoms) {
-            dom.bindedDoms.x = dom.x;
-            dom.bindedDoms.y = dom.y;
-            dom.bindedDoms.redraw();
+        if (dom.bindedDoms.length) {
+            dom.bindedDoms.forEach(function (bindedDom) {
+                bindedDom.x = dom.x;
+                bindedDom.y = dom.y;
+                bindedDom.redraw();
+            });
         }
         return t + 1 < tFinish;
     };
@@ -297,14 +387,14 @@ let animChangeAndBack = function () {
 
 let animLightning = function () {
     let dom;
-    let velocity = 0.5;
+    let velocity = 0.4;
 
-    this.init = function (p, specId) {
+    this.init = function (p, orientationId) {
         dom = this.animDoms.pop();
-        let lineData = Field.getVisibleLength(p, specId);
+        let lineData = Field.getVisibleLength(p, orientationId);
         dom.width = lineData.length * DataPoints.BLOCK_WIDTH;
         dom.height = Images.getHeight('anim-light-1.png');
-        if (specId === DataObjects.WITH_LIGHTNING_VERTICAL) {
+        if (orientationId === DataObjects.WITH_LIGHTNING_VERTICAL) {
             dom.rotate = 90;
             dom.x = (p.x) * DataPoints.BLOCK_WIDTH;
             dom.y = (lineData.lower) * DataPoints.BLOCK_HEIGHT
@@ -313,7 +403,7 @@ let animLightning = function () {
             dom.x -= (dom.width - DataPoints.BLOCK_WIDTH) / 2;
             dom.y += (dom.width - DataPoints.BLOCK_WIDTH) / 2;
         }
-        if (specId === DataObjects.WITH_LIGHTNING_HORIZONTAL) {
+        if (orientationId === DataObjects.WITH_LIGHTNING_HORIZONTAL) {
             dom.rotate = 0;
             dom.x = lineData.lower * DataPoints.BLOCK_WIDTH;
             dom.y = p.y * DataPoints.BLOCK_HEIGHT
@@ -326,7 +416,7 @@ let animLightning = function () {
     this.iterate = function (t) {
         dom.backgroundImage = Animate.getFrameUrl('anim-light-', t * velocity, 5);
         dom.redraw();
-        if (t < 15) return true;
+        if (t * velocity < 10) return true;
     };
 
     this.finish = function () {
@@ -335,10 +425,42 @@ let animLightning = function () {
     }
 };
 
+let animGemLightning = function () {
+    let frames = 5, velocity = 0.5;
+
+    this.skipAnimLock = true;
+
+    this.init = function () {
+        // get
+        console.log('init-gem-anim');
+        switch (this.objectId) {
+            case DataObjects.WITH_LIGHTNING_VERTICAL:
+                this.dom.rotate = 0;
+                break;
+            case DataObjects.WITH_LIGHTNING_HORIZONTAL:
+                this.dom.rotate = 90;
+                break;
+        }
+        console.log('anim gem lig');
+        console.log(this, arguments);
+    };
+
+    this.iterate = function (t) {
+        this.dom.backgroundImage = Animate.getFrameUrl('a-gem-light-', t * velocity, frames);
+        this.dom.redraw();
+        return true;
+    };
+
+    this.finish = function () {
+        this.dom.rotate = 0;
+    };
+};
+
 let animHummerDestroy = function () {
     let dom, imageUrl = 'anim-hd-1.png';
 
-    let velocity = 1.0;
+    let velocity = 0.6;
+    let frames = 12;
 
     this.init = function (p) {
         dom = this.animDoms.pop();
@@ -353,10 +475,10 @@ let animHummerDestroy = function () {
         dom.redraw();
     };
 
-    this.iterate = function (position) {
-        dom.backgroundImage = Animate.getFrameUrl('anim-hd-', position * velocity, 15);
+    this.iterate = function (t) {
+        dom.backgroundImage = Animate.getFrameUrl('anim-hd-', t * velocity, frames);
         dom.redraw();
-        return position < 15;
+        return t * velocity < frames;
     };
 
     this.finish = function () {
@@ -380,10 +502,12 @@ let animChangeAndDestroy = function () {
         dom.x = startP.x + v.x * position;
         dom.y = startP.y + v.y * position;
         dom.redraw();
-        if (dom.bindedDoms) {
-            dom.bindedDoms.x = dom.x;
-            dom.bindedDoms.y = dom.y;
-            dom.bindedDoms.redraw();
+        if (dom.bindedDoms.length) {
+            dom.bindedDoms.forEach(function (bindedDom) {
+                bindedDom.x = dom.x;
+                bindedDom.y = dom.y;
+                bindedDom.redraw();
+            });
         }
         return position < counterStop;
     };
@@ -401,7 +525,7 @@ let animGemEmitFader = function () {
         dom.backgroundPositionY = DataPoints.BLOCK_HEIGHT;
         dom.height = 0;
         dom.width = DataPoints.BLOCK_WIDTH;
-        dom.backgroundImage = DataObjects.objectImages[Field.getGemId(p)];
+        dom.backgroundImage = DataObjects.images[Field.getGemId(p)];
         dom.redraw();
         dom.show();
     };
@@ -428,7 +552,7 @@ let animFallGems = function () {
 
             dom.startY = (data.to.y - 1) * DataPoints.BLOCK_HEIGHT;
 
-            dom.backgroundImage = DataObjects.objectImages[Field.getGemId({x: data.to.x, y: data.to.y})];
+            dom.backgroundImage = DataObjects.images[Field.getGemId({x: data.to.x, y: data.to.y})];
             dom.x = data.to.x * DataPoints.BLOCK_WIDTH;
             dom.y = data.to.y * DataPoints.BLOCK_HEIGHT;
             dom.show();
@@ -473,10 +597,12 @@ let animFallGems = function () {
                     go |= (dom.y < dom.startY + DataPoints.BLOCK_HEIGHT);
                     break;
             }
-            if (dom.bindedDoms) {
-                dom.bindedDoms.x = dom.x;
-                dom.bindedDoms.y = dom.y;
-                dom.bindedDoms.redraw();
+            if (dom.bindedDoms.length) {
+                dom.bindedDoms.forEach(function (bindedDom) {
+                    bindedDom.x = dom.x;
+                    bindedDom.y = dom.y;
+                    bindedDom.redraw();
+                });
             }
             dom.redraw();
         });
@@ -534,6 +660,14 @@ let animHint = function animHint() {
                 startY: this.gemDoms[p.x][p.y].y,
                 dom: this.gemDoms[p.x][p.y]
             });
+            if (this.gemDoms[p.x][p.y].bindedDoms.length) {
+                this.gemDoms[p.x][p.y].bindedDoms.forEach(function (bindedDom) {
+                    list.push({
+                        startY: bindedDom.y,
+                        dom: bindedDom
+                    });
+                });
+            }
         }, this);
     };
 
@@ -542,9 +676,11 @@ let animHint = function animHint() {
             el.dom.y = el.startY + Math.cos(Math.PI * position / 15) * 3;
             el.dom.redraw();
             if (el.dom.bindedDoms) {
-                el.dom.bindedDoms.x = el.x;
-                el.dom.bindedDoms.y = el.y;
-                el.dom.bindedDoms.redraw();
+                el.dom.bindedDoms.forEach(function (bindedDom) {
+                    bindedDom.x = el.x;
+                    bindedDom.y = el.y;
+                    bindedDom.redraw();
+                });
             }
         });
         return forEver || !AnimLocker.busy();
@@ -604,9 +740,12 @@ let animDestroyLines = function () {
         return counter < 10;
     };
 };
-if(window["element-field"] !== undefined){window["element-field"].__path="../client/components/application/anims/element-field.js"};
 
 /** ../client/components/application/capi/CAPILog.js */
+/**
+ * @type {CAPILog}
+ * @constructor
+ */
 let CAPILog = function () {
 
     this.log = function (ctnx, message, data) {
@@ -615,9 +754,12 @@ let CAPILog = function () {
 };
 
 /** @type {CAPILog} */
-CAPILog = new CAPILog();if(window["CAPILog"] !== undefined){window["CAPILog"].__path="../client/components/application/capi/CAPILog.js"};
-
+CAPILog = new CAPILog();
 /** ../client/components/application/capi/CAPIMap.js */
+/**
+ * @type {CAPIMap}
+ * @constructor
+ */
 let CAPIMap = function () {
     let self = this;
     let mapping;
@@ -631,10 +773,8 @@ let CAPIMap = function () {
      * @param map
      * @param points
      * @param userPoints
-     * @param chests
-     * @param userChests
      */
-    this.gotMapsInfo = function (ctnx, mapId, map, points, userPoints, chests, userChests) {
+    this.gotMapsInfo = function (ctnx, mapId, map, points, userPoints) {
         if (!mapping) mapping = {
             /** Layer mask */
             '□': DataObjects.CELL_VISIBLE,
@@ -667,7 +807,7 @@ let CAPIMap = function () {
             '‖': DataObjects.OBJECT_BLOCK,
 
 
-            'β': DataObjects.OBJECT_SPIDER_BETA,
+            'β': DataObjects.OBJECT_BETA,
             'γ': DataObjects.OBJECT_GAMMA,
 
             'b': DataObjects.OBJECT_BOX,
@@ -706,15 +846,11 @@ let CAPIMap = function () {
 
             DataPoints.setPointData(point);
         });
-        chests.forEach(function (chest) {
-            DataChests.setData(chest);
-        });
+
         userPoints.forEach(function (info) {
             DataPoints.setPointUserScore(info.userId, info.pointId, info.score);
         });
-        userChests.forEach(function (info) {
-            DataChests.setOpened(info.chestId);
-        });
+
         if (self.onMapInfoCallback) {
             self.onMapInfoCallback.call();
             self.onMapInfoCallback = null;
@@ -816,13 +952,15 @@ let CAPIMap = function () {
         return out;
     };
 }
-;
 
 /** @type {CAPIMap} */
 CAPIMap = new CAPIMap();
-if(window["CAPIMap"] !== undefined){window["CAPIMap"].__path="../client/components/application/capi/CAPIMap.js"};
 
 /** ../client/components/application/capi/CAPIStuff.js */
+/**
+ * @type {CAPIStuff}
+ * @constructor
+ */
 let CAPIStuff = function () {
 
     this.gotStuff = function (cntx, stuff) {
@@ -840,9 +978,12 @@ let CAPIStuff = function () {
     };
 };
 
-CAPIStuff = new CAPIStuff();if(window["CAPIStuff"] !== undefined){window["CAPIStuff"].__path="../client/components/application/capi/CAPIStuff.js"};
-
+CAPIStuff = new CAPIStuff();
 /** ../client/components/application/capi/CAPITimeServer.js */
+/**
+ * @type {CAPITimeServer}
+ * @constructor
+ */
 let CAPITimeServer = function () {
 
     /**
@@ -860,9 +1001,12 @@ let CAPITimeServer = function () {
  * Static class
  * @type {CAPITimeServer}
  */
-CAPITimeServer = new CAPITimeServer();if(window["CAPITimeServer"] !== undefined){window["CAPITimeServer"].__path="../client/components/application/capi/CAPITimeServer.js"};
-
+CAPITimeServer = new CAPITimeServer();
 /** ../client/components/application/capi/CAPIUser.js */
+/**
+ * @type {CAPIUser}
+ * @constructor
+ */
 let CAPIUser = function () {
 
     /**
@@ -882,10 +1026,17 @@ let CAPIUser = function () {
      * @param user {Object} юзер инфо.
      */
     this.updateUserInfo = function (cntx, user) {
+        if (user.id === 4) {
+            console.log(user.id, user.fullRecoveryTime);
+            console.log(JSON.stringify(LogicUser.getById(4).fullRecoveryTime));
+        }
         user.createTimestamp = LogicTimeClient.convertToClient(user.createTimestamp);
         user.lastLoginTimestamp = LogicTimeClient.convertToClient(user.lastLoginTimestamp);
         user.fullRecoveryTime = LogicTimeClient.convertToClient(user.fullRecoveryTime);
         LogicUser.updateUserInfo(user);
+        if (user.id === 4) {
+            console.log('afterupdate', JSON.stringify(LogicUser.getById(4).fullRecoveryTime));
+        }
     };
 
     this.updateUserListInfo = function (cntx, userList) {
@@ -914,72 +1065,120 @@ let CAPIUser = function () {
  * Константный класс.
  * @type {CAPIUser}
  */
-CAPIUser = new CAPIUser();if(window["CAPIUser"] !== undefined){window["CAPIUser"].__path="../client/components/application/capi/CAPIUser.js"};
-
-/** ../client/components/application/data/DataChests.js */
+CAPIUser = new CAPIUser();
+/** components/application/data/DataChests.js */
+/**
+ * @type {DataChests}
+ * @constructor
+ */
 let DataChests = function () {
 
-    let chestCoords = [
-        {
-            number: 1,
-            x: 175,
-            y: 125
-        },
-        {
-            number: 2,
-            x: 475,
-            y: 225
-        }
-    ];
+    let chests = {};
 
-    let chests = [];
+    this.init = function (finished) {
+        /** Map-001 */
+        chests[1] = {
+            id: 1, prizes: [
+                {id: DataObjects.STUFF_HUMMER, count: 1},
+                {id: DataObjects.STUFF_LIGHTNING, count: 1},
+                {id: DataObjects.STUFF_SHUFFLE, count: 1},
+            ],
+        };
+        chests[2] = {
+            id: 1, prizes: [
+                {id: DataObjects.STUFF_GOLD, count: 100},
+                {id: DataObjects.STUFF_HUMMER, count: 3},
+            ],
+        };
+        chests[3] = {
+            id: 1, prizes: [
+                {id: DataObjects.STUFF_GOLD, count: 300},
+                {id: DataObjects.STUFF_LIGHTNING, count: 2},
+            ],
+        };
 
-    let opened = [];
+        /** Map-002 */
+        chests[4] = {
+            id: 1, prizes: [
+                {id: DataObjects.STUFF_HUMMER, count: 4},
+                {id: DataObjects.STUFF_LIGHTNING, count: 2},
+                {id: DataObjects.STUFF_SHUFFLE, count: 1},
+            ],
+        };
+        chests[5] = {
+            id: 1, prizes: [
+                {id: DataObjects.STUFF_GOLD, count: 200},
+                {id: DataObjects.STUFF_HUMMER, count: 5},
+            ],
+        };
+        chests[6] = {
+            id: 1, prizes: [
+                {id: DataObjects.STUFF_GOLD, count: 500},
+                {id: DataObjects.STUFF_LIGHTNING, count: 3},
+                {id: DataObjects.STUFF_SHUFFLE, count: 1},
+            ],
+        };
 
-    this.getCoords = function () {
-        return chestCoords;
+        /** Map-003 */
+        chests[7] = {
+            id: 1, prizes: [
+                {id: DataObjects.STUFF_HUMMER, count: 10},
+                {id: DataObjects.STUFF_LIGHTNING, count: 2},
+                {id: DataObjects.STUFF_SHUFFLE, count: 1},
+            ],
+        };
+        chests[8] = {
+            id: 1, prizes: [
+                {id: DataObjects.STUFF_GOLD, count: 500},
+                {id: DataObjects.STUFF_SHUFFLE, count: 1},
+            ],
+        };
+        chests[9] = {
+            id: 1, prizes: [
+                {id: DataObjects.STUFF_GOLD, count: 300},
+                {id: DataObjects.STUFF_HUMMER, count: 5},
+            ],
+        };
+        if (finished) finished();
     };
 
     this.getById = function (id) {
         return chests[id];
     };
-
-    this.setData = function (data) {
-        chests[data.id] = data;
-        PageController.redraw();
-    };
-
-    this.setOpened = function (chestId) {
-        opened[chestId] = true;
-    };
-
-    this.isItOpened = function (chestId) {
-        return opened[chestId] === true;
-    };
 };
 
-DataChests = new DataChests;
-if(window["DataChests"] !== undefined){window["DataChests"].__path="../client/components/application/data/DataChests.js"};
+DataChests = new DataChests();
 
+DataChests.depends = ['Logs'];
+
+/** Для кросс-сайдных компонент */
+if (CONST_IS_SERVER_SIDE) {
+    global['DataChests'] = DataChests;
+}
 /** components/application/data/DataCross.js */
-let DataCross = {};
-
-DataCross.user = {
-    maxHealth: 5,
-    healthRecoveryTime: 45,
-};
-
-DataCross.app = {
-    width: 777,
-    height: 500
+/**
+ * @type {DataCross}
+ */
+let DataCross = {
+    user: {
+        maxHealth: 5,
+        healthRecoveryTime: 10,
+    },
+    app: {
+        width: 777,
+        height: 500
+    }
 };
 
 /** Для кросс-сайдных компонент */
 if (CONST_IS_SERVER_SIDE) {
     global['DataCross'] = DataCross;
-}if(window["DataCross"] !== undefined){window["DataCross"].__path="components/application/data/DataCross.js"};
-
+}
 /** ../client/components/application/data/DataMap.js */
+/**
+ * @type {DataMap}
+ * @constructor
+ */
 let DataMap = function () {
 
     let currentMapId = 1;
@@ -1023,7 +1222,24 @@ let DataMap = function () {
     };
 
     this.setNextMap = function () {
+        /**
+         * 1 - При более чем текущая юзера +2 - писать Пройди уровни
+         * 2 - Прим максимум - писать
+         */
+        if (currentMapId >= LogicUser.getUserLastMapId() + 1) {
+            PBZDialogs.dialogMessage.showDialog(
+                'НЕ ДОСТУПНО',
+                ' ДОСТУП ПОЯВИТСЯ ПОСЛЕ \r\n \r\n ПРОХОЖДЕНИЯ УРОВНЕЙ \r\n\r\n ПРЕДЫДУЩЕЙ КАРТЫ. ',
+                5
+            );
+            return;
+        }
         if (currentMapId === DataMap.MAP_ID_MAX) {
+            PBZDialogs.dialogMessage.showDialog(
+                'СТРОИМ',
+                ' УРОВНИ СОЗДАЮТСЯ \r\n\r\n СЛЕДИ ЗА НОВОСТЯМИ В ГРУППЕ! \r\n\r\n И ВОЗВРАЩАЙСЯ В ИГРУ! ',
+                5
+            );
             return;
         }
         currentMapId++;
@@ -1036,7 +1252,7 @@ let DataMap = function () {
         currentMapId--;
     };
 
-    this.getMapIdFromPointId = function (pointId) {
+    this.getMapIdFromPointId = function () {
         return Math.ceil(LogicUser.getCurrent().nextPointId / DataMap.POINTS_PER_MAP);
     };
 
@@ -1054,18 +1270,6 @@ let DataMap = function () {
 
     this.getNumberFromPointId = function (pointId) {
         return pointId - this.getFirstPointId() + 1;
-    };
-
-    this.getFirstChestId = function () {
-        return DataMap.CHESTS_PER_MAP * (currentMapId - 1) + 1;
-    };
-
-    this.getLastChestId = function () {
-        return this.getFirstChestId() + DataMap.CHESTS_PER_MAP - 1;
-    };
-
-    this.getChestIdFromChestNumber = function (number) {
-        return this.getFirstChestId() + (number - 1);
     };
 
     this.countStarsByMapId = function (mapId) {
@@ -1097,26 +1301,19 @@ let DataMap = function () {
 };
 
 /** @Todo super mega crunch */
-/*GUI = {};
-
-GUI.ANIM_TYPE_ROTATE = 10;
-GUI.ANIM_TYPE_MOVE = 20;
-GUI.ANIM_TYPE_GOTO = 30;
-GUI.ANIM_TYPE_MOVIE = 40;
-GUI.ANIM_TYPE_PAUSE = 50;
-GUI.ANIM_TYPE_STOP = 60;
-*/
 //@Todonow
 /** @type {DataMap} */
 DataMap = new DataMap();
 
-/* server see */
+/** Server see */
 DataMap.MAP_ID_MIN = 1;
-DataMap.MAP_ID_MAX = 10;
+DataMap.MAP_ID_MAX = 3;
 DataMap.POINTS_PER_MAP = 18;
-DataMap.CHESTS_PER_MAP = 2;if(window["DataMap"] !== undefined){window["DataMap"].__path="../client/components/application/data/DataMap.js"};
-
 /** components/application/data/DataObjects.js */
+/**
+ * @type {DataObjects}
+ * @constructor
+ */
 let DataObjects = function () {
     /**
      * Не видна игроку.
@@ -1196,7 +1393,7 @@ let DataObjects = function () {
      * Монстр-2
      * @type {number}
      */
-    this.OBJECT_SPIDER_BETA = 160;
+    this.OBJECT_BETA = 160;
     /**
      * Монстр-3
      * @type {number}
@@ -1249,6 +1446,52 @@ let DataObjects = function () {
      */
     this.WITH_LIGHTNING_CROSS = 1012;
 
+    this.STUFF_HUMMER = 2010;
+    this.STUFF_LIGHTNING = 2011;
+    this.STUFF_SHUFFLE = 2012;
+    this.STUFF_GOLD = 2013;
+
+
+    this.images = {};
+    /** Cell images */
+    this.images[this.CELL_INVISIBLE] = 'field-none.png';
+    this.images[this.CELL_VISIBLE] = 'field-cell.png';
+
+    /** Gem images */
+    this.images[this.OBJECT_HOLE] = 'field-none.png';
+    this.images[this.OBJECT_RANDOM] = 'field-none.png';
+
+    this.images[this.OBJECT_RED] = 'field-red.png';
+    this.images[this.OBJECT_GREEN] = 'field-green.png';
+    this.images[this.OBJECT_BLUE] = 'field-blue.png';
+    this.images[this.OBJECT_YELLOW] = 'field-yellow.png';
+    this.images[this.OBJECT_PURPLE] = 'field-purple.png';
+    this.images[this.OBJECT_SAND] = 'field-sand.png';
+
+    this.images[this.OBJECT_BARREL] = 'field-barrel.png';
+    this.images[this.OBJECT_BLOCK] = 'field-block.png';
+    this.images[this.OBJECT_POLY_COLOR] = 'field-poly-color.png';
+    this.images[this.OBJECT_GOLD] = 'field-gold.png';
+    this.images[this.OBJECT_TILE] = 'field-tile.png';
+
+    this.images[this.OBJECT_ALPHA] = 'field-alpha.png';
+    this.images[this.OBJECT_BETA] = 'field-beta.png';
+    this.images[this.OBJECT_GAMMA] = 'field-gamma.png';
+
+    this.images[this.OBJECT_BOX] = 'field-box.png';
+    this.images[this.OBJECT_CHAIN_A] = 'field-chain-a.png';
+    this.images[this.OBJECT_CHAIN_B] = 'field-chain-b.png';
+
+    /** Gem-lightning images */
+    this.images[this.WITH_LIGHTNING_VERTICAL] = 'a-gem-light-1.png';
+    this.images[this.WITH_LIGHTNING_HORIZONTAL] = 'a-gem-light-1.png';
+    this.images[this.WITH_LIGHTNING_CROSS] = 'a-gem-light-1.png';
+
+    this.images[this.STUFF_HUMMER] = 'button-hummer-rest.png';
+    this.images[this.STUFF_LIGHTNING] = 'button-lightning-rest.png';
+    this.images[this.STUFF_SHUFFLE] = 'button-shuffle-rest.png';
+    this.images[this.STUFF_GOLD] = 'button-money-rest.png';
+
 };
 
 /** @type {DataObjects} */
@@ -1258,9 +1501,12 @@ DataObjects = new DataObjects();
 /** Для кросс-сайдных компонент */
 if (CONST_IS_SERVER_SIDE) {
     global['DataObjects'] = DataObjects;
-}if(window["DataObjects"] !== undefined){window["DataObjects"].__path="components/application/data/DataObjects.js"};
-
+}
 /** ../client/components/application/data/DataPoints.js */
+/**
+ * @type {DataPoints}
+ * @constructor
+ */
 let DataPoints = function () {
 
     this.FIELD_MAX_WIDTH = 10;
@@ -1268,41 +1514,6 @@ let DataPoints = function () {
 
     this.BLOCK_WIDTH = 50;
     this.BLOCK_HEIGHT = 50;
-
-    this.objectImages = {};
-    /** Cell images */
-    this.objectImages[DataObjects.CELL_INVISIBLE] = 'field-none-2.png';
-    this.objectImages[DataObjects.CELL_VISIBLE] = 'field-cell.png';
-
-    /** Gem images */
-    this.objectImages[DataObjects.OBJECT_HOLE] = 'field-none-2.png';
-    this.objectImages[DataObjects.OBJECT_RANDOM] = 'field-none.png';
-
-    this.objectImages[DataObjects.OBJECT_RED] = 'field-red.png';
-    this.objectImages[DataObjects.OBJECT_GREEN] = 'field-green.png';
-    this.objectImages[DataObjects.OBJECT_BLUE] = 'field-blue.png';
-    this.objectImages[DataObjects.OBJECT_YELLOW] = 'field-yellow.png';
-    this.objectImages[DataObjects.OBJECT_PURPLE] = 'field-purple.png';
-    this.objectImages[DataObjects.OBJECT_SAND] = 'field-sand.png';
-
-    this.objectImages[DataObjects.OBJECT_BARREL] = 'field-barrel.png';
-    this.objectImages[DataObjects.OBJECT_BLOCK] = 'field-block.png';
-    this.objectImages[DataObjects.OBJECT_POLY_COLOR] = 'field-poly-color.png';
-    this.objectImages[DataObjects.OBJECT_GOLD] = 'field-gold.png';
-    this.objectImages[DataObjects.OBJECT_TILE] = 'field-tile.png';
-
-    this.objectImages[DataObjects.OBJECT_ALPHA] = 'field-alpha.png';
-    this.objectImages[DataObjects.OBJECT_SPIDER_BETA] = 'field-beta.png';
-    this.objectImages[DataObjects.OBJECT_GAMMA] = 'field-gamma.png';
-
-    this.objectImages[DataObjects.OBJECT_BOX] = 'field-box.png';
-    this.objectImages[DataObjects.OBJECT_CHAIN_A] = 'field-chain-a.png';
-    this.objectImages[DataObjects.OBJECT_CHAIN_B] = 'field-chain-b.png';
-
-    /** Gem-lightning images */
-    this.objectImages[DataObjects.WITH_LIGHTNING_VERTICAL] = 'spec-light-ver-1.png';
-    this.objectImages[DataObjects.WITH_LIGHTNING_HORIZONTAL] = 'spec-light-hor-1.png';
-    this.objectImages[DataObjects.WITH_LIGHTNING_CROSS] = 'spec-light-cross-1.png';
 
     /** Spider healths */
     this.healthImages = {};
@@ -1464,6 +1675,7 @@ let DataPoints = function () {
     };
 
     this.getScore = function (pointId, userId) {
+        window.p = pointUserScore;
         if (!userId) userId = LogicUser.getCurrent().id;
         if (!userId) return null;
         if (!pointUserScore[pointId]) {
@@ -1507,113 +1719,20 @@ let DataPoints = function () {
     };
 
     this.init = function () {
-
-        this.objectAnims[DataObjects.WITH_LIGHTNING_HORIZONTAL] = [[{
-            type: GUI.ANIM_TYPE_MOVIE,
-            images: [
-                'spec-light-hor-1.png',
-                'spec-light-hor-2.png',
-                'spec-light-hor-3.png',
-                'spec-light-hor-4.png',
-                'spec-light-hor-5.png',
-            ],
-            duration: 5,
-        }, {
-            type: GUI.ANIM_TYPE_GOTO,
-            pos: 0
-        }]];
-        this.objectAnims[DataObjects.WITH_LIGHTNING_VERTICAL] = [[{
-            type: GUI.ANIM_TYPE_MOVIE,
-            images: [
-                'spec-light-ver-1.png',
-                'spec-light-ver-2.png',
-                'spec-light-ver-3.png',
-                'spec-light-ver-4.png',
-                'spec-light-ver-5.png',
-            ],
-            duration: 5,
-        }, {
-            type: GUI.ANIM_TYPE_GOTO,
-            pos: 0
-        }]];
-        this.objectAnims[DataObjects.WITH_LIGHTNING_CROSS] = [[{
-            type: GUI.ANIM_TYPE_MOVIE,
-            images: [
-                'spec-light-cross-1.png',
-                'spec-light-cross-2.png',
-                'spec-light-cross-3.png',
-                'spec-light-cross-4.png',
-                'spec-light-cross-5.png',
-            ],
-            duration: 5,
-        }, {
-            type: GUI.ANIM_TYPE_GOTO,
-            pos: 0
-        }]];
+        
+        this.objectAnims[DataObjects.WITH_LIGHTNING_VERTICAL] = animGemLightning;
+        this.objectAnims[DataObjects.WITH_LIGHTNING_HORIZONTAL] = animGemLightning;
+        this.objectAnims[DataObjects.WITH_LIGHTNING_CROSS] = animGemLightning;
     }
-    ;
 };
 
 DataPoints = new DataPoints;
-if(window["DataPoints"] !== undefined){window["DataPoints"].__path="../client/components/application/data/DataPoints.js"};
-
-/** ../client/components/application/data/DataPrizes.js */
-let DataPrizes = function () {
-    let self = this;
-
-    this.giveOutPrizes = function (prizes) {
-        prizes.forEach(function (prize) {
-            self.giveOutPrize(prize);
-        })
-    };
-
-    this.giveOutPrize = function (prize) {
-        switch (prize.id) {
-            case DataPrizes.PRIZE_STUFF_HUMMER:
-                LogicStuff.giveAHummer(prize.count);
-                break;
-            case DataPrizes.PRIZE_STUFF_SHUFFLE:
-                LogicStuff.giveAShuffle(prize.count);
-                break;
-            case DataPrizes.PRIZE_STUFF_LIGHTNING:
-                LogicStuff.giveALighnting(prize.count);
-                break;
-            case DataPrizes.PRIZE_STUFF_GOLD:
-                LogicStuff.giveAGold(prize.count);
-                break;
-        }
-    };
-
-    this.getImageFor = function (prize) {
-        let src;
-        switch (prize.id) {
-            case DataPrizes.PRIZE_STUFF_GOLD:
-                src = 'map-way-point-red.png';
-                break;
-            case DataPrizes.PRIZE_STUFF_HUMMER:
-                src = 'button-hummer-rest.png';
-                break;
-            case DataPrizes.PRIZE_STUFF_SHUFFLE:
-                src = 'button-shuffle-rest.png';
-                break;
-            case DataPrizes.PRIZE_STUFF_LIGHTNING:
-                src = 'button-lightning-rest.png';
-                break;
-        }
-        return src;
-    };
-};
-
-DataPrizes = new DataPrizes;
-
-DataPrizes.PRIZE_STUFF_HUMMER = 1;
-DataPrizes.PRIZE_STUFF_SHUFFLE = 2;
-DataPrizes.PRIZE_STUFF_LIGHTNING = 3;
-
-DataPrizes.PRIZE_STUFF_GOLD = 100;
-if(window["DataPrizes"] !== undefined){window["DataPrizes"].__path="../client/components/application/data/DataPrizes.js"};
 
 /** components/application/data/DataShop.js */
+/**
+ * @type {DataShop}
+ * @constructor
+ */
 let DataShop = function () {
 
     this.getGoldProductByPrice = function (price) {
@@ -1699,16 +1818,17 @@ DataShop.lightning = [
     }
 ];
 
+
 DataShop.healthGoldPrice = 100;
 
 /** Для кросс-сайдных компонент */
 if (CONST_IS_SERVER_SIDE) {
     global['DataShop'] = DataShop;
-}if(window["DataShop"] !== undefined){window["DataShop"].__path="components/application/data/DataShop.js"};
-
+}
 /** ../client/components/application/gui_elements/Dialog.js */
 /**
  * Элемент картинки.
+ * @type {Dialog}
  * @constructor
  */
 let Dialog = function (src) {
@@ -1763,7 +1883,9 @@ let Dialog = function (src) {
      */
     this.elements = [];
 
-    this.title = undefined;
+    this.elHeader = null;
+
+    this.elButtonClose = null;
 
     /**
      * Создадим дом и настроем его.
@@ -1774,9 +1896,24 @@ let Dialog = function (src) {
             width: self.width,
             height: self.height,
             backgroundImage: self.src,
+            zIndex:1000
         });
         dom.x = (document.getElementById('appArea').clientWidth / 2) - self.width / 2;
         dom.y = self.startPosition;
+
+        /** Заголовок диалога */
+        self.elHeader = GUI.createElement(ElementText,
+            {x: 135, y: 16, width: 230, height: 40},
+            dom);
+
+        /** Кнопка закрыть */
+        self.elButtonClose = GUI.createElement(ElementButton, {
+            x: 452, y: 3, srcRest: 'button-close-rest.png',
+            onClick: function () {
+                self.closeDialog();
+            }
+        }, dom);
+        self.elButtonClose.show();
 
         self.dom = dom;
     };
@@ -1788,6 +1925,7 @@ let Dialog = function (src) {
         if (showed) return;
         showed = true;
         self.dom.show();
+        self.elHeader.show();
         self.elements.forEach(function (el) {
             el.show();
         });
@@ -1801,6 +1939,7 @@ let Dialog = function (src) {
         if (!showed) return;
         showed = false;
         self.dom.hide();
+        self.elHeader.hide();
         self.elements.forEach(function (el) {
             el.hide();
         });
@@ -1812,14 +1951,14 @@ let Dialog = function (src) {
     this.redraw = function () {
         if (!showed) return;
         if (!self.dialogShowed) {
-            self.dom.title = self.title;
             self.dom.pointer = self.pointer;
             self.dom.redraw();
         }
-
-        self.elements = function (el) {
+        self.elements.forEach(function (el) {
             el.redraw();
-        };
+        });
+
+        self.elHeader.redraw();
     };
 
     /**
@@ -1875,6 +2014,11 @@ let Dialog = function (src) {
             self.hide();
         }
         Dialog.removeDialog();
+    };
+
+    this.setTitle = function (title) {
+        self.elHeader.setText(title);
+        self.elHeader.redraw();
     }
 };
 
@@ -1916,66 +2060,7 @@ Dialog.showDialog = function () {
         Dialog.queue[0].showConcreteDialog();
         GUI.lockEvents(Dialog.queue[0].dom);
     }
-};if(window["Dialog"] !== undefined){window["Dialog"].__path="../client/components/application/gui_elements/Dialog.js"};
-
-/** ../client/components/application/gui_elements/DialogChestNeedStars.js */
-let DialogChestNeedStars = function () {
-    let self = this;
-    this.__proto__ = new Dialog();
-
-    let elText;
-
-    this.init = function () {
-        this.__proto__.init.call(this);
-        GUI.pushParent(self.dom);
-        /** Кнопка закрыть */
-        GUI.createElement(ElementButton, {
-            x: 452, y: 3,
-            width: 100, height: 40,
-            srcRest: 'button-close-rest.png',
-            srcHover: 'button-close-hover.png',
-            srcActive: 'button-close-active.png',
-            onClick: function () {
-                self.closeDialog();
-            }
-        }).show();
-
-        elText = GUI.createElement(ElementText, {
-            x: 50, y: 70, width: 260, height: 80, text: ''
-        });
-        elText.show();
-
-        GUI.popParent();
-    };
-
-    this.show = function () {
-        this.__proto__.show.call(this);
-    };
-
-    this.hide = function () {
-        this.__proto__.hide.call(this);
-    };
-
-    this.redraw = function () {
-        this.__proto__.redraw.call(this);
-
-        if (!this.dialogShowed) return;
-
-        elText.setText('Нужно собрать еще :' + (this.goalStars - this.mapStars) + ' звезд(ы)');
-        elText.redraw();
-    };
-
-    this.showDialog = function () {
-        this.__proto__.showDialog.call(this);
-        self.redraw();
-    }
 };
-
-
-
-
-if(window["DialogChestNeedStars"] !== undefined){window["DialogChestNeedStars"].__path="../client/components/application/gui_elements/DialogChestNeedStars.js"};
-
 /** ../client/components/application/gui_elements/DialogChestYouWin.js */
 let DialogChestYouWin = function () {
     let self = this;
@@ -1986,75 +2071,62 @@ let DialogChestYouWin = function () {
     let imagesEls = {};
     let countersEls = {};
 
+    let chestId = null;
+
     this.init = function () {
         this.__proto__.init.call(this);
         GUI.pushParent(self.dom);
-        /** Кнопка закрыть */
-        GUI.createElement(ElementButton, {
-            x: 452, y: 3,
-            width: 100, height: 40,
-            srcRest: 'button-close-rest.png',
-            srcHover: 'button-close-hover.png',
-            srcActive: 'button-close-active.png',
-            onClick: function () {
-                self.closeDialog();
-            }
-        }).show();
 
-        elText = GUI.createElement(ElementText, {
-            x: 40, y: 20, width: 240, height: 80, text: ''
-        });
+        this.elHeader.setText('Ты нашел!');
+
+        elText = GUI.createElement(ElementText, {x: 10, y: 80, width: 480, height: 50});
+        elText.setText('Собраны все звезды! \r\nТы открыл сундук и нашел там:');
         elText.show();
 
-        for (let i = 0; i < 4; i++) {
-            imagesEls[i] = GUI.createElement(ElementImage, {
-                x: 40 + (i * 50), y: 90, src: ''
-            });
+        for (let i = 0; i < 8; i++) {
+            imagesEls[i] = GUI.createElement(ElementImage, {y: 155, width: 50, height: 50});
 
-            countersEls[i] = GUI.createElement(ElementText, {
-                x: 60 + (i * 50), y: 80 + 60, width: 50
-            });
+            countersEls[i] = GUI.createElement(ElementText, {y: 220, width: 50});
         }
         GUI.popParent();
     };
 
-    this.show = function () {
-        this.__proto__.show.call(this);
-    };
-
-    this.hide = function () {
-        this.__proto__.hide.call(this);
-    };
-
     this.redraw = function () {
+        let chest;
         this.__proto__.redraw.call(this);
-
         if (!this.dialogShowed) return;
+        chest = DataChests.getById(chestId);
 
-        let chest, prize;
-        chest = DataChests.getById(self.chestId);
+        let sX;
+        sX = Images.getWidth('window-2.png') / 2
+            - ((chest.prizes.length) * 50) / 2
+            - (chest.prizes.length - 1) * 5 / 2;
 
-        elText.setText('Собраны все звезды! Ты открыл сундук и нашел там:');
-        for (let i = 0; i < 4; i++) {
-            prize = chest.prizes[i];
-            if (prize) {
-                imagesEls[i].src = DataPrizes.getImageFor(prize);
-                countersEls[i].setText(prize.count);
+        chest.prizes.forEach(function (prize, i) {
+            let img = imagesEls[i];
+            let cnt = countersEls[i];
+            img.src = DataObjects.images[prize.id];
+            cnt.setText('x' + prize.count);
 
-                imagesEls[i].show();
-                countersEls[i].show();
-                countersEls[i].redraw();
-                imagesEls[i].redraw();
-            } else {
-                imagesEls[i].hide();
-                countersEls[i].hide();
-            }
-        }
+
+            img.x = sX + (i * 50) + (i) * 5;
+
+            cnt.x = img.x;
+
+            img.show();
+            cnt.show();
+
+            cnt.redraw();
+            img.redraw();
+        });
+        //imagesEls[i].hide();
+        //countersEls[i].hide();
 
         elText.redraw();
     };
 
-    this.showDialog = function () {
+    this.showDialog = function (newChestId) {
+        chestId = newChestId;
         this.__proto__.showDialog.call(this);
         self.redraw();
     }
@@ -2063,7 +2135,6 @@ let DialogChestYouWin = function () {
 
 
 
-if(window["DialogChestYouWin"] !== undefined){window["DialogChestYouWin"].__path="../client/components/application/gui_elements/DialogChestYouWin.js"};
 
 /** ../client/components/application/gui_elements/DialogGoals.js */
 let DialogGoals = function DialogGoals() {
@@ -2087,12 +2158,12 @@ let DialogGoals = function DialogGoals() {
         //GUI.createElement(ElementText, {x: 150, y: 13, width: 200, height: 40, text: 'ЦЕЛИ'}).show();
 
         /** Список целей */
-        for (let i in DataObjects.objectImages) {
+        for (let i in DataObjects.images) {
             /** Список целей - картинки */
             goalsImagesEls[i] = GUI.createElement(ElementImage, {
                 x: 200 + i * (DataPoints.BLOCK_WIDTH + 5),
                 y: 30,
-                src: DataObjects.objectImages[i]
+                src: DataObjects.images[i]
             });
             /** Список целей - кол-во */
             goalsCounterEls[i] = GUI.createElement(ElementText, {
@@ -2106,8 +2177,6 @@ let DialogGoals = function DialogGoals() {
         GUI.createElement(ElementButton, {
                 x: 195, y: 0,
                 srcRest: 'button-close-rest.png',
-                srcHover: 'button-close-hover.png',
-                srcActive: 'button-close-active.png',
                 onClick: function () {
                     self.closeDialog();
                 }
@@ -2149,16 +2218,19 @@ let DialogGoals = function DialogGoals() {
             this.elements[i].redraw();
         }
     };
-};if(window["DialogGoals"] !== undefined){window["DialogGoals"].__path="../client/components/application/gui_elements/DialogGoals.js"};
-
+};
 /** ../client/components/application/gui_elements/DialogGoalsReached.js */
+/**
+ * @type {DialogGoalsReached}
+ * @constructor
+ */
 let DialogGoalsReached = function () {
     let self = this;
     this.__proto__ = new Dialog();
 
     /**
      * Номер точки
-     * @type {null}
+     * @type {ElementText}
      */
     let elTitle = null;
 
@@ -2170,6 +2242,11 @@ let DialogGoalsReached = function () {
     let elUserPhotoScore = null;
 
     let elButtonPlay = null;
+
+    let elShare = null;
+
+    let share = true;
+    let score = null;
 
     /**
      * Точка с которой нажали.
@@ -2183,7 +2260,7 @@ let DialogGoalsReached = function () {
         GUI.pushParent(self.dom);
 
         /** Номер точки\заголовок */
-        elTitle = GUI.createElement(ElementText, {x: 135, y: 12, width: 230, height: 40, text: ''});
+        elTitle = GUI.createElement(ElementText, {x: 135, y: 16, width: 230, height: 40, text: ''});
         elTitle.show();
 
         /** Кол-во звёзд */
@@ -2211,28 +2288,38 @@ let DialogGoalsReached = function () {
             srcActive: 'button-red-active.png',
             onClick: function () {
                 self.closeDialog();
-                //PageBlockPanel.oneHealthHide = false;
                 PageController.showPage(PageMain);
             },
             title: 'НА КАРТУ'
         });
         elButtonPlay.show();
 
-        // Кнопка закрыть
+        /** Кнопка закрыть */
         GUI.createElement(ElementButton, {
             x: 452, y: 3,
             srcRest: 'button-close-rest.png',
-            srcHover: 'button-close-hover.png',
-            srcActive: 'button-close-active.png',
             onClick: function () {
                 self.closeDialog();
                 PageController.showPage(PageMain);
             }
         }).show();
 
+        GUI.createElement(ElementText, {x: 335, y: 254, text: 'ПОДЕЛИТЬСЯ', fontSize: 11}).show();
+
+        elShare = GUI.createElement(ElementButton, {
+            x: 418, y: 242,
+            srcRest: 'check-set.png',
+            srcHover: 'check-clear.png',
+            srcActive: 'check-clear.png',
+        });
+        elShare.onClick = function () {
+            share = !share;
+            PageController.redraw();
+        };
+        elShare.show();
+
         GUI.popParent();
     };
-
 
     this.redraw = function () {
         let user, point, friend, score;
@@ -2242,7 +2329,7 @@ let DialogGoalsReached = function () {
 
         user = LogicUser.getCurrent();
         point = DataPoints.getById(pointId);
-        elTitle.text = 'ПРОЙДЕН ' + pointId;
+        elTitle.text = 'ПРОЙДЕН';// + pointId;
 
         for (let i = 0; i < 3; i++) {
             if ((friend = friends[i]) && friend.id) {
@@ -2285,19 +2372,51 @@ let DialogGoalsReached = function () {
         } else {
             elButtonPlay.show();
         }
+
+        elShare.srcRest = share ? 'check-set.png' : 'check-clear.png';
+        elShare.srcHover = share ? 'check-clear.png' : 'check-set.png';
+        elShare.srcActive = elShare.srcHover;
+        elShare.redraw();
     };
 
-    this.showDialog = function (pId) {
+    this.showDialog = function (pId, fieldScore) {
         let mapId;
+        share = true;
         pointId = pId;
         /** @todo mapId from pointId */
         mapId = DataMap.getCurrent().id;
         friends = LogicUser.getFriendIdsByMapIdAndPointIdWithScore(mapId, pId);
         this.__proto__.showDialog.call(this);
+        score = fieldScore;
         self.redraw();
-    }
-};if(window["DialogGoalsReached"] !== undefined){window["DialogGoalsReached"].__path="../client/components/application/gui_elements/DialogGoalsReached.js"};
+    };
 
+    /**
+     * @todo
+     * - Пост: Я набрал 82100 очков на 11 уровне. А сколько сможешь набрать ты?
+     - Пост: Мой результат - 30500 очков на 13 уровне. Сможешь побить мой рекорд?
+     * @type {string[]}
+     */
+    let phrases = [
+        'Ты сможешь обогнать меня?',
+        'Заходи в игру!',
+        'Ты сможешь обогнать меня?',
+    ];
+
+    this.closeDialog = function () {
+        if (share) {
+            SocNet.post({
+                //@todo url app move to config
+                userId: LogicUser.getCurrent().socNetUserId,
+                message: 'Я набрал ' + score + " " +
+                    declination(score, ['очко', 'очка', 'очков'])
+                    + '! Ты сможешь обогнать меня? ' +
+                    'https://vk.com/app7389878'
+            });
+        }
+        this.__proto__.closeDialog();
+    };
+};
 /** ../client/components/application/gui_elements/DialogHealthShop.js */
 let  DialogHealthShop = function () {
     let self = this;
@@ -2315,18 +2434,11 @@ let  DialogHealthShop = function () {
 
         GUI.pushParent(self.dom);
 
-        /** Заголовок диалога */
-        el = GUI.createElement(ElementText, {
-            x: 135, y: 11, width: 230, height: 40,
-            text: 'МАГАЗИН'
-        });
-        self.elements.push(el);
+        this.setTitle('МАГАЗИН');
 
         elHealth5 = GUI.createElement(ElementButton, {
             x: offsetX + stepX, y: offsetY,
             srcRest: 'shop-health-1.png',
-            srcHover: 'shop-health-1.png',
-            srcActive: 'shop-health-1.png',
             onClick: function () {
                 self.buyHealth5();
             }
@@ -2336,24 +2448,11 @@ let  DialogHealthShop = function () {
         el = GUI.createElement(ElementButton, {
             x: offsetX + stepX * 2, y: offsetY,
             srcRest: 'shop-health-2.png',
-            srcHover: 'shop-health-2.png',
-            srcActive: 'shop-health-2.png',
             onClick: function () {
                 SAPIUser.zeroLife();
             }
         });
         self.elements.push(el);
-
-        /** Кнопка закрыть */
-        GUI.createElement(ElementButton, {
-            x: 452, y: 3,
-            srcRest: 'button-close-rest.png',
-            srcHover: 'button-close-hover.png',
-            srcActive: 'button-close-active.png',
-            onClick: function () {
-                self.closeDialog();
-            }
-        }).show();
 
         GUI.popParent();
     };
@@ -2383,8 +2482,7 @@ let  DialogHealthShop = function () {
         }
         PageController.redraw();
     };
-};if(window["DialogHealthShop"] !== undefined){window["DialogHealthShop"].__path="../client/components/application/gui_elements/DialogHealthShop.js"};
-
+};
 /** ../client/components/application/gui_elements/DialogJustQuit.js */
 let DialogJustQuit = function () {
     let self = this;
@@ -2394,14 +2492,7 @@ let DialogJustQuit = function () {
         this.__proto__.init.call(this);
         let element;
 
-        /** Заголовок */
-        element = GUI.createElement(ElementText, {
-            x: 150, y: 12, width: 200,
-            bold: true,
-            alignCenter: true,
-        }, this.dom);
-        element.setText("ВЫЙТИ?");
-        self.elements.push(element);
+        this.setTitle("ВЫЙТИ?");
 
         /** Надпись в центре */
         element = GUI.createElement(ElementText, {
@@ -2441,21 +2532,54 @@ let DialogJustQuit = function () {
             }, this.dom
         );
         self.elements.push(element);
-
-        /** Кнопка закрыть */
-        element = GUI.createElement(ElementButton, {
-                x: 452, y: 3,
-                srcRest: 'button-close-rest.png',
-                srcHover: 'button-close-hover.png',
-                srcActive: 'button-close-active.png',
-                onClick: function () {
-                    self.closeDialog();
-                }
-            }, this.dom
-        );
-        self.elements.push(element);
     };
-};if(window["DialogJustQuit"] !== undefined){window["DialogJustQuit"].__path="../client/components/application/gui_elements/DialogJustQuit.js"};
+};
+/** ../client/components/application/gui_elements/DialogMessage.js */
+/**
+ * @type {DialogMessage}
+ * @constructor
+ */
+let DialogMessage = function () {
+    let self = this;
+    this.__proto__ = new Dialog();
+
+    let elMessage = null;
+
+    this.init = function () {
+        this.__proto__.init.call(this);
+
+        GUI.pushParent(self.dom);
+
+        elMessage = GUI.createElement(ElementText,
+            {x: 45, y: 50, width: 410, height: 200}
+        );
+
+        self.elements.push(elMessage);
+
+        GUI.popParent();
+    };
+
+    let linesY = {
+        undefined: 150,
+        1: 150,
+        2: 140,
+        3: 130,
+        4: 120,
+        5: 110,
+    };
+    this.showDialog = function (header, message, lines) {
+        this.__proto__.showDialog.call(this);
+
+        this.elHeader.setText(header);
+        elMessage.y = linesY[lines];
+        elMessage.setText(message);
+        self.redraw();
+    };
+};
+
+
+
+
 
 /** ../client/components/application/gui_elements/DialogMoneyShop.js */
 let DialogMoneyShop = function () {
@@ -2471,12 +2595,7 @@ let DialogMoneyShop = function () {
         stepX = 150;
 
         GUI.pushParent(self.dom);
-        /** заголовок диалога */
-        el = GUI.createElement(ElementText, {
-            x: 135, y: 11, width: 230, height: 40,
-            text: 'ГОЛОСА'
-        });
-        self.elements.push(el);
+        this.setTitle("ГОЛОСА");
 
         for (let i = 0; i < 3; i++) {
             el = GUI.createElement(ElementButton, {
@@ -2497,25 +2616,12 @@ let DialogMoneyShop = function () {
             el = GUI.createElement(ElementButton, {
                 x: offsetX + stepX * i + 45, y: offsetY + 150 - 45,
                 srcRest: 'button-add-rest.png',
-                srcHover: 'button-add-hover.png',
-                srcActive: 'button-add-active.png',
                 onClick: function () {
                     SocNet.openOrderDialog(DataShop.gold[i].votes);
                     self.closeDialog();
                 }
             });
         }
-
-        /** кнопка закрыть */
-        GUI.createElement(ElementButton, {
-            x: 452, y: 3,
-            srcRest: 'button-close-rest.png',
-            srcHover: 'button-close-hover.png',
-            srcActive: 'button-close-active.png',
-            onClick: function () {
-                self.closeDialog();
-            }
-        }).show();
 
         GUI.popParent();
     };
@@ -2524,18 +2630,15 @@ let DialogMoneyShop = function () {
 
 
 
-if(window["DialogMoneyShop"] !== undefined){window["DialogMoneyShop"].__path="../client/components/application/gui_elements/DialogMoneyShop.js"};
 
 /** ../client/components/application/gui_elements/DialogPointInfo.js */
+/**
+ * @type {DialogPointInfo}
+ * @constructor
+ */
 let DialogPointInfo = function () {
     let self = this;
     this.__proto__ = new Dialog();
-
-    /**
-     * Номер точки
-     * @type {null}
-     */
-    let elTitle = null;
 
     let elStarOne = null;
     let elStarTwo = null;
@@ -2556,10 +2659,6 @@ let DialogPointInfo = function () {
     this.init = function () {
         this.__proto__.init.call(this);
         GUI.pushParent(self.dom);
-
-        /** Номер точки\заголовок */
-        elTitle = GUI.createElement(ElementText, {x: 135, y: 12, width: 230, height: 40, text: ''});
-        elTitle.show();
 
         /** Кол-во звёзд */
         elStarOne = GUI.createElement(ElementImage, {
@@ -2610,8 +2709,6 @@ let DialogPointInfo = function () {
         GUI.createElement(ElementButton, {
             x: 452, y: 3,
             srcRest: 'button-close-rest.png',
-            srcHover: 'button-close-hover.png',
-            srcActive: 'button-close-active.png',
             onClick: function () {
                 self.closeDialog();
             }
@@ -2635,7 +2732,12 @@ let DialogPointInfo = function () {
         if (!this.dialogShowed) return;
 
         point = DataPoints.getById(pointId);
-        elTitle.text = 'УРОВЕНЬ  ' + pointId;
+        this.setTitle('УРОВЕНЬ  ' + pointId);
+//console.log('friends',friends);
+        /**
+         *
+         */
+
 
         for (let i = 0; i < 3; i++) {
             if ((friend = friends[i]) && friend.id) {
@@ -2655,7 +2757,6 @@ let DialogPointInfo = function () {
         elUserPhotoScore.user = LogicUser.getCurrent();
         elUserPhotoScore.score = DataPoints.getScore(point.id);
 
-        elTitle.redraw();
         elStarOne.src = 'star-off-big.png';
         elStarTwo.src = 'star-off-big.png';
         elStarThree.src = 'star-off-big.png';
@@ -2683,8 +2784,7 @@ let DialogPointInfo = function () {
         this.__proto__.showDialog.call(this);
         self.redraw();
     }
-};if(window["DialogPointInfo"] !== undefined){window["DialogPointInfo"].__path="../client/components/application/gui_elements/DialogPointInfo.js"};
-
+};
 /** ../client/components/application/gui_elements/DialogStuffShop.js */
 let DialogStuffShop = function () {
     let self = this;
@@ -2704,12 +2804,7 @@ let DialogStuffShop = function () {
 
         GUI.pushParent(self.dom);
 
-        /** Заголовок диалога */
-        el = GUI.createElement(ElementText, {
-            x: 135, y: 11, width: 230, height: 40,
-            text: 'МАГАЗИН'
-        });
-        self.elements.push(el);
+        this.setTitle('МАГАЗИН');
 
         for (let i = 0; i < 3; i++) {
             el = GUI.createElement(ElementButton, {
@@ -2735,17 +2830,6 @@ let DialogStuffShop = function () {
                 }
             });
         }
-
-        /** Кнопка закрыть */
-        GUI.createElement(ElementButton, {
-            x: 452, y: 3,
-            srcRest: 'button-close-rest.png',
-            srcHover: 'button-close-hover.png',
-            srcActive: 'button-close-active.png',
-            onClick: function () {
-                self.closeDialog();
-            }
-        }).show();
 
         GUI.popParent();
     };
@@ -2821,18 +2905,11 @@ let DialogStuffShop = function () {
 
 
 
-if(window["DialogStuffShop"] !== undefined){window["DialogStuffShop"].__path="../client/components/application/gui_elements/DialogStuffShop.js"};
 
 /** ../client/components/application/gui_elements/DialogTurnLoose.js */
 let DialogTurnLoose = function DialogTurnLoose() {
     let self = this;
     this.__proto__ = new Dialog();
-
-    /**
-     * Номер точки
-     * @type {null}
-     */
-    let elTitle;
 
     this.init = function () {
         this.__proto__.init.call(this);
@@ -2842,8 +2919,6 @@ let DialogTurnLoose = function DialogTurnLoose() {
         el = GUI.createElement(ElementButton, {
                 x: 452, y: 3,
                 srcRest: 'button-close-rest.png',
-                srcHover: 'button-close-hover.png',
-                srcActive: 'button-close-active.png',
                 onClick: function () {
                     self.closeDialog();
                     PageBlockPanel.oneHealthHide = false;
@@ -2852,6 +2927,8 @@ let DialogTurnLoose = function DialogTurnLoose() {
             }
         );
 
+        this.elButtonClose.hide();
+
         self.elements.push(el);
 
         el = GUI.createElement(ElementText, {x: 50, y: 150, fontSize: 24, bold: true, alignCenter: true, width: 400});
@@ -2859,9 +2936,6 @@ let DialogTurnLoose = function DialogTurnLoose() {
 
         self.elements.push(el);
 
-        /** Номер точки\заголовок */
-        elTitle = GUI.createElement(ElementText, {x: 135, y: 12, width: 230, height: 40, text: 'ПРОИГРЫШ'});
-        elTitle.show();
 
         /** Кнопка играть */
         el = GUI.createElement(ElementButton, {
@@ -2890,8 +2964,7 @@ let DialogTurnLoose = function DialogTurnLoose() {
 
         GUI.popParent();
     };
-};if(window["DialogTurnLoose"] !== undefined){window["DialogTurnLoose"].__path="../client/components/application/gui_elements/DialogTurnLoose.js"};
-
+};
 /** ../client/components/application/gui_elements/ElementButton.js */
 /**
  * Элемент кнопки.
@@ -2902,6 +2975,7 @@ let DialogTurnLoose = function DialogTurnLoose() {
  * @property srcHover
  * @property srcActive
  *
+ * @type {ElementButton}
  */
 let ElementButton = function () {
     let self = this;
@@ -2940,19 +3014,19 @@ let ElementButton = function () {
      * Ссылка на картинку при наведении фокуса(мыши).
      * @type {string}
      */
-    this.srcHover = '/path/to/image/hover.png';
+    this.srcHover = '';
 
     /**
      * Ссылка на картинку при активации кнопки(клике).
      * @type {string}
      */
-    this.srcActive = '/path/to/image/active.png';
+    this.srcActive = '';
 
     /**
      * Ссылка на картинку в покое(ожидании/бездействии).
      * @type {string}
      */
-    this.srcRest = 'path/to/image/rest2.png';
+    this.srcRest = '';
 
     /**
      * Будет вызываться при нажатии на кнопку.
@@ -2964,7 +3038,7 @@ let ElementButton = function () {
      * Подсказка кнопки.
      * @type {String}
      */
-    this.title;
+    this.title = '';
 
     /**
      * Активна ли кнопка.
@@ -3041,12 +3115,45 @@ let ElementButton = function () {
      * Перерисуем кнопку.
      */
     this.redraw = function () {
-        let src;
+        let src, mode, w, h;
         if (!showed) return;
         src = self.srcRest;
-        if (mouseStateFocused) src = self.srcHover;
-        if (mouseStateFocused && mouseStateDown) src = self.srcActive;
-        if (!mouseStateFocused && mouseStateDown) src = self.srcRest;
+
+        if (mouseStateFocused) mode = 'hover';
+        if (mouseStateFocused && mouseStateDown) mode = 'active';
+        if (!mouseStateFocused && mouseStateDown) mode = 'rest';
+
+        dom.x = self.x;
+        dom.y = self.y;
+
+        w = self.width ? self.width : Images.getWidth(self.srcRest);
+        h = self.height ? self.height : Images.getHeight(self.srcRest);
+
+        dom.width = w;
+        dom.height = h;
+        src = self.srcRest;
+
+        switch (mode) {
+            case 'rest':
+                break;
+            case 'hover':
+                if (self.srcHover) src = self.srcHover; else {
+                    dom.width = w * 1.05;
+                    dom.height = h * 1.05;
+                    dom.x = self.x - w * 0.025;
+                    dom.y = self.y - h * 0.025;
+                }
+                break;
+            case 'active':
+                if (self.srcHover) src = self.srcActive; else {
+                    dom.width = Images.getWidth(self.srcRest) * 1.1;
+                    dom.height = Images.getHeight(self.srcRest) * 1.1;
+                    dom.x = self.x - w * 0.05;
+                    dom.y = self.y - h * 0.05;
+                }
+                break;
+        }
+
         dom.backgroundImage = src;
         if (self.title) {
             dom.title = self.title;
@@ -3060,8 +3167,7 @@ let ElementButton = function () {
             dom.pointer = GUI.POINTER_ARROW;
             dom.opacity = 0.5;
         }
-        dom.x = self.x;
-        dom.y = self.y;
+
         dom.redraw();
     };
 
@@ -3098,7 +3204,7 @@ let ElementButton = function () {
      * @param dom {Element}
      */
     let onMouseClick = function (mouseEvent, dom) {
-        /* Да, тут мы останавливаем дальнейшие течение клика. */
+        /** Да, тут мы останавливаем дальнейшие течение клика. */
         mouseEvent.stopPropagation();
         if (!self.enabled) return;
         mouseStateDown = false;
@@ -3106,14 +3212,14 @@ let ElementButton = function () {
         self.redraw();
         return self.onClick.call(null, mouseEvent, dom);
     };
-};if(window["ElementButton"] !== undefined){window["ElementButton"].__path="../client/components/application/gui_elements/ElementButton.js"};
-
+};
 /** ../client/components/application/gui_elements/ElementChest.js */
 /**
  * Элемент сундука.
  * @constructor
  * @property x
  * @property y
+ * @type {ElementChest}
  */
 let ElementChest = function () {
     let self = this;
@@ -3142,7 +3248,7 @@ let ElementChest = function () {
      */
     this.width = 0;
 
-    this.goalStars = null;
+    this.number = -1;
 
     /**
      * Высота кноки.
@@ -3150,44 +3256,11 @@ let ElementChest = function () {
      */
     this.height = 0;
 
-    this.srcChestClose = 'chest-close.png';
-    this.srcChestOpen = 'chest-open.png';
 
-    /**
-     * Будет вызываться при нажатии на кнопку.
-     * @type {function}
-     */
-    this.onClick = null;
+    let elPit = null;
 
-    /**
-     * Дом картинки.
-     * @type {GUIDom}
-     */
-    let dom = null;
-
-    /**
-     * Текст показывающий кол-во собранных звёзд на этом сундуке.
-     * @type {null}
-     */
-    let elText = null;
-
-    /**
-     * Опущена ли мышка.
-     * @type {boolean}
-     */
-    let mouseStateDown = false;
-
-    /**
-     * Мышь в фокусе.
-     * @type {boolean}
-     */
-    let mouseStateFocused = false;
-
-    /**
-     * Состояние сундука: 1 - закрыт, 2 - открыт
-     * @type {number}
-     */
-    this.stateId = 1;
+    let elStar = null;
+    let elTxt = null;
 
     this.chestId = null;
 
@@ -3195,21 +3268,11 @@ let ElementChest = function () {
      * Создадим дом и настроем его.
      */
     this.init = function () {
-        elText = GUI.createElement(ElementText, {
-            width: 100,
-            height: 40,
-            text: ''
-        });
 
-        dom = GUI.createDom();
-        dom.width = self.width;
-        dom.height = self.height;
-        dom.backgroundImage = self.srcChestClose;
-        dom.pointer = GUI.POINTER_HAND;
-        GUI.bind(dom, GUI.EVENT_MOUSE_MOUSE_DOWN, onMouseDown, self);
-        GUI.bind(dom, GUI.EVENT_MOUSE_CLICK, onMouseClick, self);
-        GUI.bind(dom, GUI.EVENT_MOUSE_OVER, onMouseOver, self);
-        GUI.bind(dom, GUI.EVENT_MOUSE_OUT, onMouseOut, self);
+        elPit = GUI.createDom(undefined, {width: self.width, height: self.height});
+
+        elStar = GUI.createElement(ElementImage, {src: 'star-on.png'});
+        elTxt = GUI.createElement(ElementText, {width: 100, height: 14, fontSize: 14, bold: false});
     };
 
     /**
@@ -3218,114 +3281,60 @@ let ElementChest = function () {
     this.show = function () {
         if (showed) return;
         showed = true;
-        dom.show();
-        elText.show();
+
+        elPit.show();
+        elStar.show();
+        elTxt.show();
+
         self.redraw();
     };
 
     /**
-     * Спрячем кнопку.
+     * Спрячем.
      */
     this.hide = function () {
         if (!showed) return;
         showed = false;
-        elText.hide();
-        dom.hide();
+
+        elPit.hide();
+        elStar.hide();
+        elTxt.hide();
     };
 
     /**
      * Перерисуем кнопку.
      */
     this.redraw = function () {
+        let stars, starMax;
         if (!showed) return;
 
-        switch (this.stateId) {
-            case 1:
-                if (mouseStateFocused) {
-                    dom.backgroundImage = this.srcChestOpen;
-                } else {
-                    dom.backgroundImage = this.srcChestClose;
-                }
-                break;
-            case 2:
-                dom.backgroundImage = this.srcChestOpen;
-                break;
-        }
+        elPit.x = self.x;
+        elPit.y = self.y;
 
-        if (self.stateId === ElementChest.STATE_OPEN) {
-            dom.pointer = GUI.POINTER_ARROW;
+        elTxt.x = self.x + 10;
+        elTxt.y = self.y + 10;
+
+        stars = DataMap.countStarsByMapId();
+        starMax = LogicChests.getStarsByNumber(self.number);
+
+        stars = Math.min(stars, starMax);
+
+        elTxt.text = stars.toString() + '/' + starMax;
+
+        if (starMax === stars) {
+            elPit.backgroundImage = 'pit-open.png';
         } else {
-            dom.pointer = GUI.POINTER_HAND;
+            elPit.backgroundImage = 'pit-close.png';
         }
-        dom.x = self.x;
-        dom.y = self.y;
 
-        elText.x = self.x + 10;
-        elText.y = self.y + 60;
+        elStar.x = elTxt.x + 10;
+        elStar.y = elTxt.y - 5;
 
-        let isOpened = DataChests.isItOpened(self.chestId);
-
-        if (self.goalStars) {
-            if (self.stars > self.goalStars) {
-                elText.text = self.goalStars + '/' + self.goalStars;
-            } else {
-                elText.text = self.stars + '/' + self.goalStars;
-            }
-        } else {
-            elText.text = '';
-        }
-        elText.text += isOpened ? 'opened' : 'closed';
-        elText.redraw();
-        dom.redraw();
-    };
-
-    /**
-     * Обработка события фокуса мыши.
-     */
-    let onMouseOver = function () {
-        if (!self.enabled) return;
-        mouseStateFocused = true;
-        self.redraw();
-    };
-
-    /**
-     * Обработчик события на опускание мыши.
-     */
-    let onMouseDown = function () {
-        if (!self.enabled) return;
-        mouseStateDown = true;
-        self.redraw();
-    };
-
-    /**
-     * Обработка события выхода фокуса мыши.
-     */
-    let onMouseOut = function () {
-        if (!self.enabled) return;
-        mouseStateFocused = false;
-        self.redraw();
-    };
-
-    /**
-     * Обработка события на клик.
-     * @param mouseEvent {MouseEvent}
-     * @param dom {Element}
-     */
-    let onMouseClick = function (mouseEvent, dom) {
-        /* Да, тут мы останавливаем дальнейшие течение клика. */
-        mouseEvent.stopPropagation();
-        //if (self.stateId === ElementChest.STATE_CLOSE) return;
-        mouseStateDown = false;
-        mouseStateFocused = false;
-        self.redraw();
-        return self.onClick.call(null, mouseEvent, dom, this);
+        elPit.redraw();
+        elStar.redraw();
+        elTxt.redraw();
     };
 };
-
-ElementChest.STATE_CLOSE = 1;
-ElementChest.STATE_OPEN = 2;
-
-if(window["ElementChest"] !== undefined){window["ElementChest"].__path="../client/components/application/gui_elements/ElementChest.js"};
 
 /** ../client/components/application/gui_elements/ElementField.js */
 /**
@@ -3410,7 +3419,8 @@ let ElementField = function () {
         container = GUI.createDom(undefined, {
             width: DataPoints.FIELD_MAX_WIDTH * DataPoints.BLOCK_WIDTH,
             height: DataPoints.FIELD_MAX_HEIGHT * DataPoints.BLOCK_HEIGHT,
-            overflow: 'visible'
+            overflow: 'visible',
+            isFieldContainer: true
         });
         GUI.pushParent(container);
 
@@ -3433,8 +3443,6 @@ let ElementField = function () {
 
         for (let i = 0; i < specDomsLimit; i++) {
             dom = GUI.createDom(undefined, {width: DataPoints.BLOCK_WIDTH, height: DataPoints.BLOCK_HEIGHT});
-            //@todo shit it!
-            OnIdle.register(dom.animate);
             specDoms1.push(dom);
         }
 
@@ -3451,8 +3459,6 @@ let ElementField = function () {
         });
         for (let i = 0; i < specDomsLimit; i++) {
             dom = GUI.createDom(undefined, {width: DataPoints.BLOCK_WIDTH, height: DataPoints.BLOCK_HEIGHT});
-            //@todo shit it!
-            OnIdle.register(dom.animate);
             specDoms2.push(dom);
         }
         /** Anim Doms Pool */
@@ -3541,7 +3547,6 @@ let ElementField = function () {
     };
 
     let shuffleDo = function () {
-        console.log('s');
         Field.shuffle();
 
         animate(animShuffle,
@@ -3720,6 +3725,12 @@ let ElementField = function () {
         if (stopHint) stopHint();
     };
 
+    let specDomClear = function (dom, animId) {
+        if (dom.stopAnim) dom.stopAnim();
+        dom.animId = animId;
+        dom.hide();
+    };
+
     let drawDom = function (p, dom, objectId, opacity) {
         dom.x = p.x * DataPoints.BLOCK_WIDTH;
         dom.y = p.y * DataPoints.BLOCK_HEIGHT;
@@ -3727,20 +3738,19 @@ let ElementField = function () {
         let nV = function (p) {
             return !Field.isVisible(p);
         };
-        //dom.borderRadius = '10px 10px 10px 10px';
         borderRadius += (nV({x: p.x - 1, y: p.y}) && nV({x: p.x, y: p.y - 1})) ? '8px ' : '0px ';
         borderRadius += (nV({x: p.x, y: p.y - 1}) && nV({x: p.x + 1, y: p.y})) ? '8px ' : '0px ';
         borderRadius += (nV({x: p.x + 1, y: p.y}) && nV({x: p.x, y: p.y + 1})) ? '8px ' : '0px ';
         borderRadius += (nV({x: p.x, y: p.y + 1}) && nV({x: p.x - 1, y: p.y})) ? '8px ' : '0px ';
-        //borderRadius = '8px 8px 8px 8px';
         dom.borderRadius = borderRadius;
-        if (DataObjects.objectImages[objectId]) dom.backgroundImage = DataObjects.objectImages[objectId];
+        if (DataObjects.images[objectId]) dom.backgroundImage = DataObjects.images[objectId];
         if (DataPoints.objectAnims[objectId]) {
-            dom.animPlayed = true;
-            dom.animTracks = GUI.copyAnimTracks(DataPoints.objectAnims[objectId]);
-            GUI.updateAnimTracks(dom);
+            if (dom.animId !== objectId) {
+                specDomClear(dom, objectId);
+                dom.stopAnim = Animate.anim(DataPoints.objectAnims[objectId], {dom: dom, objectId: objectId});
+            }
         } else {
-            dom.animPlayed = false;
+            specDomClear(dom);
         }
         if (opacity !== undefined) dom.opacity = opacity;
         dom.show();
@@ -3758,97 +3768,110 @@ let ElementField = function () {
 
         let spec1Index = 0;
         let spec2Index = 0;
+
         Field.eachCell(function (x, y, cell, object) {
-                let maskDom, gemDom, specDom;
-                maskDom = maskDoms[x][y];
-                gemDom = gemDoms[x][y];
+            let maskDom, gemDom, specDom;
+            maskDom = maskDoms[x][y];
+            gemDom = gemDoms[x][y];
 
-                gemDom.bindedDoms = null;
+            gemDom.bindedDoms = [];
 
-                /** Layer.mask redraw */
-                cell.isVisible ?
-                    drawDom({x: x, y: y}, maskDom, DataObjects.CELL_VISIBLE) :
-                    maskDom.hide();
-                /**
-                 * Draw any
-                 */
-                if (cell.isVisible && (object.isGem || object.isAlpha || object.isBarrel || object.isPolyColor || object.isBlock)) {
-                    drawDom({x: x, y: y}, gemDom, object.objectId, '');
-                } else {
-                    gemDom.hide();
-                    //drawDom({x: x, y: y}, gemDom, object.objectId, '');
-                }
+            /** Layer.mask redraw */
+            cell.isVisible ?
+                drawDom({x: x, y: y}, maskDom, DataObjects.CELL_VISIBLE) :
+                maskDom.hide();
+            /**
+             * Draw any
+             */
+            if (cell.isVisible && (object.isGem || object.isAlpha || object.isBarrel || object.isPolyColor || object.isBlock)) {
+                drawDom({x: x, y: y}, gemDom, object.objectId, '');
+            } else {
+                gemDom.hide();
+            }
 
-                /** Gems */
-                if (cell.isVisible && object.isGem) {
-                    /** Lightning */
-                    if (object.lightningId) {
+            /** Gems lighting */
+            if (cell.isVisible && object.isGem) {
+                /** Lightning */
+                if (object.lightningId) {
+                    if (object.lightningId === DataObjects.WITH_LIGHTNING_CROSS) {
+
                         specDom = specDoms2[spec2Index++];
-                        drawDom({x: x, y: y}, specDom, object.lightningId, 0.5);
-                        gemDom.bindedDoms = specDom;
-                    }
-                }
+                        drawDom({x: x, y: y}, specDom, DataObjects.WITH_LIGHTNING_VERTICAL, 1);
+                        gemDom.bindedDoms.push(specDom);
 
-                /** Spider red health */
-                if (cell.isVisible && object.isAlpha) {
-                    specDom = specDoms2[spec2Index++];
-                    specDom.backgroundImage = DataPoints.healthImages[object.health];
-                    drawDom({x: x, y: y}, specDom, '', '');
-                    gemDom.bindedDoms = specDom;
-                }
-
-                /** Gold */
-                if (cell.isVisible && cell.withGold) {
-                    specDom = specDoms1[spec1Index++];
-                    drawDom({x: x, y: y}, specDom, DataObjects.OBJECT_GOLD, '');
-                }
-
-                /** Tile */
-                if (cell.isVisible && cell.withTile) {
-                    specDom = specDoms1[spec1Index++];
-                    drawDom({x: x, y: y}, specDom, DataObjects.OBJECT_TILE, '');
-                }
-
-                /** Creature beta */
-                if (cell.isVisible && object.withBeta) {
-                    specDom = specDoms2[spec2Index++];
-                    drawDom({x: x, y: y}, specDom, DataObjects.OBJECT_SPIDER_BETA, '');
-                    gemDom.bindedDoms = specDom;
-                }
-
-                /** Creature beta */
-                if (cell.isVisible && object.withGamma) {
-                    specDom = specDoms2[spec2Index++];
-                    drawDom({x: x, y: y}, specDom, DataObjects.OBJECT_GAMMA, '');
-                    gemDom.bindedDoms = specDom;
-                }
-
-                /** Draw Box */
-                if (cell.isVisible && object.withBox) {
-                    specDom = specDoms2[spec2Index++];
-                    drawDom({x: x, y: y}, specDom, DataObjects.OBJECT_BOX, '');
-                    gemDom.hide();
-                }
-                /** Chain a & b */
-                if (cell.isVisible && object.withChain) {
-                    if (object.withChainA) {
                         specDom = specDoms2[spec2Index++];
-                        drawDom({x: x, y: y}, specDom, DataObjects.OBJECT_CHAIN_A, '');
-                    }
-                    if (object.withChainB) {
+                        drawDom({x: x, y: y}, specDom, DataObjects.WITH_LIGHTNING_HORIZONTAL, 1);
+                        gemDom.bindedDoms.push(specDom);
+
+                    } else {
+
                         specDom = specDoms2[spec2Index++];
-                        drawDom({x: x, y: y}, specDom, DataObjects.OBJECT_CHAIN_B, '');
+                        drawDom({x: x, y: y}, specDom, object.lightningId, 1);
+                        gemDom.bindedDoms.push(specDom);
+
                     }
                 }
             }
-        );
 
-        /** Спрячем не используемые специальные домы */
+            /** Alpha health */
+            if (cell.isVisible && object.isAlpha) {
+                specDom = specDoms2[spec2Index++];
+                specDom.backgroundImage = DataPoints.healthImages[object.health];
+                drawDom({x: x, y: y}, specDom, '', 0.9);
+                gemDom.bindedDoms.push(specDom);
+            }
+
+            /** Gold */
+            if (cell.isVisible && cell.withGold) {
+                specDom = specDoms1[spec1Index++];
+                drawDom({x: x, y: y}, specDom, DataObjects.OBJECT_GOLD, '');
+            }
+
+            /** Tile */
+            if (cell.isVisible && cell.withTile) {
+                specDom = specDoms1[spec1Index++];
+                drawDom({x: x, y: y}, specDom, DataObjects.OBJECT_TILE, '');
+            }
+
+            /** Creature beta */
+            if (cell.isVisible && object.withBeta) {
+                specDom = specDoms2[spec2Index++];
+                drawDom({x: x, y: y}, specDom, DataObjects.OBJECT_BETA, '');
+                gemDom.bindedDoms.push(specDom);
+            }
+
+            /** Creature gamma */
+            if (cell.isVisible && object.withGamma) {
+                specDom = specDoms2[spec2Index++];
+                drawDom({x: x, y: y}, specDom, DataObjects.OBJECT_GAMMA, '');
+                gemDom.bindedDoms.push(specDom);
+            }
+
+            /** Draw Box */
+            if (cell.isVisible && object.withBox) {
+                specDom = specDoms2[spec2Index++];
+                drawDom({x: x, y: y}, specDom, DataObjects.OBJECT_BOX, '');
+                gemDom.hide();
+            }
+            /** Chain a & b */
+            if (cell.isVisible && object.withChain) {
+                if (object.withChainA) {
+                    specDom = specDoms2[spec2Index++];
+                    drawDom({x: x, y: y}, specDom, DataObjects.OBJECT_CHAIN_A, '');
+                }
+                if (object.withChainB) {
+                    specDom = specDoms2[spec2Index++];
+                    drawDom({x: x, y: y}, specDom, DataObjects.OBJECT_CHAIN_B, '');
+                }
+            }
+        });
+
+        /** Спрячем не используемые  специальные домы */
         for (let i = spec1Index; i < specDomsLimit; i++) {
-            specDoms1[i].hide();
+            specDomClear(specDoms1[i]);
         }
         for (let i = spec2Index; i < specDomsLimit; i++) {
-            specDoms2[i].hide();
+            specDomClear(specDoms2[i]);
         }
 
         if (gemFramed) {
@@ -4019,12 +4042,12 @@ let ElementField = function () {
             Field.exchangeObjects({x: x, y: y}, holeToFall);
 
             //@todo some strange moment here
-            if (gemDoms[x][y].bindedDoms) {
+            if (gemDoms[x][y].bindedDoms.length) {
                 if (gemDoms[holeToFall.x][holeToFall.y]) {
                     gemDoms[holeToFall.x][holeToFall.y].bindedDoms = gemDoms[x][y].bindedDoms;
                 }
-                gemDoms[x][y].bindedDoms = null;
-            };
+                gemDoms[x][y].bindedDoms = [];
+            }
 
             if (true ||
                 Field.isVisible({x: x, y: y}) ||
@@ -4053,8 +4076,9 @@ let ElementField = function () {
     this.destroyLines = function () {
         let lines, actGem, actObjectId;
         lines = Field.findLines();
-
+        console.log(lines);
         lines.forEach(function (line) {
+
             actGem = null;
 
             if (lastExchangeGems && Field.lineCrossing([line], lastExchangeGems.a.x, lastExchangeGems.a.y)) {
@@ -4064,6 +4088,9 @@ let ElementField = function () {
                 actGem = lastExchangeGems.b;
             }
             if (actGem) {
+                actObjectId = Field.getCell(actGem).object.objectId;
+            } else {
+                actGem = (line.coords[0]);
                 actObjectId = Field.getCell(actGem).object.objectId;
             }
 
@@ -4080,6 +4107,7 @@ let ElementField = function () {
                 }
             }
             //if (actGem && p.x === actGem.x && p.y === actGem.y) return;
+            console.log('call on detroy');
             self.onDestroyLine(line);
         });
 
@@ -4183,16 +4211,15 @@ let ElementField = function () {
                 animate(animHummerDestroy, p);
             }
 
-
             if (cell.object.withBeta) {
-                /** Destroy green spider */
-                self.onDestroyThing(DataObjects.OBJECT_SPIDER_BETA, cell);
+                /** Destroy beta */
+                self.onDestroyThing(DataObjects.OBJECT_BETA, cell);
                 cell.object.withBeta = false;
                 animate(animHummerDestroy, p);
             }
 
             if (cell.object.withGamma) {
-                /** Destroy green spider */
+                /** Destroy gamma */
                 self.onDestroyThing(DataObjects.OBJECT_GAMMA, cell);
                 cell.object.withGamma = false;
                 animate(animHummerDestroy, p);
@@ -4265,8 +4292,7 @@ let ElementField = function () {
 
         return Animate.anim.apply(null, args);
     }
-};if(window["ElementField"] !== undefined){window["ElementField"].__path="../client/components/application/gui_elements/ElementField.js"};
-
+};
 /** ../client/components/application/gui_elements/ElementFriendsPanel.js */
 /**
  * Элемент панель друзей.
@@ -4405,8 +4431,7 @@ let ElementFriendsPanel = function () {
         });
 
     };
-};if(window["ElementFriendsPanel"] !== undefined){window["ElementFriendsPanel"].__path="../client/components/application/gui_elements/ElementFriendsPanel.js"};
-
+};
 /** ../client/components/application/gui_elements/ElementHealthTimer.js */
 /**
  * Элемент: таймер.
@@ -4525,7 +4550,6 @@ let ElementHealthTimer = function () {
         return minutes + ':' + seconds;
     };
 };
-if(window["ElementHealthTimer"] !== undefined){window["ElementHealthTimer"].__path="../client/components/application/gui_elements/ElementHealthTimer.js"};
 
 /** ../client/components/application/gui_elements/ElementHealthsIndicator.js */
 /**
@@ -4622,8 +4646,7 @@ let ElementHealthIndicator = function () {
         });
         if (PageBlockPanel.oneHealthHide) user.fullRecoveryTime += LogicHealth.getHealthRecoveryTime();
     };
-};if(window["ElementHealthsIndicator"] !== undefined){window["ElementHealthsIndicator"].__path="../client/components/application/gui_elements/ElementHealthsIndicator.js"};
-
+};
 /** ../client/components/application/gui_elements/ElementImage.js */
 /**
  * Элемент картинки.
@@ -4738,8 +4761,7 @@ let ElementImage = function () {
         dom.pointer = self.pointer;
         dom.redraw();
     };
-};if(window["ElementImage"] !== undefined){window["ElementImage"].__path="../client/components/application/gui_elements/ElementImage.js"};
-
+};
 /** ../client/components/application/gui_elements/ElementPanelItems.js */
 /**
  * Элемент панель целей.
@@ -4790,10 +4812,10 @@ let ElementPanelItems = function () {
         elPanel2 = GUI.createElement(ElementImage, {x: self.x, y: self.y, src: 'panel-goals-2.png'});
         elPanel3 = GUI.createElement(ElementImage, {x: self.x, y: self.y, src: 'panel-goals-3.png'});
         /** Текст : заголовок */
-        elTitle = GUI.createElement(ElementText, {x: self.x + 15, y: self.y + 7, width: 80, text: self.title, fontSize: self.fontSize});
+        elTitle = GUI.createElement(ElementText, {x: self.x + 15, y: self.y + 9, width: 80, text: self.title, fontSize: self.fontSize});
 
-        for (let id in DataObjects.objectImages) {
-            el = GUI.createElement(ElementImage, {width: 50, height: 50, src: DataObjects.objectImages[id]});
+        for (let id in DataObjects.images) {
+            el = GUI.createElement(ElementImage, {width: 50, height: 50, src: DataObjects.images[id]});
             imagesEls[id] = el;
             el = GUI.createElement(ElementText, {width: DataPoints.BLOCK_WIDTH, alignRight: true});
             countersEls[id] = el;
@@ -4882,8 +4904,7 @@ let ElementPanelItems = function () {
             offsetY += DataPoints.BLOCK_HEIGHT + 5;
         });
     };
-};if(window["ElementPanelItems"] !== undefined){window["ElementPanelItems"].__path="../client/components/application/gui_elements/ElementPanelItems.js"};
-
+};
 /** ../client/components/application/gui_elements/ElementPoint.js */
 /**
  * Элемент кнопки.
@@ -5034,17 +5055,17 @@ let ElementPoint = function () {
         dPhoto1 = GUI.createDom(null, {
             height: photoSize, width: photoSize,
             border: '1px solid #715f4b',
-            borderRadius: '2px'
+            borderRadius: '2px', zIndex: 100
         });
         dPhoto2 = GUI.createDom(null, {
             height: photoSize, width: photoSize,
             border: '1px solid #715f4b',
-            borderRadius: '2px'
+            borderRadius: '2px', zIndex: 100
         });
         dPhoto3 = GUI.createDom(null, {
             height: photoSize, width: photoSize,
             border: '1px solid #715f4b',
-            borderRadius: '2px'
+            borderRadius: '2px', zIndex: 100
         });
     };
 
@@ -5246,7 +5267,6 @@ let ElementPoint = function () {
 ElementPoint.STATE_CLOSE = 1;
 ElementPoint.STATE_CURRENT = 2;
 ElementPoint.STATE_FINISHED = 3;
-if(window["ElementPoint"] !== undefined){window["ElementPoint"].__path="../client/components/application/gui_elements/ElementPoint.js"};
 
 /** ../client/components/application/gui_elements/ElementSprite.js */
 /**
@@ -5310,11 +5330,6 @@ let ElementSprite = function () {
 
     this.title = undefined;
 
-    this.animPlay = function () {
-
-        dom.animPlayed = true;
-    };
-
     /**
      * Создадим дом и настроем его.
      */
@@ -5360,7 +5375,6 @@ let ElementSprite = function () {
         dom.redraw();
     };
 };
-if(window["ElementSprite"] !== undefined){window["ElementSprite"].__path="../client/components/application/gui_elements/ElementSprite.js"};
 
 /** ../client/components/application/gui_elements/ElementStuffButton.js */
 /**
@@ -5410,19 +5424,19 @@ let ElementStuffButton = function () {
      * Ссылка на картинку при наведении фокуса(мыши).
      * @type {string}
      */
-    this.srcHover = '/path/to/image/hover.png';
+    this.srcHover = null;
 
     /**
      * Ссылка на картинку при активации кнопки(клике).
      * @type {string}
      */
-    this.srcActive = '/path/to/image/active.png';
+    this.srcActive = null;
 
     /**
      * Ссылка на картинку в покое(ожидании/бездействии).
      * @type {string}
      */
-    this.srcRest = 'path/to/image/rest1.png';
+    this.srcRest = null;
 
     /**
      * Будет вызываться при нажатии на кнопку.
@@ -5483,7 +5497,7 @@ let ElementStuffButton = function () {
      * Покажем кнопку.
      */
     this.show = function () {
-        if (showed == true) return;
+        if (showed === true) return;
         showed = true;
         dom.show();
         counter.show();
@@ -5494,7 +5508,7 @@ let ElementStuffButton = function () {
      * Спрячем кнопку.
      */
     this.hide = function () {
-        if (showed == false) return;
+        if (showed === false) return;
         showed = false;
         dom.hide();
         counter.hide();
@@ -5504,13 +5518,38 @@ let ElementStuffButton = function () {
      * Перерисуем кнопку.
      */
     this.redraw = function () {
-        let src;
+        let src, w, h;
         if (!showed) return;
+
+        dom.x = self.x;
+        dom.y = self.y;
+
         src = self.srcRest;
-        if (mouseStateFocused) src = self.srcHover;
-        if (mouseStateFocused && mouseStateDown) src = self.srcActive;
+        w = self.width ? self.width : Images.getWidth(self.srcRest);
+        h = self.height ? self.height : Images.getHeight(self.srcRest);
+
+        dom.width = w;
+        dom.height = h;
+
+        if (mouseStateFocused) {
+            if (self.srcHover) src = self.srcHover; else {
+                dom.width = w * 1.1;
+                dom.height = h * 1.1;
+                dom.x = self.x - w * 0.05;
+                dom.y = self.y - h * 0.05;
+            }
+        }
+        if (mouseStateFocused && mouseStateDown) {
+            if (self.srcHover) src = self.srcActive; else {
+                dom.width = Images.getWidth(self.srcRest) * 1.2;
+                dom.height = Images.getHeight(self.srcRest) * 1.2;
+                dom.x = self.x - w * 0.1;
+                dom.y = self.y - h * 0.1;
+            }
+        }
         if (!mouseStateFocused && mouseStateDown) src = self.srcRest;
         dom.backgroundImage = src;
+
         if (self.title) dom.title = self.title;
         if (self.enabled) {
             dom.pointer = GUI.POINTER_HAND;
@@ -5519,8 +5558,6 @@ let ElementStuffButton = function () {
             dom.pointer = GUI.POINTER_ARROW;
             dom.opacity = 0.5;
         }
-        dom.x = self.x;
-        dom.y = self.y;
         counter.x = self.x + 70;
         counter.y = self.y + 40;
         counter.setText(LogicStuff.getStuff(self.fieldName));
@@ -5561,7 +5598,7 @@ let ElementStuffButton = function () {
      * @param dom {Element}
      */
     let onMouseClick = function (mouseEvent, dom) {
-        /* Да, тут мы останавливаем дальнейшие течение клика. */
+        /** Да, тут мы останавливаем дальнейшие течение клика. */
         mouseEvent.stopPropagation();
         if (!self.enabled) return;
         mouseStateDown = false;
@@ -5569,8 +5606,7 @@ let ElementStuffButton = function () {
         self.redraw();
         return self.onClick.call(null, mouseEvent, dom);
     };
-};if(window["ElementStuffButton"] !== undefined){window["ElementStuffButton"].__path="../client/components/application/gui_elements/ElementStuffButton.js"};
-
+};
 /** ../client/components/application/gui_elements/ElementText.js */
 /**
  * Элемент: текст.
@@ -5758,7 +5794,6 @@ let ElementText = function () {
         return self.onClick.call(this, mouseEvent, dom);
     };
 };
-if(window["ElementText"] !== undefined){window["ElementText"].__path="../client/components/application/gui_elements/ElementText.js"};
 
 /** ../client/components/application/gui_elements/ElementUserScorePhoto.js */
 /**
@@ -5847,9 +5882,74 @@ let ElementUserScorePhoto = function () {
         elPhoto.redraw();
         elTextScore.redraw();
     };
-};if(window["ElementUserScorePhoto"] !== undefined){window["ElementUserScorePhoto"].__path="../client/components/application/gui_elements/ElementUserScorePhoto.js"};
+};
+/** ../client/components/application/logic/LogicChests.js */
+/**
+ * @type {LogicChests}
+ * @constructor
+ */
+let LogicChests = function () {
 
+    let numberToStars = {1: 6 * 3, 2: 12 * 3, 3: 18 * 3};
+
+    this.getStarsByNumber = function (number) {
+        return numberToStars[number];
+    };
+
+    this.getNumberFromPointId = function (pointId) {
+        return 3 % pointId;
+    };
+
+    this.onFinish = function (pointId, lastScore, newScore, forceChest) {
+        let oldPointStars, newPointStars,
+            oldMapStars, newMapStars,
+            chestA, chestB, chestC,
+            number, chestId;
+
+        oldPointStars = DataPoints.countStars(null, null, lastScore);
+        newPointStars = DataPoints.countStars(null, null, newScore);
+
+        oldMapStars = DataMap.countStarsByMapId();
+        newMapStars = oldMapStars + (newPointStars - oldPointStars);
+
+        chestA = LogicChests.getStarsByNumber(1);
+        chestB = LogicChests.getStarsByNumber(2);
+        chestC = LogicChests.getStarsByNumber(3);
+
+        number = 0;
+        if ((oldMapStars < chestA && chestA === newMapStars) || forceChest === 1) {
+            number = 1;
+        }
+        if ((oldMapStars < chestB && chestB === newMapStars) || forceChest === 2) {
+            number = 2;
+        }
+        if ((oldMapStars < chestC && chestC === newMapStars) || forceChest === 3) {
+            number = 3;
+        }
+        if (number) {
+            chestId = LogicChests.getChestId(number);
+            LogicChests.open(chestId);
+            return chestId;
+        }
+        return 0;
+    };
+
+    this.open = function (chestId) {
+        PBZDialogs.dialogChestYouWin.showDialog(chestId);
+    };
+
+    this.getChestId = function (number) {
+        return (DataMap.getCurrent().id - 1) * 3 + number;
+    };
+};
+
+/** @type {LogicChests} */
+LogicChests = new LogicChests;
 /** ../client/components/application/logic/LogicField.js */
+/**
+ * @type {LogicField}
+ * @constructor
+ */
 let LogicField = function () {
     let self = this;
 
@@ -5940,7 +6040,7 @@ let LogicField = function () {
             p.y++;
             cell = self.getCell(p);
             object = cell && cell.object;
-            if (cell && cell.isVisible && !object.isHole && !object.withBox) {
+            if (cell && cell.isVisible && !object.isHole && !object.withBox && !object.withChain) {
                 break;
             }
             if (cell && cell.isVisible && object.isHole) {
@@ -6027,19 +6127,29 @@ let LogicField = function () {
     };
 
     this.findLines = function () {
-        let line, lines;
+        let line, lines, vlines, hlines;
         lines = [];
-        for (let y = 0; y < DataPoints.FIELD_MAX_HEIGHT; y++) {
-            for (let x = 0; x < DataPoints.FIELD_MAX_WIDTH; x++) {
-                if (this.lineCrossing(lines, x, y)) continue;
+        vlines = [];
+        hlines = [];
+        this.eachCell(function (x, y) {
 
-                line = this.findLine(x, y, DataObjects.WITH_LIGHTNING_VERTICAL);
-                if (line) lines.push(line);
-
-                line = this.findLine(x, y, DataObjects.WITH_LIGHTNING_HORIZONTAL);
-                if (line) lines.push(line);
+            if (!self.lineCrossing(vlines, x, y)) {
+                line = self.findLine(x, y, DataObjects.WITH_LIGHTNING_VERTICAL);
+                if (line) {
+                    lines.push(line);
+                    vlines.push(line);
+                }
             }
-        }
+
+            if (!self.lineCrossing(hlines, x, y)) {
+                line = self.findLine(x, y, DataObjects.WITH_LIGHTNING_HORIZONTAL);
+                if (line) {
+                    lines.push(line);
+                    hlines.push(line);
+                }
+            }
+        });
+
         return lines;
     };
 
@@ -6079,17 +6189,21 @@ let LogicField = function () {
 
 //@todo refactring
     this.lineCrossing = function (lines, x, y) {
-        for (let i in lines) {
-            for (let n in lines[i].coords) {
-                if (x === lines[i].coords[n].x &&
-                    y === lines[i].coords[n].y) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        let result = false;
+
+        lines.forEach(function (line) {
+            line.coords.forEach(function (p) {
+                if (x === p.x && y === p.y) result = true;
+            });
+        });
+
+        return result
     };
 
+    /**
+     *
+     * @param callback(x,y)
+     */
     this.eachCell = function (callback) {
         for (let y = 0; y < DataPoints.FIELD_MAX_HEIGHT; y++) {
             for (let x = 0; x < DataPoints.FIELD_MAX_WIDTH; x++) {
@@ -6119,7 +6233,7 @@ let LogicField = function () {
 
     this.updateSomeFlags = function (object) {
         object.withChain = object.withChainA || object.withChainB;
-        object.isCanMoved = (object.isGem || object.isBarrel || object.isPolyColor)
+        object.isCanMoved = (object.isGem || object.isBarrel || object.isPolyColor || object.isAlpha)
             && !object.withBox && !object.withChain;
         object.isLineForming = (object.isGem) && !object.withBox;
     };
@@ -6131,7 +6245,6 @@ let LogicField = function () {
     this.setLayers = function (mask, objects, specials) {
         let specIds, lightningId, objectId;
         cells = [];
-        console.log(objects);
         for (let x = 0; x < DataPoints.FIELD_MAX_WIDTH; x++) {
             cells[x] = [];
             for (let y = 0; y < DataPoints.FIELD_MAX_HEIGHT; y++) {
@@ -6149,7 +6262,6 @@ let LogicField = function () {
                 gems.forEach(function (gemId) {
                     if (specIds.indexOf(gemId) !== -1) {
                         objectId = gemId;
-                        console.log(gemId);
                     }
                 });
                 if (!objectId) objectId = Field.getRandomGemId();
@@ -6169,13 +6281,12 @@ let LogicField = function () {
                 object.withBox = specIds.indexOf(DataObjects.OBJECT_BOX) !== -1;
                 object.withChainA = specIds.indexOf(DataObjects.OBJECT_CHAIN_A) !== -1;
                 object.withChainB = specIds.indexOf(DataObjects.OBJECT_CHAIN_B) !== -1;
-                object.withBeta = specIds.indexOf(DataObjects.OBJECT_SPIDER_BETA) !== -1;
+                object.withBeta = specIds.indexOf(DataObjects.OBJECT_BETA) !== -1;
                 object.withGamma = specIds.indexOf(DataObjects.OBJECT_GAMMA) !== -1;
 
                 self.setObject({x: x, y: y}, objectId, lightningId)
             }
         }
-        console.log('find lines', Field.findLines().length);
         if (Field.findLines().length) {
             Field.shuffle(true);
         }
@@ -6317,9 +6428,12 @@ let LogicField = function () {
 /** @type {LogicField} */
 LogicField = new LogicField;
 /** Aliases */
-Field = LogicField;if(window["LogicField"] !== undefined){window["LogicField"].__path="../client/components/application/logic/LogicField.js"};
-
+let Field = LogicField;
 /** components/application/logic/LogicHealth.js */
+/**
+ * @type {LogicHealth}
+ * @constructor
+ */
 let LogicHealth = function () {
 
     let getTime = function () {
@@ -6366,6 +6480,7 @@ let LogicHealth = function () {
         if (LogicHealth.getHealths(user) === 0) {
             LogicHealth.zeroLife(user);
         }
+        //@todo log warning if go down then zero
         user.fullRecoveryTime += this.getHealthRecoveryTime() * quantity;
     };
 
@@ -6388,48 +6503,13 @@ LogicHealth = new LogicHealth();
 /** Для кросс-сайдных компонент */
 if (CONST_IS_SERVER_SIDE) {
     global['LogicHealth'] = LogicHealth;
-}if(window["LogicHealth"] !== undefined){window["LogicHealth"].__path="components/application/logic/LogicHealth.js"};
-
+}
 /** ../client/components/application/logic/LogicMain.js */
+/**
+ * @type {LogicMain}
+ * @constructor
+ */
 let LogicMain = function () {
-
-    this.main = function () {
-        /**@todo show preloader */
-        Logs.init(function () {
-        });
-
-        DataPoints.init();
-
-        /** init some components */
-        SocNet.init();
-
-        /** WebSocket Client */
-        webSocketClient = new WebSocketClient();
-        webSocketClient.init(function () {
-        });
-
-        //@todo need be automate...
-        /** ApiRouter */
-
-        ApiRouter.setMap({
-            CAPIUser: CAPIUser,
-            CAPITimeServer: CAPITimeServer,
-            CAPIMap: CAPIMap,
-            CAPIStuff: CAPIStuff
-        });
-
-        /** Link ApiRouter and WebSocketClient */
-        ApiRouter.sendData = webSocketClient.sendData;
-        webSocketClient.onData = ApiRouter.onData;
-        webSocketClient.onConnect = this.onConnect;
-        webSocketClient.onDisconnect = ApiRouter.onDisconnect;
-
-        /** Running */
-        webSocketClient.run();
-
-        OnIdle.init(function () {
-        });
-    };
 
     /**
      * After connect
@@ -6437,20 +6517,15 @@ let LogicMain = function () {
      */
     this.onConnect = function (connectionId) {
         ApiRouter.onConnect(connectionId);
+        SAPITimeServer.sendMeTime();
         LogicUser.authorize();
     };
 
     this.onAuthorizeSuccess = function () {
         /** Установить текущую карту игрока */
-        DataMap.setCurrentMapId(
-            DataMap.getMapIdFromPointId(
-                LogicUser.getCurrent().nextPointId
-            )
-        );
+        DataMap.setCurrentMapId(LogicUser.getUserLastMapId());
 
-        SAPITimeServer.sendMeTime();
         LogicStuff.loadStuff();
-
 
         /** Первый показ игры: Главная страница */
         PageController.showPage(PageMain);
@@ -6459,11 +6534,54 @@ let LogicMain = function () {
         LogicWizard.onAuthorizeSuccess();
     };
 };
-if(window["LogicMain"] !== undefined){window["LogicMain"].__path="../client/components/application/logic/LogicMain.js"};
+
+LogicMain.prototype.main = function () {
+    let webSocketClient;
+    /**@todo show preloader */
+    Logs.init(function () {
+    });
+
+    DataPoints.init();
+    DataChests.init();
+
+    /** init some components */
+    SocNet.init();
+
+    /** WebSocket Client */
+    webSocketClient = new WebSocketClient();
+    webSocketClient.init(function () {
+    });
+
+    //@todo need be automate...
+    /** ApiRouter */
+
+    ApiRouter.setMap({
+        CAPIUser: CAPIUser,
+        CAPITimeServer: CAPITimeServer,
+        CAPIMap: CAPIMap,
+        CAPIStuff: CAPIStuff,
+        CAPILog: CAPILog,
+    });
+
+    /** Link ApiRouter and WebSocketClient */
+    ApiRouter.sendData = webSocketClient.sendData;
+    webSocketClient.onData = ApiRouter.onData;
+    webSocketClient.onConnect = this.onConnect;
+    webSocketClient.onDisconnect = ApiRouter.onDisconnect;
+
+    /** Running */
+    webSocketClient.run();
+
+    OnIdle.init(function () {
+    });
+};
 
 /** ../client/components/application/logic/LogicMap.js */
+/**
+ * @type {LogicMap}
+ * @constructor
+ */
 let LogicMap = function () {
-    let self = this;
 
     this.onArrowPrevClick = function () {
         DataMap.setPrevMap();
@@ -6481,9 +6599,12 @@ let LogicMap = function () {
  * @type {LogicMap}
  */
 LogicMap = new LogicMap();
-if(window["LogicMap"] !== undefined){window["LogicMap"].__path="../client/components/application/logic/LogicMap.js"};
 
 /** ../client/components/application/logic/LogicStuff.js */
+/**
+ * @type {LogicStuff}
+ * @constructor
+ */
 let LogicStuff = function () {
     let self = this;
 
@@ -6499,6 +6620,7 @@ let LogicStuff = function () {
 
     this.updateStuff = function (data) {
         stuff = data;
+        PageController.redraw();
     };
 
     this.getStuff = function (fieldName) {
@@ -6519,7 +6641,7 @@ let LogicStuff = function () {
         stuff['shuffleQty']--;
     };
 
-    this.usedlightning = function () {
+    this.usedLightning = function () {
         stuff['lightningQty']--;
     };
 
@@ -6555,9 +6677,12 @@ let LogicStuff = function () {
  * @type {LogicStuff}
  */
 LogicStuff = new LogicStuff();
-if(window["LogicStuff"] !== undefined){window["LogicStuff"].__path="../client/components/application/logic/LogicStuff.js"};
 
 /** ../client/components/application/logic/LogicTimeClient.js */
+/**
+ * @type {LogicTimeClient}
+ * @constructor
+ */
 let LogicTimeClient = function () {
 
     /**
@@ -6589,7 +6714,7 @@ let LogicTimeClient = function () {
     };
 
     this.getMicroTime = function () {
-        return new Date().getTime() + timeDiff;
+        return new Date().getTime();
     };
 
     this.convertToClient = function (timestamp) {
@@ -6599,9 +6724,12 @@ let LogicTimeClient = function () {
     };
 };
 
-LogicTimeClient = new LogicTimeClient();if(window["LogicTimeClient"] !== undefined){window["LogicTimeClient"].__path="../client/components/application/logic/LogicTimeClient.js"};
-
+LogicTimeClient = new LogicTimeClient();
 /** ../client/components/application/logic/LogicUser.js */
+/**
+ * @type {LogicUser}
+ * @constructor
+ */
 let LogicUser = function () {
     let self = this;
 
@@ -6825,25 +6953,24 @@ let LogicUser = function () {
      * Возвращает id игроков-друзей на этой точке.
      * @param mapId
      * @param pointId
-     * @param widthCurrentUser
+     * @param withCurrentUser
      * @returns {Array|Uint8Array|BigInt64Array|*[]|Float64Array|Int8Array|Float32Array|Int32Array|Uint32Array|Uint8ClampedArray|BigUint64Array|Int16Array|Uint16Array}
      */
-    this.getFriendIdsByMapIdAndPointIdWithScore = function (mapId, pointId, widthCurrentUser) {
+    this.getFriendIdsByMapIdAndPointIdWithScore = function (mapId, pointId, withCurrentUser) {
         let ids, users, gamers, currentUserId;
         //return LogicUser.getList([1,2,3]);
         gamers = [];
         ids = LogicUser.getFriendIdsByMapId(mapId);
         currentUserId = LogicUser.getCurrent().id;
-        if (widthCurrentUser) {
-            ids.push(currentUserId);
-        }
+        if (withCurrentUser) ids.push(currentUserId);
+
         if (ids) {
             users = LogicUser.getList(ids);
         }
         if (users) {
             gamers = users
                 .filter(function (user, i) {
-                    if (!widthCurrentUser && currentUserId === user.id) return false;
+                    if (!withCurrentUser && currentUserId === user.id) return false;
                     /** Remove duplicates */
                     if (users.indexOf(user) !== i) return false;
                     return user.nextPointId >= pointId;
@@ -6857,8 +6984,13 @@ let LogicUser = function () {
         }
         return gamers;
     };
-}
-;
+
+    this.getUserLastMapId = function () {
+        return DataMap.getMapIdFromPointId(
+            LogicUser.getCurrent().nextPointId
+        );
+    };
+};
 
 /**
  * Статичный класс.
@@ -6867,9 +6999,12 @@ let LogicUser = function () {
 LogicUser = new LogicUser();
 
 /** Alias **/
-LU = LogicUser;if(window["LogicUser"] !== undefined){window["LogicUser"].__path="../client/components/application/logic/LogicUser.js"};
-
+let LU = LogicUser;
 /** ../client/components/application/logic/LogicWizard.js */
+/**
+ * @type {LogicWizard}
+ * @constructor
+ */
 let LogicWizard = function LogicWizard() {
     let self = this;
 
@@ -6930,11 +7065,11 @@ let LogicWizard = function LogicWizard() {
 };
 
 /** @type {LogicWizard} */
-LogicWizard = new LogicWizard();if(window["LogicWizard"] !== undefined){window["LogicWizard"].__path="../client/components/application/logic/LogicWizard.js"};
-
+LogicWizard = new LogicWizard();
 /** ../client/components/application/page_blocks/PageBlockBackground.js */
 /**
  * Страница бэкграудна.
+ * @type {PageBlockBackground}
  * @constructor
  */
 let PageBlockBackground = function PageBlockBackground() {
@@ -6957,7 +7092,7 @@ let PageBlockBackground = function PageBlockBackground() {
 
         /** Рамка для фулскрина */
         el = GUI.createElement(ElementImage, {x: -15, y: -15, src: 'fs-frame.png'});
-       // self.elements.push(el);
+        self.elements.push(el);
 
         /** Задний фон */
         el = GUI.createElement(ElementImage, {x: 0, y: 0, src: 'old-paper.png'});
@@ -7023,11 +7158,11 @@ let PageBlockBackground = function PageBlockBackground() {
  *
  * @type {PageBlockBackground}
  */
-PageBlockBackground = new PageBlockBackground();if(window["PageBlockBackground"] !== undefined){window["PageBlockBackground"].__path="../client/components/application/page_blocks/PageBlockBackground.js"};
-
+PageBlockBackground = new PageBlockBackground();
 /** ../client/components/application/page_blocks/PageBlockField.js */
 /**
  * Страница с игровым полем
+ * @type {PageBlockField}
  * @constructor
  */
 let PageBlockField = function PageBlockField() {
@@ -7080,7 +7215,7 @@ let PageBlockField = function PageBlockField() {
      * Создадим тут все элементы страницы.
      */
     this.init = function () {
-        let el, oX, oY,panelTextOffsetY;
+        let el, oX, oY, panelTextOffsetY;
         panelTextOffsetY = 37;
 
         /** Игровое поле */
@@ -7100,10 +7235,7 @@ let PageBlockField = function PageBlockField() {
 
         /** Кнопка выхода */
         el = GUI.createElement(ElementButton, {
-            x: 730, y: 10,
-            srcRest: 'button-quit-rest.png',
-            srcHover: 'button-quit-hover.png',
-            srcActive: 'button-quit-active.png',
+            x: 730, y: 10, srcRest: 'button-quit-rest.png',
             onClick: function () {
                 if (turns === 0) {
                     PBZDialogs.dialogTurnsLoose.reset();
@@ -7124,7 +7256,7 @@ let PageBlockField = function PageBlockField() {
             el = GUI.createElement(ElementImage, {x: oX, y: oY, src: 'panel-turns.png'});
             self.elements.push(el);
             /** Надпись */
-            el = GUI.createElement(ElementText, {x: oX, y: oY + 6, width: 112, text: 'УРОВЕНЬ', alignCenter: true});
+            el = GUI.createElement(ElementText, {x: oX, y: oY + 8, width: 112, text: 'УРОВЕНЬ', alignCenter: true, fontSize: 14});
             self.elements.push(el);
             /** Текст */
             elLevel = GUI.createElement(ElementText, {x: oX, y: oY + panelTextOffsetY, width: 112, alignCenter: true});
@@ -7141,7 +7273,7 @@ let PageBlockField = function PageBlockField() {
             el = GUI.createElement(ElementImage, {x: oX, y: oY, src: 'panel-score.png'});
             self.elements.push(el);
             /** Надпись */
-            el = GUI.createElement(ElementText, {x: oX, y: oY + 6, width: 112, text: 'ОЧКИ', alignCenter: true});
+            el = GUI.createElement(ElementText, {x: oX, y: oY + 8, width: 112, text: 'ОЧКИ', alignCenter: true, fontSize: 14});
             self.elements.push(el);
             /** Текст */
             elScore = GUI.createElement(ElementText, {x: oX, y: oY + panelTextOffsetY, width: 112, alignCenter: true});
@@ -7162,12 +7294,12 @@ let PageBlockField = function PageBlockField() {
          */
         {
             oX = 15;
-            oY = 65+10;
+            oY = 65 + 10;
             /** Панель */
             el = GUI.createElement(ElementImage, {x: oX, y: oY, src: 'panel-turns.png'});
             self.elements.push(el);
             /** Надпись */
-            el = GUI.createElement(ElementText, {x: oX, y: oY + 6, width: 112, text: 'ХОДЫ', alignCenter: true, fontSize5: 18});
+            el = GUI.createElement(ElementText, {x: oX, y: oY + 8, width: 112, text: 'ХОДЫ', alignCenter: true, fontSize: 14});
             self.elements.push(el);
             /** Текст */
             elTurns = GUI.createElement(ElementText, {x: oX, y: oY + panelTextOffsetY, width: 112, alignCenter: true});
@@ -7180,18 +7312,15 @@ let PageBlockField = function PageBlockField() {
         {
             oX = 15;
             oY = 260;
-            elPanelGoals = GUI.createElement(ElementPanelItems, {x: oX, y: oY, title: 'ЦЕЛИ', fontSize: 18});
+            elPanelGoals = GUI.createElement(ElementPanelItems, {x: oX, y: oY, title: 'ЦЕЛИ', fontSize: 14});
             self.elements.push(elPanelGoals);
         }
 
         oY = 200;
         /** Stuff hummer */
         el = GUI.createElement(ElementStuffButton, {
-            x: 650, y: oY,
-            fieldName: 'hummerQty',
+            x: 650, y: oY, fieldName: 'hummerQty',
             srcRest: 'button-hummer-rest.png',
-            srcHover: 'button-hummer-hover.png',
-            srcActive: 'button-hummer-active.png',
             onClick: function () {
                 self.setStuffMode(LogicStuff.STUFF_HUMMER);
             }
@@ -7200,11 +7329,8 @@ let PageBlockField = function PageBlockField() {
 
         /** Stuff lightning */
         el = GUI.createElement(ElementStuffButton, {
-            x: 650, y: oY + 80,
-            fieldName: 'lightningQty',
+            x: 650, y: oY + 80, fieldName: 'lightningQty',
             srcRest: 'button-lightning-rest.png',
-            srcHover: 'button-lightning-hover.png',
-            srcActive: 'button-lightning-active.png',
             onClick: function () {
                 self.setStuffMode(LogicStuff.STUFF_LIGHTNING);
             }
@@ -7213,11 +7339,8 @@ let PageBlockField = function PageBlockField() {
 
         /** Stuff shuffle */
         el = GUI.createElement(ElementStuffButton, {
-            x: 650, y: oY + 80 * 2,
-            fieldName: 'shuffleQty',
+            x: 650, y: oY + 80 * 2, fieldName: 'shuffleQty',
             srcRest: 'button-shuffle-rest.png',
-            srcHover: 'button-shuffle-hover.png',
-            srcActive: 'button-shuffle-active.png',
             onClick: function () {
                 self.setStuffMode(LogicStuff.STUFF_SHUFFLE);
             }
@@ -7228,8 +7351,6 @@ let PageBlockField = function PageBlockField() {
         buttonReloadField = GUI.createElement(ElementButton, {
             x: 312, y: 5, width: 25, height: 25,
             srcRest: 'button-reload-field-rest.png',
-            srcHover: 'button-reload-field-hover.png',
-            srcActive: 'button-reload-field-active.png',
             onClick: function () {
                 AnimLocker.lock();
 
@@ -7248,8 +7369,6 @@ let PageBlockField = function PageBlockField() {
         buttonChangeSpeed = GUI.createElement(ElementButton, {
             x: 312 + 30, y: 5, width: 25, height: 25,
             srcRest: 'field-red.png',
-            srcHover: 'field-red.png',
-            srcActive: 'field-red.png',
             onClick: function () {
                 let standard = 1;
                 switch (Config.OnIdle.animStep) {
@@ -7300,7 +7419,10 @@ let PageBlockField = function PageBlockField() {
             /** Передаем клик дальше, теоретически после анимации */
             domStuff.hide();
             el = document.elementFromPoint(event.clientX, event.clientY);
-            el.dispatchEvent(new MouseEvent(event.type, event));
+            /** Передаем только на поле */
+            if (el.parentElement.__dom && el.parentElement.__dom.isFieldContainer) {
+                el.dispatchEvent(new MouseEvent(event.type, event));
+            }
             if (stuffMode) domStuff.show();
         });
 
@@ -7417,7 +7539,7 @@ let PageBlockField = function PageBlockField() {
     objectScores[DataObjects.OBJECT_SAND] = 30;
 
     objectScores[DataObjects.OBJECT_ALPHA] = 100;
-    objectScores[DataObjects.OBJECT_SPIDER_BETA] = 100;
+    objectScores[DataObjects.OBJECT_BETA] = 100;
     objectScores[DataObjects.OBJECT_GAMMA] = 100;
     objectScores[DataObjects.OBJECT_POLY_COLOR] = 300;
     objectScores[DataObjects.OBJECT_GOLD] = 300;
@@ -7466,28 +7588,24 @@ let PageBlockField = function PageBlockField() {
     };
 
     this.finishLevel = function () {
-        let pointId, user, lastScore;
+        let pointId, user, lastScore, chestId;
         stuffMode = null;
         Logs.log("finishLevel()", Logs.LEVEL_DETAIL);
         user = LogicUser.getCurrent();
         pointId = DataPoints.getPlayedId();
         lastScore = DataPoints.getScore(pointId);
+        console.log(pointId, lastScore, user, score);
         if (user.nextPointId < pointId + 1) {
             user.nextPointId = pointId + 1;
             LogicUser.updateUserInfo(user);
         }
         if (score > lastScore) {
-            SAPIMap.finishLevel(pointId, score);
-            DataPoints.setPointUserScore(
-                user.id,
-                pointId,
-                score
-            );
+            chestId = LogicChests.onFinish(pointId, lastScore, score);
+            SAPIMap.onFinish(pointId, score, chestId);
+            DataPoints.setPointUserScore(user.id, pointId, score);
         }
-        //@todo
-        SAPIUser.onPlayFinish();
-        //PageBlockPanel.oneHealthHide =false;
-        PBZDialogs.dialogGoalsReached.showDialog(pointId);
+        SAPIUser.onFinish();
+        PBZDialogs.dialogGoalsReached.showDialog(pointId, score);
         PageController.redraw();
     };
 
@@ -7505,8 +7623,8 @@ let PageBlockField = function PageBlockField() {
                 LogicStuff.usedHummer();
                 break;
             case LogicStuff.STUFF_LIGHTNING:
-                SAPIStuff.usedlightning();
-                LogicStuff.usedlightning();
+                SAPIStuff.usedLightning();
+                LogicStuff.usedLightning();
                 break;
             case LogicStuff.STUFF_SHUFFLE:
                 SAPIStuff.usedShuffle();
@@ -7525,21 +7643,21 @@ let PageBlockField = function PageBlockField() {
                     PBZDialogs.dialogStuffShop.showDialog(mode);
                     return;
                 }
-                domStuff.backgroundImage = 'button-hummer-active.png';
+                domStuff.backgroundImage = 'button-hummer-rest.png';
                 break;
             case LogicStuff.STUFF_LIGHTNING:
                 if (LogicStuff.getStuff('lightningQty') < 1) {
                     PBZDialogs.dialogStuffShop.showDialog(mode);
                     return;
                 }
-                domStuff.backgroundImage = 'button-lightning-active.png';
+                domStuff.backgroundImage = 'button-lightning-rest.png';
                 break;
             case LogicStuff.STUFF_SHUFFLE:
                 if (LogicStuff.getStuff('shuffleQty') < 1) {
                     PBZDialogs.dialogStuffShop.showDialog(mode);
                     return;
                 }
-                domStuff.backgroundImage = 'button-shuffle-active.png';
+                domStuff.backgroundImage = 'button-shuffle-rest.png';
                 break;
         }
         stuffMode = mode;
@@ -7552,6 +7670,7 @@ let PageBlockField = function PageBlockField() {
     };
 
     this.onWizardFinish = function () {
+        //@Todo get sex and : Дальше ты сам(а)!
         showText('Теперь сами!');
     };
 
@@ -7568,11 +7687,11 @@ let PageBlockField = function PageBlockField() {
 };
 
 /** @type {PageBlockField} */
-PageBlockField = new PageBlockField;if(window["PageBlockField"] !== undefined){window["PageBlockField"].__path="../client/components/application/page_blocks/PageBlockField.js"};
-
+PageBlockField = new PageBlockField;
 /** ../client/components/application/page_blocks/PageBlockMaps.js */
 /**
  * Основной блок страницы игры.
+ * @type {PageBlockMaps}
  * @constructor
  */
 let PageBlockMaps = function PageBlockMaps() {
@@ -7614,8 +7733,6 @@ let PageBlockMaps = function PageBlockMaps() {
      */
     let pointsEls = [];
 
-    let chestsEls = [];
-
     /** @type {ElementImage} */
     let elArrowHint = null;
 
@@ -7655,8 +7772,6 @@ let PageBlockMaps = function PageBlockMaps() {
         elArrowPrev = GUI.createElement(ElementButton, {
             x: 0, y: pArrowNext.y,
             srcRest: 'map-arrow-left-rest.png',
-            srcHover: 'map-arrow-left-hover.png',
-            srcActive: 'map-arrow-left-active.png',
             onClick: LogicMap.onArrowPrevClick
         });
         self.elements.push(elArrowPrev);
@@ -7664,8 +7779,6 @@ let PageBlockMaps = function PageBlockMaps() {
         elArrowNext = GUI.createElement(ElementButton, {
             x: pArrowNext.x, y: pArrowNext.y,
             srcRest: 'map-arrow-right-rest.png',
-            srcHover: 'map-arrow-right-hover.png',
-            srcActive: 'map-arrow-right-active.png',
             onClick: LogicMap.onArrowNextClick
         });
         self.elements.push(elArrowNext);
@@ -7688,50 +7801,19 @@ let PageBlockMaps = function PageBlockMaps() {
             if (coords.number === 1) GUI.setTagId(null);
         });
 
-        /** Сундуки */
-        DataChests.getCoords().forEach(function (coord) {
-            el = GUI.createElement(ElementChest, {
-                x: coord.x, y: coord.y,
-                width: 71, height: 62,
-                number: coord.number,
-                enabled: true,
-                onClick: function (e, d, el) {
-                    let chestId, isItOpened, chest, goalStars, mapStars;
-                    chestId = el.chestId;
-                    isItOpened = DataChests.isItOpened(chestId);
-                    chest = DataChests.getById(chestId);
-                    goalStars = chest.goalStars;
-                    mapStars = DataMap.countStarsByMapId();
-                    if (isItOpened) {
-                        //console.log('уже открыт!');
-                    } else {
-                        if (mapStars < goalStars) {
-                            PBZDialogs.dialogChestNeedStars.mapStars = mapStars;
-                            PBZDialogs.dialogChestNeedStars.goalStars = goalStars;
-                            PBZDialogs.dialogChestNeedStars.showDialog();
-                            // если закрыт и не хватает звёзд - диалог с надписью: что бы открыть сундук , собери еще
-                        } else {
-                            SAPIChest.openChest(chestId);
-                            DataChests.setOpened(chestId);
-                            DataPrizes.giveOutPrizes(chest.prizes);
-                            PBZDialogs.dialogChestYouWin.chestId = chestId;
-                            PBZDialogs.dialogChestYouWin.showDialog();
-                            PageController.redraw();
-                        }
-                    }
-                }
-            });
-            chestsEls[coord.number] = el;
-        });
+
+        el = GUI.createElement(ElementChest, {x: 162, y: 304, number: 1});
+        self.elements.push(el);
+        el = GUI.createElement(ElementChest, {x: 309, y: 78, number: 2});
+        self.elements.push(el);
+        el = GUI.createElement(ElementChest, {x: 495, y: 304, number: 3});
+        self.elements.push(el);
 
         elFriendsPanel = GUI.createElement(ElementFriendsPanel, {x: 213, y: 450 - 15});
         self.elements.push(elFriendsPanel);
 
         el = GUI.createElement(ElementButton, {
-            x: 165, y: 438,
-            srcRest: 'button-add-rest.png',
-            srcHover: 'button-add-hover.png',
-            srcActive: 'button-add-active.png',
+            x: 165, y: 438, srcRest: 'button-add-rest.png',
             onClick: function () {
                 SocNet.openInviteFriendDialog();
             }
@@ -7780,7 +7862,6 @@ let PageBlockMaps = function PageBlockMaps() {
     this.preset = function () {
         let nextPointId, firstPointId, lastPointId;
         this.presetPoints();
-        this.presetChests();
         /** Set hint arrow */
         nextPointId = LogicUser.getCurrent().nextPointId;
         firstPointId = DataMap.getFirstPointId();
@@ -7808,10 +7889,11 @@ let PageBlockMaps = function PageBlockMaps() {
         self.preset();
         elFriendsPanel.setFriends(LogicUser.getList(LogicUser.getFriendIds(6)));
         elFriendsPanel.redraw();
+        this.mapElsRedraw();
+
         self.elements.forEach(function (element) {
             element.redraw();
         });
-        this.mapElsRedraw();
 
         elArrowPrev.redraw();
     };
@@ -7827,9 +7909,7 @@ let PageBlockMaps = function PageBlockMaps() {
                     window[data.elements[i].name],
                     data.elements[i].params
                 );
-                if (data.elements[i].animPlay) {
-                    element.animPlay();
-                }
+                //@todo elements
                 elMapElements[data.id].push(element);
             }
         }
@@ -7867,14 +7947,9 @@ let PageBlockMaps = function PageBlockMaps() {
         if (!map) return;
 
         elMap.src = map.src;
-        //   elMap.redraw();
 
         if (mapIdOld !== map.id) {
             this.mapElsShow();
-        }
-
-        for (let i in elMapElements[map.id]) {
-            //        elMapElements[map.id][i].redraw();
         }
     };
 
@@ -7908,33 +7983,12 @@ let PageBlockMaps = function PageBlockMaps() {
             else
                 elPoint.userScore = 0;
 
-            //console.log(elPoint);
-
             elPoint.setGamers(
                 LogicUser.getFriendIdsByMapIdAndPointIdWithScore(
                     DataMap.getCurrent().id,
                     pointId,
                     true)
             );
-        }
-    };
-
-    /**
-     * Обновление данных перед отрисовкой сундуков
-     */
-    this.presetChests = function () {
-        let chestId, chest, chestEl, map;
-        map = DataMap.getCurrent();
-        if (!map) return;
-        for (let number = 1; number <= DataMap.CHESTS_PER_MAP; number++) {
-            chestId = DataMap.getChestIdFromChestNumber(number);
-            chest = DataChests.getById(chestId);
-            if (!chest) continue;
-
-            chestEl = chestsEls[number];
-            chestEl.chestId = chestId;
-            chestEl.goalStars = chest.goalStars;
-            chestEl.stars = DataMap.countStarsByMapId();
         }
     };
 
@@ -7971,11 +8025,11 @@ let PageBlockMaps = function PageBlockMaps() {
  *
  * @type {PageBlockMaps}
  */
-PageBlockMaps = new PageBlockMaps;if(window["PageBlockMaps"] !== undefined){window["PageBlockMaps"].__path="../client/components/application/page_blocks/PageBlockMaps.js"};
-
+PageBlockMaps = new PageBlockMaps;
 /** ../client/components/application/page_blocks/PageBlockPanel.js */
 /**
  * Блок общих.
+ * @type {PageBlockPanel}
  * @constructor
  */
 let PageBlockPanel = function PageBlockPanel() {
@@ -8012,10 +8066,7 @@ let PageBlockPanel = function PageBlockPanel() {
 
         /** Деньги - монета */
         el = GUI.createElement(ElementButton, {
-            x: pMX + 5, y: -3,
-            srcRest: 'button-money-rest.png',
-            srcHover: 'button-money-hover.png',
-            srcActive: 'button-money-active.png',
+            x: pMX + 5, y: -3, srcRest: 'button-money-rest.png',
             onClick: function () {
                 PBZDialogs.dialogMoneyShop.showDialog();
             }
@@ -8030,10 +8081,7 @@ let PageBlockPanel = function PageBlockPanel() {
 
         /** Деньги кнопка плюс */
         el = GUI.createElement(ElementButton, {
-            x: pMX + 122, y: -3,
-            srcRest: 'button-add-rest.png',
-            srcHover: 'button-add-hover.png',
-            srcActive: 'button-add-active.png',
+            x: pMX + 122, y: -3, srcRest: 'button-add-rest.png',
             onClick: function () {
                 PBZDialogs.dialogMoneyShop.showDialog();
             }
@@ -8059,10 +8107,7 @@ let PageBlockPanel = function PageBlockPanel() {
 
         /** Жизни - кнопка плюс */
         el = GUI.createElement(ElementButton, {
-            x: pHX + 190, y: -4,
-            srcRest: 'button-add-rest.png',
-            srcHover: 'button-add-hover.png',
-            srcActive: 'button-add-active.png',
+            x: pHX + 190, y: -4, srcRest: 'button-add-rest.png',
             onClick: function () {
                 PBZDialogs.dialogHealthShop.showDialog();
             }
@@ -8085,10 +8130,7 @@ let PageBlockPanel = function PageBlockPanel() {
 
         /** Кнопка фулскрин **/
         elFSButton = GUI.createElement(ElementButton, {
-            x: 690, y: 10,
-            srcRest: 'button-fs-on-rest.png',
-            srcHover: 'button-fs-on-hover.png',
-            srcActive: 'button-fs-on-active.png',
+            x: 690, y: 10, srcRest: 'button-fs-on-rest.png',
             onClick: onFullScreenButtonClick
         });
         self.elements.push(elFSButton);
@@ -8160,11 +8202,11 @@ let PageBlockPanel = function PageBlockPanel() {
 };
 
 /** @type {PageBlockPanel} */
-PageBlockPanel = new PageBlockPanel();if(window["PageBlockPanel"] !== undefined){window["PageBlockPanel"].__path="../client/components/application/page_blocks/PageBlockPanel.js"};
-
+PageBlockPanel = new PageBlockPanel();
 /** ../client/components/application/page_blocks/PageBlockWizard.js */
 /**
  * Блок Визарда
+ * @type {PageBlockWizard}
  * @constructor
  */
 let PageBlockWizard = function PageBlockWizard() {
@@ -8197,8 +8239,6 @@ let PageBlockWizard = function PageBlockWizard() {
 
         /** Canvas */
         canvas = document.getElementById('wizardArea');
-
-        console.log(canvas);
 
         canvas.width = DataCross.app.width;
         canvas.height = DataCross.app.height;
@@ -8248,15 +8288,15 @@ let PageBlockWizard = function PageBlockWizard() {
         //canvas.onmousemove = proccesEvent;
 
         elDialog = GUI.createElement(ElementImage, {
-            x: 400, y: 360, src: 'wizard-dialog.png'
+            x: 400, y: 360, src: 'w-dialog.png'
         });
         elDialog.dom.__dom.style.zIndex = 20000;
         elDialog.hide();
 
         elText = GUI.createElement(ElementText, {
             x: 400 + dialogBorder, y: 360 + dialogBorder,
-            width: Images.getWidth('wizard-dialog.png') - dialogBorder * 2,
-            height: Images.getHeight('wizard-dialog.png'),
+            width: Images.getWidth('w-dialog.png') - dialogBorder * 2,
+            height: Images.getHeight('w-dialog.png'),
             alignCenter: true, zIndex: 20001,
             text: 'text'
         });
@@ -8399,47 +8439,42 @@ let PageBlockWizard = function PageBlockWizard() {
         callback(cntx);
     };
 
-    let unlockByImg = function (url, x, y) {
-        cntx.globalAlpha = 1;
-        cntx.globalCompositeOperation = 'destination-out';
-        if (!images[url]) {
+    let drawSome = function (url, x, y, unlock, skipload) {
+        //@todo some strange
+        if (!skipload || !images[url]) {
             images[url] = new Image();
             images[url].onload = function () {
-                unlockByImg(url, x, y);
+                drawSome(url, x, y, unlock, true);
             };
-            images[url].src = url;
+            images[url].src = Images.getPath(url);
             return;
         }
+        cntx.globalAlpha = unlock ? 1 : 0.99;
+        cntx.globalCompositeOperation = 'destination-out';
         cntx.drawImage(images[url], x, y, Images.getWidth(url), Images.getHeight(url));
+    };
+
+    let unlockByImg = function (url, x, y) {
+        drawSome(url, x, y, true);
     };
 
     let showByImg = function (url, x, y) {
-        cntx.globalAlpha = 0.99;
-        cntx.globalCompositeOperation = 'destination-out';
-        if (!images[url]) {
-            images[url] = new Image();
-            images[url].onload = function () {
-                showByImg(url, x, y);
-            };
-            images[url].src = url;
-            return;
-        }
-        cntx.drawImage(images[url], x, y, Images.getWidth(url), Images.getHeight(url));
+        drawSome(url, x, y, false);
     };
 
     let highlightCells = function (pList) {
-        let coords = PageBlockField.getElementField().getCoords();
+        let f = PageBlockField.getElementField().getCoords();
 
         pList.forEach(function (p) {
             if (p.unlock) {
-                unlockByImg('wizard-diamond-cell.png',
-                    coords.x + DataPoints.BLOCK_WIDTH * p.x,
-                    coords.y + DataPoints.BLOCK_HEIGHT * (p.y + 1)
+                unlockByImg('w-cell.png',
+                    f.x + DataPoints.BLOCK_WIDTH * p.x,
+                    f.y + DataPoints.BLOCK_HEIGHT * (p.y + 1)
                 );
             } else {
-                showByImg('wizard-diamond-cell.png',
-                    coords.x + DataPoints.BLOCK_WIDTH * p.x,
-                    coords.y + DataPoints.BLOCK_HEIGHT * (p.y + 1)
+                showByImg('w-cell.png',
+                    f.x + DataPoints.BLOCK_WIDTH * p.x,
+                    f.y + DataPoints.BLOCK_HEIGHT * (p.y + 1)
                 );
             }
         });
@@ -8453,11 +8488,117 @@ let PageBlockWizard = function PageBlockWizard() {
 /** @type {PageBlockWizard} */
 PageBlockWizard = new PageBlockWizard();
 
-PBWizard = PageBlockWizard;if(window["PageBlockWizard"] !== undefined){window["PageBlockWizard"].__path="../client/components/application/page_blocks/PageBlockWizard.js"};
+let PBWizard = PageBlockWizard;
+/** ../client/components/application/page_blocks/PageBlockZClouds.js */
+/**
+ * Блок общих.
+ * @type {PageBlockZClouds}
+ * @constructor
+ */
+let PageBlockZClouds = function PageBlockZClouds() {
+    let self = this;
 
+    /**
+     * Показывать ли страницу.
+     * @type {boolean}
+     */
+    let showed = false;
+
+    /**
+     * Массив всех элементов страницы.
+     * @type {Array}
+     */
+    this.elements = [];
+
+    this.init = function () {
+        let el, grid;
+        grid = [
+            {x: 30, y: 50},
+            {x: 30, y: 150},
+            {x: 30, y: 300},
+            {x: 30, y: 350},
+
+            {x: 100, y: 50},
+            {x: 110, y: 100},
+            {x: 100, y: 200},
+            {x: 100, y: 350},
+
+            {x: 250, y: 20},
+            {x: 250, y: 100},
+            {x: 250, y: 200},
+            {x: 250, y: 300},
+            {x: 250, y: 400},
+
+            {x: 400, y: 80},
+            {x: 400, y: 110},
+            {x: 400, y: 200},
+            {x: 400, y: 250},
+            {x: 400, y: 350},
+            {x: 510, y: 50},
+            {x: 510, y: 300},
+            {x: 510, y: 200},
+            {x: 510, y: 400},
+        ];
+
+        grid.forEach(function (p) {
+            el = GUI.createElement(ElementImage, {x: p.x, y: p.y, src: 'clouds-1.png', opacity: 0.9});
+            self.elements.push(el);
+        });
+
+        Animate.anim(animClouds, {}, self.elements);
+    };
+
+    /**
+     * Покажем все элементы на странице.
+     */
+    this.show = function () {
+        if (showed) return;
+        showed = true;
+        for (let i in self.elements) {
+            self.elements[i].show();
+        }
+        self.redraw();
+    };
+
+    /**
+     * Спрячем все элементы на странице.
+     */
+    this.hide = function () {
+        if (!showed) return;
+        showed = false;
+        for (let i in self.elements) {
+            self.elements[i].hide();
+        }
+    };
+
+    /**
+     * Обновляем онлайн индикатор и индикатор очков.
+     */
+    this.redraw = function () {
+        if (!showed) return;
+        if (DataMap.getCurrent() &&
+            DataMap.getCurrent().id > LogicUser.getUserLastMapId()
+        ) {
+            self.elements.forEach(function (el) {
+                el.show();
+            });
+        } else {
+            self.elements.forEach(function (el) {
+                el.hide();
+            });
+        }
+        self.elements.forEach(function (el) {
+            el.redraw();
+        });
+    };
+};
+
+/** @type {PageBlockZClouds} */
+PageBlockZClouds = new PageBlockZClouds();
 /** ../client/components/application/page_blocks/PageBlockZDialogs.js */
 /**
  * Блок диалогов
+ * @type {PageBlockZDialogs}
  * @constructor
  */
 let PageBlockZDialogs = function PageBlockZDialogs() {
@@ -8499,11 +8640,11 @@ let PageBlockZDialogs = function PageBlockZDialogs() {
     /** @type {DialogPointInfo} */
     this.dialogPointInfo = null;
 
-    /** @type {DialogChestNeedStars} */
-    this.dialogChestNeedStars = null;
-
     /** @type {DialogChestYouWin} */
     this.dialogChestYouWin = null;
+
+    /** @type {DialogMessage} */
+    this.dialogMessage = null;
 
     this.init = function () {
 
@@ -8531,11 +8672,11 @@ let PageBlockZDialogs = function PageBlockZDialogs() {
         this.dialogPointInfo = GUI.createElement(DialogPointInfo);
         self.elements.push(this.dialogPointInfo);
 
-        this.dialogChestNeedStars = GUI.createElement(DialogChestNeedStars);
-        self.elements.push(this.dialogChestNeedStars);
-
         this.dialogChestYouWin = GUI.createElement(DialogChestYouWin);
         self.elements.push(this.dialogChestYouWin);
+
+        this.dialogMessage = GUI.createElement(DialogMessage);
+        self.elements.push(this.dialogMessage);
     };
 
     /**
@@ -8544,7 +8685,6 @@ let PageBlockZDialogs = function PageBlockZDialogs() {
     this.show = function () {
         if (showed) return;
         showed = true;
-        self.preset();
         for (let i in self.elements) {
             self.elements[i].show();
         }
@@ -8563,18 +8703,10 @@ let PageBlockZDialogs = function PageBlockZDialogs() {
     };
 
     /**
-     * Настройка перед отрисовкой.
-     */
-    this.preset = function () {
-
-    };
-
-    /**
      * Обновляем онлайн индикатор и индикатор очков.
      */
     this.redraw = function () {
         if (!showed) return;
-        self.preset();
         self.elements.forEach(function (el) {
             el.redraw();
         });
@@ -8586,8 +8718,10 @@ let PageBlockZDialogs = function PageBlockZDialogs() {
  */
 PageBlockZDialogs = new PageBlockZDialogs();
 
-PBZDialogs = PageBlockZDialogs;if(window["PageBlockZDialogs"] !== undefined){window["PageBlockZDialogs"].__path="../client/components/application/page_blocks/PageBlockZDialogs.js"};
-
+/**
+ * @type {PageBlockZDialogs}
+ */
+let PBZDialogs = PageBlockZDialogs;
 /** ../client/components/application/pages/PageField.js */
 let PageField = function () {
     let self = this;
@@ -8602,8 +8736,7 @@ let PageField = function () {
     };
 };
 
-PageField = new PageField;if(window["PageField"] !== undefined){window["PageField"].__path="../client/components/application/pages/PageField.js"};
-
+PageField = new PageField;
 /** ../client/components/application/pages/PageMain.js */
 let PageMain = function () {
     let self = this;
@@ -8615,12 +8748,12 @@ let PageMain = function () {
         self.blocks.push(PageBlockMaps);
         self.blocks.push(PBZDialogs);
         self.blocks.push(PageBlockWizard);
+        self.blocks.push(PageBlockZClouds);
     };
 };
 
 /** @type {PageMain} */
-PageMain = new PageMain;if(window["PageMain"] !== undefined){window["PageMain"].__path="../client/components/application/pages/PageMain.js"};
-
+PageMain = new PageMain;
 /** ../client/components/application/wizards/WizardFirst.js */
 let WizardFirstStart_1 = {
 
@@ -8629,10 +8762,10 @@ let WizardFirstStart_1 = {
         PBWizard.updateText('Нажми на красный кружок, что бы начать играть.');
         PBWizard.showDialog(400, 360, 2);
         let pnt = DataPoints.getPointsCoords()[0];
-        PBWizard.unlockByImg(Images.getPath('wizard-point-circle.png'),
-            pnt.x - Images.getWidth('wizard-point-circle.png') / 2
+        PBWizard.unlockByImg('w-circle.png',
+            pnt.x - Images.getWidth('w-circle.png') / 2
             + Images.getWidth('map-way-point-red.png') / 2,
-            pnt.y - Images.getHeight('wizard-point-circle.png') / 2
+            pnt.y - Images.getHeight('w-circle.png') / 2
             + Images.getHeight('map-way-point-red.png') / 2,
         );
     },
@@ -8644,7 +8777,7 @@ let WizardFirstStart_1 = {
     }
 };
 
-WizardFirstStart_2 = {
+let WizardFirstStart_2 = {
 
     init: function () {
         PBWizard.begin();
@@ -8656,8 +8789,8 @@ WizardFirstStart_2 = {
         if (WizardFirstStart_2.dialogCounter > 1) return;
         PBWizard.updateText('Нажми кнопку играть.');
         PBWizard.showDialog(400, 380, 1);
-        PBWizard.unlockByImg('wizard-button.png',
-            390 - Images.getWidth('wizard-button.png') / 2,
+        PBWizard.unlockByImg('w-button.png',
+            390 - Images.getWidth('w-button.png') / 2,
             80 + 240 + 8,
         );
     },
@@ -8669,7 +8802,7 @@ WizardFirstStart_2 = {
     }
 };
 
-WizardFirstStart_3 = {
+let WizardFirstStart_3 = {
     init: function () {
         PBWizard.begin();
     },
@@ -8690,7 +8823,7 @@ WizardFirstStart_3 = {
     }
 };
 
-WizardFirstStart_4 = {
+let WizardFirstStart_4 = {
     init: function () {
         PBWizard.begin();
         setTimeout(function () {
@@ -8706,10 +8839,10 @@ WizardFirstStart_4 = {
         }, Config.OnIdle.second * 1.500);
     },
     onDestroyLine: function (line) {
+        console.log(line);
         LogicWizard.finish();
     }
-};if(window["WizardFirst"] !== undefined){window["WizardFirst"].__path="../client/components/application/wizards/WizardFirst.js"};
-
+};
 /** ../client/components/application/wizards/WizardLevel_12.js */
 let WizardLevel12_1 = {
 
@@ -8732,8 +8865,7 @@ let WizardLevel12_1 = {
     onDestroyLine: function () {
         LogicWizard.finish();
     }
-};if(window["WizardLevel_12"] !== undefined){window["WizardLevel_12"].__path="../client/components/application/wizards/WizardLevel_12.js"};
-
+};
 /** ../client/components/application/wizards/WizardLevel_14.js */
 let WizardLevel14_1 = {
 
@@ -8756,8 +8888,7 @@ let WizardLevel14_1 = {
     onDestroyLine: function () {
         LogicWizard.finish();
     }
-};if(window["WizardLevel_14"] !== undefined){window["WizardLevel_14"].__path="../client/components/application/wizards/WizardLevel_14.js"};
-
+};
 /** ../client/components/application/wizards/WizardLevel_2.js */
 let WizardLevel2_1 = {
 
@@ -8786,7 +8917,7 @@ let WizardLevel2_1 = {
     }
 };
 
-WizardLevel2_2 = {
+let WizardLevel2_2 = {
 
     init: function () {
         PBWizard.begin();
@@ -8809,7 +8940,6 @@ WizardLevel2_2 = {
         LogicWizard.finish();
     }
 };
-if(window["WizardLevel_2"] !== undefined){window["WizardLevel_2"].__path="../client/components/application/wizards/WizardLevel_2.js"};
 
 /** ../client/components/application/wizards/WizardLevel_23.js */
 let WizardLevel23_1 = {
@@ -8834,8 +8964,7 @@ let WizardLevel23_1 = {
     onDestroyLine: function () {
         LogicWizard.finish();
     }
-};if(window["WizardLevel_23"] !== undefined){window["WizardLevel_23"].__path="../client/components/application/wizards/WizardLevel_23.js"};
-
+};
 /** ../client/components/application/wizards/WizardLevel_3.js */
 let WizardLevel3_1 = {
 
@@ -8846,7 +8975,7 @@ let WizardLevel3_1 = {
     onHideDialog: function () {
         if (WizardLevel3_1.dialogCounter++ < 2) return;
         PBWizard.showHint([{x: 4, y: 2}, {x: 4, y: 3}]);
-        PBWizard.showDialog(210, 400, 2, 20);
+        PBWizard.showDialog(210, 380, 2, 20);
         PBWizard.highlightCells([
             {x: 2, y: 2, unlock: false},
             {x: 3, y: 2, unlock: false},
@@ -8862,7 +8991,7 @@ let WizardLevel3_1 = {
     }
 };
 
-WizardLevel3_2 = {
+let WizardLevel3_2 = {
 
     init: function () {
         PBWizard.begin();
@@ -8882,7 +9011,6 @@ WizardLevel3_2 = {
         }
     },
 };
-if(window["WizardLevel_3"] !== undefined){window["WizardLevel_3"].__path="../client/components/application/wizards/WizardLevel_3.js"};
 
 /** ../client/components/application/wizards/WizardLevel_4.js */
 let WizardLevel_4_1 = {
@@ -8908,7 +9036,7 @@ let WizardLevel_4_1 = {
     }
 };
 
-WizardLevel4_2 = {
+let WizardLevel4_2 = {
 
     init: function () {
         PBWizard.begin();
@@ -8931,7 +9059,6 @@ WizardLevel4_2 = {
         LogicWizard.finish();
     },
 };
-if(window["WizardLevel_4"] !== undefined){window["WizardLevel_4"].__path="../client/components/application/wizards/WizardLevel_4.js"};
 
 /** ../client/components/application/wizards/WizardLevel_41.js */
 let WizardLevel_41_1 = {
@@ -8955,19 +9082,16 @@ let WizardLevel_41_1 = {
         ]);
     },
     onDestroyLine: function () {
-        console.log(1);
         LogicWizard.start(WizardLevel41_2);
     }
 };
 
-WizardLevel41_2 = {
+let WizardLevel41_2 = {
 
     init: function () {
         PBWizard.begin();
-        console.log(2);
         PBWizard.updateText('Бочка ещё не улетела, взорви ряд камней что бы переместить бочку.');
 
-        console.log(2);
         PBWizard.showDialog(360, 390, 3);
         PBWizard.showHint([{x: 2, y: 5}, {x: 3, y: 5}]);
 
@@ -8983,8 +9107,7 @@ WizardLevel41_2 = {
     onDestroyLine: function () {
         LogicWizard.finish();
     }
-};if(window["WizardLevel_41"] !== undefined){window["WizardLevel_41"].__path="../client/components/application/wizards/WizardLevel_41.js"};
-
+};
 /** ../client/components/application/wizards/WizardLevel_46.js */
 let WizardLevel46_1 = {
 
@@ -9007,8 +9130,7 @@ let WizardLevel46_1 = {
     onDestroyLine: function () {
         LogicWizard.finish();
     }
-};if(window["WizardLevel_46"] !== undefined){window["WizardLevel_46"].__path="../client/components/application/wizards/WizardLevel_46.js"};
-
+};
 /** ../client/components/application/wizards/WizardLevel_51.js */
 let WizardLevel51_1 = {
 
@@ -9032,8 +9154,7 @@ let WizardLevel51_1 = {
     onDestroyLine: function () {
         LogicWizard.finish();
     }
-};if(window["WizardLevel_51"] !== undefined){window["WizardLevel_51"].__path="../client/components/application/wizards/WizardLevel_51.js"};
-
+};
 /** ../client/components/application/wizards/WizardLevel_9.js */
 let WizardLevel9_1 = {
 
@@ -9056,8 +9177,7 @@ let WizardLevel9_1 = {
     onDestroyLine: function () {
         LogicWizard.finish();
     }
-};if(window["WizardLevel_9"] !== undefined){window["WizardLevel_9"].__path="../client/components/application/wizards/WizardLevel_9.js"};
-
+};
 /** components/base/ApiRouter.js */
 var FS, PATH;
 if (CONST_IS_SERVER_SIDE) {
@@ -9070,7 +9190,7 @@ if (CONST_IS_SERVER_SIDE) {
  * Cross-side component.
  * @constructor
  */
-let ApiRouter = new (function () {
+let ApiRouter = new (function ApiRouter() {
     let self = this;
 
     let map;
@@ -9253,7 +9373,7 @@ let ApiRouter = new (function () {
             }
         }
         for (group in pureData) {
-            code += "" + group + " = function(){\r\n";
+            code += "let " + group + " = function(){\r\n";
             for (method in pureData[group]) {
                 code += "\tthis." + method + " = function(){\r\n";
                 code += "\t\tApiRouter.executeRequest('" + group + "' ,'" + method + "', arguments);\r\n";
@@ -9305,30 +9425,30 @@ let ApiRouter = new (function () {
      * @returns {*}
      */
     let getCAPIMap = function () {
-        let path, list, groupName, methodName, map, tmp;
+        let path, list, capiName, methodName, map, capiObject, file_content;
         path = CONST_DIR_CLIENT + 'components/application/capi/';
         list = FS.readdirSync(path);
         map = {};
-        for (let i in list) {
+        list.forEach(function (fileName) {
             /**@todo .js extenstion must be */
-            if (list[i] === '.gitkeep') continue;
-            if (list[i] === '.gitignore') continue;
-            groupName = getComponentNameFromPath(path + list[i]);
-            tmp = null;
-            if (global[groupName]) {
-                tmp = global[groupName];
-            }
-            require(path + list[i]);
-            map[groupName] = [];
-            for (methodName in global[groupName]) {
-                if (typeof global[groupName][methodName] === 'function') {
-                    map[groupName][methodName] = true;
+            if (fileName === '.gitkeep') return;
+            if (fileName === '.gitignore') return;
+            capiName = getComponentNameFromPath(path + fileName);
+
+            file_content = FS.readFileSync(path + fileName).toString();
+
+            capiObject = eval(file_content.toString());
+
+            map[capiName] = [];
+
+            for (let methodName in capiObject) {
+                if (!capiObject.hasOwnProperty(methodName)) return
+
+                if (typeof capiObject[methodName] === 'function') {
+                    map[capiName][methodName] = true;
                 }
             }
-            if (tmp) {
-                global[groupName] = tmp;
-            }
-        }
+        });
         return map;
     };
 
@@ -9401,18 +9521,19 @@ let ApiRouter = new (function () {
             FS.writeFileSync(CONST_DIR_COMPONENTS + 'generated/' + groupName + '.js', code);
         }
     };
-})();
+})
+();
 
 /** Для кросс-сайдных компонент */
 if (CONST_IS_SERVER_SIDE) {
     global['ApiRouter'] = ApiRouter;
-}if(window["ApiRouter"] !== undefined){window["ApiRouter"].__path="components/base/ApiRouter.js"};
-
+}
 /** ../client/components/base/GUI.js */
 /**
  * Адаптация для работы с гуёй. В данном случае это браузер.
  * Все запросы к гуи должны быть реализованы тут. и тут: GUIDom
  * @constructor
+ * @type {GUI}
  */
 let GUI = function () {
     let self = this;
@@ -9680,65 +9801,6 @@ let GUI = function () {
             for (let name in params) {
                 dom[name] = params[name];
             }
-            if (params['animTracks']) {
-                dom.animTracks = params['animTracks'];
-                self.updateAnimTracks(dom);
-                OnIdle.register(dom.animate);
-            }
-        }
-        return dom;
-    };
-
-    this.updateAnimTracks = function (dom) {
-        if (dom.animTracks) {
-            /** Init animations */
-            for (let tN in dom.animTracks) {
-                dom.animData[tN] = {frameN: 0, counter: 0};
-                for (let fN in dom.animTracks[tN]) {
-                    let frame = dom.animTracks[tN][fN];
-                    switch (frame.type) {
-                        case GUI.ANIM_TYPE_ROTATE:
-                            if (!frame.currentAngle) {
-                                frame.currentAngle = 0;
-                            }
-                            break;
-                        case GUI.ANIM_TYPE_MOVIE:
-                            if (!frame.imageN) {
-                                frame.imageN = 0;
-                                dom.src = frame.images[frame.imageN];
-                            }
-                            break;
-                    }
-                }
-            }
-        }
-    };
-
-    /**
-     * Создаёт дом инпута, иницализирует его и возврщает на него ссыслку.
-     * @param parent {GUIDom} родитель, в который будет добавлен дом.
-     * @returns {GUIDom}
-     */
-    this.createInput = function (parent, params) {
-        let dom;
-        dom = new GUIDom();
-        dom.init('input', parent);
-        if (params) {
-            for (let name in params) {
-                dom[name] = params[name];
-            }
-        }
-        return dom;
-    };
-
-    this.createCanvas = function (parent, params) {
-        let dom;
-        dom = new GUIDom();
-        dom.init('canvas', parent);
-        if (params) {
-            for (let name in params) {
-                dom[name] = params[name];
-            }
         }
         return dom;
     };
@@ -9787,22 +9849,6 @@ let GUI = function () {
     this.setTagId = function (id) {
         tagId = id;
     };
-
-    this.copyAnimTracks = function (animTracks) {
-        let newAnimTracks, newFrameData;
-        newAnimTracks = [];
-        animTracks.forEach(function (animTrack, i) {
-            newAnimTracks[i] = [];
-            animTrack.forEach(function (frameData, j) {
-                newFrameData = {};
-                for (let name in frameData) {
-                    newFrameData[name] = frameData[name];
-                }
-                newAnimTracks[i][j] = newFrameData;
-            })
-        });
-        return newAnimTracks;
-    }
 };
 
 /**
@@ -9810,14 +9856,6 @@ let GUI = function () {
  * @type {GUI}
  */
 GUI = new GUI();
-
-GUI.ANIM_TYPE_ROTATE = 10;
-GUI.ANIM_TYPE_MOVE = 20;
-GUI.ANIM_TYPE_MOVE_2 = 21;
-GUI.ANIM_TYPE_GOTO = 30;
-GUI.ANIM_TYPE_MOVIE = 40;
-GUI.ANIM_TYPE_PAUSE = 50;
-GUI.ANIM_TYPE_STOP = 60;if(window["GUI"] !== undefined){window["GUI"].__path="../client/components/base/GUI.js"};
 
 /** ../client/components/base/GUIDom.js */
 /**
@@ -9882,10 +9920,6 @@ let GUIDom = function () {
      * @type {Element}
      */
     let dom = null;
-
-    this.animTracks = [];
-    this.animData = [];
-    this.animPlayed = false;
 
     /**
      * Создается элемент браузера
@@ -9963,102 +9997,6 @@ let GUIDom = function () {
     };
 
     /**
-     * id текущей запущенной анимации.
-     * если null - анимация отключается.
-     * @type {null}
-     */
-    let animateNowId = null;
-
-    /**
-     * Аргументы переданные при запуске анимации.
-     * @type {Array}
-     */
-    let animateArguments = [];
-
-    /**
-     * тайм-аут для анимации.
-     * @type {null}
-     */
-    let animateTimeout = null;
-
-    let ANIMATE_NOW_OPACITY_UP = 1;
-    let ANIMATE_NOW_OPACITY_DOWN = 2;
-
-    /**
-     * Остановить текущую анимацию.
-     */
-    this.animateStop = function () {
-        animateNowId = null;
-    };
-    /**
-     * Анимация прозрачности.
-     * @param target {Number}
-     */
-    this.animateOpacity = function (target, from, timeout) {
-        let direction;
-
-        if (from !== undefined) {
-            self.opacity = from;
-        }
-        if (!self.opacity) {
-            self.opacity = 0;
-        }
-        from = self.opacity;
-
-        if (from < target) {
-            animateNowId = ANIMATE_NOW_OPACITY_UP;
-        } else {
-            animateNowId = ANIMATE_NOW_OPACITY_DOWN;
-        }
-        animateArguments = [];
-        animateArguments.push(target);
-        animateArguments.push(from);
-        /* animateStep */
-        animateArguments.push(Math.abs((target - from) / 24));
-        animateTimeout = timeout;
-
-        animateNow();
-    };
-
-    let animateNow = function () {
-        switch (animateNowId) {
-            case ANIMATE_NOW_OPACITY_UP:
-                animateOpacityUp.apply(this, animateArguments);
-                break;
-            case ANIMATE_NOW_OPACITY_DOWN:
-                animateOpacityDown.apply(this, animateArguments);
-                break;
-            default:
-                /** Останавливаем анимацию. */
-                return;
-                break;
-        }
-
-        setTimeout(function () {
-            animateNow();
-            self.redraw();
-        }, animateTimeout);
-    };
-
-    let animateOpacityUp = function (target, from, step) {
-        if (self.opacity < target) {
-            self.opacity += step;
-        } else {
-            self.opacity = target;
-            animateNowId = null;
-        }
-    };
-
-    let animateOpacityDown = function (target, from, step) {
-        if (self.opacity > target) {
-            self.opacity -= step;
-        } else {
-            self.opacity = target;
-            animateNowId = null;
-        }
-    };
-
-    /**
      * Прицепляем событие.
      * @param eventId
      * @param callback
@@ -10106,11 +10044,11 @@ let GUIDom = function () {
         dom.style.height = self.height + 'px';
         if (self.backgroundImage) redrawBackgroundImage();
     };
-    let redrawBackgroundImage = function () {
+    let  redrawBackgroundImage = function () {
         let meta;
         meta = Images.getMeta(self.backgroundImage);
         /** Если размер не задан, пробуем задать его автоматически. */
-        if (!self.width && !self.height && meta.path) {
+        if (!self.width && !self.height && meta.path && meta.w && meta.h) {
             self.width = meta.w;
             self.height = meta.h;
             props.height.call();
@@ -10273,80 +10211,13 @@ let GUIDom = function () {
         textDecoration: redrawTextDecoration,
         rotate: redrawRotate,
     };
-
-    /**
-     * Animate
-     */
-    this.animate = function () {
-        if (!self.animPlayed) {
-            return;
-        }
-        if (!showed) {
-            return;
-        }
-        for (let t in self.animTracks) {
-            self.proccessTrack(t);
-        }
-    };
-
-    this.proccessTrack = function (tN) {
-        let frame;
-        frame = self.animTracks[tN][self.animData[tN].frameN];
-        switch (frame.type) {
-            case GUI.ANIM_TYPE_ROTATE:
-                if (frame.currentAngle >= 360) {
-                    frame.currentAngle = 0;
-                }
-                self.transform = 'rotate(' + (frame.currentAngle += frame.angle) + 'deg)';
-                self.redraw();
-                break;
-            case GUI.ANIM_TYPE_GOTO:
-                self.animData[tN].frameN = frame.pos;
-                break;
-            case GUI.ANIM_TYPE_MOVIE:
-                frame.imageN++;
-                if (frame.imageN === frame.images.length) {
-                    frame.imageN = 0;
-                }
-                self.backgroundImage = frame.images[frame.imageN];
-                self.redraw();
-                break;
-            case GUI.ANIM_TYPE_MOVE:
-                self.x += frame.vX;
-                self.y += frame.vY;
-                self.redraw();
-                break;
-            case GUI.ANIM_TYPE_PAUSE:
-                break;
-            case GUI.ANIM_TYPE_STOP:
-                self.animPlayed = false;
-                if (frame.callback) {
-                    frame.callback();
-                }
-                break;
-        }
-        self.animData[tN].counter++;
-        // if counter > duration => frameN++
-        if (frame.duration && self.animData[tN].counter > frame.duration) {
-            self.animData[tN].frameN++;
-            self.animData[tN].counter = 0;
-            if (self.animTracks[tN][self.animData[tN].frameN] === undefined) {
-                self.animPlayed = false;
-                self.animData[tN].frameN = 0;
-                if (frame.callback) {
-                    frame.callback();
-                }
-            }
-        }
-    };
 };
 
 /**
  * Уникальнгый id для каждогого дома, иногда нужна уникальность дома, для таймаутов например.
  * @type {number}
  */
-GUIDom.lastId = 0;if(window["GUIDom"] !== undefined){window["GUIDom"].__path="../client/components/base/GUIDom.js"};
-
+GUIDom.lastId = 0;
 /** ../client/components/base/Images.js */
 /**
  * @type{Images}
@@ -10412,8 +10283,7 @@ let Images = function () {
 };
 
 /** @type {Images} */
-Images = new Images();if(window["Images"] !== undefined){window["Images"].__path="../client/components/base/Images.js"};
-
+Images = new Images();
 /** components/base/Logs.js */
 var FS;
 if (CONST_IS_SERVER_SIDE) {
@@ -10600,9 +10470,12 @@ Logs.depends = [];
 /** Для кросс-сайдных компонент */
 if (CONST_IS_SERVER_SIDE) {
     global['Logs'] = Logs;
-}if(window["Logs"] !== undefined){window["Logs"].__path="components/base/Logs.js"};
-
+}
 /** ../client/components/base/OnIdle.js */
+/**
+ * @type {OnIdle}
+ * @constructor
+ */
 let OnIdle = function () {
     let self = this;
 
@@ -10627,8 +10500,7 @@ let OnIdle = function () {
 
 };
 
-OnIdle = new OnIdle;if(window["OnIdle"] !== undefined){window["OnIdle"].__path="../client/components/base/OnIdle.js"};
-
+OnIdle = new OnIdle;
 /** ../client/components/base/PageController.js */
 /**
  * Page controller
@@ -10757,8 +10629,7 @@ let PageController = function () {
 };
 
 /** @type {PageController} */
-PageController = new PageController();if(window["PageController"] !== undefined){window["PageController"].__path="../client/components/base/PageController.js"};
-
+PageController = new PageController();
 /** ../client/components/base/Profiler.js */
 /**
  * Dummy.
@@ -10800,14 +10671,13 @@ let Profiler = function () {
  * ��������� �����.
  * @type {Profiler}
  */
-Profiler = new Profiler();if(window["Profiler"] !== undefined){window["Profiler"].__path="../client/components/base/Profiler.js"};
-
+Profiler = new Profiler();
 /** ../client/components/base/SocNet.js */
 /**
  * Компонент для работы с социальной сетью.
+ * @type {SocNet}
  * @constructor
  */
-
 let SocNet = function () {
 
     let self = this;
@@ -10882,14 +10752,16 @@ SocNet.SEX_WOMAN = 2;
  * @type {number}
  */
 SocNet.SEX_MAN = 3;
-if(window["SocNet"] !== undefined){window["SocNet"].__path="../client/components/base/SocNet.js"};
 
 /** ../client/components/base/SocNetStandalone.js */
 /**
  * Компонет для работы с социальной сетью(платформой): сайтом http://krestiki-noliki.xyz/
  * @constructor
  */
-
+/**
+ * @type {SocNetStandalone}
+ * @constructor
+ */
 let SocNetStandalone = function () {
 
     this.init = function () {
@@ -10929,20 +10801,20 @@ let SocNetStandalone = function () {
 
     this.getUserInfo = function (id, callback) {
         let randomName = [
-            'Кириллов Юрий Валериевич field-barrel.png',
-            'Пахомов Александр Григорьевич field-box.png',
-            'Негода Устин Леонидович field-red.png',
-            'Грабчак Роман Андреевич field-green.png',
-            'Наумов Людвиг Артёмович field-blue.png',
-            'Симонов Игнатий Васильевич field-purple.png',
-            'Харитонов Яромир Александрович field-yellow.png',
-            'Носков Людвиг Романович field-sand.png',
-            'Крюков Марк Романович field-poly-color.png',
-            'Киранов Марат Романович field-gold.png',
-            'Чубайк Николай Викторович field-poly-color.png',
-            'Пушкин Александр Сергеевич field-alpha.png',
-            'Билл Гейтс Ибнабабн field-beta.png',
-            'Стив Джоб Jobs field-gamma.png',
+            'Кириллов Юрий Валериевич https://sun9-66.userapi.com/c850720/v850720693/aa731/OfJz30MgPwk.jpg?ava=1',
+            'Пахомов Александр Григорьевич https://sun9-14.userapi.com/c638221/v638221218/2ef4b/_aHYzcPLBCg.jpg?ava=1',
+            'Негода Устин Леонидович https://sun1-22.userapi.com/RmZXykSdi9zj13kzngIYEqOfID_hx6orUlfJlA/MMMD8qmZ_Xw.jpg?ava=1',
+            'Грабчак Роман Андреевич https://sun1-21.userapi.com/y5VqHemrzxItmMMqaFLOgs8zICBGDnLsQSgAxQ/vCEOyLcrgd0.jpg?ava=1',
+            'Наумов Людвиг Артёмович https://sun1-17.userapi.com/dqr7J__INZrCV_sz-q_FjD3QZZ2teSTYvc1tnQ/jnfGgShVuX8.jpg?ava=1',
+            'Симонов Игнатий Васильевич https://sun1-89.userapi.com/XbvESSpRKkZTVrKVoPaLsvxi8VeAt2F3bnBSjw/CXlmEGL1hLA.jpg?ava=1',
+            'Харитонов Яромир Александрович https://sun9-23.userapi.com/c852020/v852020728/2517a/KgfXYhVKZqc.jpg?ava=1',
+            'Носков Людвиг Романович https://sun9-46.userapi.com/c856128/v856128757/17a84c/jVZi7Qhn8J0.jpg?ava=1',
+            'Крюков Марк Романович https://sun9-25.userapi.com/c129/u3798851/d_c8272907.jpg?ava=1',
+            'Киранов Марат Романович https://sun9-21.userapi.com/c856128/v856128316/2231ac/YlxmsBfJmRo.jpg?ava=1',
+            'Чубайк Николай Викторович https://sun9-24.userapi.com/c855236/v855236720/1fc41b/30CK4PHZdbA.jpg?ava=1',
+            'Пушкин Александр Сергеевич https://sun9-71.userapi.com/c857324/v857324568/1766c5/-0YaEO72vRE.jpg?ava=1',
+            'Билл Гейтс Ибнабабн https://sun9-9.userapi.com/c857324/v857324365/129750/UE54E0SgDaU.jpg?ava=1',
+            'Стив Джоб Jobs https://sun9-45.userapi.com/c845420/v845420707/eff82/P3Mvr9Zp4qI.jpg?ava=1',
         ];
         let info = {};
         if (id === this.getSocNetUserId() && false) {
@@ -10972,6 +10844,11 @@ let SocNetStandalone = function () {
         }
     };
 
+    this.post = function () {
+        console.log(arguments);
+        alert('Возможно не сейчас!');
+    };
+
     /**
      * Detect is now is a that soc net\platform.
      * @returns {boolean}
@@ -10986,14 +10863,13 @@ let SocNetStandalone = function () {
  * Статичный класс.
  * @type {SocNetStandalone}
  */
-SocNetStandalone = new SocNetStandalone();if(window["SocNetStandalone"] !== undefined){window["SocNetStandalone"].__path="../client/components/base/SocNetStandalone.js"};
-
+SocNetStandalone = new SocNetStandalone();
 /** ../client/components/base/SocNetVK.js */
 /**
  * Компонент для работы с социальной сетью.
+ * @type {SocNetVK}
  * @constructor
  */
-
 let SocNetVK = function () {
 
     let self = this;
@@ -11061,7 +10937,7 @@ let SocNetVK = function () {
     };
 
     this.openOrderDialog = function (votes) {
-        VK.callMethod('showOrderBox',{
+        VK.callMethod('showOrderBox', {
             type: 'votes',
             votes: votes
         });
@@ -11080,6 +10956,23 @@ let SocNetVK = function () {
         }, function (data) {
             callback(data.response);
         });
+    };
+
+    /**
+     * Права доступа: wall
+     * @see wall.post
+     */
+    this.post = function (params) {
+        console.log(params);
+        VK.api('wall.post',
+            {
+                owner_id: params.userId,
+                message: params.message,
+                attachments: 'photo-194995832_457239017'
+
+            }, function () {
+                console.log(arguments);
+            });
     };
 
     /**
@@ -11114,9 +11007,12 @@ let SocNetVK = function () {
  * @type {SocNetVK}
  */
 SocNetVK = new SocNetVK();
-if(window["SocNetVK"] !== undefined){window["SocNetVK"].__path="../client/components/base/SocNetVK.js"};
 
 /** ../client/components/base/Sounds.js */
+/**
+ * @type {Sounds}
+ * @constructor
+ */
 let Sounds = function () {
     let self = this;
 
@@ -11164,11 +11060,11 @@ let Sounds = function () {
     }
 };
 
-Sounds = new Sounds;if(window["Sounds"] !== undefined){window["Sounds"].__path="../client/components/base/Sounds.js"};
-
+Sounds = new Sounds;
 /** ../client/components/base/WebSocketClient.js */
 /**
  * Компонент обеспечивающий соединение с сервером.
+ * @type {WebSocketClient}
  * @constructor
  */
 let WebSocketClient = function () {
@@ -11381,8 +11277,7 @@ let WebSocketClient = function () {
 /**
  * По сути это просто номер соединения в пределах жизни скрипта.
  */
-WebSocketClient.connectionId = 0;if(window["WebSocketClient"] !== undefined){window["WebSocketClient"].__path="../client/components/base/WebSocketClient.js"};
-
+WebSocketClient.connectionId = 0;
 /** ../client/config.local.host.tri-base.js */
 let fps = 33.3;
 let Config = {
@@ -11407,12 +11302,11 @@ let Config = {
 };
 
 Config.OnIdle.second = Config.OnIdle.animateInterval * fps / Config.OnIdle.animStep;
-if(window["config.local.host.tri-base"] !== undefined){window["config.local.host.tri-base"].__path="../client/config.local.host.tri-base.js"};
 
 /** ../client//run.js */
 window.onload = function () {
     /** Эмуляция совместимости клиентского и серверного кода. */
-    let global = window;
+    //let global = window;
     let process = {};
     process.exit = function () {
         console.log("Unexpected termination of work!");
@@ -11424,14 +11318,7 @@ window.onload = function () {
     LogicMain = new LogicMain();
     LogicMain.main();
 };
-if(window["run"] !== undefined){window["run"].__path="../client//run.js"};
-SAPIChest = function(){
-	this.openChest = function(){
-		ApiRouter.executeRequest('SAPIChest' ,'openChest', arguments);
-	};
-};
-SAPIChest = new SAPIChest();
-SAPIMap = function(){
+let SAPIMap = function(){
 	this.reloadLevels = function(){
 		ApiRouter.executeRequest('SAPIMap' ,'reloadLevels', arguments);
 	};
@@ -11441,12 +11328,12 @@ SAPIMap = function(){
 	this.sendMeUsersScore = function(){
 		ApiRouter.executeRequest('SAPIMap' ,'sendMeUsersScore', arguments);
 	};
-	this.finishLevel = function(){
-		ApiRouter.executeRequest('SAPIMap' ,'finishLevel', arguments);
+	this.onFinish = function(){
+		ApiRouter.executeRequest('SAPIMap' ,'onFinish', arguments);
 	};
 };
 SAPIMap = new SAPIMap();
-SAPIStuff = function(){
+let SAPIStuff = function(){
 	this.sendMeStuff = function(){
 		ApiRouter.executeRequest('SAPIStuff' ,'sendMeStuff', arguments);
 	};
@@ -11456,8 +11343,8 @@ SAPIStuff = function(){
 	this.usedShuffle = function(){
 		ApiRouter.executeRequest('SAPIStuff' ,'usedShuffle', arguments);
 	};
-	this.usedlightning = function(){
-		ApiRouter.executeRequest('SAPIStuff' ,'usedlightning', arguments);
+	this.usedLightning = function(){
+		ApiRouter.executeRequest('SAPIStuff' ,'usedLightning', arguments);
 	};
 	this.buyHummer = function(){
 		ApiRouter.executeRequest('SAPIStuff' ,'buyHummer', arguments);
@@ -11473,13 +11360,13 @@ SAPIStuff = function(){
 	};
 };
 SAPIStuff = new SAPIStuff();
-SAPITimeServer = function(){
+let SAPITimeServer = function(){
 	this.sendMeTime = function(){
 		ApiRouter.executeRequest('SAPITimeServer' ,'sendMeTime', arguments);
 	};
 };
 SAPITimeServer = new SAPITimeServer();
-SAPIUser = function(){
+let SAPIUser = function(){
 	this.authorizeByVK = function(){
 		ApiRouter.executeRequest('SAPIUser' ,'authorizeByVK', arguments);
 	};
@@ -11495,8 +11382,8 @@ SAPIUser = function(){
 	this.sendMeUserIdsBySocNet = function(){
 		ApiRouter.executeRequest('SAPIUser' ,'sendMeUserIdsBySocNet', arguments);
 	};
-	this.onPlayFinish = function(){
-		ApiRouter.executeRequest('SAPIUser' ,'onPlayFinish', arguments);
+	this.onFinish = function(){
+		ApiRouter.executeRequest('SAPIUser' ,'onFinish', arguments);
 	};
 	this.onPlayStart = function(){
 		ApiRouter.executeRequest('SAPIUser' ,'onPlayStart', arguments);
@@ -11507,14 +11394,12 @@ SAPIUser = function(){
 };
 SAPIUser = new SAPIUser();
 ApiRouter.map2 = {
-	SAPIChest : SAPIChest,
 	SAPIMap : SAPIMap,
 	SAPIStuff : SAPIStuff,
 	SAPITimeServer : SAPITimeServer,
-	SAPIUser : SAPIUser,
-};
+	SAPIUser : SAPIUser,};
 document.addEventListener("DOMContentLoaded", function() {GUI.init();
- PageController.addBlocks([PageBlockBackground,PageBlockField,PageBlockMaps,PageBlockPanel,PageBlockWizard,PageBlockZDialogs]);
+ PageController.addBlocks([PageBlockBackground,PageBlockField,PageBlockMaps,PageBlockPanel,PageBlockWizard,PageBlockZClouds,PageBlockZDialogs]);
  PageField.init();
  PageMain.init();
 });

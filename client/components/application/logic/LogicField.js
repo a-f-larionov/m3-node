@@ -333,7 +333,7 @@ let LogicField = function () {
                 object.withBox = specIds.indexOf(DataObjects.OBJECT_BOX) !== -1;
                 object.withChainA = specIds.indexOf(DataObjects.OBJECT_CHAIN_A) !== -1;
                 object.withChainB = specIds.indexOf(DataObjects.OBJECT_CHAIN_B) !== -1;
-                object.withBeta = specIds.indexOf(DataObjects.OBJECT_SPIDER_BETA) !== -1;
+                object.withBeta = specIds.indexOf(DataObjects.OBJECT_BETA) !== -1;
                 object.withGamma = specIds.indexOf(DataObjects.OBJECT_GAMMA) !== -1;
 
                 self.setObject({x: x, y: y}, objectId, lightningId)

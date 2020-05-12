@@ -15,8 +15,6 @@ let CAPIMap = function () {
      * @param map
      * @param points
      * @param userPoints
-     * @param chests
-     * @param userChests
      */
     this.gotMapsInfo = function (ctnx, mapId, map, points, userPoints) {
         if (!mapping) mapping = {
@@ -51,7 +49,7 @@ let CAPIMap = function () {
             '‖': DataObjects.OBJECT_BLOCK,
 
 
-            'β': DataObjects.OBJECT_SPIDER_BETA,
+            'β': DataObjects.OBJECT_BETA,
             'γ': DataObjects.OBJECT_GAMMA,
 
             'b': DataObjects.OBJECT_BOX,
@@ -196,7 +194,6 @@ let CAPIMap = function () {
         return out;
     };
 }
-;
 
 /** @type {CAPIMap} */
 CAPIMap = new CAPIMap();

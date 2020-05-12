@@ -218,9 +218,7 @@ let PageBlockMaps = function PageBlockMaps() {
                     window[data.elements[i].name],
                     data.elements[i].params
                 );
-                if (data.elements[i].animPlay) {
-                    element.animPlay();
-                }
+                //@todo elements
                 elMapElements[data.id].push(element);
             }
         }

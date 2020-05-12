@@ -1,16 +1,6 @@
 //it is a super mega crumch,, but ... time or result ...
 //
 
-
-GUI = {};
-
-GUI.ANIM_TYPE_ROTATE = 10;
-GUI.ANIM_TYPE_MOVE = 20;
-GUI.ANIM_TYPE_GOTO = 30;
-GUI.ANIM_TYPE_MOVIE = 40;
-GUI.ANIM_TYPE_PAUSE = 50;
-GUI.ANIM_TYPE_STOP = 60;
-
 /**
  * @see DataMap.MAP_ID_MIN and MAP_ID_MAX
  * @constructor
@@ -22,41 +12,7 @@ DataMap = function () {
                 id: 1,
                 src: 'map-001.png',
                 elements: [
-                    /*{
-                        name: 'ElementSprite',
-                        animPlay: true,
-                        params: {
-                            x: 50,
-                            y: 50,
-                            src: 'man-01.png',
-                            domInitParams: {
-                                animTracks: [
-                                    [
-                                        {
-                                            type: GUI.ANIM_TYPE_MOVIE,
-                                            images: [
-                                                'man_right_1.png',
-                                                'man_right_2.png',
-                                                'man_right_3.png',
-                                                'man_right_4.png',
-                                                'man_right_5.png',
-                                                'man_right_6.png',
-                                                'man_right_7.png',
-                                                'man_right_8.png'
-                                            ]
-                                            , duration: 8
-                                        },
-                                        {type: GUI.ANIM_TYPE_GOTO, pos: 0}
-                                    ],
-                                    [
-                                        {type: GUI.ANIM_TYPE_MOVE, vX: 3, vY: 0, duration: 200},
-                                        {type: GUI.ANIM_TYPE_MOVE, vX: -3, vY: 0, duration: 200},
-                                        {type: GUI.ANIM_TYPE_GOTO, pos: 0}
-                                    ]
-                                ]
-                            }
-                        }
-                    }*/
+                    /*@todo*/
                 ]
             },
             '2': {

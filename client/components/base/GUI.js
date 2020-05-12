@@ -270,65 +270,6 @@ let GUI = function () {
             for (let name in params) {
                 dom[name] = params[name];
             }
-            if (params['animTracks']) {
-                dom.animTracks = params['animTracks'];
-                self.updateAnimTracks(dom);
-                OnIdle.register(dom.animate);
-            }
-        }
-        return dom;
-    };
-
-    this.updateAnimTracks = function (dom) {
-        if (dom.animTracks) {
-            /** Init animations */
-            for (let tN in dom.animTracks) {
-                dom.animData[tN] = {frameN: 0, counter: 0};
-                for (let fN in dom.animTracks[tN]) {
-                    let frame = dom.animTracks[tN][fN];
-                    switch (frame.type) {
-                        case GUI.ANIM_TYPE_ROTATE:
-                            if (!frame.currentAngle) {
-                                frame.currentAngle = 0;
-                            }
-                            break;
-                        case GUI.ANIM_TYPE_MOVIE:
-                            if (!frame.imageN) {
-                                frame.imageN = 0;
-                                dom.src = frame.images[frame.imageN];
-                            }
-                            break;
-                    }
-                }
-            }
-        }
-    };
-
-    /**
-     * Создаёт дом инпута, иницализирует его и возврщает на него ссыслку.
-     * @param parent {GUIDom} родитель, в который будет добавлен дом.
-     * @returns {GUIDom}
-     */
-    this.createInput = function (parent, params) {
-        let dom;
-        dom = new GUIDom();
-        dom.init('input', parent);
-        if (params) {
-            for (let name in params) {
-                dom[name] = params[name];
-            }
-        }
-        return dom;
-    };
-
-    this.createCanvas = function (parent, params) {
-        let dom;
-        dom = new GUIDom();
-        dom.init('canvas', parent);
-        if (params) {
-            for (let name in params) {
-                dom[name] = params[name];
-            }
         }
         return dom;
     };
@@ -377,22 +318,6 @@ let GUI = function () {
     this.setTagId = function (id) {
         tagId = id;
     };
-
-    this.copyAnimTracks = function (animTracks) {
-        let newAnimTracks, newFrameData;
-        newAnimTracks = [];
-        animTracks.forEach(function (animTrack, i) {
-            newAnimTracks[i] = [];
-            animTrack.forEach(function (frameData, j) {
-                newFrameData = {};
-                for (let name in frameData) {
-                    newFrameData[name] = frameData[name];
-                }
-                newAnimTracks[i][j] = newFrameData;
-            })
-        });
-        return newAnimTracks;
-    }
 };
 
 /**
@@ -400,11 +325,3 @@ let GUI = function () {
  * @type {GUI}
  */
 GUI = new GUI();
-
-GUI.ANIM_TYPE_ROTATE = 10;
-GUI.ANIM_TYPE_MOVE = 20;
-GUI.ANIM_TYPE_MOVE_2 = 21;
-GUI.ANIM_TYPE_GOTO = 30;
-GUI.ANIM_TYPE_MOVIE = 40;
-GUI.ANIM_TYPE_PAUSE = 50;
-GUI.ANIM_TYPE_STOP = 60;

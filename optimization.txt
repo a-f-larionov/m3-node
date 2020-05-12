@@ -1,0 +1,38 @@
+23.04.2020
+sprite.png.json     15 462 
+images/*            3 086 772 байт
+client.source.js    358 996
+
+sprite.png          2 776 374 байт
+client.min.js       147 000 
+VK, Stand           22 453, 22 215
+Total: 2 945 827
+
+23.04.2020
+// теперь window = e;
+client.source.js    358 996
+client.min.js       146 003
+
+// компоненты больше не глобальны( let Logs = ...)
+client.min.js       133 482
+
+// убрали /images/
+sprite.png          2 776 374 (95.11%)
+client.min.js       131 499       
+VK, Stand           11 058(vk), 10 820(st)
+Total: 2 918 931(vk),   2 894 655(st)
+
+12.05.2020
+sprite.png          5 164 564
+client.source.js    347 550
+client.min.js       130 104
+VK, Stand           (vk)8852,(st) 8614
+Total 5 303 520(vk), (st)
+
+// some works
+sprite.png          5 070 601
+client.source.js    328 871
+client.min.js       134 381
+VK, Stand           (vk)8004,(st) 7766
+Total 5 212 986(vk), (st)
+

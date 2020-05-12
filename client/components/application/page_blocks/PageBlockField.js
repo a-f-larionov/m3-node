@@ -377,7 +377,7 @@ let PageBlockField = function PageBlockField() {
     objectScores[DataObjects.OBJECT_SAND] = 30;
 
     objectScores[DataObjects.OBJECT_ALPHA] = 100;
-    objectScores[DataObjects.OBJECT_SPIDER_BETA] = 100;
+    objectScores[DataObjects.OBJECT_BETA] = 100;
     objectScores[DataObjects.OBJECT_GAMMA] = 100;
     objectScores[DataObjects.OBJECT_POLY_COLOR] = 300;
     objectScores[DataObjects.OBJECT_GOLD] = 300;

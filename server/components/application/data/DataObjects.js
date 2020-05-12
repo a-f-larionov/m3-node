@@ -81,7 +81,7 @@ let DataObjects = function () {
      * Монстр-2
      * @type {number}
      */
-    this.OBJECT_SPIDER_BETA = 160;
+    this.OBJECT_BETA = 160;
     /**
      * Монстр-3
      * @type {number}
@@ -163,7 +163,7 @@ let DataObjects = function () {
     this.images[this.OBJECT_TILE] = 'field-tile.png';
 
     this.images[this.OBJECT_ALPHA] = 'field-alpha.png';
-    this.images[this.OBJECT_SPIDER_BETA] = 'field-beta.png';
+    this.images[this.OBJECT_BETA] = 'field-beta.png';
     this.images[this.OBJECT_GAMMA] = 'field-gamma.png';
 
     this.images[this.OBJECT_BOX] = 'field-box.png';
@@ -171,9 +171,9 @@ let DataObjects = function () {
     this.images[this.OBJECT_CHAIN_B] = 'field-chain-b.png';
 
     /** Gem-lightning images */
-    this.images[this.WITH_LIGHTNING_VERTICAL] = 'spec-light-ver-1.png';
-    this.images[this.WITH_LIGHTNING_HORIZONTAL] = 'spec-light-hor-1.png';
-    this.images[this.WITH_LIGHTNING_CROSS] = 'spec-light-cross-1.png';
+    this.images[this.WITH_LIGHTNING_VERTICAL] = 'a-gem-light-1.png';
+    this.images[this.WITH_LIGHTNING_HORIZONTAL] = 'a-gem-light-1.png';
+    this.images[this.WITH_LIGHTNING_CROSS] = 'a-gem-light-1.png';
 
     this.images[this.STUFF_HUMMER] = 'button-hummer-rest.png';
     this.images[this.STUFF_LIGHTNING] = 'button-lightning-rest.png';
