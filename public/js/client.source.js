@@ -1699,7 +1699,7 @@ DataShop.lightning = [
     }
 ];
 
-DataShop.healthPrice = 100;
+DataShop.healthGoldPrice = 100;
 
 /** Для кросс-сайдных компонент */
 if (CONST_IS_SERVER_SIDE) {
@@ -2372,13 +2372,13 @@ let  DialogHealthShop = function () {
 
         if (LogicHealth.getHealths(user) > 0) return;
 
-        if (gold < DataShop.healthPrice) {
+        if (gold < DataShop.healthGoldPrice) {
             PBZDialogs.dialogMoneyShop.showDialog(this);
             self.closeDialog();
         } else {
             SAPIStuff.buyHealth();
             LogicStuff.giveAHealth(LogicHealth.getMaxHealth());
-            LogicStuff.usedGold(DataShop.healthPrice);
+            LogicStuff.usedGold(DataShop.healthGoldPrice);
             self.closeDialog();
         }
         PageController.redraw();
@@ -2798,7 +2798,7 @@ let DialogStuffShop = function () {
                 shopItem = DataShop.shuffle[itemIndex];
                 break;
             case LogicStuff.STUFF_LIGHTNING:
-                buyFunc = SAPIStuff.buylightning;
+                buyFunc = SAPIStuff.buyLightning;
                 giveFunc = LogicStuff.giveALighnting;
                 shopItem = DataShop.lightning[itemIndex];
                 break;
@@ -10400,14 +10400,14 @@ let Images = function () {
             notFoundImg.path = url;
             return notFoundImg;
         }
-        if (!url || !window.imagesData[url]) {
+        if (!url || !window.i_d[url]) {
             if (notfounds.indexOf(url) !== -1) return notFoundImg;
             notfounds.push(url);
             Logs.log("Image url not found for: " + url, Logs.LEVEL_ERROR);
             notFoundImg.path = '';
             return notFoundImg;
         }
-        return window.imagesData[url];
+        return window.i_d[url];
     };
 };
 
@@ -11465,8 +11465,8 @@ SAPIStuff = function(){
 	this.buyShuffle = function(){
 		ApiRouter.executeRequest('SAPIStuff' ,'buyShuffle', arguments);
 	};
-	this.buylightning = function(){
-		ApiRouter.executeRequest('SAPIStuff' ,'buylightning', arguments);
+	this.buyLightning = function(){
+		ApiRouter.executeRequest('SAPIStuff' ,'buyLightning', arguments);
 	};
 	this.buyHealth = function(){
 		ApiRouter.executeRequest('SAPIStuff' ,'buyHealth', arguments);

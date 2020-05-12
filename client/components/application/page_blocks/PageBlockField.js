@@ -461,8 +461,8 @@ let PageBlockField = function PageBlockField() {
                 LogicStuff.usedHummer();
                 break;
             case LogicStuff.STUFF_LIGHTNING:
-                SAPIStuff.usedlightning();
-                LogicStuff.usedlightning();
+                SAPIStuff.usedLightning();
+                LogicStuff.usedLightning();
                 break;
             case LogicStuff.STUFF_SHUFFLE:
                 SAPIStuff.usedShuffle();

@@ -311,17 +311,17 @@ ClientCodeLoader = function () {
             imgData = FS.readFileSync(imgJsonPath);
         } else {
             imgData = "<script>";
-            imgData += "imagesData = {};";
+            imgData += "i_d = {};";
             for (let i in spriteMap.coordinates) {
                 path = i.replace('../public/images/', '');
-                imgData += "\r\nimagesData['" + path + "']={" + "" +
+                imgData += "\r\ni_d['" + path + "']={" + "" +
                     "w:" + translate2X(spriteMap.coordinates[i].width) + "," +
                     "h:" + translate2X(spriteMap.coordinates[i].height) + "," +
                     "x:" + translate2X(spriteMap.coordinates[i].x) + "," +
                     "y:" + translate2X(spriteMap.coordinates[i].y) + "" +
                     "};";
             }
-            imgData += "for(let i in imagesData){ imagesData[i].path = '/images/sprite.png" + getTimeKey() + "';};";
+            imgData += "for(let i in i_d){ i_d[i].path = '/images/sprite.png" + getTimeKey() + "';};";
             imgData += "</script>";
             imgData += "<div style='display:none;'>";
             imgData += "<img src='/images/sprite.png" + getTimeKey() + "'>";
@@ -343,20 +343,20 @@ ClientCodeLoader = function () {
 
         imageFiles = getFileList(imagesPath);
         imageCode = "<script>";
-        imageCode += "imagesData = {};";
+        imageCode += "i_d = {};";
         for (let i in imageFiles) {
             path = imagesPrefix + imageFiles[i].substr(imagesPath.length);
             path = path.replace('/images/', '');
 
             demension = IMAGE_SIZE(imageFiles[i]);
-            imageCode += "\r\nimagesData['" + path + "']=" +
+            imageCode += "\r\ni_d['" + path + "']=" +
                 "{w:" + translate2X(demension.width) +
                 ",h:" + translate2X(demension.height) + "};";
         }
-        imageCode += "for(let i in imagesData){ " +
-            "   imagesData[i].path = '/images/' + i + '" + getTimeKey() + "';" +
-            "   imagesData[i].x = 0;" +
-            "   imagesData[i].y = 0;" +
+        imageCode += "for(let i in i_d){ " +
+            "   i_d[i].path = '/images/' + i + '" + getTimeKey() + "';" +
+            "   i_d[i].x = 0;" +
+            "   i_d[i].y = 0;" +
             "};";
         imageCode += "</script>";
         imageCode += "<div style='display:none;'>";

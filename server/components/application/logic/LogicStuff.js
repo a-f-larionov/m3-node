@@ -24,8 +24,8 @@ LogicStuff = function () {
         DataStuff.usedShuffle(userId);
     };
 
-    this.usedlightning = function (userId) {
-        DataStuff.usedlightning(userId);
+    this.usedLightning = function (userId) {
+        DataStuff.usedLightning(userId);
     };
 };
 

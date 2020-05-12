@@ -33,7 +33,7 @@ let LogicTimeClient = function () {
     };
 
     this.getMicroTime = function () {
-        return new Date().getTime() + timeDiff;
+        return new Date().getTime();
     };
 
     this.convertToClient = function (timestamp) {

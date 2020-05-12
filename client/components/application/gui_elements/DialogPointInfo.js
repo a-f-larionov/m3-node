@@ -95,7 +95,7 @@ let DialogPointInfo = function () {
 
         point = DataPoints.getById(pointId);
         this.setTitle('УРОВЕНЬ  ' + pointId);
-console.log('friends',friends);
+//console.log('friends',friends);
         /**
          *
          */

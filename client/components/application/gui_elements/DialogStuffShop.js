@@ -94,7 +94,7 @@ let DialogStuffShop = function () {
                 shopItem = DataShop.shuffle[itemIndex];
                 break;
             case LogicStuff.STUFF_LIGHTNING:
-                buyFunc = SAPIStuff.buylightning;
+                buyFunc = SAPIStuff.buyLightning;
                 giveFunc = LogicStuff.giveALighnting;
                 shopItem = DataShop.lightning[itemIndex];
                 break;

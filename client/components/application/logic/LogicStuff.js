@@ -38,7 +38,7 @@ let LogicStuff = function () {
         stuff['shuffleQty']--;
     };
 
-    this.usedlightning = function () {
+    this.usedLightning = function () {
         stuff['lightningQty']--;
     };
 

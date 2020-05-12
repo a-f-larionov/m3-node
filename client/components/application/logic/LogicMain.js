@@ -27,7 +27,8 @@ let LogicMain = function () {
             CAPIUser: CAPIUser,
             CAPITimeServer: CAPITimeServer,
             CAPIMap: CAPIMap,
-            CAPIStuff: CAPIStuff
+            CAPIStuff: CAPIStuff,
+            CAPILog: CAPILog,
         });
 
         /** Link ApiRouter and WebSocketClient */
@@ -49,6 +50,7 @@ let LogicMain = function () {
      */
     this.onConnect = function (connectionId) {
         ApiRouter.onConnect(connectionId);
+        SAPITimeServer.sendMeTime();
         LogicUser.authorize();
     };
 
@@ -56,9 +58,7 @@ let LogicMain = function () {
         /** Установить текущую карту игрока */
         DataMap.setCurrentMapId(LogicUser.getUserLastMapId());
 
-        SAPITimeServer.sendMeTime();
         LogicStuff.loadStuff();
-
 
         /** Первый показ игры: Главная страница */
         PageController.showPage(PageMain);

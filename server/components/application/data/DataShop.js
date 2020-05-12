@@ -87,7 +87,8 @@ DataShop.lightning = [
     }
 ];
 
-DataShop.healthPrice = 100;
+
+DataShop.healthGoldPrice = 100;
 
 /** Для кросс-сайдных компонент */
 if (CONST_IS_SERVER_SIDE) {

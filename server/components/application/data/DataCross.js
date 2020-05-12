@@ -4,7 +4,7 @@
 let DataCross = {
     user: {
         maxHealth: 5,
-        healthRecoveryTime: 45,
+        healthRecoveryTime: 10,
     },
     app: {
         width: 777,

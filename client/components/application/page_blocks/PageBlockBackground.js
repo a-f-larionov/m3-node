@@ -23,7 +23,7 @@ let PageBlockBackground = function PageBlockBackground() {
 
         /** Рамка для фулскрина */
         el = GUI.createElement(ElementImage, {x: -15, y: -15, src: 'fs-frame.png'});
-       // self.elements.push(el);
+        self.elements.push(el);
 
         /** Задний фон */
         el = GUI.createElement(ElementImage, {x: 0, y: 0, src: 'old-paper.png'});

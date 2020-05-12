@@ -147,9 +147,12 @@ SAPIUser = function () {
             //@todo auto LOCK timeout(with keys!)
             setTimeout(done, 5 * 60 * 1000);
             DataUser.getById(cntx.user.id, function (user) {
+                CAPILog.log(user.id, user.fullRecoveryTime);
                 if (LogicHealth.getHealths(user) > 0) {
+                    CAPILog.log(user.id, user.fullRecoveryTime);
                     LogicHealth.decrementHealth(user, 1);
                     DataUser.updateHealthAndStartTime(user, function () {
+                            CAPILog.log(user.id, user.fullRecoveryTime);
                             CAPIUser.updateUserInfo(user.id, user);
                             CAPIUser.setOneHealthHide(cntx.user.id, true);
                         }
@@ -162,17 +165,6 @@ SAPIUser = function () {
         });
     };
 
-    /*
-    this.checkHealth = function (cntx) {
-        if (!cntx.isAuthorized) return Logs.log(arguments.callee.name + " not authorized", Logs.LEVEL_WARNING, cntx);
-        if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
-        if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
-
-        LogicHealth.checkHealth(cntx.user.id);
-    };
-
-     */
-
     this.zeroLife = function (cntx) {
         if (!cntx.isAuthorized) return Logs.log(arguments.callee.name + " not authorized", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
@@ -180,6 +172,8 @@ SAPIUser = function () {
 
         //@todo lock
         DataUser.getById(cntx.user.id, function (user) {
+
+            if (user.socNetTypeId !== SocNet.TYPE_STANDALONE) return;
 
             LogicHealth.zeroLife(user);
 

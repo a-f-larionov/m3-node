@@ -1,4 +1,8 @@
-let LogicHealth = function () {
+/**
+ * @type {LogicHealth}
+ * @constructor
+ */
+LogicHealth = function () {
 
     let getTime = function () {
         return typeof LogicTimeClient !== 'undefined' ?
@@ -44,6 +48,7 @@ let LogicHealth = function () {
         if (LogicHealth.getHealths(user) === 0) {
             LogicHealth.zeroLife(user);
         }
+        //@todo log warning if go down then zero
         user.fullRecoveryTime += this.getHealthRecoveryTime() * quantity;
     };
 

@@ -27,12 +27,12 @@ SAPIStuff = function () {
         DataStuff.usedShuffle(cntx.user.id, LogicTid.getOne());
     };
 
-    this.usedlightning = function (cntx) {
+    this.usedLightning = function (cntx) {
         if (!cntx.isAuthorized) return Logs.log(arguments.callee.name + " not authorized", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
 
-        DataStuff.usedlightning(cntx.user.id, LogicTid.getOne());
+        DataStuff.usedLightning(cntx.user.id, LogicTid.getOne());
     };
 
     this.buyHummer = function (cntx, itemIndex) {
@@ -63,7 +63,7 @@ SAPIStuff = function () {
         });
     };
 
-    this.buylightning = function (cntx, itemIndex) {
+    this.buyLightning = function (cntx, itemIndex) {
         if (!cntx.isAuthorized) return Logs.log(arguments.callee.name + " not authorized", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
@@ -91,7 +91,7 @@ SAPIStuff = function () {
                         Logs.log("Health tid:" + tid + " uid:" + user.id + " NO ZERO", Logs.LEVEL_DETAIL, user, Logs.CHANNEL_VK_HEALTH);
                         done();
                     } else {
-                        DataStuff.usedGold(cntx.user.id, DataShop.healthPrice, tid, function (success) {
+                        DataStuff.usedGold(cntx.user.id, DataShop.healthGoldPrice, tid, function (success) {
                             if (!success) {
                                 Logs.log("Health tid:" + tid + " uid:" + user.id + " CANCEL", Logs.LEVEL_DETAIL, user, Logs.CHANNEL_VK_HEALTH);
                                 done();

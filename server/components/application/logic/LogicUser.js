@@ -38,7 +38,7 @@ LogicUser = function () {
         }
         if (!checkResult) return;
         let prid = Profiler.start(Profiler.ID_AUTH_VK);
-        /* get from db */
+        /** Get from db */
         DataUser.getBySocNet(socNetTypeId, socNetUserId, function (user) {
             authorizeOrCreate(user, socNetTypeId, socNetUserId, cntx, prid, Profiler.ID_AUTH_VK);
         });
@@ -76,7 +76,7 @@ LogicUser = function () {
     };
 
     let authorizeOrCreate = function (user, socNetTypeId, socNetUserId, cntx, prid, profilerType) {
-        /* if not exists create user */
+        /** If not exists create user */
         if (!user) {
             createUser(socNetTypeId, socNetUserId, function (user) {
                 authorizeSendSuccess(user, cntx, prid, profilerType);
@@ -107,11 +107,12 @@ LogicUser = function () {
      * @todo prid and profilerType conflited by means..
      */
     let authorizeSendSuccess = function (user, cntx, prid, profilerType) {
-        /* тут мы запомним его connectionId раз и на всегда */
+        /** Тут мы запомним его connectionId раз и на всегда */
         Statistic.add(user.id, Statistic.ID_AUTHORIZE);
         userAddConn(user, cntx);
         DataUser.updateLastLogin(user.id);
         CAPIUser.authorizeSuccess(user.id, user);
+        CAPILog.log(124);
         Profiler.stop(profilerType, prid);
     };
 

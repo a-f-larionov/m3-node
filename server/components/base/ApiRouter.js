@@ -9,7 +9,7 @@ if (CONST_IS_SERVER_SIDE) {
  * Cross-side component.
  * @constructor
  */
-let ApiRouter = new (function () {
+let ApiRouter = new (function ApiRouter() {
     let self = this;
 
     let map;

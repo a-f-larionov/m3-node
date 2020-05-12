@@ -50,14 +50,14 @@ let Images = function () {
             notFoundImg.path = url;
             return notFoundImg;
         }
-        if (!url || !window.imagesData[url]) {
+        if (!url || !window.i_d[url]) {
             if (notfounds.indexOf(url) !== -1) return notFoundImg;
             notfounds.push(url);
             Logs.log("Image url not found for: " + url, Logs.LEVEL_ERROR);
             notFoundImg.path = '';
             return notFoundImg;
         }
-        return window.imagesData[url];
+        return window.i_d[url];
     };
 };
 

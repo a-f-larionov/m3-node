@@ -7,6 +7,11 @@ let LOCK = new AsyncLock();
  */
 DataStuff = function () {
 
+    this.STUFF_LIGTNING = 'lightningQty';
+    this.STUFF_HUMMER = 'hummerQty';
+    this.STUFF_SHUFFLE = 'shuffleQty';
+    this.STUFF_GOLD = 'goldgQty';
+
     let tableName = 'users_stuff';
 
     let fromDBToData = function (data) {
@@ -41,7 +46,7 @@ DataStuff = function () {
     };
 
     let incrementStuff = function (fieldName, userId, quantity, tid) {
-        LOCK.acquire('stuff-' + userId + "-" + fieldName, function (done) {
+        LOCK.acquire(Keys.stuff(userId, fieldName), function (done) {
             setTimeout(done, 5 * 60 * 1000);
             DB.query("UPDATE " + tableName + "" +
                 " SET `" + fieldName + "` = `" + fieldName + "` + " + parseInt(quantity) +
@@ -55,7 +60,7 @@ DataStuff = function () {
     };
 
     let decrementStuff = function (fieldName, userId, quantity, tid, callback) {
-        LOCK.acquire('stuff-' + userId + "-" + fieldName, function (done) {
+        LOCK.acquire(Keys.stuff(userId, fieldName), function (done) {
             setTimeout(done, 5 * 60 * 1000);
 
             DB.query("SELECT `" + fieldName + "`" +
@@ -88,35 +93,35 @@ DataStuff = function () {
     };
 
     this.usedGold = function (userId, quantity, tid, callback) {
-        decrementStuff('goldQty', userId, quantity, tid, callback)
+        decrementStuff(DataStuff.STUFF_GOLD, userId, quantity, tid, callback)
     };
 
     this.usedHummer = function (userId, tid, callback) {
-        decrementStuff('hummerQty', userId, 1, tid, callback)
+        decrementStuff(DataStuff.STUFF_HUMMER, userId, 1, tid, callback)
     };
 
     this.usedShuffle = function (userId, tid, callback) {
-        decrementStuff('shuffleQty', userId, 1, tid, callback)
+        decrementStuff(DataStuff.STUFF_SHUFFLE, userId, 1, tid, callback)
     };
 
-    this.usedlightning = function (userId, tid, callback) {
-        decrementStuff('lightningQty', userId, 1, tid, callback)
+    this.usedLightning = function (userId, tid, callback) {
+        decrementStuff(DataStuff.STUFF_LIGTNING, userId, 1, tid, callback)
     };
 
     this.giveAGold = function (userId, quantity, tid) {
-        incrementStuff('goldQty', userId, quantity, tid);
+        incrementStuff(DataStuff.STUFF_GOLD, userId, quantity, tid);
     };
 
     this.giveAHummer = function (userId, quantity, tid) {
-        incrementStuff('hummerQty', userId, quantity, tid);
+        incrementStuff(DataStuff.STUFF_HUMMER, userId, quantity, tid);
     };
 
     this.giveAShuffle = function (userId, quantity, tid) {
-        incrementStuff('shuffleQty', userId, quantity, tid);
+        incrementStuff(DataStuff.STUFF_SHUFFLE, userId, quantity, tid);
     };
 
     this.giveALightning = function (userId, quantity, tid) {
-        incrementStuff('lightningQty', userId, quantity, tid);
+        incrementStuff(DataStuff.STUFF_LIGTNING, userId, quantity, tid);
     };
 };
 

@@ -51,13 +51,13 @@ let  DialogHealthShop = function () {
 
         if (LogicHealth.getHealths(user) > 0) return;
 
-        if (gold < DataShop.healthPrice) {
+        if (gold < DataShop.healthGoldPrice) {
             PBZDialogs.dialogMoneyShop.showDialog(this);
             self.closeDialog();
         } else {
             SAPIStuff.buyHealth();
             LogicStuff.giveAHealth(LogicHealth.getMaxHealth());
-            LogicStuff.usedGold(DataShop.healthPrice);
+            LogicStuff.usedGold(DataShop.healthGoldPrice);
             self.closeDialog();
         }
         PageController.redraw();
