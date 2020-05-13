@@ -175,11 +175,11 @@ let DialogGoalsReached = function () {
      - Пост: Мой результат - 30500 очков на 13 уровне. Сможешь побить мой рекорд?
      * @type {string[]}
      */
-    let phrases = [
+    /*let phrases = [
         'Ты сможешь обогнать меня?',
         'Заходи в игру!',
         'Ты сможешь обогнать меня?',
-    ];
+    ];*/
 
     this.closeDialog = function () {
         if (share) {

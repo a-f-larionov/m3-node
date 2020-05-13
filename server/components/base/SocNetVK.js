@@ -164,7 +164,7 @@ SocNetVK = function () {
     };
 
     this.init = function (afterInitCallback) {
-        self.oAuthorization();
+        //self.oAuthorization();
         afterInitCallback();
     };
 };

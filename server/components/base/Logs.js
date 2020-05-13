@@ -101,11 +101,15 @@ let Logs = function () {
                 FS.writeFile(CONST_DIR_SERVER + '/logs/vk_health.log', logText + details + "\r\n", {flag: 'a'}, function () {
                 });
                 break;
+            case Logs.CHANNEL_CLIENT:
+                FS.writeFile(CONST_DIR_SERVER + '/logs/client.log', logText + details + "\r\n", {flag: 'a'}, function () {
+                });
+                break;
         }
         if (level === Logs.LEVEL_ERROR || level === Logs.LEVEL_FATAL_ERROR) {
-            if (typeof CONST_IS_CLIENT_SIDE) {
+            if (CONST_IS_CLIENT_SIDE) {
                 //@todo client errors channel
-                // SAPILogs.log(message, level, details);
+                SAPILogs.log(message, level, details);
             }
         }
         // если это фатальная ошибка - завершим работу программы.
@@ -177,6 +181,7 @@ Logs = new Logs();
 Logs.CHANNEL_VK_PAYMENTS = 1;
 Logs.CHANNEL_VK_STUFF = 2;
 Logs.CHANNEL_VK_HEALTH = 3;
+Logs.CHANNEL_CLIENT = 4;
 
 Logs.depends = [];
 

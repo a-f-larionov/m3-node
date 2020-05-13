@@ -15,7 +15,7 @@ DAEMON="./run.sh"
 
 DAEMONOPTS=""
 
-OUTPUT_FILE="/var/www/tri-base/server/last.log"
+OUTPUT_FILE="/var/www/tri-base/server/logs/last.log"
 
 NAME=tri-base
 

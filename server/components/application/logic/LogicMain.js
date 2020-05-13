@@ -35,6 +35,7 @@ LogicMain = function () {
 
         WebSocketServer.setMap({
             '/service/vk_buy': LogicPayments.VKbuy,
+            '/service/standalone_buy': LogicPayments.standaloneBuy,
             '/service/client-vk': ClientCodeLoader.getClientVK,
             '/service/client-standalone': ClientCodeLoader.getClientStandalone,
             '/service/reloadClientCode': ClientCodeLoader.reloadClient,

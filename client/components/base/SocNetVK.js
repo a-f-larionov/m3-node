@@ -5,7 +5,6 @@
  */
 let SocNetVK = function () {
 
-    let self = this;
     let getParams = {};
 
     // для вконтакте

@@ -3,8 +3,6 @@
  * @constructor
  */
 let LogicStuff = function () {
-    let self = this;
-
     let stuff = {};
 
     this.STUFF_HUMMER = 1;

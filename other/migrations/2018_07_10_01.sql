@@ -1,3 +1,3 @@
  ALTER TABLE users
- ADD COLUMN nextPointId
+ ADD COLUMN nextLevelId
  INT(11) NOT NULL default 1;

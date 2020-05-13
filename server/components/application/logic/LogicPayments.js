@@ -1,6 +1,5 @@
 let QUERYSTRING = require('querystring');
 let MD5 = require('md5');
-let FS = require('fs');
 var AsyncLock = require('async-lock');
 var LOCK = new AsyncLock();
 
@@ -39,11 +38,11 @@ LogicPayments = function () {
      * @constructor
      */
     this.VKbuy = function (callback, request) {
-        let body = '';
+        let body = '', buyPrefix = 'vk_buy';
         let tid;
         tid = LogicTid.getOne();
 
-        Logs.log("vk_buy tid:" + tid + " REQUEST", Logs.LEVEL_DETAIL, undefined, Logs.CHANNEL_VK_PAYMENTS);
+        Logs.log(buyPrefix + " tid:" + tid + " REQUEST", Logs.LEVEL_DETAIL, undefined, Logs.CHANNEL_VK_PAYMENTS);
 
         /** Собираем тело */
         request.on('data', function (data) {
@@ -55,25 +54,61 @@ LogicPayments = function () {
             onVKbuyReady(
                 request.url,
                 body,
-                params = QUERYSTRING.decode(body),
+                QUERYSTRING.decode(body),
                 tid,
-                callback
+                callback,
+                buyPrefix
             );
         });
     };
 
-    let onVKbuyReady = function (url, body, params, tid, callback) {
+    this.standaloneBuy = function (callback, request) {
+        let body = '', buyPrefix = 'standalone_buy';
+        let tid, params;
+        tid = LogicTid.getOne();
 
-        Logs.log("vk_buy tid:" + tid + " REQUEST BODY READY", Logs.LEVEL_DETAIL, {
+        Logs.log(buyPrefix + " tid:" + tid + " REQUEST", Logs.LEVEL_DETAIL, undefined, Logs.CHANNEL_VK_PAYMENTS);
+
+        /** Собираем тело */
+        request.on('data', function (data) {
+            body += data;
+        });
+
+        /** Завершили сбор тела */
+        request.on('end', function () {
+            params = QUERYSTRING.parse(request.url.substr(request.url.indexOf('?') + 1));
+
+            Logs.log(JSON.stringify(params));
+            console.log(QUERYSTRING.parse(request.url));
+            console.log(request.url);
+            console.log(params);
+            console.log(body);
+
+            self.doOrderChange(
+                parseInt(params.receiver_id),
+                parseInt(params.order_id),
+                parseInt(params.item_price),
+                tid,
+                function (answer) {
+                    callback(JSON.stringify(answer));
+                },
+                SocNet.TYPE_STANDALONE,
+                buyPrefix);
+        });
+    };
+
+    let onVKbuyReady = function (url, body, params, tid, callback, buyPrefix) {
+
+        Logs.log(buyPrefix + " tid:" + tid + " REQUEST BODY READY", Logs.LEVEL_DETAIL, {
             url: url, body: body, params: params
         }, Logs.CHANNEL_VK_PAYMENTS);
 
         self.VKBuyProccess(params, tid, function (answer) {
             callback(JSON.stringify(answer));
-        });
+        }, buyPrefix);
     };
 
-    this.VKBuyProccess = function (params, tid, callback) {
+    this.VKBuyProccess = function (params, tid, callback, buyPrefix) {
         let app_id, receiver_id, sig, order_id, item_price, notification_type;
         /** Проверка наличия полей */
         if (
@@ -84,7 +119,7 @@ LogicPayments = function () {
             !params.item_price ||
             !params.notification_type
         ) {
-            Logs.log("vk_buy tid:" + tid + " Не все аргументы.", Logs.LEVEL_ERROR, params, Logs.CHANNEL_VK_PAYMENTS);
+            Logs.log(buyPrefix + " tid:" + tid + " Не все аргументы.", Logs.LEVEL_ERROR, params, Logs.CHANNEL_VK_PAYMENTS);
             return callback(vkErrorCommon);
         }
         app_id = parseInt(params.app_id);
@@ -96,51 +131,52 @@ LogicPayments = function () {
 
         /** Проверка id приложения */
         if (app_id !== Config.SocNet.VK.appId) {
-            Logs.log("vk_buy tid:" + tid + " Не верный appId", Logs.LEVEL_ERROR, params, Logs.CHANNEL_VK_PAYMENTS);
+            Logs.log(buyPrefix + " tid:" + tid + " Не верный appId", Logs.LEVEL_ERROR, params, Logs.CHANNEL_VK_PAYMENTS);
             return callback(vkErrorCommon);
         }
         /** Проверка сигнатуры */
         if (sig !== self.calcVKSign(params)) {
-            Logs.log("vk_buy tid:" + tid + " Не верная сигнатура подписи", Logs.LEVEL_ERROR, params, Logs.CHANNEL_VK_PAYMENTS);
+            Logs.log(buyPrefix + " tid:" + tid + " Не верная сигнатура подписи", Logs.LEVEL_ERROR, params, Logs.CHANNEL_VK_PAYMENTS);
             return callback(vkErrorSign);
         }
         /** Проверка типа запроса */
         if (notification_type === 'order_status_change' || notification_type === 'order_status_change_test') {
             if (!params.status || params.status !== 'chargeable') {
-                Logs.log("vk_buy tid:" + tid + " Ошибка статуса", Logs.LEVEL_ERROR, params, Logs.CHANNEL_VK_PAYMENTS);
+                Logs.log(buyPrefix + " tid:" + tid + " Ошибка статуса", Logs.LEVEL_ERROR, params, Logs.CHANNEL_VK_PAYMENTS);
                 return callback(vkErrorCommon);
             }
-            return self.doOrderChange(receiver_id, order_id, item_price, tid, callback);
+            return self.doOrderChange(receiver_id, order_id, item_price, tid, callback, SocNet.TYPE_VK, buyPrefix);
         } else {
-            Logs.log("vk_buy tid:" + tid + " Ошибка типа запроса `notification_type` ", Logs.LEVEL_ERROR, params, Logs.CHANNEL_VK_PAYMENTS);
+            Logs.log(buyPrefix + " tid:" + tid + " Ошибка типа запроса `notification_type` ", Logs.LEVEL_ERROR, params, Logs.CHANNEL_VK_PAYMENTS);
             return callback(vkErrorCommon);
         }
     };
 
-    this.doOrderChange = function (receiver_id, order_id, item_price, tid, callback) {
+    this.doOrderChange = function (socNetUserId, order_id, item_price, tid, callback, socNetTypeId, buyPrefix) {
         let product;
         product = DataShop.getGoldProductByPrice(item_price);
-
+        console.log(arguments);
         /** Существует ли такой товар */
         if (!product) {
-            Logs.log("vk_buy tid:" + tid + " product not found", Logs.LEVEL_ERROR, arguments, Logs.CHANNEL_VK_PAYMENTS);
+            Logs.log(buyPrefix + " tid:" + tid + " product not found", Logs.LEVEL_ERROR, arguments, Logs.CHANNEL_VK_PAYMENTS);
             return callback(vkErrorItemPriceNotFound);
         }
 
-        LOCK.acquire('buy-vk-' + order_id, function (done) {
+        LOCK.acquire(buyPrefix + order_id, function (done) {
             setTimeout(done, 5 * 60 * 1000);
             /** Проверка наличия пользователя */
-            DataUser.getBySocNet(SocNet.TYPE_VK, receiver_id, function (user) {
+            DataUser.getBySocNet(socNetTypeId, socNetUserId, function (user) {
                 if (!user || !user.id) {
-                    Logs.log("vk_buy tid:" + tid + " no user found", Logs.LEVEL_ERROR, arguments, Logs.CHANNEL_VK_PAYMENTS);
+                    Logs.log(buyPrefix + " tid:" + tid + " no user found", Logs.LEVEL_ERROR, arguments, Logs.CHANNEL_VK_PAYMENTS);
                     done();
                     return callback(vkErrorCommon);
                 }
                 /** Проверка повторной обработки заказа. */
                 DataPayments.getByOrderId(order_id, function (order) {
                     if (order) {
-                        Logs.log("vk_buy tid:" + tid + " order already exists", Logs.LEVEL_DETAIL, arguments, Logs.CHANNEL_VK_PAYMENTS);
+                        Logs.log(buyPrefix + " tid:" + tid + " order already exists", Logs.LEVEL_DETAIL, arguments, Logs.CHANNEL_VK_PAYMENTS);
                         done();
+                        //
                         return callback(vkErrorCommon);
                     }
 
@@ -154,7 +190,7 @@ LogicPayments = function () {
 
                             CAPIStuff.incrementGold(user.id, product.quantity);
 
-                            Logs.log("vk_buy tid:" + tid + " uid:" + user.id + " votes:" + item_price + " gold:" + product.quantity + " order success", Logs.LEVEL_DETAIL, {
+                            Logs.log(buyPrefix + " tid:" + tid + " uid:" + user.id + " votes:" + item_price + " gold:" + product.quantity + " order success", Logs.LEVEL_DETAIL, {
                                 order: order, itemPrice: item_price
                             }, Logs.CHANNEL_VK_PAYMENTS);
                             done();

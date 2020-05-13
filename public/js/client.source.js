@@ -4,6 +4,16 @@
 let CONST_IS_SERVER_SIDE = false;
 let CONST_IS_CLIENT_SIDE = true;
 
+let thisIsASomeLongNameVariable = 54343443 + 24 + 3;
+
+let THIS_IS_SOME_LONG_NAME_CONSTNATN = 2343243;
+
+let add55 = function (first, second) {
+    return first + second;
+};
+console.log(add55(15, 4));
+
+
 /** ../client/core/functions.js */
 /**
  * В этом файле содержаться системные функции.
@@ -21,90 +31,7 @@ let log = console.log;
  */
 let error = function (message) {
     console.log("Ошибка: " + message);
-    process.exit();
-};
-
-/* Функционал для последовательной инициализации компонент. */
-let sequencedInitStack = [];
-let sequencedInitBlocked = false;
-
-/**
- * Выполнить очередной инит по завершению всех предыдущих.
- * @param initFunction {function}
- */
-let sequencedInit = function (initFunction) {
-    sequencedInitStack.push(initFunction);
-    tryInitNext();
-};
-
-let tryInitNext = function () {
-    if (!sequencedInitStack.length) {
-        log("Init stack empty now.");
-        return;
-    }
-    if (sequencedInitBlocked) return;
-    sequencedInitBlocked = true;
-    initFunction = sequencedInitStack.shift();
-    initFunction(function () {
-        sequencedInitBlocked = false;
-        tryInitNext();
-    });
-};
-
-/**
- *
- *  Javascript string pad
- *  http://www.webtoolkit.info/
- *
- **/
-
-let STR_PAD_LEFT = 1;
-let STR_PAD_RIGHT = 2;
-let STR_PAD_BOTH = 3;
-
-let str_pad = function (str, len, pad, dir) {
-    if (typeof (len) == "undefined") {
-        let len = 0;
-    }
-    if (typeof (pad) == "undefined") {
-        let pad = ' ';
-    }
-    if (typeof (dir) == "undefined") {
-        let dir = STR_PAD_RIGHT;
-    }
-    if (len + 1 >= str.length) {
-
-        switch (dir) {
-            case STR_PAD_LEFT:
-                str = Array(len + 1 - str.length).join(pad) + str;
-                break;
-
-            case STR_PAD_BOTH:
-                let right = Math.ceil((padlen = len - str.length) / 2);
-                let left = padlen - right;
-                str = Array(left + 1).join(pad) + str + Array(right + 1).join(pad);
-                break;
-
-            default:
-                str = str + Array(len + 1 - str.length).join(pad);
-                break;
-        } // switch
-    }
-    return str;
-};
-
-/**
- * Возвращает время в секундах.
- */
-let time = function () {
-    return LogicTimeClient.getTime();
-};
-
-/**
- * Возвращает время в миллисекундах секундах.
- */
-let mtime = function () {
-    return LogicTimeClient.getMicroTime();
+    throw new Error(message);
 };
 
 let getQueryVariable = function (variable) {
@@ -2397,11 +2324,11 @@ let DialogGoalsReached = function () {
      - Пост: Мой результат - 30500 очков на 13 уровне. Сможешь побить мой рекорд?
      * @type {string[]}
      */
-    let phrases = [
+    /*let phrases = [
         'Ты сможешь обогнать меня?',
         'Заходи в игру!',
         'Ты сможешь обогнать меня?',
-    ];
+    ];*/
 
     this.closeDialog = function () {
         if (share) {
@@ -3473,27 +3400,27 @@ let ElementField = function () {
         this.redraw();
     };
 
-    let gemTouched = null;
+    //let gemTouched = null;
 
-    let onGemTouchStart = function (event) {
-        Sounds.play(Sounds.PATH_CHALK);
-        gemTouched = pointFromEvent(event);
-    };
+    // let onGemTouchStart = function (event) {
+    //     Sounds.play(Sounds.PATH_CHALK);
+    //     gemTouched = pointFromEvent(event);
+    // };
 
-    let onGemTouchEnd = function (event) {
-        try {
-            event.stopPropagation();
-            let changedTouch = event.changedTouches[0];
-            let elem = document.elementFromPoint(changedTouch.clientX, changedTouch.clientY);
-            if (gemTouched) {
-                //fieldAct(gemTouched);
-                //fieldAct(pointFromEvent(event.changedTouches[0]));
-                gemTouched = null;
-            }
-        } catch (e) {
-            gemTouched = null;
-        }
-    };
+    // let onGemTouchEnd = function (event) {
+    //     try {
+    //         event.stopPropagation();
+    //         let changedTouch = event.changedTouches[0];
+    //         let elem = document.elementFromPoint(changedTouch.clientX, changedTouch.clientY);
+    //         if (gemTouched) {
+    //             //fieldAct(gemTouched);
+    //             //fieldAct(pointFromEvent(event.changedTouches[0]));
+    //             gemTouched = null;
+    //         }
+    //     } catch (e) {
+    //         gemTouched = null;
+    //     }
+    // };
 
     let pointFromEvent = function (event) {
         return {
@@ -4049,12 +3976,10 @@ let ElementField = function () {
                 gemDoms[x][y].bindedDoms = [];
             }
 
-            if (true ||
-                Field.isVisible({x: x, y: y}) ||
+            if (Field.isVisible({x: x, y: y}) ||
                 Field.isVisible({x: x, y: y - 1}) ||
                 Field.isVisible({x: x, y: y + 1})
-            )
-                fallDoms.push({from: {x: x, y: y}, to: holeToFall});
+            ) fallDoms.push({from: {x: x, y: y}, to: holeToFall});
         });
 
         if (fallDoms.length) animate(animFallGems, fallDoms); else {
@@ -6515,13 +6440,13 @@ let LogicMain = function () {
      * After connect
      * @param connectionId
      */
-    this.onConnect = function (connectionId) {
+    LogicMain.prototype.onConnect = function (connectionId) {
         ApiRouter.onConnect(connectionId);
         SAPITimeServer.sendMeTime();
         LogicUser.authorize();
     };
 
-    this.onAuthorizeSuccess = function () {
+    LogicMain.prototype.onAuthorizeSuccess = function () {
         /** Установить текущую карту игрока */
         DataMap.setCurrentMapId(LogicUser.getUserLastMapId());
 
@@ -6533,49 +6458,50 @@ let LogicMain = function () {
         /** Проверка визарада начала игры */
         LogicWizard.onAuthorizeSuccess();
     };
+
+    LogicMain.prototype.main = function () {
+        let webSocketClient;
+        /**@todo show preloader */
+        Logs.init(function () {
+        });
+
+        DataPoints.init();
+        DataChests.init();
+
+        /** init some components */
+        SocNet.init();
+
+        /** WebSocket Client */
+        webSocketClient = new WebSocketClient();
+        webSocketClient.init(function () {
+        });
+
+        //@todo need be automate...
+        /** ApiRouter */
+
+        ApiRouter.setMap({
+            CAPIUser: CAPIUser,
+            CAPITimeServer: CAPITimeServer,
+            CAPIMap: CAPIMap,
+            CAPIStuff: CAPIStuff,
+            CAPILog: CAPILog,
+        });
+
+        /** Link ApiRouter and WebSocketClient */
+        ApiRouter.sendData = webSocketClient.sendData;
+        webSocketClient.onData = ApiRouter.onData;
+        webSocketClient.onConnect = this.onConnect;
+        webSocketClient.onDisconnect = ApiRouter.onDisconnect;
+
+        /** Running */
+        webSocketClient.run();
+
+        OnIdle.init(function () {
+        });
+    };
 };
 
-LogicMain.prototype.main = function () {
-    let webSocketClient;
-    /**@todo show preloader */
-    Logs.init(function () {
-    });
-
-    DataPoints.init();
-    DataChests.init();
-
-    /** init some components */
-    SocNet.init();
-
-    /** WebSocket Client */
-    webSocketClient = new WebSocketClient();
-    webSocketClient.init(function () {
-    });
-
-    //@todo need be automate...
-    /** ApiRouter */
-
-    ApiRouter.setMap({
-        CAPIUser: CAPIUser,
-        CAPITimeServer: CAPITimeServer,
-        CAPIMap: CAPIMap,
-        CAPIStuff: CAPIStuff,
-        CAPILog: CAPILog,
-    });
-
-    /** Link ApiRouter and WebSocketClient */
-    ApiRouter.sendData = webSocketClient.sendData;
-    webSocketClient.onData = ApiRouter.onData;
-    webSocketClient.onConnect = this.onConnect;
-    webSocketClient.onDisconnect = ApiRouter.onDisconnect;
-
-    /** Running */
-    webSocketClient.run();
-
-    OnIdle.init(function () {
-    });
-};
-
+LogicMain = new LogicMain();
 /** ../client/components/application/logic/LogicMap.js */
 /**
  * @type {LogicMap}
@@ -6606,8 +6532,6 @@ LogicMap = new LogicMap();
  * @constructor
  */
 let LogicStuff = function () {
-    let self = this;
-
     let stuff = {};
 
     this.STUFF_HUMMER = 1;
@@ -7444,8 +7368,7 @@ let PageBlockField = function PageBlockField() {
             self.elements[i].show();
         }
         self.firstShow();
-        if (false
-            || SocNet.getType() === SocNet.TYPE_STANDALONE
+        if (SocNet.getType() === SocNet.TYPE_STANDALONE
             || LogicUser.getCurrent().id === 1
             || LogicUser.getCurrent().socNetUserId === 1
         ) {
@@ -9337,6 +9260,7 @@ let ApiRouter = new (function ApiRouter() {
      * Добавлить каллбэк дисконнекта.
      * Будет вызван при дисконнекте соедеинения.
      * @param callback
+     * @todo move out
      */
     this.addOnDisconnectCallback = function (callback) {
         onDisconnectCallbacks.push(callback);
@@ -9354,6 +9278,7 @@ let ApiRouter = new (function ApiRouter() {
     /**
      * авто-код для клиента.
      * @returns {string}
+     * @todo moveout
      */
     this.getSAPIJSCode = function () {
         let code, group, method;
@@ -9395,7 +9320,9 @@ let ApiRouter = new (function ApiRouter() {
     };
 
 
-    /* Generators part */
+    /** Generators part
+     * @todo move out
+     */
     this.generate = function () {
 
         generateCAPIComponents(getCAPIMap());
@@ -9403,26 +9330,10 @@ let ApiRouter = new (function ApiRouter() {
         return generateSAPIMapCode(getSAPIMap());
     };
 
-    this.generateClient = function () {
-        let groupName, map;
-
-        map = getCAPIMap();
-        // for client
-        // формирование карты для ApiRouter. { CAPI*: CAPI*, ... }
-        let code2 = '';
-        code2 += 'ApiRouter.map = {\r\n';
-        for (groupName in map) {
-            code2 += '\t' + groupName + ' : ' + groupName + ',\r\n';
-        }
-        // remove last symbol
-        code2 = code2.substr(0, code2.length - 1);
-        code2 += '};\r\n';
-        code2 = 'document.addEventListener("DOMContentLoaded", function() {' + code2 + '})';
-    };
-
     /**
      * Generate capi map from exist code.
      * @returns {*}
+     * @todo move out
      */
     let getCAPIMap = function () {
         let path, list, capiName, methodName, map, capiObject, file_content;
@@ -9455,6 +9366,7 @@ let ApiRouter = new (function ApiRouter() {
     /**
      * Generate sapi map from exist code.
      * @returns {*}
+     * @todo move out
      */
     let getSAPIMap = function () {
         let path, list, groupName, methodName, map;
@@ -9477,12 +9389,17 @@ let ApiRouter = new (function ApiRouter() {
         return map;
     };
 
+    /**
+     *      * @todo move out
+     * @param path
+     * @returns {void | string | *}
+     */
     let getComponentNameFromPath = function (path) {
         return PATH.basename(path).replace('.js', '');
     };
 
     /**
-     *
+     * @todo move out
      * @param map
      */
     let generateSAPIMapCode = function (map) {
@@ -9497,7 +9414,7 @@ let ApiRouter = new (function ApiRouter() {
     };
 
     /**
-     *
+     * @todo move out
      */
     let generateCAPIComponents = function (map) {
         let groupName, methodName;
@@ -10274,7 +10191,7 @@ let Images = function () {
         if (!url || !window.i_d[url]) {
             if (notfounds.indexOf(url) !== -1) return notFoundImg;
             notfounds.push(url);
-            Logs.log("Image url not found for: " + url, Logs.LEVEL_ERROR);
+            Logs.log("Image url not found for: " + url, Logs.LEVEL_WARNING);
             notFoundImg.path = '';
             return notFoundImg;
         }
@@ -10388,11 +10305,15 @@ let Logs = function () {
                 FS.writeFile(CONST_DIR_SERVER + '/logs/vk_health.log', logText + details + "\r\n", {flag: 'a'}, function () {
                 });
                 break;
+            case Logs.CHANNEL_CLIENT:
+                FS.writeFile(CONST_DIR_SERVER + '/logs/client.log', logText + details + "\r\n", {flag: 'a'}, function () {
+                });
+                break;
         }
         if (level === Logs.LEVEL_ERROR || level === Logs.LEVEL_FATAL_ERROR) {
-            if (typeof CONST_IS_CLIENT_SIDE) {
+            if (CONST_IS_CLIENT_SIDE) {
                 //@todo client errors channel
-                // SAPILogs.log(message, level, details);
+                SAPILogs.log(message, level, details);
             }
         }
         // если это фатальная ошибка - завершим работу программы.
@@ -10464,6 +10385,7 @@ Logs = new Logs();
 Logs.CHANNEL_VK_PAYMENTS = 1;
 Logs.CHANNEL_VK_STUFF = 2;
 Logs.CHANNEL_VK_HEALTH = 3;
+Logs.CHANNEL_CLIENT = 4;
 
 Logs.depends = [];
 
@@ -10636,7 +10558,6 @@ PageController = new PageController();
  * @constructor
  */
 let Profiler = function () {
-    let self = this;
 
     this.start = function (id) {
 
@@ -10817,8 +10738,8 @@ let SocNetStandalone = function () {
             'Стив Джоб Jobs https://sun9-45.userapi.com/c845420/v845420707/eff82/P3Mvr9Zp4qI.jpg?ava=1',
         ];
         let info = {};
-        if (id === this.getSocNetUserId() && false) {
-            info.first_name = 'Админ';
+        if (id === this.getSocNetUserId()) {
+            //info.first_name = 'Админ';
             info.last_name = 'Админов';
             info.photo_50 = 'button-shuffle-rest.png';
             info.photo_100 = 'button-shuffle-rest.png';
@@ -10835,12 +10756,14 @@ let SocNetStandalone = function () {
 
     this.openOrderDialog = function (votes) {
         let product = DataShop.getGoldProductByPrice(votes);
+        let url;
         let qty = confirm("Купить " + product.quantity + "монет за " + votes + " стенделонов?");
         if (qty) {
-            //@todo callback here!
-            //https://8ffd246e-5d74-49a5-8696-e92eff606a60.pub.cloud.scaleway.com/service/vk_buy
-            //https://local.host/service/standalone_buy
-            //do something here
+            url = "https://local.host/service/standalone_buy?" +
+                "receiver_id=" + LogicUser.getCurrent().socNetUserId + "&" +
+                "order_id=" + LogicTimeClient.getTime() + "&" +
+                "item_price=" + product.votes;
+            window.open(url);
         }
     };
 
@@ -10872,7 +10795,6 @@ SocNetStandalone = new SocNetStandalone();
  */
 let SocNetVK = function () {
 
-    let self = this;
     let getParams = {};
 
     // для вконтакте
@@ -11305,19 +11227,15 @@ Config.OnIdle.second = Config.OnIdle.animateInterval * fps / Config.OnIdle.animS
 
 /** ../client//run.js */
 window.onload = function () {
-    /** Эмуляция совместимости клиентского и серверного кода. */
-    //let global = window;
-    let process = {};
-    process.exit = function () {
-        console.log("Unexpected termination of work!");
-        document.body.innerHTML = 'server is broken!';
-        throw new Error("server is broken!");
-    };
-
     /** Передаем управление вхдоной точки. */
-    LogicMain = new LogicMain();
     LogicMain.main();
 };
+let SAPILogs = function(){
+	this.log = function(){
+		ApiRouter.executeRequest('SAPILogs' ,'log', arguments);
+	};
+};
+SAPILogs = new SAPILogs();
 let SAPIMap = function(){
 	this.reloadLevels = function(){
 		ApiRouter.executeRequest('SAPIMap' ,'reloadLevels', arguments);
@@ -11394,6 +11312,7 @@ let SAPIUser = function(){
 };
 SAPIUser = new SAPIUser();
 ApiRouter.map2 = {
+	SAPILogs : SAPILogs,
 	SAPIMap : SAPIMap,
 	SAPIStuff : SAPIStuff,
 	SAPITimeServer : SAPITimeServer,

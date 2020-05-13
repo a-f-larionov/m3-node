@@ -156,6 +156,7 @@ let ApiRouter = new (function ApiRouter() {
      * Добавлить каллбэк дисконнекта.
      * Будет вызван при дисконнекте соедеинения.
      * @param callback
+     * @todo move out
      */
     this.addOnDisconnectCallback = function (callback) {
         onDisconnectCallbacks.push(callback);
@@ -173,6 +174,7 @@ let ApiRouter = new (function ApiRouter() {
     /**
      * авто-код для клиента.
      * @returns {string}
+     * @todo moveout
      */
     this.getSAPIJSCode = function () {
         let code, group, method;
@@ -214,7 +216,9 @@ let ApiRouter = new (function ApiRouter() {
     };
 
 
-    /* Generators part */
+    /** Generators part
+     * @todo move out
+     */
     this.generate = function () {
 
         generateCAPIComponents(getCAPIMap());
@@ -222,26 +226,10 @@ let ApiRouter = new (function ApiRouter() {
         return generateSAPIMapCode(getSAPIMap());
     };
 
-    this.generateClient = function () {
-        let groupName, map;
-
-        map = getCAPIMap();
-        // for client
-        // формирование карты для ApiRouter. { CAPI*: CAPI*, ... }
-        let code2 = '';
-        code2 += 'ApiRouter.map = {\r\n';
-        for (groupName in map) {
-            code2 += '\t' + groupName + ' : ' + groupName + ',\r\n';
-        }
-        // remove last symbol
-        code2 = code2.substr(0, code2.length - 1);
-        code2 += '};\r\n';
-        code2 = 'document.addEventListener("DOMContentLoaded", function() {' + code2 + '})';
-    };
-
     /**
      * Generate capi map from exist code.
      * @returns {*}
+     * @todo move out
      */
     let getCAPIMap = function () {
         let path, list, capiName, methodName, map, capiObject, file_content;
@@ -274,6 +262,7 @@ let ApiRouter = new (function ApiRouter() {
     /**
      * Generate sapi map from exist code.
      * @returns {*}
+     * @todo move out
      */
     let getSAPIMap = function () {
         let path, list, groupName, methodName, map;
@@ -296,12 +285,17 @@ let ApiRouter = new (function ApiRouter() {
         return map;
     };
 
+    /**
+     *      * @todo move out
+     * @param path
+     * @returns {void | string | *}
+     */
     let getComponentNameFromPath = function (path) {
         return PATH.basename(path).replace('.js', '');
     };
 
     /**
-     *
+     * @todo move out
      * @param map
      */
     let generateSAPIMapCode = function (map) {
@@ -316,7 +310,7 @@ let ApiRouter = new (function ApiRouter() {
     };
 
     /**
-     *
+     * @todo move out
      */
     let generateCAPIComponents = function (map) {
         let groupName, methodName;

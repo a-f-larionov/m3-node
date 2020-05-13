@@ -61,8 +61,8 @@ let SocNetStandalone = function () {
             'Стив Джоб Jobs https://sun9-45.userapi.com/c845420/v845420707/eff82/P3Mvr9Zp4qI.jpg?ava=1',
         ];
         let info = {};
-        if (id === this.getSocNetUserId() && false) {
-            info.first_name = 'Админ';
+        if (id === this.getSocNetUserId()) {
+            //info.first_name = 'Админ';
             info.last_name = 'Админов';
             info.photo_50 = 'button-shuffle-rest.png';
             info.photo_100 = 'button-shuffle-rest.png';
@@ -79,12 +79,14 @@ let SocNetStandalone = function () {
 
     this.openOrderDialog = function (votes) {
         let product = DataShop.getGoldProductByPrice(votes);
+        let url;
         let qty = confirm("Купить " + product.quantity + "монет за " + votes + " стенделонов?");
         if (qty) {
-            //@todo callback here!
-            //https://8ffd246e-5d74-49a5-8696-e92eff606a60.pub.cloud.scaleway.com/service/vk_buy
-            //https://local.host/service/standalone_buy
-            //do something here
+            url = "https://local.host/service/standalone_buy?" +
+                "receiver_id=" + LogicUser.getCurrent().socNetUserId + "&" +
+                "order_id=" + LogicTimeClient.getTime() + "&" +
+                "item_price=" + product.votes;
+            window.open(url);
         }
     };
 

@@ -134,27 +134,27 @@ let ElementField = function () {
         this.redraw();
     };
 
-    let gemTouched = null;
+    //let gemTouched = null;
 
-    let onGemTouchStart = function (event) {
-        Sounds.play(Sounds.PATH_CHALK);
-        gemTouched = pointFromEvent(event);
-    };
+    // let onGemTouchStart = function (event) {
+    //     Sounds.play(Sounds.PATH_CHALK);
+    //     gemTouched = pointFromEvent(event);
+    // };
 
-    let onGemTouchEnd = function (event) {
-        try {
-            event.stopPropagation();
-            let changedTouch = event.changedTouches[0];
-            let elem = document.elementFromPoint(changedTouch.clientX, changedTouch.clientY);
-            if (gemTouched) {
-                //fieldAct(gemTouched);
-                //fieldAct(pointFromEvent(event.changedTouches[0]));
-                gemTouched = null;
-            }
-        } catch (e) {
-            gemTouched = null;
-        }
-    };
+    // let onGemTouchEnd = function (event) {
+    //     try {
+    //         event.stopPropagation();
+    //         let changedTouch = event.changedTouches[0];
+    //         let elem = document.elementFromPoint(changedTouch.clientX, changedTouch.clientY);
+    //         if (gemTouched) {
+    //             //fieldAct(gemTouched);
+    //             //fieldAct(pointFromEvent(event.changedTouches[0]));
+    //             gemTouched = null;
+    //         }
+    //     } catch (e) {
+    //         gemTouched = null;
+    //     }
+    // };
 
     let pointFromEvent = function (event) {
         return {
@@ -710,12 +710,10 @@ let ElementField = function () {
                 gemDoms[x][y].bindedDoms = [];
             }
 
-            if (true ||
-                Field.isVisible({x: x, y: y}) ||
+            if (Field.isVisible({x: x, y: y}) ||
                 Field.isVisible({x: x, y: y - 1}) ||
                 Field.isVisible({x: x, y: y + 1})
-            )
-                fallDoms.push({from: {x: x, y: y}, to: holeToFall});
+            ) fallDoms.push({from: {x: x, y: y}, to: holeToFall});
         });
 
         if (fallDoms.length) animate(animFallGems, fallDoms); else {

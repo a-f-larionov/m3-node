@@ -282,8 +282,7 @@ let PageBlockField = function PageBlockField() {
             self.elements[i].show();
         }
         self.firstShow();
-        if (false
-            || SocNet.getType() === SocNet.TYPE_STANDALONE
+        if (SocNet.getType() === SocNet.TYPE_STANDALONE
             || LogicUser.getCurrent().id === 1
             || LogicUser.getCurrent().socNetUserId === 1
         ) {

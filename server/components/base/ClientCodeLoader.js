@@ -80,7 +80,7 @@ ClientCodeLoader = function () {
         cacheImages = Config.WebSocketServer.cacheImages;
         clientSource = Config.WebSocketServer.clientSource;
         imagesPath = Config.WebSocketServer.imagesPath;
-        useSprite = Config.WebSocketServer.useSprite;
+        useSprite = Config.Project.useSprite;
         // check before after init
         if (typeof cacheCode !== 'boolean') {
             Logs.log("cacheCode given by .setup, must be boolean", Logs.LEVEL_FATAL_ERROR, cacheCode);
@@ -170,15 +170,15 @@ ClientCodeLoader = function () {
             "}</style>";
 
         code += "<script>window.PLATFORM_ID = '" + socNetCode + "';</script>";
-        code += "<script>window.useSprite = " + Config.WebSocketServer.useSprite + ";</script>";
-        if (Config.WebSocketServer.useSprite) {
+        code += "<script>window.useSprite = " + Config.Project.useSprite + ";</script>";
+        if (Config.Project.useSprite) {
             code += "<script>window.spriteSize = {" +
                 "width: " + translate2X(demension.width) + ", " +
                 "height:" + translate2X(demension.height) + "" +
                 "};</script>";
         }
         code += "<script type='text/javascript' src='/js/client." +
-            (Config.WebSocketServer.compressCode ? 'min' : 'source') +
+            (Config.Project.minifyCode ? 'min' : 'source') +
             ".js" + getTimeKey() + "'></script>\r\n";
         code += "</head>";
         code += "<body>";
@@ -229,24 +229,56 @@ ClientCodeLoader = function () {
     let reloadClientJS = function () {
         let js;
         js = getClientJS();
-        js = '"use strict"   \r\n' + js;
-        FS.writeFileSync(CONST_DIR_ROOT + '/public/js/client.source.js', js);
+
+        FS.writeFileSync(CONST_DIR_ROOT + '/public/js/client.source.js', '"use strict" \r\n' + js);
 
         Logs.log("ClientJS source code writed. Size: " + js.length, Logs.LEVEL_DETAIL);
 
         //@todo LogicClintCodeloader.config?
-        if (Config.WebSocketServer.compressCode) {
-            js = 'function _(window){ ' + js + ' };' +
-                '_(window);' +
-                '';
-            let result = UGLIFYJS.minify(js);
+        if (Config.Project.minifyCode) {
+            js = 'function func(window,document){ ' + js + ' };' +
+                'func(window, window.document);';
+
+            let options;
+            options = {
+                compress: {
+                    drop_console: !Config.Project.develop,
+                    drop_debugger: !Config.Project.develop,
+                    hoist_funs: true,
+                    keep_fargs: false,
+                    keep_infinity: false,
+                    passes: 1000000,
+                    pure_funcs: null,// may helpfull for CAPI SAPI
+                },
+                output: {
+                    beautify: false,
+                },
+                mangle: {
+                    keep_fnames: false,
+                    toplevel: true,
+                    properties: {
+                        reserved: ['cookie']
+                    },
+                    reserved: ['cookie']
+                },
+                keep_fnames: false,
+                warnings: false,
+                toplevel: true,
+            }
+            //options.compress = false;
+            let sTime = mtime();
+            let result = UGLIFYJS.minify({js: js}, options);
             if (result.code) {
                 js = result.code;
                 FS.writeFileSync(CONST_DIR_ROOT + '/public/js/client.min.js', js);
-                Logs.log("ClientJS minified success(writen). Size: " + js.length, Logs.LEVEL_DETAIL);
+                Logs.log("ClientJS minified success(writen)." +
+                    " Size: " + js.length.toString() +
+                    " Time: " + (mtime() - sTime).toString()
+                    , Logs.LEVEL_DETAIL);
             } else {
                 Logs.log("ClientJS minified [FAILED], because some error.", Logs.LEVEL_ERROR, result);
             }
+            if (result.warnings) Logs.log("code minify warnings", Logs.LEVEL_WARNING, result.warnings);
         }
     };
 
@@ -453,7 +485,6 @@ ClientCodeLoader = function () {
             if (name.substr(0, 4) === 'Page') {
                 guiCode += ' ' + name + '.init();' + "\r\n";
             }
-
         });
 
         return 'document.addEventListener("DOMContentLoaded", function() {' + guiCode + '});';
@@ -464,6 +495,6 @@ ClientCodeLoader = function () {
     };
 };
 
-ClientCodeLoader = new ClientCodeLoader;
+ClientCodeLoader = new ClientCodeLoader();
 
 ClientCodeLoader.depends = ['Logs', 'Profiler', 'SocNet', 'WebSocketServer'];
