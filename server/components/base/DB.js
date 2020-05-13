@@ -59,7 +59,6 @@ DB = function () {
             }
             isConnected = true;
             Logs.log("Connect to DB successful.", Logs.LEVEL_NOTIFY);
-            Logs.log("DB inited.", Logs.LEVEL_NOTIFY);
             afterInitCallback();
         });
     };

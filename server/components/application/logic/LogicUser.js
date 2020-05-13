@@ -108,11 +108,11 @@ LogicUser = function () {
      */
     let authorizeSendSuccess = function (user, cntx, prid, profilerType) {
         /** Тут мы запомним его connectionId раз и на всегда */
-        Statistic.add(user.id, Statistic.ID_AUTHORIZE);
+        Logs.log("Auth+", Logs.LEVEL_NOTIFY, user.socNetUserId, Logs.CHANNEL_TELEGRAM);
+
         userAddConn(user, cntx);
         DataUser.updateLastLogin(user.id);
         CAPIUser.authorizeSuccess(user.id, user);
-        Profiler.stop(profilerType, prid);
     };
 
     /**

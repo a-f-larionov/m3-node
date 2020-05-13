@@ -101,10 +101,9 @@ function Loader() {
 
     this.callMainFunction = function () {
 
-        /* Execute main function. */
+        /** Execute main function. */
         LogicMain.main();
     };
-
 
     this.getComponentsMap = function () {
         let map;
@@ -223,7 +222,7 @@ function Loader() {
             }
         }
         sequencedInit(function (afterInitCallback) {
-            Logs.log("Server is running full.", Logs.LEVEL_NOTIFY);
+            Logs.log("Server is running full.", Logs.LEVEL_ALERT);
             afterInitCallback();
             callback();
         });

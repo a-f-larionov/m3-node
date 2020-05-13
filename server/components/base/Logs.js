@@ -40,7 +40,7 @@ let Logs = function () {
      * @param [details] {*} необязательный параметр, детали.
      * @param channel
      */
-    this.log = function (message, level, details, channel) {
+    this.log = function (message, level, details, channel, telega) {
         let date, dateFormated, logText, levelTitle;
         /** Если не передан уровень, то считаем его детальным. */
         if (!level) level = Logs.LEVEL_DETAIL;
@@ -92,20 +92,27 @@ let Logs = function () {
             case Logs.CHANNEL_VK_PAYMENTS:
                 FS.writeFile(CONST_DIR_SERVER + '/logs/vk_payments.log', logText + details + "\r\n", {flag: 'a'}, function () {
                 });
+                telega = true;
                 break;
             case Logs.CHANNEL_VK_STUFF:
                 FS.writeFile(CONST_DIR_SERVER + '/logs/vk_stuff.log', logText + details + "\r\n", {flag: 'a'}, function () {
                 });
+                telega = true;
                 break;
             case Logs.CHANNEL_VK_HEALTH:
                 FS.writeFile(CONST_DIR_SERVER + '/logs/vk_health.log', logText + details + "\r\n", {flag: 'a'}, function () {
                 });
+                telega = true;
                 break;
             case Logs.CHANNEL_CLIENT:
                 FS.writeFile(CONST_DIR_SERVER + '/logs/client.log', logText + details + "\r\n", {flag: 'a'}, function () {
                 });
                 break;
+            case Logs.CHANNEL_TELEGRAM:
+                telega = true;
+                break;
         }
+        if (level >= Logs.LEVEL_ALERT) telega = true;
         if (level === Logs.LEVEL_ERROR || level === Logs.LEVEL_FATAL_ERROR) {
             if (CONST_IS_CLIENT_SIDE) {
                 //@todo client errors channel
@@ -113,6 +120,10 @@ let Logs = function () {
             }
         }
         // если это фатальная ошибка - завершим работу программы.
+
+        if (CONST_IS_SERVER_SIDE && telega) {
+            telegramSent(logText + details);
+        }
         if (level === Logs.LEVEL_FATAL_ERROR) {
             self.showCache();
             throw new Error("Vse polamalos'!");
@@ -145,19 +156,24 @@ let Logs = function () {
     this.LEVEL_NOTIFY = 2;
 
     /**
+     * Оповещение.
+     */
+    this.LEVEL_ALERT = 3;
+
+    /**
      * Внимание.
      */
-    this.LEVEL_WARNING = 3;
+    this.LEVEL_WARNING = 4;
 
     /**
      * Ошибка.
      */
-    this.LEVEL_ERROR = 4;
+    this.LEVEL_ERROR = 5;
 
     /**
      * Фатальная ошибка.
      */
-    this.LEVEL_FATAL_ERROR = 5;
+    this.LEVEL_FATAL_ERROR = 6;
 
     this.alert = function (level, message) {
         if (level < trigger_level) return;
@@ -168,6 +184,7 @@ let Logs = function () {
     /** Человеко-читаемые типы логов. */
     typeTitles[this.LEVEL_DETAIL] = 'd';
     typeTitles[this.LEVEL_NOTIFY] = 'N';
+    typeTitles[this.LEVEL_ALERT] = '!';
     typeTitles[this.LEVEL_WARNING] = 'w';
     typeTitles[this.LEVEL_ERROR] = 'E';
     typeTitles[this.LEVEL_FATAL_ERROR] = 'FE';
@@ -182,6 +199,7 @@ Logs.CHANNEL_VK_PAYMENTS = 1;
 Logs.CHANNEL_VK_STUFF = 2;
 Logs.CHANNEL_VK_HEALTH = 3;
 Logs.CHANNEL_CLIENT = 4;
+Logs.CHANNEL_TELEGRAM = 5;
 
 Logs.depends = [];
 

@@ -131,7 +131,6 @@ WebSocketServer = function () {
         server.on('request', onWebSocketRequest);
 
         Logs.log("WebSocketServer running. port:" + port, Logs.LEVEL_NOTIFY);
-        Logs.log("WebSocketServer inited.", Logs.LEVEL_NOTIFY);
         afterRunCallback();
     };
 

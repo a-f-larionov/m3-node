@@ -21,17 +21,10 @@ let CAPIUser = function () {
      * @param user {Object} юзер инфо.
      */
     this.updateUserInfo = function (cntx, user) {
-        if (user.id === 4) {
-            console.log(user.id, user.fullRecoveryTime);
-            console.log(JSON.stringify(LogicUser.getById(4).fullRecoveryTime));
-        }
         user.createTimestamp = LogicTimeClient.convertToClient(user.createTimestamp);
         user.lastLoginTimestamp = LogicTimeClient.convertToClient(user.lastLoginTimestamp);
         user.fullRecoveryTime = LogicTimeClient.convertToClient(user.fullRecoveryTime);
         LogicUser.updateUserInfo(user);
-        if (user.id === 4) {
-            console.log('afterupdate', JSON.stringify(LogicUser.getById(4).fullRecoveryTime));
-        }
     };
 
     this.updateUserListInfo = function (cntx, userList) {

@@ -19,7 +19,7 @@ LogicMain = function () {
 
     this.setStatisticsIds = function () {
 
-        /* User statistics. */
+        /** User statistics. */
         Statistic.ID_AUTHORIZE = Statistic.addTitle(1, "авторизация через ВКонтакте ");
         Statistic.ID_LOGOUT = Statistic.addTitle(2, "покинул игру.");
     };
@@ -77,7 +77,6 @@ LogicMain = function () {
         addDeInitCallback(Statistic.flushCache);
     };
 };
-
 
 LogicMain = new LogicMain;
 

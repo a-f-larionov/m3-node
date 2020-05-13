@@ -74,6 +74,7 @@ SAPIMap = function () {
         DataUser.getById(cntx.userId, function (user) {
             if (user.nextPointId < pointId + 1) {
                 DataUser.updateNextPointId(cntx.userId, pointId + 1);
+                Logs.log("LevelUp uid:" + cntx.user.id + " pid:" + pointId + 1, Logs.LEVEL_ALERT);
             }
         });
         /** Откроем сундук, если возможно */
@@ -83,6 +84,8 @@ SAPIMap = function () {
 
             if (!chest) {
                 return Logs.log("no chest found for " + chestId, Logs.LEVEL_WARNING, arguments);
+            } else {
+                Logs.log("Chest open uid:" + cntx.user.id + " cid:" + chestId, Logs.LEVEL_ALERT);
             }
             chest.prizes.forEach(function (prize) {
                 switch (prize.id) {
