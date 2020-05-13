@@ -169,7 +169,7 @@ let WebSocketClient = function () {
      */
     let onMessage = function (event) {
         /* Logs.log("WebSocket: Получены данные.", Logs.LEVEL_DETAIL, event.data); */
-        self.onData(event.data, connectionId);
+        self.onData(clientDecrypt(event.data), connectionId);
     };
 
     /**
@@ -201,7 +201,8 @@ let WebSocketClient = function () {
         }
         /* Берем элемент из буфера. */
         data = packetBuffer.shift();
-        socket.send(data);
+
+        socket.send(clientCrypt(data));
         /* Logs.log("WebSocketClient.send data: length=" + data.length, Logs.LEVEL_DETAIL); */
         /* Остальные данные отправим позже. */
         if (packetBuffer.length) {

@@ -1,6 +1,6 @@
 /**
  * Компонент для работы с социальной сетью.
- * @type {SocNet}
+ * @type {SocNet|SocNetVK|SocNetStandalone}
  * @constructor
  */
 let SocNet = function () {

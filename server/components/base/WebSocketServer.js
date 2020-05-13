@@ -84,7 +84,8 @@ WebSocketServer = function () {
             Logs.log("undefined connection:" + id + " with data:" + data, Logs.LEVEL_WARNING);
             return false;
         }
-        connectionStack[id].sendUTF(data);
+        //send here to client
+        connectionStack[id].sendUTF(serverCrypt(data));
         return true;
     };
 
@@ -172,10 +173,10 @@ WebSocketServer = function () {
         Logs.log("WebSocketServer.onConnected: id=" + id, Logs.LEVEL_DETAIL);
         self.onConnect(id);
         connection.on('message', function (message) {
-            if (message.type == 'utf8') {
+            if (message.type === 'utf8') {
                 /* Logs.log("Получены данные.", Logs.LEVEL_DETAIL, message.utf8Data); */
                 lastConnectionId = id;
-                self.onData(message.utf8Data, id);
+                self.onData(serverDecrypt(message.utf8Data), id);
             }
         });
         connection.on('close', function () {

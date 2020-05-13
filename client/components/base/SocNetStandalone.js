@@ -17,7 +17,7 @@ let SocNetStandalone = function () {
 
     this.getUserProfileUrl = function () {
         Logs.log("TODO Me, SocNetStandalone.getUserProfileUrl", Logs.LEVEL_WARNING);
-        return '/notFound/todo/me/please/:)';
+        return '';
     };
 
     this.openInviteFriendDialog = function () {
@@ -36,7 +36,7 @@ let SocNetStandalone = function () {
     };
 
     let friends = [];
-    for (let i = 0; i < 10000; i++) {
+    for (let i = 0; i < 1000; i++) {
         friends.push(i);
     }
     this.getFriendIds = function (callback) {

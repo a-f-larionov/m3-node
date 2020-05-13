@@ -6,6 +6,20 @@ let DialogStuffShop = function () {
 
     let items = [];
 
+    let locked = false;
+
+    /**
+     * Чтобы пользователь на купил 2ыйнм кликом
+     * @returns {boolean}
+     */
+    let lock = function () {
+        if (locked) return true;
+        locked = true;
+        setTimeout(function () {
+            locked = false;
+        }, 1000);
+    };
+
     this.init = function () {
         let el, offsetX, stepX, offsetY;
         this.__proto__.init.call(this);
@@ -78,6 +92,8 @@ let DialogStuffShop = function () {
     };
 
     this.buyStuff = function (itemIndex) {
+
+        if (lock()) return;
 
         let userGold, buyFunc, giveFunc, shopItem;
         userGold = LogicStuff.getStuff('goldQty');

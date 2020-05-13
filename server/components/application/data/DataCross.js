@@ -9,7 +9,9 @@ let DataCross = {
     app: {
         width: 777,
         height: 500
-    }
+    },
+    clientCryptKey: 3705,
+    serverCryptKey: 987,
 };
 
 /** Для кросс-сайдных компонент */

@@ -4,8 +4,69 @@ let PATH = require('path');
 let IMAGE_SIZE = require('image-size');
 let UGLIFYJS = require('uglify-es');
 let SPRITESMITH = require('spritesmith');
+let CRYPTO = require('crypto');
+var JavaScriptObfuscator = require('javascript-obfuscator');
 
 ClientCodeLoader = function () {
+
+    let minifyOptions = {
+        compress: {
+            drop_console: !Config.Project.develop,
+            drop_debugger: !Config.Project.develop,
+            hoist_funs: true,
+            keep_fargs: false,
+            keep_infinity: false,
+            passes: 10000,
+            pure_funcs: null,// may helpfull for CAPI SAPI
+        },
+        mangle: {
+            keep_fnames: false,
+            toplevel: true,
+            properties: false,
+            keep_classnames: false,
+        },
+        keep_fnames: false,
+        toplevel: true,
+        warnings: false,
+    };
+
+    let obfuscateOptions =
+        {
+            compact: true,
+            controlFlowFlattening: false,
+            controlFlowFlatteningThreshold: 0.75,
+            deadCodeInjection: false,
+            deadCodeInjectionThreshold: 0.4,
+            debugProtection: false,
+            debugProtectionInterval: false,
+            disableConsoleOutput: false,
+            domainLock: [],
+            identifierNamesGenerator: 'mangled',
+            identifiersDictionary: [],
+            identifiersPrefix: '',
+            inputFileName: '',
+            log: false,
+            renameGlobals: true,
+            reservedNames: [],
+            reservedStrings: [],
+            rotateStringArray: true,
+            seed: 1,
+            selfDefending: false,
+            shuffleStringArray: true,
+            sourceMap: false,
+            sourceMapBaseUrl: '',
+            sourceMapFileName: '',
+            sourceMapMode: 'separate',
+            splitStrings: false,
+            splitStringsChunkLength: 10,
+            stringArray: true,
+            stringArrayEncoding: 'base64',
+            stringArrayThreshold: 0.75,
+            target: 'browser',
+            transformObjectKeys: false,
+            unicodeEscapeSequence: false,
+        };
+
 
     let self = this;
     /**
@@ -227,47 +288,59 @@ ClientCodeLoader = function () {
      * Перезагрузка основного кода клиента.
      */
     let reloadClientJS = function () {
-        let js;
+        let cache, sTime, result, js, jsHash;
+        cache = (FS.existsSync(CONST_DIR_ROOT + '/cache.js')
+            && JSON.parse(FS.readFileSync(CONST_DIR_ROOT + '/cache.js').toString()))
+            || {};
+
         js = getClientJS();
+        jsHash = CRYPTO.createHash('md5')
+            .update(js +
+                JSON.stringify(minifyOptions) +
+                JSON.stringify(Config) +
+                JSON.stringify(obfuscateOptions)
+            )
+            .digest('hex');
 
-        FS.writeFileSync(CONST_DIR_ROOT + '/public/js/client.source.js', '"use strict" \r\n' + js);
+        if (cache.jsHash && cache.jsHash == jsHash) {
+            Logs.log("Use cached js", Logs.LEVEL_NOTIFY);
+            return;
+        }
+        cache.jsHash = jsHash;
 
+        FS.writeFileSync(CONST_DIR_ROOT + '/public/js/client.source.js', js);
         Logs.log("ClientJS source code writed. Size: " + js.length, Logs.LEVEL_DETAIL);
+
+        if (Config.Project.obfuscate) {
+            sTime = mtime();
+            js = JavaScriptObfuscator.obfuscate(js, obfuscateOptions).getObfuscatedCode();
+
+            FS.writeFileSync(CONST_DIR_ROOT + '/public/js/client.source.obfuscated.js', js);
+            Logs.log("ClientJS obfuscated (writen)." +
+                " Size: " + js.length.toString() +
+                " Time: " + (mtime() - sTime).toString()
+                , Logs.LEVEL_DETAIL);
+        }
+
+        FS.writeFileSync(CONST_DIR_ROOT + '/cache.js', JSON.stringify(cache));
 
         //@todo LogicClintCodeloader.config?
         if (Config.Project.minifyCode) {
-            js = 'function func(window,document){ ' + js + ' };' +
-                'func(window, window.document);';
 
-            let options;
-            options = {
-                compress: {
-                    drop_console: !Config.Project.develop,
-                    drop_debugger: !Config.Project.develop,
-                    hoist_funs: true,
-                    keep_fargs: false,
-                    keep_infinity: false,
-                    passes: 1000000,
-                    pure_funcs: null,// may helpfull for CAPI SAPI
-                },
-                output: {
-                    beautify: false,
-                },
-                mangle: {
-                    keep_fnames: false,
-                    toplevel: true,
-                    properties: {
-                        reserved: ['cookie']
-                    },
-                    reserved: ['cookie']
-                },
-                keep_fnames: false,
-                warnings: false,
-                toplevel: true,
-            }
-            //options.compress = false;
-            let sTime = mtime();
-            let result = UGLIFYJS.minify({js: js}, options);
+            let reserved = [
+                'cookie',
+                'addEventListener',
+                'location',
+                'getElementById',
+                'elementFromPoint',
+                'getElementsByTagName',
+                'createElement',
+                'appendChild',
+                'i_d',
+            ];
+
+            sTime = mtime();
+            result = UGLIFYJS.minify({js: "{" + js + "}"}, JSON.parse(JSON.stringify(minifyOptions)));
             if (result.code) {
                 js = result.code;
                 FS.writeFileSync(CONST_DIR_ROOT + '/public/js/client.min.js', js);
@@ -309,6 +382,7 @@ ClientCodeLoader = function () {
     let getClientJS = function () {
         let jsFiles, hostname, clientConfigPath, code;
         jsFiles = [];
+        jsFiles.push(clientSource + '/run.js');
         jsFiles = jsFiles.concat(getFileList(clientSource + 'core/'));
         jsFiles = jsFiles.concat(getFileList(clientSource + 'components/'));
         /** Include Config file. */
@@ -322,11 +396,17 @@ ClientCodeLoader = function () {
         clientConfigPath = clientSource + 'config.' + hostname + '.' + parentFolderName + '.js';
         Logs.log("Generate client code(client). The config file: " + clientConfigPath, Logs.LEVEL_NOTIFY);
         jsFiles.push(clientConfigPath);
-        jsFiles.push(clientSource + '/run.js');
+
         code = clientCodePrepareCode(jsFiles);
         /** Generate sapi */
         code += ApiRouter.getSAPIJSCode();
         code += getGUIGeneratedCode();
+
+        if (!Config.Project.develop) {
+            code = 'function _(window){' + code + ' }; _(window);';
+        }
+        code = '"use strict";\r\n' + code;
+
         return code;
     };
 
@@ -493,7 +573,7 @@ ClientCodeLoader = function () {
     let translate2X = function (value) {
         return value / 2;
     };
-};
+}
 
 ClientCodeLoader = new ClientCodeLoader();
 
