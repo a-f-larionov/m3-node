@@ -158,8 +158,8 @@ let ElementField = function () {
 
     let pointFromEvent = function (event) {
         return {
-            x: Math.floor((event.clientX - self.x) / DataPoints.BLOCK_WIDTH),
-            y: Math.floor((event.clientY - self.y) / DataPoints.BLOCK_HEIGHT)
+            x: Math.floor((event.clientX - self.x - GUI.appArea.offsetLeft ) / DataPoints.BLOCK_WIDTH),
+            y: Math.floor((event.clientY - self.y - GUI.appArea.offsetTop ) / DataPoints.BLOCK_HEIGHT)
         }
     };
 
@@ -168,6 +168,7 @@ let ElementField = function () {
     };
 
     let fieldAct = function (p) {
+        console.log(p, container);
         let cell;
         if (lock) return;
         if (AnimLocker.busy()) return;

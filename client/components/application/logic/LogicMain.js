@@ -15,10 +15,9 @@ let LogicMain = function () {
     };
 
     LogicMain.prototype.onAuthorizeSuccess = function () {
-        /** Установить текущую карту игрока */
-        DataMap.setCurrentMapId(LogicUser.getUserLastMapId());
-
         LogicStuff.loadStuff();
+        /** Установить текущую карту игрока */
+        DataMap.setCurrentMapId();
 
         /** Первый показ игры: Главная страница */
         PageController.showPage(PageMain);

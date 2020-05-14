@@ -9,7 +9,8 @@ let GUI = function () {
 
     let isFSMode = false;
 
-    let appArea = false;
+    this.appArea = false;
+    let wizardArea = false;
 
     /**
      * Событие нажатия мышы(левой), но не отпускания.
@@ -104,8 +105,9 @@ let GUI = function () {
      * - установим родителя, это будет тело документа.
      */
     this.init = function () {
-        appArea = document.getElementById('appArea');
-        parentsStack.push(appArea);
+        GUI.appArea = document.getElementById('appArea');
+        wizardArea = document.getElementById('wizardArea');
+        parentsStack.push(GUI.appArea);
         let style = document.createElement('style');
         style.type = 'text/css';
         style.innerHTML = '.sepia { ' +
@@ -133,7 +135,7 @@ let GUI = function () {
         document.addEventListener('mousemove', function (event) {
 
             mouseMoveStack.forEach(function (callback) {
-                callback.call(null, event.clientX - appArea.offsetLeft, event.clientY - appArea.offsetTop);
+                callback.call(null, event.clientX - GUI.appArea.offsetLeft, event.clientY - GUI.appArea.offsetTop);
             })
         });
 
@@ -157,12 +159,16 @@ let GUI = function () {
 
             if ((before && !GUI.isFullScreen()) || (!before && GUI.isFullScreen())) {
                 if (vkWidgets) vkWidgets.style.display = 'none';
-                appArea.style.left = (screen.availWidth / 2 - parseInt(appArea.style.width) / 2) + 'px';
-                appArea.style.top = (screen.availHeight / 2 - parseInt(appArea.style.height) / 2) + 'px'
+                GUI.appArea.style.left = (screen.availWidth / 2 - parseInt(GUI.appArea.style.width) / 2) + 'px';
+                GUI.appArea.style.top = (screen.availHeight / 2 - parseInt(GUI.appArea.style.height) / 2) + 'px'
+                wizardArea.style.left = (screen.availWidth / 2 - parseInt(GUI.appArea.style.width) / 2) + 'px';
+                wizardArea.style.top = (screen.availHeight / 2 - parseInt(GUI.appArea.style.height) / 2) + 'px'
             } else {
                 if (vkWidgets) vkWidgets.style.display = '';
-                appArea.style.left = '';
-                appArea.style.top = '';
+                GUI.appArea.style.left = '';
+                GUI.appArea.style.top = '';
+                wizardArea.style.left = '';
+                wizardArea.style.top = '';
             }
         };
 

@@ -74,7 +74,7 @@ SAPIMap = function () {
         DataUser.getById(cntx.userId, function (user) {
             if (user.nextPointId < pointId + 1) {
                 DataUser.updateNextPointId(cntx.userId, pointId + 1);
-                Logs.log("LevelUp uid:" + cntx.user.id + " pid:" + pointId + 1, Logs.LEVEL_ALERT);
+                Logs.log("LevelUp uid:" + cntx.user.id + " pid:" + (pointId + 1), Logs.LEVEL_ALERT);
             }
         });
         /** Откроем сундук, если возможно */

@@ -50,10 +50,8 @@ let PageBlockWizard = function PageBlockWizard() {
             y = event.offsetY;
             pixelData = cntx.getImageData(x, y, 1, 1).data;
             if (pixelData[3] === 0) {
-
                 canvas.style.display = 'none';
-                el = document.elementFromPoint(event.offsetX, event.offsetY);
-
+                el = document.elementFromPoint(event.clientX, event.clientY);
                 if (el) el.dispatchEvent(new MouseEvent(event.type, event));
                 if (canvas.isActive) canvas.style.display = '';
 

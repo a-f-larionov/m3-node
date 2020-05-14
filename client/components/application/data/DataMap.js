@@ -35,7 +35,10 @@ let DataMap = function () {
     };
 
     this.setCurrentMapId = function (id) {
-        if (id >= DataMap.MAP_ID_MAX) {
+        if (!id) id = Math.min(DataMap.MAP_ID_MAX, LogicUser.getUserLastMapId());
+        if (!id) return;
+
+        if (id > DataMap.MAP_ID_MAX) {
             return;
         }
         if (id <= DataMap.MAP_ID_MIN) {
