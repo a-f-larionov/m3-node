@@ -2,7 +2,10 @@
  * @type {LogicMain}
  * @constructor
  */
-let LogicMain = function () {
+let LogicMain = (function () {
+
+    function LogicMain() {
+    }
 
     /**
      * After connect
@@ -66,6 +69,6 @@ let LogicMain = function () {
         OnIdle.init(function () {
         });
     };
-};
 
-LogicMain = new LogicMain();
+    return new LogicMain();
+})();
