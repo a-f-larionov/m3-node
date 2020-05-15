@@ -8,7 +8,7 @@ SAPIStuff = function () {
         if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
 
-        LogicStuff.sendStuffToUser(cntx.user.id);
+        LogicStuff.sendStuffToUser(cntx.user.id, pStart(Profiler.ID_SAPISTUFF_SEND_ME_STUFF));
     };
 
     this.usedHummer = function (cntx) {

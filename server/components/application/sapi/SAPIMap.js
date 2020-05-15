@@ -1,24 +1,7 @@
 SAPIMap = function () {
 
-    this.reloadLevels = function (cntx) {
-        if (!cntx.isAuthorized) return Logs.log(arguments.callee.name + " not authorized", Logs.LEVEL_WARNING, cntx);
-        if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
-        if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
-
-        DataUser.getById(cntx.user.id, function (user) {
-            if (!
-                (user.id === 1 || user.socNetUserId === 1)
-            ) {
-                Logs.log("ERROR", Logs.LEVEL_ERROR);
-                return;
-            }
-
-            LogicSystemRequests.reloadLevels();
-        });
-    };
-
     this.sendMeMapInfo = function (cntx, mapId) {
-        let map, points, chests, userPoints, userChests;
+        let map, points;
         if (!cntx.isAuthorized) return Logs.log(arguments.callee.name + " not authorized", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
@@ -27,11 +10,13 @@ SAPIMap = function () {
             Logs.log("no map found:" + mapId, Logs.LEVEL_WARNING, cntx);
             return;
         }
+        let prid = pStart(Profiler.IS_SAPIMAP_SEND_ME_MAP_INFO);
         map = DataMap.getMap(mapId);
         points = DataPoints.getPointsByMapId(mapId);
 
         DataPoints.getUsersInfo(mapId, [cntx.userId], function (usePoints) {
             CAPIMap.gotMapsInfo(cntx.userId, mapId, map, points, usePoints);
+            pFinish(prid);
         });
     };
 
@@ -40,19 +25,18 @@ SAPIMap = function () {
         if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
 
-        if (!DataMap.existsMap(mapId)) {
-            Logs.log("no map found:" + mapId, Logs.LEVEL_WARNING, cntx);
-            return;
-        }
-        if (userIds.length === 0) {
-            Logs.log("no friends - no data", Logs.LEVEL_DETAIL, cntx);
-            return;
-        }
+        if (!DataMap.existsMap(mapId)) return Logs.log("no map found:" + mapId, Logs.LEVEL_WARNING, cntx);
+
+        if (userIds.length === 0) return Logs.log("no friends - no data", Logs.LEVEL_DETAIL, cntx);
+
+        let prid = pStart(Profiler.IS_SAPIMAP_SEND_ME_USERS_SCORE);
+
         DataPoints.getUsersInfo(mapId, userIds, function (userPoints) {
             CAPIMap.gotUserScores(
                 cntx.userId,
                 userPoints
             );
+            pFinish(prid);
         });
     };
 
@@ -68,45 +52,72 @@ SAPIMap = function () {
         if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
 
+        let prid = pStart(Profiler.IS_SAPIMAP_ON_FINISH);
         let tid = LogicTid.getOne();
         /** Обновляем номер точки и очки на ней */
-        DataPoints.updateUsersPoints(cntx.userId, pointId, score);
-        DataUser.getById(cntx.userId, function (user) {
-            if (user.nextPointId < pointId + 1) {
-                DataUser.updateNextPointId(cntx.userId, pointId + 1);
-                Logs.log("LevelUp uid:" + cntx.user.id + " pid:" + (pointId + 1), Logs.LEVEL_ALERT);
-            }
-        });
-        /** Откроем сундук, если возможно */
-        //@todo check map stars
-        if (chestId) {
-            let chest = DataChests.getById(chestId);
+        DataPoints.updateUsersPoints(cntx.userId, pointId, score, function(){
 
-            if (!chest) {
-                return Logs.log("no chest found for " + chestId, Logs.LEVEL_WARNING, arguments);
-            } else {
-                Logs.log("Chest open uid:" + cntx.user.id + " cid:" + chestId, Logs.LEVEL_ALERT);
-            }
-            chest.prizes.forEach(function (prize) {
-                switch (prize.id) {
-                    case DataObjects.STUFF_HUMMER:
-                        DataStuff.giveAHummer(cntx.userId, prize.count, tid);
-                        break;
-                    case DataObjects.STUFF_LIGHTNING:
-                        DataStuff.giveALightning(cntx.userId, prize.count, tid);
-                        break;
-                    case DataObjects.STUFF_SHUFFLE:
-                        DataStuff.giveAHummer(cntx.userId, prize.count, tid);
-                        break;
-                    case DataObjects.STUFF_GOLD:
-                        DataStuff.giveAGold(cntx.userId, prize.count, tid);
-                        break;
+            DataUser.getById(cntx.userId, function (user) {
+                if (user.nextPointId < pointId + 1) {
+
+                    DataUser.updateNextPointId(cntx.userId, pointId + 1, function () {
+                        Logs.log("LevelUp uid:" + cntx.user.id + " pid:" + (pointId + 1), Logs.LEVEL_ALERT);
+                        /** Откроем сундук, если возможно */
+                        //@todo check map stars
+                        pFinish(prid);
+                        if (chestId) {
+                            let prid = pStart(Profiler.IS_SAPIMAP_OPEN_CHEST);
+                            let chest = DataChests.getById(chestId);
+
+                            if (!chest) {
+                                pClear(prid);
+                                return Logs.log("no chest found for " + chestId, Logs.LEVEL_WARNING, arguments);
+                            } else {
+                                Logs.log("Chest open uid:" + cntx.user.id + " cid:" + chestId, Logs.LEVEL_ALERT);
+                            }
+                            chest.prizes.forEach(function (prize) {
+                                switch (prize.id) {
+                                    case DataObjects.STUFF_HUMMER:
+                                        DataStuff.giveAHummer(cntx.userId, prize.count, tid);
+                                        break;
+                                    case DataObjects.STUFF_LIGHTNING:
+                                        DataStuff.giveALightning(cntx.userId, prize.count, tid);
+                                        break;
+                                    case DataObjects.STUFF_SHUFFLE:
+                                        DataStuff.giveAHummer(cntx.userId, prize.count, tid);
+                                        break;
+                                    case DataObjects.STUFF_GOLD:
+                                        DataStuff.giveAGold(cntx.userId, prize.count, tid);
+                                        break;
+                                }
+                            });
+                            //@todo LOCK many hummer light shuffle and gold
+                            DataStuff.getByUserId(cntx.userId, function (data) {
+                                CAPIStuff.gotStuff(cntx.userId, data);
+                                pFinish(prid);
+                            });
+                        }
+                    });
                 }
             });
-            DataStuff.getByUserId(cntx.userId, function (data) {
-                CAPIStuff.gotStuff(cntx.userId, data);
-            });
-        }
+        });
+    };
+
+    this.reloadLevels = function (cntx) {
+        if (!cntx.isAuthorized) return Logs.log(arguments.callee.name + " not authorized", Logs.LEVEL_WARNING, cntx);
+        if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
+        if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
+
+        DataUser.getById(cntx.user.id, function (user) {
+            if (!
+                (user.id === 1 || user.socNetUserId === 1)
+            ) {
+                Logs.log("ERROR", Logs.LEVEL_ERROR);
+                return;
+            }
+
+            LogicSystemRequests.reloadLevels();
+        });
     };
 };
 

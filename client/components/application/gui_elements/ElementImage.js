@@ -39,7 +39,7 @@ let ElementImage = function () {
      * Ссылка на картинку.
      * @type {string}
      */
-    this.src = 'not-found.png';
+    this.src;
 
     /**
      * Прозрачность картинки.

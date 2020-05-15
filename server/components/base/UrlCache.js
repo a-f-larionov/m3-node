@@ -19,7 +19,7 @@ UrlCache = function () {
      */
     this.get = function (key) {
         if (cache[key]) {
-            if (cache[key].timestamp < (new Date().getTime())) {
+            if (cache[key].timestamp < (Date.now())) {
                 let tmp = cache[key].data;
                 delete cache[key];
                 return tmp;
@@ -37,7 +37,7 @@ UrlCache = function () {
     this.set = function (key, data) {
         cache[key] = {
             data: data,
-            timestamp: new Date().getTime() + Config.UrlCache.lifeTime
+            timestamp: Date.now() + Config.UrlCache.lifeTime
         };
     };
 };

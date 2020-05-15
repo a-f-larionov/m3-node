@@ -26,23 +26,23 @@ LogicMain = function () {
 
     this.setProfileIds = function () {
 
-        Profiler.ID_AUTH_VK = Profiler.addTitle(1, "ID_AUTH_VK");
-        Profiler.ID_AUTH_STANDALONE = Profiler.addTitle(2, "ID_AUTH_STANDALONE");
-        Profiler.ID_LOGIC_SEND_TO_ALL = Profiler.addTitle(3, "ID_LOGIC_SEND_TO_ALL");
     };
 
     this.setWebSocketServerMap = function () {
 
         WebSocketServer.setMap({
+
             '/service/vk_buy': LogicPayments.VKbuy,
             '/service/standalone_buy': LogicPayments.standaloneBuy,
+
             '/service/client-vk': ClientCodeLoader.getClientVK,
             '/service/client-standalone': ClientCodeLoader.getClientStandalone,
+
             '/service/reloadClientCode': ClientCodeLoader.reloadClient,
             '/service/vk-comments-widget': ClientCodeLoader.getVKCommentsWidget,
 
             '/service/--profiler': LogicSystemRequests.getProfiler,
-            '/service/--log': LogicSystemRequests.getLog,
+            '/service/--counters': LogicSystemRequests.getCounters,
             '/service/--shutdown___': LogicSystemRequests.shutdown,
             '/service/--reload-levels': LogicSystemRequests.reloadLevels,
             '/service/--logsSetDetail': LogicSystemRequests.logsSetDetail,
@@ -50,12 +50,12 @@ LogicMain = function () {
             '/service/--help': function (callback) {
                 callback("Project.name:" + Config.Project.name + "<br>" +
                     "--profiler <br>" +
-                    "--log <br>" +
+                    "--counters <br>" +
                     "--logsSetDetail<br>" +
                     "--logsSetNotify<br>" +
                     "--help<br>" +
                     "<br>" +
-                    "reloadClient<br>" +
+                   // "reloadClient<br>" +
                     "client-vk<br>" +
                     "client-standalone?soc-net-user-id={socNetUserId}<br>");
             }

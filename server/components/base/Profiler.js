@@ -1,101 +1,93 @@
+/**
+ * @type {Profiler}
+ * @constructor
+ */
 Profiler = function () {
-    let self = this;
 
-    let titles = [];
-    let lastId = 0;
-    let maxTitleLength = 0;
+    let data = [];
+
+    let pridToId = [];
 
     /**  Last profiler Id. */
     let lastPrid = 0;
 
     this.start = function (id) {
+        let prid;
         lastPrid++;
-        titles[id].stamps[lastPrid] = mtime();
-        return lastPrid;
+        prid = lastPrid;
+        if (!data[id]) return Logs.log("Profiler.start(). no data for ", Logs.LEVEL_WARNING, {prid: lastPrid, id: id, data: data});
+
+        pridToId[prid] = id;
+        data[id].stamps[prid] = mtime();
+
+        return prid;
     };
 
-    this.stop = function (id, prid) {
-        if (!prid) {
-            Logs.log("Profiler.stop().", Logs.LEVEL_WARNING, prid);
-        }
-        if (!titles[id].stamps[prid]) {
-            Logs.log("Profiler.stop(). no stamp for", Logs.LEVEL_WARNING, {prid: prid, id: id});
-        }
-        titles[id].sumTime += mtime() - titles[id].stamps[prid];
-        titles[id].count++;
-        delete titles[id].stamps[prid];
+    this.stop = function (prid) {
+        let id;
+        if (!prid) return Logs.log("Profiler.stop().", Logs.LEVEL_WARNING, prid);
+        id = pridToId[prid];
+        if (!data[id].stamps[prid]) return Logs.log("Profiler.stop(). no stamp for", Logs.LEVEL_WARNING, {prid: prid, id: id});
+        data[id].sumTime += mtime() - data[id].stamps[prid];
+        data[id].count++;
+        Profiler.clear(prid);
     };
 
-    this.addTitle = function (id, title) {
-        titles[id] = {
-            stamps: {},
-            sumTime: 0,
-            count: 0,
-            title: title
-        };
-        // @todo move to this.getMaxTitleLength = function()
-        if (title.length > maxTitleLength) {
-            maxTitleLength = title.length;
-        }
-        return id;
+    this.clear = function (prid) {
+        let id;
+        id = pridToId[prid];
+        delete data[id].stamps[prid];
+        delete pridToId[prid];
     };
 
-    this.printReport = function () {
-        output = self.getTextReport();
-        console.log(output);
-    };
+    this.getReport = function () {
+        let txt = '', report, totalSumm = 0;
 
-    this.saveToDB = function () {
-        let row, query;
-        query = "INSERT INTO profiling ( `datetime`, `profileId`, `sumTime`, `count` ) VALUES ";
-        for (let id in titles) {
-            row = titles[id];
-            query += "(" + time() + "," + id + "," + row.sumTime + "," + row.count + "),";
-        }
-        query = query.substr(0, query.length - 1);
-        DB.query(query, function () {
+        report = [];
+        data.forEach(function (data, i) {
+            report[i] = data;
         });
-    };
 
-    this.getTextReport = function () {
-        let output, row, rps;
-        output = '';
-        output += "id " + str_pad("title", maxTitleLength + 3) + "  sumTime    count   rps\r\n";
-        titles.forEach(function (row) {
-            row.rps = (row.count / (row.sumTime / 1000) * 10000) / 10000;
-            if (!row.rps) {
-                row.rps = 0;
-            }
+        report.sort(function (a, b) {
+            if (a.sumTime === b.sumTime) return 0;
+            return a.sumTime < b.sumTime ? 1 : -1;
         });
-        let data2 = titles.slice(0);
-        data2.sort(function (a, b) {
-            if (a.rps > b.rps) return -1;
-            if (a.rps < b.rps) return 1;
-            return 0;
+        report = data.filter(function (a) {
+            return a.count;
         });
-        for (let id in data2) {
-            row = data2[id];
-            output += str_pad(id.toString(), 3);
-            output += ' ';
-            output += str_pad(row.title, maxTitleLength + 3);
-            output += ' ';
-            output += str_pad((row.sumTime / 1000).toString(), 10);
-            output += ' ';
-            output += str_pad((row.count).toString(), 7);
-            output += ' ';
-            output += row.rps;
-            output += "\r\n";
-        }
+
+        txt += '<table>';
+        report.forEach(function (row) {
+            totalSumm += row.sumTime;
+            txt +=
+                '<tr>' +
+                '<td>' + row.title + '</td>' +
+                '<td>' + row.count + '</td>' +
+                '<td>' + row.sumTime + '</td>\r\n' +
+                '</tr>';
+        });
+        txt += '</table>';
+
+        txt += '\r\ntotalSumm: ' + totalSumm + '\r\n';
         let memoryUsage = process.memoryUsage();
-        output += "rss: " + Math.round(memoryUsage.rss / 1024 / 1024) + " Mb\r\n";
-        output += "heapTotal: " + Math.round(memoryUsage.heapTotal / 1024 / 1024) + " Mb\r\n";
-        output += "heapUsed: " + Math.round(memoryUsage.heapUsed / 1024 / 1024) + " Mb\r\n";
-        return output;
+        /** https://nodejs.org/api/process.html */
+        txt += "rss: " + Math.round(memoryUsage.rss / 1024 / 1024) + " Mb\r\n";
+        txt += "heapTotal: " + Math.round(memoryUsage.heapTotal / 1024 / 1024) + " Mb\r\n";
+        txt += "heapUsed: " + Math.round(memoryUsage.heapUsed / 1024 / 1024) + " Mb\r\n";
+        return txt;
     };
 
     this.init = function (afterInitCallback) {
-        setInterval(Profiler.printReport, Config.Profiler.reportTimeout);
-        setInterval(Profiler.saveToDB, Config.Profiler.saveToDBTimeout);
+
+        Profiler.titles.forEach(function (title, id) {
+            data[id] = {
+                stamps: {},
+                sumTime: 0,
+                count: 0,
+                title: title
+            };
+        });
+
         afterInitCallback();
     };
 };
@@ -106,4 +98,51 @@ Profiler = function () {
  */
 Profiler = new Profiler();
 
+pStart = Profiler.start;
+pFinish = Profiler.stop;
+pClear = Profiler.clear;
+
 Profiler.depends = ['Logs'];
+
+Profiler.ID_AUTH_VK = 1;
+Profiler.ID_AUTH_STANDALONE = 2;
+Profiler.ID_LOGIC_SEND_TO_ALL = 3;
+Profiler.ID_SAPIUSER_SEND_ME_INFO = 4;
+Profiler.ID_USERSAPI_SEND_ME_USER_LIST_INFO = 5;
+Profiler.ID_USERSAPI_SEND_ME_USER_IDS_BY_SOC_NET = 6;
+Profiler.ID_USERSAPI_ON_FINISH = 7;
+Profiler.ID_USERSAPI_ON_START = 8;
+Profiler.ID_SEND_ME_TIME = 9;
+Profiler.IS_SAPIMAP_SEND_ME_MAP_INFO = 10;
+Profiler.IS_SAPIMAP_SEND_ME_USERS_SCORE = 11;
+Profiler.IS_SAPIMAP_OPEN_CHEST = 12;
+Profiler.ID_SAPISTUFF_SEND_ME_STUFF = 13;
+
+
+Profiler.titles = [];
+Profiler.titles[Profiler.ID_AUTH_VK] = 'auth-vk';
+Profiler.titles[Profiler.ID_AUTH_STANDALONE] = 'auth-standalone';
+Profiler.titles[Profiler.ID_LOGIC_SEND_TO_ALL] = 'send-to-all';
+
+Profiler.titles[Profiler.ID_SAPIUSER_SEND_ME_INFO] = 'SAPIUSER.sendMeInfo';
+Profiler.titles[Profiler.ID_USERSAPI_SEND_ME_USER_LIST_INFO] = 'SAPIUSER.sendMeUserListInfo';
+Profiler.titles[Profiler.ID_USERSAPI_SEND_ME_USER_IDS_BY_SOC_NET] = 'SAPIUSER.sendMeUserIdsBySocNet';
+Profiler.titles[Profiler.ID_USERSAPI_ON_FINISH] = 'SAPIUSER.onFinish';
+Profiler.titles[Profiler.ID_USERSAPI_ON_START] = 'SAPIUSER.onStart';
+Profiler.titles[Profiler.ID_SEND_ME_TIME] = 'Send-Me-Time';
+Profiler.titles[Profiler.IS_SAPIMAP_SEND_ME_MAP_INFO] = 'SAPIMap.sendMeMapInfo';
+Profiler.titles[Profiler.IS_SAPIMAP_SEND_ME_USERS_SCORE] = 'SAPIMap.sendMeUsersScore';
+Profiler.titles[Profiler.IS_SAPIMAP_OPEN_CHEST] = 'SAPIMap.openChest';
+Profiler.titles[Profiler.ID_SAPISTUFF_SEND_ME_STUFF] = 'SAPIStuff.sendMeStuff';
+
+
+//let prid = pStart(Profiler.ID_SAPIUSER_SEND_ME_INFO);
+//pStart(Profiler.ID_USERSAPI_SEND_ME_USER_LIST_INFO));
+//        let prid = pStart(Profiler.ID_USERSAPI_SEND_ME_USER_IDS_BY_SOC_NET);
+//let prid = pStart(Profiler.ID_USERSAPI_ON_FINISH);
+//let prid = pStart(Profiler.ID_USERSAPI_ON_START);
+///let prid = pStart(Profiler.ID_SEND_ME_TIME);
+//let prid = pStart(Profiler.IS_SAPIMAP_SEND_ME_MAP_INFO);
+//let prid = pStart(Profiler.IS_SAPIMAP_SEND_ME_USERS_SCORE);
+//IS_SAPIMAP_OPEN_CHEST
+//ID_SAPISTUFF_SEND_ME_STUFF

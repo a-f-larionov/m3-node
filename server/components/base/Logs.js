@@ -17,20 +17,9 @@ let Logs = function () {
      */
     let trigger_level = null;
 
-    let cache = [];
-
     this.init = function (afterInitCallback) {
         trigger_level = Config.Logs.triggerLevel;
-        for (let i = 0; i < 100; i++) {
-            cache.push('--dummy--');
-        }
         afterInitCallback();
-    };
-
-    this.showCache = function () {
-        for (let i in cache) {
-            if (cache[i] == '--dummy--') continue;
-        }
     };
 
     /**
@@ -73,8 +62,6 @@ let Logs = function () {
             if (details) details = JSON.stringify(details);
         }
         // выведем на экран
-        cache.push(logText);
-        cache.shift();
         switch (channel) {
             default:
                 switch (level) {
@@ -125,7 +112,6 @@ let Logs = function () {
             telegramSent(logText + details);
         }
         if (level === Logs.LEVEL_FATAL_ERROR) {
-            self.showCache();
             throw new Error("Vse polamalos'!");
         }
     };

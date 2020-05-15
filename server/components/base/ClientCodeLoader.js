@@ -208,11 +208,11 @@ ClientCodeLoader = function () {
         reloadClientJS();
         reloadHTMLVK();
         reloadHTMLStandalone();
-        callback('<pre>' + "Reload Client Code executed!" + new Date().getTime() + '</pre>');
+        callback('<pre>' + "Reload Client Code executed!" + Date.now() + '</pre>');
     };
 
     let getTimeKey = function () {
-        return Config.Project.develop ? "" : "?t=" + (new Date().getTime()).toString();
+        return Config.Project.develop ? "" : "?t=" + Date.now().toString();
     };
 
     let getClientHTML = function (socNetCode) {
@@ -394,12 +394,12 @@ ClientCodeLoader = function () {
             return cwd.pop();
         })();
         clientConfigPath = clientSource + 'config.' + hostname + '.' + parentFolderName + '.js';
-        Logs.log("Generate client code(client). The config file: " + clientConfigPath, Logs.LEVEL_NOTIFY);
+        Logs.log("Generate client code(client). The config file: " + clientConfigPath, Logs.LEVEL_DETAIL);
         jsFiles.push(clientConfigPath);
 
         code = clientCodePrepareCode(jsFiles);
         /** Generate sapi */
-        code += ApiRouter.getSAPIJSCode();
+        code += CodeGenerator.getSAPIJSCode();
         code += getGUIGeneratedCode();
 
         if (!Config.Project.develop) {

@@ -58,7 +58,7 @@ let PageBlockMaps = function PageBlockMaps() {
         let el;
 
         //@todo preloader
-        elPreloader = GUI.createElement(ElementImage, {x: 0, y: 0, width: 777, height: 500, src: 'not-found.png'});
+        elPreloader = GUI.createElement(ElementImage, {x: 0, y: 0, width: 777, height: 500, src: 'oblojkla.png'});
 
         elOldPaper = GUI.createElement(ElementImage, {x: 0, y: 0, width: 777, height: 500, src: 'old-paper.png'});
         self.elements.push(elOldPaper);

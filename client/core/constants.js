@@ -1,3 +1,3 @@
-let CONST_IS_SERVER_SIDE = false;
-let CONST_IS_CLIENT_SIDE = true;
+const CONST_IS_SERVER_SIDE = false;
+const CONST_IS_CLIENT_SIDE = true;
 

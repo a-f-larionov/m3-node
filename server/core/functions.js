@@ -68,7 +68,6 @@ deInitBeforeShutdown = function (callback) {
  * При вызове process.exit(), выполниться каллбэки деинициализации.
  */
 process.on('exit', function () {
-    if (typeof Logs !== 'undefined') Logs.showCache();
     log("on Exit raized!");
 });
 
@@ -76,9 +75,9 @@ process.on('exit', function () {
  * Перехыватываем ошибки!
  */
 process.on('uncaughtException', function (err) {
+    Logs.log("ERROR HAPPENDS", Logs.LEVEL_ERROR, err.stack, Logs.CHANNEL_TELEGRAM);
     log('ERROR HAPPENDZ');
     console.log(err.stack);
-    if (typeof Logs !== 'undefined') Logs.showCache();
     process.exit();
 });
 
@@ -128,15 +127,13 @@ str_pad = function (str, len, pad, dir) {
  * Возвращает время в секундах.
  */
 time = function () {
-    return Math.floor((new Date()).getTime() / 1000);
+    return Math.floor(Date().now() / 1000);
 };
 
 /**
  * Возвращает время в миллисекундах секундах.
  */
-mtime = function () {
-    return new Date().getTime();
-};
+mtime = Date.now;
 
 serverCrypt = function (str) {
     return str.split('')

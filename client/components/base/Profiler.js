@@ -1,40 +1,19 @@
 /**
  * Dummy.
+ * @type {ProfilerDummy}
  * @constructor
  */
-let Profiler = function () {
+let ProfilerDummy = function () {
 
-    this.start = function (id) {
-
+    let emptyFunc = function () {
     };
 
-    this.stop = function (id) {
+    this.start = emptyFunc;
 
-    };
-
-    this.getNewId = function (title) {
-
-    };
-
-    this.printReport = function () {
-
-    };
-
-    this.saveToDB = function () {
-
-    };
-
-    this.getTextReport = function () {
-
-    };
-
-    this.init = function (afterInitCallback) {
-
-    };
+    this.stop = emptyFunc;
 };
 
 /**
- * ��������� �����.
- * @type {Profiler}
+ * @type {ProfilerDummy}
  */
-Profiler = new Profiler();
+let Profiler = new ProfilerDummy();

@@ -18,7 +18,7 @@ Statistic = function () {
         }
         cache.push({
             userId: userId,
-            timeStamp: new Date().getTime(),
+            timeStamp: Date.now(),
             statisticId: statisticId
         });
     };

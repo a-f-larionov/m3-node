@@ -15,7 +15,7 @@ DataUser = function () {
     this.init = function (afterInitCallback) {
         DB.query("SELECT `AUTO_INCREMENT` as autoIncrement FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '" + Config.DB.database + "' AND TABLE_NAME   = '" + tableName + "';", function (rows) {
             autoIncrementValue = rows[0].autoIncrement;
-            Logs.log("users.autoincrementId:" + autoIncrementValue, Logs.LEVEL_NOTIFY);
+            Logs.log("users.autoincrementId:" + autoIncrementValue, Logs.LEVEL_DETAIL);
             afterInitCallback();
         });
     };

@@ -59,12 +59,11 @@ SAPIUser = function () {
         if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
 
-
         if (!userId || typeof userId !== 'number') {
-            Logs.log("SAPIUser.sendMeUserInfo: must have userId", Logs.LEVEL_WARNING, userId);
-            return;
+            return Logs.log("SAPIUser.sendMeUserInfo: must have userId", Logs.LEVEL_WARNING, userId);
         }
-        LogicUser.sendUserInfo(userId, cntx.userId);
+
+        LogicUser.sendUserInfo(userId, cntx.userId, pStart(Profiler.ID_SAPIUSER_SEND_ME_INFO));
     };
 
     /**
@@ -81,7 +80,7 @@ SAPIUser = function () {
             Logs.log(arguments.callee.name + ": must have ids", Logs.LEVEL_WARNING, ids);
             return;
         }
-        LogicUser.sendUserListInfo(ids, cntx.userId);
+        LogicUser.sendUserListInfo(ids, cntx.userId, pStart(Profiler.ID_USERSAPI_SEND_ME_USER_LIST_INFO));
     };
 
     /**
@@ -102,9 +101,13 @@ SAPIUser = function () {
             cntx, userIds: userIds
         });
 
+        let prid = pStart(Profiler.ID_USERSAPI_SEND_ME_USER_IDS_BY_SOC_NET);
+
         DataUser.getById(cntx.user.id, function (user) {
             DataUser.getUserIdsBySocNet(user.socNetTypeId, userIds, limit, function (ids) {
+
                 CAPIUser.gotFriendsIds(cntx.user.id, ids);
+                pFinish(prid);
             });
         });
     };
@@ -119,6 +122,8 @@ SAPIUser = function () {
         if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
 
+        let prid = pStart(Profiler.ID_USERSAPI_ON_FINISH);
+
         /** Возвращаем жизнь */
         LOCK.acquire(Keys.health(cntx.user.id), function (done) {
             setTimeout(done, 5 * 60 * 1000);
@@ -131,17 +136,21 @@ SAPIUser = function () {
                         }
                     );
                     done();
+                    pFinish(prid);
                 } else {
                     done();
+                    pClear(prid);
                 }
             })
         });
     };
 
-    this.onPlayStart = function (cntx) {
+    this.onStart = function (cntx) {
         if (!cntx.isAuthorized) return Logs.log(arguments.callee.name + " not authorized", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
+
+        let prid = pStart(Profiler.ID_USERSAPI_ON_START);
 
         LOCK.acquire(Keys.health(cntx.user.id), function (done) {
             //@todo auto LOCK timeout(with keys!)
@@ -155,8 +164,10 @@ SAPIUser = function () {
                         }
                     );
                     done();
+                    pFinish(prid);
                 } else {
                     done();
+                    pClear(prid);
                 }
             })
         });

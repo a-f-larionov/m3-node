@@ -23,17 +23,17 @@ let LogicTimeClient = function () {
 
     this.setServerTime = function (timestamp) {
         serverTime = timestamp;
-        gotTime = (new Date).getTime();
+        gotTime = Date.now();
         timeDiff = serverTime - gotTime;
         Logs.log("Time sync:" + timestamp + ' gotTime:' + gotTime + ' timeDiff:' + timeDiff, Logs.LEVEL_DETAIL);
     };
 
     this.getTime = function () {
-        return Math.floor(this.getMicroTime() / 1000);
+        return Math.floor(this.getMTime() / 1000);
     };
 
-    this.getMicroTime = function () {
-        return new Date().getTime();
+    this.getMTime = function () {
+        return Date.now();
     };
 
     this.convertToClient = function (timestamp) {

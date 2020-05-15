@@ -42,7 +42,7 @@ let DialogTurnLoose = function DialogTurnLoose() {
                     self.showDialog(pointId);
                 } else {
                     /** Начать игру */
-                    SAPIUser.onPlayStart();
+                    SAPIUser.onStart();
                     PageBlockPanel.oneHealthHide = true;
                     DataPoints.setPlayedId(DataPoints.getPlayedId());
                     PageController.showPage(PageMain);

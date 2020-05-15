@@ -61,7 +61,7 @@ let DialogPointInfo = function () {
                     self.showDialog(pointId);
                 } else {
                     /** Начать игру */
-                    SAPIUser.onPlayStart();
+                    SAPIUser.onStart();
                     PageBlockPanel.oneHealthHide = true;
                     DataPoints.setPlayedId(pointId);
                     PageController.showPage(PageField);

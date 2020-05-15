@@ -84,7 +84,7 @@ function Loader() {
     };
 
     this.callGenerators = function () {
-        let code;
+        let code, name;
         code = '';
         for (name in componentsMap) {
             if (global[name].generate) {

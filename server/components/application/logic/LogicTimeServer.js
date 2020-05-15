@@ -8,8 +8,8 @@ LogicTimeServer = function () {
      * Return current time. (micro seconds)
      * @returns {number}
      */
-    this.getMicroTime = function () {
-        return (new Date).getTime();
+    this.getMTime = function () {
+        return Date.now();
     };
 
     /**
@@ -17,7 +17,7 @@ LogicTimeServer = function () {
      * @returns {number}
      */
     this.getTime = function () {
-        return Math.floor(this.getMicroTime() / 1000);
+        return Math.floor(this.getMTime() / 1000);
     }
 };
 

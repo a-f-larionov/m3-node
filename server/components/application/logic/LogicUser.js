@@ -1,5 +1,7 @@
-//@todo не работает ...
-//let  nodemailer = require('nodemailer');
+/**
+ * @type {LogicUser}
+ * @constructor
+ */
 LogicUser = function () {
     let self = this;
     let userToCntx = {};
@@ -40,7 +42,7 @@ LogicUser = function () {
         let prid = Profiler.start(Profiler.ID_AUTH_VK);
         /** Get from db */
         DataUser.getBySocNet(socNetTypeId, socNetUserId, function (user) {
-            authorizeOrCreate(user, socNetTypeId, socNetUserId, cntx, prid, Profiler.ID_AUTH_VK);
+            authorizeOrCreate(user, socNetTypeId, socNetUserId, cntx, prid);
         });
     };
 
@@ -71,18 +73,18 @@ LogicUser = function () {
         let prid = Profiler.start(Profiler.ID_AUTH_STANDALONE);
         /* get from db */
         DataUser.getBySocNet(socNetTypeId, socNetUserId, function (user) {
-            authorizeOrCreate(user, socNetTypeId, socNetUserId, cntx, prid, Profiler.ID_AUTH_STANDALONE);
+            authorizeOrCreate(user, socNetTypeId, socNetUserId, cntx, prid);
         });
     };
 
-    let authorizeOrCreate = function (user, socNetTypeId, socNetUserId, cntx, prid, profilerType) {
+    let authorizeOrCreate = function (user, socNetTypeId, socNetUserId, cntx, prid) {
         /** If not exists create user */
         if (!user) {
             createUser(socNetTypeId, socNetUserId, function (user) {
-                authorizeSendSuccess(user, cntx, prid, profilerType);
+                authorizeSendSuccess(user, cntx, prid);
             })
         } else {
-            authorizeSendSuccess(user, cntx, prid, profilerType);
+            authorizeSendSuccess(user, cntx, prid);
         }
     };
 
@@ -103,16 +105,15 @@ LogicUser = function () {
      * @param user {Object} инфо пользователя.
      * @param cntx {Object} контекст соединения.
      * @param prid {int} id профелируйщего таймера
-     * @param profilerType {int} id профайлера.
-     * @todo prid and profilerType conflited by means..
      */
-    let authorizeSendSuccess = function (user, cntx, prid, profilerType) {
+    let authorizeSendSuccess = function (user, cntx, prid) {
         /** Тут мы запомним его connectionId раз и на всегда */
         Logs.log("Auth+", Logs.LEVEL_NOTIFY, user.socNetUserId, Logs.CHANNEL_TELEGRAM);
 
         userAddConn(user, cntx);
         DataUser.updateLastLogin(user.id);
         CAPIUser.authorizeSuccess(user.id, user);
+        Profiler.stop(prid);
     };
 
     /**
@@ -140,7 +141,6 @@ LogicUser = function () {
      * @param arg8 {*} любой параметр, будет передан в CAPI-функцию 8-ым.
      */
     this.sendToAll = function () {
-        let prid = Profiler.start(Profiler.ID_LOGIC_SEND_TO_ALL);
         let args = [];
         args = Array.prototype.slice.call(arguments);
         capiFunction = args.shift();
@@ -149,7 +149,6 @@ LogicUser = function () {
             args[0] = userId;
             capiFunction.apply(null, args);
         }
-        Profiler.stop(Profiler.ID_LOGIC_SEND_TO_ALL, prid);
     };
 
     this.getOnlineUserIds = function () {
@@ -249,13 +248,16 @@ LogicUser = function () {
      * Отправка информации о пользователе.
      * @param toUserId {Number} кому отправляем.
      * @param userId {Number} данные о каком пользователе.
+     * @param prid
      */
-    this.sendUserInfo = function (userId, toUserId) {
+    this.sendUserInfo = function (userId, toUserId, prid) {
         DataUser.getById(userId, function (user) {
             if (user) {
                 user.online = self.isUserOnline(user.id);
                 CAPIUser.updateUserInfo(toUserId, user);
+                pFinish(prid);
             } else {
+                pClear(prid);
                 Logs.log("LogicUser.sendUserInfo. User not found: id=" + userId, Logs.LEVEL_WARNING);
             }
         });
@@ -265,13 +267,16 @@ LogicUser = function () {
      * Отправка информации о пользователе.
      * @param toUserId {Number} кому отправляем.
      * @param ids {Number} данные о каком пользователе.
+     * @param prid
      */
-    this.sendUserListInfo = function (ids, toUserId) {
+    this.sendUserListInfo = function (ids, toUserId, prid) {
         DataUser.getList(ids, function (list) {
             if (list) {
                 CAPIUser.updateUserListInfo(toUserId, list);
+                pFinish(prid);
             } else {
                 Logs.log(arguments.callee.name + " Users not found: id=" + ids, Logs.LEVEL_WARNING);
+                pFinish(prid);
             }
         });
     };
