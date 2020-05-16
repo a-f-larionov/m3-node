@@ -113,7 +113,7 @@ LogicUser = function () {
         userAddConn(user, cntx);
         DataUser.updateLastLogin(user.id);
         CAPIUser.authorizeSuccess(user.id, user);
-        Profiler.stop(prid);
+        Profiler.finish(prid);
     };
 
     /**

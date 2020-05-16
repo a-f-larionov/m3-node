@@ -170,21 +170,24 @@ ClientCodeLoader = function () {
     }
 
     this.getClientVK = function (callback) {
+        let prid = pStart(Profiler.ID_CLIENT_LOAD_VK);
         if (Config.Project.maintance) return callback(htmlMaintaince);
         if (!cacheCode) {
             reloadHTMLVK();
             reloadClientJS();
         }
         callback(codeVK);
+        callback(codeStandalone + ' prid=' + prid);
     };
 
     this.getClientStandalone = function (callback) {
+        let prid = pStart(Profiler.ID_CLIENT_LOAD_STANDALONE);
         if (Config.Project.maintance) return callback(htmlMaintaince);
         if (!cacheCode) {
             reloadHTMLStandalone();
             reloadClientJS();
         }
-        callback(codeStandalone);
+        callback(codeStandalone + '<script>prid=' + prid + '</script>');
     };
 
     this.getVKCommentsWidget = function (callback) {

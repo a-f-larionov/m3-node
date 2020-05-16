@@ -1,5 +1,6 @@
 /**
  * Page controller
+ * @type {PageController}
  * @constructor
  */
 let PageController = function () {

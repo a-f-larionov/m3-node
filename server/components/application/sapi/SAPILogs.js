@@ -7,6 +7,14 @@ SAPILogs = function () {
 
         Logs.log(message, level, details, Logs.CHANNEL_CLIENT);
     };
+
+    this.clientLoaded = function (cntx, prid) {
+        if (!cntx.isAuthorized) return Logs.log(arguments.callee.name + " not authorized", Logs.LEVEL_WARNING, cntx);
+        if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
+        if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
+
+        pFinish(prid);
+    };
 };
 
 SAPILogs = new SAPILogs();

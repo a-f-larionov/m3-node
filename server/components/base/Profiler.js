@@ -23,10 +23,11 @@ Profiler = function () {
         return prid;
     };
 
-    this.stop = function (prid) {
+    this.finish = function (prid) {
         let id;
         if (!prid) return Logs.log("Profiler.stop().", Logs.LEVEL_WARNING, prid);
         id = pridToId[prid];
+        if (!data[id]) return Logs.log("Profiler.stop(). no data['id']", Logs.LEVEL_WARNING, {prid: prid, id: id});
         if (!data[id].stamps[prid]) return Logs.log("Profiler.stop(). no stamp for", Logs.LEVEL_WARNING, {prid: prid, id: id});
         data[id].sumTime += mtime() - data[id].stamps[prid];
         data[id].count++;
@@ -99,7 +100,7 @@ Profiler = function () {
 Profiler = new Profiler();
 
 pStart = Profiler.start;
-pFinish = Profiler.stop;
+pFinish = Profiler.finish;
 pClear = Profiler.clear;
 
 Profiler.depends = ['Logs'];
@@ -117,6 +118,8 @@ Profiler.IS_SAPIMAP_SEND_ME_MAP_INFO = 10;
 Profiler.IS_SAPIMAP_SEND_ME_USERS_SCORE = 11;
 Profiler.IS_SAPIMAP_OPEN_CHEST = 12;
 Profiler.ID_SAPISTUFF_SEND_ME_STUFF = 13;
+Profiler.ID_CLIENT_LOAD_VK = 14;
+Profiler.ID_CLIENT_LOAD_STANDALONE = 15;
 
 
 Profiler.titles = [];
@@ -135,14 +138,5 @@ Profiler.titles[Profiler.IS_SAPIMAP_SEND_ME_USERS_SCORE] = 'SAPIMap.sendMeUsersS
 Profiler.titles[Profiler.IS_SAPIMAP_OPEN_CHEST] = 'SAPIMap.openChest';
 Profiler.titles[Profiler.ID_SAPISTUFF_SEND_ME_STUFF] = 'SAPIStuff.sendMeStuff';
 
-
-//let prid = pStart(Profiler.ID_SAPIUSER_SEND_ME_INFO);
-//pStart(Profiler.ID_USERSAPI_SEND_ME_USER_LIST_INFO));
-//        let prid = pStart(Profiler.ID_USERSAPI_SEND_ME_USER_IDS_BY_SOC_NET);
-//let prid = pStart(Profiler.ID_USERSAPI_ON_FINISH);
-//let prid = pStart(Profiler.ID_USERSAPI_ON_START);
-///let prid = pStart(Profiler.ID_SEND_ME_TIME);
-//let prid = pStart(Profiler.IS_SAPIMAP_SEND_ME_MAP_INFO);
-//let prid = pStart(Profiler.IS_SAPIMAP_SEND_ME_USERS_SCORE);
-//IS_SAPIMAP_OPEN_CHEST
-//ID_SAPISTUFF_SEND_ME_STUFF
+Profiler.titles[Profiler.ID_CLIENT_LOAD_VK] = 'load-client-vk';
+Profiler.titles[Profiler.ID_CLIENT_LOAD_STANDALONE] = 'load-client-standalone';

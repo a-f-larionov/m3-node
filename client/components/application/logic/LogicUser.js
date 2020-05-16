@@ -40,7 +40,7 @@ let LogicUser = function () {
 
     /**
      * Метод для обработки ответа от сервера об успешной авторизации.
-     * @param user
+     * @param userId
      */
     this.authorizeSuccess = function (userId) {
         authorizedUserId = userId;

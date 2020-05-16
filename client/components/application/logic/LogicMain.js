@@ -1,5 +1,6 @@
 /**
  * @type {LogicMain}
+ * @return {LogicMain}
  * @constructor
  */
 let LogicMain = (function () {
@@ -27,6 +28,8 @@ let LogicMain = (function () {
 
         /** Проверка визарада начала игры */
         LogicWizard.onAuthorizeSuccess();
+
+        SAPILogs.clientLoaded(prid);
     };
 
     LogicMain.prototype.main = function () {
@@ -70,5 +73,8 @@ let LogicMain = (function () {
         });
     };
 
+    /**
+     * @type {LogicMain}
+     */
     return new LogicMain();
 })();
