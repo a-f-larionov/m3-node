@@ -95,7 +95,6 @@ let SocNetVK = function () {
      * @see wall.post
      */
     this.post = function (params) {
-        console.log(params);
         VK.api('wall.post',
             {
                 owner_id: params.userId,

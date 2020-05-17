@@ -78,7 +78,6 @@ let animGemLightning = function () {
 
     this.init = function () {
         // get
-        console.log('init-gem-anim');
         switch (this.objectId) {
             case DataObjects.WITH_LIGHTNING_VERTICAL:
                 this.dom.rotate = 0;
@@ -87,8 +86,6 @@ let animGemLightning = function () {
                 this.dom.rotate = 90;
                 break;
         }
-        console.log('anim gem lig');
-        console.log(this, arguments);
     };
 
     this.iterate = function (t) {

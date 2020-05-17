@@ -168,7 +168,6 @@ let ElementField = function () {
     };
 
     let fieldAct = function (p) {
-        console.log(p, container);
         let cell;
         if (lock) return;
         if (AnimLocker.busy()) return;
@@ -633,7 +632,6 @@ let ElementField = function () {
 
     let tryShowHint = function () {
         setTimeout(function () {
-            console.log('tryShowHint', self.isFieldSilent(), !lock, showed, !stopHint, !stopPolyColorAnim, !lockHint);
             if (self.isFieldSilent() && !lock && showed && !stopHint && !stopPolyColorAnim && !lockHint) {
                 let allTurns = Field.countTurns();
                 if (allTurns.length) {
@@ -767,8 +765,6 @@ let ElementField = function () {
                 }
             }
             //if (actGem && p.x === actGem.x && p.y === actGem.y) return;
-            console.log('call on detroy');
-            self.onDestroyLine(line);
         });
 
         animate(animDestroyLines);

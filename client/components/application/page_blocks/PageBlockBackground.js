@@ -75,11 +75,27 @@ let PageBlockBackground = function PageBlockBackground() {
     };
 
     let setBackgroundImage = function () {
-        let elBody, backgroundImage;
+        let elBody, backgroundImage, url, meta;
+
+        url = 'old-paper.png';
+        meta = Images.getMeta(url);
         elBody = document.getElementsByTagName('body')[0];
 
-        backgroundImage = "url('" + Images.getPath('old-paper.png') + "')";
+        backgroundImage = "url('" + meta.path + "')";
 
+        if (window.useSprite) {
+            let koefW, koefH;
+            koefW = screen.availWidth / meta.w;
+            koefH = screen.availHeight / meta.h;
+            elBody.style.backgroundPositionX = '-' + meta.x * koefW + 'px';
+            elBody.style.backgroundPositionY = '-' + meta.y * koefH + 'px';
+            elBody.style.backgroundSize =
+                (
+                    window.spriteSize.width * koefW + 'px' +
+                    ' ' +
+                    window.spriteSize.height * koefH + 'px'
+                );
+        }
         elBody.style.backgroundImage = backgroundImage;
         //elBody.style.backgroundSize = "777px 500px";
     };

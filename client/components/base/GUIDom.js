@@ -169,7 +169,7 @@ let GUIDom = function () {
         dom.focus();
     };
 
-    /* Далее идут методы перерисовки. */
+    /** Далее идут методы перерисовки. */
     let redrawX = function () {
         dom.style.left = self.x + 'px';
     };

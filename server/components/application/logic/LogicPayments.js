@@ -79,10 +79,6 @@ LogicPayments = function () {
             params = QUERYSTRING.parse(request.url.substr(request.url.indexOf('?') + 1));
 
             Logs.log(JSON.stringify(params));
-            console.log(QUERYSTRING.parse(request.url));
-            console.log(request.url);
-            console.log(params);
-            console.log(body);
 
             self.doOrderChange(
                 parseInt(params.receiver_id),

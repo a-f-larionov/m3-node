@@ -574,7 +574,7 @@ ClientCodeLoader = function () {
     };
 
     let translate2X = function (value) {
-        return value / 2;
+        return Math.ceil(value / 2);
     };
 }
 

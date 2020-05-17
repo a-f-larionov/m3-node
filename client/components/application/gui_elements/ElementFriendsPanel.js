@@ -61,8 +61,8 @@ let ElementFriendsPanel = function () {
             cardsDom.push(dom);
             cardsText.push(GUI.createElement(ElementText,
                 {
-                    x: self.x + i * (self.cardWidth + self.cardSpace) + 3,
-                    y: self.y + 50 - 15,
+                    x: self.x + i * (self.cardWidth + self.cardSpace) + 2,
+                    y: self.y + 50 - 17,
                     width: self.cardWidth, height: 30 / (100 / self.cardWidth), alignCenter: true,
                     background: '#eee',
                     opacity: 0.7,
