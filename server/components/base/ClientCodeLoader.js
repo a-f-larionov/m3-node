@@ -542,6 +542,13 @@ ClientCodeLoader = function () {
         });
     };
 
+    this.reloadSprite = function () {
+        makeSprite(function () {
+            reloadHTMLVK();
+            reloadHTMLStandalone();
+        })
+    }
+
     let getGUIGeneratedCode = function () {
 
         /**

@@ -158,8 +158,8 @@ let ElementField = function () {
 
     let pointFromEvent = function (event) {
         return {
-            x: Math.floor((event.clientX - self.x - GUI.appArea.offsetLeft ) / DataPoints.BLOCK_WIDTH),
-            y: Math.floor((event.clientY - self.y - GUI.appArea.offsetTop ) / DataPoints.BLOCK_HEIGHT)
+            x: Math.floor((event.clientX - self.x - GUI.appArea.offsetLeft) / DataPoints.BLOCK_WIDTH),
+            y: Math.floor((event.clientY - self.y - GUI.appArea.offsetTop) / DataPoints.BLOCK_HEIGHT)
         }
     };
 
@@ -734,7 +734,7 @@ let ElementField = function () {
     this.destroyLines = function () {
         let lines, actGem, actObjectId;
         lines = Field.findLines();
-        console.log(lines);
+console.log('destroy line');
         lines.forEach(function (line) {
 
             actGem = null;
@@ -765,6 +765,7 @@ let ElementField = function () {
                 }
             }
             //if (actGem && p.x === actGem.x && p.y === actGem.y) return;
+            self.onDestroyLine(line);
         });
 
         animate(animDestroyLines);

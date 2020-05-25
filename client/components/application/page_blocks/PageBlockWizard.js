@@ -238,7 +238,7 @@ let PageBlockWizard = function PageBlockWizard() {
             images[url].onload = function () {
                 drawSome(url, x, y, unlock, true);
             };
-            images[url].src = Images.getPath(url);
+            images[url].src = Images.getRealPath(url);
             return;
         }
         cntx.globalAlpha = unlock ? 1 : 0.99;

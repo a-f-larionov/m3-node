@@ -1,7 +1,7 @@
 LogicStuff = function () {
 
     this.sendStuffToUser = function (userId, prid) {
-        createOrSend(userId);
+        createOrSend(userId, prid);
     };
 
     let createOrSend = function (userId, prid) {
@@ -9,11 +9,11 @@ LogicStuff = function () {
             if (!data) {
                 DataStuff.create(userId, function (data) {
                     CAPIStuff.gotStuff(userId, data);
-                    pStart(prid);
+                    pFinish(prid);
                 });
             } else {
                 CAPIStuff.gotStuff(userId, data);
-                pStart(prid);
+                pFinish(prid);
             }
         });
     };

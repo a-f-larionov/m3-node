@@ -184,7 +184,7 @@ let GUIDom = function () {
         dom.style.height = self.height + 'px';
         if (self.backgroundImage) redrawBackgroundImage();
     };
-    let  redrawBackgroundImage = function () {
+    let redrawBackgroundImage = function () {
         let meta;
         meta = Images.getMeta(self.backgroundImage);
         /** Если размер не задан, пробуем задать его автоматически. */
@@ -197,29 +197,26 @@ let GUIDom = function () {
 
         dom.style.backgroundImage = 'url(' + meta.path + ')';
         self.backgroundPositionY = self.backgroundPositionY ? self.backgroundPositionY : 0;
-        dom.style.backgroundPositionX = '-' + Images.getX(self.backgroundImage) + 'px';
-        dom.style.backgroundPositionY = '-' + (Images.getY(self.backgroundImage) + self.backgroundPositionY) + 'px';
+        dom.style.backgroundPositionX = '-' + meta.x+ 'px';
+        dom.style.backgroundPositionY = '-' + (meta.y + self.backgroundPositionY) + 'px';
         dom.style.backgroundRepeat = 'no-repeat';
-        if (self.noScale) {
-            // double if no sprite...
+
+        if ((window.useSprite && !meta.absolute) && self.width && self.height) {
+
+            dom.style.backgroundPositionX =
+                parseInt(dom.style.backgroundPositionX) * self.width / meta.w + 'px';
+            dom.style.backgroundPositionY =
+                parseInt(dom.style.backgroundPositionY) * self.height / meta.h + 'px';
             dom.style.backgroundSize =
-                (meta.w) + 'px' + ' ' +
-                (meta.h) + 'px';
+                (window.spriteSize.width * self.width / meta.w) + 'px ' +
+                (window.spriteSize.height * self.height / meta.h) + 'px ';
+
         } else {
-            if (window.useSprite && self.width && self.height) {
-                dom.style.backgroundPositionX =
-                    parseInt(dom.style.backgroundPositionX) * self.width / meta.w + 'px';
-                dom.style.backgroundPositionY =
-                    parseInt(dom.style.backgroundPositionY) * self.height / meta.h + 'px';
-                dom.style.backgroundSize =
-                    (window.spriteSize.width * self.width / meta.w) + 'px ' +
-                    (window.spriteSize.height * self.height / meta.h) + 'px ';
-            } else {
-                dom.style.backgroundSize =
-                    (self.width) + 'px' + ' ' +
-                    (self.height) + 'px';
-            }
+            dom.style.backgroundSize =
+                (self.width) + 'px' + ' ' +
+                (self.height) + 'px';
         }
+
     };
     let redrawBackgroundSize = function () {
         dom.style.backgroundSize = self.backgroundSize + 'px';

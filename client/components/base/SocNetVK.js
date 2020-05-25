@@ -81,6 +81,13 @@ let SocNetVK = function () {
         });
     };
 
+    /**
+     *
+     * @param id
+     * @param callback
+     * @see https://vk.com/dev/objects/user
+     * @see https://vk.com/dev/objects/user_2
+     */
     this.getUserInfo = function (id, callback) {
         VK.api('users.get', {
             user_ids: id,

@@ -19,7 +19,7 @@ let DialogHealthShop = function () {
     };
 
     this.init = function () {
-        let el, offsetX, stepX, offsetY;
+        let el, offsetX, stepX, offsetY, user;
         this.__proto__.init.call(this);
 
         offsetX = 30;
@@ -40,15 +40,22 @@ let DialogHealthShop = function () {
         });
         self.elements.push(elHealth5);
 
-        el = GUI.createElement(ElementButton, {
-            x: offsetX + stepX * 2, y: offsetY,
-            srcRest: 'shop-health-2.png',
-            onClick: function () {
-                if (lock()) return;
-                SAPIUser.zeroLife();
-            }
-        });
-        self.elements.push(el);
+        user = LogicUser.getCurrent();
+
+        if (SocNet.getType() === SocNet.TYPE_STANDALONE &&
+            (user && user.id > 1000)
+        ) {
+
+            el = GUI.createElement(ElementButton, {
+                x: offsetX + stepX * 2, y: offsetY,
+                srcRest: 'shop-health-2.png',
+                onClick: function () {
+                    if (lock()) return;
+                    SAPIUser.zeroLife();
+                }
+            });
+            self.elements.push(el);
+        }
 
         GUI.popParent();
     };

@@ -36,7 +36,7 @@ Statistic = function () {
 
     this.flushCache = function () {
         let query, row;
-        if (cache.length) {
+        if (cache.length && false) {
             query = "INSERT INTO statistic (`userId`,`timeStamp`,`statisticId`) VALUES ";
             for (let i in cache) {
                 row = cache[i];

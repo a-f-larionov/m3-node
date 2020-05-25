@@ -41,7 +41,7 @@ let animLightning = function () {
         dom.width = lineData.length * DataPoints.BLOCK_WIDTH;
         dom.height = Images.getHeight('anim-light-1.png');
         if (orientationId === DataObjects.WITH_LIGHTNING_VERTICAL) {
-            dom.rotate = 90;
+            dom.rotate = 0;
             dom.x = (p.x) * DataPoints.BLOCK_WIDTH;
             dom.y = (lineData.lower) * DataPoints.BLOCK_HEIGHT
                 - (Images.getHeight('anim-light-1.png') - DataPoints.BLOCK_HEIGHT) / 2;
@@ -50,7 +50,7 @@ let animLightning = function () {
             dom.y += (dom.width - DataPoints.BLOCK_WIDTH) / 2;
         }
         if (orientationId === DataObjects.WITH_LIGHTNING_HORIZONTAL) {
-            dom.rotate = 0;
+            dom.rotate = 90;
             dom.x = lineData.lower * DataPoints.BLOCK_WIDTH;
             dom.y = p.y * DataPoints.BLOCK_HEIGHT
                 - (Images.getHeight('anim-light-1.png') - DataPoints.BLOCK_HEIGHT) / 2;

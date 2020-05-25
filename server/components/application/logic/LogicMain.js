@@ -38,7 +38,9 @@ LogicMain = function () {
             '/service/client-vk': ClientCodeLoader.getClientVK,
             '/service/client-standalone': ClientCodeLoader.getClientStandalone,
 
-            '/service/reloadClientCode': ClientCodeLoader.reloadClient,
+            '/service/--reload-sprite': ClientCodeLoader.reloadSprite,
+
+            '/service/--reloadClientCode': ClientCodeLoader.reloadClient,
             '/service/vk-comments-widget': ClientCodeLoader.getVKCommentsWidget,
 
             '/service/--profiler': LogicSystemRequests.getProfiler,

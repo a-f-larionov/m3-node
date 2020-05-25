@@ -75,9 +75,12 @@ process.on('exit', function () {
  * Перехыватываем ошибки!
  */
 process.on('uncaughtException', function (err) {
-    Logs.log("ERROR HAPPENDS", Logs.LEVEL_ERROR, err.stack, Logs.CHANNEL_TELEGRAM);
-    log('ERROR HAPPENDZ');
+
+    Logs.log("ERROR HAPPENDS", Logs.LEVEL_ERROR, err, Logs.CHANNEL_TELEGRAM);
+
+    log('ERROR HAPPENDZ2');
     console.log(err.stack);
+    console.log(err);
     process.exit();
 });
 

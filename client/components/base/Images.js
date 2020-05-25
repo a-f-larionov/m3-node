@@ -13,6 +13,10 @@ let Images = function () {
         return this.getMeta(url).path;
     };
 
+    this.getRealPath = function (url) {
+        return '/images/' + url;
+    };
+
     this.getHeight = function (url) {
         return this.getMeta(url).h;
     };
@@ -48,6 +52,7 @@ let Images = function () {
         /** Абсолютный url, используем без изменений, т.к. это внешний url */
         if (url && url.indexOf('https://') === 0 || url.indexOf('http://') === 0) {
             notFoundImg.path = url;
+            notFoundImg.absolute = true;
             return notFoundImg;
         }
         if (!url || !window.i_d[url]) {

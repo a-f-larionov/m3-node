@@ -122,12 +122,12 @@ let LogicField = function () {
                 objectB = cellB.object;
                 if (cellA.isVisible && objectA.isCanMoved && cellB.isVisible && objectB.isCanMoved) {
                     /** 1 - Меняем a ⇔ b */
-                    self.exchangeObjects(a, b);
+                    self.exchangeObjects(a, b, null);
                     /** 2 - Считаем линии */
                     lines = self.findLines();
                     if (lines.length) allLines.push({a: a, b: b, lines: lines});
                     /** 3 - Возвращаем a ⇔ b */
-                    self.exchangeObjects(a, b);
+                    self.exchangeObjects(a, b, null);
                 }
             }
         };
@@ -142,7 +142,7 @@ let LogicField = function () {
     this.exchangeObjects = function (a, b, onlyObjectId) {
         let tmp;
         if (self.isOut(a) || self.isOut(b)) return false;
-
+        //console.log('exchange', onlyObjectId);
         if (onlyObjectId) {
             tmp = cells[b.x][b.y].object.objectId;
             cells[b.x][b.y].object.objectId = cells[a.x][a.y].object.objectId;
@@ -253,8 +253,8 @@ let LogicField = function () {
     };
 
     /**
-     *
-     * @param callback(x,y)
+     * x, y, cell, object
+     * @param callback(x, y, cell, object)
      */
     this.eachCell = function (callback) {
         for (let y = 0; y < DataPoints.FIELD_MAX_HEIGHT; y++) {
@@ -340,7 +340,20 @@ let LogicField = function () {
             }
         }
         if (Field.findLines().length) {
+            let n;
+            n = [];
+            Field.eachCell(function (x, y, cell, object) {
+                if (!n[y]) n[y] = [];
+                n[y].push(cell.withGold ? 'G' : ' ');
+            });
+            console.log(n);
             Field.shuffle(true);
+            n = [];
+            Field.eachCell(function (x, y, cell, object) {
+                if (!n[y]) n[y] = [];
+                n[y].push(cell.withGold ? 'G' : ' ');
+            });
+            console.log(n);
         }
     };
 
@@ -366,10 +379,10 @@ let LogicField = function () {
 
     this.isLinePossiblyDestroy = function (pA, pB) {
         let lines, mayLineDestroy;
-        LogicField.exchangeObjects(pA, pB);
+        LogicField.exchangeObjects(pA, pB, -1);
         lines = LogicField.findLines();
         mayLineDestroy = LogicField.lineCrossing(lines, pA.x, pA.y) | LogicField.lineCrossing(lines, pB.x, pB.y);
-        LogicField.exchangeObjects(pA, pB);
+        LogicField.exchangeObjects(pA, pB, -1);
         return mayLineDestroy;
     };
 
@@ -431,21 +444,22 @@ let LogicField = function () {
     let shuffleCounter = 0;
 
     this.shuffle = function (beforePlay) {
+        console.log('shuffle', beforePlay);
         shuffleCounter++;
         let funcShuffleField = function () {
-            let p1, p2, cell2;
-            Field.eachCell(function (x1, y1, cell1) {
+            let p1, p2, c2;
+            Field.eachCell(function (x1, y1, c1) {
                 p1 = {x: x1, y: y1};
                 p2 = {
                     x: Math.floor(Math.random() * DataPoints.FIELD_MAX_WIDTH),
                     y: Math.floor(Math.random() * DataPoints.FIELD_MAX_HEIGHT)
                 };
-                cell2 = Field.getCell(p2);
+                c2 = Field.getCell(p2);
                 let o1, o2;
-                o1 = cell1.object;
-                o2 = cell2.object;
-                if (cell1.isVisible && o1.isCanMoved && !o1.isBarrel && o1.objectId !== DataObjects.OBJECT_SAND &&
-                    cell2.isVisible && o2.isCanMoved && !o2.isBarrel && o2.objectId !== DataObjects.OBJECT_SAND) {
+                o1 = c1.object;
+                o2 = c2.object;
+                if (c1.isVisible && o1.isCanMoved && !o1.isBarrel && o1.objectId !== DataObjects.OBJECT_SAND &&
+                    c2.isVisible && o2.isCanMoved && !o2.isBarrel && o2.objectId !== DataObjects.OBJECT_SAND) {
                     Field.exchangeObjects(p1, p2, beforePlay)
                 }
             });

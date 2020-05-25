@@ -15,8 +15,7 @@ Profiler = function () {
         let prid;
         lastPrid++;
         prid = lastPrid;
-        if (!data[id]) return Logs.log("Profiler.start(). no data for ", Logs.LEVEL_WARNING, {prid: lastPrid, id: id, data: data});
-
+        if (!data[id]) return Logs.log("Profiler.start(). no data for " + JSON.stringify(id), Logs.LEVEL_WARNING, {prid: lastPrid, id: id, data: data});
         pridToId[prid] = id;
         data[id].stamps[prid] = mtime();
 
@@ -37,6 +36,7 @@ Profiler = function () {
     this.clear = function (prid) {
         let id;
         id = pridToId[prid];
+        Logs.log("clear " + prid + ' ' + id, Logs.LEVEL_ALERT);
         delete data[id].stamps[prid];
         delete pridToId[prid];
     };
