@@ -226,6 +226,7 @@ ClientCodeLoader = function () {
         code += "<!doctype html>";
         code += "<html style=\"background:white;\">\r\n";
         code += "<head>\r\n";
+        code += "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no\" />\r\n";
         code += "<style type='text/css'>*{padding:0px;margin:0px;}</style>";
         code += "<meta charset='utf-8' />\r\n";
         code += "<style> body span { background-size: "

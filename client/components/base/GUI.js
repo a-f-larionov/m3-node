@@ -160,9 +160,9 @@ let GUI = function () {
             if ((before && !GUI.isFullScreen()) || (!before && GUI.isFullScreen())) {
                 if (vkWidgets) vkWidgets.style.display = 'none';
                 GUI.appArea.style.left = (screen.availWidth / 2 - parseInt(GUI.appArea.style.width) / 2) + 'px';
-                GUI.appArea.style.top = (screen.availHeight / 2 - parseInt(GUI.appArea.style.height) / 2) + 'px'
+                GUI.appArea.style.top = (screen.availHeight / 2 - parseInt(GUI.appArea.style.height) / 2) + 'px';
                 wizardArea.style.left = (screen.availWidth / 2 - parseInt(GUI.appArea.style.width) / 2) + 'px';
-                wizardArea.style.top = (screen.availHeight / 2 - parseInt(GUI.appArea.style.height) / 2) + 'px'
+                wizardArea.style.top = (screen.availHeight / 2 - parseInt(GUI.appArea.style.height) / 2) + 'px';
             } else {
                 if (vkWidgets) vkWidgets.style.display = '';
                 GUI.appArea.style.left = '';

@@ -85,6 +85,8 @@ let ElementStuffButton = function () {
 
     let counter = null;
 
+    let point = null;
+
     /**
      * Опущена ли мышка.
      * @type {boolean}
@@ -111,6 +113,7 @@ let ElementStuffButton = function () {
         GUI.bind(dom, GUI.EVENT_MOUSE_OVER, onMouseOver, self);
         GUI.bind(dom, GUI.EVENT_MOUSE_OUT, onMouseOut, self);
 
+        point = GUI.createDom(null, {backgroundImage: 'map-way-point-grey.png'});
         counter = GUI.createElement(ElementText, {});
     };
 
@@ -122,6 +125,7 @@ let ElementStuffButton = function () {
         showed = true;
         dom.show();
         counter.show();
+        point.show();
         self.redraw();
     };
 
@@ -133,6 +137,7 @@ let ElementStuffButton = function () {
         showed = false;
         dom.hide();
         counter.hide();
+        point.hide();
     };
 
     /**
@@ -179,11 +184,14 @@ let ElementStuffButton = function () {
             dom.pointer = GUI.POINTER_ARROW;
             dom.opacity = 0.5;
         }
-        counter.x = self.x + 70;
-        counter.y = self.y + 40;
+        counter.x = self.x + 65;
+        counter.y = self.y + 22;
+        point.x = self.x + 65 - 20;
+        point.y = self.y + 22 -15;
         counter.setText(LogicStuff.getStuff(self.fieldName));
         dom.redraw();
         counter.redraw();
+        point.redraw();
     };
 
     /**
