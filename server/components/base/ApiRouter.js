@@ -11,6 +11,8 @@ let ApiRouter = new (function ApiRouter() {
     let stats = {};
     this.stats = stats;
 
+    let connectionCount = 0;
+
     let connections = {};
     let onDisconnectCallbacks = [];
     let onFailedSendCallbacks = [];
@@ -79,9 +81,7 @@ let ApiRouter = new (function ApiRouter() {
 
     this.onConnect = function (id) {
         Logs.log("ApiRouter.onConnect: id=" + id, Logs.LEVEL_DETAIL);
-        connections[id] = {
-            connectionId: id
-        };
+        connections[id] = {connectionId: id};
     };
 
     this.onDisconnect = function (id) {
@@ -90,8 +90,21 @@ let ApiRouter = new (function ApiRouter() {
             onDisconnectCallbacks[i].call(self, connections[id]);
         }
         delete connections[id];
-        //@todo не очень это выглядиты
+        //@todo не очень это выглядиты(да  и на сервере такой штуки нет)
         prid = null;
+        let count = 0;
+        for (let i in connections) count++;
+        if (CONST_IS_SERVER_SIDE && count === 0) {
+            setTimeout(function () {
+                let count = 0;
+                for (let i in connections) count++;
+                if (count === 0) {
+                    Logs.log("Zero clients - got down.", Logs.LEVEL_ALERT);
+                    LogicSystemRequests.shutdown(function () {
+                    });
+                }
+            }, Config.Project.zeroOnlineDowntimeout);
+        }
     };
 
     this.executeRequest = function (group, method, args, cntxList) {
@@ -155,6 +168,7 @@ let ApiRouter = new (function ApiRouter() {
         onFailedSendCallbacks.push(callback);
     };
 
-})();
+})
+();
 
 global['ApiRouter'] = ApiRouter;
