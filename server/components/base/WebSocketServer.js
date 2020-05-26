@@ -178,6 +178,9 @@ WebSocketServer = function () {
                 self.onData(serverDecrypt(message.utf8Data), id);
             }
         });
+        connection.on('error', function (err) {
+            Logs.log("con err", Logs.LEVEL_ALERT, err);
+        });
         connection.on('close', function () {
             Logs.log("WebSocketServer.onDisconnected: id=" + id);
             delete connectionStack[id];

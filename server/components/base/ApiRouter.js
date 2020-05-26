@@ -90,6 +90,8 @@ let ApiRouter = new (function ApiRouter() {
             onDisconnectCallbacks[i].call(self, connections[id]);
         }
         delete connections[id];
+        //@todo не очень это выглядиты
+        prid = null;
     };
 
     this.executeRequest = function (group, method, args, cntxList) {

@@ -178,7 +178,7 @@ let DataObjects = function () {
     this.images[this.STUFF_HUMMER] = 'button-hummer-rest.png';
     this.images[this.STUFF_LIGHTNING] = 'button-lightning-rest.png';
     this.images[this.STUFF_SHUFFLE] = 'button-shuffle-rest.png';
-    this.images[this.STUFF_GOLD] = 'button-money-rest.png';
+    this.images[this.STUFF_GOLD] = 'coin.png';
 
 };
 

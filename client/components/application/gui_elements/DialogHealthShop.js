@@ -4,6 +4,8 @@ let DialogHealthShop = function () {
 
     let elHealth5 = null;
 
+    let elButton = null;
+
     let locked = false;
 
     /**
@@ -30,15 +32,29 @@ let DialogHealthShop = function () {
 
         this.setTitle('МАГАЗИН');
 
-        elHealth5 = GUI.createElement(ElementButton, {
-            x: offsetX + stepX, y: offsetY,
-            srcRest: 'shop-health-1.png',
-            onClick: function () {
-                if (lock()) return;
-                self.buyHealth5();
-            }
+        let onClick = function () {
+            if (lock()) return;
+            self.buyHealth5();
+        };
+
+        elHealth5 = GUI.createElement(ElementMoneyCount, {
+            x: offsetX + stepX - 60, y: offsetY + 10,
+            productImg: 'hearth-big.png',
+            productCount: 5, goldCount: 300,
+            type: 'B',
+            onClick: onClick
         });
         self.elements.push(elHealth5);
+
+        elButton = GUI.createElement(ElementButton, {
+            x: 185, y: 215,
+            srcRest: 'button-red-rest.png',
+            srcHover: 'button-red-hover.png',
+            srcActive: 'button-red-active.png',
+            title: 'КУПИТЬ',
+            onClick: onClick
+        });
+        self.elements.push(elButton);
 
         user = LogicUser.getCurrent();
 
@@ -64,6 +80,7 @@ let DialogHealthShop = function () {
         let user;
         user = LogicUser.getCurrent();
         elHealth5.enabled = LogicHealth.getHealths(user) === 0;
+        elButton.enabled = LogicHealth.getHealths(user) === 0;
         this.__proto__.redraw.call(this);
     };
 

@@ -45,6 +45,7 @@ LogicSystemRequests = function () {
     };
 
     this.shutdown = function (callback) {
+        Logs.log("Shutdown", Logs.LEVEL_ALERT);
         callback('<pre>' + "Shutdown executed!" + Date.now() + '</pre>');
         deInitBeforeShutdown(function () {
             process.exit();

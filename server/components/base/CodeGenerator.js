@@ -157,13 +157,15 @@ CodeGenerator = function () {
         }
         // api router map для клиента CAPI : CAPI
 
-        code += 'ApiRouter.map2 = {\r\n';
+        /*code += 'ApiRouter.map2 = {\r\n';
         for (group in pureData) {
             code += '\t' + group + ' : ' + group + ',\r\n';
         }
         // remove last symbol
         code = code.substr(0, code.length - 1);
         code += '};\r\n';
+
+         */
         return code;
     };
 };

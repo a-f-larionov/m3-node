@@ -60,7 +60,7 @@ deInitBeforeShutdown = function (callback) {
             count++;
         });
     }
-    log("de inits completed.");
+    log("De inits completed.");
     setTimeout(callback, 1235);
 };
 
@@ -78,9 +78,11 @@ process.on('uncaughtException', function (err) {
 
     Logs.log("ERROR HAPPENDS", Logs.LEVEL_ERROR, err, Logs.CHANNEL_TELEGRAM);
 
-    log('ERROR HAPPENDZ2');
-    console.log(err.stack);
-    console.log(err);
+    log('!!! ERROR HAPPENDZ !!!', err);
+
+    if (err.code === 'ECONNRESET') {
+        return Logs.log("Skip process.exit()", Logs.LEVEL_ALERT, err);
+    }
     process.exit();
 });
 
@@ -177,14 +179,14 @@ telegramSent = function (message) {
             res.statusCode;
             res.statusMessage;
             res.on('data', function (data) {
-                console.log(data.toString());
+                //console.log(data.toString());
             });
             res.on('error', function (data) {
-                console.log('err', data);
+                console.log('error telegramm', data);
             });
             req.end();
         });
     }
 
     exec(message);
-}
+};

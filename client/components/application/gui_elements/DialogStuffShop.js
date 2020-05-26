@@ -33,28 +33,16 @@ let DialogStuffShop = function () {
         this.setTitle('МАГАЗИН');
 
         for (let i = 0; i < 3; i++) {
-            el = GUI.createElement(ElementButton, {
+            el = GUI.createElement(ElementMoneyCount, {
                 x: offsetX + stepX * i, y: offsetY,
-                srcRest: 'shop-hummer-2.png',
-                srcHover: 'shop-hummer-2.png',
-                srcActive: 'shop-hummer-2.png',
+                productImg: '', productCount: 0, goldCount: 0,
+                counterOffset: 20,
                 onClick: function () {
                     self.buyStuff(i);
                 }
             });
             items.push(el);
             self.elements.push(el);
-
-            el = GUI.createElement(ElementButton, {
-                x: offsetX + stepX * i + 45, y: offsetY + 150 - 25,
-                srcRest: 'button-add-rest.png',
-                srcHover: 'button-add-hover.png',
-                srcActive: 'button-add-active.png',
-                itemNumber: i,
-                onClick: function () {
-                    self.buyStuff(i);
-                }
-            });
         }
 
         GUI.popParent();
@@ -82,9 +70,9 @@ let DialogStuffShop = function () {
             }
             /** Обновить картинки товаров */
             for (let i = 0; i < 3; i++) {
-                items[i].srcRest = data[i].imageSrc;
-                items[i].srcHover = data[i].imageSrc;
-                items[i].srcActive = data[i].imageSrc;
+                items[i].productImg = data[i].imageSrc;
+                items[i].goldCount = data[i].gold;
+                items[i].productCount = data[i].quantity;
                 items[i].redraw();
             }
         }

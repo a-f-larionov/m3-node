@@ -29,7 +29,10 @@ let LogicMain = (function () {
         /** Проверка визарада начала игры */
         LogicWizard.onAuthorizeSuccess();
 
-        SAPILogs.clientLoaded(prid);
+        if (prid) {
+            SAPILogs.clientLoaded(prid);
+            prid = null;
+        }
     };
 
     LogicMain.prototype.main = function () {
@@ -38,11 +41,10 @@ let LogicMain = (function () {
         Logs.init(function () {
         });
 
+        /** Init some components */
+        SocNet.init();
         DataPoints.init();
         DataChests.init();
-
-        /** init some components */
-        SocNet.init();
 
         /** WebSocket Client */
         webSocketClient = new WebSocketClient();

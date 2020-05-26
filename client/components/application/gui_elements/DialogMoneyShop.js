@@ -14,11 +14,11 @@ let DialogMoneyShop = function () {
         this.setTitle("ГОЛОСА");
 
         for (let i = 0; i < 3; i++) {
-            el = GUI.createElement(ElementButton, {
+
+            el = GUI.createElement(ElementMoneyCount, {
                 x: offsetX + stepX * i, y: offsetY,
-                srcRest: 'money_' + (i + 1) + '.png',
-                srcHover: 'money_' + (i + 1) + '.png',
-                srcActive: 'money_' + (i + 1) + '.png',
+                productImg: 'money_' + (i + 1) + '.png',
+                productCount: 0, goldCount: DataShop.gold[i].quantity,
                 onClick: function () {
                     if (GUI.isFullScreen()) {
                         GUI.fsSwitch();
@@ -27,16 +27,8 @@ let DialogMoneyShop = function () {
                     self.closeDialog();
                 }
             });
-            self.elements.push(el);
 
-            el = GUI.createElement(ElementButton, {
-                x: offsetX + stepX * i + 45, y: offsetY + 150 - 45,
-                srcRest: 'button-add-rest.png',
-                onClick: function () {
-                    SocNet.openOrderDialog(DataShop.gold[i].votes);
-                    self.closeDialog();
-                }
-            });
+            self.elements.push(el);
         }
 
         GUI.popParent();

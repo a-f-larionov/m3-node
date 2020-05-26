@@ -179,7 +179,7 @@ let ElementText = function () {
         if (!self.onClick) {
             return;
         }
-        /* Да, тут мы останавливаем дальнейшие течение клика. */
+        /** Да, тут мы останавливаем дальнейшие течение клика. */
         mouseEvent.stopPropagation();
         return self.onClick.call(this, mouseEvent, dom);
     };

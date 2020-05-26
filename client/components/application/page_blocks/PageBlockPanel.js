@@ -37,7 +37,7 @@ let PageBlockPanel = function PageBlockPanel() {
 
         /** Деньги - монета */
         el = GUI.createElement(ElementButton, {
-            x: pMX + 5, y: -3, srcRest: 'button-money-rest.png',
+            x: pMX + 5, y: -3, srcRest: 'coin.png',
             onClick: function () {
                 PBZDialogs.dialogMoneyShop.showDialog();
             }
