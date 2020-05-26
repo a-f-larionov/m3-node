@@ -40,7 +40,7 @@ let DialogHealthShop = function () {
         elHealth5 = GUI.createElement(ElementMoneyCount, {
             x: offsetX + stepX - 60, y: offsetY + 10,
             productImg: 'hearth-big.png',
-            productCount: 5, goldCount: 300,
+            productCount: LogicHealth.getMaxHealth(), goldCount: DataShop.healthGoldPrice,
             type: 'B',
             onClick: onClick
         });
