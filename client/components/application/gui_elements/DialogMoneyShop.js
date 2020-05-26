@@ -15,6 +15,13 @@ let DialogMoneyShop = function () {
 
         for (let i = 0; i < 3; i++) {
 
+            el = GUI.createElement(ElementText, {
+                x: offsetX + stepX * i, y: offsetY + 15,
+                text: DataShop.gold[i].votes.toString() + ' <br>ГОЛОС',
+                color: '#4680C2',
+                fontSize: 20, width: Images.getWidth('money_1.png')
+            }).show();
+
             el = GUI.createElement(ElementMoneyCount, {
                 x: offsetX + stepX * i, y: offsetY,
                 productImg: 'money_' + (i + 1) + '.png',
