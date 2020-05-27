@@ -85,7 +85,6 @@ let ApiRouter = new (function ApiRouter() {
     };
 
     this.onDisconnect = function (id) {
-        Logs.log("connection close: id=" + id, Logs.LEVEL_WARNING);
         for (let i in onDisconnectCallbacks) {
             onDisconnectCallbacks[i].call(self, connections[id]);
         }
@@ -94,6 +93,7 @@ let ApiRouter = new (function ApiRouter() {
         prid = null;
         let count = 0;
         for (let i in connections) count++;
+        Logs.log("connection close: id=" + id + " count:" + count , Logs.LEVEL_WARNING);
         if (CONST_IS_SERVER_SIDE && count === 0) {
             setTimeout(function () {
                 let count = 0;

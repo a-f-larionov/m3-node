@@ -248,7 +248,7 @@ let LogicUser = function () {
                     return user.nextPointId >= pointId;
                 })
                 .sort(function (a, b) {
-                    return b.lastLoginTimestamp - a.lastLoginTimestamp;
+                    return b.login_tm - a.login_tm;
                 })
                 .map(function (user) {
                     return user;

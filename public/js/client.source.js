@@ -1,17 +1,15 @@
-"use strict"   
+"use strict";
+function _(window){
+/** ../client//run.js */
+let global = {};
+window.onload = function () {
+    /** Передаем управление вхдоной точки. */
+    LogicMain.main();
+};
 
 /** ../client/core/constants.js */
-let CONST_IS_SERVER_SIDE = false;
-let CONST_IS_CLIENT_SIDE = true;
-
-let thisIsASomeLongNameVariable = 54343443 + 24 + 3;
-
-let THIS_IS_SOME_LONG_NAME_CONSTNATN = 2343243;
-
-let add55 = function (first, second) {
-    return first + second;
-};
-console.log(add55(15, 4));
+const CONST_IS_SERVER_SIDE = false;
+const CONST_IS_CLIENT_SIDE = true;
 
 
 /** ../client/core/functions.js */
@@ -80,6 +78,22 @@ function declination(number, titles) {
     let cases = [2, 0, 1, 1, 1, 2];
     return titles[(number % 100 > 4 && number % 100 < 20) ? 2 : cases[(number % 10 < 5) ? number % 10 : 5]];
 }
+
+let clientCrypt = function (str) {
+    return str.split('')
+        .map(function (s, i) {
+            return String.fromCharCode(s.charCodeAt() ^ DataCross.clientCryptKey + i)
+        })
+        .join('');
+};
+
+let clientDecrypt = function (str) {
+    return str.split('')
+        .map(function (s, i) {
+            return String.fromCharCode(s.charCodeAt() ^ DataCross.serverCryptKey + i)
+        })
+        .join('');
+};
 /** ../client/components/application/anims/AnimLocker.js */
 let AnimLocker = {
     locks: 0,
@@ -359,17 +373,14 @@ let animGemLightning = function () {
 
     this.init = function () {
         // get
-        console.log('init-gem-anim');
         switch (this.objectId) {
             case DataObjects.WITH_LIGHTNING_VERTICAL:
-                this.dom.rotate = 0;
-                break;
-            case DataObjects.WITH_LIGHTNING_HORIZONTAL:
                 this.dom.rotate = 90;
                 break;
+            case DataObjects.WITH_LIGHTNING_HORIZONTAL:
+                this.dom.rotate = 0;
+                break;
         }
-        console.log('anim gem lig');
-        console.log(this, arguments);
     };
 
     this.iterate = function (t) {
@@ -953,17 +964,10 @@ let CAPIUser = function () {
      * @param user {Object} юзер инфо.
      */
     this.updateUserInfo = function (cntx, user) {
-        if (user.id === 4) {
-            console.log(user.id, user.fullRecoveryTime);
-            console.log(JSON.stringify(LogicUser.getById(4).fullRecoveryTime));
-        }
-        user.createTimestamp = LogicTimeClient.convertToClient(user.createTimestamp);
-        user.lastLoginTimestamp = LogicTimeClient.convertToClient(user.lastLoginTimestamp);
+        user.createTimestamp = LogicTimeClient.convertToClient(user.create_tm);
+        user.login_tm = LogicTimeClient.convertToClient(user.login_tm);
         user.fullRecoveryTime = LogicTimeClient.convertToClient(user.fullRecoveryTime);
         LogicUser.updateUserInfo(user);
-        if (user.id === 4) {
-            console.log('afterupdate', JSON.stringify(LogicUser.getById(4).fullRecoveryTime));
-        }
     };
 
     this.updateUserListInfo = function (cntx, userList) {
@@ -1089,12 +1093,14 @@ if (CONST_IS_SERVER_SIDE) {
 let DataCross = {
     user: {
         maxHealth: 5,
-        healthRecoveryTime: 10,
+        healthRecoveryTime: 120,
     },
     app: {
-        width: 777,
+        width: 778,
         height: 500
-    }
+    },
+    clientCryptKey: 3705,
+    serverCryptKey: 987,
 };
 
 /** Для кросс-сайдных компонент */
@@ -1139,7 +1145,10 @@ let DataMap = function () {
     };
 
     this.setCurrentMapId = function (id) {
-        if (id >= DataMap.MAP_ID_MAX) {
+        if (!id) id = Math.min(DataMap.MAP_ID_MAX, LogicUser.getUserLastMapId());
+        if (!id) return;
+
+        if (id > DataMap.MAP_ID_MAX) {
             return;
         }
         if (id <= DataMap.MAP_ID_MIN) {
@@ -1417,7 +1426,7 @@ let DataObjects = function () {
     this.images[this.STUFF_HUMMER] = 'button-hummer-rest.png';
     this.images[this.STUFF_LIGHTNING] = 'button-lightning-rest.png';
     this.images[this.STUFF_SHUFFLE] = 'button-shuffle-rest.png';
-    this.images[this.STUFF_GOLD] = 'button-money-rest.png';
+    this.images[this.STUFF_GOLD] = 'coin.png';
 
 };
 
@@ -1674,79 +1683,31 @@ let DataShop = function () {
 
 DataShop = new DataShop();
 
-/* @see LogicPayments.doOrderChange */
+let vK = 0.5;
+let qK = 0.5;
+
+DataShop.healthGoldPrice = 300 * qK;
+/** @see LogicPayments.doOrderChange */
 DataShop.gold = [
-    {
-        votes: 1,
-        quantity: 10
-    },
-    {
-        votes: 5,
-        quantity: 70
-    },
-    {
-        votes: 10,
-        quantity: 1000
-    }
+    {votes: 6 * vK, quantity: 300 * qK},
+    {votes: 24 * vK, quantity: 1500 * qK},
+    {votes: 44 * vK, quantity: 3000 * qK}
 ];
-
 DataShop.hummers = [
-    {
-        gold: 10,
-        quantity: 3,
-        imageSrc: 'shop-hummer-1.png',
-    },
-    {
-        gold: 15,
-        quantity: 6,
-        imageSrc: 'shop-hummer-2.png',
-    },
-    {
-        gold: 30,
-        quantity: 9,
-        imageSrc: 'shop-hummer-3.png',
-    }
+    {gold: 900 * qK, quantity: 3, imageSrc: 'hummer-big.png',},
+    {gold: 1300 * qK, quantity: 6, imageSrc: 'hummer-big.png',},
+    {gold: 2000 * qK, quantity: 9, imageSrc: 'hummer-big.png',}
 ];
-
 DataShop.shuffle = [
-    {
-        gold: 10,
-        quantity: 3,
-        imageSrc: 'shop-shuffle-1.png',
-    },
-    {
-        gold: 15,
-        quantity: 6,
-        imageSrc: 'shop-shuffle-2.png',
-    },
-    {
-        gold: 30,
-        quantity: 9,
-        imageSrc: 'shop-shuffle-3.png',
-    }
+    {gold: 1100 * qK, quantity: 3, imageSrc: 'shuffle-big.png',},
+    {gold: 2000 * qK, quantity: 6, imageSrc: 'shuffle-big.png',},
+    {gold: 3000 * qK, quantity: 9, imageSrc: 'shuffle-big.png',}
 ];
-
-
 DataShop.lightning = [
-    {
-        gold: 10,
-        quantity: 3,
-        imageSrc: 'shop-lightning-1.png',
-    },
-    {
-        gold: 15,
-        quantity: 6,
-        imageSrc: 'shop-lightning-2.png',
-    },
-    {
-        gold: 30,
-        quantity: 9,
-        imageSrc: 'shop-lightning-3.png',
-    }
+    {gold: 1200 * qK, quantity: 3, imageSrc: 'lightning-big.png',},
+    {gold: 2500 * qK, quantity: 6, imageSrc: 'lightning-big.png',},
+    {gold: 3000 * qK, quantity: 9, imageSrc: 'lightning-big.png',}
 ];
-
-
-DataShop.healthGoldPrice = 100;
 
 /** Для кросс-сайдных компонент */
 if (CONST_IS_SERVER_SIDE) {
@@ -2345,14 +2306,30 @@ let DialogGoalsReached = function () {
     };
 };
 /** ../client/components/application/gui_elements/DialogHealthShop.js */
-let  DialogHealthShop = function () {
+let DialogHealthShop = function () {
     let self = this;
     this.__proto__ = new Dialog();
 
     let elHealth5 = null;
 
+    let elButton = null;
+
+    let locked = false;
+
+    /**
+     * Чтобы пользователь на купил 2ыйнм кликом
+     * @returns {boolean}
+     */
+    let lock = function () {
+        if (locked) return true;
+        locked = true;
+        setTimeout(function () {
+            locked = false;
+        }, 1000);
+    };
+
     this.init = function () {
-        let el, offsetX, stepX, offsetY;
+        let el, offsetX, stepX, offsetY, user;
         this.__proto__.init.call(this);
 
         offsetX = 30;
@@ -2363,23 +2340,46 @@ let  DialogHealthShop = function () {
 
         this.setTitle('МАГАЗИН');
 
-        elHealth5 = GUI.createElement(ElementButton, {
-            x: offsetX + stepX, y: offsetY,
-            srcRest: 'shop-health-1.png',
-            onClick: function () {
-                self.buyHealth5();
-            }
+        let onClick = function () {
+            if (lock()) return;
+            self.buyHealth5();
+        };
+
+        elHealth5 = GUI.createElement(ElementMoneyCount, {
+            x: offsetX + stepX - 60, y: offsetY + 10,
+            productImg: 'hearth-big.png',
+            productCount: LogicHealth.getMaxHealth(), goldCount: DataShop.healthGoldPrice,
+            type: 'B',
+            onClick: onClick
         });
         self.elements.push(elHealth5);
 
-        el = GUI.createElement(ElementButton, {
-            x: offsetX + stepX * 2, y: offsetY,
-            srcRest: 'shop-health-2.png',
-            onClick: function () {
-                SAPIUser.zeroLife();
-            }
+        elButton = GUI.createElement(ElementButton, {
+            x: 185, y: 215,
+            srcRest: 'button-red-rest.png',
+            srcHover: 'button-red-hover.png',
+            srcActive: 'button-red-active.png',
+            title: 'КУПИТЬ',
+            onClick: onClick
         });
-        self.elements.push(el);
+        self.elements.push(elButton);
+
+        user = LogicUser.getCurrent();
+
+        if (SocNet.getType() === SocNet.TYPE_STANDALONE &&
+            (user && user.id > 1000)
+        ) {
+
+            el = GUI.createElement(ElementButton, {
+                x: offsetX + stepX * 2, y: offsetY,
+                srcRest: 'shop-health-2.png',
+                onClick: function () {
+                    if (lock()) return;
+                    SAPIUser.zeroLife();
+                }
+            });
+            self.elements.push(el);
+        }
 
         GUI.popParent();
     };
@@ -2388,6 +2388,7 @@ let  DialogHealthShop = function () {
         let user;
         user = LogicUser.getCurrent();
         elHealth5.enabled = LogicHealth.getHealths(user) === 0;
+        elButton.enabled = LogicHealth.getHealths(user) === 0;
         this.__proto__.redraw.call(this);
     };
 
@@ -2525,11 +2526,21 @@ let DialogMoneyShop = function () {
         this.setTitle("ГОЛОСА");
 
         for (let i = 0; i < 3; i++) {
-            el = GUI.createElement(ElementButton, {
+
+            el = GUI.createElement(ElementText, {
+                x: offsetX + stepX * i, y: offsetY + 15,
+                text: DataShop.gold[i].votes.toString() + ' <br>' + declination(
+                    DataShop.gold[i].votes,
+                    ['ГОЛОС', 'ГОЛОСА', 'ГОЛОСОВ']
+                ),
+                color: '#4680C2',
+                fontSize: 20, width: Images.getWidth('money_1.png')
+            }).show();
+
+            el = GUI.createElement(ElementMoneyCount, {
                 x: offsetX + stepX * i, y: offsetY,
-                srcRest: 'money_' + (i + 1) + '.png',
-                srcHover: 'money_' + (i + 1) + '.png',
-                srcActive: 'money_' + (i + 1) + '.png',
+                productImg: 'money_' + (i + 1) + '.png',
+                productCount: 0, goldCount: DataShop.gold[i].quantity,
                 onClick: function () {
                     if (GUI.isFullScreen()) {
                         GUI.fsSwitch();
@@ -2538,16 +2549,8 @@ let DialogMoneyShop = function () {
                     self.closeDialog();
                 }
             });
-            self.elements.push(el);
 
-            el = GUI.createElement(ElementButton, {
-                x: offsetX + stepX * i + 45, y: offsetY + 150 - 45,
-                srcRest: 'button-add-rest.png',
-                onClick: function () {
-                    SocNet.openOrderDialog(DataShop.gold[i].votes);
-                    self.closeDialog();
-                }
-            });
+            self.elements.push(el);
         }
 
         GUI.popParent();
@@ -2622,7 +2625,7 @@ let DialogPointInfo = function () {
                     self.showDialog(pointId);
                 } else {
                     /** Начать игру */
-                    SAPIUser.onPlayStart();
+                    SAPIUser.onStart();
                     PageBlockPanel.oneHealthHide = true;
                     DataPoints.setPlayedId(pointId);
                     PageController.showPage(PageField);
@@ -2721,6 +2724,20 @@ let DialogStuffShop = function () {
 
     let items = [];
 
+    let locked = false;
+
+    /**
+     * Чтобы пользователь на купил 2ыйнм кликом
+     * @returns {boolean}
+     */
+    let lock = function () {
+        if (locked) return true;
+        locked = true;
+        setTimeout(function () {
+            locked = false;
+        }, 1000);
+    };
+
     this.init = function () {
         let el, offsetX, stepX, offsetY;
         this.__proto__.init.call(this);
@@ -2734,28 +2751,16 @@ let DialogStuffShop = function () {
         this.setTitle('МАГАЗИН');
 
         for (let i = 0; i < 3; i++) {
-            el = GUI.createElement(ElementButton, {
+            el = GUI.createElement(ElementMoneyCount, {
                 x: offsetX + stepX * i, y: offsetY,
-                srcRest: 'shop-hummer-2.png',
-                srcHover: 'shop-hummer-2.png',
-                srcActive: 'shop-hummer-2.png',
+                productImg: '', productCount: 0, goldCount: 0,
+                counterOffset: 20,
                 onClick: function () {
                     self.buyStuff(i);
                 }
             });
             items.push(el);
             self.elements.push(el);
-
-            el = GUI.createElement(ElementButton, {
-                x: offsetX + stepX * i + 45, y: offsetY + 150 - 25,
-                srcRest: 'button-add-rest.png',
-                srcHover: 'button-add-hover.png',
-                srcActive: 'button-add-active.png',
-                itemNumber: i,
-                onClick: function () {
-                    self.buyStuff(i);
-                }
-            });
         }
 
         GUI.popParent();
@@ -2783,9 +2788,9 @@ let DialogStuffShop = function () {
             }
             /** Обновить картинки товаров */
             for (let i = 0; i < 3; i++) {
-                items[i].srcRest = data[i].imageSrc;
-                items[i].srcHover = data[i].imageSrc;
-                items[i].srcActive = data[i].imageSrc;
+                items[i].productImg = data[i].imageSrc;
+                items[i].goldCount = data[i].gold;
+                items[i].productCount = data[i].quantity;
                 items[i].redraw();
             }
         }
@@ -2793,6 +2798,8 @@ let DialogStuffShop = function () {
     };
 
     this.buyStuff = function (itemIndex) {
+
+        if (lock()) return;
 
         let userGold, buyFunc, giveFunc, shopItem;
         userGold = LogicStuff.getStuff('goldQty');
@@ -2878,7 +2885,7 @@ let DialogTurnLoose = function DialogTurnLoose() {
                     self.showDialog(pointId);
                 } else {
                     /** Начать игру */
-                    SAPIUser.onPlayStart();
+                    SAPIUser.onStart();
                     PageBlockPanel.oneHealthHide = true;
                     DataPoints.setPlayedId(DataPoints.getPlayedId());
                     PageController.showPage(PageMain);
@@ -3424,8 +3431,8 @@ let ElementField = function () {
 
     let pointFromEvent = function (event) {
         return {
-            x: Math.floor((event.clientX - self.x) / DataPoints.BLOCK_WIDTH),
-            y: Math.floor((event.clientY - self.y) / DataPoints.BLOCK_HEIGHT)
+            x: Math.floor((event.clientX - self.x - GUI.appArea.offsetLeft) / DataPoints.BLOCK_WIDTH),
+            y: Math.floor((event.clientY - self.y - GUI.appArea.offsetTop) / DataPoints.BLOCK_HEIGHT)
         }
     };
 
@@ -3898,7 +3905,6 @@ let ElementField = function () {
 
     let tryShowHint = function () {
         setTimeout(function () {
-            console.log('tryShowHint', self.isFieldSilent(), !lock, showed, !stopHint, !stopPolyColorAnim, !lockHint);
             if (self.isFieldSilent() && !lock && showed && !stopHint && !stopPolyColorAnim && !lockHint) {
                 let allTurns = Field.countTurns();
                 if (allTurns.length) {
@@ -4001,7 +4007,7 @@ let ElementField = function () {
     this.destroyLines = function () {
         let lines, actGem, actObjectId;
         lines = Field.findLines();
-        console.log(lines);
+console.log('destroy line');
         lines.forEach(function (line) {
 
             actGem = null;
@@ -4032,7 +4038,6 @@ let ElementField = function () {
                 }
             }
             //if (actGem && p.x === actGem.x && p.y === actGem.y) return;
-            console.log('call on detroy');
             self.onDestroyLine(line);
         });
 
@@ -4282,8 +4287,8 @@ let ElementFriendsPanel = function () {
             cardsDom.push(dom);
             cardsText.push(GUI.createElement(ElementText,
                 {
-                    x: self.x + i * (self.cardWidth + self.cardSpace) + 3,
-                    y: self.y + 50 - 15,
+                    x: self.x + i * (self.cardWidth + self.cardSpace) + 2,
+                    y: self.y + 50 - 17,
                     width: self.cardWidth, height: 30 / (100 / self.cardWidth), alignCenter: true,
                     background: '#eee',
                     opacity: 0.7,
@@ -4614,7 +4619,7 @@ let ElementImage = function () {
      * Ссылка на картинку.
      * @type {string}
      */
-    this.src = 'not-found.png';
+    this.src;
 
     /**
      * Прозрачность картинки.
@@ -5193,114 +5198,6 @@ ElementPoint.STATE_CLOSE = 1;
 ElementPoint.STATE_CURRENT = 2;
 ElementPoint.STATE_FINISHED = 3;
 
-/** ../client/components/application/gui_elements/ElementSprite.js */
-/**
- * Element Sprite.
- * @constructor
- */
-let ElementSprite = function () {
-    let self = this;
-
-    /**
-     * Показывать ли элемент.
-     * @type {boolean}
-     */
-    let showed = false;
-
-    /**
-     * Координата X картинки.
-     * @type {number}
-     */
-    this.x = 0;
-
-    /**
-     * Координата Y картинки.
-     * @type {number}
-     */
-    this.y = 0;
-
-    /**
-     * Ширина картинки.
-     * @type {number}
-     */
-    this.width = 0;
-
-    /**
-     * Высота картинки.
-     * @type {number}
-     */
-    this.height = 0;
-
-    /**
-     * Ссылка на картинку.
-     * @type {string}
-     */
-    this.src = 'not-found.png';
-
-    /**
-     * Прозрачность картинки.
-     * @type {null}
-     */
-    this.opacity = null;
-
-    /**
-     * Дом картинки.
-     * @type {GUIDom}
-     */
-    this.dom = null;
-
-    this.pointer = undefined;
-
-    let dom;
-
-    this.title = undefined;
-
-    /**
-     * Создадим дом и настроем его.
-     */
-    this.init = function () {
-        dom = GUI.createDom(undefined, self.domInitParams);
-        dom.width = self.width;
-        dom.height = self.height;
-        dom.x = self.x;
-        dom.y = self.y;
-        dom.backgroundImage = self.src;
-        self.dom = dom;
-    };
-
-    /**
-     * Покажем картинку.
-     */
-    this.show = function () {
-        if (showed === true) return;
-        showed = true;
-        dom.show();
-        self.redraw();
-    };
-
-    /**
-     * Спрячем картинку.
-     */
-    this.hide = function () {
-        if (showed === false) return;
-        showed = false;
-        dom.hide();
-    };
-
-    /**
-     * Перерисуем картинку.
-     */
-    this.redraw = function () {
-        if (!showed) return;
-        if (self.opacity != null) {
-            dom.opacity = self.opacity;
-        }
-        dom.title = self.title;
-        dom.pointer = self.pointer;
-        dom.redraw();
-    };
-};
-
 /** ../client/components/application/gui_elements/ElementStuffButton.js */
 /**
  * Элемент инструмент(магия) молоток там и т.д..
@@ -5389,6 +5286,8 @@ let ElementStuffButton = function () {
 
     let counter = null;
 
+    let point = null;
+
     /**
      * Опущена ли мышка.
      * @type {boolean}
@@ -5415,7 +5314,8 @@ let ElementStuffButton = function () {
         GUI.bind(dom, GUI.EVENT_MOUSE_OVER, onMouseOver, self);
         GUI.bind(dom, GUI.EVENT_MOUSE_OUT, onMouseOut, self);
 
-        counter = GUI.createElement(ElementText, {});
+        point = GUI.createDom(null, {backgroundImage: 'map-way-point-grey.png'});
+        counter = GUI.createElement(ElementText, {width: 19});
     };
 
     /**
@@ -5426,6 +5326,7 @@ let ElementStuffButton = function () {
         showed = true;
         dom.show();
         counter.show();
+        point.show();
         self.redraw();
     };
 
@@ -5437,6 +5338,7 @@ let ElementStuffButton = function () {
         showed = false;
         dom.hide();
         counter.hide();
+        point.hide();
     };
 
     /**
@@ -5483,11 +5385,14 @@ let ElementStuffButton = function () {
             dom.pointer = GUI.POINTER_ARROW;
             dom.opacity = 0.5;
         }
-        counter.x = self.x + 70;
-        counter.y = self.y + 40;
+        counter.x = self.x + 65 - 4;
+        counter.y = self.y + 22;
+        point.x = self.x + 65 - 20;
+        point.y = self.y + 22 - 15;
         counter.setText(LogicStuff.getStuff(self.fieldName));
         dom.redraw();
         counter.redraw();
+        point.redraw();
     };
 
     /**
@@ -5714,7 +5619,7 @@ let ElementText = function () {
         if (!self.onClick) {
             return;
         }
-        /* Да, тут мы останавливаем дальнейшие течение клика. */
+        /** Да, тут мы останавливаем дальнейшие течение клика. */
         mouseEvent.stopPropagation();
         return self.onClick.call(this, mouseEvent, dom);
     };
@@ -5807,6 +5712,169 @@ let ElementUserScorePhoto = function () {
         elPhoto.redraw();
         elTextScore.redraw();
     };
+};
+/** ../client/components/application/gui_elements/ElemenеMoneyCount.js */
+/**
+ * @constructor
+ */
+let ElementMoneyCount = function () {
+    let self = this;
+
+    /**
+     * Показывать ли элемент.
+     * @type {boolean}
+     */
+    let showed = false;
+
+    /**
+     * Координата X картинки.
+     * @type {number}
+     */
+    this.x = 0;
+
+    /**
+     * Координата Y картинки.
+     * @type {number}
+     */
+    this.y = 0;
+
+    this.productImg = null;
+    this.productCount = null;
+    this.goldCount = null;
+
+    this.onClick = function () {
+    };
+
+    this.counterOffset = 0;
+    this.enabled = true;
+
+    let domProduct = null;
+    let textProductCount = null;
+
+    let domMoneyImage = null;
+    let textCounter = null;
+
+    let els = [];
+
+    /**
+     * Создадим дом и настроем его.
+     */
+    this.init = function () {
+        domMoneyImage = GUI.createDom(null, {backgroundImage: 'coin.png', pointer: GUI.POINTER_HAND});
+        textCounter = GUI.createElement(ElementText, {onClick: self.onClick, width: 100, alignCenter: false, pointer: GUI.POINTER_HAND});
+
+        domProduct = GUI.createDom(null, {pointer: GUI.POINTER_HAND});
+        textProductCount = GUI.createElement(ElementText, {onClick: self.onClick, pointer: GUI.POINTER_HAND});
+
+        GUI.bind(domMoneyImage, GUI.EVENT_MOUSE_CLICK, self.onClick, self);
+        GUI.bind(domProduct, GUI.EVENT_MOUSE_CLICK, self.onClick, self);
+
+        els.push(domMoneyImage);
+        els.push(textCounter);
+        els.push(domProduct);
+        els.push(textProductCount);
+    };
+
+    /**
+     * Покажем картинку.
+     */
+    this.show = function () {
+        if (showed === true) return;
+        showed = true;
+        els.forEach(function (el) {
+            el.show();
+        });
+        self.redraw();
+    };
+
+    /**
+     * Спрячем картинку.
+     */
+    this.hide = function () {
+        if (showed === false) return;
+        showed = false;
+        els.forEach(function (el) {
+            el.hide();
+        });
+    };
+
+    /**
+     * Перерисуем картинку.
+     */
+    this.redraw = function () {
+        if (!showed) return;
+
+        if (self.type === 'B') {
+            redrawB();
+        } else {
+            redrawA();
+        }
+        els.forEach(function (el) {
+            el.opacity = self.enabled ? 1.0 : 0.5;
+            el.redraw();
+        });
+    };
+
+
+    let redrawA = function () {
+
+        domProduct.x = self.x;
+        domProduct.y = self.y;
+        domProduct.backgroundImage = self.productImg;
+
+        if (self.productCount) {
+            textProductCount.show();
+            textProductCount.x = self.x + 100;
+            textProductCount.y = self.y + 20;
+            textProductCount.fontSize = 41;
+            textProductCount.text = "x" + self.productCount.toString();
+        } else {
+            textProductCount.hide();
+        }
+
+        let offsetX = 0;
+        if (self.goldCount > 9) offsetX = -0;
+        if (self.goldCount > 99) offsetX = -10;
+        if (self.goldCount > 999) offsetX = -20;
+
+        domMoneyImage.x = self.x + 30 + offsetX;
+        domMoneyImage.y = self.y + Images.getHeight(self.productImg) + self.counterOffset;
+
+        textCounter.x = self.x + 95 + offsetX * 2;
+        textCounter.y = self.y + Images.getHeight(self.productImg) + self.counterOffset;
+        textCounter.fontSize = 36;
+        textCounter.text = self.goldCount.toString();
+    };
+
+    let redrawB = function () {
+
+        let offsetX = 0;
+        if (self.goldCount > 9) offsetX = -0;
+        if (self.goldCount > 99) offsetX = -10;
+        if (self.goldCount > 999) offsetX = -15;
+
+        domProduct.x = self.x;
+        domProduct.y = self.y;
+        domProduct.backgroundImage = self.productImg;
+
+        if (self.productCount) {
+            textProductCount.show();
+            textProductCount.x = self.x + 100;
+            textProductCount.y = self.y + 20;
+            textProductCount.fontSize = 41;
+            textProductCount.text = "x" + self.productCount.toString();
+        } else {
+            textProductCount.hide();
+        }
+
+        domMoneyImage.x = self.x + 50 + 30 + offsetX + Images.getWidth(self.productImg);
+        domMoneyImage.y = self.y + self.counterOffset + 20;
+
+        textCounter.x = self.x + 50 + 95 + offsetX * 2 + Images.getWidth(self.productImg);
+        textCounter.y = self.y + self.counterOffset + 25;
+        textCounter.fontSize = 36;
+        textCounter.text = self.goldCount.toString();
+    }
 };
 /** ../client/components/application/logic/LogicChests.js */
 /**
@@ -5995,12 +6063,12 @@ let LogicField = function () {
                 objectB = cellB.object;
                 if (cellA.isVisible && objectA.isCanMoved && cellB.isVisible && objectB.isCanMoved) {
                     /** 1 - Меняем a ⇔ b */
-                    self.exchangeObjects(a, b);
+                    self.exchangeObjects(a, b, null);
                     /** 2 - Считаем линии */
                     lines = self.findLines();
                     if (lines.length) allLines.push({a: a, b: b, lines: lines});
                     /** 3 - Возвращаем a ⇔ b */
-                    self.exchangeObjects(a, b);
+                    self.exchangeObjects(a, b, null);
                 }
             }
         };
@@ -6015,7 +6083,7 @@ let LogicField = function () {
     this.exchangeObjects = function (a, b, onlyObjectId) {
         let tmp;
         if (self.isOut(a) || self.isOut(b)) return false;
-
+        //console.log('exchange', onlyObjectId);
         if (onlyObjectId) {
             tmp = cells[b.x][b.y].object.objectId;
             cells[b.x][b.y].object.objectId = cells[a.x][a.y].object.objectId;
@@ -6126,8 +6194,8 @@ let LogicField = function () {
     };
 
     /**
-     *
-     * @param callback(x,y)
+     * x, y, cell, object
+     * @param callback(x, y, cell, object)
      */
     this.eachCell = function (callback) {
         for (let y = 0; y < DataPoints.FIELD_MAX_HEIGHT; y++) {
@@ -6213,7 +6281,20 @@ let LogicField = function () {
             }
         }
         if (Field.findLines().length) {
+            let n;
+            n = [];
+            Field.eachCell(function (x, y, cell, object) {
+                if (!n[y]) n[y] = [];
+                n[y].push(cell.withGold ? 'G' : ' ');
+            });
+            console.log(n);
             Field.shuffle(true);
+            n = [];
+            Field.eachCell(function (x, y, cell, object) {
+                if (!n[y]) n[y] = [];
+                n[y].push(cell.withGold ? 'G' : ' ');
+            });
+            console.log(n);
         }
     };
 
@@ -6239,10 +6320,10 @@ let LogicField = function () {
 
     this.isLinePossiblyDestroy = function (pA, pB) {
         let lines, mayLineDestroy;
-        LogicField.exchangeObjects(pA, pB);
+        LogicField.exchangeObjects(pA, pB, -1);
         lines = LogicField.findLines();
         mayLineDestroy = LogicField.lineCrossing(lines, pA.x, pA.y) | LogicField.lineCrossing(lines, pB.x, pB.y);
-        LogicField.exchangeObjects(pA, pB);
+        LogicField.exchangeObjects(pA, pB, -1);
         return mayLineDestroy;
     };
 
@@ -6304,21 +6385,22 @@ let LogicField = function () {
     let shuffleCounter = 0;
 
     this.shuffle = function (beforePlay) {
+        console.log('shuffle', beforePlay);
         shuffleCounter++;
         let funcShuffleField = function () {
-            let p1, p2, cell2;
-            Field.eachCell(function (x1, y1, cell1) {
+            let p1, p2, c2;
+            Field.eachCell(function (x1, y1, c1) {
                 p1 = {x: x1, y: y1};
                 p2 = {
                     x: Math.floor(Math.random() * DataPoints.FIELD_MAX_WIDTH),
                     y: Math.floor(Math.random() * DataPoints.FIELD_MAX_HEIGHT)
                 };
-                cell2 = Field.getCell(p2);
+                c2 = Field.getCell(p2);
                 let o1, o2;
-                o1 = cell1.object;
-                o2 = cell2.object;
-                if (cell1.isVisible && o1.isCanMoved && !o1.isBarrel && o1.objectId !== DataObjects.OBJECT_SAND &&
-                    cell2.isVisible && o2.isCanMoved && !o2.isBarrel && o2.objectId !== DataObjects.OBJECT_SAND) {
+                o1 = c1.object;
+                o2 = c2.object;
+                if (c1.isVisible && o1.isCanMoved && !o1.isBarrel && o1.objectId !== DataObjects.OBJECT_SAND &&
+                    c2.isVisible && o2.isCanMoved && !o2.isBarrel && o2.objectId !== DataObjects.OBJECT_SAND) {
                     Field.exchangeObjects(p1, p2, beforePlay)
                 }
             });
@@ -6432,9 +6514,13 @@ if (CONST_IS_SERVER_SIDE) {
 /** ../client/components/application/logic/LogicMain.js */
 /**
  * @type {LogicMain}
+ * @return {LogicMain}
  * @constructor
  */
-let LogicMain = function () {
+let LogicMain = (function () {
+
+    function LogicMain() {
+    }
 
     /**
      * After connect
@@ -6447,16 +6533,20 @@ let LogicMain = function () {
     };
 
     LogicMain.prototype.onAuthorizeSuccess = function () {
-        /** Установить текущую карту игрока */
-        DataMap.setCurrentMapId(LogicUser.getUserLastMapId());
-
         LogicStuff.loadStuff();
+        /** Установить текущую карту игрока */
+        DataMap.setCurrentMapId();
 
         /** Первый показ игры: Главная страница */
         PageController.showPage(PageMain);
 
         /** Проверка визарада начала игры */
         LogicWizard.onAuthorizeSuccess();
+
+        if (prid) {
+            SAPILogs.clientLoaded(prid);
+            prid = null;
+        }
     };
 
     LogicMain.prototype.main = function () {
@@ -6465,11 +6555,10 @@ let LogicMain = function () {
         Logs.init(function () {
         });
 
+        /** Init some components */
+        SocNet.init();
         DataPoints.init();
         DataChests.init();
-
-        /** init some components */
-        SocNet.init();
 
         /** WebSocket Client */
         webSocketClient = new WebSocketClient();
@@ -6499,9 +6588,12 @@ let LogicMain = function () {
         OnIdle.init(function () {
         });
     };
-};
 
-LogicMain = new LogicMain();
+    /**
+     * @type {LogicMain}
+     */
+    return new LogicMain();
+})();
 /** ../client/components/application/logic/LogicMap.js */
 /**
  * @type {LogicMap}
@@ -6628,17 +6720,17 @@ let LogicTimeClient = function () {
 
     this.setServerTime = function (timestamp) {
         serverTime = timestamp;
-        gotTime = (new Date).getTime();
+        gotTime = Date.now();
         timeDiff = serverTime - gotTime;
         Logs.log("Time sync:" + timestamp + ' gotTime:' + gotTime + ' timeDiff:' + timeDiff, Logs.LEVEL_DETAIL);
     };
 
     this.getTime = function () {
-        return Math.floor(this.getMicroTime() / 1000);
+        return Math.floor(this.getMTime() / 1000);
     };
 
-    this.getMicroTime = function () {
-        return new Date().getTime();
+    this.getMTime = function () {
+        return Date.now();
     };
 
     this.convertToClient = function (timestamp) {
@@ -6692,7 +6784,7 @@ let LogicUser = function () {
 
     /**
      * Метод для обработки ответа от сервера об успешной авторизации.
-     * @param user
+     * @param userId
      */
     this.authorizeSuccess = function (userId) {
         authorizedUserId = userId;
@@ -7068,13 +7160,28 @@ let PageBlockBackground = function PageBlockBackground() {
     };
 
     let setBackgroundImage = function () {
-        let elBody, backgroundImage;
+        let elBody, backgroundImage, url, meta;
+
+        url = 'old-paper.png';
+        meta = Images.getMeta(url);
         elBody = document.getElementsByTagName('body')[0];
 
-        backgroundImage = "url('" + Images.getPath('old-paper.png') + "')";
+        backgroundImage = "url('" + meta.path + "')";
 
+        if (window.useSprite) {
+            let koefW, koefH;
+            koefW = screen.availWidth / meta.w;
+            koefH = screen.availHeight / meta.h;
+            elBody.style.backgroundPositionX = '-' + meta.x * koefW + 'px';
+            elBody.style.backgroundPositionY = '-' + meta.y * koefH + 'px';
+            elBody.style.backgroundSize =
+                (
+                    window.spriteSize.width * koefW + 'px' +
+                    ' ' +
+                    window.spriteSize.height * koefH + 'px'
+                );
+        }
         elBody.style.backgroundImage = backgroundImage;
-        //elBody.style.backgroundSize = "777px 500px";
     };
 };
 
@@ -7513,11 +7620,12 @@ let PageBlockField = function PageBlockField() {
     this.finishLevel = function () {
         let pointId, user, lastScore, chestId;
         stuffMode = null;
+        elementField.setStuffMode(stuffMode);
+
         Logs.log("finishLevel()", Logs.LEVEL_DETAIL);
         user = LogicUser.getCurrent();
         pointId = DataPoints.getPlayedId();
         lastScore = DataPoints.getScore(pointId);
-        console.log(pointId, lastScore, user, score);
         if (user.nextPointId < pointId + 1) {
             user.nextPointId = pointId + 1;
             LogicUser.updateUserInfo(user);
@@ -7672,15 +7780,15 @@ let PageBlockMaps = function PageBlockMaps() {
         let el;
 
         //@todo preloader
-        elPreloader = GUI.createElement(ElementImage, {x: 0, y: 0, width: 777, height: 500, src: 'not-found.png'});
+        elPreloader = GUI.createElement(ElementImage, {x: 0, y: 0, width: 778, height: 500, src: 'oblojkla.png'});
 
-        elOldPaper = GUI.createElement(ElementImage, {x: 0, y: 0, width: 777, height: 500, src: 'old-paper.png'});
+        elOldPaper = GUI.createElement(ElementImage, {x: 0, y: 0, width: 778, height: 500, src: 'old-paper.png'});
         self.elements.push(elOldPaper);
 
-        elMapWay = GUI.createElement(ElementImage, {x: 0, y: 0, width: 777, height: 500, src: 'way-line.png'});
+        elMapWay = GUI.createElement(ElementImage, {x: 0, y: 0, width: 778, height: 500, src: 'way-line.png'});
         self.elements.push(elMapWay);
 
-        elMap = GUI.createElement(ElementImage, {x: 0, y: 0, width: 777, height: 500, src: 'map-001.png'});
+        elMap = GUI.createElement(ElementImage, {x: 0, y: 0, width: 778, height: 500, src: 'map-001.png'});
         self.elements.push(elMap);
 
         /**
@@ -7989,7 +8097,7 @@ let PageBlockPanel = function PageBlockPanel() {
 
         /** Деньги - монета */
         el = GUI.createElement(ElementButton, {
-            x: pMX + 5, y: -3, srcRest: 'button-money-rest.png',
+            x: pMX + 5, y: -3, srcRest: 'coin.png',
             onClick: function () {
                 PBZDialogs.dialogMoneyShop.showDialog();
             }
@@ -8179,10 +8287,8 @@ let PageBlockWizard = function PageBlockWizard() {
             y = event.offsetY;
             pixelData = cntx.getImageData(x, y, 1, 1).data;
             if (pixelData[3] === 0) {
-
                 canvas.style.display = 'none';
-                el = document.elementFromPoint(event.offsetX, event.offsetY);
-
+                el = document.elementFromPoint(event.clientX, event.clientY);
                 if (el) el.dispatchEvent(new MouseEvent(event.type, event));
                 if (canvas.isActive) canvas.style.display = '';
 
@@ -8369,7 +8475,7 @@ let PageBlockWizard = function PageBlockWizard() {
             images[url].onload = function () {
                 drawSome(url, x, y, unlock, true);
             };
-            images[url].src = Images.getPath(url);
+            images[url].src = Images.getRealPath(url);
             return;
         }
         cntx.globalAlpha = unlock ? 1 : 0.99;
@@ -8762,7 +8868,6 @@ let WizardFirstStart_4 = {
         }, Config.OnIdle.second * 1.500);
     },
     onDestroyLine: function (line) {
-        console.log(line);
         LogicWizard.finish();
     }
 };
@@ -8771,7 +8876,7 @@ let WizardLevel12_1 = {
 
     init: function () {
         PBWizard.begin();
-        PBWizard.updateText('Собирай пауков, взрывая камни на которых они сидят');
+        PBWizard.updateText('Собирай пауков, взрывая камни на которых они сидят.');
     },
 
     onHideDialog: function () {
@@ -9102,12 +9207,6 @@ let WizardLevel9_1 = {
     }
 };
 /** components/base/ApiRouter.js */
-var FS, PATH;
-if (CONST_IS_SERVER_SIDE) {
-    FS = require('fs');
-    PATH = require('path');
-}
-
 /**
  * ApiRouter
  * Cross-side component.
@@ -9117,6 +9216,11 @@ let ApiRouter = new (function ApiRouter() {
     let self = this;
 
     let map;
+
+    let stats = {};
+    this.stats = stats;
+
+    let connectionCount = 0;
 
     let connections = {};
     let onDisconnectCallbacks = [];
@@ -9128,6 +9232,12 @@ let ApiRouter = new (function ApiRouter() {
      */
     this.setMap = function (newMap) {
         map = newMap;
+        for (let group in map) {
+            stats[group] = {};
+            for (let method in map[group]) {
+                stats[group][method] = 0;
+            }
+        }
     };
 
     /**
@@ -9143,67 +9253,44 @@ let ApiRouter = new (function ApiRouter() {
             log("Wrong data:parse error", Logs.LEVEL_WARNING, packet);
             return;
         }
-        if (typeof packet !== 'object') {
-            Logs.log("Wrong data: packet must be 'object'", Logs.LEVEL_WARNING, packet);
-            return;
-        }
-        if (packet.group === undefined) {
-            Logs.log("Wrong data: packet must have .group", Logs.LEVEL_WARNING, packet);
-            return;
-        }
-        if (typeof packet.group !== 'string') {
-            Logs.log("Wrong data: packet.group must have type 'string'", Logs.LEVEL_WARNING, packet);
-            return;
-        }
-        if (packet.method === undefined) {
-            Logs.log("Wrong data: packet must have .method", Logs.LEVEL_WARNING, packet);
-            return;
-        }
-        if (typeof packet.method !== 'string') {
-            Logs.log("Wrong data: packet.method must have type 'string'", Logs.LEVEL_WARNING, packet);
-            return;
-        }
-        if (packet.args === undefined) {
-            Logs.log("Wrong data: packet must have .args", Logs.LEVEL_WARNING, packet);
-            return;
-        }
-        if (typeof packet.args !== 'object') {
-            Logs.log("Wrong data: packet.args must have type 'object'", Logs.LEVEL_WARNING, packet);
-            return;
-        }
+        if (typeof packet !== 'object') return Logs.log("Wrong data: packet must be 'object'", Logs.LEVEL_WARNING, packet);
+
+        if (packet.group === undefined) return Logs.log("Wrong data: packet must have .group", Logs.LEVEL_WARNING, packet);
+
+        if (typeof packet.group !== 'string') return Logs.log("Wrong data: packet.group must have type 'string'", Logs.LEVEL_WARNING, packet);
+
+        if (packet.method === undefined) return Logs.log("Wrong data: packet must have .method", Logs.LEVEL_WARNING, packet);
+
+        if (typeof packet.method !== 'string') return Logs.log("Wrong data: packet.method must have type 'string'", Logs.LEVEL_WARNING, packet);
+
+        if (packet.args === undefined) return Logs.log("Wrong data: packet must have .args", Logs.LEVEL_WARNING, packet);
+
+        if (typeof packet.args !== 'object') return Logs.log("Wrong data: packet.args must have type 'object'", Logs.LEVEL_WARNING, packet);
 
         group = packet.group;
         method = packet.method;
         args = packet.args;
 
-        if (map[group] === undefined) {
-            Logs.log("Wrong data: group not found " + group, Logs.LEVEL_WARNING, packet);
-            return;
-        }
-        if (map[group][method] === undefined) {
-            Logs.log("Wrong data: method not found " + method, Logs.LEVEL_WARNING, packet);
-            return;
-        }
+        if (map[group] === undefined) return Logs.log("Wrong data: group not found " + group, Logs.LEVEL_WARNING, packet);
 
-        if (CONST_IS_SERVER_SIDE) {
-            /** Server */
-            Logs.log(id + " " + ">> " + group + "." + method, Logs.LEVEL_DETAIL, args);
-        } else {
-            /** Client */
-            Logs.log(group + "." + method, Logs.LEVEL_DETAIL, args);
-        }
+        if (map[group][method] === undefined) return Logs.log("Wrong data: method not found " + method, Logs.LEVEL_WARNING, packet);
+
+
+        Logs.log((CONST_IS_SERVER_SIDE ? id + " " + ">> " : '') + group + "." + method, Logs.LEVEL_DETAIL, args);
+
 
         /** Добавим к аргументам контекст соединения. */
         args.unshift(connections[id]);
         /** Group_method.counter ++ **/
+
+        stats[group][method]++;
+
         map[group][method].apply(self, args);
     };
 
     this.onConnect = function (id) {
         Logs.log("ApiRouter.onConnect: id=" + id, Logs.LEVEL_DETAIL);
-        connections[id] = {
-            connectionId: id
-        };
+        connections[id] = {connectionId: id};
     };
 
     this.onDisconnect = function (id) {
@@ -9212,6 +9299,21 @@ let ApiRouter = new (function ApiRouter() {
             onDisconnectCallbacks[i].call(self, connections[id]);
         }
         delete connections[id];
+        //@todo не очень это выглядиты(да  и на сервере такой штуки нет)
+        prid = null;
+        let count = 0;
+        for (let i in connections) count++;
+        if (CONST_IS_SERVER_SIDE && count === 0) {
+            setTimeout(function () {
+                let count = 0;
+                for (let i in connections) count++;
+                if (count === 0) {
+                    Logs.log("Zero clients - got down.", Logs.LEVEL_ALERT);
+                    LogicSystemRequests.shutdown(function () {
+                    });
+                }
+            }, Config.Project.zeroOnlineDowntimeout);
+        }
     };
 
     this.executeRequest = function (group, method, args, cntxList) {
@@ -9275,176 +9377,11 @@ let ApiRouter = new (function ApiRouter() {
         onFailedSendCallbacks.push(callback);
     };
 
-    /**
-     * авто-код для клиента.
-     * @returns {string}
-     * @todo moveout
-     */
-    this.getSAPIJSCode = function () {
-        let code, group, method;
-        code = '';
-        let pureData;
-        pureData = {};
-        if (!map) {
-            map = getSAPIMap();
-        }
-        for (group in map) {
-            for (method in global[group]) {
-                if (typeof global[group][method] !== 'function') continue;
-                if (!pureData[group]) {
-                    pureData[group] = {};
-                }
-                pureData[group][method] = true;
-            }
-        }
-        for (group in pureData) {
-            code += "let " + group + " = function(){\r\n";
-            for (method in pureData[group]) {
-                code += "\tthis." + method + " = function(){\r\n";
-                code += "\t\tApiRouter.executeRequest('" + group + "' ,'" + method + "', arguments);\r\n";
-                code += "\t};\r\n";
-            }
-            code += "};\r\n";
-            code += group + " = new " + group + "();\r\n";
-        }
-        // api router map для клиента CAPI : CAPI
-
-        code += 'ApiRouter.map2 = {\r\n';
-        for (group in pureData) {
-            code += '\t' + group + ' : ' + group + ',\r\n';
-        }
-        // remove last symbol
-        code = code.substr(0, code.length - 1);
-        code += '};\r\n';
-        return code;
-    };
-
-
-    /** Generators part
-     * @todo move out
-     */
-    this.generate = function () {
-
-        generateCAPIComponents(getCAPIMap());
-
-        return generateSAPIMapCode(getSAPIMap());
-    };
-
-    /**
-     * Generate capi map from exist code.
-     * @returns {*}
-     * @todo move out
-     */
-    let getCAPIMap = function () {
-        let path, list, capiName, methodName, map, capiObject, file_content;
-        path = CONST_DIR_CLIENT + 'components/application/capi/';
-        list = FS.readdirSync(path);
-        map = {};
-        list.forEach(function (fileName) {
-            /**@todo .js extenstion must be */
-            if (fileName === '.gitkeep') return;
-            if (fileName === '.gitignore') return;
-            capiName = getComponentNameFromPath(path + fileName);
-
-            file_content = FS.readFileSync(path + fileName).toString();
-
-            capiObject = eval(file_content.toString());
-
-            map[capiName] = [];
-
-            for (let methodName in capiObject) {
-                if (!capiObject.hasOwnProperty(methodName)) return
-
-                if (typeof capiObject[methodName] === 'function') {
-                    map[capiName][methodName] = true;
-                }
-            }
-        });
-        return map;
-    };
-
-    /**
-     * Generate sapi map from exist code.
-     * @returns {*}
-     * @todo move out
-     */
-    let getSAPIMap = function () {
-        let path, list, groupName, methodName, map;
-        path = CONST_DIR_COMPONENTS + '/application/sapi/';
-        list = FS.readdirSync(path);
-        map = {};
-        for (let i in list) {
-            /**@todo .js extenstion must be */
-            if (list[i] === '.gitkeep') continue;
-            if (list[i] === '.gitignore') continue;
-            groupName = getComponentNameFromPath(path + list[i]);
-            require(path + list[i]);
-            map[groupName] = [];
-            for (methodName in global[groupName]) {
-                if (typeof global[groupName][methodName] === 'function') {
-                    map[groupName][methodName] = true;
-                }
-            }
-        }
-        return map;
-    };
-
-    /**
-     *      * @todo move out
-     * @param path
-     * @returns {void | string | *}
-     */
-    let getComponentNameFromPath = function (path) {
-        return PATH.basename(path).replace('.js', '');
-    };
-
-    /**
-     * @todo move out
-     * @param map
-     */
-    let generateSAPIMapCode = function (map) {
-        let groupName, code;
-        code = '';
-        code += ' ApiRouter.setMap({\r\n';
-        for (groupName in map) {
-            code += "\t" + groupName + ":" + groupName + ",\r\n";
-        }
-        code += "});\r\n";
-        return code;
-    };
-
-    /**
-     * @todo move out
-     */
-    let generateCAPIComponents = function (map) {
-        let groupName, methodName;
-        let code = '';
-        for (groupName in map) {
-            /*@todo must .js extension*/
-            if (groupName === '.gitkeep') continue;
-            if (groupName === '.gitignore') continue;
-            code = '';
-            code += groupName + ' = function(){\r\n\r\n';
-            for (methodName in map[groupName]) {
-                code += '\tthis.' + methodName + ' = function(){\r\n\r\n';
-                code += '\t\tlet args, toUserId;\r\n';
-                code += '\t\targs = Array.prototype.slice.call(arguments);\r\n';
-                code += '\t\ttoUserId = args.shift();\r\n';
-                code += '\t\tLogicUser.sendToUser(toUserId, "' + groupName + '", "' + methodName + '", args);\r\n';
-                code += '\t};\r\n\r\n';
-            }
-            code += '};\r\n';
-            code += groupName + ' = new ' + groupName + '();\r\n';
-            FS.writeFileSync(CONST_DIR_COMPONENTS + 'generated/' + groupName + '.js', code);
-        }
-    };
 })
 ();
 
-/** Для кросс-сайдных компонент */
-if (CONST_IS_SERVER_SIDE) {
-    global['ApiRouter'] = ApiRouter;
-}
+global['ApiRouter'] = ApiRouter;
+
 /** ../client/components/base/GUI.js */
 /**
  * Адаптация для работы с гуёй. В данном случае это браузер.
@@ -9457,7 +9394,8 @@ let GUI = function () {
 
     let isFSMode = false;
 
-    let appArea = false;
+    this.appArea = false;
+    let wizardArea = false;
 
     /**
      * Событие нажатия мышы(левой), но не отпускания.
@@ -9552,8 +9490,9 @@ let GUI = function () {
      * - установим родителя, это будет тело документа.
      */
     this.init = function () {
-        appArea = document.getElementById('appArea');
-        parentsStack.push(appArea);
+        GUI.appArea = document.getElementById('appArea');
+        wizardArea = document.getElementById('wizardArea');
+        parentsStack.push(GUI.appArea);
         let style = document.createElement('style');
         style.type = 'text/css';
         style.innerHTML = '.sepia { ' +
@@ -9581,7 +9520,7 @@ let GUI = function () {
         document.addEventListener('mousemove', function (event) {
 
             mouseMoveStack.forEach(function (callback) {
-                callback.call(null, event.clientX - appArea.offsetLeft, event.clientY - appArea.offsetTop);
+                callback.call(null, event.clientX - GUI.appArea.offsetLeft, event.clientY - GUI.appArea.offsetTop);
             })
         });
 
@@ -9605,12 +9544,16 @@ let GUI = function () {
 
             if ((before && !GUI.isFullScreen()) || (!before && GUI.isFullScreen())) {
                 if (vkWidgets) vkWidgets.style.display = 'none';
-                appArea.style.left = (screen.availWidth / 2 - parseInt(appArea.style.width) / 2) + 'px';
-                appArea.style.top = (screen.availHeight / 2 - parseInt(appArea.style.height) / 2) + 'px'
+                GUI.appArea.style.left = (screen.availWidth / 2 - parseInt(GUI.appArea.style.width) / 2) + 'px';
+                GUI.appArea.style.top = (screen.availHeight / 2 - parseInt(GUI.appArea.style.height) / 2) + 'px';
+                wizardArea.style.left = (screen.availWidth / 2 - parseInt(GUI.appArea.style.width) / 2) + 'px';
+                wizardArea.style.top = (screen.availHeight / 2 - parseInt(GUI.appArea.style.height) / 2) + 'px';
             } else {
                 if (vkWidgets) vkWidgets.style.display = '';
-                appArea.style.left = '';
-                appArea.style.top = '';
+                GUI.appArea.style.left = '';
+                GUI.appArea.style.top = '';
+                wizardArea.style.left = '';
+                wizardArea.style.top = '';
             }
         };
 
@@ -9946,7 +9889,7 @@ let GUIDom = function () {
         dom.focus();
     };
 
-    /* Далее идут методы перерисовки. */
+    /** Далее идут методы перерисовки. */
     let redrawX = function () {
         dom.style.left = self.x + 'px';
     };
@@ -9961,7 +9904,7 @@ let GUIDom = function () {
         dom.style.height = self.height + 'px';
         if (self.backgroundImage) redrawBackgroundImage();
     };
-    let  redrawBackgroundImage = function () {
+    let redrawBackgroundImage = function () {
         let meta;
         meta = Images.getMeta(self.backgroundImage);
         /** Если размер не задан, пробуем задать его автоматически. */
@@ -9974,29 +9917,26 @@ let GUIDom = function () {
 
         dom.style.backgroundImage = 'url(' + meta.path + ')';
         self.backgroundPositionY = self.backgroundPositionY ? self.backgroundPositionY : 0;
-        dom.style.backgroundPositionX = '-' + Images.getX(self.backgroundImage) + 'px';
-        dom.style.backgroundPositionY = '-' + (Images.getY(self.backgroundImage) + self.backgroundPositionY) + 'px';
+        dom.style.backgroundPositionX = '-' + meta.x+ 'px';
+        dom.style.backgroundPositionY = '-' + (meta.y + self.backgroundPositionY) + 'px';
         dom.style.backgroundRepeat = 'no-repeat';
-        if (self.noScale) {
-            // double if no sprite...
+
+        if ((window.useSprite && !meta.absolute) && self.width && self.height) {
+
+            dom.style.backgroundPositionX =
+                parseInt(dom.style.backgroundPositionX) * self.width / meta.w + 'px';
+            dom.style.backgroundPositionY =
+                parseInt(dom.style.backgroundPositionY) * self.height / meta.h + 'px';
             dom.style.backgroundSize =
-                (meta.w) + 'px' + ' ' +
-                (meta.h) + 'px';
+                (window.spriteSize.width * self.width / meta.w) + 'px ' +
+                (window.spriteSize.height * self.height / meta.h) + 'px ';
+
         } else {
-            if (window.useSprite && self.width && self.height) {
-                dom.style.backgroundPositionX =
-                    parseInt(dom.style.backgroundPositionX) * self.width / meta.w + 'px';
-                dom.style.backgroundPositionY =
-                    parseInt(dom.style.backgroundPositionY) * self.height / meta.h + 'px';
-                dom.style.backgroundSize =
-                    (window.spriteSize.width * self.width / meta.w) + 'px ' +
-                    (window.spriteSize.height * self.height / meta.h) + 'px ';
-            } else {
-                dom.style.backgroundSize =
-                    (self.width) + 'px' + ' ' +
-                    (self.height) + 'px';
-            }
+            dom.style.backgroundSize =
+                (self.width) + 'px' + ' ' +
+                (self.height) + 'px';
         }
+
     };
     let redrawBackgroundSize = function () {
         dom.style.backgroundSize = self.backgroundSize + 'px';
@@ -10151,6 +10091,10 @@ let Images = function () {
         return this.getMeta(url).path;
     };
 
+    this.getRealPath = function (url) {
+        return '/images/' + url;
+    };
+
     this.getHeight = function (url) {
         return this.getMeta(url).h;
     };
@@ -10186,6 +10130,7 @@ let Images = function () {
         /** Абсолютный url, используем без изменений, т.к. это внешний url */
         if (url && url.indexOf('https://') === 0 || url.indexOf('http://') === 0) {
             notFoundImg.path = url;
+            notFoundImg.absolute = true;
             return notFoundImg;
         }
         if (!url || !window.i_d[url]) {
@@ -10221,20 +10166,9 @@ let Logs = function () {
      */
     let trigger_level = null;
 
-    let cache = [];
-
     this.init = function (afterInitCallback) {
         trigger_level = Config.Logs.triggerLevel;
-        for (let i = 0; i < 100; i++) {
-            cache.push('--dummy--');
-        }
         afterInitCallback();
-    };
-
-    this.showCache = function () {
-        for (let i in cache) {
-            if (cache[i] == '--dummy--') continue;
-        }
     };
 
     /**
@@ -10244,7 +10178,7 @@ let Logs = function () {
      * @param [details] {*} необязательный параметр, детали.
      * @param channel
      */
-    this.log = function (message, level, details, channel) {
+    this.log = function (message, level, details, channel, telega) {
         let date, dateFormated, logText, levelTitle;
         /** Если не передан уровень, то считаем его детальным. */
         if (!level) level = Logs.LEVEL_DETAIL;
@@ -10277,8 +10211,6 @@ let Logs = function () {
             if (details) details = JSON.stringify(details);
         }
         // выведем на экран
-        cache.push(logText);
-        cache.shift();
         switch (channel) {
             default:
                 switch (level) {
@@ -10296,20 +10228,27 @@ let Logs = function () {
             case Logs.CHANNEL_VK_PAYMENTS:
                 FS.writeFile(CONST_DIR_SERVER + '/logs/vk_payments.log', logText + details + "\r\n", {flag: 'a'}, function () {
                 });
+                telega = true;
                 break;
             case Logs.CHANNEL_VK_STUFF:
                 FS.writeFile(CONST_DIR_SERVER + '/logs/vk_stuff.log', logText + details + "\r\n", {flag: 'a'}, function () {
                 });
+                telega = true;
                 break;
             case Logs.CHANNEL_VK_HEALTH:
                 FS.writeFile(CONST_DIR_SERVER + '/logs/vk_health.log', logText + details + "\r\n", {flag: 'a'}, function () {
                 });
+                telega = true;
                 break;
             case Logs.CHANNEL_CLIENT:
                 FS.writeFile(CONST_DIR_SERVER + '/logs/client.log', logText + details + "\r\n", {flag: 'a'}, function () {
                 });
                 break;
+            case Logs.CHANNEL_TELEGRAM:
+                telega = true;
+                break;
         }
+        if (level >= Logs.LEVEL_ALERT) telega = true;
         if (level === Logs.LEVEL_ERROR || level === Logs.LEVEL_FATAL_ERROR) {
             if (CONST_IS_CLIENT_SIDE) {
                 //@todo client errors channel
@@ -10317,8 +10256,11 @@ let Logs = function () {
             }
         }
         // если это фатальная ошибка - завершим работу программы.
+
+        if (CONST_IS_SERVER_SIDE && telega) {
+            telegramSent(logText + details);
+        }
         if (level === Logs.LEVEL_FATAL_ERROR) {
-            self.showCache();
             throw new Error("Vse polamalos'!");
         }
     };
@@ -10349,19 +10291,24 @@ let Logs = function () {
     this.LEVEL_NOTIFY = 2;
 
     /**
+     * Оповещение.
+     */
+    this.LEVEL_ALERT = 3;
+
+    /**
      * Внимание.
      */
-    this.LEVEL_WARNING = 3;
+    this.LEVEL_WARNING = 4;
 
     /**
      * Ошибка.
      */
-    this.LEVEL_ERROR = 4;
+    this.LEVEL_ERROR = 5;
 
     /**
      * Фатальная ошибка.
      */
-    this.LEVEL_FATAL_ERROR = 5;
+    this.LEVEL_FATAL_ERROR = 6;
 
     this.alert = function (level, message) {
         if (level < trigger_level) return;
@@ -10372,6 +10319,7 @@ let Logs = function () {
     /** Человеко-читаемые типы логов. */
     typeTitles[this.LEVEL_DETAIL] = 'd';
     typeTitles[this.LEVEL_NOTIFY] = 'N';
+    typeTitles[this.LEVEL_ALERT] = '!';
     typeTitles[this.LEVEL_WARNING] = 'w';
     typeTitles[this.LEVEL_ERROR] = 'E';
     typeTitles[this.LEVEL_FATAL_ERROR] = 'FE';
@@ -10386,6 +10334,7 @@ Logs.CHANNEL_VK_PAYMENTS = 1;
 Logs.CHANNEL_VK_STUFF = 2;
 Logs.CHANNEL_VK_HEALTH = 3;
 Logs.CHANNEL_CLIENT = 4;
+Logs.CHANNEL_TELEGRAM = 5;
 
 Logs.depends = [];
 
@@ -10426,6 +10375,7 @@ OnIdle = new OnIdle;
 /** ../client/components/base/PageController.js */
 /**
  * Page controller
+ * @type {PageController}
  * @constructor
  */
 let PageController = function () {
@@ -10555,48 +10505,27 @@ PageController = new PageController();
 /** ../client/components/base/Profiler.js */
 /**
  * Dummy.
+ * @type {ProfilerDummy}
  * @constructor
  */
-let Profiler = function () {
+let ProfilerDummy = function () {
 
-    this.start = function (id) {
-
+    let emptyFunc = function () {
     };
 
-    this.stop = function (id) {
+    this.start = emptyFunc;
 
-    };
-
-    this.getNewId = function (title) {
-
-    };
-
-    this.printReport = function () {
-
-    };
-
-    this.saveToDB = function () {
-
-    };
-
-    this.getTextReport = function () {
-
-    };
-
-    this.init = function (afterInitCallback) {
-
-    };
+    this.stop = emptyFunc;
 };
 
 /**
- * ��������� �����.
- * @type {Profiler}
+ * @type {ProfilerDummy}
  */
-Profiler = new Profiler();
+let Profiler = new ProfilerDummy();
 /** ../client/components/base/SocNet.js */
 /**
  * Компонент для работы с социальной сетью.
- * @type {SocNet}
+ * @type {SocNet|SocNetVK|SocNetStandalone}
  * @constructor
  */
 let SocNet = function () {
@@ -10694,7 +10623,7 @@ let SocNetStandalone = function () {
 
     this.getUserProfileUrl = function () {
         Logs.log("TODO Me, SocNetStandalone.getUserProfileUrl", Logs.LEVEL_WARNING);
-        return '/notFound/todo/me/please/:)';
+        return '';
     };
 
     this.openInviteFriendDialog = function () {
@@ -10713,7 +10642,7 @@ let SocNetStandalone = function () {
     };
 
     let friends = [];
-    for (let i = 0; i < 10000; i++) {
+    for (let i = 0; i < 1000; i++) {
         friends.push(i);
     }
     this.getFriendIds = function (callback) {
@@ -10871,6 +10800,13 @@ let SocNetVK = function () {
         });
     };
 
+    /**
+     *
+     * @param id
+     * @param callback
+     * @see https://vk.com/dev/objects/user
+     * @see https://vk.com/dev/objects/user_2
+     */
     this.getUserInfo = function (id, callback) {
         VK.api('users.get', {
             user_ids: id,
@@ -10885,7 +10821,6 @@ let SocNetVK = function () {
      * @see wall.post
      */
     this.post = function (params) {
-        console.log(params);
         VK.api('wall.post',
             {
                 owner_id: params.userId,
@@ -11155,7 +11090,7 @@ let WebSocketClient = function () {
      */
     let onMessage = function (event) {
         /* Logs.log("WebSocket: Получены данные.", Logs.LEVEL_DETAIL, event.data); */
-        self.onData(event.data, connectionId);
+        self.onData(clientDecrypt(event.data), connectionId);
     };
 
     /**
@@ -11187,7 +11122,8 @@ let WebSocketClient = function () {
         }
         /* Берем элемент из буфера. */
         data = packetBuffer.shift();
-        socket.send(data);
+
+        socket.send(clientCrypt(data));
         /* Logs.log("WebSocketClient.send data: length=" + data.length, Logs.LEVEL_DETAIL); */
         /* Остальные данные отправим позже. */
         if (packetBuffer.length) {
@@ -11202,6 +11138,7 @@ let WebSocketClient = function () {
 WebSocketClient.connectionId = 0;
 /** ../client/config.local.host.tri-base.js */
 let fps = 33.3;
+
 let Config = {
     Logs: {
         triggerLevel: Logs.LEVEL_DETAIL
@@ -11212,8 +11149,8 @@ let Config = {
         url: '/service'
     },
     SocNet: {
-        /** VK applicafiton id*/
-        appId: 6221265
+        /** VK application id*/
+        appId: 7389878
     },
     OnIdle: {
         /** 1000 ms / 30 fps = 33.3*/
@@ -11224,22 +11161,16 @@ let Config = {
 };
 
 Config.OnIdle.second = Config.OnIdle.animateInterval * fps / Config.OnIdle.animStep;
-
-/** ../client//run.js */
-window.onload = function () {
-    /** Передаем управление вхдоной точки. */
-    LogicMain.main();
-};
 let SAPILogs = function(){
 	this.log = function(){
 		ApiRouter.executeRequest('SAPILogs' ,'log', arguments);
 	};
+	this.clientLoaded = function(){
+		ApiRouter.executeRequest('SAPILogs' ,'clientLoaded', arguments);
+	};
 };
 SAPILogs = new SAPILogs();
 let SAPIMap = function(){
-	this.reloadLevels = function(){
-		ApiRouter.executeRequest('SAPIMap' ,'reloadLevels', arguments);
-	};
 	this.sendMeMapInfo = function(){
 		ApiRouter.executeRequest('SAPIMap' ,'sendMeMapInfo', arguments);
 	};
@@ -11248,6 +11179,9 @@ let SAPIMap = function(){
 	};
 	this.onFinish = function(){
 		ApiRouter.executeRequest('SAPIMap' ,'onFinish', arguments);
+	};
+	this.reloadLevels = function(){
+		ApiRouter.executeRequest('SAPIMap' ,'reloadLevels', arguments);
 	};
 };
 SAPIMap = new SAPIMap();
@@ -11303,22 +11237,16 @@ let SAPIUser = function(){
 	this.onFinish = function(){
 		ApiRouter.executeRequest('SAPIUser' ,'onFinish', arguments);
 	};
-	this.onPlayStart = function(){
-		ApiRouter.executeRequest('SAPIUser' ,'onPlayStart', arguments);
+	this.onStart = function(){
+		ApiRouter.executeRequest('SAPIUser' ,'onStart', arguments);
 	};
 	this.zeroLife = function(){
 		ApiRouter.executeRequest('SAPIUser' ,'zeroLife', arguments);
 	};
 };
 SAPIUser = new SAPIUser();
-ApiRouter.map2 = {
-	SAPILogs : SAPILogs,
-	SAPIMap : SAPIMap,
-	SAPIStuff : SAPIStuff,
-	SAPITimeServer : SAPITimeServer,
-	SAPIUser : SAPIUser,};
 document.addEventListener("DOMContentLoaded", function() {GUI.init();
  PageController.addBlocks([PageBlockBackground,PageBlockField,PageBlockMaps,PageBlockPanel,PageBlockWizard,PageBlockZClouds,PageBlockZDialogs]);
  PageField.init();
  PageMain.init();
-});
+}); }; _(window);

@@ -97,7 +97,6 @@ let PageBlockBackground = function PageBlockBackground() {
                 );
         }
         elBody.style.backgroundImage = backgroundImage;
-        //elBody.style.backgroundSize = "777px 500px";
     };
 };
 

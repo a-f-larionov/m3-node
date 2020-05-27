@@ -41,7 +41,7 @@ LogicMain = function () {
             '/service/--reload-sprite': ClientCodeLoader.reloadSprite,
 
             '/service/--reloadClientCode': ClientCodeLoader.reloadClient,
-            '/service/vk-comments-widget': ClientCodeLoader.getVKCommentsWidget,
+            '/service/vk-widget-comments': ClientCodeLoader.getVKWidgetComments,
 
             '/service/--profiler': LogicSystemRequests.getProfiler,
             '/service/--counters': LogicSystemRequests.getCounters,

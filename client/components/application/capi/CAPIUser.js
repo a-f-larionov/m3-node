@@ -21,8 +21,8 @@ let CAPIUser = function () {
      * @param user {Object} юзер инфо.
      */
     this.updateUserInfo = function (cntx, user) {
-        user.createTimestamp = LogicTimeClient.convertToClient(user.createTimestamp);
-        user.lastLoginTimestamp = LogicTimeClient.convertToClient(user.lastLoginTimestamp);
+        user.create_tm = LogicTimeClient.convertToClient(user.create_tm);
+        user.login_tm = LogicTimeClient.convertToClient(user.login_tm);
         user.fullRecoveryTime = LogicTimeClient.convertToClient(user.fullRecoveryTime);
         LogicUser.updateUserInfo(user);
     };

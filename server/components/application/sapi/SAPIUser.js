@@ -20,6 +20,18 @@ SAPIUser = function () {
             });
             return false;
         }
+        if (isNaN(parseInt(socNetUserId))) {
+            Logs.log("SAPIUser.auhthorizeValidateParams: isNan " + socNetUserId, Logs.LEVEL_ALERT);
+            return false;
+        }
+        if (parseInt(socNetUserId) < 0) {
+            Logs.log("SAPIUser.auhthorizeValidateParams: <0 " + socNetUserId, Logs.LEVEL_ALERT);
+            return false;
+        }
+        if (parseInt(socNetUserId) > DB.INTEGER_MAX_NUMBER) {
+            Logs.log("SAPIUser.auhthorizeValidateParams: < max number " + socNetUserId, Logs.LEVEL_ALERT);
+            return false;
+        }
         return true;
     };
 
@@ -47,6 +59,14 @@ SAPIUser = function () {
             return false;
         }
         LogicUser.authorizeByStandalone(socNetUserId, authParams, cntx);
+    };
+
+    this.logout = function (cntx) {
+        if (cntx.userId) DataUser.updateLastLogout(cntx.userId);
+        cntx.userId = undefined;
+        cntx.isAuthorized = undefined;
+        cntx.user = undefined;
+
     };
 
     /**

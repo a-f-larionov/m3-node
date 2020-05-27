@@ -81,7 +81,8 @@ WebSocketServer = function () {
      */
     this.sendData = function (data, id) {
         if (!connectionStack[id]) {
-            Logs.log("undefined connection:" + id + " with data:" + data, Logs.LEVEL_WARNING);
+            //@todo set alert
+            Logs.log("undefined connection:" + id + " with data:" + data, Logs.LEVEL_DETAIL);
             return false;
         }
         //send here to client

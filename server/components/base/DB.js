@@ -180,4 +180,6 @@ DB = function () {
  */
 DB = new DB();
 
+DB.INTEGER_MAX_NUMBER = 4294967295;
+
 DB.depends = ['Logs'];

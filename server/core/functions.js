@@ -76,13 +76,13 @@ process.on('exit', function () {
  */
 process.on('uncaughtException', function (err) {
 
-    Logs.log("ERROR HAPPENDS", Logs.LEVEL_ERROR, err, Logs.CHANNEL_TELEGRAM);
-
-    log('!!! ERROR HAPPENDZ !!!', err);
+    Logs.log("!!! ERROR HAPPENDZ !!!", Logs.LEVEL_ERROR, err, Logs.CHANNEL_TELEGRAM);
 
     if (err.code === 'ECONNRESET') {
-        return Logs.log("Skip process.exit()", Logs.LEVEL_ALERT, err);
+        return Logs.log("Skip process.exit()", Logs.LEVEL_DETAIL, err);
     }
+
+    log('!!! ERROR HAPPENDZ !!!', err);
     process.exit();
 });
 

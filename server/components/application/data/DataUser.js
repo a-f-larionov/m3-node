@@ -115,8 +115,8 @@ DataUser = function () {
             id: autoIncrementValue++,
             socNetTypeId: parseInt(socNetTypeId),
             socNetUserId: parseInt(socNetUserId),
-            createTimestamp: LogicTimeServer.getTime(),
-            lastLoginTimestamp: LogicTimeServer.getTime(),
+            create_tm: LogicTimeServer.getTime(),
+            login_tm: LogicTimeServer.getTime(),
             //@todo is not current, is it next point id
             nextPointId: 1,
         };
@@ -156,8 +156,8 @@ DataUser = function () {
             id: user.id,
             socNetTypeId: user.socNetTypeId,
             socNetUserId: user.socNetUserId,
-            createTimestamp: user.createTimestamp,
-            lastLoginTimestamp: user.lastLoginTimestamp,
+            create_tm: user.create_tm,
+            login_tm: user.login_tm,
             nextPointId: user.nextPointId
         };
         callback(user);
@@ -177,7 +177,7 @@ DataUser = function () {
         if (cache[userId]) {
             cache[userId] = null;
         }
-        DB.query("UPDATE " + tableName + " SET lastLogoutTimestamp = " + LogicTimeServer.getTime() + " WHERE id = " + userId, function () {
+        DB.query("UPDATE " + tableName + " SET logout_tm = " + LogicTimeServer.getTime() + " WHERE id = " + userId, function () {
         });
     };
 
@@ -193,9 +193,9 @@ DataUser = function () {
         }
         time = LogicTimeServer.getTime();
         if (cache[userId]) {
-            cache[userId].lastLoginTimestamp = time;
+            cache[userId].login_tm = time;
         }
-        DB.query("UPDATE " + tableName + " SET lastLoginTimestamp = " +
+        DB.query("UPDATE " + tableName + " SET login_tm = " +
             time + " WHERE id = " + userId, function () {
             }
         );

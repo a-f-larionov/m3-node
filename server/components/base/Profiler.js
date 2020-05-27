@@ -37,7 +37,7 @@ Profiler = function () {
     this.clear = function (prid) {
         let id;
         id = pridToId[prid];
-        Logs.log("clear " + prid + ' ' + id, Logs.LEVEL_ALERT);
+        //Logs.log("clear " + prid + ' ' + id, Logs.LEVEL_ALERT);
         delete data[id].stamps[prid];
         delete pridToId[prid];
     };
@@ -66,6 +66,7 @@ Profiler = function () {
                 '<td>' + row.title + '</td>' +
                 '<td>' + row.count + '</td>' +
                 '<td>' + row.sumTime + '</td>\r\n' +
+                '<td>' + Math.round(row.sumTime / row.count) + '</td>\r\n' +
                 '</tr>';
         });
         txt += '</table>';

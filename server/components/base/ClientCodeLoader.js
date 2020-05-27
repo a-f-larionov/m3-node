@@ -5,7 +5,8 @@ let IMAGE_SIZE = require('image-size');
 let UGLIFYJS = require('uglify-es');
 let SPRITESMITH = require('spritesmith');
 let CRYPTO = require('crypto');
-var JavaScriptObfuscator = require('javascript-obfuscator');
+let JavaScriptObfuscator = require('javascript-obfuscator');
+let cp = require('child_process');
 
 ClientCodeLoader = function () {
 
@@ -66,7 +67,6 @@ ClientCodeLoader = function () {
             transformObjectKeys: false,
             unicodeEscapeSequence: false,
         };
-
 
     let self = this;
     /**
@@ -165,10 +165,6 @@ ClientCodeLoader = function () {
         });
     };
 
-    let getMaintainceHtml = function () {
-
-    }
-
     this.getClientVK = function (callback) {
         let prid = pStart(Profiler.ID_CLIENT_LOAD_VK);
         if (Config.Project.maintance) return callback(htmlMaintaince);
@@ -176,8 +172,7 @@ ClientCodeLoader = function () {
             reloadHTMLVK();
             reloadClientJS();
         }
-        callback(codeVK);
-        callback(codeStandalone + ' prid=' + prid);
+        callback(codeVK + '<script>prid=' + prid + '</script>');
     };
 
     this.getClientStandalone = function (callback) {
@@ -190,8 +185,8 @@ ClientCodeLoader = function () {
         callback(codeStandalone + '<script>prid=' + prid + '</script>');
     };
 
-    this.getVKCommentsWidget = function (callback) {
-        let VKCommentsWidgetCode = "" +
+    this.getVKWidgetComments = function (callback) {
+        let code = "" +
             "<html>" +
             "<head>" +
             "<script type='text/javascript' src='//vk.com/js/api/openapi.js?116'></script>" +
@@ -200,11 +195,15 @@ ClientCodeLoader = function () {
             "<body style='margin:0px;'>" +
             "<div id='vk_comments'></div>" +
             "<script type='text/javascript'>" +
-            "VK.Widgets.Comments('vk_comments', {limit: 5, height: " + (Config.VKCommentWidget.height).toString() + ", width: " + (Config.VKCommentWidget.width).toString() + ", attach: '*', pageUrl: 'http://vk.com/app" + Config.SocNet.VK.appId + "'});" +
+            "VK.Widgets.Comments('vk_comments', {limit: 5," +
+            "height: " + (Config.VKWidgetComments.height).toString() + "," +
+            "width: " + (Config.VKWidgetComments.width - 50 + 33).toString() + "," +
+            "attach: '*'," +
+            "pageUrl: 'http://vk.com/app" + Config.SocNet.VK.appId + "'});" +
             "</script>" +
             "</body>" +
             "</html>";
-        callback(VKCommentsWidgetCode);
+        callback(code);
     };
 
     this.reloadClient = function (callback) {
@@ -250,12 +249,14 @@ ClientCodeLoader = function () {
 
         /** Application div */
         code += "<div style='" +
-            "height:" + DataCross.app.height + "px;" + "width:" + DataCross.app.width + "px;" +
+            "height:" + DataCross.app.height + "px;" +
+            "width:" + DataCross.app.width + "px;" +
             "position:absolute;top:0px;' " +
             "id='appArea' ></div>\r\n";
         /** Wizard canvas */
         code += "<canvas style='" +
-            "height:" + DataCross.app.height + "px;" + "width:" + DataCross.app.width + "px;" +
+            "height:" + DataCross.app.height + "px;" +
+            "width:" + DataCross.app.width + "px;" +
             "position:absolute;top:0px;z-index:2000;' " +
             "id='wizardArea' ></canvas>\r\n";
         code += getClientImageCode();
@@ -265,9 +266,16 @@ ClientCodeLoader = function () {
             code += "<script src='//vk.com/js/api/xd_connection.js?2' type='text/javascript'></script>\r\n";
 
             /** Сomments div */
-            code += "<div id='vk_comments' style='top:" + DataCross.app.height + "px;position:absolute;'>";
-            code += "<iframe src='/service/VKCommentsWidget' style='border:none; height: " + (Config.VKCommentWidget.height + 44) + "px; width:" + Config.VKCommentWidget.width + ";'></iframe>";
+            code += "<div id='vk_comments' style='" +
+                "top:" + DataCross.app.height + "px;position:absolute;'>";
+            code += "<iframe src='/service/vk-widget-comments' style='border:none; " +
+                "width:" + Config.VKWidgetComments.width + "px;" +
+                "height: " + (Config.VKWidgetComments.height) + "px;" +
+                "'></iframe>";
             code += "</div>\r\n";
+            //code += "<iframe src='" + projectPrefix + "/service/VKCommentsWidget'
+            // style='border:none; height: " + (Config.VKWidgetComments.height + 44) +
+            // "px; width:" + Config.VKWidgetComments.width + ";'></iframe>";
         }
 
         code += "</body>";
@@ -539,7 +547,23 @@ ClientCodeLoader = function () {
             }
             Logs.log("SPRITESMITH Complete `" + spritePathPhysic + "`" + result.image.length, Logs.LEVEL_NOTIFY);
             spriteMap = result;
-            callback();
+
+            let sTime = mtime();
+            Logs.log('Pngquant begin', Logs.LEVEL_ALERT);
+            if (Config.Project.usePngquant) {
+                cp.exec(
+                    "cd ../public/images/ && pngquant *.png  --ext '.png' --force --verbose  --speed 1",
+                    function () {
+                        Logs.log('Pngquant finish' +
+                            " time: " + (mtime() - sTime).toString() +
+                            " size: " + FS.statSync("../public/images/sprite.png")['size'], Logs.LEVEL_ALERT);
+                        //@todo run service under www-data user
+                        cp.exec(' cd ../public/images/ && chmod 777 *');
+                        callback();
+                    });
+            } else {
+                callback();
+            }
         });
     };
 

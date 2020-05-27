@@ -14,8 +14,8 @@ SAPIMap = function () {
         map = DataMap.getMap(mapId);
         points = DataPoints.getPointsByMapId(mapId);
 
-        DataPoints.getUsersInfo(mapId, [cntx.userId], function (usePoints) {
-            CAPIMap.gotMapsInfo(cntx.userId, mapId, map, points, usePoints);
+        DataPoints.getUsersInfo(mapId, [cntx.userId], function (userPoints) {
+            CAPIMap.gotMapsInfo(cntx.userId, mapId, map, points, userPoints);
             pFinish(prid);
         });
     };

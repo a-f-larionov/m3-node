@@ -7,7 +7,7 @@ let DataCross = {
         healthRecoveryTime: 120,
     },
     app: {
-        width: 777,
+        width: 778,
         height: 500
     },
     clientCryptKey: 3705,

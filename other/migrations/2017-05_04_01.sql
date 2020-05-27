@@ -6,9 +6,9 @@ CREATE TABLE `users` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `socNetUserId` int(11) unsigned NOT NULL,
   `socNetTypeId` int(11) unsigned NOT NULL,
-  `createTimestamp` int(11) unsigned DEFAULT NULL,
-  `lastLoginTimestamp` int(11) unsigned DEFAULT NULL,
-  `lastLogoutTimestamp` int(11) unsigned NOT NULL DEFAULT '0',
+  `create_tm` int(11) unsigned DEFAULT NULL,
+  `login_tm` int(11) unsigned DEFAULT NULL,
+  `logout_tm` int(11) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `socNetUniqueKey` (`socNetUserId`,`socNetTypeId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
