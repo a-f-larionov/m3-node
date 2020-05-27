@@ -114,7 +114,7 @@ let ElementStuffButton = function () {
         GUI.bind(dom, GUI.EVENT_MOUSE_OUT, onMouseOut, self);
 
         point = GUI.createDom(null, {backgroundImage: 'map-way-point-grey.png'});
-        counter = GUI.createElement(ElementText, {});
+        counter = GUI.createElement(ElementText, {width: 19});
     };
 
     /**
@@ -184,10 +184,10 @@ let ElementStuffButton = function () {
             dom.pointer = GUI.POINTER_ARROW;
             dom.opacity = 0.5;
         }
-        counter.x = self.x + 65;
+        counter.x = self.x + 65 - 4;
         counter.y = self.y + 22;
         point.x = self.x + 65 - 20;
-        point.y = self.y + 22 -15;
+        point.y = self.y + 22 - 15;
         counter.setText(LogicStuff.getStuff(self.fieldName));
         dom.redraw();
         counter.redraw();
