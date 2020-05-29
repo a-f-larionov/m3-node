@@ -5,10 +5,6 @@ var LOCK = new AsyncLock();
 SAPIUser = function () {
 
     let auhthorizeValidateParams = function (cntx, socNetUserId, authParams) {
-        if (!socNetUserId) {
-            Logs.log("SAPIUser.auhthorizeValidateParams: must have socNetUserId", Logs.LEVEL_WARNING);
-            return false;
-        }
         if (!authParams || typeof authParams !== 'object') {
             Logs.log("SAPIUser.auhthorizeValidateParams: must have authParams", Logs.LEVEL_WARNING);
             return false;
@@ -20,16 +16,9 @@ SAPIUser = function () {
             });
             return false;
         }
-        if (isNaN(parseInt(socNetUserId))) {
-            Logs.log("SAPIUser.auhthorizeValidateParams: isNan " + socNetUserId, Logs.LEVEL_ALERT);
-            return false;
-        }
-        if (parseInt(socNetUserId) < 0) {
-            Logs.log("SAPIUser.auhthorizeValidateParams: <0 " + socNetUserId, Logs.LEVEL_ALERT);
-            return false;
-        }
-        if (parseInt(socNetUserId) > DB.INTEGER_MAX_NUMBER) {
-            Logs.log("SAPIUser.auhthorizeValidateParams: < max number " + socNetUserId, Logs.LEVEL_ALERT);
+        socNetUserId = Valid.DBUINT(socNetUserId);
+        if (!socNetUserId) {
+            Logs.log("SAPIUser.auhthorizeValidateParams invalid socNetUserId" + socNetUserId, Logs.LEVEL_ALERT);
             return false;
         }
         return true;
@@ -107,29 +96,41 @@ SAPIUser = function () {
      * Отправляет внутрение id пользователей по их socNetUserId.
      * Тип социальной сети определяется по cntx.user
      * @param cntx {Object}
-     * @param userIds
+     * @param socIds
      * @param limit
      */
-    this.sendMeUserIdsBySocNet = function (cntx, userIds, limit) {
+    this.sendMeUserIdsBySocNet = function (cntx, socIds) {
         if (!cntx.isAuthorized) return Logs.log(arguments.callee.name + " not authorized", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
         //if (!limit) return Logs.log(arguments.callee.name + " limit not found", Logs.LEVEL_WARNING, cntx);
-
+        socIds = Valid.DBUINTArray(socIds);
         // @Todo validate userIds
-        if (typeof userIds !== 'object' || !userIds.length) return Logs.log(arguments.callee.name + " wrong params", Logs.LEVEL_WARNING, {
-            cntx, userIds: userIds
-        });
+        if (!socIds) return Logs.log(arguments.callee.name + " wrong params", Logs.LEVEL_WARNING, {cntx, userIds: socIds});
 
         let prid = pStart(Profiler.ID_USERSAPI_SEND_ME_USER_IDS_BY_SOC_NET);
-
+        //@todo add check ids and length no more 1000
         DataUser.getById(cntx.user.id, function (user) {
-            DataUser.getUserIdsBySocNet(user.socNetTypeId, userIds, limit, function (ids) {
+            DataUser.getUserIdsBySocNet(user.socNetTypeId, socIds, function (ids) {
 
                 CAPIUser.gotFriendsIds(cntx.user.id, ids);
                 pFinish(prid);
             });
         });
+    };
+
+    this.sendMeTopUsers = function (cntx, fids) {
+        if (!cntx.isAuthorized) return Logs.log(arguments.callee.name + " not authorized", Logs.LEVEL_WARNING, cntx);
+        if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
+        if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
+
+        //@todo cache it at day
+        if (!Valid.DBUINTArray(fids)) return Logs.log("invalid data", Logs.LEVEL_ALERT, fids);
+
+        DataUser.getList(fids, function (users) {
+            //@todo
+            CAPIUser.gotTopUsers(cntx.user.id, users);
+        }, ' ORDER BY nextPointId DESC LIMIT ' + DataCross.topUsersLimit);
     };
 
     /**

@@ -16,7 +16,7 @@ let LogicUser = function () {
      */
     let users = [];
 
-    let friendIds = null;
+    let friendIds = [];
 
     /**
      * Авторизация пользователя.
@@ -91,8 +91,9 @@ let LogicUser = function () {
                 toLoadIds.push(id);
             }
         });
+
         if (toLoadIds.length) {
-            SAPIUser.sendMeUserListInfo(toLoadIds);
+            //SAPIUser.sendMeUserListInfo(toLoadIds);
         }
 
         ids.forEach(function (id) {
@@ -156,54 +157,103 @@ let LogicUser = function () {
         PageController.redraw();
     };
 
-    this.setFriendIds = function (ids) {
-        friendIds = ids;
-        PageController.redraw();
+    let topUsers = [];
+
+    this.getTopUsers = function () {
+        let chunks;
+        if (!getFriendIds()) return null;
+        //@todo only panel, sorted by score
+        if (!this.getTopUsers.loading && (this.getTopUsers.loading = true)) {
+            chunks = chunkIt(getFriendIds());
+            this.getTopUsers.chunksCount = chunks.length;
+            chunks.forEach(function (chunk) {
+                SAPIUser.sendMeTopUsers(chunk);
+            });
+        }
+        if (!this.getTopUsers.complete) return null;
+        return topUsers;
     };
 
-    let friendIdsLoading = false;
-
-    this.getFriendIds = function (limit) {
-        //@todo only panel, sorted by score
-        if (!friendIds && !friendIdsLoading) {
-            /** Запросить друзей у ВК */
-            friendIdsLoading = true;
-            SocNet.getFriendIds(function (ids) {
-                SAPIUser.sendMeUserIdsBySocNet(ids/*,limit*/);
+    this.loadTopUsers = function (users) {
+        this.getTopUsers.chunksCount--;
+        users.forEach(function (user) {
+            topUsers[user.id] = user;
+        });
+        if (this.getTopUsers.chunksCount === 0) {
+            topUsers.sort(function (a, b) {
+                if (a.nextPointId === b.nextPointId) return 0;
+                return a.nextPointId < b.nextPointId ? 1 : -1;
             });
-            return null;
+            topUsers = topUsers.slice(0, DataCross.topUsersLimit);
+            self.getTopUsers.socInfoCount = DataCross.topUsersLimit;
+            //@todo for fast - got users by one request.
+            topUsers.forEach(function (user) {
+                SocNet.getUserInfo(user.socNetUserId, function (socInfo) {
+                    user.photo50 = socInfo[0].photo_50;
+                    self.getTopUsers.socInfoCount--;
+                    if (self.getTopUsers.socInfoCount === 0) {
+                        self.getTopUsers.complete = true;
+                        PageController.redraw();
+                    }
+                });
+            });
         }
-        if (!friendIds) return null;
-        if (limit) return friendIds.slice(0, limit);
+    };
+
+    let getFriendIds = function () {
+        let chunks;
+        //@todo only panel, sorted by score
+        if (!getFriendIds.loading && (getFriendIds.loading = true)) {
+            SocNet.getFriendIds(function (ids) {
+                chunks = chunkIt(ids);
+                getFriendIds.chunksCount = chunks.length;
+                chunks.forEach(function (chunk) {
+                    SAPIUser.sendMeUserIdsBySocNet(chunk);
+                });
+            });
+        }
+        if (!getFriendIds.complete) return null;
         return friendIds;
     };
 
-    this.getMapFriendIds = function (mapId) {
-        let points;
-        if (this.getFriendIds()) {
-            points = DataPoints.getPointsByMapId(mapId);
-
-            friendIds.forEach(function (friendId) {
-
-            });
+    this.loadFriendIds = function (chunkIds) {
+        getFriendIds.chunksCount--;
+        friendIds = friendIds.concat(chunkIds);
+        if (getFriendIds.chunksCount === 0) {
+            getFriendIds.complete = true;
+            PageController.redraw();
         }
-        return null;
+    };
+
+    this.getPointScores = function () {
+        /**
+         * 1 -
+         */
+        return [];
+        /**
+         * 1 - для 10 000 друзей
+         * 2 - определного диапазаона точек
+         * 3 - найти топ-3
+         */
+        if (!DataMap.getCurrent()) return;
+        SAPIUser.sendMePointUsers(getFriendIds(), DataMap.getCurrent().id);
     };
 
     let mapsFriendsLoadings = [];
 
     let loadFriendsScoreByMapId = function (mapId) {
         if (!mapId) mapId = currentMapId;
-        if (!LogicUser.getFriendIds()) return;
+        if (!getFriendIds()) return;
         if (!mapsFriendsLoadings[mapId]) {
             mapsFriendsLoadings[mapId] = true;
-            SAPIMap.sendMeUsersScore(mapId, LogicUser.getFriendIds());
+            //@todo chunkit
+            //SAPIMap.sendMeUsersScore(mapId, getFriendIds());
         }
     };
 
     this.getFriendIdsByMapId = function (mapId) {
         let lpid, fpid, ids;
-        if (this.getFriendIds()) {
+        if (getFriendIds()) {
             fpid = DataMap.getFirstPointId();
             lpid = DataMap.getLastPointId();
             // get every friendIds

@@ -37,7 +37,11 @@ let CAPIUser = function () {
 
     this.gotFriendsIds = function (cntx, ids) {
         //@todo got userIds for that map
-        LogicUser.setFriendIds(ids);
+        LogicUser.loadFriendIds(ids);
+    };
+
+    this.gotTopUsers = function (cntx, users) {
+        LogicUser.loadTopUsers(users);
     };
 
     /**

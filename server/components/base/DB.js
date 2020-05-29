@@ -83,7 +83,7 @@ DB = function () {
      * @param where {object} параметры where
      * @param callback
      */
-    this.queryWhere = function (tableName, where, callback) {
+    this.queryWhere = function (tableName, where, callback, queryAdd) {
         let query = "", value, valueSource, condition;
         query += "SELECT * FROM " + tableName + " WHERE 1=1 ";
         for (let name in where) {
@@ -105,7 +105,7 @@ DB = function () {
                     break;
             }
         }
-        DB.query(query, callback);
+        DB.query(query + (queryAdd ? queryAdd : ''), callback);
     };
 
     /**

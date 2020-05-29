@@ -315,7 +315,7 @@ ClientCodeLoader = function () {
             .digest('hex');
 
         if (cache.jsHash && cache.jsHash == jsHash) {
-            Logs.log("Use cached js", Logs.LEVEL_NOTIFY);
+            Logs.log("Use cached js with hash:" + jsHash, Logs.LEVEL_NOTIFY);
             return;
         }
         cache.jsHash = jsHash;

@@ -79,3 +79,13 @@ let clientDecrypt = function (str) {
         })
         .join('');
 };
+
+function chunkIt(arr) {
+    let i, j, temparray, chunk = 1000, out = [];
+    for (i = 0, j = arr.length; i < j; i += chunk) {
+        temparray = arr.slice(i, i + chunk);
+        if (i + chunk > j) temparray.isLast = true;
+        out.push(temparray);
+    }
+    return out;
+}

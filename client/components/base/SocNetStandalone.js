@@ -36,8 +36,9 @@ let SocNetStandalone = function () {
     };
 
     let friends = [];
-    for (let i = 0; i < 10000; i++) {
-        friends.push(44400000 + i);
+    for (let i = 0; i < 10000 / 2 - 5; i++) {
+        friends.push(444400000 + i);
+        friends.push(i);
     }
 
     this.getFriendIds = function (callback) {

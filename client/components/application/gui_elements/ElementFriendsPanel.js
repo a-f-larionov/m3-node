@@ -27,7 +27,7 @@ let ElementFriendsPanel = function () {
     this.cardHeight = 50;
     this.cardSpace = 10;
 
-    this.cardsCount = 6;
+    this.cardsCount = DataCross.topUsersLimit;
 
     let friends = [];
 

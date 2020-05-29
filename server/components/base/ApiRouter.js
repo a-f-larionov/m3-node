@@ -37,7 +37,8 @@ let ApiRouter = new (function ApiRouter() {
      * @param id {Number} id соединения.
      */
     this.onData = function (packet, id) {
-        let group, method, args;
+        let group, method, args, l;
+        l = packet.length;
         try {
             packet = JSON.parse(packet);
         } catch (e) {
@@ -67,8 +68,9 @@ let ApiRouter = new (function ApiRouter() {
         if (map[group][method] === undefined) return Logs.log("Wrong data: method not found " + method, Logs.LEVEL_WARNING, packet);
 
 
-        Logs.log((CONST_IS_SERVER_SIDE ? id + " " + ">> " : '') + group + "." + method, Logs.LEVEL_DETAIL, args);
-
+        Logs.log((CONST_IS_SERVER_SIDE ? id + " " + ">> " : '') +
+            group + "." + method + (l > 500 ? "(" + l + ")" : ""),
+            Logs.LEVEL_DETAIL, args);
 
         /** Добавим к аргументам контекст соединения. */
         args.unshift(connections[id]);
@@ -93,7 +95,7 @@ let ApiRouter = new (function ApiRouter() {
         prid = null;
         let count = 0;
         for (let i in connections) count++;
-        Logs.log("connection close: id=" + id + " count:" + count , Logs.LEVEL_WARNING);
+        Logs.log("connection close: id=" + id + " count:" + count, Logs.LEVEL_WARNING);
         if (CONST_IS_SERVER_SIDE && count === 0) {
             setTimeout(function () {
                 let count = 0;
@@ -117,20 +119,22 @@ let ApiRouter = new (function ApiRouter() {
         connectionsKey = '';
         for (i in cntxList) connectionsKey += cntxList[i].connectionId;
 
-        if (CONST_IS_SERVER_SIDE) {
-            /** Server */
-            Logs.log(connectionsKey + " " + "<< " + group + "." + method + ':' + args.join(','), Logs.LEVEL_DETAIL);
-        } else {
-            /** Client */
-            Logs.log(group + "." + method, Logs.LEVEL_DETAIL, args);
-        }
-
         let packet = {
             group: group,
             method: method,
             args: args
         };
         packet = JSON.stringify(packet);
+
+        if (CONST_IS_SERVER_SIDE) {
+            /** Server */
+            Logs.log(connectionsKey + " " + "<< " + group + "." + method + ':' + args.join(','), Logs.LEVEL_DETAIL);
+        } else {
+            /** Client */
+            Logs.log(group + "." + method +
+                (packet.length > 500 ? "(" + packet.length + ")" : ""), Logs.LEVEL_DETAIL, args);
+        }
+
         let cntxListLength = 0;
         for (i in cntxList) {
             if (!this.sendData(packet, cntxList[i].connectionId)) {

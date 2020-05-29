@@ -12,6 +12,8 @@ let DataCross = {
     },
     clientCryptKey: 3705,
     serverCryptKey: 987,
+
+    topUsersLimit: 6
 };
 
 /** Для кросс-сайдных компонент */

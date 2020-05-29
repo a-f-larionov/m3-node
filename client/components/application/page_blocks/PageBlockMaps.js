@@ -26,8 +26,6 @@ let PageBlockMaps = function PageBlockMaps() {
 
     let elOldPaper = false;
 
-    let elMapElements = {};
-
     /**
      * @type {ElementFriendsPanel}
      */
@@ -146,9 +144,6 @@ let PageBlockMaps = function PageBlockMaps() {
             element.show();
         });
 
-        this.mapElsCreateIfNotExits();
-        this.mapElsShow();
-        self.preset();
         self.redraw();
     };
 
@@ -161,16 +156,15 @@ let PageBlockMaps = function PageBlockMaps() {
         for (let i in self.elements) {
             self.elements[i].hide();
         }
-        this.mapElsHide();
         elArrowPrev.hide();
     };
 
     /**
      * Настройка перед отрисовкой.
      */
-    this.preset = function () {
+    this.preset = function (data) {
         let nextPointId, firstPointId, lastPointId;
-        this.presetPoints();
+        this.presetPoints(data);
         /** Set hint arrow */
         nextPointId = LogicUser.getCurrent().nextPointId;
         firstPointId = DataMap.getFirstPointId();
@@ -192,13 +186,22 @@ let PageBlockMaps = function PageBlockMaps() {
     };
 
     this.redraw = function () {
+        let data;
         if (!showed) return;
-        if (isWaiting()) return;
+        data = fetchData();
+        if (!data) return;
 
-        self.preset();
-        elFriendsPanel.setFriends(LogicUser.getList(LogicUser.getFriendIds(6)));
+        self.preset(data);
+        //@todo got friends top + users top for panel
+        /**
+         * взять
+         * SAPIUser.sendMeTopUsers(fids);
+         * CAPIUser.updateTopUsers(info);
+         * LogicUser.getTopUsers();
+         *  select * FROM users
+         */
+        elFriendsPanel.setFriends(data.tUsers);
         elFriendsPanel.redraw();
-        this.mapElsRedraw();
 
         self.elements.forEach(function (element) {
             element.redraw();
@@ -207,69 +210,15 @@ let PageBlockMaps = function PageBlockMaps() {
         elArrowPrev.redraw();
     };
 
-    this.mapElsCreateIfNotExits = function () {
-        let data, element;
-        data = DataMap.getCurrent();
-        if (!data) return;
-        if (!elMapElements[data.id]) {
-            elMapElements[data.id] = [];
-            for (let i in data.elements) {
-                element = GUI.createElement(
-                    window[data.elements[i].name],
-                    data.elements[i].params
-                );
-                //@todo elements
-                elMapElements[data.id].push(element);
-            }
-        }
-    };
-
-    this.mapElsShow = function () {
-        let data;
-        data = DataMap.getCurrent();
-        if (!data) return;
-
-        for (let i in elMapElements[data.id]) {
-            elMapElements[data.id][i].show();
-        }
-        if (mapIdOld !== data.id) {
-
-            for (let i in elMapElements[mapIdOld]) {
-                elMapElements[mapIdOld][i].hide();
-            }
-            mapIdOld = data.id;
-        }
-    };
-
-    this.mapElsHide = function () {
-        for (let id in elMapElements) {
-            for (let i in elMapElements[id]) {
-                elMapElements[id][i].hide();
-            }
-        }
-        domLoader.hide();
-    };
-
-    this.mapElsRedraw = function () {
-        let map;
-        map = DataMap.getCurrent();
-        if (!map) return;
-
-        elMap.src = map.src;
-
-        if (mapIdOld !== map.id) {
-            this.mapElsShow();
-        }
-    };
-
     /**
      * Обновление данных перед отрисовкой точек
      */
-    this.presetPoints = function () {
+    this.presetPoints = function (data) {
         let user, pointId, point, elPoint, userPoint, map;
         user = LogicUser.getCurrent();
         map = DataMap.getCurrent();
         if (!map) return;
+        //???
         userPoint = DataPoints.getPointUserScore(map.id, [user.id]);
 
         // DataPoints
@@ -292,6 +241,7 @@ let PageBlockMaps = function PageBlockMaps() {
             else
                 elPoint.userScore = 0;
 
+            //@todo
             elPoint.setGamers(
                 LogicUser.getFriendIdsByMapIdAndPointIdWithScore(
                     DataMap.getCurrent().id,
@@ -301,32 +251,26 @@ let PageBlockMaps = function PageBlockMaps() {
         }
     };
 
-    let isWaiting = function () {
-        let waiting, map, fids, mfids, flist, mflist;
-        waiting = false;
+    let fetchData = function () {
+        let out;
+        /**
+         *
+         * @type {{}}
+         */
+        out = {};
+        out.map = DataMap.getCurrent();
+        out.tUsers = LogicUser.getTopUsers();
+        out.pointScores = out.map && LogicUser.getPointScores(out.map.id);
 
-        map = DataMap.getCurrent();
-        fids = LogicUser.getFriendIds(6);
-        if (map) mfids = LogicUser.getFriendIdsByMapId(map.id);
-        if (fids) flist = LogicUser.getList(fids);
-        if (mfids) mflist = LogicUser.getList(mfids);
+        if (!(out.map && out.tUsers && out.pointScores && out.pointScores)) out = null;
 
-        if (!map) waiting = true;
-        //if (!fids) waiting = true;
-        //if (!mfids) waiting = true;
-        if (fids && fids.length !== flist.length) waiting = true;
-        if (mfids && mfids.length !== mflist.length) waiting = true;
-        // if (waiting) {
-        //     Logs.log('PageBlockMaps::Waiting data');
-        // } else {
-        //     Logs.log('PageBlockMaps::No Wating');
-        // }
-        if (waiting) {
+        if (!out) {
             domLoader.show();
         } else {
             domLoader.hide();
         }
-        return waiting;
+
+        return out;
     }
 };
 

@@ -42,14 +42,14 @@ DataUser = function () {
      * @param socNetUserIds
      * @param callback
      */
-    this.getUserIdsBySocNet = function (socNetTypeId, socNetUserIds, limit, callback) {
+    this.getUserIdsBySocNet = function (socNetTypeId, socNetUserIds, callback) {
         let query;
         if (socNetUserIds.length === 0) return callback([]);
         query = "SELECT id FROM " + tableName + " WHERE ";
         query += " socNetTypeId = " + DB.escape(socNetTypeId);
         query += " AND socNetUserId IN ( " + DB.escape(socNetUserIds) + " ) ";
         query += " ORDER BY nextPointId DESC ";
-        if (limit) query += " LIMIT " + DB.escape(limit);
+        //if (limit) query += " LIMIT " + DB.escape(limit);
 
         DB.query(query, function (rows) {
             let ids = [];
@@ -84,7 +84,7 @@ DataUser = function () {
      * @param ids внутрений id пользовтаеля.
      * @param callback
      */
-    this.getList = function (ids, callback) {
+    this.getList = function (ids, callback, queryAdd) {
         if (!ids.length) return callback([]);
 
         DB.queryWhere(tableName, {
@@ -92,12 +92,11 @@ DataUser = function () {
         }, function (rows) {
             if (!rows) return callback([]);
             rows.forEach(function (row, i) {
-                //console.log(row);
                 cache[row.id] = fromDBToData(row) || null;
                 rows[i] = cache[row.id];
             });
             callback(rows);
-        });
+        }, queryAdd);
     };
 
     let waitForCreateBySocNet = [];

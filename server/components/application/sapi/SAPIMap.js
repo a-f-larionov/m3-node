@@ -30,12 +30,13 @@ SAPIMap = function () {
         if (userIds.length === 0) return Logs.log("no friends - no data", Logs.LEVEL_DETAIL, cntx);
 
         let prid = pStart(Profiler.IS_SAPIMAP_SEND_ME_USERS_SCORE);
+        //@todo check mapId is isNAN, 0<mapId<MAX_NUMBER
+        //@todo check usersIs must be array with only ids 0<i<MAX_NUMBER
 
-        DataPoints.getUsersInfo(mapId, userIds, function (userPoints) {
-            CAPIMap.gotUserScores(
-                cntx.userId,
-                userPoints
-            );
+        DataPoints.getUsersInfo(mapId, userIds, function (usersPoints) {
+            //@todo check size ?
+            ////0: {userId: 4, pointId: 37, score: 2920}
+            CAPIMap.gotUserScores(cntx.userId, usersPoints);
             pFinish(prid);
         });
     };
@@ -55,7 +56,7 @@ SAPIMap = function () {
         let prid = pStart(Profiler.IS_SAPIMAP_ON_FINISH);
         let tid = LogicTid.getOne();
         /** Обновляем номер точки и очки на ней */
-        DataPoints.updateUsersPoints(cntx.userId, pointId, score, function(){
+        DataPoints.updateUsersPoints(cntx.userId, pointId, score, function () {
 
             DataUser.getById(cntx.userId, function (user) {
                 if (user.nextPointId < pointId + 1) {
