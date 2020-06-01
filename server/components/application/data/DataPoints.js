@@ -1991,9 +1991,10 @@ DataPoints = function () {
             "   WHERE" +
             "       pointId = " + parseInt(pointId) +
             "   AND userId IN(" + fids.join(',') + ")" +
-            "   AND score >= " + parseInt(userScore) +
+            //"   AND score >= " + parseInt(userScore) +
             "   ORDER BY score DESC" +
             "   LIMIT 3";
+
         DB.query(query, function (rows) {
             callback(rows);
         });

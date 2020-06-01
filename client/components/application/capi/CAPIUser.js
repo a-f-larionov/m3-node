@@ -21,13 +21,22 @@ let CAPIUser = function () {
      * @param user {Object} юзер инфо.
      */
     this.updateUserInfo = function (cntx, user) {
-        user.create_tm = LogicTimeClient.convertToClient(user.create_tm);
-        user.login_tm = LogicTimeClient.convertToClient(user.login_tm);
+       // user.create_tm = LogicTimeClient.convertToClient(user.create_tm);
+       // user.login_tm = LogicTimeClient.convertToClient(user.login_tm);
+       // user.logout_tm = LogicTimeClient.convertToClient(user.logout_tm);
         user.fullRecoveryTime = LogicTimeClient.convertToClient(user.fullRecoveryTime);
         LogicUser.updateUserInfo(user);
     };
 
     this.updateUserListInfo = function (cntx, userList) {
+        userList = userList.map(function(user){
+            return {
+                id: user[0],
+                nextPointId : user[1],
+                socNetUserId: user[2],
+                fullRecoveryTime : user[3]
+            };
+        });
         PageController.pendingData(true);
         userList.forEach(function (user) {
             CAPIUser.updateUserInfo(cntx, user);
@@ -38,6 +47,10 @@ let CAPIUser = function () {
     this.gotFriendsIds = function (cntx, ids) {
         //@todo got userIds for that map
         LogicUser.loadFriendIds(ids);
+    };
+
+    this.gotMapFriendIds = function (cntx, mapId, fids) {
+        LogicUser.setMapFriendIds(mapId, fids);
     };
 
     this.gotTopUsers = function (cntx, users) {

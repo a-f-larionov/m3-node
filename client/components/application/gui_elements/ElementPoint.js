@@ -257,8 +257,8 @@ let ElementPoint = function () {
     let redrawPhotos = function () {
         let offsetX = (self.pointWidth / 2 - photoSize / 2) - 2;
         /** H   alf of Y */
-        let offsetY, offsetCenterY;
-        let friendIndex = 0;
+        let offsetY, offsetCenterY
+            , index = 0;
         let doms = [dPhoto1, dPhoto2, dPhoto3];
 
         if (self.y > 250
@@ -281,21 +281,22 @@ let ElementPoint = function () {
         dPhoto3.x = self.x + 19 + offsetX;
         dPhoto3.y = self.y + offsetY;
 
+        index = 0;
         gamers.forEach(function (user) {
 
-            if (!user) doms[friendIndex].hide();
+            if (!user) doms[index].hide();
             else {
                 if (user && user.photo50
-                    ////  && user.nextPointId === self.pointId
-                ) {
-                    doms[friendIndex].backgroundImage = user.photo50;
-                    doms[friendIndex].show();
-                    doms[friendIndex].redraw();
+                    && user.nextPointId === self.pointId
+                ) { doms[index].backgroundImage = user.photo50;
+                    doms[index].title = user.firstName;
+                    doms[index].show();
+                    doms[index].redraw();
                 } else {
-                    doms[friendIndex].hide();
+                    doms[index].hide();
                 }
             }
-            friendIndex++;
+            index++;
         });
     };
 
@@ -343,15 +344,11 @@ let ElementPoint = function () {
 
     /**
      * Игроки на точке это друзья
-     * @param newData
+     * @param users
      */
-    this.setGamers = function (topScoreNew) {
-        let user1, user2, user3;
-
-
-
-
-        return;
+    this.setGamers = function (users) {
+        /*@todo брать сначало из топа, а потом уже друзей любых*/
+        gamers = users.slice(0, 3);
         /** Центрируем если игрок только один */
         if (gamers.length === 1) gamers.unshift(null);
         while (gamers.length < 3) gamers.push(null);

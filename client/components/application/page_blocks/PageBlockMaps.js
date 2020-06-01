@@ -222,9 +222,11 @@ let PageBlockMaps = function PageBlockMaps() {
         // for current all scores on this map
         userPUS = DataPoints.getPointUserScore(map.id, [user.id]);
 
-        let ids = LogicUser.getMapFriendIds();
-
-
+        let ids = LogicUser.getMapFriendIds(map.id);
+        let mapFriends = ids ? LogicUser.getList(ids) : [];
+        /**
+         * get users
+         */
         // DataPoints
         for (let number = 1; number <= DataMap.POINTS_PER_MAP; number++) {
             pointId = DataMap.getPointIdFromPointNumber(number);
@@ -246,12 +248,10 @@ let PageBlockMaps = function PageBlockMaps() {
                 elPoint.userScore = 0;
 
             elPoint.setGamers(
-                123
+                mapFriends.filter(function (user) {
+                    return user.photo50 && user.nextPointId === pointId
+                })
             );
-
-            /*elPoint.setTopScore(
-                LogicUser.getPointTopScore(point.id)
-            );*/
         }
     };
 

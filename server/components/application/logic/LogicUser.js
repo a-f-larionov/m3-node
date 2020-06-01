@@ -254,7 +254,7 @@ LogicUser = function () {
         DataUser.getById(userId, function (user) {
             if (user) {
                 user.online = self.isUserOnline(user.id);
-                CAPIUser.updateUserInfo(toUserId, user);
+                CAPIUser.updateUserInfo(toUserId, prepareUserToClient(user));
                 pFinish(prid);
             } else {
                 pClear(prid);
@@ -272,6 +272,15 @@ LogicUser = function () {
     this.sendUserListInfo = function (ids, toUserId, prid) {
         DataUser.getList(ids, function (list) {
             if (list) {
+                list = list.map(prepareUserToClient);
+                list = list.map(function (user) {
+                    return [
+                        user.id,
+                        user.nextPointId,
+                        user.socNetUserId,
+                        user.fullRecoveryTime,
+                    ];
+                });
                 CAPIUser.updateUserListInfo(toUserId, list);
                 pFinish(prid);
             } else {
@@ -279,6 +288,15 @@ LogicUser = function () {
                 pFinish(prid);
             }
         });
+    };
+
+    let prepareUserToClient = function (user) {
+        return {
+            id: user.id,
+            nextPointId: user.nextPointId,
+            socNetUserId: user.socNetUserId,
+            fullRecoveryTime: user.fullRecoveryTime,
+        };
     };
 };
 

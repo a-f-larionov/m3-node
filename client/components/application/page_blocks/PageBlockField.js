@@ -337,8 +337,6 @@ let PageBlockField = function PageBlockField() {
     this.redraw = function () {
         if (!showed) return;
 
-
-
         let countStars = DataPoints.countStars(null, null, score);
         elStar1.backgroundImage = 'star-off-middle.png';
         elStar2.backgroundImage = 'star-off-middle.png';

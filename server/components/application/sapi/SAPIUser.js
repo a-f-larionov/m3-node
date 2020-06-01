@@ -92,6 +92,16 @@ SAPIUser = function () {
         LogicUser.sendUserListInfo(ids, cntx.userId, pStart(Profiler.ID_SAPIUSER_SEND_ME_USER_LIST_INFO));
     };
 
+    this.sendMeMapFriends = function (cntx, mapId, fids) {
+        if (!cntx.isAuthorized) return Logs.log(arguments.callee.name + " not authorized", Logs.LEVEL_WARNING, cntx);
+        if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
+        if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
+
+        DataUser.getMapFriendIds(mapId, fids, function (fids) {
+            CAPIUser.gotMapFriendIds(cntx.user.id, mapId, fids);
+        });
+    };
+
     /**
      * Отправляет внутрение id пользователей по их socNetUserId.
      * Тип социальной сети определяется по cntx.user

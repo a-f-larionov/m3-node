@@ -158,6 +158,31 @@ let LogicUser = function () {
         PageController.redraw();
     };
 
+    let mapFriendIds = {};
+
+    this.setMapFriendIds = function (mapId, fids) {
+        let toLoadIds = [];
+        fids.forEach(function (id) {
+            if (!pendingIds[id]) {
+                pendingIds[id] = true;
+                toLoadIds.push(id);
+            }
+        });
+        chunkIt(toLoadIds).forEach(function (chunk) {
+            SAPIUser.sendMeUserListInfo(chunk);
+        });
+        mapFriendIds[mapId].ids = fids;
+    };
+
+    this.getMapFriendIds = function (mapId) {
+        if (!getFriendIds()) return null;
+        if (!mapFriendIds[mapId]) mapFriendIds[mapId] = {};
+        if (!mapFriendIds[mapId].loading && (mapFriendIds[mapId].loading = true)) {
+            SAPIUser.sendMeMapFriends(mapId, getFriendIds());
+        }
+        return mapFriendIds[mapId].ids;
+    };
+
     let topUsers = [];
 
     this.getTopUsers = function () {
@@ -229,17 +254,8 @@ let LogicUser = function () {
     };
 
     this.getPointScores = function () {
-        /**
-         * 1 -
-         */
+
         return [];
-        /**
-         * 1 - для 10 000 друзей
-         * 2 - определного диапазаона точек
-         * 3 - найти топ-3
-         */
-        if (!DataMap.getCurrent()) return;
-        SAPIUser.sendMePointUsers(getFriendIds(), DataMap.getCurrent().id);
     };
 
     let pointTopScore = {};
@@ -353,9 +369,6 @@ let LogicUser = function () {
         );
     };
 
-    this.getMapFriendIds = function () {
-
-    }
 };
 
 /**
