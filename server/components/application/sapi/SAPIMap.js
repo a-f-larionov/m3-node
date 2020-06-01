@@ -24,7 +24,7 @@ SAPIMap = function () {
         if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
 
-        if (chunks > 1) Logs.log("More then one chunk", Logs.LEVEL_ALERT, arguments);
+        if (chunks > 1) Logs.log("More then one chunk", Logs.LEVEL_ALERT, cntx);
 
         if (Number.isNaN(score = Valid.DBUINT(score, true))) return Logs.log(arguments.callee.name + " not valid score", Logs.LEVEL_ALERT, arguments);
         if (!(pointId = Valid.DBUINT(pointId))) return Logs.log(arguments.callee.name + " not valid pointId", Logs.LEVEL_ALERT, arguments);

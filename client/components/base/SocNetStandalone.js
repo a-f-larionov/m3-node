@@ -36,7 +36,7 @@ let SocNetStandalone = function () {
     };
 
     let friends = [];
-    for (let i = 0; i < 10000 / 20 ; i++) {
+    for (let i = 0; i < 10000; i++) {
         friends.push(444400000 + i);
         friends.push(i);
     }

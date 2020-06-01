@@ -23,6 +23,9 @@ TopScoreCache = function TopScoreCache() {
 
     this.set = function (userId, pointId, out) {
         //cache[userId + '-' + pointId] = out;
+        if (!out.place1Uid || !out.place2Uid || !out.place3Uid) {
+            return;
+        }
 
         DB.query("REPLACE INTO cache_top_score" +
             " (userId, pointId, place1Uid, place2Uid, place3Uid,pos)" +
