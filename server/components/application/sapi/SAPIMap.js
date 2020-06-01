@@ -42,7 +42,7 @@ SAPIMap = function () {
                             place1Uid: rows[0] ? rows[0].userId : null,
                             place2Uid: rows[1] ? rows[1].userId : null,
                             place3Uid: rows[2] ? rows[2].userId : null,
-                            pos: pos,
+                            pos: pos
                         };
                         TopScoreCache.set(cntx.user.id, pointId, out);
                         CAPIMap.gotPointTopScore(cntx.user.id, pointId, out);

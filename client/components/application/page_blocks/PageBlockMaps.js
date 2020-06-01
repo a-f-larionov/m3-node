@@ -31,8 +31,6 @@ let PageBlockMaps = function PageBlockMaps() {
      */
     let elFriendsPanel;
 
-    let mapIdOld = 1;
-
     let domLoader = null;
 
     /**
@@ -191,6 +189,7 @@ let PageBlockMaps = function PageBlockMaps() {
         data = fetchData();
         if (!data) return;
 
+        elMap.src = data.map.src;
         self.preset(data);
         //@todo got friends top + users top for panel
         /**
@@ -218,16 +217,13 @@ let PageBlockMaps = function PageBlockMaps() {
         user = LogicUser.getCurrent();
         map = DataMap.getCurrent();
         if (!map) return;
-        //???
+        //???@todo
         // for current all scores on this map
         userPUS = DataPoints.getPointUserScore(map.id, [user.id]);
 
         let ids = LogicUser.getMapFriendIds(map.id);
         let mapFriends = ids ? LogicUser.getList(ids) : [];
-        /**
-         * get users
-         */
-        // DataPoints
+
         for (let number = 1; number <= DataMap.POINTS_PER_MAP; number++) {
             pointId = DataMap.getPointIdFromPointNumber(number);
             elPoint = pointsEls[number];
