@@ -18,6 +18,7 @@ let DataMap = function () {
         if (!mapId) mapId = currentMapId;
         if (!mapsLoadings[mapId]) {
             mapsLoadings[mapId] = true;
+            DataPoints.loadScores(DataMap.getMapPointIds(mapId));
             SAPIMap.sendMeMapInfo(mapId);
         }
     };
@@ -88,6 +89,15 @@ let DataMap = function () {
 
     this.getLastPointId = function () {
         return this.getFirstPointId() + DataMap.POINTS_PER_MAP - 1;
+    };
+
+    this.getMapPointIds = function (mapId) {
+        let firstPointId, lastPointId, pointIds;
+        firstPointId = DataMap.getFirstPointId(mapId);
+        lastPointId = DataMap.getLastPointId(mapId);
+        pointIds = [];
+        for (let i = firstPointId; i <= lastPointId; i++) pointIds.push(i);
+        return pointIds;
     };
 
     this.getPointIdFromPointNumber = function (number) {

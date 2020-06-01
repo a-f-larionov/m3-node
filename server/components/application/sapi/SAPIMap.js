@@ -1,23 +1,22 @@
 SAPIMap = function () {
 
     this.sendMeMapInfo = function (cntx, mapId) {
-        let map, points;
+        let map, points, prid;
         if (!cntx.isAuthorized) return Logs.log(arguments.callee.name + " not authorized", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
 
-        if (!DataMap.existsMap(mapId)) {
-            Logs.log("no map found:" + mapId, Logs.LEVEL_WARNING, cntx);
-            return;
-        }
-        let prid = pStart(Profiler.IS_SAPIMAP_SEND_ME_MAP_INFO);
+        if (!(mapId = Valid.DBUINT(mapId))) return Logs.log("no map id:" + mapId, Logs.LEVEL_WARNING, arguments);
+
+        if (!DataMap.existsMap(mapId)) return Logs.log("no map found:" + mapId, Logs.LEVEL_WARNING, cntx);
+
+        prid = pStart(Profiler.ID_SAPIMAP_SEND_ME_MAP_INFO);
         map = DataMap.getMap(mapId);
         points = DataPoints.getPointsByMapId(mapId);
 
-        DataPoints.getUsersInfo(mapId, [cntx.userId], function (userPoints) {
-            CAPIMap.gotMapsInfo(cntx.userId, mapId, map, points, userPoints);
-            pFinish(prid);
-        });
+        CAPIMap.gotMapsInfo(cntx.userId, mapId, map, points);
+
+        pFinish(prid);
     };
 
     this.sendMeUsersScore = function (cntx, mapId, userIds) {
@@ -25,11 +24,12 @@ SAPIMap = function () {
         if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
 
+        if (!(mapId = Valid.DBUINT(mapId))) return Logs.log("invalid params", Logs.LEVEL_ALERT, arguments);
+        if (!(userIds = Valid.DBUINTArray(userIds))) return Logs.log("no friends - no data", Logs.LEVEL_DETAIL, cntx);
+
         if (!DataMap.existsMap(mapId)) return Logs.log("no map found:" + mapId, Logs.LEVEL_WARNING, cntx);
 
-        if (userIds.length === 0) return Logs.log("no friends - no data", Logs.LEVEL_DETAIL, cntx);
-
-        let prid = pStart(Profiler.IS_SAPIMAP_SEND_ME_USERS_SCORE);
+        let prid = pStart(Profiler.ID_SAPIMAP_SEND_ME_USERS_SCORE);
         //@todo check mapId is isNAN, 0<mapId<MAX_NUMBER
         //@todo check usersIs must be array with only ids 0<i<MAX_NUMBER
 
@@ -55,8 +55,6 @@ SAPIMap = function () {
         let prid = pStart(Profiler.ID_SAPIMAP_SEND_ME_POINT_TOP_SCORE);
 
         DataPoints.getTopScore(score, pointId, fids, function (rows) {
-            //console.log(rows);
-
             DataPoints.getTopScoreUserPosition(score, pointId, fids, cntx.user.id, function (pos) {
 
                 /**
@@ -69,7 +67,6 @@ SAPIMap = function () {
                     place3Uid: rows[2] ? rows[2].userId : null,
                     userPosition: pos,
                 };
-                console.log(pos);
                 CAPIMap.gotPointTopScore(cntx.user.id, pointId, out);
                 pFinish(prid);
             });
@@ -103,7 +100,7 @@ SAPIMap = function () {
                         //@todo check map stars
                         pFinish(prid);
                         if (chestId) {
-                            let prid = pStart(Profiler.IS_SAPIMAP_OPEN_CHEST);
+                            let prid = pStart(Profiler.ID_SAPIMAP_OPEN_CHEST);
                             let chest = DataChests.getById(chestId);
 
                             if (!chest) {

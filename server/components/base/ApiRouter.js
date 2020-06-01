@@ -83,7 +83,7 @@ let ApiRouter = new (function ApiRouter() {
 
     this.onConnect = function (id) {
         Logs.log("ApiRouter.onConnect: id=" + id, Logs.LEVEL_DETAIL);
-        connections[id] = {connectionId: id};
+        connections[id] = {cid: id};
     };
 
     this.onDisconnect = function (id) {
@@ -114,10 +114,10 @@ let ApiRouter = new (function ApiRouter() {
         /** Convert object to array. */
         args = Array.prototype.slice.call(args);
 
-        if (!cntxList) cntxList = [{connectionId: null}];
+        if (!cntxList) cntxList = [{cid: null}];
 
         connectionsKey = '';
-        for (i in cntxList) connectionsKey += cntxList[i].connectionId;
+        for (i in cntxList) connectionsKey += cntxList[i].cid;
 
         let packet = {
             group: group,
@@ -137,7 +137,7 @@ let ApiRouter = new (function ApiRouter() {
 
         let cntxListLength = 0;
         for (i in cntxList) {
-            if (!this.sendData(packet, cntxList[i].connectionId)) {
+            if (!this.sendData(packet, cntxList[i].cid)) {
                 Logs.log("ApiRouter.failedToSend", Logs.LEVEL_WARNING, {packet: packet, cntx: cntxList[i]});
                 for (let j in onFailedSendCallbacks) {
                     onFailedSendCallbacks[j].call(self, cntxList[j]);

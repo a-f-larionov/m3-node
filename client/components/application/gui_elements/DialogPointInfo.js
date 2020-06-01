@@ -99,17 +99,17 @@ let DialogPointInfo = function () {
 
         //*todo blyad'
         let topScore = LogicUser.getPointTopScore(pointId);
-        let users, user1, user2, user3;
-        users = [];
-        if (topScore.place1Uid) user1 = (LU.getById(topScore.place1Uid));
-        if (topScore.place2Uid) user2 = (LU.getById(topScore.place2Uid));
-        if (topScore.place3Uid) user3 = (LU.getById(topScore.place3Uid));
+        let user1, user2, user3;
+        friends = [];
+        if (topScore) {
+            if (topScore.place1Uid) user1 = (LU.getById(topScore.place1Uid));
+            if (topScore.place2Uid) user2 = (LU.getById(topScore.place2Uid));
+            if (topScore.place3Uid) user3 = (LU.getById(topScore.place3Uid));
 
-        if (user1) users.push(user1);
-        if (user2) users.push(user2);
-        if (user3) users.push(user3);
-
-        friends = users;
+            if (user1) friends.push(user1);
+            if (user2) friends.push(user2);
+            if (user3) friends.push(user3);
+        }
 
         point = DataPoints.getById(pointId);
         this.setTitle('УРОВЕНЬ  ' + pointId);

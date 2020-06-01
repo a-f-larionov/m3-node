@@ -72,9 +72,7 @@ SAPIUser = function () {
         if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
 
-        if (!userId || typeof userId !== 'number') {
-            return Logs.log("SAPIUser.sendMeUserInfo: must have userId", Logs.LEVEL_WARNING, userId);
-        }
+        if (!(userId = Valid.DBUINT(userId))) return Logs.log("SAPIUser.sendMeUserInfo: must have userId", Logs.LEVEL_WARNING, userId);
 
         LogicUser.sendUserInfo(userId, cntx.userId, pStart(Profiler.ID_SAPIUSER_SEND_ME_INFO));
     };
@@ -89,10 +87,8 @@ SAPIUser = function () {
         if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
 
-        if (!ids || typeof ids !== 'object') {
-            Logs.log(arguments.callee.name + ": must have ids", Logs.LEVEL_WARNING, ids);
-            return;
-        }
+        if (!Valid.DBUINTArray(ids)) Logs.log(arguments.callee.name + ": must have ids", Logs.LEVEL_WARNING, ids);
+
         LogicUser.sendUserListInfo(ids, cntx.userId, pStart(Profiler.ID_SAPIUSER_SEND_ME_USER_LIST_INFO));
     };
 
@@ -101,7 +97,6 @@ SAPIUser = function () {
      * Тип социальной сети определяется по cntx.user
      * @param cntx {Object}
      * @param socIds
-     * @param limit
      */
     this.sendMeUserIdsBySocNet = function (cntx, socIds) {
         if (!cntx.isAuthorized) return Logs.log(arguments.callee.name + " not authorized", Logs.LEVEL_WARNING, cntx);
@@ -137,16 +132,22 @@ SAPIUser = function () {
         }, ' ORDER BY nextPointId DESC LIMIT ' + DataCross.topUsersLimit);
     };
 
-    this.sendMeScore = function (cntx, pointId, userId) {
+    this.sendMeScores = function (cntx, pids, uids) {
         if (!cntx.isAuthorized) return Logs.log(arguments.callee.name + " not authorized", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
 
-        if (!Valid.DBUINT(pointId)) Logs.log("invalid adata", Logs.LEVEL_ALERT, pointId);
-        if (!Valid.DBUINT(userId)) Logs.log("invalid adata", Logs.LEVEL_ALERT, userId);
+        if (!(pids instanceof Array)) pids = [pids];
+        if (!(uids instanceof Array)) uids = [uids];
 
-        DataPoints.getScore(pointId, userId, function (score) {
-            CAPIUser.gotScore(cntx.user.id, pointId, userId, score);
+        if (!(pids = Valid.DBUINTArray(pids))) return Logs.log("invalid data pids", Logs.LEVEL_ALERT, arguments);
+        if (!(uids = Valid.DBUINTArray(uids))) return Logs.log("invalid data uids", Logs.LEVEL_ALERT, arguments);
+
+        let prid = pStart(Profiler.ID_SAPIUSER_SEND_ME_SCORES);
+        //@todo prid
+        DataPoints.getScores(pids, uids, function (rows) {
+            CAPIUser.gotScores(cntx.user.id, rows);
+            pFinish(prid);
         });
     };
 

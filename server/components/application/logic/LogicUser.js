@@ -107,7 +107,7 @@ LogicUser = function () {
      * @param prid {int} id профелируйщего таймера
      */
     let authorizeSendSuccess = function (user, cntx, prid) {
-        /** Тут мы запомним его connectionId раз и на всегда */
+        /** Тут мы запомним его cid раз и на всегда */
         Logs.log("Auth+", Logs.LEVEL_NOTIFY, user.socNetUserId, Logs.CHANNEL_TELEGRAM);
 
         userAddConn(user, cntx);
@@ -177,7 +177,7 @@ LogicUser = function () {
      */
     let userAddConn = function (user, cntx) {
         if (!userToCntx[user.id]) {
-            Logs.log("CREATE user context. uid:" + user.id + ", cid:" + cntx.connectionId, Logs.LEVEL_DETAIL);
+            Logs.log("CREATE user context. uid:" + user.id + ", cid:" + cntx.cid, Logs.LEVEL_DETAIL);
             userToCntx[user.id] = {
                 conns: {},
                 user: {
@@ -191,7 +191,7 @@ LogicUser = function () {
         cntx.userId = user.id;
         cntx.isAuthorized = true;
         cntx.user = userToCntx[user.id].user;
-        userToCntx[user.id].conns[cntx.connectionId] = cntx;
+        userToCntx[user.id].conns[cntx.cid] = cntx;
         userToCntx[user.id].connsCount++;
     };
 
@@ -212,7 +212,7 @@ LogicUser = function () {
     let userDeleteConn = function (cntx) {
         let userId = cntx.userId;
         Logs.log("DELETE user conn", Logs.LEVEL_DETAIL);
-        delete userToCntx[userId].conns[cntx.connectionId];
+        delete userToCntx[userId].conns[cntx.cid];
         userToCntx[userId].connsCount--;
         if (userToCntx[userId].connsCount == 0) {
             Logs.log("DELETE user Context", Logs.LEVEL_DETAIL);

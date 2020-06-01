@@ -92,8 +92,9 @@ let LogicUser = function () {
             }
         });
 
+
         if (toLoadIds.length) {
-            //SAPIUser.sendMeUserListInfo(toLoadIds);
+            SAPIUser.sendMeUserListInfo(toLoadIds);
         }
 
         ids.forEach(function (id) {
@@ -259,13 +260,21 @@ let LogicUser = function () {
         return pointTopScore[pointId].top;
     };
 
-    this.loadPointTopScore = function (pointId, top) {
-        if (pointTopScore[pointId].top.userPosition < top.userPosition) {
-            pointTopScore[pointId].top = top;
+    this.loadPointTopScore = function (pid, top) {
+        // предзакгрузка
+        let uids;
+        uids = [top.place1Uid, top.place2Uid, top.place3Uid].filter(v => !!v);
+        if (uids.length) {
+            DataPoints.loadScores([pid], uids);
+            LogicUser.getList(uids);
         }
-        pointTopScore[pointId].chunksCount--;
-        if (pointTopScore[pointId].chunksCount === 0) {
-            pointTopScore[pointId].complete = true;
+
+        if (pointTopScore[pid].top.userPosition < top.userPosition) {
+            pointTopScore[pid].top = top;
+        }
+        pointTopScore[pid].chunksCount--;
+        if (pointTopScore[pid].chunksCount === 0) {
+            pointTopScore[pid].complete = true;
             PageController.redraw();
         }
     };

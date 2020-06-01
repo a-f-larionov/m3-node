@@ -2014,16 +2014,16 @@ DataPoints = function () {
         });
     };
 
-    this.getScore = function (pointId, userId, callback) {
+    this.getScores = function (pids, uids, callback) {
         let query;
-        query = "SELECT score FROM " +
+        query = "SELECT userId, pointId, score FROM " +
             "   users_points " +
             "WHERE" +
-            "       pointId = " + pointId +
-            " AND   userId = " + userId;
+            "       pointId IN ( " + pids.join(",") + ")" +
+            " AND   userId IN (" + uids.join(',') + ")";
 
         DB.query(query, function (rows) {
-            callback(rows && rows[0] ? rows[0].score : 0);
+            callback(rows);
         });
     }
 };

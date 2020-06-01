@@ -44,8 +44,10 @@ let CAPIUser = function () {
         LogicUser.loadTopUsers(users);
     };
 
-    this.gotScore = function (cntx, pointId, userId, score) {
-        DataPoints.setPointUserScore(pointId, userId, score);
+    this.gotScores = function (cntx, rows) {
+        rows.forEach(function (row) {
+            DataPoints.setPointUserScore(row.pointId, row.userId, row.score);
+        });
         PageController.redraw();
     };
 

@@ -89,10 +89,6 @@ let CAPIMap = function () {
             DataPoints.setPointData(point);
         });
 
-        userPoints.forEach(function (info) {
-            DataPoints.setPointUserScore(info.pointId, info.userId, info.score);
-        });
-
         if (self.onMapInfoCallback) {
             self.onMapInfoCallback.call();
             self.onMapInfoCallback = null;

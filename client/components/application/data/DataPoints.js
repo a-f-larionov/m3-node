@@ -158,25 +158,43 @@ let DataPoints = function () {
         return out;
     };
 
-    this.setPointUserScore = function (pointId, userId, score) {
-        if (!pointUserScore[pointId]) pointUserScore[pointId] = {};
-        pointUserScore[pointId][userId] = {
-            userId: userId,
-            pointId: pointId,
-            score: score
-        };
+    this.setPointUserScore = function (pid, uid, score) {
+        if (!pointUserScore[pid]) pointUserScore[pid] = {};
+        pointUserScore[pid][uid].score = score;
     };
 
-    this.getScore = function (pointId, userId) {
-        if (!userId) userId = LogicUser.getCurrent().id;
-        if (!userId) return null;
-        if (!pointUserScore[pointId]) pointUserScore[pointId] = {};
-        if (!pointUserScore[pointId][userId]) {
-            pointUserScore[pointId][userId] = {};
-            SAPIUser.sendMeScore(pointId, userId);
-            return null;
+    this.loadScores = function (pids, uids) {
+        if (!uids && !(uids = LogicUser.getCurrent().id)) return null;
+        if (!(uids instanceof Array)) uids = [uids];
+
+        let toLoadPids = [], toLoadUids = [];
+        pids.forEach(function (pid) {
+            uids.forEach(function (uid) {
+                if (!pointUserScore[pid]) pointUserScore[pid] = {};
+                if (!pointUserScore[pid][uid]) pointUserScore[pid][uid] = {};
+                if (!pointUserScore[pid][uid].loading && (pointUserScore[pid][uid].loading = true)) {
+                    toLoadPids.push(pid);
+                    toLoadUids.push(uids);
+                }
+            });
+        });
+        toLoadPids = toLoadPids.filter(onlyUnique);
+        toLoadUids = toLoadUids.filter(onlyUnique);
+        SAPIUser.sendMeScores(toLoadPids, toLoadUids);
+
+    };
+
+    this.getScore = function (pid, uid) {
+        if (!uid && !(uid = LogicUser.getCurrent().id)) return null;
+
+        if (!pointUserScore[pid]) pointUserScore[pid] = {};
+        if (!pointUserScore[pid][uid]) pointUserScore[pid][uid] = {};
+
+        if (!pointUserScore[pid][uid].loading && (pointUserScore[pid][uid].loading = true)) {
+            SAPIUser.sendMeScores(pid, uid);
         }
-        return pointUserScore[pointId][userId].score;
+
+        return pointUserScore[pid][uid].score;
     };
 
     this.countStars = function (pointId, userId, userScore) {
