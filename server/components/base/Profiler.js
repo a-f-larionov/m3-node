@@ -109,19 +109,27 @@ Profiler.depends = ['Logs'];
 
 Profiler.ID_AUTH_VK = 1;
 Profiler.ID_AUTH_STANDALONE = 2;
-Profiler.ID_LOGIC_SEND_TO_ALL = 3;
-Profiler.ID_SAPIUSER_SEND_ME_INFO = 4;
-Profiler.ID_USERSAPI_SEND_ME_USER_LIST_INFO = 5;
-Profiler.ID_USERSAPI_SEND_ME_USER_IDS_BY_SOC_NET = 6;
-Profiler.ID_USERSAPI_ON_FINISH = 7;
-Profiler.ID_USERSAPI_ON_START = 8;
-Profiler.ID_SEND_ME_TIME = 9;
-Profiler.IS_SAPIMAP_SEND_ME_MAP_INFO = 10;
-Profiler.IS_SAPIMAP_SEND_ME_USERS_SCORE = 11;
-Profiler.IS_SAPIMAP_OPEN_CHEST = 12;
-Profiler.ID_SAPISTUFF_SEND_ME_STUFF = 13;
-Profiler.ID_CLIENT_LOAD_VK = 14;
-Profiler.ID_CLIENT_LOAD_STANDALONE = 15;
+
+Profiler.ID_LOGIC_SEND_TO_ALL = 50;
+
+Profiler.ID_SAPIUSER_SEND_ME_INFO = 100;
+Profiler.ID_SAPIUSER_SEND_ME_USER_LIST_INFO = 101;
+Profiler.ID_SAPIUSER_SEND_ME_USER_IDS_BY_SOC_NET = 102;
+Profiler.ID_SAPIUSER_ON_FINISH = 120;
+Profiler.ID_SAPIUSER_ON_START = 121;
+
+Profiler.ID_SEND_ME_TIME = 200;
+
+Profiler.IS_SAPIMAP_SEND_ME_MAP_INFO = 300;
+Profiler.IS_SAPIMAP_SEND_ME_USERS_SCORE = 301;
+Profiler.ID_SAPIMAP_SEND_ME_USERS_TOP = 303;
+Profiler.ID_SAPIMAP_SEND_ME_POINT_TOP_SCORE = 304;
+Profiler.IS_SAPIMAP_OPEN_CHEST = 305;
+
+Profiler.ID_SAPISTUFF_SEND_ME_STUFF = 400;
+
+Profiler.ID_CLIENT_LOAD_VK = 500;
+Profiler.ID_CLIENT_LOAD_STANDALONE = 501;
 
 
 Profiler.titles = [];
@@ -130,14 +138,19 @@ Profiler.titles[Profiler.ID_AUTH_STANDALONE] = 'auth-standalone';
 Profiler.titles[Profiler.ID_LOGIC_SEND_TO_ALL] = 'send-to-all';
 
 Profiler.titles[Profiler.ID_SAPIUSER_SEND_ME_INFO] = 'SAPIUSER.sendMeInfo';
-Profiler.titles[Profiler.ID_USERSAPI_SEND_ME_USER_LIST_INFO] = 'SAPIUSER.sendMeUserListInfo';
-Profiler.titles[Profiler.ID_USERSAPI_SEND_ME_USER_IDS_BY_SOC_NET] = 'SAPIUSER.sendMeUserIdsBySocNet';
-Profiler.titles[Profiler.ID_USERSAPI_ON_FINISH] = 'SAPIUSER.onFinish';
-Profiler.titles[Profiler.ID_USERSAPI_ON_START] = 'SAPIUSER.onStart';
+Profiler.titles[Profiler.ID_SAPIUSER_SEND_ME_USER_LIST_INFO] = 'SAPIUSER.sendMeUserListInfo';
+Profiler.titles[Profiler.ID_SAPIUSER_SEND_ME_USER_IDS_BY_SOC_NET] = 'SAPIUSER.sendMeUserIdsBySocNet';
+Profiler.titles[Profiler.ID_SAPIUSER_ON_FINISH] = 'SAPIUSER.onFinish';
+Profiler.titles[Profiler.ID_SAPIUSER_ON_START] = 'SAPIUSER.onStart';
+
 Profiler.titles[Profiler.ID_SEND_ME_TIME] = 'Send-Me-Time';
+
 Profiler.titles[Profiler.IS_SAPIMAP_SEND_ME_MAP_INFO] = 'SAPIMap.sendMeMapInfo';
 Profiler.titles[Profiler.IS_SAPIMAP_SEND_ME_USERS_SCORE] = 'SAPIMap.sendMeUsersScore';
+Profiler.titles[Profiler.ID_SAPIMAP_SEND_ME_USERS_TOP] = 'SAPIMap.sendMeUsersTop';
+Profiler.titles[Profiler.ID_SAPIMAP_SEND_ME_POINT_TOP_SCORE] = 'SAPIMap.sendMePointTopScore';
 Profiler.titles[Profiler.IS_SAPIMAP_OPEN_CHEST] = 'SAPIMap.openChest';
+
 Profiler.titles[Profiler.ID_SAPISTUFF_SEND_ME_STUFF] = 'SAPIStuff.sendMeStuff';
 
 Profiler.titles[Profiler.ID_CLIENT_LOAD_VK] = 'load-client-vk';

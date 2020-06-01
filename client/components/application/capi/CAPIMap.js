@@ -90,7 +90,7 @@ let CAPIMap = function () {
         });
 
         userPoints.forEach(function (info) {
-            DataPoints.setPointUserScore(info.userId, info.pointId, info.score);
+            DataPoints.setPointUserScore(info.pointId, info.userId, info.score);
         });
 
         if (self.onMapInfoCallback) {
@@ -106,9 +106,13 @@ let CAPIMap = function () {
 
     this.gotUserScores = function (cntx, usersInfo) {
         usersInfo.forEach(function (info) {
-            DataPoints.setPointUserScore(info.userId, info.pointId, info.score);
+            DataPoints.setPointUserScore(info.pointId, info.userId, info.score);
         });
         PageController.redraw();
+    };
+
+    this.gotPointTopScore = function (cntx, pointId, topScore) {
+        LogicUser.loadPointTopScore(pointId, topScore);
     };
 
     let getEmitterSpecialLayer = function () {
@@ -193,7 +197,7 @@ let CAPIMap = function () {
 
         return out;
     };
-}
+};
 
 /** @type {CAPIMap} */
 CAPIMap = new CAPIMap();

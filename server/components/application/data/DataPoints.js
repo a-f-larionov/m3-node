@@ -1983,6 +1983,49 @@ DataPoints = function () {
             "UPDATE score = " + score;
         DB.query(query, callback);
     };
+
+    this.getTopScore = function (userScore, pointId, fids, callback) {
+        let query;
+        query = "" +
+            "SELECT * FROM users_points" +
+            "   WHERE" +
+            "       pointId = " + parseInt(pointId) +
+            "   AND userId IN(" + fids.join(',') + ")" +
+            "   AND score >= " + parseInt(userScore) +
+            "   ORDER BY score DESC" +
+            "   LIMIT 3";
+        DB.query(query, function (rows) {
+            callback(rows);
+        });
+    };
+
+    this.getTopScoreUserPosition = function (userScore, pointId, fids, userId, callback) {
+        let query;
+        fids.push(userId);
+        query = "" +
+            "SELECT COUNT(*) as pos FROM users_points" +
+            "   WHERE" +
+            "       pointId = " + parseInt(pointId) +
+            "   AND userId IN(" + fids.join(',') + ")" +
+            "   AND score >= " + parseInt(userScore) +
+            "   ORDER BY score DESC";
+        DB.query(query, function (rows) {
+            callback(rows[0].pos);
+        });
+    };
+
+    this.getScore = function (pointId, userId, callback) {
+        let query;
+        query = "SELECT score FROM " +
+            "   users_points " +
+            "WHERE" +
+            "       pointId = " + pointId +
+            " AND   userId = " + userId;
+
+        DB.query(query, function (rows) {
+            callback(rows && rows[0] ? rows[0].score : 0);
+        });
+    }
 };
 
 /**

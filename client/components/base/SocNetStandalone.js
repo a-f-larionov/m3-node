@@ -36,7 +36,7 @@ let SocNetStandalone = function () {
     };
 
     let friends = [];
-    for (let i = 0; i < 10000 / 2 - 5; i++) {
+    for (let i = 0; i < 10000 / 200 - 5; i++) {
         friends.push(444400000 + i);
         friends.push(i);
     }
@@ -69,7 +69,7 @@ let SocNetStandalone = function () {
             info.photo_50 = 'button-shuffle-rest.png';
             info.photo_100 = 'button-shuffle-rest.png';
         } else {
-            info.first_name = randomName[id % randomName.length].split(' ')[0];
+            info.first_name = randomName[id % randomName.length].split(' ')[0] + id;
             info.last_name = randomName[id % randomName.length].split(' ')[1];
             info.photo_50 = randomName[id % randomName.length].split(' ')[3];
             info.photo_100 = randomName[id % randomName.length].split(' ')[3];

@@ -3,10 +3,10 @@
  */
 let Valid = {
 
-    DBUINT: function (value) {
+    DBUINT: function (value, mayZero) {
         value = parseInt(value);
         return !Number.isNaN(value)
-            && value > 0
+            && (value > 0 || (mayZero && value >= 0))
             && value < DB.INTEGER_MAX_NUMBER
             && value;
     },

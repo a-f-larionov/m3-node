@@ -41,6 +41,42 @@ SAPIMap = function () {
         });
     };
 
+    this.sendMePointTopScore = function (cntx, score, pointId, fids, chunks) {
+        if (!cntx.isAuthorized) return Logs.log(arguments.callee.name + " not authorized", Logs.LEVEL_WARNING, cntx);
+        if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
+        if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
+
+        if (chunks > 1) Logs.log("More then one chunk", Logs.LEVEL_ALERT, arguments);
+
+        if (Number.isNaN(score = Valid.DBUINT(score, true))) return Logs.log(arguments.callee.name + " not valid score", Logs.LEVEL_ALERT, arguments);
+        if (!(pointId = Valid.DBUINT(pointId))) return Logs.log(arguments.callee.name + " not valid pointId", Logs.LEVEL_ALERT, arguments);
+        if (!(fids = Valid.DBUINTArray(fids))) return Logs.log(arguments.callee.name + "not valid fids", Logs.LEVEL_ALERT, arguments);
+
+        let prid = pStart(Profiler.ID_SAPIMAP_SEND_ME_POINT_TOP_SCORE);
+
+        DataPoints.getTopScore(score, pointId, fids, function (rows) {
+            //console.log(rows);
+
+            DataPoints.getTopScoreUserPosition(score, pointId, fids, cntx.user.id, function (pos) {
+
+                /**
+                 * {p1u: 123123, p2u:123213, up:123123 }
+                 */
+                let out;
+                out = {
+                    place1Uid: rows[0] ? rows[0].userId : null,
+                    place2Uid: rows[1] ? rows[1].userId : null,
+                    place3Uid: rows[2] ? rows[2].userId : null,
+                    userPosition: pos,
+                };
+                console.log(pos);
+                CAPIMap.gotPointTopScore(cntx.user.id, pointId, out);
+                pFinish(prid);
+            });
+
+        });
+    };
+
     /**
      * Закончили уровень.
      * @param cntx

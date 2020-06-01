@@ -345,11 +345,13 @@ let ElementPoint = function () {
      * Игроки на точке это друзья
      * @param newData
      */
-    this.setGamers = function (newData) {
-        newData = newData.filter(function (user) {
-            return user.nextPointId === self.pointId;
-        });
-        gamers = newData.slice(0, 3);
+    this.setGamers = function (topScoreNew) {
+        let user1, user2, user3;
+
+
+
+
+        return;
         /** Центрируем если игрок только один */
         if (gamers.length === 1) gamers.unshift(null);
         while (gamers.length < 3) gamers.push(null);

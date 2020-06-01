@@ -440,7 +440,7 @@ let PageBlockField = function PageBlockField() {
         if (score > lastScore) {
             chestId = LogicChests.onFinish(pointId, lastScore, score);
             SAPIMap.onFinish(pointId, score, chestId);
-            DataPoints.setPointUserScore(user.id, pointId, score);
+            DataPoints.setPointUserScore(pointId, user.id, score);
         }
         SAPIUser.onFinish();
         PBZDialogs.dialogGoalsReached.showDialog(pointId, score);

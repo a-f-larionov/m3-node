@@ -105,6 +105,7 @@ let DataMap = function () {
         mapStars = 0;
         user = LogicUser.getCurrent();
         if (!user) return 0;
+        //for currentUser all scores here
         pointUsersInfo = DataPoints.getPointUserScore(mapId, [user.id]);
 
         if (!pointUsersInfo) return 0;

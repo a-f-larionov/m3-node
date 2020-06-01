@@ -10,7 +10,7 @@ let DialogPointInfo = function () {
     let elStarTwo = null;
     let elStarThree = null;
 
-    let friendsPanel = [];
+    let panel = [];
     let elUserPhotoScore = null;
 
     let elButtonPlay = null;
@@ -39,7 +39,7 @@ let DialogPointInfo = function () {
         elStarThree.show();
 
         [0, 1, 2].forEach(function (i) {
-            friendsPanel[i] = {
+            panel[i] = {
                 elPhotoScore: GUI.createElement(ElementUserScorePhoto, {x: 75 + 75 * i + 15, y: 155})
             }
         });
@@ -97,27 +97,36 @@ let DialogPointInfo = function () {
 
         if (!this.dialogShowed) return;
 
+        //*todo blyad'
+        let topScore = LogicUser.getPointTopScore(pointId);
+        let users, user1, user2, user3;
+        users = [];
+        if (topScore.place1Uid) user1 = (LU.getById(topScore.place1Uid));
+        if (topScore.place2Uid) user2 = (LU.getById(topScore.place2Uid));
+        if (topScore.place3Uid) user3 = (LU.getById(topScore.place3Uid));
+
+        if (user1) users.push(user1);
+        if (user2) users.push(user2);
+        if (user3) users.push(user3);
+
+        friends = users;
+
         point = DataPoints.getById(pointId);
         this.setTitle('УРОВЕНЬ  ' + pointId);
-//console.log('friends',friends);
-        /**
-         *
-         */
-
 
         for (let i = 0; i < 3; i++) {
             if ((friend = friends[i]) && friend.id) {
                 score = DataPoints.getScore(point.id, friend.id);
-                friendsPanel[i].elPhotoScore.user = friend;
-                friendsPanel[i].elPhotoScore.score = score;
+                panel[i].elPhotoScore.user = friend;
+                panel[i].elPhotoScore.score = score;
                 if (score) {
-                    friendsPanel[i].elPhotoScore.show();
-                    friendsPanel[i].elPhotoScore.redraw();
+                    panel[i].elPhotoScore.show();
+                    panel[i].elPhotoScore.redraw();
                 } else {
-                    friendsPanel[i].elPhotoScore.hide();
+                    panel[i].elPhotoScore.hide();
                 }
             } else {
-                friendsPanel[i].elPhotoScore.hide();
+                panel[i].elPhotoScore.hide();
             }
         }
         elUserPhotoScore.user = LogicUser.getCurrent();
@@ -142,11 +151,7 @@ let DialogPointInfo = function () {
     };
 
     this.showDialog = function (pId) {
-        let mapId;
         pointId = pId;
-        //@todo mapId from pointId
-        mapId = DataMap.getCurrent().id;
-        friends = LogicUser.getFriendIdsByMapIdAndPointIdWithScore(mapId, pId, false);
         this.__proto__.showDialog.call(this);
         self.redraw();
     }

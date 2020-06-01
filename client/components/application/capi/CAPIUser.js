@@ -44,6 +44,11 @@ let CAPIUser = function () {
         LogicUser.loadTopUsers(users);
     };
 
+    this.gotScore = function (cntx, pointId, userId, score) {
+        DataPoints.setPointUserScore(pointId, userId, score);
+        PageController.redraw();
+    };
+
     /**
      * @param cntx {Object}
      * @param value {boolean}

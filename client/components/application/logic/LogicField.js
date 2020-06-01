@@ -346,14 +346,14 @@ let LogicField = function () {
                 if (!n[y]) n[y] = [];
                 n[y].push(cell.withGold ? 'G' : ' ');
             });
-            console.log(n);
+//            console.log(n);
             Field.shuffle(true);
             n = [];
             Field.eachCell(function (x, y, cell, object) {
                 if (!n[y]) n[y] = [];
                 n[y].push(cell.withGold ? 'G' : ' ');
             });
-            console.log(n);
+  //          console.log(n);
         }
     };
 

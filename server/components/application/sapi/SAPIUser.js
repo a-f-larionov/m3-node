@@ -2,6 +2,10 @@ let FS = require('fs');
 var AsyncLock = require('async-lock');
 var LOCK = new AsyncLock();
 
+/**
+ * @type {SAPIUser}
+ * @constructor
+ */
 SAPIUser = function () {
 
     let auhthorizeValidateParams = function (cntx, socNetUserId, authParams) {
@@ -89,7 +93,7 @@ SAPIUser = function () {
             Logs.log(arguments.callee.name + ": must have ids", Logs.LEVEL_WARNING, ids);
             return;
         }
-        LogicUser.sendUserListInfo(ids, cntx.userId, pStart(Profiler.ID_USERSAPI_SEND_ME_USER_LIST_INFO));
+        LogicUser.sendUserListInfo(ids, cntx.userId, pStart(Profiler.ID_SAPIUSER_SEND_ME_USER_LIST_INFO));
     };
 
     /**
@@ -108,7 +112,7 @@ SAPIUser = function () {
         // @Todo validate userIds
         if (!socIds) return Logs.log(arguments.callee.name + " wrong params", Logs.LEVEL_WARNING, {cntx, userIds: socIds});
 
-        let prid = pStart(Profiler.ID_USERSAPI_SEND_ME_USER_IDS_BY_SOC_NET);
+        let prid = pStart(Profiler.ID_SAPIUSER_SEND_ME_USER_IDS_BY_SOC_NET);
         //@todo add check ids and length no more 1000
         DataUser.getById(cntx.user.id, function (user) {
             DataUser.getUserIdsBySocNet(user.socNetTypeId, socIds, function (ids) {
@@ -133,6 +137,19 @@ SAPIUser = function () {
         }, ' ORDER BY nextPointId DESC LIMIT ' + DataCross.topUsersLimit);
     };
 
+    this.sendMeScore = function (cntx, pointId, userId) {
+        if (!cntx.isAuthorized) return Logs.log(arguments.callee.name + " not authorized", Logs.LEVEL_WARNING, cntx);
+        if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
+        if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
+
+        if (!Valid.DBUINT(pointId)) Logs.log("invalid adata", Logs.LEVEL_ALERT, pointId);
+        if (!Valid.DBUINT(userId)) Logs.log("invalid adata", Logs.LEVEL_ALERT, userId);
+
+        DataPoints.getScore(pointId, userId, function (score) {
+            CAPIUser.gotScore(cntx.user.id, pointId, userId, score);
+        });
+    };
+
     /**
      *
      * @param cntx {Object}
@@ -143,7 +160,7 @@ SAPIUser = function () {
         if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
 
-        let prid = pStart(Profiler.ID_USERSAPI_ON_FINISH);
+        let prid = pStart(Profiler.ID_SAPIUSER_ON_FINISH);
 
         /** Возвращаем жизнь */
         LOCK.acquire(Keys.health(cntx.user.id), function (done) {
@@ -171,7 +188,7 @@ SAPIUser = function () {
         if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
 
-        let prid = pStart(Profiler.ID_USERSAPI_ON_START);
+        let prid = pStart(Profiler.ID_SAPIUSER_ON_START);
 
         LOCK.acquire(Keys.health(cntx.user.id), function (done) {
             //@todo auto LOCK timeout(with keys!)
@@ -211,6 +228,7 @@ SAPIUser = function () {
             });
         });
     };
+
 };
 /**
  * Статичный класс.

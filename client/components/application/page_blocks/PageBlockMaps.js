@@ -214,12 +214,16 @@ let PageBlockMaps = function PageBlockMaps() {
      * Обновление данных перед отрисовкой точек
      */
     this.presetPoints = function (data) {
-        let user, pointId, point, elPoint, userPoint, map;
+        let user, pointId, point, elPoint, userPUS, map;
         user = LogicUser.getCurrent();
         map = DataMap.getCurrent();
         if (!map) return;
         //???
-        userPoint = DataPoints.getPointUserScore(map.id, [user.id]);
+        // for current all scores on this map
+        userPUS = DataPoints.getPointUserScore(map.id, [user.id]);
+
+        let ids = LogicUser.getMapFriendIds();
+
 
         // DataPoints
         for (let number = 1; number <= DataMap.POINTS_PER_MAP; number++) {
@@ -236,18 +240,18 @@ let PageBlockMaps = function PageBlockMaps() {
             if (point.id < user.nextPointId) elPoint.stateId = ElementPoint.STATE_FINISHED;
             if (point.id > user.nextPointId) elPoint.stateId = ElementPoint.STATE_CLOSE;
 
-            if (userPoint[pointId])
-                elPoint.userScore = userPoint[pointId][user.id] ? userPoint[pointId][user.id].score : 0;
+            if (userPUS[pointId])
+                elPoint.userScore = userPUS[pointId][user.id] ? userPUS[pointId][user.id].score : 0;
             else
                 elPoint.userScore = 0;
 
-            //@todo
             elPoint.setGamers(
-                LogicUser.getFriendIdsByMapIdAndPointIdWithScore(
-                    DataMap.getCurrent().id,
-                    pointId,
-                    true)
+                123
             );
+
+            /*elPoint.setTopScore(
+                LogicUser.getPointTopScore(point.id)
+            );*/
         }
     };
 

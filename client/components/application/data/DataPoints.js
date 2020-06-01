@@ -152,36 +152,29 @@ let DataPoints = function () {
             for (let uid in pointUserScore[pId]) {
                 if (userIds.indexOf(parseInt(uid)) === -1) continue;
                 if (!out[pId]) out[pId] = {};
-                out[pId][uid] = pointUserScore[pId][uid];
+                out[pId][uid] = this.getScore(pId, uid);
             }
         }
         return out;
     };
 
-    this.setPointUserScore = function (userId, pointId, score) {
-        if (!pointUserScore[pointId]) {
-            pointUserScore[pointId] = {};
-        }
+    this.setPointUserScore = function (pointId, userId, score) {
+        if (!pointUserScore[pointId]) pointUserScore[pointId] = {};
         pointUserScore[pointId][userId] = {
             userId: userId,
             pointId: pointId,
             score: score
-        }
+        };
     };
 
     this.getScore = function (pointId, userId) {
-        window.p = pointUserScore;
         if (!userId) userId = LogicUser.getCurrent().id;
         if (!userId) return null;
-        if (!pointUserScore[pointId]) {
-            pointUserScore[pointId] = {};
-        }
+        if (!pointUserScore[pointId]) pointUserScore[pointId] = {};
         if (!pointUserScore[pointId][userId]) {
-            pointUserScore[pointId][userId] = {
-                userId: userId,
-                pointId: pointId,
-                score: 0
-            }
+            pointUserScore[pointId][userId] = {};
+            SAPIUser.sendMeScore(pointId, userId);
+            return null;
         }
         return pointUserScore[pointId][userId].score;
     };
@@ -214,11 +207,11 @@ let DataPoints = function () {
     };
 
     this.init = function () {
-        
+
         this.objectAnims[DataObjects.WITH_LIGHTNING_VERTICAL] = animGemLightning;
         this.objectAnims[DataObjects.WITH_LIGHTNING_HORIZONTAL] = animGemLightning;
         this.objectAnims[DataObjects.WITH_LIGHTNING_CROSS] = animGemLightning;
-    }
+    };
 };
 
 DataPoints = new DataPoints;

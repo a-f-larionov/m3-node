@@ -219,6 +219,8 @@ let LogicUser = function () {
     this.loadFriendIds = function (chunkIds) {
         getFriendIds.chunksCount--;
         friendIds = friendIds.concat(chunkIds);
+        /** Удаяем самих себя из друзей */
+        friendIds.splice(friendIds.indexOf(authorizedUserId), 1);
         if (getFriendIds.chunksCount === 0) {
             getFriendIds.complete = true;
             PageController.redraw();
@@ -237,6 +239,35 @@ let LogicUser = function () {
          */
         if (!DataMap.getCurrent()) return;
         SAPIUser.sendMePointUsers(getFriendIds(), DataMap.getCurrent().id);
+    };
+
+    let pointTopScore = {};
+
+    this.getPointTopScore = function (pointId) {
+        let fids, chunks;
+        if (!(fids = getFriendIds())) return undefined;
+
+        if (!pointTopScore[pointId]) pointTopScore[pointId] = {top: {userPosition: -Infinity}};
+        if (!pointTopScore[pointId].loading && (pointTopScore[pointId].loading = true)) {
+            chunks = chunkIt(fids);
+            pointTopScore[pointId].chunksCount = chunks.length;
+            chunks.forEach(function (chunk) {
+                SAPIMap.sendMePointTopScore(0, pointId, chunk, chunks.length);
+            });
+        }
+        if (!pointTopScore[pointId].complete) return undefined;
+        return pointTopScore[pointId].top;
+    };
+
+    this.loadPointTopScore = function (pointId, top) {
+        if (pointTopScore[pointId].top.userPosition < top.userPosition) {
+            pointTopScore[pointId].top = top;
+        }
+        pointTopScore[pointId].chunksCount--;
+        if (pointTopScore[pointId].chunksCount === 0) {
+            pointTopScore[pointId].complete = true;
+            PageController.redraw();
+        }
     };
 
     let mapsFriendsLoadings = [];
@@ -312,6 +343,10 @@ let LogicUser = function () {
             LogicUser.getCurrent().nextPointId
         );
     };
+
+    this.getMapFriendIds = function () {
+
+    }
 };
 
 /**
