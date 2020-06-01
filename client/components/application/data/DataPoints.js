@@ -161,6 +161,7 @@ let DataPoints = function () {
     this.setPointUserScore = function (pid, uid, score) {
         if (!pointUserScore[pid]) pointUserScore[pid] = {};
         pointUserScore[pid][uid].score = score;
+        LogicUser.flushPointTopScore(pid, uid);
     };
 
     this.loadScores = function (pids, uids) {
@@ -180,8 +181,8 @@ let DataPoints = function () {
         });
         toLoadPids = toLoadPids.filter(onlyUnique);
         toLoadUids = toLoadUids.filter(onlyUnique);
-        SAPIUser.sendMeScores(toLoadPids, toLoadUids);
-
+        if (toLoadUids.length && toLoadPids.length)
+            SAPIUser.sendMeScores(toLoadPids, toLoadUids);
     };
 
     this.getScore = function (pid, uid) {

@@ -437,7 +437,8 @@ let PageBlockField = function PageBlockField() {
             user.nextPointId = pointId + 1;
             LogicUser.updateUserInfo(user);
         }
-        if (score > lastScore) {
+        console.log(score, lastScore);
+        if (score > lastScore || lastScore === undefined) {
             chestId = LogicChests.onFinish(pointId, lastScore, score);
             SAPIMap.onFinish(pointId, score, chestId);
             DataPoints.setPointUserScore(pointId, user.id, score);

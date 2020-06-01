@@ -26,7 +26,7 @@ Profiler = function () {
         let id;
         if (!prid) return Logs.log("Profiler.stop().", Logs.LEVEL_WARNING, prid);
         id = pridToId[prid];
-        if (!data[id]) return Logs.log("Profiler.stop(). if (!data['id']) { /*  This message. */ }",
+        if (!data[id]) return Logs.log("Profiler.stop(). if (!data[id]) { /*  This message. */ }",
             Logs.LEVEL_WARNING, {prid: prid, id: id, stack: (new Error().stack)});
         if (!data[id].stamps[prid]) return Logs.log("Profiler.stop(). no stamp for", Logs.LEVEL_WARNING, {prid: prid, id: id});
         data[id].sumTime += mtime() - data[id].stamps[prid];

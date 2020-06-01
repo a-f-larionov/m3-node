@@ -264,7 +264,7 @@ let LogicUser = function () {
         let fids, chunks;
         if (!(fids = getFriendIds())) return undefined;
 
-        if (!pointTopScore[pointId]) pointTopScore[pointId] = {top: {userPosition: -Infinity}};
+        if (!pointTopScore[pointId]) pointTopScore[pointId] = {top: {pos: -Infinity}};
         if (!pointTopScore[pointId].loading && (pointTopScore[pointId].loading = true)) {
             chunks = chunkIt(fids);
             pointTopScore[pointId].chunksCount = chunks.length;
@@ -285,7 +285,7 @@ let LogicUser = function () {
             LogicUser.getList(uids);
         }
 
-        if (pointTopScore[pid].top.userPosition < top.userPosition) {
+        if (pointTopScore[pid].top.pos < top.pos) {
             pointTopScore[pid].top = top;
         }
         pointTopScore[pid].chunksCount--;
@@ -295,72 +295,8 @@ let LogicUser = function () {
         }
     };
 
-    let mapsFriendsLoadings = [];
-
-    let loadFriendsScoreByMapId = function (mapId) {
-        if (!mapId) mapId = currentMapId;
-        if (!getFriendIds()) return;
-        if (!mapsFriendsLoadings[mapId]) {
-            mapsFriendsLoadings[mapId] = true;
-            //@todo chunkit
-            //SAPIMap.sendMeUsersScore(mapId, getFriendIds());
-        }
-    };
-
-    this.getFriendIdsByMapId = function (mapId) {
-        let lpid, fpid, ids;
-        if (getFriendIds()) {
-            fpid = DataMap.getFirstPointId();
-            lpid = DataMap.getLastPointId();
-            // get every friendIds
-            ids = this.getList(friendIds)
-                .filter(function (user) {
-                    return user.nextPointId >= fpid && user.nextPointId <= lpid;
-                }).map(function (user) {
-                    return user.id;
-                });
-            //@todo не очень краисо загружать это здесь)
-            loadFriendsScoreByMapId(mapId, ids);
-            return ids;
-        } else {
-            return [];
-        }
-    };
-
-    /**
-     * Возвращает id игроков-друзей на этой точке.
-     * @param mapId
-     * @param pointId
-     * @param withCurrentUser
-     * @returns {Array|Uint8Array|BigInt64Array|*[]|Float64Array|Int8Array|Float32Array|Int32Array|Uint32Array|Uint8ClampedArray|BigUint64Array|Int16Array|Uint16Array}
-     */
-    this.getFriendIdsByMapIdAndPointIdWithScore = function (mapId, pointId, withCurrentUser) {
-        let ids, users, gamers, currentUserId;
-        //return LogicUser.getList([1,2,3]);
-        gamers = [];
-        ids = LogicUser.getFriendIdsByMapId(mapId);
-        currentUserId = LogicUser.getCurrent().id;
-        if (withCurrentUser) ids.push(currentUserId);
-
-        if (ids) {
-            users = LogicUser.getList(ids);
-        }
-        if (users) {
-            gamers = users
-                .filter(function (user, i) {
-                    if (!withCurrentUser && currentUserId === user.id) return false;
-                    /** Remove duplicates */
-                    if (users.indexOf(user) !== i) return false;
-                    return user.nextPointId >= pointId;
-                })
-                .sort(function (a, b) {
-                    return b.login_tm - a.login_tm;
-                })
-                .map(function (user) {
-                    return user;
-                });
-        }
-        return gamers;
+    this.flushPointTopScore = function (pid, uid) {
+        if (pointTopScore[pid]) pointTopScore[pid][uid] = undefined;
     };
 
     this.getUserLastMapId = function () {

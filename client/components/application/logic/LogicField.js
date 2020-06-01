@@ -444,7 +444,6 @@ let LogicField = function () {
     let shuffleCounter = 0;
 
     this.shuffle = function (beforePlay) {
-        console.log('shuffle', beforePlay);
         shuffleCounter++;
         let funcShuffleField = function () {
             let p1, p2, c2;

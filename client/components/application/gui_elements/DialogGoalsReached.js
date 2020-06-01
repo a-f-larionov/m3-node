@@ -105,9 +105,25 @@ let DialogGoalsReached = function () {
 
         if (!this.dialogShowed) return;
 
+        let topScore = LogicUser.getPointTopScore(pointId);
+        let user1, user2, user3;
+        friends = [];
+        if (topScore) {
+            if (topScore.place1Uid) user1 = (LU.getById(topScore.place1Uid));
+            if (topScore.place2Uid) user2 = (LU.getById(topScore.place2Uid));
+            if (topScore.place3Uid) user3 = (LU.getById(topScore.place3Uid));
+
+            if (user1) friends.push(user1);
+            if (user2) friends.push(user2);
+            if (user3) friends.push(user3);
+        }
+
         user = LogicUser.getCurrent();
         point = DataPoints.getById(pointId);
         elTitle.text = 'ПРОЙДЕН';// + pointId;
+
+        elUserPhotoScore.user = LogicUser.getCurrent();
+        elUserPhotoScore.score = 1 + DataPoints.getScore(point.id);
 
         for (let i = 0; i < 3; i++) {
             if ((friend = friends[i]) && friend.id) {
@@ -124,8 +140,6 @@ let DialogGoalsReached = function () {
                 friendsPanel[i].elPhotoScore.hide();
             }
         }
-        elUserPhotoScore.user = LogicUser.getCurrent();
-        elUserPhotoScore.score = DataPoints.getScore(point.id);
 
         elTitle.redraw();
         elStarOne.src = 'star-off-big.png';
@@ -158,12 +172,11 @@ let DialogGoalsReached = function () {
     };
 
     this.showDialog = function (pId, fieldScore) {
-        let mapId;
         share = true;
         pointId = pId;
         /** @todo mapId from pointId */
-        mapId = DataMap.getCurrent().id;
-        friends = LogicUser.getFriendIdsByMapIdAndPointIdWithScore(mapId, pId);
+        //mapId = DataMap.getCurrent().id;
+        //friends = LogicUser.getFriendIdsByMapIdAndPointIdWithScore(mapId, pId);
         this.__proto__.showDialog.call(this);
         score = fieldScore;
         self.redraw();

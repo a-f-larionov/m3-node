@@ -76,11 +76,11 @@ let ElementUserScorePhoto = function () {
      */
     this.redraw = function () {
         if (!showed) return;
-        if (!this.user || !this.user.id || isNaN(this.score)) return;
+        if (!this.user || !this.user.id ) return;
 
         elTextName.text = this.user.firstName;
         elPhoto.src = this.user.photo50;
-        elTextScore.text = this.score.toString();
+        elTextScore.text = this.score ? this.score.toString() : 0;
 
         elTextName.redraw();
         elPhoto.redraw();

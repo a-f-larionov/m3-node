@@ -129,6 +129,7 @@ let DialogPointInfo = function () {
                 panel[i].elPhotoScore.hide();
             }
         }
+
         elUserPhotoScore.user = LogicUser.getCurrent();
         elUserPhotoScore.score = DataPoints.getScore(point.id);
 

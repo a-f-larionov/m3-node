@@ -734,7 +734,7 @@ let ElementField = function () {
     this.destroyLines = function () {
         let lines, actGem, actObjectId;
         lines = Field.findLines();
-console.log('destroy line');
+
         lines.forEach(function (line) {
 
             actGem = null;
