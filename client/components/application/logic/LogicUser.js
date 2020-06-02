@@ -160,6 +160,22 @@ let LogicUser = function () {
 
     let mapFriendIds = {};
 
+    this.getMapFriendIds = function (mapId) {
+        let chunks;
+        if (!getFriendIds()) return null;
+        if (!mapId) return null;
+        if (!mapFriendIds[mapId]) mapFriendIds[mapId] = {ids: []};
+        if (!mapFriendIds[mapId].loading && (mapFriendIds[mapId].loading = true)) {
+            chunks = chunkIt(getFriendIds());
+            mapFriendIds[mapId].chunksCount = chunks.length;
+            chunks.forEach(function (chunk) {
+                SAPIUser.sendMeMapFriends(mapId, chunk);
+            });
+        }
+        if (!mapFriendIds[mapId].complete) return null;
+        return mapFriendIds[mapId].ids;
+    };
+
     this.setMapFriendIds = function (mapId, fids) {
         let toLoadIds = [];
         fids.forEach(function (id) {
@@ -171,16 +187,12 @@ let LogicUser = function () {
         chunkIt(toLoadIds).forEach(function (chunk) {
             SAPIUser.sendMeUserListInfo(chunk);
         });
-        mapFriendIds[mapId].ids = fids;
-    };
-
-    this.getMapFriendIds = function (mapId) {
-        if (!getFriendIds()) return null;
-        if (!mapFriendIds[mapId]) mapFriendIds[mapId] = {};
-        if (!mapFriendIds[mapId].loading && (mapFriendIds[mapId].loading = true)) {
-            SAPIUser.sendMeMapFriends(mapId, getFriendIds());
+        mapFriendIds[mapId].chunksCount--;
+        mapFriendIds[mapId].ids = mapFriendIds[mapId].ids.concat(fids);
+        if (mapFriendIds[mapId].chunksCount === 0) {
+            mapFriendIds[mapId].complete = true;
+            PageController.redraw();
         }
-        return mapFriendIds[mapId].ids;
     };
 
     let topUsers = [];
@@ -251,11 +263,6 @@ let LogicUser = function () {
             getFriendIds.complete = true;
             PageController.redraw();
         }
-    };
-
-    this.getPointScores = function () {
-
-        return [];
     };
 
     let pointTopScore = {};

@@ -9,6 +9,7 @@ let PageMain = function () {
         self.blocks.push(PBZDialogs);
         self.blocks.push(PageBlockWizard);
         self.blocks.push(PageBlockZClouds);
+        self.blocks.push(PageBlockZPreloader);
     };
 };
 

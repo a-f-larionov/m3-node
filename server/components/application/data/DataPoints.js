@@ -1984,7 +1984,6 @@ DataPoints = function () {
         DB.query(query, callback);
     };
 
-    let topScoreCache = [];
 
     this.getTopScore = function (userId, userScore, pointId, fids, callback) {
         let query;

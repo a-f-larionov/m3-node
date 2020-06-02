@@ -12,8 +12,6 @@ let PageBlockMaps = function PageBlockMaps() {
      */
     let showed = false;
 
-    let elPreloader = false;
-
     let pArrowNext = {x: 714, y: 500 / 2 - 50 / 2};
 
     let elArrowPrev = false;
@@ -52,9 +50,6 @@ let PageBlockMaps = function PageBlockMaps() {
      */
     this.init = function () {
         let el;
-
-        //@todo preloader
-        elPreloader = GUI.createElement(ElementImage, {x: 0, y: 0, width: 778, height: 500, src: 'oblojkla.png'});
 
         elOldPaper = GUI.createElement(ElementImage, {x: 0, y: 0, width: 778, height: 500, src: 'old-paper.png'});
         self.elements.push(elOldPaper);
@@ -128,8 +123,6 @@ let PageBlockMaps = function PageBlockMaps() {
         el = GUI.createElement(ElementImage, {x: 650, y: 370, opacity: 0.7, src: 'wind-rose.png'});
         self.elements.push(el);
 
-        //@todo preloader
-        domLoader = GUI.createDom(undefined, {x: 0, y: 0, backgroundImage: 'not-found.png'});
     };
 
     /**
@@ -187,7 +180,10 @@ let PageBlockMaps = function PageBlockMaps() {
         let data;
         if (!showed) return;
         data = fetchData();
-        if (!data) return;
+        if (!data) {
+
+            return;
+        }
 
         elMap.src = data.map.src;
         self.preset(data);
@@ -260,15 +256,8 @@ let PageBlockMaps = function PageBlockMaps() {
         out = {};
         out.map = DataMap.getCurrent();
         out.tUsers = LogicUser.getTopUsers();
-        out.pointScores = out.map && LogicUser.getPointScores(out.map.id);
 
-        if (!(out.map && out.tUsers && out.pointScores && out.pointScores)) out = null;
-
-        if (!out) {
-            domLoader.show();
-        } else {
-            domLoader.hide();
-        }
+        if (!(out.map && out.tUsers)) out = null;
 
         return out;
     }
