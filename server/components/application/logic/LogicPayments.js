@@ -150,6 +150,14 @@ LogicPayments = function () {
 
     this.doOrderChange = function (socNetUserId, order_id, item_price, tid, callback, socNetTypeId, buyPrefix) {
         let product;
+        socNetTypeId = Valid.DBUINT(socNetTypeId);
+        socNetUserId = Valid.DBUINT(socNetUserId);
+        item_price = Valid.DBUINT(item_price);
+        order_id = Valid.DBUINT(order_id);
+        if (!socNetTypeId || !socNetUserId || !item_price || !order_id) {
+            Logs.log(buyPrefix + " tid:" + tid, Logs.LEVEL_ALERT, arguments);
+            return callback(vkErrorItemPriceNotFound);
+        }
         product = DataShop.getGoldProductByPrice(item_price);
         console.log(arguments);
         /** Существует ли такой товар */
@@ -170,7 +178,7 @@ LogicPayments = function () {
                 /** Проверка повторной обработки заказа. */
                 DataPayments.getByOrderId(order_id, function (order) {
                     if (order) {
-                        Logs.log(buyPrefix + " tid:" + tid + " order already exists", Logs.LEVEL_DETAIL, arguments, Logs.CHANNEL_VK_PAYMENTS);
+                        Logs.log(buyPrefix + " tid:" + tid + " order already exists", Logs.LEVEL_WARNING, arguments, Logs.CHANNEL_VK_PAYMENTS);
                         done();
                         //
                         return callback(vkErrorCommon);

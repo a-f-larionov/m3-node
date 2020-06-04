@@ -2,7 +2,7 @@ let WizardLevel23_1 = {
 
     init: function () {
         PBWizard.begin();
-        PBWizard.updateText('Взрывай камни рядом с красным пауком, что бы он убежал с поля.');
+        PBWizard.updateText('Взрывай камни рядом с красным пауком, чтобы он убежал с поля.');
     },
 
     onHideDialog: function () {

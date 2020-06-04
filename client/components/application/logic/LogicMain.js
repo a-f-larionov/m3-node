@@ -27,9 +27,18 @@ let LogicMain = (function () {
         PageController.showPage(PageMain);
 
         /** Проверка визарада начала игры */
-        LogicWizard.onAuthorizeSuccess();
+        let timerId = setInterval(function () {
+            if (PageBlockZPreloader.isLoaded()) {
+                clearInterval(timerId);
+                LogicWizard.onLoaded();
+                PageBlockZPreloader.onLoaded();
+            }
+        }, 10);
 
         if (prid) {
+            setTimeout(function () {
+                Sounds.loadSounds();
+            }, 2000);
             SAPILogs.clientLoaded(prid);
             prid = null;
         }

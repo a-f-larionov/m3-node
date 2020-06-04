@@ -17,7 +17,7 @@ let LogicWizard = function LogicWizard() {
     this.onHideDialog = dymmyFunc;
     this.onFieldSilent = dymmyFunc;
 
-    this.onAuthorizeSuccess = function () {
+    this.onLoaded = function () {
         if (LogicUser.getCurrent().nextPointId === 1) {
             self.start(WizardFirstStart_1);
         }

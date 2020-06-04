@@ -2,7 +2,7 @@ let WizardFirstStart_1 = {
 
     init: function () {
         PBWizard.begin();
-        PBWizard.updateText('Нажми на красный кружок, что бы начать играть.');
+        PBWizard.updateText('Нажми на красный кружок, чтобы начать играть.');
         PBWizard.showDialog(400, 360, 2);
         let pnt = DataPoints.getPointsCoords()[0];
         PBWizard.unlockByImg('w-circle.png',
@@ -71,7 +71,7 @@ let WizardFirstStart_4 = {
         PBWizard.begin();
         setTimeout(function () {
             PBWizard.updateText('У тебя получилось. Давай ещё!');
-            PBWizard.showDialog(210, 380, 2, 21);
+            PBWizard.showDialog(210, 380, 1, 21);
             PBWizard.showHint([{x: 3, y: 2}, {x: 3, y: 3}]);
             PBWizard.highlightCells([
                 {x: 2, y: 2, unlock: false},

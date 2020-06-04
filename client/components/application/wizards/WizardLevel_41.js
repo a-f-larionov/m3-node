@@ -27,7 +27,7 @@ let WizardLevel41_2 = {
 
     init: function () {
         PBWizard.begin();
-        PBWizard.updateText('Бочка ещё не улетела, взорви ряд камней что бы переместить бочку.');
+        PBWizard.updateText('Бочка ещё не улетела, взорви ряд камней чтобы переместить бочку.');
 
         PBWizard.showDialog(360, 390, 3);
         PBWizard.showHint([{x: 2, y: 5}, {x: 3, y: 5}]);

@@ -36,6 +36,7 @@ let animLightning = function () {
     let velocity = 0.4;
 
     this.init = function (p, orientationId) {
+        Sounds.play(Sounds.TYPE_LIGHTNING);
         dom = this.animDoms.pop();
         let lineData = Field.getVisibleLength(p, orientationId);
         dom.width = lineData.length * DataPoints.BLOCK_WIDTH;
@@ -106,6 +107,9 @@ let animHummerDestroy = function () {
     let frames = 12;
 
     this.init = function (p) {
+        setTimeout(function () {
+            Sounds.play(Sounds.TYPE_GEM_DESTROY);
+        }, 150);
         dom = this.animDoms.pop();
         dom.x = p.x * DataPoints.BLOCK_WIDTH
             - (Images.getWidth(imageUrl) - DataPoints.BLOCK_WIDTH) / 2;
@@ -266,6 +270,7 @@ let animShuffle = function () {
     let velocity = 20;
 
     this.init = function (x, y) {
+        Sounds.play(Sounds.TYPE_SHUFFLE);
         dom = this.animDoms.pop();
         dom.x = x - Images.getWidth('anim-shuffle-1.png') / 2;
         dom.y = y - Images.getHeight('anim-shuffle-1.png') / 2;

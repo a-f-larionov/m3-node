@@ -29,24 +29,24 @@ let PageBlockZPreloader = function PageBlockZPreloader() {
         showed = false;
     };
 
+    this.isLoaded = function () {
+        let isLoaded;
+
+        isLoaded = true;
+        isLoaded &= !!LogicUser.getCurrent();
+        isLoaded &= !!DataMap.getCurrent();
+        isLoaded &= !!LogicUser.getTopUsers();
+        isLoaded &= !!(DataMap.getCurrent() && LogicUser.getMapFriendIds(DataMap.getCurrent().id));
+        return isLoaded;
+    };
+
     this.redraw = function () {
-        let hidePreloader;
+        elPreloader.redraw();
+    };
 
-        hidePreloader = true;
-        hidePreloader &= !!LogicUser.getCurrent();
-        hidePreloader &= !!DataMap.getCurrent();
-        hidePreloader &= !!LogicUser.getTopUsers();
-        hidePreloader &= !!(DataMap.getCurrent() && LogicUser.getMapFriendIds(DataMap.getCurrent().id));
-
-        if (hidePreloader) {
-            console.log('hide');
-            elPreloader.hide();
-        } else {
-            console.log('show');
-            elPreloader.show();
-            elPreloader.redraw();
-        }
-    }
+    this.onLoaded = function () {
+        elPreloader.hide();
+    };
 };
 
 PageBlockZPreloader = new PageBlockZPreloader();

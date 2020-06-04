@@ -386,6 +386,7 @@ let PageBlockField = function PageBlockField() {
     objectScores[DataObjects.OBJECT_BOX] = 100;
 
     this.onDestroyThing = function (objectId, cell) {
+        console.log('destroy ', objectId)
         /** Goals */
         decreaseGoal(objectId, 1);
 
@@ -458,6 +459,7 @@ let PageBlockField = function PageBlockField() {
     this.beforeStuffUse = function () {
         switch (stuffMode) {
             case LogicStuff.STUFF_HUMMER:
+                Sounds.play(Sounds.TYPE_HUMMER_HIT);
                 SAPIStuff.usedHummer();
                 LogicStuff.usedHummer();
                 break;

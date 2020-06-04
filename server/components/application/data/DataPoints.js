@@ -507,7 +507,7 @@ DataPoints = function () {
                 "□□□□□□□",
                 "□□□□□□□",
                 "  □□□  ",
-            ], gems: [ /** WizardLevel_14 Взорви камни, что бы снять цепь.*/
+            ], gems: [ /** WizardLevel_14 Взорви камни, чтобы снять цепь.*/
                 "GBRPYPY",
                 "GPBRPBG",
 

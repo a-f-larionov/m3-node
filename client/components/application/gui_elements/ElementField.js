@@ -297,7 +297,7 @@ let ElementField = function () {
     let gemMouseDown = null;
 
     let onGemMouseDown = function (event) {
-        Sounds.play(Sounds.PATH_CHALK);
+        Sounds.play(Sounds.TYPE_GEM_TOUCH);
         gemMouseDown = pointFromEvent(event);
         // 1 - при mousedown - ждём перехода в соседнию
         // 2 - если перешли - вызываем onclick дважды

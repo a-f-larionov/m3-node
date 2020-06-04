@@ -241,6 +241,7 @@ let ElementButton = function () {
         if (!self.enabled) return;
         mouseStateDown = false;
         mouseStateFocused = false;
+        Sounds.play(Sounds.TYPE_BUTTON);
         self.redraw();
         return self.onClick.call(null, mouseEvent, dom);
     };

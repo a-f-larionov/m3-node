@@ -40,7 +40,7 @@ let PageBlockWizard = function PageBlockWizard() {
         canvas.style.display = 'none';
         cntx = canvas.getContext('2d');
 
-        cntx.showByImg = showByImg;
+        //cntx.showByImg = showByImg;
         cntx.unlockByImg = unlockByImg;
         cntx.highlightCells = highlightCells;
 
@@ -64,6 +64,13 @@ let PageBlockWizard = function PageBlockWizard() {
         /** On Click */
         canvas.onclick = function (event) {
             proccesEvent(event, LogicWizard.onClick)
+        };
+        /** On Click */
+        canvas.onmousedown = function (event) {
+            proccesEvent(event, LogicWizard.onMouseDown)
+        };
+        canvas.onmouseup = function (event) {
+            proccesEvent(event, LogicWizard.onMouseUp)
         };
         /** On Mouse Move */
         canvas.onmousemove = function (event) {
@@ -204,10 +211,10 @@ let PageBlockWizard = function PageBlockWizard() {
                 textOffsetY = 30;
                 break;
             case 2:
-                textOffsetY = 15;
+                textOffsetY = 15 + 3;
                 break;
             case 3:
-                textOffsetY = 2;
+                textOffsetY = 2 + 6;
                 break;
         }
         if (!lines) textOffsetY = lines * 15;
@@ -272,7 +279,7 @@ let PageBlockWizard = function PageBlockWizard() {
         });
     };
 
-    this.showByImg = showByImg;
+    //this.showByImg = showByImg;
     this.unlockByImg = unlockByImg;
     this.highlightCells = highlightCells;
 };

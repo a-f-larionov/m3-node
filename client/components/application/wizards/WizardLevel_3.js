@@ -29,7 +29,7 @@ let WizardLevel3_2 = {
         PBWizard.begin();
     },
     onFieldSilent: function () {
-        PBWizard.updateText('Выбери цвет, что бы убрать все камни этого цвета.');
+        PBWizard.updateText('Выбери цвет, чтобы убрать все камни этого цвета.');
         PBWizard.showDialog(230, 50, 2, 20);
         PBWizard.showHint([{x: 4, y: 2}, {x: 5, y: 2}]);
         PBWizard.highlightCells([

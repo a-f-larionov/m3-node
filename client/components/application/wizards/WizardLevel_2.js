@@ -5,9 +5,9 @@ let WizardLevel2_1 = {
         PBWizard.updateText('Собрав ряд из 4-ех камней, получишь камень с молнией.');
     },
 
-    onHideDialog: function (onStart) {
+    onHideDialog: function () {
         if (WizardLevel2_1.dialogCounter++ < 2) return;
-        PBWizard.showDialog(210, 400, 3, 20);
+        PBWizard.showDialog(210, 400, 2, 20);
         PBWizard.showHint([{x: 1, y: 3}, {x: 2, y: 3}]);
         PBWizard.draw(function (cntx) {
             cntx.highlightCells([
@@ -29,7 +29,7 @@ let WizardLevel2_2 = {
 
     init: function () {
         PBWizard.begin();
-        PBWizard.updateText('Взорви камень с молнией, что бы использовать её.');
+        PBWizard.updateText('Взорви камень с молнией, чтобы использовать её.');
         setTimeout(function () {
             PBWizard.showHint([{x: 2, y: 4}, {x: 3, y: 4}]);
             PBWizard.showDialog(230, 150, 2, 20);
