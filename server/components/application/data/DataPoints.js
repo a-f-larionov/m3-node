@@ -83,7 +83,7 @@ DataPoints = function () {
                 "RGBPPRGB",
                 "PRPPRPRG",
                 "RPPBGPGR",
-                "GPYPPYPG",
+                "GPYPGYPG",
                 "BYPGPPBB",
             ]
         }
@@ -507,19 +507,7 @@ DataPoints = function () {
                 "□□□□□□□",
                 "□□□□□□□",
                 "  □□□  ",
-            ], gems: [ /** WizardLevel_14 Взорви камни, чтобы снять цепь.*/
-                "GBRPYPY",
-                "GPBRPBG",
-
-                "GRGYGPG",
-                "BGRRPRR",
-                "YPYGPYB",
-                "YRPRYPP",
-                "PPBRBPY",
-                "GBGBGBG",
-                "GRPRYPG",
-            ],
-            special: [[
+            ], special: [[
                 "",
                 "",
 
@@ -572,6 +560,14 @@ DataPoints = function () {
                 "□□□□□□□□□",
                 "□□□□□□□□□ ",
                 "□□□□□□□□□",
+            ], gems: [ /** WizardLevel_15 Взорви камни, чтобы снять цепь.*/
+                "GRGYGPGRG",
+                "BGRRPRRGG",
+                "YPYGPYBBR",
+                "GGPRYPPRP",
+                "PPBPBPPBP",
+                "GBGBGBGBG",
+                "GBPRYPBYP",
             ],
             special: [[
                 "  β β β  ",
@@ -588,6 +584,9 @@ DataPoints = function () {
                 "",
                 "",
                 "╱  XXX  ╲",
+                "",
+                "  ╱╲ ╱╲",
+                "",
             ],
             ]
         }

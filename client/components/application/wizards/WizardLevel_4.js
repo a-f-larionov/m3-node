@@ -2,7 +2,7 @@ let WizardLevel_4_1 = {
 
     init: function () {
         PBWizard.begin();
-        PBWizard.updateText('Взорви камень, под которым есть золото.');
+        PBWizard.updateText('Взорви камни, под которым есть сокровища.');
     },
 
     onHideDialog: function () {
@@ -28,7 +28,7 @@ let WizardLevel4_2 = {
     },
 
     onFieldSilent: function () {
-        PBWizard.updateText('Собери еще золота!');
+        PBWizard.updateText('Собери еще сокровища!');
         PBWizard.showDialog(450, 250, 1, 20);
         PBWizard.showHint([{x: 0, y: 2}, {x: 1, y: 2}]);
         PBWizard.highlightCells([

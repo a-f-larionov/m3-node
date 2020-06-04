@@ -36,7 +36,7 @@ let DialogChestYouWin = function () {
         let sX;
         sX = Images.getWidth('window-2.png') / 2
             - ((chest.prizes.length) * 50) / 2
-            - (chest.prizes.length - 1) * 5 / 2;
+            - (chest.prizes.length - 1) * 25 / 2;
 
         chest.prizes.forEach(function (prize, i) {
             let img = imagesEls[i];
@@ -55,8 +55,6 @@ let DialogChestYouWin = function () {
             cnt.redraw();
             img.redraw();
         });
-        //imagesEls[i].hide();
-        //countersEls[i].hide();
 
         elText.redraw();
     };

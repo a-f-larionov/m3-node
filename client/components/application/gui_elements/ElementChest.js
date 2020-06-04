@@ -56,7 +56,7 @@ let ElementChest = function () {
         elPit = GUI.createDom(undefined, {width: self.width, height: self.height});
 
         elStar = GUI.createElement(ElementImage, {src: 'star-on.png'});
-        elTxt = GUI.createElement(ElementText, {width: 100, height: 14, fontSize: 14, bold: false});
+        elTxt = GUI.createElement(ElementText, {width: 100, height: 14, fontSize: 14, bold: true});
     };
 
     /**

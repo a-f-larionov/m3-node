@@ -758,6 +758,7 @@ let ElementField = function () {
 
             if (line.coords.length > 3) {
                 if (actGem && line.coords.length === 4) {
+                    Sounds.play(Sounds.TYPE_CREATE_LIGHTNING);
                     Field.setObject(actGem, actObjectId, line.orientation);
                 }
                 if (actGem && line.coords.length === 5) {

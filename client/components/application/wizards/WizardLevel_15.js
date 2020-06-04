@@ -1,4 +1,4 @@
-let WizardLevel14_1 = {
+let WizardLevel15_1 = {
 
     init: function () {
         PBWizard.begin();
@@ -6,14 +6,14 @@ let WizardLevel14_1 = {
     },
 
     onHideDialog: function () {
-        if (WizardLevel14_1.dialogCounter++ < 2) return;
-        PBWizard.showHint([{x: 2, y: 1}, {x: 2, y: 0}]);
+        if (WizardLevel15_1.dialogCounter++ < 2) return;
+        PBWizard.showHint([{x: 4, y: 1}, {x: 4, y: 0}]);
         PBWizard.showDialog(210, 400, 2, 20);
         PBWizard.highlightCells([
-            {x: 2, y: 0, unlock: true},
-            {x: 1, y: 1, unlock: false},
-            {x: 2, y: 1, unlock: true},
-            {x: 3, y: 1, unlock: false},
+            {x: 4, y: 4, unlock: true},
+            {x: 3, y: 5, unlock: false},
+            {x: 4, y: 5, unlock: true},
+            {x: 5, y: 5, unlock: false},
         ]);
     },
     onDestroyLine: function () {

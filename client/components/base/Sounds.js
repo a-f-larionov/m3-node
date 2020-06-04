@@ -28,13 +28,16 @@ let Sounds = function () {
     this.PATH_MAGIC_HUMMER_HIT_3 = '/sounds/hummer-hit-3.wav';
     this.PATH_MAGIC_HUMMER_HIT_4 = '/sounds/hummer-hit-4.wav';
     this.PATH_MAGIC_LIGHTNING_1 = '/sounds/woosh.wav';
+    //https://freesound.org/people/Sergenious/sounds/55823/
     this.PATH_MAGIC_LIGHTNING_2 = '/sounds/dicharge-1.wav';
     this.PATH_MAGIC_LIGHTNING_3 = '/sounds/dicharge-2.wav';
     this.PATH_MAGIC_LIGHTNING_4 = '/sounds/l-3.mp3';
     this.PATH_MAGIC_LIGHTNING_5 = '/sounds/l-4.mp3';
+    this.PATH_MAGIC_LIGHTNING_8 = '/sounds/dicharge-8.mp3';
     this.PATH_COLLECT_ITEM = '/sounds/collect-item.mp3';
     this.PATH_SUCCESS_1 = '/sounds/success.wav';
     this.PATH_SUCCESS_3 = '/sounds/success-3.wav';
+    //https://freesound.org/people/renatalmar/sounds/264981/
     this.PATH_SUCCESS_4 = '/sounds/success-4.mp3';
     this.PATH_SPELL_FIREBALL = '/sounds/spell-fireball.wav';
 
@@ -45,6 +48,7 @@ let Sounds = function () {
     this.TYPE_LIGHTNING = this.PATH_MAGIC_LIGHTNING_5;
     this.TYPE_GEM_TOUCH = this.PATH_CHALK_2;
     this.TYPE_BUTTON = this.PATH_BUTTON;
+    this.TYPE_CREATE_LIGHTNING = this.PATH_MAGIC_LIGHTNING_8;
 
     this.toggle = function () {
         if (self.enabled)

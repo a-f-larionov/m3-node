@@ -109,7 +109,7 @@ let DataMap = function () {
     };
 
     this.countStarsByMapId = function (mapId) {
-        let mapStars, user, pointUsersInfo, pointId, point, stars;
+        let mapStars, user, pointUsersInfo, pid, point, stars;
         if (!mapId) mapId = currentMapId;
 
         mapStars = 0;
@@ -120,17 +120,17 @@ let DataMap = function () {
 
         if (!pointUsersInfo) return 0;
         for (let number = 1; number <= DataMap.POINTS_PER_MAP; number++) {
-            pointId = DataMap.getPointIdFromPointNumber(number);
-            point = DataPoints.getById(pointId);
-            if (!point) return 0;
+            pid = DataMap.getPointIdFromPointNumber(number);
+            point = DataPoints.getById(pid);
+            if (!point) continue;
 
             stars = 0;
-            if (!pointUsersInfo[pointId]) continue;
-            if (!pointUsersInfo[pointId][user.id]) continue;
+            if (!pointUsersInfo[pid]) continue;
+            if (!pointUsersInfo[pid][user.id]) continue;
 
-            if (pointUsersInfo[pointId][user.id].score >= point.score1) stars = 1;
-            if (pointUsersInfo[pointId][user.id].score >= point.score2) stars = 2;
-            if (pointUsersInfo[pointId][user.id].score >= point.score3) stars = 3;
+            if (pointUsersInfo[pid][user.id] >= point.score1) stars = 1;
+            if (pointUsersInfo[pid][user.id] >= point.score2) stars = 2;
+            if (pointUsersInfo[pid][user.id] >= point.score3) stars = 3;
             mapStars += stars;
         }
         return mapStars;

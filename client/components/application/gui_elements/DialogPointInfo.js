@@ -61,9 +61,11 @@ let DialogPointInfo = function () {
                     self.showDialog(pointId);
                 } else {
                     /** Начать игру */
+                    //@todo ищи код ljklkjlkjkljkjlkjljlkjlk
                     SAPIUser.onStart();
                     PageBlockPanel.oneHealthHide = true;
                     DataPoints.setPlayedId(pointId);
+
                     PageController.showPage(PageField);
                 }
             },

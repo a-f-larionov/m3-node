@@ -235,7 +235,7 @@ let PageBlockMaps = function PageBlockMaps() {
             if (point.id > user.nextPointId) elPoint.stateId = ElementPoint.STATE_CLOSE;
 
             if (userPUS[pointId])
-                elPoint.userScore = userPUS[pointId][user.id] ? userPUS[pointId][user.id].score : 0;
+                elPoint.userScore = userPUS[pointId][user.id] ? userPUS[pointId][user.id] : 0;
             else
                 elPoint.userScore = 0;
 

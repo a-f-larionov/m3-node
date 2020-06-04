@@ -2,6 +2,8 @@ let DialogTurnLoose = function DialogTurnLoose() {
     let self = this;
     this.__proto__ = new Dialog();
 
+    let pointId;
+
     this.init = function () {
         this.__proto__.init.call(this);
         GUI.pushParent(self.dom);
@@ -42,17 +44,26 @@ let DialogTurnLoose = function DialogTurnLoose() {
                     self.showDialog(pointId);
                 } else {
                     /** Начать игру */
+                    PageController.showPage(PageMain);
+
+                    //@todo ищи код ljklkjlkjkljkjlkjljlkjlk
                     SAPIUser.onStart();
                     PageBlockPanel.oneHealthHide = true;
                     DataPoints.setPlayedId(DataPoints.getPlayedId());
-                    PageController.showPage(PageMain);
+
                     PageController.showPage(PageField);
                 }
             },
-            title: 'ИГРАТЬ'
+            title: 'ПОВТОРИТЬ'
         });
         el.show();
 
         GUI.popParent();
     };
+
+    this.showDialog = function (pId) {
+        pointId = pId;
+        this.setTitle('УРОВЕНЬ  ' + pointId);
+        this.__proto__.showDialog.call(this);
+    }
 };

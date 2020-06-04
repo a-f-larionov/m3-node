@@ -2,7 +2,7 @@ let WizardLevel12_1 = {
 
     init: function () {
         PBWizard.begin();
-        PBWizard.updateText('Собирай пауков, взрывая камни на которых они сидят.');
+        PBWizard.updateText('Собирай ежей, взрывая камни на которых они сидят.');
     },
 
     onHideDialog: function () {

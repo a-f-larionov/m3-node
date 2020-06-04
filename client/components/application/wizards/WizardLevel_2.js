@@ -29,7 +29,7 @@ let WizardLevel2_2 = {
 
     init: function () {
         PBWizard.begin();
-        PBWizard.updateText('Взорви камень с молнией, чтобы использовать её.');
+        PBWizard.updateText('Взорви камень с молнией, чтобы активировать её.');
         setTimeout(function () {
             PBWizard.showHint([{x: 2, y: 4}, {x: 3, y: 4}]);
             PBWizard.showDialog(230, 150, 2, 20);

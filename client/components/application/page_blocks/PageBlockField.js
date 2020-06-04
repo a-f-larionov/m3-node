@@ -386,7 +386,6 @@ let PageBlockField = function PageBlockField() {
     objectScores[DataObjects.OBJECT_BOX] = 100;
 
     this.onDestroyThing = function (objectId, cell) {
-        console.log('destroy ', objectId)
         /** Goals */
         decreaseGoal(objectId, 1);
 
@@ -421,7 +420,7 @@ let PageBlockField = function PageBlockField() {
             noMoreGoals = false;
             setTimeout(self.finishLevel, Config.OnIdle.animateInterval * 15);
         } else if (turns === 0) {
-            PBZDialogs.dialogTurnsLoose.showDialog();
+            PBZDialogs.dialogTurnsLoose.showDialog(DataPoints.getPlayedId());
         }
     };
 
