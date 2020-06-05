@@ -2,7 +2,7 @@ let WizardLevel_41_1 = {
 
     init: function () {
         PBWizard.begin();
-        PBWizard.updateText('Взорви камни и бочка упадет на блок.');
+        PBWizard.updateText('Собери кристаллы и камень упадет на дна.');
     },
 
     onHideDialog: function () {
@@ -27,7 +27,8 @@ let WizardLevel41_2 = {
 
     init: function () {
         PBWizard.begin();
-        PBWizard.updateText('Бочка ещё не улетела, взорви ряд камней чтобы переместить бочку.');
+        PBWizard.updateText('Камень ещё не достиг дня, ' +
+            'собери ряд кристаллов чтобы переместить камень.');
 
         PBWizard.showDialog(360, 390, 3);
         PBWizard.showHint([{x: 2, y: 5}, {x: 3, y: 5}]);
