@@ -728,6 +728,7 @@ DataPoints = function () {
                 "□□□□□□□",
                 "□□□□□□□ ",
                 "□□□□□□□",
+                "□□□□□□□",
             ],
             special: [[
                 "       ",
@@ -894,8 +895,7 @@ DataPoints = function () {
         id: 23, turns: 15, score1: 500, score2: 1000, score3: 1500,
         goals: [
             {id: DataObjects.OBJECT_ALPHA, count: 4},
-        ],
-        layers: {
+        ], layers: {
             mask: [
                 " □□□□□□□",
                 "□□□□□□□□□",
@@ -904,17 +904,14 @@ DataPoints = function () {
                 "□□□□□□□□□",
                 " □□□□□□□ ",
 
-            ],
-            // WIZARD
-            gems: [
+            ], gems: [           // WIZARD
                 "RGBBPYRPR",
                 "GRRGRBPYR",
-                "BBαRGRαPR",
+                "BBαRGPαPR",
                 "PRGBBRYRP",
                 "YPαRBGαBY",
                 "PPPYPRRGB",
-            ],
-            special: [[
+            ], special: [[
                 "         ",
                 "         ",
                 "         ",
@@ -927,7 +924,7 @@ DataPoints = function () {
     };
 
     wayPoints[24] = {
-        id: 24, turns: 20, score1: 500, score2: 2500, score3: 5500,
+        id: 24, turns: 20, score1: 500, score2: 1200, score3: 2500,
         goals: [
             {id: DataObjects.OBJECT_RED, count: 20},
         ],
@@ -954,7 +951,7 @@ DataPoints = function () {
             mask: [
                 "□□□   □□□",
                 "□□□   □□□",
-                "□□□   □□□",
+                "□□□□ □□□□",
                 "□□□□□□□□□",
                 "□□□□□□□□□",
                 "□□□□□□□□□",
@@ -970,9 +967,9 @@ DataPoints = function () {
                 "ββββ ββββ",
                 "■■■■■■■■■  ",
             ], [
-                "        ",
-                "        ",
-                "        ",
+                "",
+                "",
+                "",
                 "╱╲╱╲╱╲╱╲",
                 "",
                 "",
@@ -1026,7 +1023,7 @@ DataPoints = function () {
     };
 
     wayPoints[27] = {
-        id: 27, turns: 8, score1: 500, score2: 2500, score3: 5500,
+        id: 27, turns: 8, score1: 500, score2: 1200, score3: 1800,
         goals: [
             {id: DataObjects.OBJECT_BOX, count: 12},
         ],
@@ -1053,7 +1050,7 @@ DataPoints = function () {
     };
 
     wayPoints[28] = {
-        id: 28, turns: 18, score1: 500, score2: 2500, score3: 5500,
+        id: 28, turns: 18, score1: 500, score2: 1800, score3: 2200,
         goals: [
             {id: DataObjects.OBJECT_BOX, count: 10},
         ],
@@ -1108,29 +1105,37 @@ DataPoints = function () {
     };
 
     wayPoints[30] = {
-        id: 30, turns: 30, score1: 500, score2: 2500, score3: 5500,
+        id: 30, turns: 10, score1: 100, score2: 200, score3: 400,
         goals: [
             {id: DataObjects.OBJECT_BARREL, count: 2},
         ],
+        //WIZARD
         layers: {
             mask: [
-                "□□□□□□□□□",
-                "□□ □□□□□□",
-                "□□□□□□□□□",
-                "□□ □□□□□□",
-                "□□□□□□□□□",
-                "□□□□□□□□□",
-                "□□□□□□□□□",
+                "□□□□□□□□",
+                "□□□□□□□□",
+                "□□□□□□□□",
+                "□□□□□□□□",
+                "□□□□□□□□",
+
+            ],
+            gems: [
+                "PYRBGRBPY",
+                "GRBPYBRGP",
+                "RPGYPYBRP",
+                "PGPBPYPYG",
+                "GRPPYGBRP",
+                "RPGRBPYPP",
+                "BGPBPYGBR",
             ],
             special: [[
-                "ᥩᥩ■■□□□□□",
-                "□□ ■□□□□□",
-                "□□■■□□□□□",
-                "□□■■□□□□□",
-                "■■■■□□□□□",
-                "□□■■□□□□□",
-                "□□■■□□□□□",
-                /** α β γ ■ ╱ ╲ Ξ ᥩ ‖ */
+                "        ",
+                "  ᥩ  ᥩ  ",
+                "        ",
+                "        ",
+                "        ",
+                "        ",
+                //"* ╱ ╲ ■ □ ᥩ α β γ ",
             ],
             ]
         }
@@ -1175,37 +1180,28 @@ DataPoints = function () {
     };
 
     wayPoints[32] = {
-        id: 32, turns: 10, score1: 100, score2: 200, score3: 400,
+        id: 32, turns: 30, score1: 500, score2: 2500, score3: 5500,
         goals: [
             {id: DataObjects.OBJECT_BARREL, count: 2},
         ],
-        //WIZARD
         layers: {
             mask: [
-                "□□□□□□□□",
-                "□□□□□□□□",
-                "□□□□□□□□",
-                "□□□□□□□□",
-                "□□□□□□□□",
-
-            ],
-            gems: [
-                "PYRBGRBPY",
-                "GRBPYBRGP",
-                "RPGYPYBRP",
-                "PGPBPYPYG",
-                "GRPPYGBRP",
-                "RPGRBPYPP",
-                "BGPBPYGBR",
-            ],
-            special: [[
-                "        ",
-                "  ᥩ  ᥩ  ",
-                "        ",
-                "        ",
-                "        ",
-                "        ",
-                //"* ╱ ╲ ■ □ ᥩ α β γ ",
+                "□□□□□□□□□",
+                "□□ □□□□□□",
+                "□□□□□□□□□",
+                "□□ □□□□□□",
+                "□□□□□□□□□",
+                "□□□□□□□□□",
+                "□□□□□□□□□",
+            ], special: [[
+                "ᥩᥩ■■□□□□□",
+                "□□ ■□□□□□",
+                "□□■■□□□□□",
+                "□□■■□□□□□",
+                "■■■■□□□□□",
+                "□□■■□□□□□",
+                "□□■■□□□□□",
+                /** α β γ ■ ╱ ╲ Ξ ᥩ ‖ */
             ],
             ]
         }
@@ -1496,9 +1492,7 @@ DataPoints = function () {
                 "□□□□□□□□□",
                 "□□□□□□□□□",
                 "□□□□□□□□□",
-            ],
-            //WIZARD BLOCKS
-            gems: [
+            ], gems: [           //WIZARD BLOCKS
                 "RGBYPBGBP",
                 "GBYPBGBPY",
                 "YPYGRGRGB",

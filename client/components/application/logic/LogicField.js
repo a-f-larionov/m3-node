@@ -179,30 +179,23 @@ let LogicField = function () {
     };
 
     this.findLines = function () {
-        let line, lines, vlines, hlines;
-        lines = [];
+        let line, vlines, hlines;
         vlines = [];
         hlines = [];
         this.eachCell(function (x, y) {
 
             if (!self.lineCrossing(vlines, x, y)) {
                 line = self.findLine(x, y, DataObjects.WITH_LIGHTNING_VERTICAL);
-                if (line) {
-                    lines.push(line);
-                    vlines.push(line);
-                }
+                if (line) vlines.push(line);
             }
 
             if (!self.lineCrossing(hlines, x, y)) {
                 line = self.findLine(x, y, DataObjects.WITH_LIGHTNING_HORIZONTAL);
-                if (line) {
-                    lines.push(line);
-                    hlines.push(line);
-                }
+                if (line) hlines.push(line);
             }
         });
 
-        return lines;
+        return vlines.concat(hlines);
     };
 
     this.findLine = function (x, y, orientation) {
@@ -346,14 +339,12 @@ let LogicField = function () {
                 if (!n[y]) n[y] = [];
                 n[y].push(cell.withGold ? 'G' : ' ');
             });
-//            console.log(n);
             Field.shuffle(true);
             n = [];
             Field.eachCell(function (x, y, cell, object) {
                 if (!n[y]) n[y] = [];
                 n[y].push(cell.withGold ? 'G' : ' ');
             });
-  //          console.log(n);
         }
     };
 
@@ -378,11 +369,13 @@ let LogicField = function () {
     };
 
     this.isLinePossiblyDestroy = function (pA, pB) {
+        console.log(pA, pB);
         let lines, mayLineDestroy;
-        LogicField.exchangeObjects(pA, pB, -1);
+        LogicField.exchangeObjects(pA, pB, null);
         lines = LogicField.findLines();
+        console.log(lines);
         mayLineDestroy = LogicField.lineCrossing(lines, pA.x, pA.y) | LogicField.lineCrossing(lines, pB.x, pB.y);
-        LogicField.exchangeObjects(pA, pB, -1);
+        LogicField.exchangeObjects(pA, pB, null);
         return mayLineDestroy;
     };
 
@@ -457,8 +450,10 @@ let LogicField = function () {
                 let o1, o2;
                 o1 = c1.object;
                 o2 = c2.object;
-                if (c1.isVisible && o1.isCanMoved && !o1.isBarrel && o1.objectId !== DataObjects.OBJECT_SAND &&
-                    c2.isVisible && o2.isCanMoved && !o2.isBarrel && o2.objectId !== DataObjects.OBJECT_SAND) {
+                if (c1.isVisible && o1.isCanMoved && !o1.isBarrel && o1.objectId !== DataObjects.OBJECT_SAND && o1.objectId !== DataObjects.OBJECT_ALPHA
+                    &&
+                    c2.isVisible && o2.isCanMoved && !o2.isBarrel && o2.objectId !== DataObjects.OBJECT_SAND && o2.objectId !== DataObjects.OBJECT_ALPHA
+                ) {
                     Field.exchangeObjects(p1, p2, beforePlay)
                 }
             });
