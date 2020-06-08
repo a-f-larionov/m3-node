@@ -37,7 +37,10 @@ Profiler = function () {
     this.clear = function (prid) {
         let id;
         id = pridToId[prid];
+        if (!data[id]) return Logs.log("Profiler.stop(). if (!data[id]) { /*  This message. */ }",
+            Logs.LEVEL_WARNING, {prid: prid, id: id, stack: (new Error().stack)});
         //Logs.log("clear " + prid + ' ' + id, Logs.LEVEL_ALERT);
+
         delete data[id].stamps[prid];
         delete pridToId[prid];
     };
@@ -118,6 +121,8 @@ Profiler.ID_SAPIUSER_SEND_ME_USER_IDS_BY_SOC_NET = 102;
 Profiler.ID_SAPIUSER_ON_FINISH = 120;
 Profiler.ID_SAPIUSER_ON_START = 121;
 Profiler.ID_SAPIUSER_SEND_ME_SCORES = 130;
+Profiler.ID_SAPIUSER_SEND_ME_MAP_FRIENDS = 135;
+Profiler.ID_SAPIUSER_SEND_ME_TOP_USER_SCORES = 136;
 
 Profiler.ID_SEND_ME_TIME = 200;
 
@@ -125,12 +130,23 @@ Profiler.ID_SAPIMAP_SEND_ME_MAP_INFO = 300;
 Profiler.ID_SAPIMAP_SEND_ME_USERS_SCORE = 302;
 Profiler.ID_SAPIMAP_SEND_ME_USERS_TOP = 303;
 Profiler.ID_SAPIMAP_SEND_ME_POINT_TOP_SCORE = 304;
-Profiler.ID_SAPIMAP_OPEN_CHEST = 305;
+Profiler.ID_SAPIMAP_SEND_ME_POINT_TOP_SCORE_CACHED = 305;
+Profiler.ID_SAPIMAP_OPEN_CHEST = 306;
 
 Profiler.ID_SAPISTUFF_SEND_ME_STUFF = 400;
+Profiler.ID_SAPISTUFF_USED_HUMMER = 410;
+Profiler.ID_SAPISTUFF_USED_SHUFFLE = 411;
+Profiler.ID_SAPISTUFF_USED_LIGHTNING = 412;
+
+Profiler.ID_SAPISTUFF_BUY_HUMMER = 450;
+Profiler.ID_SAPISTUFF_BUY_SHUFFLE = 451;
+Profiler.ID_SAPISTUFF_BUY_LIGHTNING = 452;
+Profiler.ID_SAPISTUFF_BUY_HEALTH = 453;
 
 Profiler.ID_CLIENT_LOAD_VK = 500;
 Profiler.ID_CLIENT_LOAD_STANDALONE = 501;
+
+Profiler.ID_SAPILOGS_LOG = 601;
 
 
 Profiler.titles = [];
@@ -144,16 +160,30 @@ Profiler.titles[Profiler.ID_SAPIUSER_SEND_ME_USER_IDS_BY_SOC_NET] = 'SAPIUSER.se
 Profiler.titles[Profiler.ID_SAPIUSER_ON_FINISH] = 'SAPIUSER.onFinish';
 Profiler.titles[Profiler.ID_SAPIUSER_ON_START] = 'SAPIUSER.onStart';
 Profiler.titles[Profiler.ID_SAPIUSER_SEND_ME_SCORES] = 'SAPIUSER.sendMeScores';
+Profiler.titles[Profiler.ID_SAPIUSER_SEND_ME_MAP_FRIENDS] = 'SAPIUSER.sendMeMapFriends';
 
 Profiler.titles[Profiler.ID_SEND_ME_TIME] = 'Send-Me-Time';
 
 Profiler.titles[Profiler.ID_SAPIMAP_SEND_ME_MAP_INFO] = 'SAPIMap.sendMeMapInfo';
 Profiler.titles[Profiler.ID_SAPIMAP_SEND_ME_USERS_SCORE] = 'SAPIMap.sendMeUsersScore';
 Profiler.titles[Profiler.ID_SAPIMAP_SEND_ME_USERS_TOP] = 'SAPIMap.sendMeUsersTop';
+Profiler.titles[Profiler.ID_SAPIUSER_SEND_ME_TOP_USER_SCORES] = 'SAPIMap.sendMeTopUsers';
 Profiler.titles[Profiler.ID_SAPIMAP_SEND_ME_POINT_TOP_SCORE] = 'SAPIMap.sendMePointTopScore';
+Profiler.titles[Profiler.ID_SAPIMAP_SEND_ME_POINT_TOP_SCORE_CACHED] = 'SAPIMap.sendMePointTopScore(cached)';
 Profiler.titles[Profiler.ID_SAPIMAP_OPEN_CHEST] = 'SAPIMap.openChest';
 
 Profiler.titles[Profiler.ID_SAPISTUFF_SEND_ME_STUFF] = 'SAPIStuff.sendMeStuff';
 
+Profiler.titles[Profiler.ID_SAPISTUFF_USED_HUMMER] = 'SAPIStuff.usedHummer';
+Profiler.titles[Profiler.ID_SAPISTUFF_USED_SHUFFLE] = 'SAPIStuff.usedShuffle';
+Profiler.titles[Profiler.ID_SAPISTUFF_USED_LIGHTNING] = 'SAPIStuff.usedLightning';
+
+Profiler.titles[Profiler.ID_SAPISTUFF_BUY_HUMMER] = 'SAPIStuff.buyHummer';
+Profiler.titles[Profiler.ID_SAPISTUFF_BUY_SHUFFLE] = 'SAPIStuff.buyShuffle';
+Profiler.titles[Profiler.ID_SAPISTUFF_BUY_LIGHTNING] = 'SAPIStuff.buyLightning';
+Profiler.titles[Profiler.ID_SAPISTUFF_BUY_HEALTH] = 'SAPIStuff.buyHealth';
+
 Profiler.titles[Profiler.ID_CLIENT_LOAD_VK] = 'load-client-vk';
 Profiler.titles[Profiler.ID_CLIENT_LOAD_STANDALONE] = 'load-client-standalone';
+
+Profiler.titles[Profiler.ID_SAPILOGS_LOG] = 'SAPILogs.log';

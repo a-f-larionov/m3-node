@@ -97,8 +97,10 @@ SAPIUser = function () {
         if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
 
+        let prid = pStart(Profiler.ID_SAPIUSER_SEND_ME_MAP_FRIENDS);
         DataUser.getMapFriendIds(mapId, fids, function (fids) {
             CAPIUser.gotMapFriendIds(cntx.user.id, mapId, fids);
+            pFinish(prid);
         });
     };
 
@@ -113,7 +115,7 @@ SAPIUser = function () {
         if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
         //if (!limit) return Logs.log(arguments.callee.name + " limit not found", Logs.LEVEL_WARNING, cntx);
-        console.log(socIds);
+
         socIds = Valid.DBUINTArray(socIds);
         // @Todo validate userIds
         if (!socIds) return Logs.log(arguments.callee.name + " wrong params", Logs.LEVEL_WARNING, arguments);
@@ -134,12 +136,15 @@ SAPIUser = function () {
         if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
 
+        //@todo profiler
         //@todo cache it at day
         if (!Valid.DBUINTArray(fids)) return Logs.log("invalid data", Logs.LEVEL_ALERT, fids);
 
+        let prid = pStart(Profiler.ID_SAPIUSER_SEND_ME_TOP_USER_SCORES);
+
         DataUser.getList(fids, function (users) {
-            //@todo
             CAPIUser.gotTopUsers(cntx.user.id, users);
+            pFinish(prid);
         }, ' ORDER BY nextPointId DESC LIMIT ' + DataCross.topUsersLimit);
     };
 

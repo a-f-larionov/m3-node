@@ -41,7 +41,18 @@
     let openClient = function () {
 
         let wnd = window.open('https://local.host/service/client-standalone?soc-net-user-id=' + Math.random() * 123456789);
-        closeOnLoad(wnd);
+
+        wnd.addEventListener('DOMContentLoaded', function () {
+            let intervalId;
+            intervalId = setInterval(function () {
+
+                if (wnd.prid === null) {
+                    wnd.close();
+                    clearInterval(intervalId);
+                }
+
+            }, 10);
+        });
     };
 
     let buyAll = function () {
@@ -56,9 +67,9 @@
         let wnd5 = window.open(SocNetStandalone.getBuyOrderUrl(DataShop.gold[Math.floor(Math.random(3))].votes));
         closeOnLoad(wnd5);
 
-        SAPIStuff.buyHummer(Math.ceil(Math.random() * 3));
-        SAPIStuff.buyLightning(Math.ceil(Math.random() * 3));
-        SAPIStuff.buyShuffle(Math.ceil(Math.random() * 3));
+        SAPIStuff.buyHummer(Math.floor(Math.random() * 3));
+        SAPIStuff.buyLightning(Math.floor(Math.random() * 3));
+        SAPIStuff.buyShuffle(Math.floor(Math.random() * 3));
 
         SAPIStuff.buyHealth();
     };
@@ -89,8 +100,15 @@
         SAPIStuff.usedLightning();
         SAPIStuff.usedShuffle();
     };
-    openGame();
-    openClient();
-    buyAll();
-    playOne();
+
+    for (let i = 0; i < 10; i++) {
+
+        setTimeout(function () {
+            openGame();
+            openClient();
+            buyAll();
+            playOne();
+        }, 100 * i);
+    }
+
 })();

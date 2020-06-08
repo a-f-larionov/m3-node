@@ -15,10 +15,6 @@ TopScoreCache = function TopScoreCache() {
             if (!rows) return callback(undefined);
             callback(rows[0]);
         });
-        if (cache[userId + '-' + pointId]) {
-            callback(cache[userId + '-' + pointId]);
-        } else
-            callback(undefined);
     };
 
     this.set = function (userId, pointId, out) {

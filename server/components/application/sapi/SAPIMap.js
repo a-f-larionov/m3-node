@@ -30,7 +30,8 @@ SAPIMap = function () {
         if (!(pointId = Valid.DBUINT(pointId))) return Logs.log(arguments.callee.name + " not valid pointId", Logs.LEVEL_ALERT, arguments);
         if (!(fids = Valid.DBUINTArray(fids))) return Logs.log(arguments.callee.name + "not valid fids", Logs.LEVEL_ALERT, arguments);
 
-        let prid = pStart(Profiler.ID_SAPIMAP_SEND_ME_POINT_TOP_SCORE);
+        let pridNoCached = pStart(Profiler.ID_SAPIMAP_SEND_ME_POINT_TOP_SCORE);
+        let pridCached = pStart(Profiler.ID_SAPIMAP_SEND_ME_POINT_TOP_SCORE_CACHED);
 
         TopScoreCache.get(cntx.user.id, pointId, function (data) {
             if (!data) {
@@ -46,12 +47,15 @@ SAPIMap = function () {
                         };
                         TopScoreCache.set(cntx.user.id, pointId, out);
                         CAPIMap.gotPointTopScore(cntx.user.id, pointId, out);
-                        pFinish(prid);
+                        pFinish(pridNoCached);
+                        Profiler.clear(pridCached);
                     });
 
                 });
             } else {
-                CAPIMap.gotPointTopScore(cntx.user.id, pointId, data)
+                CAPIMap.gotPointTopScore(cntx.user.id, pointId, data);
+                pFinish(pridCached);
+                Profiler.clear(pridNoCached);
             }
         });
     };

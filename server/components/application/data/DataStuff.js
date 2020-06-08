@@ -45,7 +45,7 @@ DataStuff = function () {
         });
     };
 
-    let incrementStuff = function (fieldName, userId, quantity, tid) {
+    let incrementStuff = function (fieldName, userId, quantity, tid, callback) {
         LOCK.acquire(Keys.stuff(userId, fieldName), function (done) {
             setTimeout(done, 5 * 60 * 1000);
             DB.query("UPDATE " + tableName + "" +
@@ -54,6 +54,8 @@ DataStuff = function () {
                 Logs.log("vk_stuff tid:" + tid + " uid:"
                     + userId + " " + fieldName + " +" + quantity + " " + data.affectedRows + " " + data.changedRows,
                     Logs.LEVEL_NOTIFY, undefined, Logs.CHANNEL_VK_STUFF);
+
+                if (callback) callback();
                 done();
             });
         });
@@ -112,16 +114,16 @@ DataStuff = function () {
         incrementStuff(DataStuff.STUFF_GOLD, userId, quantity, tid);
     };
 
-    this.giveAHummer = function (userId, quantity, tid) {
-        incrementStuff(DataStuff.STUFF_HUMMER, userId, quantity, tid);
+    this.giveAHummer = function (userId, quantity, tid, callback) {
+        incrementStuff(DataStuff.STUFF_HUMMER, userId, quantity, tid, callback);
     };
 
-    this.giveAShuffle = function (userId, quantity, tid) {
-        incrementStuff(DataStuff.STUFF_SHUFFLE, userId, quantity, tid);
+    this.giveAShuffle = function (userId, quantity, tid, callback) {
+        incrementStuff(DataStuff.STUFF_SHUFFLE, userId, quantity, tid, callback);
     };
 
-    this.giveALightning = function (userId, quantity, tid) {
-        incrementStuff(DataStuff.STUFF_LIGTNING, userId, quantity, tid);
+    this.giveALightning = function (userId, quantity, tid, callback) {
+        incrementStuff(DataStuff.STUFF_LIGTNING, userId, quantity, tid, callback);
     };
 };
 

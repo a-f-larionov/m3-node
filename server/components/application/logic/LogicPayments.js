@@ -159,7 +159,6 @@ LogicPayments = function () {
             return callback(vkErrorItemPriceNotFound);
         }
         product = DataShop.getGoldProductByPrice(item_price);
-        console.log(arguments);
         /** Существует ли такой товар */
         if (!product) {
             Logs.log(buyPrefix + " tid:" + tid + " product not found", Logs.LEVEL_ERROR, arguments, Logs.CHANNEL_VK_PAYMENTS);
