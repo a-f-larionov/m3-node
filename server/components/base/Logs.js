@@ -35,7 +35,7 @@ let Logs = function () {
         if (!level) level = Logs.LEVEL_DETAIL;
 
         /** Если уровень лога ниже уровня срабатывания ничего не делаем. */
-        if (level < trigger_level) return;
+        if (!channel && level < trigger_level) return;
         /** Сформируем сообщение лога. */
         date = new Date();
         /** Тут мы получим "01-01-2014 15:55:55" */

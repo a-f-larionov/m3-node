@@ -155,7 +155,7 @@ LogicPayments = function () {
         item_price = Valid.DBUINT(item_price);
         order_id = Valid.DBUINT(order_id);
         if (!socNetTypeId || !socNetUserId || !item_price || !order_id) {
-            Logs.log(buyPrefix + " tid:" + tid, Logs.LEVEL_ALERT, arguments);
+            Logs.log(buyPrefix + " tid:" + tid + "CANCEL no data", Logs.LEVEL_ALERT, arguments);
             return callback(vkErrorItemPriceNotFound);
         }
         product = DataShop.getGoldProductByPrice(item_price);

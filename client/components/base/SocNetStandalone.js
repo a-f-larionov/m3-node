@@ -36,7 +36,7 @@ let SocNetStandalone = function () {
     };
 
     let friends = [];
-    for (let i = 0; i < 10000; i++) {
+    for (let i = 1; i < 100; i++) {
         friends.push(444400000 + i);
         friends.push(i);
     }
@@ -84,12 +84,16 @@ let SocNetStandalone = function () {
         let url;
         let qty = confirm("Купить " + product.quantity + "монет за " + votes + " стенделонов?");
         if (qty) {
-            url = "https://local.host/service/standalone_buy?" +
-                "receiver_id=" + LogicUser.getCurrent().socNetUserId + "&" +
-                "order_id=" + LogicTimeClient.getTime() + "&" +
-                "item_price=" + product.votes;
+            url = this.getBuyOrderUrl(product.votes);
             window.open(url);
         }
+    };
+
+    this.getBuyOrderUrl = function (votes) {
+        return "https://local.host/service/standalone_buy?" +
+            "receiver_id=" + LogicUser.getCurrent().socNetUserId + "&" +
+            "order_id=" + (LogicTimeClient.getMTime()-1591622077720) + (Math.floor(Math.random()*123)) + "&" +
+            "item_price=" + votes;
     };
 
     this.post = function () {

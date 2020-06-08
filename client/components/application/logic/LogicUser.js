@@ -177,6 +177,7 @@ let LogicUser = function () {
     };
 
     this.setMapFriendIds = function (mapId, fids) {
+        if (!mapFriendIds[mapId] || mapFriendIds[mapId].complete) return Logs.log("hm", Logs.LEVEL_WARNING, arguments);
         let toLoadIds = [];
         fids.forEach(function (id) {
             if (!pendingIds[id]) {
@@ -291,7 +292,7 @@ let LogicUser = function () {
             DataPoints.loadScores([pid], uids);
             LogicUser.getList(uids);
         }
-
+        if (!pointTopScore[pid]) pointTopScore[pid] = {top: {}};
         if (pointTopScore[pid].top.pos < top.pos) {
             pointTopScore[pid].top = top;
         }

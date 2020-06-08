@@ -113,9 +113,10 @@ SAPIUser = function () {
         if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
         //if (!limit) return Logs.log(arguments.callee.name + " limit not found", Logs.LEVEL_WARNING, cntx);
+        console.log(socIds);
         socIds = Valid.DBUINTArray(socIds);
         // @Todo validate userIds
-        if (!socIds) return Logs.log(arguments.callee.name + " wrong params", Logs.LEVEL_WARNING, {cntx, userIds: socIds});
+        if (!socIds) return Logs.log(arguments.callee.name + " wrong params", Logs.LEVEL_WARNING, arguments);
 
         let prid = pStart(Profiler.ID_SAPIUSER_SEND_ME_USER_IDS_BY_SOC_NET);
         //@todo add check ids and length no more 1000

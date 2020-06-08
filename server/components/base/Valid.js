@@ -20,7 +20,7 @@ let Valid = {
         let out;
         out = true;
         arr.forEach(function (val) {
-            out |= !!Valid.DBUINT(val);
+            out &= !!Valid.DBUINT(val);
         });
         if (!out) return false;
 

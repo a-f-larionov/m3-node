@@ -2,7 +2,7 @@ let WizardLevel51_1 = {
 
     init: function () {
         PBWizard.begin();
-        PBWizard.updateText('Соедини ряд чтобы взорвать желтого паука.');
+        PBWizard.updateText('Собери ряд кристаллов, чтобы собрать монетки.');
     },
 
     onHideDialog: function () {

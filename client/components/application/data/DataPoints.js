@@ -160,6 +160,7 @@ let DataPoints = function () {
 
     this.setPointUserScore = function (pid, uid, score) {
         if (!pointUserScore[pid]) pointUserScore[pid] = {};
+        if (!pointUserScore[pid][uid]) pointUserScore[pid][uid] = {};
         pointUserScore[pid][uid].score = score;
         LogicUser.flushPointTopScore(pid, uid);
     };
