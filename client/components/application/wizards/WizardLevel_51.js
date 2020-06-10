@@ -8,7 +8,7 @@ let WizardLevel51_1 = {
     onHideDialog: function () {
         if (WizardLevel51_1.dialogCounter++ < 2) return;
         PBWizard.showHint([{x: 5, y: 2}, {x: 5, y: 2}]);
-        PBWizard.showDialog(340, 390, 2);
+        PBWizard.showDialog(340, 390 - 6, 2, null, 558, 154);
         PBWizard.highlightCells([
             {x: 2, y: 2, unlock: false},
             {x: 3, y: 2, unlock: false},

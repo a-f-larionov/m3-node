@@ -142,7 +142,6 @@ let LogicField = function () {
     this.exchangeObjects = function (a, b, onlyObjectId) {
         let tmp;
         if (self.isOut(a) || self.isOut(b)) return false;
-        //console.log('exchange', onlyObjectId);
         if (onlyObjectId) {
             tmp = cells[b.x][b.y].object.objectId;
             cells[b.x][b.y].object.objectId = cells[a.x][a.y].object.objectId;
@@ -369,11 +368,9 @@ let LogicField = function () {
     };
 
     this.isLinePossiblyDestroy = function (pA, pB) {
-        console.log(pA, pB);
         let lines, mayLineDestroy;
         LogicField.exchangeObjects(pA, pB, null);
         lines = LogicField.findLines();
-        console.log(lines);
         mayLineDestroy = LogicField.lineCrossing(lines, pA.x, pA.y) | LogicField.lineCrossing(lines, pB.x, pB.y);
         LogicField.exchangeObjects(pA, pB, null);
         return mayLineDestroy;

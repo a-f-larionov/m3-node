@@ -172,12 +172,12 @@ SAPIUser = function () {
      * @param cntx {Object}
      * @returns {undefined}
      */
-    this.onFinish = function (cntx) {
+    this.healthBack = function (cntx) {
         if (!cntx.isAuthorized) return Logs.log(arguments.callee.name + " not authorized", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
 
-        let prid = pStart(Profiler.ID_SAPIUSER_ON_FINISH);
+        let prid = pStart(Profiler.ID_SAPIUSER_HEALTH_BACK);
 
         /** Возвращаем жизнь */
         LOCK.acquire(Keys.health(cntx.user.id), function (done) {
@@ -200,12 +200,12 @@ SAPIUser = function () {
         });
     };
 
-    this.onStart = function (cntx) {
+    this.healthDown = function (cntx) {
         if (!cntx.isAuthorized) return Logs.log(arguments.callee.name + " not authorized", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
 
-        let prid = pStart(Profiler.ID_SAPIUSER_ON_START);
+        let prid = pStart(Profiler.ID_SAPIUSER_HEALTH_DOWN);
 
         LOCK.acquire(Keys.health(cntx.user.id), function (done) {
             //@todo auto LOCK timeout(with keys!)

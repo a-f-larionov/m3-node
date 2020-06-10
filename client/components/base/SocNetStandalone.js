@@ -92,7 +92,7 @@ let SocNetStandalone = function () {
     this.getBuyOrderUrl = function (votes) {
         return "https://local.host/service/standalone_buy?" +
             "receiver_id=" + LogicUser.getCurrent().socNetUserId + "&" +
-            "order_id=" + (LogicTimeClient.getMTime()-1591622077720) + (Math.floor(Math.random()*123)) + "&" +
+            "order_id=" + ((LogicTimeClient.getMTime()) + (Math.floor(Math.random() * 123))) % 400000 + "&" +
             "item_price=" + votes;
     };
 

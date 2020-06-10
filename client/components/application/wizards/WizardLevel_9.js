@@ -2,7 +2,7 @@ let WizardLevel9_1 = {
 
     init: function () {
         PBWizard.begin();
-        PBWizard.updateText('Взорви камни рядом с ящиками.');
+        PBWizard.updateText('Собери кристаллы рядом с ящиками.');
     },
 
     onHideDialog: function () {

@@ -13,7 +13,7 @@ let DialogChestYouWin = function () {
         this.__proto__.init.call(this);
         GUI.pushParent(self.dom);
 
-        this.elHeader.setText('Ты нашел!');
+        this.elHeader.setText('Ты нашёл!');
 
         elText = GUI.createElement(ElementText, {x: 10, y: 80, width: 480, height: 50});
         elText.setText('Собраны все звезды! \r\nТы открыл сундук и нашел там:');
@@ -45,9 +45,9 @@ let DialogChestYouWin = function () {
             cnt.setText('x' + prize.count);
 
 
-            img.x = sX + (i * 50) + (i) * 5;
+            img.x = sX + (i * 50) + (i) * 5 + 5;
 
-            cnt.x = img.x;
+            cnt.x = img.x + 5;
 
             img.show();
             cnt.show();

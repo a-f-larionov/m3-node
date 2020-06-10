@@ -2,7 +2,7 @@ let WizardLevel15_1 = {
 
     init: function () {
         PBWizard.begin();
-        PBWizard.updateText('Взорви камни, чтобы снять цепь.');
+        PBWizard.updateText('Собирай кристаллы, чтобы снять цепь.');
     },
 
     onHideDialog: function () {

@@ -26,6 +26,7 @@ let PageBlockWizard = function PageBlockWizard() {
 
     let elDialog = null;
     let elText = null;
+    let elWCat = null;
 
     let dialogBorder = 16;
 
@@ -86,11 +87,9 @@ let PageBlockWizard = function PageBlockWizard() {
         //canvas.onmouseover = proccesEvent;
         //canvas.onmousemove = proccesEvent;
 
-        elDialog = GUI.createElement(ElementImage, {
-            x: 400, y: 360, src: 'w-dialog.png'
-        });
+        elDialog = GUI.createElement(ElementImage, {src: 'w-dialog.png'});
         elDialog.dom.__dom.style.zIndex = 20000;
-        elDialog.hide();
+        //elDialog.hide();
 
         elText = GUI.createElement(ElementText, {
             x: 400 + dialogBorder, y: 360 + dialogBorder,
@@ -99,7 +98,10 @@ let PageBlockWizard = function PageBlockWizard() {
             alignCenter: true, zIndex: 20001,
             text: 'text'
         });
-        elText.hide();
+        //elText.hide();
+
+        elWCat = GUI.createElement(ElementImage, {src: 'w-cat.png'});
+        elWCat.dom.__dom.style.zIndex = 20001;
     };
 
     let drawBackground = function () {
@@ -157,6 +159,7 @@ let PageBlockWizard = function PageBlockWizard() {
             el.redraw();
         });
         elDialog.redraw();
+        elWCat.redraw();
         elText.redraw();
     };
 
@@ -176,6 +179,7 @@ let PageBlockWizard = function PageBlockWizard() {
         canvas.isActive = false;
         canvas.style.display = 'none';
         elDialog.hide();
+        elWCat.hide();
         elText.hide();
         PageBlockField.getElementField().unlockHint();
         clearInterval(hintIntervalId);
@@ -196,12 +200,14 @@ let PageBlockWizard = function PageBlockWizard() {
         }, Config.OnIdle.second * 1.5);
     };
 
-    this.updateText = function (text) {
+    let wCatX = 0;
+    this.updateText = function (text, wCatXNew) {
         elText.text = text;
+        wCatX = wCatXNew;
         self.redraw();
     };
 
-    this.showDialog = function (x, y, lines, fontSize) {
+    this.showDialog = function (x, y, lines, fontSize, wCatX, wCatY) {
         let textOffsetY;
         if (!x) x = 400;
         if (!y) y = 360;
@@ -221,10 +227,17 @@ let PageBlockWizard = function PageBlockWizard() {
         if (!fontSize) fontSize = '';
         elDialog.x = x;
         elDialog.y = y;
+        elWCat.x = x + 210;
+        elWCat.y = y - 232;
+        elWCat.x = 568;
+        elWCat.y = 257;
+        if (wCatX) elWCat.x = wCatX;
+        if (wCatY) elWCat.y = wCatY;
         elText.x = x + dialogBorder;
         elText.y = y + dialogBorder + textOffsetY;
         //elText.fontSize = fontSize;
         elDialog.show();
+        elWCat.show();
         elText.show();
         self.redraw();
     };
@@ -232,6 +245,7 @@ let PageBlockWizard = function PageBlockWizard() {
     this.hideDialog = function () {
         elDialog.hide();
         elText.hide();
+        elWCat.hide();
     };
 
     this.draw = function (callback) {

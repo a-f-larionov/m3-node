@@ -31,13 +31,13 @@ let LogicChests = function () {
         chestC = LogicChests.getStarsByNumber(3);
 
         number = 0;
-        if ((oldMapStars < chestA && chestA === newMapStars) || forceChest === 1) {
+        if ((oldMapStars < chestA && chestA >= newMapStars) || forceChest === 1) {
             number = 1;
         }
-        if ((oldMapStars < chestB && chestB === newMapStars) || forceChest === 2) {
+        if ((oldMapStars < chestB && chestB >= newMapStars) || forceChest === 2) {
             number = 2;
         }
-        if ((oldMapStars < chestC && chestC === newMapStars) || forceChest === 3) {
+        if ((oldMapStars < chestC && chestC >= newMapStars) || forceChest === 3) {
             number = 3;
         }
         if (number) {

@@ -2,13 +2,13 @@ let WizardLevel_41_1 = {
 
     init: function () {
         PBWizard.begin();
-        PBWizard.updateText('Собери кристаллы и камень упадет на дна.');
+        PBWizard.updateText('Собери кристаллы и камень упадет на дно.');
     },
 
     onHideDialog: function () {
         if (WizardLevel_41_1.dialogCounter++ < 2) return;
         PBWizard.showHint([{x: 1, y: 4}, {x: 2, y: 4}]);
-        PBWizard.showDialog(340, 390, 2);
+        PBWizard.showDialog(340, 390 - 6, 2, null, 328, 148);
         PBWizard.highlightCells([
             {x: 2, y: 2, unlock: false},
             {x: 2, y: 3, unlock: false},
@@ -27,10 +27,10 @@ let WizardLevel41_2 = {
 
     init: function () {
         PBWizard.begin();
-        PBWizard.updateText('Камень ещё не достиг дня, ' +
+        PBWizard.updateText('Камень ещё не достиг дна, ' +
             'собери ряд кристаллов чтобы переместить камень.');
 
-        PBWizard.showDialog(360, 390, 3);
+        PBWizard.showDialog(365, 390 - 6, 3, null, 348, 148);
         PBWizard.showHint([{x: 2, y: 5}, {x: 3, y: 5}]);
 
         PBWizard.highlightCells([

@@ -47,7 +47,7 @@ let DialogTurnLoose = function DialogTurnLoose() {
                     PageController.showPage(PageMain);
 
                     //@todo ищи код ljklkjlkjkljkjlkjljlkjlk
-                    SAPIUser.onStart();
+                    SAPIUser.healthDown();
                     PageBlockPanel.oneHealthHide = true;
                     DataPoints.setPlayedId(DataPoints.getPlayedId());
 

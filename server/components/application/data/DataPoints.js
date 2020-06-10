@@ -123,7 +123,7 @@ DataPoints = function () {
     };
 
     wayPoints[4] = {
-        id: 4, turns: 10, score1: 500, score2: 1500, score3: 2000,
+        id: 4, turns: 10, score1: 600, score2: 1500, score3: 2000,
         goals: [
             {id: DataObjects.OBJECT_GOLD, count: 4}
         ],
@@ -196,7 +196,7 @@ DataPoints = function () {
     };
 
     wayPoints[6] = {
-        id: 6, turns: 15, score1: 500, score2: 1000, score3: 2000,
+        id: 6, turns: 15, score1: 600, score2: 1000, score3: 2000,
         goals: [
             {id: DataObjects.OBJECT_GOLD, count: 6}
         ],
@@ -560,7 +560,7 @@ DataPoints = function () {
                 "□□□□□□□□□",
                 "□□□□□□□□□ ",
                 "□□□□□□□□□",
-            ], gems: [ /** WizardLevel_15 Взорви камни, чтобы снять цепь.*/
+            ], gems: [ /** WizardLevel_15 Собери кристаллы, чтобы снять цепь.*/
                 "GRGYGPGRG",
                 "BGRRPRRGG",
                 "YPYGPYBBR",
@@ -1686,7 +1686,7 @@ DataPoints = function () {
     };
 
     wayPoints[47] = {
-        id: 47, turns: 40, score1: 500, score2: 2500, score3: 3300,
+        id: 47, turns: 40, score1: 600, score2: 2500, score3: 3300,
         goals: [
             {id: DataObjects.OBJECT_SAND, count: 9},
             {id: DataObjects.OBJECT_GREEN, count: 25},
@@ -1716,7 +1716,7 @@ DataPoints = function () {
     };
 
     wayPoints[48] = {
-        id: 48, turns: 20, score1: 500, score2: 2500, score3: 1000,
+        id: 48, turns: 20, score1: 600, score2: 2500, score3: 1000,
         goals: [
             {id: DataObjects.OBJECT_RED, count: 18},
             {id: DataObjects.OBJECT_BLUE, count: 18},
@@ -1745,7 +1745,7 @@ DataPoints = function () {
     };
 
     wayPoints[49] = {
-        id: 49, turns: 30, score1: 500, score2: 2500, score3: 1200,
+        id: 49, turns: 30, score1: 600, score2: 2500, score3: 1200,
         goals: [
             {id: DataObjects.OBJECT_PURPLE, count: 20},
             {id: DataObjects.OBJECT_YELLOW, count: 20},
@@ -1776,7 +1776,7 @@ DataPoints = function () {
     };
 
     wayPoints[50] = {
-        id: 50, turns: 30, score1: 500, score2: 2500, score3: 4100,
+        id: 50, turns: 30, score1: 600, score2: 2500, score3: 4100,
         goals: [
             {id: DataObjects.OBJECT_SAND, count: 8},
             {id: DataObjects.OBJECT_BETA, count: 12},
@@ -1822,7 +1822,7 @@ DataPoints = function () {
     };
 
     wayPoints[51] = {
-        id: 51, turns: 10, score1: 500, score2: 2500, score3: 500,
+        id: 51, turns: 10, score1: 600, score2: 2500, score3: 500,
         goals: [
             {id: DataObjects.OBJECT_GAMMA, count: 4},
         ],
@@ -1855,7 +1855,7 @@ DataPoints = function () {
     };
 
     wayPoints[52] = {
-        id: 52, turns: 40, score1: 500, score2: 2500, score3: 3100,
+        id: 52, turns: 40, score1: 600, score2: 2500, score3: 3100,
         goals: [
             {id: DataObjects.OBJECT_GAMMA, count: 14},
             {id: DataObjects.OBJECT_BARREL, count: 2},

@@ -21,6 +21,8 @@ let PageBlockField = function PageBlockField() {
     let elStar2 = null;
     let elStar3 = null;
 
+    let elProgressBar = null;
+
     let elTurns = null;
     let elLevel = null;
 
@@ -125,6 +127,14 @@ let PageBlockField = function PageBlockField() {
             /** Звезда 3 */
             elStar3 = GUI.createDom(undefined, {x: oX + 15 + 27 * 2, y: oY + 62});
             self.elements.push(elStar3);
+            elProgressBar = GUI.createDom(null, {
+                x: oX + 21, y: oY + 59,
+                width: 71, height: 0,
+                //border: '2px solid ' + 'rgba(200, 200, 0, 0.7)',
+                border: '2px solid ' + 'rgba(68, 68, 0, 0.7)',
+                borderRadius: '8px'
+            });
+            self.elements.push(elProgressBar);
         }
 
         /**
@@ -363,6 +373,11 @@ let PageBlockField = function PageBlockField() {
         }
         buttonReloadField.redraw();
         buttonChangeSpeed.redraw();
+
+        elProgressBar.width = Math.min(71,
+            71 / 100 *
+            (100 / (DataPoints.getById(DataPoints.getPlayedId()).score3) * score)
+        );
     };
 
     let noMoreGoals;
@@ -429,7 +444,6 @@ let PageBlockField = function PageBlockField() {
         stuffMode = null;
         elementField.setStuffMode(stuffMode);
 
-        Logs.log("finishLevel()", Logs.LEVEL_DETAIL);
         user = LogicUser.getCurrent();
         pointId = DataPoints.getPlayedId();
         lastScore = DataPoints.getScore(pointId);
@@ -437,13 +451,12 @@ let PageBlockField = function PageBlockField() {
             user.nextPointId = pointId + 1;
             LogicUser.updateUserInfo(user);
         }
-        console.log(score, lastScore);
         if (score > lastScore || lastScore === undefined) {
             chestId = LogicChests.onFinish(pointId, lastScore, score);
             SAPIMap.onFinish(pointId, score, chestId);
             DataPoints.setPointUserScore(pointId, user.id, score);
         }
-        SAPIUser.onFinish();
+        SAPIUser.healthBack();
         PBZDialogs.dialogGoalsReached.showDialog(pointId, score);
         PageController.redraw();
     };

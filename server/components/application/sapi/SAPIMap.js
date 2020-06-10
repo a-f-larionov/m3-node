@@ -72,7 +72,7 @@ SAPIMap = function () {
         if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
 
-        let prid = pStart(Profiler.ID_SAPIUSER_ON_FINISH);
+        let prid = pStart(Profiler.ID_SAPIUSER_HEALTH_BACK);
         let tid = LogicTid.getOne();
         /** Обновляем номер точки и очки на ней */
         DataPoints.updateUsersPoints(cntx.userId, pointId, score, function () {
@@ -80,6 +80,7 @@ SAPIMap = function () {
             TopScoreCache.flush(cntx.user.id, pointId);
 
             DataUser.getById(cntx.userId, function (user) {
+                //@todo only by one up
                 if (user.nextPointId < pointId + 1) {
 
                     DataUser.updateNextPointId(cntx.userId, pointId + 1, function () {

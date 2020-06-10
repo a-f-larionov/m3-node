@@ -92,9 +92,9 @@
             [getUid(), getUid(), getUid()]
         );
 
-        SAPIUser.onStart();
+        SAPIUser.healthDown();
         SAPIMap.onFinish(getPid(), Math.random() * 10000, Math.ceil(getPid() / 3))
-        SAPIUser.onFinish();
+        SAPIUser.healthBack();
 
         SAPIStuff.usedHummer();
         SAPIStuff.usedLightning();

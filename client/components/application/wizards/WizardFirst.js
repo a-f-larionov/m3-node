@@ -3,7 +3,7 @@ let WizardFirstStart_1 = {
     init: function () {
         PBWizard.begin();
         PBWizard.updateText('Нажми на красный кружок, чтобы начать играть.');
-        PBWizard.showDialog(400, 360, 2);
+        PBWizard.showDialog(400, 360, 2, null, 618, 123);
         let pnt = DataPoints.getPointsCoords()[0];
         PBWizard.unlockByImg('w-circle.png',
             pnt.x - Images.getWidth('w-circle.png') / 2
@@ -31,7 +31,7 @@ let WizardFirstStart_2 = {
         WizardFirstStart_2.dialogCounter++;
         if (WizardFirstStart_2.dialogCounter > 1) return;
         PBWizard.updateText('Нажми кнопку играть.');
-        PBWizard.showDialog(400, 380, 1);
+        PBWizard.showDialog(400, 380, 1, null, 618, 143);
         PBWizard.unlockByImg('w-button.png',
             390 - Images.getWidth('w-button.png') / 2,
             80 + 240 + 8,
@@ -51,8 +51,8 @@ let WizardFirstStart_3 = {
     },
     onHideDialog: function (onStart) {
         if (this.dialogCounter++ < 3) return;
-        PBWizard.updateText('Поменяй соседние камни местами, чтобы собрать камни красного цвета.');
-        PBWizard.showDialog(210, 380, 3);
+        PBWizard.updateText('Поменяй соседние кристаллы местами, чтобы собрать кристаллы красного цвета.');
+        PBWizard.showDialog(210, 380, 3, null, 477);
         PBWizard.showHint([{x: 1, y: 0}, {x: 2, y: 0}]);
         PBWizard.highlightCells([
             {x: 1, y: 0, unlock: true},
@@ -71,7 +71,7 @@ let WizardFirstStart_4 = {
         PBWizard.begin();
         setTimeout(function () {
             PBWizard.updateText('У тебя получилось. Давай ещё!');
-            PBWizard.showDialog(210, 380, 1, 21);
+            PBWizard.showDialog(210, 380, 1, 21, 486);
             PBWizard.showHint([{x: 3, y: 2}, {x: 3, y: 3}]);
             PBWizard.highlightCells([
                 {x: 2, y: 2, unlock: false},
