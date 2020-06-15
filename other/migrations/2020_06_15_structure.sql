@@ -52,23 +52,6 @@ CREATE TABLE `payments` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `profiling`
---
-
-DROP TABLE IF EXISTS `profiling`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `profiling` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `datetime` int(11) NOT NULL,
-  `profileId` int(11) NOT NULL,
-  `sumTime` int(11) NOT NULL,
-  `count` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Table structure for table `users`
 --
 
