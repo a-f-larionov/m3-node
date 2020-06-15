@@ -168,6 +168,10 @@ let LogicUser = function () {
         if (!mapFriendIds[mapId].loading && (mapFriendIds[mapId].loading = true)) {
             chunks = chunkIt(getFriendIds());
             mapFriendIds[mapId].chunksCount = chunks.length;
+            if (chunks.length === 0) {
+                mapFriendIds[mapId].ids = [];
+                mapFriendIds[mapId].complete = true;
+            }
             chunks.forEach(function (chunk) {
                 SAPIUser.sendMeMapFriends(mapId, chunk);
             });
@@ -204,6 +208,10 @@ let LogicUser = function () {
         //@todo only panel, sorted by score
         if (!this.getTopUsers.loading && (this.getTopUsers.loading = true)) {
             chunks = chunkIt(getFriendIds());
+            if (chunks.length === 0) {
+                topUsers = [];
+                this.getTopUsers.complete = true;
+            }
             this.getTopUsers.chunksCount = chunks.length;
             chunks.forEach(function (chunk) {
                 SAPIUser.sendMeTopUsers(chunk);
@@ -246,14 +254,21 @@ let LogicUser = function () {
             SocNet.getFriendIds(function (ids) {
                 chunks = chunkIt(ids);
                 getFriendIds.chunksCount = chunks.length;
+                /** И такое может быть. (это друзья играющие в тоже приложение) */
+                if (chunks.length === 0) {
+                    getFriendIds.chunksCount = 1;
+                    CAPIUser.gotFriendsIds({}, []);
+                }
                 chunks.forEach(function (chunk) {
-                    SAPIUser.sendMeUserIdsBySocNet(chunk);
+                    SAPIUser.sendMeFriendIdsBySocNet(chunk);
                 });
             });
         }
         if (!getFriendIds.complete) return null;
         return friendIds;
     };
+
+    this.getFriendIds = getFriendIds;
 
     this.loadFriendIds = function (chunkIds) {
         getFriendIds.chunksCount--;

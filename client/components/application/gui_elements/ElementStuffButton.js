@@ -184,7 +184,7 @@ let ElementStuffButton = function () {
             dom.pointer = GUI.POINTER_ARROW;
             dom.opacity = 0.5;
         }
-        counter.x = self.x + 65 - 4;
+        counter.x = self.x + 65 - 5;
         counter.y = self.y + 22;
         point.x = self.x + 65 - 20;
         point.y = self.y + 22 - 15;

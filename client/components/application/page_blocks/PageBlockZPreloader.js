@@ -36,7 +36,9 @@ let PageBlockZPreloader = function PageBlockZPreloader() {
         isLoaded &= !!LogicUser.getCurrent();
         isLoaded &= !!DataMap.getCurrent();
         isLoaded &= !!LogicUser.getTopUsers();
-        isLoaded &= !!(DataMap.getCurrent() && LogicUser.getMapFriendIds(DataMap.getCurrent().id));
+        isLoaded &= !!(DataMap.getCurrent() &&
+            LogicUser.getMapFriendIds(DataMap.getCurrent().id)
+        );
         return isLoaded;
     };
 

@@ -1255,7 +1255,7 @@ DataPoints = function () {
         id: 34, turns: 28 - 12, score1: 500, score2: 2500, score3: 2700,
         goals: [
             {id: DataObjects.OBJECT_BETA, count: 10},
-            {id: DataObjects.OBJECT_ALPHA, count: 5},
+            {id: DataObjects.OBJECT_ALPHA, count: 4},
         ],
         layers: {
             mask: [
@@ -1264,13 +1264,13 @@ DataPoints = function () {
                 "□□□□□□□□□",
                 "□□□□□□□□□",
                 "□□□□ □□□□",
-                "□□□□□□□□□",
+                " □□□□□□□ ",
 
             ],
             special: [[
                 "  βββββ  ",
                 "         ",
-                "  ααααα  ",
+                "  αα αα  ",
                 "         ",
                 "         ",
                 "  βββββ  ",

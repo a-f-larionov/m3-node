@@ -42,7 +42,11 @@ let SocNetStandalone = function () {
     }
 
     this.getFriendIds = function (callback) {
-        callback(friends);
+        if (true) {
+            callback([]);
+        } else {
+            callback(friends);
+        }
     };
 
     this.getUserInfo = function (id, callback) {

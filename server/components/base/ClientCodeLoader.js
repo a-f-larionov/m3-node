@@ -192,7 +192,7 @@ ClientCodeLoader = function () {
             "<html>" +
             "<head>" +
             "<script type='text/javascript' src='//vk.com/js/api/openapi.js?116'></script>" +
-            "<script>VK.init({apiId: " + Config.SocNet.VK.appId + ", onlyWidgets: true});</script>" +
+            "<script>VK.init({apiId: " + Config.SocNet.VK.appId[1] + ", onlyWidgets: true});</script>" +
             "</head>" +
             "<body style='margin:0px;'>" +
             "<div id='vk_comments'></div>" +
@@ -201,7 +201,7 @@ ClientCodeLoader = function () {
             "height: " + (Config.VKWidgetComments.height).toString() + "," +
             "width: " + (Config.VKWidgetComments.width - 50 + 33).toString() + "," +
             "attach: '*'," +
-            "pageUrl: 'http://vk.com/app" + Config.SocNet.VK.appId + "'});" +
+            "pageUrl: 'http://vk.com/app" + Config.SocNet.VK.appId[1] + "'});" +
             "</script>" +
             "</body>" +
             "</html>";

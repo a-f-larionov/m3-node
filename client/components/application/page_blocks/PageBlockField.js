@@ -195,7 +195,7 @@ let PageBlockField = function PageBlockField() {
         });
         self.elements.push(el);
 
-        /** Кнопка обновить поле, для админов */
+        /** Кнопка обновить поле, для админов\adminov */
         buttonReloadField = GUI.createElement(ElementButton, {
             x: 312, y: 5, width: 25, height: 25,
             srcRest: 'button-reload-field-rest.png',
@@ -296,8 +296,10 @@ let PageBlockField = function PageBlockField() {
             || LogicUser.getCurrent().id === 1
             || LogicUser.getCurrent().socNetUserId === 1
         ) {
-            buttonReloadField.show();
-            buttonChangeSpeed.show();
+            if (LogicUser.getCurrent().id !== 4) {
+                buttonReloadField.show();
+                buttonChangeSpeed.show();
+            }
         }
     };
 

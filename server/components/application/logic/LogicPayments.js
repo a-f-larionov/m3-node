@@ -126,12 +126,12 @@ LogicPayments = function () {
         notification_type = params.notification_type;
 
         /** Проверка id приложения */
-        if (app_id !== Config.SocNet.VK.appId) {
+        if (Config.SocNet.VK.appId.indexOf(app_id) === -1) {
             Logs.log(buyPrefix + " tid:" + tid + " Не верный appId", Logs.LEVEL_ERROR, params, Logs.CHANNEL_VK_PAYMENTS);
             return callback(vkErrorCommon);
         }
         /** Проверка сигнатуры */
-        if (sig !== self.calcVKSign(params)) {
+        if (self.checkVKSign(sig, params)) {
             Logs.log(buyPrefix + " tid:" + tid + " Не верная сигнатура подписи", Logs.LEVEL_ERROR, params, Logs.CHANNEL_VK_PAYMENTS);
             return callback(vkErrorSign);
         }
@@ -206,7 +206,12 @@ LogicPayments = function () {
         });
     };
 
-    this.calcVKSign = function (params) {
+    this.checkVKSign = function (sig, params) {
+        return (sig === self.calcVKSign(params, 0)) ||
+            (sig === self.calcVKSign(params, 1));
+    };
+
+    this.calcVKSign = function (params, i) {
         let keys, str;
         keys = [];
         for (let name in params) {
@@ -218,7 +223,7 @@ LogicPayments = function () {
         keys.forEach(function (name) {
             str += name + '=' + params[name];
         });
-        str += Config.SocNet.VK.secretKey;
+        str += Config.SocNet.VK.secretKey[i];
         return MD5(str);
     };
 };

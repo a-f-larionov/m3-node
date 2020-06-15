@@ -110,14 +110,13 @@ SAPIUser = function () {
      * @param cntx {Object}
      * @param socIds
      */
-    this.sendMeUserIdsBySocNet = function (cntx, socIds) {
+    this.sendMeFriendIdsBySocNet = function (cntx, socIds) {
         if (!cntx.isAuthorized) return Logs.log(arguments.callee.name + " not authorized", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
         //if (!limit) return Logs.log(arguments.callee.name + " limit not found", Logs.LEVEL_WARNING, cntx);
 
         socIds = Valid.DBUINTArray(socIds);
-        // @Todo validate userIds
         if (!socIds) return Logs.log(arguments.callee.name + " wrong params", Logs.LEVEL_WARNING, arguments);
 
         let prid = pStart(Profiler.ID_SAPIUSER_SEND_ME_USER_IDS_BY_SOC_NET);

@@ -65,11 +65,18 @@ SocNetVK = function () {
     this.checkAuth = function (socNetUserId, authParams) {
         let generatedAuthKey;
         /*	auth_key = md5(app_id+'_'+viewer_id+'_'+app_secret); */
-        generatedAuthKey = MD5(authParams.appId + '_' + socNetUserId + '_' + Config.SocNet.VK.secretKey);
-        if (generatedAuthKey !== authParams.authKey) {
+        if (
+            (self.calcSign(socNetUserId, authParams, 0) !== authParams.authKey) &&
+            (self.calcSign(socNetUserId, authParams, 1) !== authParams.authKey)
+        ) {
             Logs.log("auth key mismatch, generated:" + generatedAuthKey + " given:" + authParams.authKey);
+            return false;
         }
-        return generatedAuthKey === authParams.authKey;
+        return true;
+    };
+
+    this.calcSign = function (socNetUserId, authParams, i) {
+        return MD5(authParams.appId + '_' + socNetUserId + '_' + Config.SocNet.VK.secretKey[i]);
     };
 
     /**
