@@ -76,6 +76,9 @@ process.on('exit', function () {
  */
 process.on('uncaughtException', function (err) {
 
+    if (typeof Logs === 'undefined') {
+        console.log(err);
+    }
     Logs.log("!!! ERROR HAPPENDZ !!!", Logs.LEVEL_ERROR, err, Logs.CHANNEL_TELEGRAM);
 
     if (err.code === 'ECONNRESET') {
@@ -156,6 +159,10 @@ serverDecrypt = function (str) {
         .join('');
 };
 
+/**
+ *
+ * @param message
+ */
 telegramSent = function (message) {
     let HTTPS = require('https');
     let URL = require('url');
@@ -168,12 +175,21 @@ telegramSent = function (message) {
      * отправить сообщение https://api.telegram.org/bot[BOT_API_KEY]/sendMessage?chat_id=[MY_CHANNEL_NAME]&text=[MY_MESSAGE_TEXT]
      */
     function exec(message) {
+        /**
+         * -1001210466099 - tri_base_log_local
+         * -1001416055228 - tri_base_log_prod
+         */
         let req, agent, endpoint, options;
-        agent = new HttpsProxyAgent('http://82.119.170.106:8080');
-        endpoint = "https://api.telegram.org/bot1194574646:AAFn2QK8b_9gR-h6FI-M6a4DCeuGmkDgMro/sendMessage?chat_id=@tri_base_log&text="
-            + message;
+        endpoint = "https://api.telegram.org/" +
+            "bot1194574646:AAFn2QK8b_9gR-h6FI-M6a4DCeuGmkDgMro" +
+            "/sendMessage?chat_id=" + Config.Telegramm.chatId +
+            "&text=" + message;
         options = URL.parse(endpoint);
-        options.agent = agent;
+
+        if (Config.Telegramm.agent) {
+            agent = new HttpsProxyAgent(Config.Telegramm.agent);
+            options.agent = agent;
+        }
 
         req = HTTPS.get(options, function (res) {
             res.statusCode;

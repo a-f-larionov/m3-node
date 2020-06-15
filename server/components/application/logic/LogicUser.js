@@ -111,7 +111,7 @@ LogicUser = function () {
         Logs.log("Auth+", Logs.LEVEL_NOTIFY, user.socNetUserId, Logs.CHANNEL_TELEGRAM);
 
         userAddConn(user, cntx);
-        DataUser.updateLastLogin(user.id);
+        DataUser.updateLastLogin(user.id,cntx);
         CAPIUser.authorizeSuccess(user.id, user);
         Profiler.finish(prid);
     };

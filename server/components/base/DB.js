@@ -50,7 +50,8 @@ DB = function () {
             user: Config.DB.username,
             password: Config.DB.password,
             database: Config.DB.database,
-            charset: Config.DB.charset
+            charset: Config.DB.charset,
+            insecureAuth: true
         };
         connection = MYSQL.createConnection(connectionData);
         connection.connect(function (err) {

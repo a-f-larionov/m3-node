@@ -126,7 +126,7 @@ LogicPayments = function () {
         notification_type = params.notification_type;
 
         /** Проверка id приложения */
-        if (Config.SocNet.VK.appId.indexOf(app_id) === -1) {
+        if (Config.SocNet.VK.appId !== app_id) {
             Logs.log(buyPrefix + " tid:" + tid + " Не верный appId", Logs.LEVEL_ERROR, params, Logs.CHANNEL_VK_PAYMENTS);
             return callback(vkErrorCommon);
         }

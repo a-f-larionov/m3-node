@@ -1,11 +1,11 @@
 # Project Tri_Base 
 
-Project Tri_Base - it is my first Match Three game!
+Project Tri_Base - it is my first Match Three Game!
 And it is my first commercial project!
-Awesome project - I know! :)
+Awesome project - I know it! :)
 
 Projects use it:
- https://vk.com/app6221265
+ https://vk.com/app7506736
 
 If you want to collaborate or something else, please send me message via:
 email: a.f.larionov@gmail.com ;
@@ -33,14 +33,16 @@ vkontakte: https://vk.com/a.f.larionov
 
 # Setup server
 
-Ubuntu
+Ubuntu( Xenial xerus, Bionic Beaver, Focal Fossa )
 
     apt update
     apt upgrade
+    
 MySql
 
     apt install mysql-server
     mysql_secure_installation
+    
 Nginx
 
     apt install nginx
@@ -54,6 +56,9 @@ NodeJs
 Nginx
  
  @see other/daemon.files/nginx_sites-enabled/tri_base.conf
+ 
+ ln -s /etc/nginx/sites-available/tri-base.conf /etc/nginx/sites-enabled/
+ 
 Mysql
 
     CREATE USER 'tri_base'@'%' IDENTIFIED BY 'tri_base';
@@ -61,8 +66,13 @@ Mysql
     FLUSH PRIVILEGES;
 
 NodeJs
+
     cd server/
     npm install
+    
+PNGQUANT
+
+    apt install pngquant
     
 Rename server/config.{hostname}.{projectfolder}.js
 Config Database access
@@ -85,4 +95,4 @@ sudo ln -s /etc/nginx/sites-available/tri-base.conf /etc/nginx/sites-enabled/tri
 nginx -t # for test
 systemctl restart nginx
 
-here nginx_sites-enabled - is a /etc/nginx/sites-enabled/
+here, folder nginx_sites-enabled - is a /etc/nginx/sites-enabled/

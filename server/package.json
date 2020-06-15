@@ -8,6 +8,8 @@
     "mysql": "*",
     "spritesmith": "*",
     "uglify-js": "*",
+    "uglify-es": "*",
+    "https-proxy-agent": "*",
     "websocket": "*",
     "lock": "*",
     "locks": "*",

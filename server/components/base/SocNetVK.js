@@ -63,20 +63,16 @@ SocNetVK = function () {
      * @returns {boolean} результат аутентификации.
      */
     this.checkAuth = function (socNetUserId, authParams) {
-        let generatedAuthKey;
         /*	auth_key = md5(app_id+'_'+viewer_id+'_'+app_secret); */
-        if (
-            (self.calcSign(socNetUserId, authParams, 0) !== authParams.authKey) &&
-            (self.calcSign(socNetUserId, authParams, 1) !== authParams.authKey)
-        ) {
-            Logs.log("auth key mismatch, generated:" + generatedAuthKey + " given:" + authParams.authKey);
+        if (self.calcSign(socNetUserId, authParams) !== authParams.authKey) {
+            Logs.log("auth key mismatch, generated: ...  given:" + authParams.authKey, Logs.LEVEL_WARNING);
             return false;
         }
         return true;
     };
 
-    this.calcSign = function (socNetUserId, authParams, i) {
-        return MD5(authParams.appId + '_' + socNetUserId + '_' + Config.SocNet.VK.secretKey[i]);
+    this.calcSign = function (socNetUserId, authParams) {
+        return MD5(authParams.appId + '_' + socNetUserId + '_' + Config.SocNet.VK.secretKey);
     };
 
     /**
@@ -137,7 +133,7 @@ SocNetVK = function () {
      * @see http://vk.com/dev/oauth_gettoken
      */
     this.oAuthorization = function (callback) {
-        let url, options, req;
+        let url, options, req, host;
 
         url = "/access_token?client_id=" + Config.SocNet.VK.appId + "&client_secret=" + Config.SocNet.VK.secretKey + "&v=5.28&grant_type=client_credentials";
         host = 'oauth.vk.com';

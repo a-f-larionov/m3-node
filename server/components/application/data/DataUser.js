@@ -13,11 +13,14 @@ DataUser = function () {
     let autoIncrementValue = null;
 
     this.init = function (afterInitCallback) {
-        DB.query("SELECT `AUTO_INCREMENT` as autoIncrement FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '" + Config.DB.database + "' AND TABLE_NAME   = '" + tableName + "';", function (rows) {
-            autoIncrementValue = rows[0].autoIncrement;
-            Logs.log("users.autoincrementId:" + autoIncrementValue, Logs.LEVEL_DETAIL);
-            afterInitCallback();
-        });
+        DB.query("SELECT MAX(id) as maxId FROM users",
+
+            function (rows) {
+                autoIncrementValue = rows[0].maxId + 1;
+                if (autoIncrementValue === null) autoIncrementValue = 1;
+                Logs.log("users.autoincrementId:" + autoIncrementValue, Logs.LEVEL_NOTIFY, rows);
+                afterInitCallback();
+            });
     };
 
     /**
@@ -126,7 +129,13 @@ DataUser = function () {
         DataPoints.updateUsersPoints(user.id, 0, 0);
         DB.insert(tableName, user, function (result) {
             if (result.insertId !== user.id) {
-                Logs.log("DataUser.createFromSocNet. result.insertId != user.id", Logs.LEVEL_FATAL_ERROR);
+                Logs.log("DataUser.createFromSocNet. result.insertId != user.id",
+                    Logs.LEVEL_FATAL_ERROR, {
+                        user: user,
+                        autoIncrementValue: autoIncrementValue,
+                        result: result
+                    }
+                );
             }
             delete waitForCreateBySocNet[socNetUserId];
         });

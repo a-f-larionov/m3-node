@@ -192,7 +192,7 @@ ClientCodeLoader = function () {
             "<html>" +
             "<head>" +
             "<script type='text/javascript' src='//vk.com/js/api/openapi.js?116'></script>" +
-            "<script>VK.init({apiId: " + Config.SocNet.VK.appId[1] + ", onlyWidgets: true});</script>" +
+            "<script>VK.init({apiId: " + Config.SocNet.VK.appId + ", onlyWidgets: true});</script>" +
             "</head>" +
             "<body style='margin:0px;'>" +
             "<div id='vk_comments'></div>" +
@@ -201,7 +201,7 @@ ClientCodeLoader = function () {
             "height: " + (Config.VKWidgetComments.height).toString() + "," +
             "width: " + (Config.VKWidgetComments.width - 50 + 33).toString() + "," +
             "attach: '*'," +
-            "pageUrl: 'http://vk.com/app" + Config.SocNet.VK.appId[1] + "'});" +
+            "pageUrl: 'http://vk.com/app" + Config.SocNet.VK.appId + "'});" +
             "</script>" +
             "</body>" +
             "</html>";
@@ -215,8 +215,11 @@ ClientCodeLoader = function () {
         callback('<pre>' + "Reload Client Code executed!" + Date.now() + '</pre>');
     };
 
+
+    let time = Date.now().toString();
+
     let getTimeKey = function () {
-        return Config.Project.develop ? "" : "?t=" + Date.now().toString();
+        return Config.Project.develop ? "" : "?t=" + time;
     };
 
     let getClientHTML = function (socNetCode) {
@@ -551,7 +554,7 @@ ClientCodeLoader = function () {
             spriteMap = result;
 
             let sTime = mtime();
-            Logs.log('Pngquant begin', Logs.LEVEL_ALERT);
+            Logs.log('Pngquant begin. Sprite size:' + FS.statSync("../public/images/sprite.png")['size'], Logs.LEVEL_ALERT);
             if (Config.Project.usePngquant) {
                 cp.exec(
                     "cd ../public/images/ && pngquant *.png  --ext '.png' --force --verbose  --speed 1",

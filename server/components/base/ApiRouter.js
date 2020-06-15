@@ -90,12 +90,15 @@ let ApiRouter = new (function ApiRouter() {
         for (let i in onDisconnectCallbacks) {
             onDisconnectCallbacks[i].call(self, connections[id]);
         }
+        let count = 0;
+        for (let i in connections) count++;
+        Logs.log("Connection close: id=" + id + " count:" + count + " userId:" + connections[id].userId,
+            Logs.LEVEL_WARNING);
         delete connections[id];
         //@todo не очень это выглядиты(да  и на сервере такой штуки нет)
         prid = null;
-        let count = 0;
+        count = 0;
         for (let i in connections) count++;
-        Logs.log("connection close: id=" + id + " count:" + count, Logs.LEVEL_WARNING);
         if (CONST_IS_SERVER_SIDE && count === 0) {
             setTimeout(function () {
                 let count = 0;
