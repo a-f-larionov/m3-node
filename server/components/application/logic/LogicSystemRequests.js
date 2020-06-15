@@ -3,7 +3,12 @@ LogicSystemRequests = function () {
     this.getOnline = function (callback) {
         let ids = LogicUser.getOnlineUserIds();
         DataUser.getList(ids, function (list) {
-            callback(JSON.stringify(list));
+            callback(JSON.stringify(
+                {
+                    ids: ids,
+                    list: list
+                }
+            ));
         });
     };
 

@@ -173,7 +173,7 @@ DataPoints = function () {
     wayPoints[5] = {
         id: 5, turns: 18, score1: 1000, score2: 1500, score3: 8000,
         goals: [
-            {id: DataObjects.OBJECT_GOLD, count: 17}
+            {id: DataObjects.OBJECT_GOLD, count: 17 - 4}
         ], layers: {
             mask: [
                 "□□□□□□□",
@@ -184,13 +184,13 @@ DataPoints = function () {
                 "□□□□□□□",
                 "□□□□□□□",
             ], special: [
-                "$     $",
+                "       ",
                 " $ $ $ ",
                 "   $   ",
                 " $$$$$ ",
                 "   $   ",
                 " $ $ $ ",
-                "$     $",
+                "       ",
             ],
         }
     };

@@ -153,9 +153,9 @@ LogicUser = function () {
 
     this.getOnlineUserIds = function () {
         let list;
-        list = {};
+        list = [];
         for (let userId in userToCntx) {
-            list[userId] = parseInt(userId);
+            list.push(userId);
         }
         return list;
     };

@@ -554,8 +554,8 @@ ClientCodeLoader = function () {
             spriteMap = result;
 
             let sTime = mtime();
-            Logs.log('Pngquant begin. Sprite size:' + FS.statSync("../public/images/sprite.png")['size'], Logs.LEVEL_ALERT);
             if (Config.Project.usePngquant) {
+                Logs.log('Pngquant begin. Sprite size:' + FS.statSync("../public/images/sprite.png")['size'], Logs.LEVEL_ALERT);
                 cp.exec(
                     "cd ../public/images/ && pngquant *.png  --ext '.png' --force --verbose  --speed 1",
                     function () {
