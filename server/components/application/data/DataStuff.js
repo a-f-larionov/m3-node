@@ -34,10 +34,10 @@ DataStuff = function () {
     this.create = function (userId, callback) {
         let data = {
             userId: userId,
-            hummerQty: 0,
-            shuffleQty: 0,
-            lightningQty: 0,
-            goldQty: 0
+            hummerQty: 3,
+            shuffleQty: 3,
+            lightningQty: 3,
+            goldQty: 1000
         };
         DB.insert(tableName, data, function (result) {
             // result = {"fieldCount":0,"affectedRows":1,"insertId":0,"serverStatus":2,"warningCount":0,"message":"","protocol41":true,"changedRows":0}

@@ -89,7 +89,7 @@ DataUser = function () {
      */
     this.getList = function (ids, callback, queryAdd) {
         if (!ids.length) return callback([]);
-
+//@todo no cache cheked?!
         DB.queryWhere(tableName, {
             id: [ids, DB.WHERE_IN]
         }, function (rows) {
@@ -239,7 +239,7 @@ DataUser = function () {
             });
             callback(rows);
         });
-    }
+    };
 };
 
 /**

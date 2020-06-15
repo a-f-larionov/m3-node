@@ -167,7 +167,7 @@ ClientCodeLoader = function () {
 
     this.getClientVK = function (callback) {
         //@todo save ip on login
-        Logs.log("User request the client code.", Logs.LEVEL_ALERT, null, null, true);
+        Logs.log("User request the client code.", Logs.LEVEL_DETAIL, null, null, false);
         let prid = pStart(Profiler.ID_CLIENT_LOAD_VK);
         if (Config.Project.maintance) return callback(htmlMaintaince);
         if (!cacheCode) {
