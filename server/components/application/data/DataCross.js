@@ -10,7 +10,6 @@ let DataCross = {
     app: {
         width: 778,
         height: 500,
-        id: Config.SocNet.VK.appId
     },
     clientCryptKey: 3705,
     serverCryptKey: 987,

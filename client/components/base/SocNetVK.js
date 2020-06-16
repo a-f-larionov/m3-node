@@ -106,7 +106,7 @@ let SocNetVK = function () {
             {
                 owner_id: params.userId,
                 message: params.message,
-                attachments: 'photo-194995832_457239017'
+                attachments: Config.SocNet.VK.postAttachments
 
             }, function () {
                 console.log(arguments);
