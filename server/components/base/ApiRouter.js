@@ -87,13 +87,15 @@ let ApiRouter = new (function ApiRouter() {
     };
 
     this.onDisconnect = function (id) {
+        let userId;
         for (let i in onDisconnectCallbacks) {
             onDisconnectCallbacks[i].call(self, connections[id]);
         }
+        userId = connections[id].userId;
         delete connections[id];
         count = 0;
         for (let i in connections) count++;
-        Logs.log("Connection close: id=" + id + " count:" + count + " userId:" + connections[id].userId, Logs.LEVEL_WARNING);
+        Logs.log("Connection close: id=" + id + " count:" + count + " userId:" + userId, Logs.LEVEL_WARNING);
 
         if (CONST_IS_CLIENT_SIDE) {
             //@todo не очень это выглядиты(да  и на сервере такой штуки нет)

@@ -159,6 +159,7 @@ let LogicUser = function () {
     };
 
     let mapFriendIds = {};
+    this.mapFriendIds = mapFriendIds;
 
     this.getMapFriendIds = function (mapId) {
         let chunks;
@@ -224,15 +225,17 @@ let LogicUser = function () {
     this.loadTopUsers = function (users) {
         this.getTopUsers.chunksCount--;
         users.forEach(function (user) {
-            topUsers[user.id] = user;
+            topUsers.push(user);
         });
         if (this.getTopUsers.chunksCount === 0) {
+
             topUsers.sort(function (a, b) {
                 if (a.nextPointId === b.nextPointId) return 0;
                 return a.nextPointId < b.nextPointId ? 1 : -1;
             });
-            topUsers = topUsers.slice(0, DataCross.topUsersLimit);
-            self.getTopUsers.socInfoCount = DataCross.topUsersLimit;
+            if (topUsers.length > DataCross.topUsersLimit) topUsers = topUsers.slice(0, DataCross.topUsersLimit);
+            console.log('topusers 4', topUsers);
+            self.getTopUsers.socInfoCount = topUsers.length;
             //@todo for fast - got users by one request.
             topUsers.forEach(function (user) {
                 SocNet.getUserInfo(user.socNetUserId, function (socInfo) {

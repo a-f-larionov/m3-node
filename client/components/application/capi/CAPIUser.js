@@ -21,20 +21,20 @@ let CAPIUser = function () {
      * @param user {Object} юзер инфо.
      */
     this.updateUserInfo = function (cntx, user) {
-       // user.create_tm = LogicTimeClient.convertToClient(user.create_tm);
-       // user.login_tm = LogicTimeClient.convertToClient(user.login_tm);
-       // user.logout_tm = LogicTimeClient.convertToClient(user.logout_tm);
+        // user.create_tm = LogicTimeClient.convertToClient(user.create_tm);
+        // user.login_tm = LogicTimeClient.convertToClient(user.login_tm);
+        // user.logout_tm = LogicTimeClient.convertToClient(user.logout_tm);
         user.fullRecoveryTime = LogicTimeClient.convertToClient(user.fullRecoveryTime);
         LogicUser.updateUserInfo(user);
     };
 
     this.updateUserListInfo = function (cntx, userList) {
-        userList = userList.map(function(user){
+        userList = userList.map(function (user) {
             return {
                 id: user[0],
-                nextPointId : user[1],
+                nextPointId: user[1],
                 socNetUserId: user[2],
-                fullRecoveryTime : user[3]
+                fullRecoveryTime: user[3]
             };
         });
         PageController.pendingData(true);
@@ -54,6 +54,7 @@ let CAPIUser = function () {
     };
 
     this.gotTopUsers = function (cntx, users) {
+        console.log('got users', users);
         LogicUser.loadTopUsers(users);
     };
 
