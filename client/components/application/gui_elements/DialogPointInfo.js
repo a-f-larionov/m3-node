@@ -116,24 +116,21 @@ let DialogPointInfo = function () {
         point = DataPoints.getById(pointId);
         this.setTitle('УРОВЕНЬ  ' + pointId);
 
+        /** @todo copy to DialogGoalds Reacehed*/
         for (let i = 0; i < 3; i++) {
             if ((friend = friends[i]) && friend.id) {
                 score = DataPoints.getScore(point.id, friend.id);
                 panel[i].elPhotoScore.user = friend;
                 panel[i].elPhotoScore.score = score;
-                if (score) {
-                    panel[i].elPhotoScore.show();
-                    panel[i].elPhotoScore.redraw();
-                } else {
-                    panel[i].elPhotoScore.hide();
-                }
-            } else {
-                panel[i].elPhotoScore.hide();
             }
+            panel[i].elPhotoScore.score = 0;
+            panel[i].elPhotoScore.user = null;
+            panel[i].elPhotoScore.show();
+            panel[i].elPhotoScore.redraw();
         }
 
         elUserPhotoScore.user = LogicUser.getCurrent();
-        elUserPhotoScore.score = DataPoints.getScore(point.id);
+        elUserPhotoScore.score = 0 + DataPoints.getScore(point.id);
 
         elStarOne.src = 'star-off-big.png';
         elStarTwo.src = 'star-off-big.png';

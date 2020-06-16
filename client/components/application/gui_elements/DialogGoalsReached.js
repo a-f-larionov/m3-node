@@ -10,13 +10,13 @@ let DialogGoalsReached = function () {
      * Номер точки
      * @type {ElementText}
      */
-    let elTitle = null;
+    //let elTitle = null;
 
     let elStarOne = null;
     let elStarTwo = null;
     let elStarThree = null;
 
-    let friendsPanel = [];
+    let panel = [];
     let elUserPhotoScore = null;
 
     let elButtonPlay = null;
@@ -38,8 +38,8 @@ let DialogGoalsReached = function () {
         GUI.pushParent(self.dom);
 
         /** Номер точки\заголовок */
-        elTitle = GUI.createElement(ElementText, {x: 135, y: 16, width: 230, height: 40, text: ''});
-        elTitle.show();
+        //elTitle = GUI.createElement(ElementText, {x: 135, y: 16, width: 230, height: 40, text: ''});
+        //elTitle.show();
 
         /** Кол-во звёзд */
         elStarOne = GUI.createElement(ElementImage, {x: 100, y: 40, src: 'star-off-big.png'});
@@ -50,7 +50,7 @@ let DialogGoalsReached = function () {
         elStarThree.show();
 
         for (let i = 0; i < 3; i++) {
-            friendsPanel[i] = {
+            panel[i] = {
                 elPhotoScore: GUI.createElement(ElementUserScorePhoto, {x: 75 + 75 * i + 15, y: 155}),
             }
         }
@@ -118,30 +118,27 @@ let DialogGoalsReached = function () {
             if (user3) friends.push(user3);
         }
 
-        user = LogicUser.getCurrent();
         point = DataPoints.getById(pointId);
-        elTitle.text = 'ПРОЙДЕН';// + pointId;
+        this.setTitle('ПРОЙДЕН  ' + pointId);
 
-        elUserPhotoScore.user = LogicUser.getCurrent();
-        elUserPhotoScore.score = 1 + DataPoints.getScore(point.id);
+        user = LogicUser.getCurrent();
 
+        /** @todo copy to DialogGoalds Reacehed*/
         for (let i = 0; i < 3; i++) {
             if ((friend = friends[i]) && friend.id) {
                 score = DataPoints.getScore(point.id, friend.id);
-                friendsPanel[i].elPhotoScore.user = friend;
-                friendsPanel[i].elPhotoScore.score = score;
-                if (score) {
-                    friendsPanel[i].elPhotoScore.show();
-                    friendsPanel[i].elPhotoScore.redraw();
-                } else {
-                    friendsPanel[i].elPhotoScore.hide();
-                }
-            } else {
-                friendsPanel[i].elPhotoScore.hide();
+                panel[i].elPhotoScore.user = friend;
+                panel[i].elPhotoScore.score = score;
             }
+            panel[i].elPhotoScore.score = 0;
+            panel[i].elPhotoScore.user = null;
+            panel[i].elPhotoScore.show();
+            panel[i].elPhotoScore.redraw();
         }
 
-        elTitle.redraw();
+        elUserPhotoScore.user = LogicUser.getCurrent();
+        elUserPhotoScore.score = 0 + DataPoints.getScore(point.id);
+
         elStarOne.src = 'star-off-big.png';
         elStarTwo.src = 'star-off-big.png';
         elStarThree.src = 'star-off-big.png';
@@ -158,6 +155,7 @@ let DialogGoalsReached = function () {
         elStarTwo.redraw();
         elStarThree.redraw();
         elUserPhotoScore.redraw();
+        //elTitle.redraw();
 
         if (LogicHealth.getHealths(user) === 0) {
             elButtonPlay.hide();

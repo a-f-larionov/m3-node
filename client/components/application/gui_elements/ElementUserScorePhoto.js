@@ -42,6 +42,8 @@ let ElementUserScorePhoto = function () {
             x: self.x, y: self.y, width: 50, height: 50,
             photoBorder: true
         });
+        elPhoto.dom.pointer = GUI.POINTER_HAND;
+        GUI.bind(elPhoto.dom, GUI.EVENT_MOUSE_CLICK, self.onClick, self);
         elTextScore = GUI.createElement(ElementText, {
             x: self.x - 25, y: self.y + 61, width: 100, height: 50,
             fontSize: 12, alignCenter: true
@@ -76,14 +78,29 @@ let ElementUserScorePhoto = function () {
      */
     this.redraw = function () {
         if (!showed) return;
-        if (!this.user || !this.user.id ) return;
 
-        elTextName.text = this.user.firstName;
-        elPhoto.src = this.user.photo50;
-        elTextScore.text = this.score ? this.score.toString() : 0;
+        if (!this.user || !this.user.id) {
+            elTextScore.hide();
+            elTextName.hide();
+            elPhoto.src = 'button-add-rest.png';
+        } else {
+            elTextName.text = this.user.firstName;
+            elPhoto.src = this.user.photo50;
+            elTextScore.text = this.score ? this.score.toString() : 0;
+            elTextScore.show();
+            elTextName.show();
+        }
 
         elTextName.redraw();
         elPhoto.redraw();
         elTextScore.redraw();
     };
+
+    this.onClick = function () {
+        if (self.user) {
+            window.open(SocNet.getUserProfileUrl(SocNet.getType(), self.user.socNetUserId));
+        } else {
+            SocNet.openInviteFriendDialog();
+        }
+    }
 };
