@@ -90,15 +90,17 @@ let ApiRouter = new (function ApiRouter() {
         for (let i in onDisconnectCallbacks) {
             onDisconnectCallbacks[i].call(self, connections[id]);
         }
-        let count = 0;
-        for (let i in connections) count++;
-        Logs.log("Connection close: id=" + id + " count:" + count + " userId:" + connections[id].userId,
-            Logs.LEVEL_WARNING);
         delete connections[id];
-        //@todo не очень это выглядиты(да  и на сервере такой штуки нет)
-        prid = null;
         count = 0;
         for (let i in connections) count++;
+        Logs.log("Connection close: id=" + id + " count:" + count + " userId:" + connections[id].userId, Logs.LEVEL_WARNING);
+
+        if (CONST_IS_CLIENT_SIDE) {
+            //@todo не очень это выглядиты(да  и на сервере такой штуки нет)
+            // @prid это глобальная переменная на клиенте
+            prid = null;
+        }
+
         if (CONST_IS_SERVER_SIDE && count === 0) {
             Logs.log("Online Zero", Logs.LEVEL_ALERT);
             setTimeout(function () {
