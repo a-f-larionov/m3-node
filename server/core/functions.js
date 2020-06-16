@@ -84,8 +84,11 @@ process.on('uncaughtException', function (err) {
     if (err.code === 'ECONNRESET') {
         return Logs.log("Skip process.exit()", Logs.LEVEL_DETAIL, err);
     }
+    if (err.code === 'PROTOCOL_CONNECTION_LOST') {
+        return Logs.log("Skip process.exit()", Logs.LEVEL_DETAIL, err);
+    }
 
-    log('!!! ERROR HAPPENDZ !!!', err);
+    log('!!! ERROR HAPPENDZ !!!', err, Date.now());
     process.exit();
 });
 

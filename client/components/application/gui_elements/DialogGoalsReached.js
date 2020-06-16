@@ -202,7 +202,7 @@ let DialogGoalsReached = function () {
                 message: 'Я набрал ' + score + " " +
                     declination(score, ['очко', 'очка', 'очков'])
                     + '! Ты сможешь обогнать меня? ' +
-                    'https://vk.com/app7389878'
+                    'https://vk.com/app' + DataCross.app.id
             });
         }
         this.__proto__.closeDialog();
