@@ -82,6 +82,6 @@ let WizardFirstStart_4 = {
         }, Config.OnIdle.second * 1.500);
     },
     onDestroyLine: function (line) {
-        LogicWizard.finish();
+        LogicWizard.finish(true);
     }
 };

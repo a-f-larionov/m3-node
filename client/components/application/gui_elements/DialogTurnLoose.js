@@ -62,6 +62,7 @@ let DialogTurnLoose = function DialogTurnLoose() {
     };
 
     this.showDialog = function (pId) {
+        LogicWizard.finish(false);
         pointId = pId;
         this.setTitle('УРОВЕНЬ  ' + pointId);
         this.__proto__.showDialog.call(this);

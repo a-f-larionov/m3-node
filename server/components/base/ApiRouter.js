@@ -100,6 +100,7 @@ let ApiRouter = new (function ApiRouter() {
         count = 0;
         for (let i in connections) count++;
         if (CONST_IS_SERVER_SIDE && count === 0) {
+            Logs.log("Online Zero", Logs.LEVEL_ALERT);
             setTimeout(function () {
                 let count = 0;
                 for (let i in connections) count++;

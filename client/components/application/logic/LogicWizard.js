@@ -51,8 +51,8 @@ let LogicWizard = function LogicWizard() {
         wizard.init();
     };
 
-    this.finish = function () {
-        PBWizard.finish();
+    this.finish = function (showText) {
+        PBWizard.finish(showText);
         self.onClick = dymmyFunc;
         self.onDestroyThing = dymmyFunc;
         self.onDestroyLine = dymmyFunc;

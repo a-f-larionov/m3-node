@@ -76,6 +76,9 @@ let LogicMain = (function () {
         webSocketClient.onData = ApiRouter.onData;
         webSocketClient.onConnect = this.onConnect;
         webSocketClient.onDisconnect = ApiRouter.onDisconnect;
+        ApiRouter.addOnDisconnectCallback(function () {
+            LogicWizard.finish(false);
+        });
 
         /** Running */
         webSocketClient.run();

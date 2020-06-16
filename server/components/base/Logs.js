@@ -40,7 +40,7 @@ let Logs = function () {
         date = new Date();
         /** Тут мы получим "01-01-2014 15:55:55" */
         let day, month, year, hour, minutes, seconds;
-        year = date.getFullYear();
+        //year = date.getFullYear().toString().substr(2, 2);
         day = str_pad(date.getDate());
         month = str_pad(date.getMonth() + 1);
         hour = str_pad(date.getHours());
@@ -49,7 +49,7 @@ let Logs = function () {
         if (CONST_IS_CLIENT_SIDE) {
             dateFormated = minutes + ':' + seconds;
         } else {
-            dateFormated = day + '-' + month + '-' + year + ' ' + hour + ':' + minutes + ':' + seconds;
+            dateFormated = day + '.' + month + ' ' + hour + ':' + minutes + ':' + seconds;
         }
         // превратим уровень лога из константы в человеко-читаемый текст.
         levelTitle = typeTitles[level];

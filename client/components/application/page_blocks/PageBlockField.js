@@ -443,8 +443,10 @@ let PageBlockField = function PageBlockField() {
 
     this.finishLevel = function () {
         let pointId, user, lastScore, chestId;
+        LogicWizard.finish(false);
         stuffMode = null;
         elementField.setStuffMode(stuffMode);
+
 
         user = LogicUser.getCurrent();
         pointId = DataPoints.getPlayedId();
@@ -466,7 +468,7 @@ let PageBlockField = function PageBlockField() {
     this.beforeTurnUse = function () {
         turns--;
         if (turns === 0 && !noMoreGoals) elementField.lock();
-        if (turns === 5) showText('Осталось 5 ходов!');
+        if (turns === 5 && !noMoreGoals) showText('Осталось 5 ходов!');
         self.redraw();
     };
 
@@ -524,9 +526,12 @@ let PageBlockField = function PageBlockField() {
         return elementField;
     };
 
-    this.onWizardFinish = function () {
+    this.onWizardFinish = function (showTextDalcheSami) {
         //@Todo get sex and : Дальше ты сам(а)!
-        showText('Теперь сами!');
+        //@todo show from Wizard by code, but not automaticaly
+        if (showTextDalcheSami) {
+            showText('Теперь сами!');
+        }
     };
 
     let showText = function (text) {

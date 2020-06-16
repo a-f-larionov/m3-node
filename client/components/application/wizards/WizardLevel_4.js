@@ -8,7 +8,7 @@ let WizardLevel_4_1 = {
     onHideDialog: function () {
         if (WizardLevel_4_1.dialogCounter++ < 2) return;
         PBWizard.showHint([{x: 2, y: 1}, {x: 3, y: 1}]);
-        PBWizard.showDialog(210, 400, 2, 20, 420, 168);
+        PBWizard.showDialog(210, 380, 2, 20, 420, 148);
         PBWizard.highlightCells([
             {x: 0, y: 1, unlock: false},
             {x: 1, y: 1, unlock: false},
@@ -28,7 +28,7 @@ let WizardLevel4_2 = {
     },
 
     onFieldSilent: function () {
-        PBWizard.updateText('Собери еще сокровища!');
+        PBWizard.updateText('Собери еще сокровищ!');
         PBWizard.showDialog(427, 250, 1, 20, 630, 14);
         PBWizard.showHint([{x: 0, y: 2}, {x: 1, y: 2}]);
         PBWizard.highlightCells([
@@ -41,6 +41,6 @@ let WizardLevel4_2 = {
         ]);
     },
     onDestroyLine: function (cell) {
-        LogicWizard.finish();
+        LogicWizard.finish(true);
     },
 };

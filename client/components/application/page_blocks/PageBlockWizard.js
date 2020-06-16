@@ -170,9 +170,9 @@ let PageBlockWizard = function PageBlockWizard() {
         drawBackground();
     };
 
-    this.finish = function () {
+    this.finish = function (showText) {
         self.reset();
-        PageBlockField.onWizardFinish();
+        PageBlockField.onWizardFinish(showText);
     };
 
     this.reset = function () {

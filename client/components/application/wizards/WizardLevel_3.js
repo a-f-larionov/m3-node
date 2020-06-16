@@ -39,7 +39,7 @@ let WizardLevel3_2 = {
     },
     onDestroyThing: function (cell) {
         if (cell.object.objectId === DataObjects.OBJECT_POLY_COLOR) {
-            LogicWizard.finish();
+            LogicWizard.finish(true);
         }
     },
 };

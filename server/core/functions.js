@@ -89,7 +89,7 @@ process.on('uncaughtException', function (err) {
     }
 
     log('!!! ERROR HAPPENDZ !!!', err, Date.now());
-    process.exit();
+    // process.exit();
 });
 
 /**
@@ -186,7 +186,7 @@ telegramSent = function (message) {
         endpoint = "https://api.telegram.org/" +
             "bot1194574646:AAFn2QK8b_9gR-h6FI-M6a4DCeuGmkDgMro" +
             "/sendMessage?chat_id=" + Config.Telegramm.chatId +
-            "&text=" + message;
+            "&text=" + encodeURIComponent(message);
         options = URL.parse(endpoint);
 
         if (Config.Telegramm.agent) {

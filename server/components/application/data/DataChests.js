@@ -10,21 +10,21 @@ let DataChests = function () {
         /** Map-001 */
         chests[1] = {
             id: 1, prizes: [
-                {id: DataObjects.STUFF_HUMMER, count: 1},
-                {id: DataObjects.STUFF_LIGHTNING, count: 1},
-                {id: DataObjects.STUFF_SHUFFLE, count: 1},
+                {id: DataObjects.STUFF_HUMMER, count: 3},
+                {id: DataObjects.STUFF_LIGHTNING, count: 3},
+                {id: DataObjects.STUFF_SHUFFLE, count: 3},
             ],
         };
         chests[2] = {
             id: 1, prizes: [
-                {id: DataObjects.STUFF_GOLD, count: 100},
+                {id: DataObjects.STUFF_GOLD, count: 500},
                 {id: DataObjects.STUFF_HUMMER, count: 3},
             ],
         };
         chests[3] = {
             id: 1, prizes: [
-                {id: DataObjects.STUFF_GOLD, count: 300},
-                {id: DataObjects.STUFF_LIGHTNING, count: 2},
+                {id: DataObjects.STUFF_GOLD, count: 500},
+                {id: DataObjects.STUFF_LIGHTNING, count: 6},
             ],
         };
 
@@ -38,7 +38,7 @@ let DataChests = function () {
         };
         chests[5] = {
             id: 1, prizes: [
-                {id: DataObjects.STUFF_GOLD, count: 200},
+                {id: DataObjects.STUFF_GOLD, count: 500},
                 {id: DataObjects.STUFF_HUMMER, count: 5},
             ],
         };
@@ -60,14 +60,14 @@ let DataChests = function () {
         };
         chests[8] = {
             id: 1, prizes: [
-                {id: DataObjects.STUFF_GOLD, count: 500},
-                {id: DataObjects.STUFF_SHUFFLE, count: 1},
+                {id: DataObjects.STUFF_GOLD, count: 1500},
+                {id: DataObjects.STUFF_SHUFFLE, count: 2},
             ],
         };
         chests[9] = {
             id: 1, prizes: [
-                {id: DataObjects.STUFF_GOLD, count: 300},
-                {id: DataObjects.STUFF_HUMMER, count: 5},
+                {id: DataObjects.STUFF_GOLD, count: 1500},
+                {id: DataObjects.STUFF_HUMMER, count: 6},
             ],
         };
         if (finished) finished();

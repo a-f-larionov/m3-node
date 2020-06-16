@@ -170,6 +170,7 @@ let DialogGoalsReached = function () {
     };
 
     this.showDialog = function (pId, fieldScore) {
+        LogicWizard.finish(false);
         share = true;
         pointId = pId;
         /** @todo mapId from pointId */

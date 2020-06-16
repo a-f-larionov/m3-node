@@ -18,6 +18,6 @@ let WizardLevel51_1 = {
     },
 
     onDestroyLine: function () {
-        LogicWizard.finish();
+        LogicWizard.finish(true);
     }
 };

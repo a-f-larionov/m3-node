@@ -7,7 +7,7 @@ let WizardLevel2_1 = {
 
     onHideDialog: function () {
         if (WizardLevel2_1.dialogCounter++ < 2) return;
-        PBWizard.showDialog(210, 400, 2, 20);
+        PBWizard.showDialog(360, 380, 2, 20, 350, 144);
         PBWizard.showHint([{x: 1, y: 3}, {x: 2, y: 3}]);
         PBWizard.draw(function (cntx) {
             cntx.highlightCells([
@@ -32,7 +32,7 @@ let WizardLevel2_2 = {
         PBWizard.updateText('Собери ряд кристаллов - молния активируется.');
         setTimeout(function () {
             PBWizard.showHint([{x: 2, y: 4}, {x: 3, y: 4}]);
-            PBWizard.showDialog(230, 150, 2, 20,512,61);
+            PBWizard.showDialog(230, 150, 2, 20, 556, 110);
             PBWizard.draw(function (cntx) {
                 cntx.highlightCells([
                     {x: 2, y: 4, unlock: true},
@@ -45,6 +45,6 @@ let WizardLevel2_2 = {
     },
 
     onDestroyLine: function () {
-        LogicWizard.finish();
+        LogicWizard.finish(true);
     }
 };

@@ -20,6 +20,6 @@ let WizardLevel_30_1 = {
         ]);
     },
     onDestroyLine: function () {
-        LogicWizard.finish();
+        LogicWizard.finish(true);
     }
 };
