@@ -257,12 +257,12 @@ ClientCodeLoader = function () {
             "  color: grey;" +
             "  font-size: 24px;" +
             //"  background-color:rgba(103, 77, 56, 1.0);" +
-            "  background-color:grey" +
+            "  background-color: grey;" +
             " background-size:contain;" +
             "  height:" + DataCross.app.height + "px;\n" +
             "'>Загрузка...</div>";
 
-        code += "<img id=\"img\" src='/images/oblojka.png'" +
+        code += "<img id=\"img\" src='/images/oblojka.png" + getTimeKey() + "'" +
             " style='display:none; " +
             "height:" + DataCross.app.height + "px;" +
             "' " +
