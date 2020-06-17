@@ -256,8 +256,8 @@ ClientCodeLoader = function () {
             "  font-family: arial,sans-serif,\"Marvin\",Tahoma,\"Geneva CY\",sans-serif;\n" +
             "  color: grey;" +
             "  font-size: 24px;" +
-            //"  background-color:rgba(103, 77, 56, 1.0);" +
-            "  background-color: grey;" +
+            "  background-color:rgba(103, 77, 56, 1.0);" +
+            //"  background-color: grey;" +
             " background-size:contain;" +
             "  height:" + DataCross.app.height + "px;\n" +
             "'>Загрузка...</div>";
