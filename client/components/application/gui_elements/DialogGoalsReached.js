@@ -6,12 +6,6 @@ let DialogGoalsReached = function () {
     let self = this;
     this.__proto__ = new Dialog();
 
-    /**
-     * Номер точки
-     * @type {ElementText}
-     */
-    //let elTitle = null;
-
     let elStarOne = null;
     let elStarTwo = null;
     let elStarThree = null;
@@ -21,11 +15,6 @@ let DialogGoalsReached = function () {
 
     let elButtonPlay = null;
 
-    let elShare = null;
-
-    let share = true;
-    let score = null;
-
     /**
      * Точка с которой нажали.
      * @type {null}
@@ -33,13 +22,17 @@ let DialogGoalsReached = function () {
     let pointId = null;
     let friends;
 
+
+
+    let elShare = null;
+
+
+    let share = true;
+    let score = null;
+
     this.init = function () {
         this.__proto__.init.call(this);
         GUI.pushParent(self.dom);
-
-        /** Номер точки\заголовок */
-        //elTitle = GUI.createElement(ElementText, {x: 135, y: 16, width: 230, height: 40, text: ''});
-        //elTitle.show();
 
         /** Кол-во звёзд */
         elStarOne = GUI.createElement(ElementImage, {x: 100, y: 40, src: 'star-off-big.png'});
@@ -49,11 +42,11 @@ let DialogGoalsReached = function () {
         elStarThree = GUI.createElement(ElementImage, {x: 300, y: 40, src: 'star-off-big.png'});
         elStarThree.show();
 
-        for (let i = 0; i < 3; i++) {
+        [0, 1, 2].forEach(function (i) {
             panel[i] = {
-                elPhotoScore: GUI.createElement(ElementUserScorePhoto, {x: 75 + 75 * i + 15, y: 155}),
+                elPhotoScore: GUI.createElement(ElementUserScorePhoto, {x: 75 + 75 * i + 15, y: 155})
             }
-        }
+        });
 
         elUserPhotoScore = GUI.createElement(ElementUserScorePhoto, {x: 75 + 75 * 3 + 55, y: 155});
         elUserPhotoScore.show();
@@ -129,9 +122,10 @@ let DialogGoalsReached = function () {
                 score = DataPoints.getScore(point.id, friend.id);
                 panel[i].elPhotoScore.user = friend;
                 panel[i].elPhotoScore.score = score;
+            } else {
+                panel[i].elPhotoScore.score = 0;
+                panel[i].elPhotoScore.user = null;
             }
-            panel[i].elPhotoScore.score = 0;
-            panel[i].elPhotoScore.user = null;
             panel[i].elPhotoScore.show();
             panel[i].elPhotoScore.redraw();
         }

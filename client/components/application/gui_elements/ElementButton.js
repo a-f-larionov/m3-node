@@ -190,6 +190,7 @@ let ElementButton = function () {
         if (self.title) {
             dom.title = self.title;
             elText.width = Images.getWidth(src);
+            elText.text = self.title;
             elText.redraw();
         }
         if (self.enabled) {

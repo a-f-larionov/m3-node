@@ -461,7 +461,7 @@ let PageBlockField = function PageBlockField() {
             DataPoints.setPointUserScore(pointId, user.id, score);
         }
         SAPIUser.healthBack();
-        PBZDialogs.dialogGoalsReached.showDialog(pointId, score);
+        PBZDialogs.dialogPointInfo.showDialog(pointId, score, true);
         PageController.redraw();
     };
 

@@ -13,7 +13,7 @@ let DialogPointInfo = function () {
     let panel = [];
     let elUserPhotoScore = null;
 
-    let elButtonPlay = null;
+    let elGeneralButton = null;
 
     /**
      * Точка с которой нажали.
@@ -22,18 +22,22 @@ let DialogPointInfo = function () {
     let pointId = null;
     let friends;
 
+    let isGoalsReached = false;
+
+    let elShare = null;
+    let elButtonShare = null;
+
+    let share = true;
+    let score = null;
+
     this.init = function () {
         this.__proto__.init.call(this);
         GUI.pushParent(self.dom);
 
         /** Кол-во звёзд */
-        elStarOne = GUI.createElement(ElementImage, {
-            x: 100, y: 40, src: 'star-off-big.png'
-        });
+        elStarOne = GUI.createElement(ElementImage, {x: 100, y: 40, src: 'star-off-big.png'});
         elStarOne.show();
-        elStarTwo = GUI.createElement(ElementImage, {
-            x: 200, y: 40, src: 'star-off-big.png'
-        });
+        elStarTwo = GUI.createElement(ElementImage, {x: 200, y: 40, src: 'star-off-big.png'});
         elStarTwo.show();
         elStarThree = GUI.createElement(ElementImage, {x: 300, y: 40, src: 'star-off-big.png'});
         elStarThree.show();
@@ -48,30 +52,35 @@ let DialogPointInfo = function () {
         elUserPhotoScore.show();
 
         /** Кнопка играть */
-        elButtonPlay = GUI.createElement(ElementButton, {
+        elGeneralButton = GUI.createElement(ElementButton, {
             x: 178, y: 240,
             srcRest: 'button-red-rest.png',
             srcHover: 'button-red-hover.png',
             srcActive: 'button-red-active.png',
             onClick: function () {
                 self.closeDialog();
-                /** Предложить купить жизни */
-                if (LogicHealth.getHealths(LogicUser.getCurrent()) === 0) {
-                    PBZDialogs.dialogHealthShop.showDialog();
-                    self.showDialog(pointId);
-                } else {
-                    /** Начать игру */
-                    //@todo ищи код ljklkjlkjkljkjlkjljlkjlk
-                    SAPIUser.healthDown();
-                    PageBlockPanel.oneHealthHide = true;
-                    DataPoints.setPlayedId(pointId);
 
-                    PageController.showPage(PageField);
+                if (isGoalsReached) {
+                    PageController.showPage(PageMain);
+                } else {
+                    /** Предложить купить жизни */
+                    if (LogicHealth.getHealths(LogicUser.getCurrent()) === 0) {
+                        PBZDialogs.dialogHealthShop.showDialog();
+                        self.showDialog(pointId);
+                    } else {
+                        /** Начать игру */
+                        //@todo ищи код ljklkjlkjkljkjlkjljlkjlk
+                        SAPIUser.healthDown();
+                        PageBlockPanel.oneHealthHide = true;
+                        DataPoints.setPlayedId(pointId);
+
+                        PageController.showPage(PageField);
+                    }
                 }
             },
             title: 'ИГРАТЬ'
         });
-        elButtonPlay.show();
+        elGeneralButton.show();
 
         /** Кнопка закрыть */
         GUI.createElement(ElementButton, {
@@ -82,15 +91,22 @@ let DialogPointInfo = function () {
             }
         }).show();
 
+
+        elButtonShare = GUI.createElement(ElementText, {x: 335, y: 254, text: 'ПОДЕЛИТЬСЯ', fontSize: 11});
+
+        elShare = GUI.createElement(ElementButton, {
+            x: 418, y: 242,
+            srcRest: 'check-set.png',
+            srcHover: 'check-clear.png',
+            srcActive: 'check-clear.png',
+        });
+        elShare.onClick = function () {
+            share = !share;
+            PageController.redraw();
+        };
+        elShare.show();
+
         GUI.popParent();
-    };
-
-    this.show = function () {
-        this.__proto__.show.call(this);
-    };
-
-    this.hide = function () {
-        this.__proto__.hide.call(this);
     };
 
     this.redraw = function () {
@@ -99,7 +115,6 @@ let DialogPointInfo = function () {
 
         if (!this.dialogShowed) return;
 
-        //*todo blyad'
         let topScore = LogicUser.getPointTopScore(pointId);
         let user1, user2, user3;
         friends = [];
@@ -114,7 +129,11 @@ let DialogPointInfo = function () {
         }
 
         point = DataPoints.getById(pointId);
-        this.setTitle('УРОВЕНЬ  ' + pointId);
+        if (isGoalsReached) {
+            this.setTitle('ПРОЙДЕН  ' + pointId);
+        } else {
+            this.setTitle('УРОВЕНЬ  ' + pointId);
+        }
 
         /** @todo copy to DialogGoalds Reacehed*/
         for (let i = 0; i < 3; i++) {
@@ -122,7 +141,7 @@ let DialogPointInfo = function () {
                 score = DataPoints.getScore(point.id, friend.id);
                 panel[i].elPhotoScore.user = friend;
                 panel[i].elPhotoScore.score = score;
-            }else {
+            } else {
                 panel[i].elPhotoScore.score = 0;
                 panel[i].elPhotoScore.user = null;
             }
@@ -149,11 +168,56 @@ let DialogPointInfo = function () {
         elStarTwo.redraw();
         elStarThree.redraw();
         elUserPhotoScore.redraw();
+        elGeneralButton.redraw();
+
+        if (isGoalsReached) {
+            let user;
+            user = LogicUser.getCurrent();
+            if (LogicHealth.getHealths(user) === 0) {
+                elGeneralButton.hide();
+            } else {
+                elGeneralButton.show();
+            }
+
+            elShare.srcRest = share ? 'check-set.png' : 'check-clear.png';
+            elShare.srcHover = share ? 'check-clear.png' : 'check-set.png';
+            elShare.srcActive = elShare.srcHover;
+            elShare.redraw();
+        }
     };
 
-    this.showDialog = function (pId) {
+    this.showDialog = function (pId, scoreNew, isGoalsReachedValue) {
         pointId = pId;
+        isGoalsReached = isGoalsReachedValue;
+        LogicWizard.finish(false);
         this.__proto__.showDialog.call(this);
+
+        if (isGoalsReachedValue) {
+            share = true;
+            score = scoreNew;
+            elButtonShare.show();
+            elShare.show();
+            elGeneralButton.title = 'НА КАРТУ';
+        } else {
+            share = false;
+            elButtonShare.hide();
+            elShare.hide();
+            elGeneralButton.title = 'ИГРАТЬ';
+        }
         self.redraw();
-    }
+    };
+
+    this.closeDialog = function () {
+        if (share) {
+            SocNet.post({
+                //@todo url app move to config
+                userId: LogicUser.getCurrent().socNetUserId,
+                message: 'Я набрал ' + score + " " +
+                    declination(score, ['очко', 'очка', 'очков'])
+                    + '! Ты сможешь обогнать меня? ' +
+                    'https://vk.com/app' + Config.SocNet.VK.appId
+            });
+        }
+        this.__proto__.closeDialog();
+    };
 };

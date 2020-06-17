@@ -30,9 +30,6 @@ let PageBlockZDialogs = function PageBlockZDialogs() {
     /** @type {DialogStuffShop} */
     this.dialogStuffShop = null;
 
-    /** @type {DialogGoalsReached} */
-    this.dialogGoalsReached = null;
-
     /** @type {DialogTurnLoose} */
     this.dialogTurnsLoose = null;
 
@@ -58,9 +55,6 @@ let PageBlockZDialogs = function PageBlockZDialogs() {
 
         this.dialogGoals = GUI.createElement(DialogGoals);
         self.elements.push(this.dialogGoals);
-
-        this.dialogGoalsReached = GUI.createElement(DialogGoalsReached);
-        self.elements.push(this.dialogGoalsReached);
 
         this.dialogTurnsLoose = GUI.createElement(DialogTurnLoose);
         self.elements.push(this.dialogTurnsLoose);

@@ -4,8 +4,6 @@
  */
 TopScoreCache = function TopScoreCache() {
 
-    let cache = [];
-
     this.get = function (userId, pointId, callback) {
         DB.query("SELECT * FROM " +
             "cache_top_score " +

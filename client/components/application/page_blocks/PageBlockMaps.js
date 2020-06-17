@@ -93,7 +93,7 @@ let PageBlockMaps = function PageBlockMaps() {
                 number: null,
                 pointId: null,
                 onClick: function (event, dom, element) {
-                    PBZDialogs.dialogPointInfo.showDialog(element.pointId);
+                    PBZDialogs.dialogPointInfo.showDialog(element.pointId, null, false);
                 }
             });
             self.elements.push(el);

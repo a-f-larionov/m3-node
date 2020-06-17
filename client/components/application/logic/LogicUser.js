@@ -296,8 +296,8 @@ let LogicUser = function () {
         if (!pointTopScore[pointId].loading && (pointTopScore[pointId].loading = true)) {
             chunks = chunkIt(fids);
             pointTopScore[pointId].chunksCount = chunks.length;
-            chunks.forEach(function (chunk) {
-                SAPIMap.sendMePointTopScore(0, pointId, chunk, chunks.length);
+            chunks.forEach(function (chunkFids) {
+                SAPIMap.sendMePointTopScore(0, pointId, chunkFids, chunks.length);
             });
         }
         if (!pointTopScore[pointId].complete) return undefined;
@@ -320,6 +320,10 @@ let LogicUser = function () {
         if (pointTopScore[pid].chunksCount === 0) {
             pointTopScore[pid].complete = true;
             PageController.redraw();
+            //@todo load more here,but only this socNetTypeId
+            // if 1,2,3 empty -> SendMeMore
+            // on SendMe More
+
         }
     };
 
@@ -332,7 +336,6 @@ let LogicUser = function () {
             LogicUser.getCurrent().nextPointId
         );
     };
-
 };
 
 /**
