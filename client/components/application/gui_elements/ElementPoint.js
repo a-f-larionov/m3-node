@@ -288,7 +288,8 @@ let ElementPoint = function () {
             else {
                 if (user && user.photo50
                     && user.nextPointId === self.pointId
-                ) { doms[index].backgroundImage = user.photo50;
+                ) {
+                    doms[index].backgroundImage = user.photo50;
                     doms[index].title = user.firstName;
                     doms[index].show();
                     doms[index].redraw();
@@ -348,6 +349,9 @@ let ElementPoint = function () {
      */
     this.setGamers = function (users) {
         /*@todo брать сначало из топа, а потом уже друзей любых*/
+        if (self.pointId === LogicUser.getCurrent().nextPointId) {
+            users.push(LogicUser.getCurrent());
+        }
         gamers = users.slice(0, 3);
         /** Центрируем если игрок только один */
         if (gamers.length === 1) gamers.unshift(null);

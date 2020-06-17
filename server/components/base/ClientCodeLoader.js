@@ -257,7 +257,7 @@ ClientCodeLoader = function () {
             "  color: grey;" +
             "  font-size: 24px;" +
             //"  background-color:rgba(103, 77, 56, 1.0);" +
-            "  background-color:rgba(200, 200, 0, 1.0);" +
+            "  background-color:grey" +
             " background-size:contain;" +
             "  height:" + DataCross.app.height + "px;\n" +
             "'>Загрузка...</div>";
