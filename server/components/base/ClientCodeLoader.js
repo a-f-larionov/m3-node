@@ -246,9 +246,6 @@ ClientCodeLoader = function () {
                 "height:" + translate2X(demension.height) + "" +
                 "};</script>";
         }
-        code += "<script type='text/javascript' src='/js/client." +
-            (Config.Project.minifyCode ? 'min' : 'source') +
-            ".js" + getTimeKey() + "'></script>\r\n";
         code += "</head>";
         code += "<body>";
 
@@ -265,6 +262,11 @@ ClientCodeLoader = function () {
             "position:absolute;top:0px;z-index:2000;' " +
             "id='wizardArea' ></canvas>\r\n";
         code += getClientImageCode();
+
+        code += "<script type='text/javascript' src='/js/client." +
+            (Config.Project.minifyCode ? 'min' : 'source') +
+            ".js" + getTimeKey() + "'></script>\r\n";
+
 
         if (socNetCode === 'VK') {
             /** @see https://vk.com/dev/Javascript_SDK */
@@ -451,6 +453,10 @@ ClientCodeLoader = function () {
                     "};";
             }
             imgData += "for(let i in i_d){ i_d[i].path = '/images/sprite.png" + getTimeKey() + "';};";
+//@todo auto it!
+            imgData += "\r\ni_d['oblojka.png']={" +
+                "path: '/images/oblojka.png'" + getTimeKey() +
+                "};";
             imgData += "</script>";
             imgData += "<div style='display:none;'>";
             imgData += "<img src='/images/sprite.png" + getTimeKey() + "'>";
@@ -470,18 +476,19 @@ ClientCodeLoader = function () {
         let imageFiles, imageCode, path, demension;
         if (cacheImages && codeImages) return codeImages;
 
-        imageFiles = getFileList(imagesPath);
+        imageFiles = getFileList(imagesPath, Config.spriteSkip);
         imageCode = "<script>";
         imageCode += "i_d = {};";
-        for (let i in imageFiles) {
-            path = imagesPrefix + imageFiles[i].substr(imagesPath.length);
+        imageFiles.forEach(function (image) {
+            path = imagesPrefix + image.substr(imagesPath.length);
             path = path.replace('/images/', '');
 
-            demension = IMAGE_SIZE(imageFiles[i]);
+            demension = IMAGE_SIZE(image);
             imageCode += "\r\ni_d['" + path + "']=" +
                 "{w:" + translate2X(demension.width) +
                 ",h:" + translate2X(demension.height) + "};";
-        }
+        });
+
         imageCode += "for(let i in i_d){ " +
             "   i_d[i].path = '/images/' + i + '" + getTimeKey() + "';" +
             "   i_d[i].x = 0;" +
@@ -499,27 +506,30 @@ ClientCodeLoader = function () {
         return imageCode;
     };
 
-    let getFileList = function (basePath) {
-        let dirList, path, files;
+    let getFileList = function (basePath, skipArrAdd) {
+        let dirList, path, files, skip, skipArr;
         files = [];
+        skipArr = [
+            '.gitkeep',
+            '.gitignore',
+            'sprite.png',
+            'sprite.png.cache.js',
+        ];
+        if (skipArrAdd) skipArr = skipArr.concat(skipArrAdd);
         dirList = FS.readdirSync(basePath);
-        for (let i in dirList) {
-            /**@todo .js extenstion must be */
-            if (dirList[i] === '.gitkeep') continue;
-            if (dirList[i] === '.gitignore') continue;
-            if (dirList[i] === 'sprite.png') continue;
-            if (dirList[i] === 'sprite.png.js') continue;
-            if (dirList[i] === 'sprite.png.cache.js') continue;
-            if (dirList[i].indexOf('tmp$$') !== -1) continue;
-            path = basePath + dirList[i];
+        dirList.forEach(function (dirRow) {
+            if (dirRow.indexOf('tmp$$') !== -1) return 5;
+            if (skipArr.indexOf(dirRow) !== -1) return 10;
+
+            path = basePath + dirRow;
             if (FS.statSync(path).isDirectory()) {
-                files = files.concat(getFileList(path + '/'));
+                files = files.concat(getFileList(path + '/', skipArrAdd));
             } else {
                 files.push(path);
             }
-        }
+        });
         return files;
-    };
+    }
 
     let makeSprite = function (callback) {
         let list;
@@ -536,7 +546,7 @@ ClientCodeLoader = function () {
          * Calculate hash, if no changes - skip it!
          */
 
-        list = getFileList(imagesPath);
+        list = getFileList(imagesPath, Config.spriteSkip);
 
         SPRITESMITH.run({src: list}, function handleResult(err, result) {
             let fsResult;

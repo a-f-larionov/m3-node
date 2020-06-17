@@ -11,7 +11,12 @@ let PageBlockZPreloader = function PageBlockZPreloader() {
     let showed = true;
 
     this.init = function () {
-        elPreloader = GUI.createElement(ElementImage, {x: 0, y: 0, width: 778, height: 500, src: 'oblojka.png'});
+        /**
+         * 1- Загрузка текст
+         */
+        elPreloader = GUI.createElement(ElementImage,
+            {x: 0, y: 0, width: 778, height: 500, src: 'oblojka.png'}
+        );
         elPreloader.show();
     };
 

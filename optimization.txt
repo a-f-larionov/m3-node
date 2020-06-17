@@ -36,3 +36,6 @@ client.min.js       134 381
 VK, Stand           (vk)8004,(st) 7766
 Total 5 212 986(vk), (st)
 
+17.06.2020
+sprite.png          1.38Mb
+
