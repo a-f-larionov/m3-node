@@ -79,7 +79,8 @@ process.on('uncaughtException', function (err) {
     if (typeof Logs === 'undefined') {
         console.log(err);
     }
-    Logs.log("!!! ERROR HAPPENDZ !!!", Logs.LEVEL_ERROR, err, Logs.CHANNEL_TELEGRAM);
+    Logs.log("!!! ERROR HAPPENDZ !!!.", Logs.LEVEL_ERROR, err, Logs.CHANNEL_TELEGRAM);
+    Logs.log("!!! ERROR HAPPENDZ !!!!.", Logs.LEVEL_ERROR, err);
 
     if (err.code === 'ECONNRESET') {
         return Logs.log("Skip process.exit()", Logs.LEVEL_DETAIL, err);
@@ -88,8 +89,9 @@ process.on('uncaughtException', function (err) {
         return Logs.log("Skip process.exit()", Logs.LEVEL_DETAIL, err);
     }
 
-    log('!!! ERROR HAPPENDZ !!!', err, Date.now());
+    log('!!! ERROR HAPPENDZ !!!!', err, Date.now());
     // process.exit();
+    //@todo check self connect
 });
 
 /**

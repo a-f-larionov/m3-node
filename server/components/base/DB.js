@@ -14,13 +14,7 @@ DB = function () {
      * Cоединение mysql.
      * @type {Connection}
      */
-    let connection = null;
-
-    /**
-     * Статус соединения.
-     * @type {boolean}
-     */
-    let isConnected = false;
+    let pool = null;
 
     /**
      * Условие: эквивалентен.
@@ -51,17 +45,30 @@ DB = function () {
             password: Config.DB.password,
             database: Config.DB.database,
             charset: Config.DB.charset,
-            insecureAuth: true
+
+            insecureAuth: true,
+            //Параметр connectionLimit определяет максимальное количество подключений.
+            connectionLimit: 100,
+            //waitForConnections : true,
+            //queueLimit :0,
+            //debug    :  true,
+            //wait_timeout : 28800,
+            //connect_timeout :10
         };
-        connection = MYSQL.createConnection(connectionData);
-        connection.connect(function (err) {
+        //connection = MYSQL.createConnection(connectionData);
+        pool = MYSQL.createPool(connectionData);
+        //console.log(connection);
+        /*connection.connect(function (err) {
             if (err) {
                 Logs.log("Cant connect to DB.", Logs.LEVEL_FATAL_ERROR, {err: err, connectionData: connectionData});
             }
             isConnected = true;
             Logs.log("Connect to DB successful.", Logs.LEVEL_NOTIFY);
             afterInitCallback();
-        });
+        });*/
+
+        Logs.log("MySql create Pool.", Logs.LEVEL_NOTIFY);
+        afterInitCallback();
     };
 
     /**
@@ -70,7 +77,7 @@ DB = function () {
      * @param callback (rows)
      */
     this.query = function (query, callback) {
-        connection.query(query, function (err, rows) {
+        pool.query(query, function (err, rows) {
             if (err) {
                 Logs.log("Query error:" + query, Logs.LEVEL_ERROR, err);
             }
