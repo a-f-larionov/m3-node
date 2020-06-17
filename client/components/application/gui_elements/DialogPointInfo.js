@@ -122,9 +122,10 @@ let DialogPointInfo = function () {
                 score = DataPoints.getScore(point.id, friend.id);
                 panel[i].elPhotoScore.user = friend;
                 panel[i].elPhotoScore.score = score;
+            }else {
+                panel[i].elPhotoScore.score = 0;
+                panel[i].elPhotoScore.user = null;
             }
-            panel[i].elPhotoScore.score = 0;
-            panel[i].elPhotoScore.user = null;
             panel[i].elPhotoScore.show();
             panel[i].elPhotoScore.redraw();
         }
