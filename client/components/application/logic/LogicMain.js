@@ -46,6 +46,7 @@ let LogicMain = (function () {
 
     LogicMain.prototype.main = function () {
         let webSocketClient;
+
         /**@todo show preloader */
         Logs.init(function () {
         });

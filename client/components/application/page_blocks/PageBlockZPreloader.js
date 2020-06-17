@@ -11,13 +11,7 @@ let PageBlockZPreloader = function PageBlockZPreloader() {
     let showed = true;
 
     this.init = function () {
-        /**
-         * 1- Загрузка текст
-         */
-        elPreloader = GUI.createElement(ElementImage,
-            {x: 0, y: 0, width: 778, height: 500, src: 'oblojka.png'}
-        );
-        elPreloader.show();
+
     };
 
     this.show = function () {
@@ -48,11 +42,10 @@ let PageBlockZPreloader = function PageBlockZPreloader() {
     };
 
     this.redraw = function () {
-        elPreloader.redraw();
     };
 
     this.onLoaded = function () {
-        elPreloader.hide();
+        document.getElementById('img').remove();
     };
 };
 

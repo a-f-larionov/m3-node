@@ -249,6 +249,29 @@ ClientCodeLoader = function () {
         code += "</head>";
         code += "<body>";
 
+        code += "<div id='loading' style='" +
+            "  display: flex;\n" +
+            "  justify-content: center;\n" +
+            "  align-items: center;\n" +
+            "  font-family: arial,sans-serif,\"Marvin\",Tahoma,\"Geneva CY\",sans-serif;\n" +
+            "  color: grey;" +
+            "  font-size: 24px;" +
+            //"  background-color:rgba(103, 77, 56, 1.0);" +
+            "  background-color:rgba(200, 200, 0, 1.0);" +
+            " background-size:contain;" +
+            "  height:" + DataCross.app.height + "px;\n" +
+            "'>Загрузка...</div>";
+
+        code += "<img id=\"img\" src='/images/oblojka.png'" +
+            " style='display:none; " +
+            "height:" + DataCross.app.height + "px;" +
+            "' " +
+            "document.getElementById(\"img\").style.display=\"block\";" +
+            "document.getElementById(\"loading\").remove(); " +
+            "' " +
+            "/>";
+
+
         /** Application div */
         code += "<div style='" +
             "height:" + DataCross.app.height + "px;" +
@@ -455,7 +478,7 @@ ClientCodeLoader = function () {
             imgData += "for(let i in i_d){ i_d[i].path = '/images/sprite.png" + getTimeKey() + "';};";
 //@todo auto it!
             imgData += "\r\ni_d['oblojka.png']={" +
-                "path: '/images/oblojka.png'" + getTimeKey() +
+                "path: '/images/oblojka.png" + getTimeKey() + "'" +
                 "};";
             imgData += "</script>";
             imgData += "<div style='display:none;'>";
