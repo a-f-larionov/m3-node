@@ -277,7 +277,9 @@ let LogicUser = function () {
         getFriendIds.chunksCount--;
         friendIds = friendIds.concat(chunkIds);
         /** Удаяем самих себя из друзей */
-        friendIds.splice(friendIds.indexOf(authorizedUserId), 1);
+        if (friendIds.indexOf(authorizedUserId) !== -1) {
+            friendIds.splice(friendIds.indexOf(authorizedUserId), 1);
+        }
         if (getFriendIds.chunksCount === 0) {
             getFriendIds.complete = true;
             PageController.redraw();
