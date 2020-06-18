@@ -120,11 +120,11 @@ WebSocketServer = function () {
 
         checkBeforeRun();
 
-        /* создадим сервер */
+        /** Создадим сервер */
         http = HTTP.createServer(onHTTPRequest);
-        /* запустим прослушивание */
+        /** Запустим прослушивание */
         http.listen(port);
-        /* создадим websocket */
+        /** Создадим websocket */
 
         server = new WEBSOCKET.server({
             httpServer: http
@@ -144,7 +144,6 @@ WebSocketServer = function () {
      */
     let onHTTPRequest = function (request, response) {
         let requestUrlParts;
-        /** Запрашивается клинетский код? **/
         for (let path in map) {
             requestUrlParts = URL.parse(request.url, true);
             if (requestUrlParts.pathname === path) {

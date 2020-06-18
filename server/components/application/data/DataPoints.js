@@ -109,9 +109,10 @@ DataPoints = function () {
 
             ], gems: [ /** WizardLevel_3 polycolor gem */
                 "RBYYYPPBB",
-                "GPRBGRPRG",
-                "BRGYRBBGB",
-                "RBYYYPPBB",
+                "GPRGGRGRG",
+                "BRGGRBBGB",
+                "RBGGGPGBB",
+
                 "GPRBGRPRG",
                 "BRGYRBBGB",
                 "GPRBGGPRG",

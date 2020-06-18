@@ -98,7 +98,7 @@ let ElementUserScorePhoto = function () {
 
     this.onClick = function () {
         if (self.user) {
-            window.open(SocNet.getUserProfileUrl(SocNet.getType(), self.user.socNetUserId));
+            window.open(SocNet.getUserProfileUrl(self.user.socNetUserId));
         } else {
             SocNet.openInviteFriendDialog();
         }

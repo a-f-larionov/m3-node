@@ -170,6 +170,15 @@ SocNetVK = function () {
         //self.oAuthorization();
         afterInitCallback();
     };
+
+    /**
+     * Возвращает url на профиль пользователя в социальной сети.
+     * @param socNetUserId {Number} id пользователя в соц.сети.
+     * @returns {string} url на профиль пользователя в соц.сети.
+     */
+    this.getUserProfileUrl = function (socNetUserId) {
+        return 'http://vk.com/id' + socNetUserId;
+    };
 };
 /**
  * Статичный класс.

@@ -87,7 +87,7 @@ let ApiRouter = new (function ApiRouter() {
     };
 
     this.onDisconnect = function (id) {
-        let userId;
+        let userId, count;
         for (let i in onDisconnectCallbacks) {
             onDisconnectCallbacks[i].call(self, connections[id]);
         }

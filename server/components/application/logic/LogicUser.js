@@ -108,10 +108,13 @@ LogicUser = function () {
      */
     let authorizeSendSuccess = function (user, cntx, prid) {
         /** Тут мы запомним его cid раз и на всегда */
-        Logs.log("Auth+", Logs.LEVEL_NOTIFY, user.socNetUserId, Logs.CHANNEL_TELEGRAM);
+        Logs.log("🥰 ", Logs.LEVEL_NOTIFY,
+            SocNet(SocNet.TYPE_VK).getUserProfileUrl(user.socNetUserId),
+            Logs.CHANNEL_TELEGRAM
+        );
 
         userAddConn(user, cntx);
-        DataUser.updateLastLogin(user.id,cntx);
+        DataUser.updateLastLogin(user.id, cntx);
         CAPIUser.authorizeSuccess(user.id, user);
         Profiler.finish(prid);
     };
@@ -226,6 +229,12 @@ LogicUser = function () {
      * @param userId {Number} id пользователя.
      */
     let onLogout = function (userId) {
+        DataUser.getById(userId, function (user) {
+            Logs.log("😴 ", Logs.LEVEL_NOTIFY,
+                SocNet(SocNet.TYPE_STANDALONE).getUserProfileUrl(user.socNetUserId),
+                Logs.CHANNEL_TELEGRAM
+            )
+        });
         Logs.log("User logout. user.id=" + userId, Logs.LEVEL_DETAIL);
         Statistic.add(userId, Statistic.ID_LOGOUT);
         DataUser.updateLastLogout(userId);

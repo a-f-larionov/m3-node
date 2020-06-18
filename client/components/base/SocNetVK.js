@@ -52,11 +52,10 @@ let SocNetVK = function () {
 
     /**
      * Возвращает url на профиль пользователя в социальной сети.
-     * @param socNetTypeId {Number} id социальной сети SocNet.TYPE_*
      * @param socNetUserId {Number} id пользователя в соц.сети.
      * @returns {string} url на профиль пользователя в соц.сети.
      */
-    this.getUserProfileUrl = function (socNetTypeId, socNetUserId) {
+    this.getUserProfileUrl = function (socNetUserId) {
         return 'http://vk.com/id' + socNetUserId;
     };
 
