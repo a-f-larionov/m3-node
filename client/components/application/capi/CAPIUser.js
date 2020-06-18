@@ -69,8 +69,12 @@ let CAPIUser = function () {
      * @param cntx {Object}
      * @param value {boolean}
      */
-    this.setOneHealthHide = function (cntx, value) {
+    this.setOneHealthHide = function (cntx, value, fullRecoveryTime) {
         PageBlockPanel.oneHealthHide = value;
+        let user = LogicUser.getCurrent();
+        user.fullRecoveryTime = fullRecoveryTime;
+        user.fullRecoveryTime = LogicTimeClient.convertToClient(user.fullRecoveryTime);
+        LogicUser.updateUserInfo(user);
     }
 };
 

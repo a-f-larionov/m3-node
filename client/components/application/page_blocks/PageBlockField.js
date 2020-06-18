@@ -457,8 +457,8 @@ let PageBlockField = function PageBlockField() {
         }
         if (score > lastScore || lastScore === undefined) {
             chestId = LogicChests.onFinish(pointId, lastScore, score);
-            SAPIMap.onFinish(pointId, score, chestId);
             DataPoints.setPointUserScore(pointId, user.id, score);
+            SAPIMap.onFinish(pointId, score, chestId);
         }
         SAPIUser.healthBack();
         PBZDialogs.dialogPointInfo.showDialog(pointId, score, true);
@@ -530,7 +530,7 @@ let PageBlockField = function PageBlockField() {
         //@Todo get sex and : Дальше ты сам(а)!
         //@todo show from Wizard by code, but not automaticaly
         if (showTextDalcheSami) {
-            showText('Теперь сами!');
+            showText('Дальше сам!');
         }
     };
 

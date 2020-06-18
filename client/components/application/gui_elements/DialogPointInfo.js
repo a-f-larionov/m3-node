@@ -88,6 +88,9 @@ let DialogPointInfo = function () {
             srcRest: 'button-close-rest.png',
             onClick: function () {
                 self.closeDialog();
+                if (isGoalsReached) {
+                    PageController.showPage(PageMain);
+                }
             }
         }).show();
 

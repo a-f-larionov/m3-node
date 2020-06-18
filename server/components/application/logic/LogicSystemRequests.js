@@ -61,7 +61,7 @@ LogicSystemRequests = function () {
     this.shutdown = function (callback, request) {
         if (LogicUser.getOnlineUserIds().length) {
             if (request.url.indexOf('key=' + shutdownForceKey) === -1) {
-                shutdownForceKey = Date.now() + Math.ceil(Math.random() * 1000);
+                shutdownForceKey = '' + Date.now() + '' + Math.ceil(Math.random() * 1000);
                 return callback('online' + LogicUser.getOnlineUserIds().length + "\r\n<br> " +
                     "key=" + shutdownForceKey);
             }

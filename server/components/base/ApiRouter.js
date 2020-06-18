@@ -91,7 +91,7 @@ let ApiRouter = new (function ApiRouter() {
         for (let i in onDisconnectCallbacks) {
             onDisconnectCallbacks[i].call(self, connections[id]);
         }
-        userId = connections[id].userId;
+        if (connections[id]) userId = connections[id].userId;
         delete connections[id];
         count = 0;
         for (let i in connections) count++;

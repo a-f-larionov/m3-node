@@ -185,8 +185,7 @@ SAPIUser = function () {
                 if (!LogicHealth.isMaxHealths(user)) {
                     LogicHealth.decrementHealth(user, -1);
                     DataUser.updateHealthAndStartTime(user, function () {
-                            CAPIUser.updateUserInfo(cntx.user.id, user);
-                            CAPIUser.setOneHealthHide(cntx.user.id, false);
+                            CAPIUser.setOneHealthHide(cntx.user.id, false, user.fullRecoveryTime);
                         }
                     );
                     done();
@@ -213,8 +212,7 @@ SAPIUser = function () {
                 if (LogicHealth.getHealths(user) > 0) {
                     LogicHealth.decrementHealth(user, 1);
                     DataUser.updateHealthAndStartTime(user, function () {
-                            CAPIUser.updateUserInfo(user.id, user);
-                            CAPIUser.setOneHealthHide(cntx.user.id, true);
+                            CAPIUser.setOneHealthHide(cntx.user.id, true, user.fullRecoveryTime);
                         }
                     );
                     done();

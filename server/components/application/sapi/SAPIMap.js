@@ -84,7 +84,7 @@ SAPIMap = function () {
                 if (user.nextPointId < pointId + 1) {
 
                     DataUser.updateNextPointId(cntx.userId, pointId + 1, function () {
-                        Logs.log("LevelUp uid:" + cntx.user.id + " pid:" + (pointId + 1), Logs.LEVEL_ALERT);
+                        Logs.log("😻LevelUp uid:" + cntx.user.id + " pid:" + (pointId + 1), Logs.LEVEL_ALERT);
                         /** Откроем сундук, если возможно */
                         //@todo check map stars
                         if (chestId) {

@@ -231,7 +231,7 @@ LogicUser = function () {
     let onLogout = function (userId) {
         DataUser.getById(userId, function (user) {
             Logs.log("😴 ", Logs.LEVEL_NOTIFY,
-                SocNet(SocNet.TYPE_STANDALONE).getUserProfileUrl(user.socNetUserId),
+                SocNet(SocNet.TYPE_VK).getUserProfileUrl(user.socNetUserId),
                 Logs.CHANNEL_TELEGRAM
             )
         });

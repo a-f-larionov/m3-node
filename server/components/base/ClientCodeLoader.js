@@ -266,8 +266,9 @@ ClientCodeLoader = function () {
             " style='display:none; " +
             "height:" + DataCross.app.height + "px;" +
             "' " +
-            "document.getElementById(\"img\").style.display=\"block\";" +
+            "onload='" +
             "document.getElementById(\"loading\").remove(); " +
+            "document.getElementById(\"img\").style.display=\"block\";" +
             "' " +
             "/>";
 

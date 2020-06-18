@@ -45,7 +45,8 @@ let PageBlockZPreloader = function PageBlockZPreloader() {
     };
 
     this.onLoaded = function () {
-        document.getElementById('img').remove();
+        let el = document.getElementById('img');
+        if (el) el.remove();
     };
 };
 

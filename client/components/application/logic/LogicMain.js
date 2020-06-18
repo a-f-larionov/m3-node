@@ -5,6 +5,8 @@
  */
 let LogicMain = (function () {
 
+    let firstAuth = true;
+
     function LogicMain() {
     }
 
@@ -24,16 +26,18 @@ let LogicMain = (function () {
         DataMap.setCurrentMapId();
 
         /** Первый показ игры: Главная страница */
-        PageController.showPage(PageMain);
+        if (firstAuth) {
+            PageController.showPage(PageMain);
 
-        /** Проверка визарада начала игры */
-        let timerId = setInterval(function () {
-            if (PageBlockZPreloader.isLoaded()) {
-                clearInterval(timerId);
-                LogicWizard.onLoaded();
-                PageBlockZPreloader.onLoaded();
-            }
-        }, 10);
+            /** Проверка визарада начала игры */
+            let timerId = setInterval(function () {
+                if (PageBlockZPreloader.isLoaded()) {
+                    clearInterval(timerId);
+                    LogicWizard.onLoaded();
+                    PageBlockZPreloader.onLoaded();
+                }
+            }, 10);
+        }
 
         if (prid) {
             setTimeout(function () {
@@ -42,6 +46,7 @@ let LogicMain = (function () {
             SAPILogs.clientLoaded(prid);
             prid = null;
         }
+        firstAuth = false;
     };
 
     LogicMain.prototype.main = function () {
