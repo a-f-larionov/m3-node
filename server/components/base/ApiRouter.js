@@ -95,7 +95,7 @@ let ApiRouter = new (function ApiRouter() {
         delete connections[id];
         count = 0;
         for (let i in connections) count++;
-        Logs.log("Connection close: id=" + id + " count:" + count + " userId:" + userId, Logs.LEVEL_WARNING);
+        Logs.log("Connection close: id=" + id + " count:" + count + " userId:" + userId, Logs.LEVEL_DETAIL);
 
         if (CONST_IS_CLIENT_SIDE) {
             //@todo не очень это выглядиты(да  и на сервере такой штуки нет)
@@ -104,7 +104,6 @@ let ApiRouter = new (function ApiRouter() {
         }
 
         if (CONST_IS_SERVER_SIDE && count === 0) {
-            Logs.log("Online Zero", Logs.LEVEL_ALERT);
             setTimeout(function () {
                 let count = 0;
                 for (let i in connections) count++;

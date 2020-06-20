@@ -231,12 +231,6 @@ LogicUser = function () {
      * @param userId {Number} id пользователя.
      */
     let onLogout = function (userId) {
-        DataUser.getById(userId, function (user) {
-            Logs.log("😴 ", Logs.LEVEL_NOTIFY,
-                SocNet(SocNet.TYPE_VK).getUserProfileUrl(user.socNetUserId),
-                Logs.CHANNEL_TELEGRAM
-            )
-        });
         Logs.log("User logout. user.id=" + userId, Logs.LEVEL_DETAIL);
         Statistic.write(userId, Statistic.ID_LOGOUT);
         DataUser.updateLastLogout(userId);

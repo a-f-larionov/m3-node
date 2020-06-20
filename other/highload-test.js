@@ -92,7 +92,7 @@
             [getUid(), getUid(), getUid()]
         );
 
-        SAPIUser.healthDown();
+        SAPIUser.healthDown(getPid());
         SAPIMap.onFinish(getPid(), Math.random() * 10000, Math.ceil(getPid() / 3))
         SAPIUser.healthBack();
 

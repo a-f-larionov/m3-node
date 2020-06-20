@@ -82,12 +82,14 @@ SAPIMap = function () {
 
             DataUser.getById(cntx.userId, function (user) {
                 //@todo only by one up
+
+                Statistic.write(user.id, Statistic.ID_FINISH_PLAY, pointId, score);
+
                 if (user.nextPointId < pointId + 1) {
 
-                    Statistic.write(user.id, Statistic.ID_FINISH_PLAY, pointId, score);
+                    Statistic.write(user.id, Statistic.ID_LEVEL_UP, pointId, score);
 
                     DataUser.updateNextPointId(cntx.userId, pointId + 1, function () {
-                        Logs.log("😻LevelUp uid:" + cntx.user.id + " pid:" + (pointId + 1), Logs.LEVEL_ALERT);
                         /** Откроем сундук, если возможно */
                         //@todo check map stars
                         if (chestId) {
@@ -100,6 +102,7 @@ SAPIMap = function () {
                             } else {
                                 Logs.log("Chest open uid:" + cntx.user.id + " cid:" + chestId, Logs.LEVEL_ALERT);
                             }
+                            Statistic.write(user.id, Statistic.ID_OPEN_CHEST, chestId);
                             chest.prizes.forEach(function (prize) {
                                 switch (prize.id) {
                                     case DataObjects.STUFF_HUMMER:

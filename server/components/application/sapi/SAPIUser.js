@@ -178,8 +178,6 @@ SAPIUser = function () {
 
         let prid = pStart(Profiler.ID_SAPIUSER_HEALTH_BACK);
 
-        Statistic.write(cntx.userId, Statistic.ID_START_PLAY);
-
         /** Возвращаем жизнь */
         LOCK.acquire(Keys.health(cntx.user.id), function (done) {
             setTimeout(done, 5 * 60 * 1000);
@@ -200,12 +198,13 @@ SAPIUser = function () {
         });
     };
 
-    this.healthDown = function (cntx) {
+    this.healthDown = function (cntx,pointId) {
         if (!cntx.isAuthorized) return Logs.log(arguments.callee.name + " not authorized", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
 
         let prid = pStart(Profiler.ID_SAPIUSER_HEALTH_DOWN);
+        Statistic.write(cntx.userId, Statistic.ID_START_PLAY, pointId);
 
         LOCK.acquire(Keys.health(cntx.user.id), function (done) {
             //@todo auto LOCK timeout(with keys!)

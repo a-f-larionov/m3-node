@@ -39,7 +39,6 @@ Profiler = function () {
         id = pridToId[prid];
         if (!data[id]) return Logs.log("Profiler.stop(). if (!data[id]) { /*  This message. */ }",
             Logs.LEVEL_WARNING, {prid: prid, id: id, stack: (new Error().stack)});
-        //Logs.log("clear " + prid + ' ' + id, Logs.LEVEL_ALERT);
 
         delete data[id].stamps[prid];
         delete pridToId[prid];

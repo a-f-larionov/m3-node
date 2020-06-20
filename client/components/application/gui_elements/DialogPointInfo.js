@@ -70,7 +70,7 @@ let DialogPointInfo = function () {
                     } else {
                         /** Начать игру */
                         //@todo ищи код ljklkjlkjkljkjlkjljlkjlk
-                        SAPIUser.healthDown();
+                        SAPIUser.healthDown(pointId);
                         PageBlockPanel.oneHealthHide = true;
                         DataPoints.setPlayedId(pointId);
 

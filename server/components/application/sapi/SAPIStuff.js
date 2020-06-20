@@ -16,7 +16,7 @@ SAPIStuff = function () {
         if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
 
-        Statistic.write(Statistic.ID_HUMMER_USE);
+        Statistic.write(cntx.userId, Statistic.ID_HUMMER_USE);
         let prid = pStart(Profiler.ID_SAPISTUFF_USED_HUMMER);
         DataStuff.usedHummer(cntx.user.id, LogicTid.getOne(), function () {
             pFinish(prid);
@@ -28,7 +28,7 @@ SAPIStuff = function () {
         if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
 
-        Statistic.write(Statistic.ID_LIGHTNING_USE);
+        Statistic.write(cntx.userId, Statistic.ID_LIGHTNING_USE);
         let prid = pStart(Profiler.ID_SAPISTUFF_USED_LIGHTNING);
         DataStuff.usedLightning(cntx.user.id, LogicTid.getOne(), function () {
             pFinish(prid);
@@ -40,7 +40,7 @@ SAPIStuff = function () {
         if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
 
-        Statistic.write(Statistic.ID_SHUFFLE_USE);
+        Statistic.write(cntx.userId, Statistic.ID_SHUFFLE_USE);
         let prid = pStart(Profiler.ID_SAPISTUFF_USED_SHUFFLE);
         DataStuff.usedShuffle(cntx.user.id, LogicTid.getOne(), function () {
             pFinish(prid);
@@ -54,11 +54,11 @@ SAPIStuff = function () {
 
         if (!DataShop.hummers[itemIndex]) return Logs.log("no item hummer " + itemIndex, Logs.LEVEL_WARNING, cntx);
         let tid;
-        Statistic.write(Statistic.ID_BUY_HUMMER);
         let prid = pStart(Profiler.ID_SAPISTUFF_BUY_HUMMER);
         DataStuff.usedGold(cntx.user.id, DataShop.hummers[itemIndex].gold, tid = LogicTid.getOne(), function (success) {
             if (success)
                 DataStuff.giveAHummer(cntx.user.id, DataShop.hummers[itemIndex].quantity, tid, function () {
+                    Statistic.write(cntx.userId, Statistic.ID_BUY_HUMMER, DataShop.hummers[itemIndex].quantity);
                     pFinish(prid);
                 });
         });
@@ -74,10 +74,11 @@ SAPIStuff = function () {
         let tid;
 
         let prid = pStart(Profiler.ID_SAPISTUFF_BUY_LIGHTNING);
-        Statistic.write(Statistic.ID_BUY_LIGHTNING);
+
         DataStuff.usedGold(cntx.user.id, DataShop.lightning[itemIndex].gold, tid = LogicTid.getOne(), function (success) {
             if (success)
                 DataStuff.giveALightning(cntx.user.id, DataShop.lightning[itemIndex].quantity, tid, function () {
+                    Statistic.write(cntx.userId, Statistic.ID_BUY_LIGHTNING, DataShop.lightning[itemIndex].quantity);
                     pFinish(prid);
                 });
         });
@@ -92,11 +93,11 @@ SAPIStuff = function () {
         let tid;
 
         let prid = pStart(Profiler.ID_SAPISTUFF_BUY_SHUFFLE);
-        Statistic.write(Statistic.ID_BUY_SHUFFLE);
 
         DataStuff.usedGold(cntx.user.id, DataShop.shuffle[itemIndex].gold, tid = LogicTid.getOne(), function (success) {
             if (success)
                 DataStuff.giveAShuffle(cntx.user.id, DataShop.shuffle[itemIndex].quantity, tid, function () {
+                    Statistic.write(cntx.userId, Statistic.ID_BUY_SHUFFLE, DataShop.shuffle[itemIndex].quantity);
                     pFinish(prid);
                 });
         });
@@ -110,7 +111,7 @@ SAPIStuff = function () {
         let tid = LogicTid.getOne();
 
         let prid = pStart(Profiler.ID_SAPISTUFF_BUY_HEALTH);
-        Statistic.write(Statistic.ID_BUY_HEALTH);
+
         LOCK.acquire(Keys.health(cntx.user.id), function (done) {
                 setTimeout(done, 5 * 60 * 1000);
                 DataUser.getById(cntx.user.id, function (user) {
@@ -119,6 +120,7 @@ SAPIStuff = function () {
                         done();
                         pFinish(prid);
                     } else {
+                        Statistic.write(cntx.userId, Statistic.ID_BUY_HEALTH);
                         DataStuff.usedGold(cntx.user.id, DataShop.healthGoldPrice, tid, function (success) {
                             if (!success) {
                                 Logs.log("Health tid:" + tid + " uid:" + user.id + " CANCEL", Logs.LEVEL_DETAIL, user, Logs.CHANNEL_VK_HEALTH);

@@ -193,10 +193,11 @@ LogicPayments = function () {
 
                             CAPIStuff.incrementGold(user.id, product.quantity);
 
-                            Logs.log(buyPrefix + " tid:" + tid + " uid:" + user.id + " votes:" + item_price + " gold:" + product.quantity + " order success", Logs.LEVEL_DETAIL, {
+                            Logs.log(buyPrefix + " tid:" + tid + " uid:" + user.id + " votes:" +
+                                item_price + " gold:" + product.quantity + " order success", Logs.LEVEL_DETAIL, {
                                 order: order, itemPrice: item_price
                             }, Logs.CHANNEL_VK_PAYMENTS);
-                            Statistic.write(user.id, Statistic.ID_BUY_VK_MONEY);
+                            Statistic.write(user.id, Statistic.ID_BUY_VK_MONEY, order_id, item_price);
                             done();
                             return callback(
                                 {"response": {"order_id": order_id, "app_order_id": newOrder.id}}
