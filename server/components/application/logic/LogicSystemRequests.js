@@ -84,7 +84,7 @@ LogicSystemRequests = function () {
         setTimeout(function () {
             Logs.setLevel(Logs.LEVEL_NOTIFY);
         }, 1000 * 60 * 10);
-        callback("set detail log level " + Date.now());
+        callback("set detail log level by a time " + Date.now());
     };
 
     this.logsSetNotify = function (callback) {

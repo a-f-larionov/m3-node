@@ -3,8 +3,6 @@ LogicMain = function () {
 
     this.preInit = function (afterCallback) {
 
-        self.setStatisticsIds();
-        self.setProfileIds();
         self.setWebSocketServerMap();
         self.linkWebSocketAndApiRouter();
 
@@ -17,17 +15,6 @@ LogicMain = function () {
         this.setDeInitCallbacks();
     };
 
-    this.setStatisticsIds = function () {
-
-        /** User statistics. */
-        Statistic.ID_AUTHORIZE = Statistic.addTitle(1, "авторизация через ВКонтакте ");
-        Statistic.ID_LOGOUT = Statistic.addTitle(2, "покинул игру.");
-    };
-
-    this.setProfileIds = function () {
-
-    };
-
     this.setWebSocketServerMap = function () {
 
         WebSocketServer.setMap({
@@ -38,25 +25,31 @@ LogicMain = function () {
             '/service/client-vk': ClientCodeLoader.getClientVK,
             '/service/client-standalone': ClientCodeLoader.getClientStandalone,
 
-            '/service/--reload-sprite': ClientCodeLoader.reloadSprite,
-
-            '/service/--reloadClientCode': ClientCodeLoader.reloadClient,
             '/service/vk-widget-comments': ClientCodeLoader.getVKWidgetComments,
+
+            '/service/--reload-sprite': ClientCodeLoader.reloadSprite,
+            '/service/--reload-client-code': ClientCodeLoader.reloadClient,
 
             '/service/--profiler': LogicSystemRequests.getProfiler,
             '/service/--counters': LogicSystemRequests.getCounters,
-            '/service/--shutdown___': LogicSystemRequests.shutdown,
+            '/service/--get-statistics': Statistic.getReport,
             '/service/--get-online': LogicSystemRequests.getOnline,
             '/service/--reload-levels': LogicSystemRequests.reloadLevels,
-            '/service/--logsSetDetail': LogicSystemRequests.logsSetDetail,
-            '/service/--logsSetNotify': LogicSystemRequests.logsSetNotify,
+            '/service/--logs-set-detail': LogicSystemRequests.logsSetDetail,
+            '/service/--logs-set-notify': LogicSystemRequests.logsSetNotify,
+            '/service/--shutdown___': LogicSystemRequests.shutdown,
+
             '/service/--help': function (callback) {
                 callback("Project.name:" + Config.Project.name + "<br>" +
                     "--profiler <br>" +
                     "--counters <br>" +
+                    "--get-statistics<br>" +
                     "--get-online<br>" +
-                    "--logsSetDetail<br>" +
-                    "--logsSetNotify<br>" +
+                    "--reload-levels<br>" +
+                    "--logs-set-detail<br>" +
+                    "--logs-set-notify<br>" +
+                    "--reload-sprite<br>" +
+                    "--reload-client-code<br>" +
                     "--help<br>" +
                     "<br>" +
                    // "reloadClient<br>" +

@@ -178,6 +178,8 @@ SAPIUser = function () {
 
         let prid = pStart(Profiler.ID_SAPIUSER_HEALTH_BACK);
 
+        Statistic.write(cntx.userId, Statistic.ID_START_PLAY);
+
         /** Возвращаем жизнь */
         LOCK.acquire(Keys.health(cntx.user.id), function (done) {
             setTimeout(done, 5 * 60 * 1000);

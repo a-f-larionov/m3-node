@@ -112,6 +112,8 @@ LogicUser = function () {
             SocNet(SocNet.TYPE_VK).getUserProfileUrl(user.socNetUserId),
             Logs.CHANNEL_TELEGRAM
         );
+        if (user.socNetTypeId === SocNet.TYPE_VK) Statistic.write(user.id, Statistic.ID_AUTHORIZE_VK);
+        if (user.socNetTypeId === SocNet.TYPE_STANDALONE) Statistic.write(user.id, Statistic.ID_AUTHORIZE_STANDALONE);
 
         userAddConn(user, cntx);
         DataUser.updateLastLogin(user.id, cntx);
@@ -236,7 +238,7 @@ LogicUser = function () {
             )
         });
         Logs.log("User logout. user.id=" + userId, Logs.LEVEL_DETAIL);
-        Statistic.add(userId, Statistic.ID_LOGOUT);
+        Statistic.write(userId, Statistic.ID_LOGOUT);
         DataUser.updateLastLogout(userId);
     };
 

@@ -79,8 +79,6 @@ process.on('uncaughtException', function (err) {
     if (typeof Logs === 'undefined') {
         console.log(err);
     }
-    Logs.log("!!! ERROR HAPPENDZ !!!.", Logs.LEVEL_ERROR, err, Logs.CHANNEL_TELEGRAM);
-    Logs.log("!!! ERROR HAPPENDZ !!!!.", Logs.LEVEL_ERROR, err);
 
     if (err.code === 'ECONNRESET') {
         return Logs.log("Skip process.exit()", Logs.LEVEL_DETAIL, err);
@@ -88,6 +86,9 @@ process.on('uncaughtException', function (err) {
     if (err.code === 'PROTOCOL_CONNECTION_LOST') {
         return Logs.log("Skip process.exit()", Logs.LEVEL_DETAIL, err);
     }
+
+    Logs.log("!!! ERROR HAPPENDZ !!!.", Logs.LEVEL_ERROR, err, Logs.CHANNEL_TELEGRAM);
+    Logs.log("!!! ERROR HAPPENDZ !!!!.", Logs.LEVEL_ERROR, err);
 
     log('!!! ERROR HAPPENDZ !!!!', err, Date.now());
     // process.exit();
@@ -140,7 +141,7 @@ str_pad = function (str, len, pad, dir) {
  * Возвращает время в секундах.
  */
 time = function () {
-    return Math.floor(Date().now() / 1000);
+    return Math.floor(mtime() / 1000);
 };
 
 /**
