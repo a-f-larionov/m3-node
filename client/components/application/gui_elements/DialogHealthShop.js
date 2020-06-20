@@ -11,6 +11,7 @@ let DialogHealthShop = function () {
     /**
      * Чтобы пользователь на купил 2ыйнм кликом
      * @returns {boolean}
+     * @todo to tlock
      */
     let lock = function () {
         if (locked) return true;

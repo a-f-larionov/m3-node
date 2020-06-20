@@ -108,6 +108,7 @@ let ElementStuffButton = function () {
         dom.height = self.height;
         dom.backgroundImage = self.srcRest;
         dom.pointer = GUI.POINTER_HAND;
+        dom.isStuffButton = true;
         GUI.bind(dom, GUI.EVENT_MOUSE_MOUSE_DOWN, onMouseDown, self);
         GUI.bind(dom, GUI.EVENT_MOUSE_CLICK, onMouseClick, self);
         GUI.bind(dom, GUI.EVENT_MOUSE_OVER, onMouseOver, self);

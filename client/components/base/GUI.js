@@ -75,6 +75,8 @@ let GUI = function () {
      */
     this.POINTER_ARROW = 'default';
 
+    this.POINTER_NONE = 'none';
+
     this.eventNames = [];
     this.eventNames[this.EVENT_MOUSE_MOUSE_DOWN] = 'mousedown';
     this.eventNames[this.EVENT_MOUSE_MOUSE_UP] = 'mouseup';

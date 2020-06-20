@@ -93,3 +93,16 @@ function chunkIt(arr) {
 function onlyUnique(value, index, self) {
     return self.indexOf(value) === index;
 }
+
+
+function tlock(key, seconds) {
+    if (!seconds) seconds = 1;
+    if (tlock.locks[key]) return true;
+    tlock.locks[key] = true;
+    setTimeout(function () {
+        tlock.locks[key] = false;
+    }, seconds);
+};
+
+tlock.locks = [];
+tlock.STUFF_BUTTON = 1;

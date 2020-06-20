@@ -170,6 +170,7 @@ let PageBlockField = function PageBlockField() {
             x: 650, y: oY, fieldName: 'hummerQty',
             srcRest: 'button-hummer-rest.png',
             onClick: function () {
+                if (tlock(tlock.STUFF_BUTTON)) return;
                 self.setStuffMode(LogicStuff.STUFF_HUMMER);
             }
         });
@@ -180,6 +181,7 @@ let PageBlockField = function PageBlockField() {
             x: 650, y: oY + 80, fieldName: 'lightningQty',
             srcRest: 'button-lightning-rest.png',
             onClick: function () {
+                if (tlock(tlock.STUFF_BUTTON)) return;
                 self.setStuffMode(LogicStuff.STUFF_LIGHTNING);
             }
         });
@@ -190,6 +192,7 @@ let PageBlockField = function PageBlockField() {
             x: 650, y: oY + 80 * 2, fieldName: 'shuffleQty',
             srcRest: 'button-shuffle-rest.png',
             onClick: function () {
+                if (tlock(tlock.STUFF_BUTTON)) return;
                 self.setStuffMode(LogicStuff.STUFF_SHUFFLE);
             }
         });
@@ -241,14 +244,14 @@ let PageBlockField = function PageBlockField() {
         });
 
         /** Dom stuff */
-        domStuff = GUI.createDom(null, {x: 190, y: 10});
+        domStuff = GUI.createDom(null, {x: 190, y: 10, pointer: GUI.POINTER_NONE});
         domStuff.__dom.style.zIndex = 10000;
 
         elTextShadow = GUI.createDom(undefined, {
             x: 0, y: 0, width: DataCross.app.width, height: DataCross.app.height,
             background: "black",
             opacity: 0.3,
-            zIndex: 999,
+            zIndex: 999
         });
 
         elText = GUI.createElement(ElementText, {
@@ -268,7 +271,9 @@ let PageBlockField = function PageBlockField() {
             domStuff.hide();
             el = document.elementFromPoint(event.clientX, event.clientY);
             /** Передаем только на поле */
-            if (el.parentElement.__dom && el.parentElement.__dom.isFieldContainer) {
+            if (
+                (el.parentElement.__dom && el.parentElement.__dom.isFieldContainer) ||
+                el.__dom.isStuffButton) {
                 el.dispatchEvent(new MouseEvent(event.type, event));
             }
             if (stuffMode) domStuff.show();
@@ -494,6 +499,8 @@ let PageBlockField = function PageBlockField() {
     };
 
     this.setStuffMode = function (mode) {
+        /** Если уже выбран этот - отменяем его */
+        if (mode === stuffMode) mode = null;
         switch (mode) {
             case LogicStuff.STUFF_HUMMER:
                 if (LogicStuff.getStuff('hummerQty') < 1) {
