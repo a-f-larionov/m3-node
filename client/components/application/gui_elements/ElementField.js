@@ -643,7 +643,7 @@ let ElementField = function () {
                     }
                 }
             }
-        }, Config.OnIdle.second * 3);
+        }, Config.OnIdle.second * 6);
     };
 
     this.isFieldSilent = function () {

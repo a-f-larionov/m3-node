@@ -67,8 +67,6 @@ let ElementImage = function () {
      */
     this.init = function () {
         dom = GUI.createDom();
-        dom.width = self.width;
-        dom.height = self.height;
         dom.backgroundImage = self.src;
         if (this.photoBorder) {
             dom.border = '2px solid ' + 'rgba(68, 62, 0, 0.7)';
@@ -107,6 +105,8 @@ let ElementImage = function () {
         }
         dom.x = self.x;
         dom.y = self.y;
+        dom.width = self.width;
+        dom.height = self.height;
         dom.title = self.title;
         dom.pointer = self.pointer;
         dom.redraw();

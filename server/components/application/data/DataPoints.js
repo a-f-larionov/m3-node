@@ -124,7 +124,7 @@ DataPoints = function () {
     };
 
     wayPoints[4] = {
-        id: 4, turns: 10, score1: 600, score2: 1500, score3: 2000,
+        id: 4, turns: 18, score1: 600, score2: 1500, score3: 2000,
         goals: [
             {id: DataObjects.OBJECT_GOLD, count: 4}
         ],
@@ -172,7 +172,7 @@ DataPoints = function () {
     };
 
     wayPoints[5] = {
-        id: 5, turns: 18, score1: 1000, score2: 1500, score3: 8000,
+        id: 5, turns: 21, score1: 1000, score2: 1500, score3: 8000,
         goals: [
             {id: DataObjects.OBJECT_GOLD, count: 17 - 4}
         ], layers: {

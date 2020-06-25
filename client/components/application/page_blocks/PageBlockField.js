@@ -413,7 +413,6 @@ let PageBlockField = function PageBlockField() {
 
         if (objectScores[objectId]) {
             score += objectScores[objectId];
-            //@todo animate score here
         }
         self.redraw();
         LogicWizard.onDestroyThing(cell);
@@ -427,11 +426,14 @@ let PageBlockField = function PageBlockField() {
         noMoreGoals = true;
         goals.forEach(function (goal) {
             if (goal.id === id) {
+                Animate.anim(animBlump, {}, elPanelGoals.getItemDom(goal.id));
                 goal.count -= qty;
             }
             if (goal.count > 0) noMoreGoals = false;
             if (goal.count < 0) goal.count = 0;
         });
+        /** @todo act goals */
+
         self.redraw();
     };
 

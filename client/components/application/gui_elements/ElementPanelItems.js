@@ -30,7 +30,19 @@ let ElementPanelItems = function () {
     let elPanel2;
     let elPanel3;
 
+    /**
+     *
+     * @type {ElementImage}
+     */
     let imagesEls = {};
+
+    /**
+     * @param id
+     * @returns ElementImage
+     */
+    this.getItemDom = function (id) {
+        return imagesEls[id];
+    };
 
     let countersEls = {};
 
@@ -127,7 +139,10 @@ let ElementPanelItems = function () {
         offsetY = 0;
 
         self.items.forEach(function (item) {
+            //**/
+            imagesEls[item.id].sX = self.x + 15;
             imagesEls[item.id].x = self.x + 15;
+            imagesEls[item.id].sY = self.y + 46 + offsetY;
             imagesEls[item.id].y = self.y + 46 + offsetY;
             imagesEls[item.id].show();
 

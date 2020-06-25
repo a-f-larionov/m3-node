@@ -347,13 +347,13 @@ let animHintArrow = function animHint() {
         imgs = [dom];
     };
 
-    this.iterate = function (counter) {
-        offset = Math.cos(Math.PI / 15 * counter) * 4;
+    this.iterate = function (t) {
+        offset = Math.cos(Math.PI / 15 * t) * 4;
         imgs.forEach(function (img) {
             img.x = img.p.x + offset / 2;
             img.y = img.p.y + offset / 2;
-            img.dom.width = 50 - offset;
-            img.dom.height = 50 - offset;
+            img.width = 50 - offset;
+            img.height = 50 - offset;
             img.redraw();
         });
         return true;
@@ -387,4 +387,47 @@ let animDestroyLines = function () {
     this.iterate = function (counter) {
         return counter < 10;
     };
+};
+
+
+
+let animBlump = function () {
+    let elImg;
+    let width = 50,
+        height = 50,
+        offset,
+        radius = 16,
+        rounds = 1,
+        velocity = 2.5,
+        skipBecauseAlreadyAnimate = false;
+    ;
+
+    this.skipAnimLock = true;
+
+    this.init = function (img) {
+        elImg = img;
+        if (elImg.animBlump) skipBecauseAlreadyAnimate = true;
+        elImg.animBlump = true;
+    };
+
+    this.iterate = function (t) {
+        if (skipBecauseAlreadyAnimate) return false;
+        offset = radius + Math.cos((2 * Math.PI * t / 60 * velocity) - Math.PI) * radius;
+        elImg.x = elImg.sX - offset / 2;
+        elImg.y = elImg.sY - offset / 2;
+        elImg.width = width + offset;
+        elImg.height = height + offset;
+        elImg.redraw();
+
+        return (t < 60 * rounds / velocity);
+    };
+
+    this.finish = function () {
+        elImg.x = elImg.sX;
+        elImg.y = elImg.sY;
+        elImg.width = width;
+        elImg.height = height;
+        elImg.redraw();
+        elImg.animBlump = false;
+    }
 };
