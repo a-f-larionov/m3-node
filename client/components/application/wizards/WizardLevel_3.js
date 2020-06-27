@@ -29,8 +29,8 @@ let WizardLevel3_2 = {
         PBWizard.begin();
     },
     onFieldSilent: function () {
-        PBWizard.updateText('Выбери цвет, чтобы убрать все кристаллы этого цвета.');
-        PBWizard.showDialog(230, 50, 2, 20, 458, 160);
+        PBWizard.updateText('Выбери звезду и потом цвет, чтобы убрать все кристаллы этого цвета.');
+        PBWizard.showDialog(230, 50, 3, 20, 458, 160);
         PBWizard.showHint([{x: 4, y: 2}, {x: 5, y: 2}]);
         PBWizard.highlightCells([
             {x: 4, y: 2, unlock: true},

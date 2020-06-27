@@ -133,6 +133,8 @@ Statistic.ID_BUY_SHUFFLE = 600;
 
 Statistic.ID_START_PLAY = 701;
 Statistic.ID_FINISH_PLAY = 702;
+Statistic.ID_EXIT_GAME = 703;
+Statistic.ID_LOOSE_GAME = 704;
 
 Statistic.ID_LEVEL_UP = 800;
 Statistic.ID_OPEN_CHEST = 900;
@@ -156,6 +158,8 @@ Statistic.titles[Statistic.ID_BUY_SHUFFLE] = "Купил вихрь";
 
 Statistic.titles[Statistic.ID_START_PLAY] = "Начал играть";
 Statistic.titles[Statistic.ID_FINISH_PLAY] = "Закончил играть";
+Statistic.titles[Statistic.ID_EXIT_GAME] = "Вышел на карту сам";
+Statistic.titles[Statistic.ID_LOOSE_GAME] = "Проиграл";
 
 Statistic.titles[Statistic.ID_LEVEL_UP] = "Перешел на следующий уровень";
 

@@ -27,6 +27,7 @@ let DialogJustQuit = function () {
                     PageBlockPanel.oneHealthHide = false;
                     PageController.showPage(PageMain);
                     PageBlockField.setStuffMode(null);
+                    SAPIUser.exitGame(DataPoints.getPlayedId());
                 },
                 title: 'СДАТЬСЯ'
             }, this.dom,

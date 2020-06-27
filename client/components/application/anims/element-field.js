@@ -235,8 +235,10 @@ let animFallGems = function () {
                     go |= (dom.y < dom.startY + DataPoints.BLOCK_HEIGHT);
                     break;
                 case 'to-show':
+
                     dom.height = velocity * position;
                     dom.backgroundPositionY = DataPoints.BLOCK_HEIGHT - velocity * position;
+                    console.log(dom.height, dom.backgroundPositionY);
                     go |= (dom.height < DataPoints.BLOCK_HEIGHT);
                     break;
                 case 'just':

@@ -198,7 +198,7 @@ SAPIUser = function () {
         });
     };
 
-    this.healthDown = function (cntx,pointId) {
+    this.healthDown = function (cntx, pointId) {
         if (!cntx.isAuthorized) return Logs.log(arguments.callee.name + " not authorized", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
@@ -224,6 +224,14 @@ SAPIUser = function () {
                 }
             })
         });
+    };
+
+    this.exitGame = function (cntx, pointId) {
+        Statistic.write(cntx.userId, Statistic.ID_EXIT_GAME, pointId);
+    };
+
+    this.looseGame = function (cntx, pointId) {
+        Statistic.write(cntx.userId, Statistic.ID_LOOSE_GAME, pointId);
     };
 
     this.zeroLife = function (cntx) {

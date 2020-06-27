@@ -445,6 +445,7 @@ let PageBlockField = function PageBlockField() {
             setTimeout(self.finishLevel, Config.OnIdle.animateInterval * 15);
         } else if (turns === 0) {
             PBZDialogs.dialogTurnsLoose.showDialog(DataPoints.getPlayedId());
+            SAPIUser.looseGame(DataPoints.getPlayedId());
         }
     };
 

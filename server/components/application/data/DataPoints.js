@@ -2,7 +2,7 @@
  * @type {DataPoints}
  * @constructor
  */
-DataPoints = function () {
+DataPoints = function ()    {
 
     this.FIELD_MAX_WIDTH = 10;
     this.FIELD_MAX_HEIGHT = 11;
@@ -172,7 +172,7 @@ DataPoints = function () {
     };
 
     wayPoints[5] = {
-        id: 5, turns: 21, score1: 1000, score2: 1500, score3: 8000,
+        id: 5, turns: 24, score1: 1000, score2: 1500, score3: 8000,
         goals: [
             {id: DataObjects.OBJECT_GOLD, count: 17 - 4}
         ], layers: {
@@ -197,7 +197,7 @@ DataPoints = function () {
     };
 
     wayPoints[6] = {
-        id: 6, turns: 15, score1: 600, score2: 1000, score3: 2000,
+        id: 6, turns: 21, score1: 600, score2: 1000, score3: 2000,
         goals: [
             {id: DataObjects.OBJECT_GOLD, count: 6}
         ],
@@ -223,7 +223,7 @@ DataPoints = function () {
     };
 
     wayPoints[7] = {
-        id: 7, turns: 25, score1: 100, score2: 3000, score3: 5000,
+        id: 7, turns: 28, score1: 100, score2: 3000, score3: 5000,
         goals: [
             {id: DataObjects.OBJECT_GOLD, count: 9},
             {id: DataObjects.OBJECT_RED, count: 33},
@@ -252,7 +252,7 @@ DataPoints = function () {
     };
 
     wayPoints[8] = {
-        id: 8, turns: 15, score1: 100, score2: 1000, score3: 5000,
+        id: 8, turns: 24, score1: 100, score2: 1000, score3: 5000,
         goals: [
             {id: DataObjects.OBJECT_GOLD, count: 12},
             {id: DataObjects.OBJECT_RED, count: 10},
@@ -375,7 +375,7 @@ DataPoints = function () {
     };
 
     wayPoints[11] = {
-        id: 11, turns: 40, score1: 500, score2: 1500, score3: 2000,
+        id: 11, turns: 45, score1: 500, score2: 1500, score3: 2000,
         goals: [
             {id: DataObjects.OBJECT_BLUE, count: 40},
             {id: DataObjects.OBJECT_RED, count: 40},
@@ -477,7 +477,7 @@ DataPoints = function () {
                 "□□□□□□□",
                 "□□□□□□□",
                 "□□□□□□□",
-                "□ □ □ □",
+                "□□□ □□□",
             ], special: [[
                 "β β β β",
                 "",
@@ -596,25 +596,25 @@ DataPoints = function () {
     wayPoints[16] = {
         id: 16, turns: 15, score1: 500, score2: 1000, score3: 3500,
         goals: [
-            {id: DataObjects.OBJECT_GOLD, count: 8},
-            {id: DataObjects.OBJECT_BETA, count: 8}
+            {id: DataObjects.OBJECT_GOLD, count: 4},
+            {id: DataObjects.OBJECT_BETA, count: 4}
         ],
         layers: {
             mask: [
+                " □□□□□□ ",
                 "□□□□□□□□",
                 "□□□□□□□□",
                 "□□□  □□□",
-                "□□□  □□□",
-                "□□□  □□□",
+                "□□□□□□□□",
                 "□□□□□□□□",
                 "□□□□□□□□",
             ],
             special: [[
-                "ββββββββ",
-                "$$    $$",
+                "β β  β β",
+                " $    $ ",
                 "       ",
                 "       ",
-                "$$    $$",
+                " $    $ ",
                 "       ",
                 "       ",
             ],
