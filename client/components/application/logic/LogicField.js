@@ -88,14 +88,15 @@ let LogicField = function () {
     };
 
     let getHole = function (p) {
-        for (let y = 0, cell, object; y < DataPoints.FIELD_MAX_HEIGHT; y++) {
+        for (let y = 0, cell, fromCell, object; y < DataPoints.FIELD_MAX_HEIGHT; y++) {
+            fromCell = self.getCell(p);
             p.y++;
             cell = self.getCell(p);
             object = cell && cell.object;
             if (cell && cell.isVisible && !object.isHole && !object.withBox && !object.withChain) {
                 break;
             }
-            if (cell && cell.isVisible && object.isHole) {
+            if (cell && (cell.isVisible || !fromCell.isVisible) && object.isHole) {
                 return p;
             }
         }

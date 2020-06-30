@@ -217,8 +217,7 @@ let animFallGems = function () {
                 Field.isVisible({x: data.to.x, y: data.to.y})
             ) dom.fallMode = 'to-show';
 
-
-            console.log(dom.fallMode, data);
+            //console.log(dom.fallMode, data);
 
             if (dom.fallMode === 'to-show') {
                 /** Спускаем его заранее  */
