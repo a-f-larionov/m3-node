@@ -37,7 +37,7 @@ DataStuff = function () {
             hummerQty: 3,
             shuffleQty: 3,
             lightningQty: 3,
-            goldQty: 1000
+            goldQty: 500
         };
         DB.insert(tableName, data, function (result) {
             // result = {"fieldCount":0,"affectedRows":1,"insertId":0,"serverStatus":2,"warningCount":0,"message":"","protocol41":true,"changedRows":0}
@@ -52,7 +52,7 @@ DataStuff = function () {
                 " SET `" + fieldName + "` = `" + fieldName + "` + " + parseInt(quantity) +
                 " WHERE `userId` = " + parseInt(userId), function (data) {
                 Logs.log("vk_stuff tid:" + tid + " uid:"
-                    + userId + " " + fieldName + " +" + quantity + " " + data.affectedRows + " " + data.changedRows,
+                    + userId + " " + fieldName + " +" + quantity + " current:" + " OK",
                     Logs.LEVEL_NOTIFY, undefined, Logs.CHANNEL_VK_STUFF);
 
                 if (callback) callback();
@@ -86,7 +86,8 @@ DataStuff = function () {
                     " SET `" + fieldName + "` = `" + fieldName + "` -" + parseInt(quantity) +
                     " WHERE `userId` = " + parseInt(userId), function () {
                     Logs.log("vk_stuff tid:" + tid + " uid:" + userId + " "
-                        + fieldName + " -" + quantity + " OK", Logs.LEVEL_NOTIFY, undefined, Logs.CHANNEL_VK_STUFF);
+                        + fieldName + " -" + quantity + " current:" + data[0][fieldName] + " OK",
+                        Logs.LEVEL_NOTIFY, undefined, Logs.CHANNEL_VK_STUFF);
                     done();
                     if (callback) callback(true);
                 });

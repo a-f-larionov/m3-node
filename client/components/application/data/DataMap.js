@@ -55,7 +55,7 @@ let DataMap = function () {
          */
         if (currentMapId >= LogicUser.getUserLastMapId() + 1) {
             PBZDialogs.dialogMessage.showDialog(
-                'НЕ ДОСТУПНО',
+                'НЕДОСТУПНО',
                 ' ДОСТУП ПОЯВИТСЯ ПОСЛЕ \r\n \r\n ПРОХОЖДЕНИЯ УРОВНЕЙ \r\n\r\n ПРЕДЫДУЩЕЙ КАРТЫ. ',
                 5
             );

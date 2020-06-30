@@ -180,10 +180,8 @@ let PageBlockMaps = function PageBlockMaps() {
         let data;
         if (!showed) return;
         data = fetchData();
-        if (!data) {
+        if (!data) return;
 
-            return;
-        }
 
         elMap.src = data.map.src;
         self.preset(data);
@@ -249,10 +247,6 @@ let PageBlockMaps = function PageBlockMaps() {
 
     let fetchData = function () {
         let out;
-        /**
-         *
-         * @type {{}}
-         */
         out = {};
         out.map = DataMap.getCurrent();
         out.tUsers = LogicUser.getTopUsers();
