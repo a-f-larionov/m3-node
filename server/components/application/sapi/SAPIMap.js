@@ -103,27 +103,29 @@ SAPIMap = function () {
                                 Logs.log("Chest open uid:" + cntx.user.id + " cid:" + chestId, Logs.LEVEL_ALERT);
                             }
                             Statistic.write(user.id, Statistic.ID_OPEN_CHEST, chestId);
+                            let updateUseRInfo = function () {
+                                DataStuff.getByUserId(cntx.userId, function (data) {
+                                    CAPIStuff.gotStuff(cntx.userId, data);
+                                });
+                            };
                             chest.prizes.forEach(function (prize) {
                                 switch (prize.id) {
                                     case DataObjects.STUFF_HUMMER:
-                                        DataStuff.giveAHummer(cntx.userId, prize.count, tid);
+                                        DataStuff.giveAHummer(cntx.userId, prize.count, tid, updateUseRInfo);
                                         break;
                                     case DataObjects.STUFF_LIGHTNING:
-                                        DataStuff.giveALightning(cntx.userId, prize.count, tid);
+                                        DataStuff.giveALightning(cntx.userId, prize.count, tid, updateUseRInfo);
                                         break;
                                     case DataObjects.STUFF_SHUFFLE:
-                                        DataStuff.giveAHummer(cntx.userId, prize.count, tid);
+                                        DataStuff.giveAShuffle(cntx.userId, prize.count, tid, updateUseRInfo);
                                         break;
                                     case DataObjects.STUFF_GOLD:
-                                        DataStuff.giveAGold(cntx.userId, prize.count, tid);
+                                        DataStuff.giveAGold(cntx.userId, prize.count, tid, updateUseRInfo);
                                         break;
                                 }
                             });
                             //@todo LOCK many hummer light shuffle and gold
-                            DataStuff.getByUserId(cntx.userId, function (data) {
-                                CAPIStuff.gotStuff(cntx.userId, data);
-                                pFinish(prid);
-                            });
+                            pFinish(prid);
                         } else {
                             pFinish(prid);
                         }

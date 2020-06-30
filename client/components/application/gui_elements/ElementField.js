@@ -5,6 +5,8 @@
 let ElementField = function () {
     let self = this;
 
+    let showAllGems = false;
+
     let lock = true;
 
     let lockHint = false;
@@ -111,7 +113,6 @@ let ElementField = function () {
             if (!gemDoms[x]) gemDoms[x] = [];
             dom = GUI.createDom(undefined, {
                 p: {x: x, y: y},
-                noScale: true,
                 height: DataPoints.BLOCK_HEIGHT,
                 width: DataPoints.BLOCK_WIDTH,
                 backgroundImage: 'field-none.png'
@@ -379,8 +380,8 @@ let ElementField = function () {
         showed = false;
         container.hide();
         Field.eachCell(function (x, y) {
-            maskDoms[x][y].hide();
-            gemDoms[x][y].hide();
+            ///maskDoms[x][y].hide();
+            //gemDoms[x][y].hide();
         });
         domFrame.hide();
         if (stopHint) stopHint();
@@ -436,7 +437,7 @@ let ElementField = function () {
             gemDom = gemDoms[x][y];
 
             gemDom.bindedDoms = [];
-
+            if (showAllGems && Config.Project.develop) gemDom.border = null;
             /** Layer.mask redraw */
             cell.isVisible ?
                 drawDom({x: x, y: y}, maskDom, DataObjects.CELL_VISIBLE) :
@@ -447,7 +448,14 @@ let ElementField = function () {
             if (cell.isVisible && (object.isGem || object.isAlpha || object.isBarrel || object.isPolyColor || object.isBlock)) {
                 drawDom({x: x, y: y}, gemDom, object.objectId, '');
             } else {
-                gemDom.hide();
+                if (showAllGems && Config.Project.develop) {
+                    gemDom.opacity = 0.5;
+                    gemDom.border = '1px solid red';
+                    gemDom.show();
+                    gemDom.redraw();
+                } else {
+                    gemDom.hide();
+                }
             }
 
             /** Gems lighting */

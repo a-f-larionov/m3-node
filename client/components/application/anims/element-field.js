@@ -191,6 +191,9 @@ let animFallGems = function () {
 
     this.init = function (list) {
         doms = [];
+
+        //console.log(list);
+
         list.forEach(function (data) {
             self.gemDoms[data.from.x][data.from.y].hide();
             dom = self.gemDoms[data.to.x][data.to.y];
@@ -206,16 +209,23 @@ let animFallGems = function () {
 
 
             //@todo who to-hide on from point, if to.y == from.y+2
-            if (!Field.isVisible({x: data.to.x, y: data.to.y - 1}) && Field.isVisible(data.to))
-                dom.fallMode = 'to-show';
-            if (Field.isVisible({x: data.to.x, y: data.to.y - 1}) && !Field.isVisible(data.to))
-                dom.fallMode = 'to-hide';
+            if (Field.isVisible({x: data.from.x, y: data.from.y}) &&
+                !Field.isVisible({x: data.from.x, y: data.from.y + 1})
+            ) dom.fallMode = 'to-hide';
+
+            if (!Field.isVisible({x: data.to.x, y: data.to.y - 1}) &&
+                Field.isVisible({x: data.to.x, y: data.to.y})
+            ) dom.fallMode = 'to-show';
+
+
+            console.log(dom.fallMode, data);
 
             if (dom.fallMode === 'to-show') {
                 /** Спускаем его заранее  */
                 dom.y = (data.to.y) * DataPoints.BLOCK_HEIGHT;
-                dom.height = 25;
+                dom.height = DataPoints.BLOCK_HEIGHT;
                 dom.width = DataPoints.BLOCK_WIDTH;
+                dom.visibleHeight = 0;
                 //dom.backgroundImage = DataObjects.objectImages[Field.getGemId({x: dom.from.x, y: dom.p.y + 1})];
                 /** Перерисовка backgroundPositionY это хитрый хак и костыль :) */
                 dom.backgroundPositionY = DataPoints.BLOCK_HEIGHT;
@@ -225,22 +235,23 @@ let animFallGems = function () {
     };
 
     this.iterate = function (position) {
+        if (Config.Project.develop) position = position / 5;
         let go;
         go = false;
         doms.forEach(function (dom) {
             switch (dom.fallMode) {
                 case 'to-hide':
                     dom.y = dom.startY + velocity * position;
-                    dom.height = DataPoints.BLOCK_HEIGHT - velocity * position;
+                    dom.height = DataPoints.BLOCK_HEIGHT;
+                    dom.visibleHeight = DataPoints.BLOCK_HEIGHT;
                     go |= (dom.y < dom.startY + DataPoints.BLOCK_HEIGHT);
                     break;
                 case 'to-show':
-
-                    dom.height = velocity * position;
+                    dom.visibleHeight = velocity * position;
                     dom.backgroundPositionY = DataPoints.BLOCK_HEIGHT - velocity * position;
-                    console.log(dom.height, dom.backgroundPositionY);
                     go |= (dom.height < DataPoints.BLOCK_HEIGHT);
                     break;
+
                 case 'just':
                     dom.y = dom.startY + velocity * position;
                     go |= (dom.y < dom.startY + DataPoints.BLOCK_HEIGHT);
@@ -262,6 +273,8 @@ let animFallGems = function () {
         doms.forEach(function (dom) {
             dom.backgroundPositionY = 0;
             dom.height = DataPoints.BLOCK_HEIGHT;
+            dom.visibleHeight = undefined;
+            dom.fallMode = undefined;
             dom.redraw();
         });
     }
@@ -390,7 +403,6 @@ let animDestroyLines = function () {
         return counter < 10;
     };
 };
-
 
 
 let animBlump = function () {

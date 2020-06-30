@@ -181,11 +181,12 @@ let GUIDom = function () {
         if (self.backgroundImage) redrawBackgroundImage();
     };
     let redrawHeight = function () {
-        dom.style.height = self.height + 'px';
+        dom.style.height = (!isNaN(self.visibleHeight) ? self.visibleHeight : self.height) + 'px';
+
         if (self.backgroundImage) redrawBackgroundImage();
     };
     let redrawBackgroundImage = function () {
-        let meta;
+        let meta, kW, kH, s;
         meta = Images.getMeta(self.backgroundImage);
         /** Если размер не задан, пробуем задать его автоматически. */
         if (!self.width && !self.height && meta.path && meta.w && meta.h) {
@@ -194,25 +195,29 @@ let GUIDom = function () {
             props.height.call();
             props.width.call();
         }
+        s = dom.style;
+        s.backgroundImage = 'url(' + meta.path + ')';
+        s.backgroundRepeat = 'no-repeat';
 
-        dom.style.backgroundImage = 'url(' + meta.path + ')';
+        s.backgroundPositionX = '-' + meta.x + 'px';
         self.backgroundPositionY = self.backgroundPositionY ? self.backgroundPositionY : 0;
-        dom.style.backgroundPositionX = '-' + meta.x+ 'px';
-        dom.style.backgroundPositionY = '-' + (meta.y + self.backgroundPositionY) + 'px';
-        dom.style.backgroundRepeat = 'no-repeat';
+        s.backgroundPositionY = '-' + (meta.y + self.backgroundPositionY) + 'px';
+
 
         if ((window.useSprite && !meta.absolute) && self.width && self.height) {
 
-            dom.style.backgroundPositionX =
-                parseInt(dom.style.backgroundPositionX) * self.width / meta.w + 'px';
-            dom.style.backgroundPositionY =
-                parseInt(dom.style.backgroundPositionY) * self.height / meta.h + 'px';
-            dom.style.backgroundSize =
-                (window.spriteSize.width * self.width / meta.w) + 'px ' +
-                (window.spriteSize.height * self.height / meta.h) + 'px ';
+            kW = self.width / meta.w;
+            kH = self.height / meta.h;
 
+            s.backgroundPositionX =
+                parseInt(dom.style.backgroundPositionX) * kW + 'px';
+            s.backgroundPositionY =
+                parseInt(dom.style.backgroundPositionY) * kH + 'px';
+            s.backgroundSize =
+                (window.spriteSize.width * kW) + 'px ' +
+                (window.spriteSize.height * kH) + 'px ';
         } else {
-            dom.style.backgroundSize =
+            s.backgroundSize =
                 (self.width) + 'px' + ' ' +
                 (self.height) + 'px';
         }
@@ -318,6 +323,7 @@ let GUIDom = function () {
         y: redrawY,
         width: redrawWidth,
         height: redrawHeight,
+        visibleHeight: redrawHeight,
         backgroundPositionY: redrawBackgroundImage,
         backgroundImage: redrawBackgroundImage,
         backgroundSize: redrawBackgroundSize,
