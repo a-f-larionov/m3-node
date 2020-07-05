@@ -87,23 +87,23 @@ SAPIMap = function () {
 
                 if (user.nextPointId < pointId + 1) {
 
-                    Statistic.write(user.id, Statistic.ID_LEVEL_UP, pointId, score);
+                    Statistic.write(user.id, Statistic.ID_LEVEL_UP, pointId + 1, score);
 
                     DataUser.updateNextPointId(cntx.userId, pointId + 1, function () {
                         /** Откроем сундук, если возможно */
                         //@todo check map stars
                         if (chestId) {
-                            let prid = pStart(Profiler.ID_SAPIMAP_OPEN_CHEST);
+                            let prid2 = pStart(Profiler.ID_SAPIMAP_OPEN_CHEST);
                             let chest = DataChests.getById(chestId);
 
                             if (!chest) {
-                                pClear(prid);
+                                pClear(prid2);
                                 return Logs.log("no chest found for " + chestId, Logs.LEVEL_WARNING, arguments);
                             } else {
                                 Logs.log("Chest open uid:" + cntx.user.id + " cid:" + chestId, Logs.LEVEL_ALERT);
                             }
                             Statistic.write(user.id, Statistic.ID_OPEN_CHEST, chestId);
-                            let updateUseRInfo = function () {
+                            let updateUserInfo = function () {
                                 DataStuff.getByUserId(cntx.userId, function (data) {
                                     CAPIStuff.gotStuff(cntx.userId, data);
                                 });
@@ -111,20 +111,21 @@ SAPIMap = function () {
                             chest.prizes.forEach(function (prize) {
                                 switch (prize.id) {
                                     case DataObjects.STUFF_HUMMER:
-                                        DataStuff.giveAHummer(cntx.userId, prize.count, tid, updateUseRInfo);
+                                        DataStuff.giveAHummer(cntx.userId, prize.count, tid, updateUserInfo);
                                         break;
                                     case DataObjects.STUFF_LIGHTNING:
-                                        DataStuff.giveALightning(cntx.userId, prize.count, tid, updateUseRInfo);
+                                        DataStuff.giveALightning(cntx.userId, prize.count, tid, updateUserInfo);
                                         break;
                                     case DataObjects.STUFF_SHUFFLE:
-                                        DataStuff.giveAShuffle(cntx.userId, prize.count, tid, updateUseRInfo);
+                                        DataStuff.giveAShuffle(cntx.userId, prize.count, tid, updateUserInfo);
                                         break;
                                     case DataObjects.STUFF_GOLD:
-                                        DataStuff.giveAGold(cntx.userId, prize.count, tid, updateUseRInfo);
+                                        DataStuff.giveAGold(cntx.userId, prize.count, tid, updateUserInfo);
                                         break;
                                 }
                             });
                             //@todo LOCK many hummer light shuffle and gold
+                            pFinish(prid2);
                             pFinish(prid);
                         } else {
                             pFinish(prid);

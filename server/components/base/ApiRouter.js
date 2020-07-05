@@ -103,7 +103,7 @@ let ApiRouter = new (function ApiRouter() {
             prid = null;
         }
 
-        if (CONST_IS_SERVER_SIDE && count === 0) {
+        if (CONST_IS_SERVER_SIDE && count === 0 && Config.Project.zeroOnlineDowntimeout) {
             setTimeout(function () {
                 let count = 0;
                 for (let i in connections) count++;

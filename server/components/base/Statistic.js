@@ -73,17 +73,18 @@ Statistic = function () {
                 "       on users.id = statistic.uid " +
                 "ORDER BY statistic.id DESC LIMIT 1000";
             DB.query(query, function (rows) {
-                let html, row, title;
+                let html, row, title, d;
                 html = "";
                 html += "<html><head><meta charset='utf8' ></head><body>";
                 html += "<table>";
                 for (let i in rows) {
                     row = rows[i];
+                    d = new Date(row.time * 1000);
                     let time =
-                        new Date(row.time).getDay() + " " +
-                        new Date(row.time).getHours() + ":" +
-                        new Date(row.time).getMinutes() + ":" +
-                        new Date(row.time).getSeconds();
+                        d.getDay() + " " +
+                        d.getHours() + ":" +
+                        d.getMinutes() + ":" +
+                        d.getSeconds();
                     html += "<tr>";
                     html += "<td><a href='" +
                         SocNet(SocNet.TYPE_VK).getUserProfileUrl(row.socNetUserId) +
@@ -142,7 +143,7 @@ Statistic.ID_OPEN_CHEST = 900;
 Statistic.titles = {};
 Statistic.titles[Statistic.ID_AUTHORIZE_VK] = "Зашел через ВК";
 Statistic.titles[Statistic.ID_AUTHORIZE_STANDALONE] = "Зашел Стандале";
-Statistic.titles[Statistic.ID_LOGOUT] = "Выход ";
+Statistic.titles[Statistic.ID_LOGOUT] = "Вышел из приложения";
 
 Statistic.titles[Statistic.ID_HUMMER_USE] = "Использовал молоток ";
 Statistic.titles[Statistic.ID_LIGHTNING_USE] = "Использовал молнию";
@@ -156,8 +157,8 @@ Statistic.titles[Statistic.ID_BUY_HUMMER] = "Купил молоток";
 Statistic.titles[Statistic.ID_BUY_LIGHTNING] = "Купил молнию";
 Statistic.titles[Statistic.ID_BUY_SHUFFLE] = "Купил вихрь";
 
-Statistic.titles[Statistic.ID_START_PLAY] = "Начал играть";
-Statistic.titles[Statistic.ID_FINISH_PLAY] = "Закончил играть";
+Statistic.titles[Statistic.ID_START_PLAY] = "Начал уровень";
+Statistic.titles[Statistic.ID_FINISH_PLAY] = "Выиграл уровень";
 Statistic.titles[Statistic.ID_EXIT_GAME] = "Вышел на карту сам";
 Statistic.titles[Statistic.ID_LOOSE_GAME] = "Проиграл";
 

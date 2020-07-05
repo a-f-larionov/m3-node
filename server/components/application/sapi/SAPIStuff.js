@@ -116,17 +116,17 @@ SAPIStuff = function () {
                 setTimeout(done, 5 * 60 * 1000);
                 DataUser.getById(cntx.user.id, function (user) {
                     if (LogicHealth.getHealths(user) > 0) {
-                        Logs.log("Health tid:" + tid + " uid:" + user.id + " NO ZERO", Logs.LEVEL_DETAIL, user, Logs.CHANNEL_VK_HEALTH);
+                        Logs.log("buy health tid:" + tid + " uid:" + user.id + " NO ZERO", Logs.LEVEL_DETAIL, user, Logs.CHANNEL_VK_HEALTH);
                         done();
                         pFinish(prid);
                     } else {
                         Statistic.write(cntx.userId, Statistic.ID_BUY_HEALTH);
                         DataStuff.usedGold(cntx.user.id, DataShop.healthGoldPrice, tid, function (success) {
                             if (!success) {
-                                Logs.log("Health tid:" + tid + " uid:" + user.id + " CANCEL", Logs.LEVEL_DETAIL, user, Logs.CHANNEL_VK_HEALTH);
+                                Logs.log("buy health tid:" + tid + " uid:" + user.id + " CANCEL", Logs.LEVEL_DETAIL, user, Logs.CHANNEL_VK_HEALTH);
                                 done();
                             } else {
-                                Logs.log("Health tid:" + tid + " uid:" + user.id + " +" + LogicHealth.getMaxHealth() + " OK", Logs.LEVEL_DETAIL, user, Logs.CHANNEL_VK_HEALTH);
+                                Logs.log("buy health tid:" + tid + " uid:" + user.id + " +" + LogicHealth.getMaxHealth() + " OK", Logs.LEVEL_DETAIL, user, Logs.CHANNEL_VK_HEALTH);
                                 LogicHealth.setMaxHealth(user);
                                 DataUser.updateHealthAndStartTime(user, function () {
                                         CAPIUser.updateUserInfo(cntx.user.id, user);
