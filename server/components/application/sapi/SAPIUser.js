@@ -226,6 +226,16 @@ SAPIUser = function () {
         });
     };
 
+    this.spendTurnsMoney = function (cntx, pointId) {
+        if (!cntx.isAuthorized) return Logs.log(arguments.callee.name + " not authorized", Logs.LEVEL_WARNING, cntx);
+        if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
+        if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
+
+        Statistic.write(cntx.userId, Statistic.ID_BUY_LOOSE_TURNS, DataShop.looseTurnsQuantity, DataShop.looseTurnsPrice);
+
+        DataStuff.usedGold(cntx.user.id, DataShop.looseTurnsPrice, LogicTid.getOne());
+    };
+
     this.exitGame = function (cntx, pointId) {
         Statistic.write(cntx.userId, Statistic.ID_EXIT_GAME, pointId);
     };

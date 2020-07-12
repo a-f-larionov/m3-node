@@ -651,7 +651,8 @@ let ElementField = function () {
                     }
                 }
             }
-        }, Config.OnIdle.second * 6);
+        }, Config.OnIdle.second * 5.5);
+        // в пиратах 4 секунды.
     };
 
     this.isFieldSilent = function () {

@@ -234,7 +234,7 @@ let animFallGems = function () {
     };
 
     this.iterate = function (position) {
-        if (Config.Project.develop) position = position / 5;
+        //if (Config.Project.develop) position = position / 5;
         let go;
         go = false;
         doms.forEach(function (dom) {

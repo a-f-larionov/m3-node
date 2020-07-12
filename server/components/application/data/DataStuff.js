@@ -34,9 +34,9 @@ DataStuff = function () {
     this.create = function (userId, callback) {
         let data = {
             userId: userId,
-            hummerQty: 3,
-            shuffleQty: 3,
-            lightningQty: 3,
+            hummerQty: 2,
+            lightningQty: 1,
+            shuffleQty: 1,
             goldQty: 500
         };
         DB.insert(tableName, data, function (result) {

@@ -351,6 +351,10 @@ let PageBlockField = function PageBlockField() {
         LogicWizard.onFieldFirstShow();
     };
 
+    this.unlockField = function () {
+        elementField.unlock();
+    };
+
     this.redraw = function () {
         if (!showed) return;
 
@@ -445,7 +449,6 @@ let PageBlockField = function PageBlockField() {
             setTimeout(self.finishLevel, Config.OnIdle.animateInterval * 15);
         } else if (turns === 0) {
             PBZDialogs.dialogTurnsLoose.showDialog(DataPoints.getPlayedId());
-            SAPIUser.looseGame(DataPoints.getPlayedId());
         }
     };
 
@@ -553,7 +556,11 @@ let PageBlockField = function PageBlockField() {
             elTextShadow.hide();
             elText.hide();
         }, Config.OnIdle.second * 1.1);
-    }
+    };
+
+    this.increaseTurns = function (diff) {
+        turns += diff;
+    };
 };
 
 /** @type {PageBlockField} */

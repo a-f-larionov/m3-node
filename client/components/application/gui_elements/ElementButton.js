@@ -114,9 +114,11 @@ let ElementButton = function () {
         if (self.title) {
             GUI.pushParent(dom);
             elText = GUI.createElement(ElementText, {
-                x: 0, y: 10, height: 25,
+                x: 0, y: 10 + (self.fontSize ? (18 - self.fontSize) / 2 : 0),
+                height: 25,
                 alignCenter: true,
-                text: self.title,
+                fontSize: self.fontSize,
+                //text: self.title,
                 pointer: GUI.POINTER_HAND
             });
             elText.show();
@@ -200,6 +202,8 @@ let ElementButton = function () {
             dom.pointer = GUI.POINTER_ARROW;
             dom.opacity = 0.5;
         }
+
+        if (self.fontSize) elText.fontSize = self.fontSize;
 
         dom.redraw();
     };

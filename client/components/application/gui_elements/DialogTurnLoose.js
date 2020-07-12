@@ -24,15 +24,15 @@ let DialogTurnLoose = function DialogTurnLoose() {
 
         self.elements.push(el);
 
-        el = GUI.createElement(ElementText, {x: 50, y: 150, fontSize: 24, bold: true, alignCenter: true, width: 400});
-        el.setText("Больше ходов нет! Ты потерял жизнь :(");
+        el = GUI.createElement(ElementText, {x: 50, y: 135, fontSize: 24, bold: true, alignCenter: true, width: 400});
+        el.setText("Больше ходов нет! :(");
 
         self.elements.push(el);
 
 
         /** Кнопка играть */
         el = GUI.createElement(ElementButton, {
-            x: 178, y: 240,
+            x: 178 - 80, y: 240,
             srcRest: 'button-red-rest.png',
             srcHover: 'button-red-hover.png',
             srcActive: 'button-red-active.png',
@@ -52,9 +52,35 @@ let DialogTurnLoose = function DialogTurnLoose() {
                     DataPoints.setPlayedId(DataPoints.getPlayedId());
 
                     PageController.showPage(PageField);
+                    SAPIUser.looseGame(DataPoints.getPlayedId());
                 }
             },
             title: 'ПОВТОРИТЬ'
+        });
+        el.show();
+
+        /** Кнопка купить ходов */
+        el = GUI.createElement(ElementButton, {
+            x: 178 + 80, y: 240,
+            srcRest: 'button-red-rest.png',
+            srcHover: 'button-red-hover.png',
+            srcActive: 'button-red-active.png',
+            fontSize: 13,
+            onClick: function () {
+                self.closeDialog();
+
+                if (LogicStuff.getStuff('goldQty') < DataShop.looseTurnsPrice) {
+                    PBZDialogs.dialogMoneyShop.showDialog();
+                    self.showDialog(pointId);
+                } else {
+                    SAPIUser.spendTurnsMoney();
+                    PageBlockField.increaseTurns(DataShop.looseTurnsQuantity);
+                    LogicStuff.usedGold(DataShop.looseTurnsPrice);
+                    PageBlockField.unlockField();
+                }
+                PageController.showPage(PageField);
+            },
+            title: '+10 ЗА 200 МОНЕТ'
         });
         el.show();
 
@@ -64,7 +90,8 @@ let DialogTurnLoose = function DialogTurnLoose() {
     this.showDialog = function (pId) {
         LogicWizard.finish(false);
         pointId = pId;
-        this.setTitle('УРОВЕНЬ  ' + pointId);
+        //this.setTitle('УРОВЕНЬ  ' + pointId);
+        this.setTitle('НЕТ ХОДОВ!');
         this.__proto__.showDialog.call(this);
     }
 };

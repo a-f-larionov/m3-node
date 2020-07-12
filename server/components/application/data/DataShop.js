@@ -17,6 +17,8 @@ let DataShop = function () {
 DataShop = new DataShop();
 
 DataShop.healthGoldPrice = 200;
+DataShop.looseTurnsPrice = 200;
+DataShop.looseTurnsQuantity = 10;
 /** @see LogicPayments.doOrderChange */
 DataShop.gold = [
     {votes: 3, quantity: 200},

@@ -81,7 +81,7 @@ Statistic = function () {
                     row = rows[i];
                     d = new Date(row.time * 1000);
                     let time =
-                        d.getDay() + " " +
+                        d.getDate() + " " +
                         d.getHours() + ":" +
                         d.getMinutes() + ":" +
                         d.getSeconds();
@@ -131,6 +131,7 @@ Statistic.ID_BUY_HEALTH = 700;
 Statistic.ID_BUY_HUMMER = 400;
 Statistic.ID_BUY_LIGHTNING = 500;
 Statistic.ID_BUY_SHUFFLE = 600;
+Statistic.ID_BUY_LOOSE_TURNS = 610;
 
 Statistic.ID_START_PLAY = 701;
 Statistic.ID_FINISH_PLAY = 702;
@@ -156,6 +157,7 @@ Statistic.titles[Statistic.ID_BUY_HEALTH] = "Купил жизни";
 Statistic.titles[Statistic.ID_BUY_HUMMER] = "Купил молоток";
 Statistic.titles[Statistic.ID_BUY_LIGHTNING] = "Купил молнию";
 Statistic.titles[Statistic.ID_BUY_SHUFFLE] = "Купил вихрь";
+Statistic.titles[Statistic.ID_BUY_LOOSE_TURNS] = "Купил +10 ходов";
 
 Statistic.titles[Statistic.ID_START_PLAY] = "Начал уровень";
 Statistic.titles[Statistic.ID_FINISH_PLAY] = "Выиграл уровень";

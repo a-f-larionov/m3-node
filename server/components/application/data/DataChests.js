@@ -11,27 +11,27 @@ let DataChests = function () {
         chests[1] = {
             id: 1, prizes: [
                 {id: DataObjects.STUFF_HUMMER, count: 3},
-                {id: DataObjects.STUFF_LIGHTNING, count: 3},
-                {id: DataObjects.STUFF_SHUFFLE, count: 3},
+                {id: DataObjects.STUFF_LIGHTNING, count: 1},
+                {id: DataObjects.STUFF_SHUFFLE, count: 1},
             ],
         };
         chests[2] = {
             id: 1, prizes: [
                 {id: DataObjects.STUFF_GOLD, count: 500},
-                {id: DataObjects.STUFF_HUMMER, count: 3},
+                {id: DataObjects.STUFF_HUMMER, count: 2},
             ],
         };
         chests[3] = {
             id: 1, prizes: [
                 {id: DataObjects.STUFF_GOLD, count: 500},
-                {id: DataObjects.STUFF_LIGHTNING, count: 6},
+                {id: DataObjects.STUFF_LIGHTNING, count: 3},
             ],
         };
 
         /** Map-002 */
         chests[4] = {
             id: 1, prizes: [
-                {id: DataObjects.STUFF_HUMMER, count: 4},
+                {id: DataObjects.STUFF_HUMMER, count: 3},
                 {id: DataObjects.STUFF_LIGHTNING, count: 2},
                 {id: DataObjects.STUFF_SHUFFLE, count: 1},
             ],
@@ -39,7 +39,7 @@ let DataChests = function () {
         chests[5] = {
             id: 1, prizes: [
                 {id: DataObjects.STUFF_GOLD, count: 500},
-                {id: DataObjects.STUFF_HUMMER, count: 5},
+                {id: DataObjects.STUFF_HUMMER, count: 3},
             ],
         };
         chests[6] = {
@@ -53,7 +53,7 @@ let DataChests = function () {
         /** Map-003 */
         chests[7] = {
             id: 1, prizes: [
-                {id: DataObjects.STUFF_HUMMER, count: 10},
+                {id: DataObjects.STUFF_HUMMER, count: 3},
                 {id: DataObjects.STUFF_LIGHTNING, count: 2},
                 {id: DataObjects.STUFF_SHUFFLE, count: 1},
             ],
@@ -67,7 +67,7 @@ let DataChests = function () {
         chests[9] = {
             id: 1, prizes: [
                 {id: DataObjects.STUFF_GOLD, count: 1500},
-                {id: DataObjects.STUFF_HUMMER, count: 6},
+                {id: DataObjects.STUFF_HUMMER, count: 3},
             ],
         };
         if (finished) finished();

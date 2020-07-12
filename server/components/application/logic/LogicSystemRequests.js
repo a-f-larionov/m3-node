@@ -59,12 +59,10 @@ LogicSystemRequests = function () {
     let shutdownForceKey;
 
     this.shutdown = function (callback, request) {
-        if (LogicUser.getOnlineUserIds().length) {
-            if (request.url.indexOf('key=' + shutdownForceKey) === -1) {
-                shutdownForceKey = '' + Date.now() + '' + Math.ceil(Math.random() * 1000);
-                return callback('online' + LogicUser.getOnlineUserIds().length + "\r\n<br> " +
-                    "key=" + shutdownForceKey);
-            }
+        if (request.url.indexOf('key=' + shutdownForceKey) === -1) {
+            shutdownForceKey = '' + Date.now() + '' + Math.ceil(Math.random() * 1000);
+            return callback('online' + LogicUser.getOnlineUserIds().length + "\r\n<br> " +
+                "key=" + shutdownForceKey);
         }
         Logs.log("Shutdown by user call.", Logs.LEVEL_ALERT);
         callback('<pre>' + "Shutdown executed!" + Date.now() + '</pre>');

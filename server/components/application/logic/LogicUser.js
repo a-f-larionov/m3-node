@@ -108,10 +108,13 @@ LogicUser = function () {
      */
     let authorizeSendSuccess = function (user, cntx, prid) {
         /** Тут мы запомним его cid раз и на всегда */
-        Logs.log("🥰 ", Logs.LEVEL_NOTIFY,
-            SocNet(SocNet.TYPE_VK).getUserProfileUrl(user.socNetUserId),
-            Logs.CHANNEL_TELEGRAM
-        );
+
+        if (user.socNetTypeId === SocNet.TYPE_VK) {
+            Logs.log("🥰 ", Logs.LEVEL_NOTIFY,
+                SocNet(SocNet.TYPE_VK).getUserProfileUrl(user.socNetUserId),
+                Logs.CHANNEL_TELEGRAM
+            );
+        }
         if (user.socNetTypeId === SocNet.TYPE_VK) Statistic.write(user.id, Statistic.ID_AUTHORIZE_VK);
         if (user.socNetTypeId === SocNet.TYPE_STANDALONE) Statistic.write(user.id, Statistic.ID_AUTHORIZE_STANDALONE);
 
