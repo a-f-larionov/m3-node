@@ -234,6 +234,13 @@ SAPIUser = function () {
         Statistic.write(cntx.userId, Statistic.ID_BUY_LOOSE_TURNS, DataShop.looseTurnsQuantity, DataShop.looseTurnsPrice);
 
         DataStuff.usedGold(cntx.user.id, DataShop.looseTurnsPrice, LogicTid.getOne());
+
+        Logs.log("Купил " +
+            DataShop.looseTurnsQuantity + "ходов за " +
+            DataShop.looseTurnsPrice + " монет",
+            Logs.LEVEL_NOTIFY,
+            null,
+            null, true);
     };
 
     this.exitGame = function (cntx, pointId) {

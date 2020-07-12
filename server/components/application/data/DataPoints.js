@@ -339,7 +339,7 @@ DataPoints = function ()    {
     };
 
     wayPoints[10] = {
-        id: 10, turns: 25, score1: 1000, score2: 2000, score3: 2500,
+        id: 10, turns: 20, score1: 1000, score2: 2000, score3: 2500,
         goals: [
             {id: DataObjects.OBJECT_GOLD, count: 4},
             {id: DataObjects.OBJECT_RED, count: 9},

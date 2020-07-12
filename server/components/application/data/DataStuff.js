@@ -86,7 +86,7 @@ DataStuff = function () {
                     " SET `" + fieldName + "` = `" + fieldName + "` -" + parseInt(quantity) +
                     " WHERE `userId` = " + parseInt(userId), function () {
                     Logs.log("vk_stuff tid:" + tid + " uid:" + userId + " "
-                        + fieldName + " -" + quantity + " current:" + data[0][fieldName] + " OK",
+                        + fieldName + " -" + quantity + " current:" + (data[0][fieldName] - quantity) + " OK",
                         Logs.LEVEL_NOTIFY, undefined, Logs.CHANNEL_VK_STUFF);
                     done();
                     if (callback) callback(true);
