@@ -231,24 +231,35 @@ SAPIUser = function () {
         if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
 
+        let tid = LogicTid.getOne();
         Statistic.write(cntx.userId, Statistic.ID_BUY_LOOSE_TURNS, DataShop.looseTurnsQuantity, DataShop.looseTurnsPrice);
 
-        DataStuff.usedGold(cntx.user.id, DataShop.looseTurnsPrice, LogicTid.getOne());
+        DataStuff.usedGold(cntx.user.id, DataShop.looseTurnsPrice, tid);
 
-        Logs.log("Купил " +
-            DataShop.looseTurnsQuantity + "ходов за " +
-            DataShop.looseTurnsPrice + " монет",
+        Logs.log(
+            "tid:" + tid +
+            " uid:" + cntx.user.id + " купил " +
+            DataShop.looseTurnsQuantity + " ходов за " +
+            DataShop.looseTurnsPrice + " монет.",
             Logs.LEVEL_NOTIFY,
             null,
             null, true);
     };
 
     this.exitGame = function (cntx, pointId) {
-        Statistic.write(cntx.userId, Statistic.ID_EXIT_GAME, pointId);
+        if (!cntx.isAuthorized) return Logs.log(arguments.callee.name + " not authorized", Logs.LEVEL_WARNING, cntx);
+        if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
+        if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
+
+        Statistic.write(cntx.user.id, Statistic.ID_EXIT_GAME, pointId);
     };
 
     this.looseGame = function (cntx, pointId) {
-        Statistic.write(cntx.userId, Statistic.ID_LOOSE_GAME, pointId);
+        if (!cntx.isAuthorized) return Logs.log(arguments.callee.name + " not authorized", Logs.LEVEL_WARNING, cntx);
+        if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
+        if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
+
+        Statistic.write(cntx.user.id, Statistic.ID_LOOSE_GAME, pointId);
     };
 
     this.zeroLife = function (cntx) {

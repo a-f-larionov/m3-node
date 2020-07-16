@@ -43,6 +43,16 @@ let DialogMoneyShop = function () {
 
         GUI.popParent();
     };
+
+    this.showDialog = function (afterDialog) {
+        self.__proto__.showDialog(afterDialog);
+        SAPILogs.showMoneyDialog();
+    };
+
+    this.closeDialog = function () {
+        self.__proto__.closeDialog();
+        SAPILogs.closeMoneyDialog();
+    }
 };
 
 

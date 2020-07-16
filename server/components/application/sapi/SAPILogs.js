@@ -19,6 +19,17 @@ SAPILogs = function () {
 
         pFinish(prid);
     };
+
+    this.showMoneyDialog = function (cntx) {
+
+        Logs.log("uid:" + cntx.user.id + " Show money dialog", Logs.LEVEL_NOTIFY, null, null, true);
+    };
+
+
+    this.closeMoneyDialog = function (cntx) {
+
+        Logs.log("uid:" + cntx.user.id + " Close money dialog", Logs.LEVEL_NOTIFY, null, null, true);
+    };
 };
 
 SAPILogs = new SAPILogs();

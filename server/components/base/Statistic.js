@@ -1,3 +1,4 @@
+let QUERYSTRING = require('querystring');
 /**
  * @type {Statistic}
  * @constructor
@@ -64,14 +65,21 @@ Statistic = function () {
         }
     };
 
-    this.getReport = function (callback) {
+    this.getReport = function (callback, request) {
+        let params = QUERYSTRING.parse(request.url.substr(request.url.indexOf('?') + 1));
+
         self.flushCache(function () {
             let query;
             query = "SELECT socNetUserId, uid, statId, time, paramA, paramB " +
                 "from users " +
                 "   inner join statistic " +
                 "       on users.id = statistic.uid " +
-                "ORDER BY statistic.id DESC LIMIT 1000";
+                "  WHERE 1=1 " +
+                (params.sid ? " AND socNetUserId = " + params.sid : "") +
+                (params.statId ? " AND statId = " + params.statId : "") +
+                (params.paramA ? " AND paramA = " + params.paramA : "") +
+                (params.paramB ? " AND paramB = " + params.paramB : "") +
+                " ORDER BY statistic.time DESC LIMIT 1000";
             DB.query(query, function (rows) {
                 let html, row, title, d;
                 html = "";
@@ -94,7 +102,7 @@ Statistic = function () {
                         "</td>";
                     html += "<td>" + row.uid + "</td>";
                     html += "<td>" + time + "</td>";
-                    html += "<td>" + self.titles[row.statId] + "</td>";
+                    html += "<td>" + self.titles[row.statId] + "(" + row.statId + ")" + "</td>";
                     html += "<td>" + (row.paramA ? row.paramA : '') + "</td>";
                     html += "<td>" + (row.paramB ? row.paramB : '') + "</td>";
                     html += "</tr>";

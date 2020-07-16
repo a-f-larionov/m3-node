@@ -21,9 +21,9 @@ DataShop.looseTurnsPrice = 200;
 DataShop.looseTurnsQuantity = 10;
 /** @see LogicPayments.doOrderChange */
 DataShop.gold = [
-    {votes: 3, quantity: 200},
-    {votes: 12, quantity: 800},
-    {votes: 22, quantity: 1500}
+    {votes: 1, quantity: 300},
+    {votes: 2, quantity: 700},
+    {votes: 3, quantity: 1000}
 ];
 DataShop.hummers = [
     {gold: 400, quantity: 3, imageSrc: 'hummer-big.png',},
