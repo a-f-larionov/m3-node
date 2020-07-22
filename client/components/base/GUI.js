@@ -100,8 +100,6 @@ let GUI = function () {
 
     this.lockEventsExcept = null;
 
-    let tagId = null;
-
     /**
      * Инициализация.
      * - установим родителя, это будет тело документа.
@@ -110,6 +108,19 @@ let GUI = function () {
         GUI.appArea = document.getElementById('appArea');
         wizardArea = document.getElementById('wizardArea');
         parentsStack.push(GUI.appArea);
+        //@todo canvas
+        /*  if (Config.Project.canvas) {
+              parentsStack.push(GUI.createDom({
+                  appendChild: function (dom) {
+
+                  }
+              }));
+          } else {
+              parentsStack.push(GUI.appArea);
+          }
+
+         */
+
         let style = document.createElement('style');
         style.type = 'text/css';
         style.innerHTML = '.sepia { ' +
@@ -272,8 +283,14 @@ let GUI = function () {
     this.createDom = function (parent, params) {
         let dom;
         dom = new GUIDom();
-        dom.init(undefined, parent);
-        if (tagId) dom.__dom.tagId = tagId;
+        /** @todo canvas
+         /**
+         if (Config.Project.canvas) {
+            dom = new GUIDomCanvas();
+        } else {
+            dom = new GUIDom();
+        }*/
+        dom.init(parent);
         if (params) {
             for (let name in params) {
                 dom[name] = params[name];
@@ -321,10 +338,6 @@ let GUI = function () {
 
     this.isFullScreen = function () {
         return isFSMode;
-    };
-
-    this.setTagId = function (id) {
-        tagId = id;
     };
 };
 

@@ -5,9 +5,9 @@
 let LogicStuff = function () {
     let stuff = {};
 
-    this.STUFF_HUMMER = 1;
-    this.STUFF_LIGHTNING = 2;
-    this.STUFF_SHUFFLE = 3;
+    this.STUFF_HUMMER = 'hummerQty';
+    this.STUFF_LIGHTNING = 'lightningQty';
+    this.STUFF_SHUFFLE = 'shuffleQty';
 
     this.loadStuff = function () {
         SAPIStuff.sendMeStuff();

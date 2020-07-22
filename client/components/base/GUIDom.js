@@ -64,24 +64,17 @@ let GUIDom = function () {
     /**
      * Создается элемент браузера
      * Настраиваются минимальные параметры
-     * @param tagName [string] input|div
      * @param parent [GUIDom] родитель.
      */
-    this.init = function (tagName, parent) {
+    this.init = function (parent) {
         /** Начальное значение старых свойств */
         for (let i in props) {
             oldProps[i] = undefined;
         }
-        if (!tagName) {
-            tagName = 'span';
-        }
         /** Создадим дом */
-        dom = document.createElement(tagName);
+        dom = document.createElement('div');
         /** Значения по умолчанию для дом-ов. */
         dom.className = 'gui-dom';
-        if (tagName === 'input') {
-            dom.style.border = 'none';
-        }
         /** Does not dragable by default */
         dom.ondragstart = function () {
             return false;
@@ -163,10 +156,6 @@ let GUIDom = function () {
             }
             callback.call(context, event, dom);
         }, false);
-    };
-
-    this.setFocus = function () {
-        dom.focus();
     };
 
     /** Далее идут методы перерисовки. */

@@ -85,6 +85,8 @@ let ElementStuffButton = function () {
 
     let counter = null;
 
+    let plusButton = null;
+
     let point = null;
 
     /**
@@ -116,6 +118,9 @@ let ElementStuffButton = function () {
 
         point = GUI.createDom(null, {backgroundImage: 'map-way-point-grey.png'});
         counter = GUI.createElement(ElementText, {width: 19});
+        plusButton = GUI.createDom(null, {backgroundImage: 'button-add-rest.png', width: 25, height: 25});
+        plusButton.pointer = GUI.POINTER_HAND;
+        GUI.bind(plusButton, GUI.EVENT_MOUSE_CLICK, onPlusButtonClick, self);
     };
 
     /**
@@ -126,6 +131,7 @@ let ElementStuffButton = function () {
         showed = true;
         dom.show();
         counter.show();
+        plusButton.show();
         point.show();
         self.redraw();
     };
@@ -138,6 +144,7 @@ let ElementStuffButton = function () {
         showed = false;
         dom.hide();
         counter.hide();
+        plusButton.hide();
         point.hide();
     };
 
@@ -187,11 +194,14 @@ let ElementStuffButton = function () {
         }
         counter.x = self.x + 65 - 5;
         counter.y = self.y + 22;
+        plusButton.x = self.x;
+        plusButton.y = self.y + 35;
         point.x = self.x + 65 - 20;
         point.y = self.y + 22 - 15;
         counter.setText(LogicStuff.getStuff(self.fieldName));
         dom.redraw();
         counter.redraw();
+        plusButton.redraw();
         point.redraw();
     };
 
@@ -236,4 +246,8 @@ let ElementStuffButton = function () {
         self.redraw();
         return self.onClick.call(null, mouseEvent, dom);
     };
+
+    let onPlusButtonClick = function () {
+        PageBlockZDialogs.dialogStuffShop.showDialog(self.fieldName);
+    }
 };

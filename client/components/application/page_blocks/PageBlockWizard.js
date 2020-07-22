@@ -88,7 +88,7 @@ let PageBlockWizard = function PageBlockWizard() {
         //canvas.onmousemove = proccesEvent;
 
         elDialog = GUI.createElement(ElementImage, {src: 'w-dialog.png'});
-        elDialog.dom.__dom.style.zIndex = 20000;
+        elDialog.dom.zIndex = 20000;
         //elDialog.hide();
 
         elText = GUI.createElement(ElementText, {
@@ -101,7 +101,7 @@ let PageBlockWizard = function PageBlockWizard() {
         //elText.hide();
 
         elWCat = GUI.createElement(ElementImage, {src: 'w-cat.png'});
-        elWCat.dom.__dom.style.zIndex = 20001;
+        elWCat.dom.zIndex = 20001;
     };
 
     let drawBackground = function () {

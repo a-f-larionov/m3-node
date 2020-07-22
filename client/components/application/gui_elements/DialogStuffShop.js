@@ -52,6 +52,7 @@ let DialogStuffShop = function () {
         this.__proto__.showDialog.call(this);
         stuffId = newStuffId;
         self.redraw();
+        SAPILogs.showStuffShopDialog(newStuffId);
     };
 
     this.redraw = function () {

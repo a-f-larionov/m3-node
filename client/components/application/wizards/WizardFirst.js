@@ -14,9 +14,7 @@ let WizardFirstStart_1 = {
     },
 
     onClick: function (el) {
-        if (el.tagId === LogicWizard.TAG_FIRST_NUMBER_POINT && el.innerText === '1') {
-            LogicWizard.start(WizardFirstStart_2);
-        }
+        LogicWizard.start(WizardFirstStart_2);
     }
 };
 

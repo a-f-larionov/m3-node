@@ -92,6 +92,8 @@ let SocNetVK = function () {
             user_ids: id,
             fields: 'photo_50,photo_100'
         }, function (data) {
+            if (!window.jjj) window.jjj = [];
+            window.jjj.push({id: id, data: data});
             callback(data.response);
         });
     };

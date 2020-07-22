@@ -85,7 +85,6 @@ let PageBlockMaps = function PageBlockMaps() {
 
         /** Points */
         DataPoints.getPointsCoords().forEach(function (coords) {
-            if (coords.number === 1) GUI.setTagId(LogicWizard.TAG_FIRST_NUMBER_POINT);
             el = GUI.createElement(ElementPoint, {
                 x: coords.x, y: coords.y,
                 friends: [],
@@ -98,7 +97,6 @@ let PageBlockMaps = function PageBlockMaps() {
             });
             self.elements.push(el);
             pointsEls[coords.number] = el;
-            if (coords.number === 1) GUI.setTagId(null);
         });
 
 

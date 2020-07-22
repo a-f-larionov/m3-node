@@ -30,6 +30,11 @@ SAPILogs = function () {
 
         Logs.log("uid:" + cntx.user.id + " Close money dialog", Logs.LEVEL_NOTIFY, null, null, true);
     };
+
+    this.showStuffShopDialog = function (cntx, stuffFieldName) {
+
+        Logs.log("uid:" + cntx.user.id + " Show Stuff shop dialog " + stuffFieldName, Logs.LEVEL_NOTIFY, null, null, true);
+    }
 };
 
 SAPILogs = new SAPILogs();

@@ -89,15 +89,13 @@ let ElementText = function () {
      * Создадим дом и настроем его.
      */
     this.init = function () {
-        //this.color = "rgba(255,0,0,0.5)";
         dom = GUI.createDom(undefined, {
             height: this.height,
             color: this.color ? this.color : "rgba(103, 77, 56, 1.0)",
             background: this.background,
             fontFamily: 'arial,sans-serif,"Marvin",Tahoma,"Geneva CY",sans-serif',
         });
-        dom.__dom.style.zIndex = this.zIndex;
-//        dom.textShadow = '1px 1px black';
+        dom.zIndex = this.zIndex;
         GUI.bind(dom, GUI.EVENT_MOUSE_CLICK, onMouseClick, self);
     };
 

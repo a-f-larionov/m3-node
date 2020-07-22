@@ -245,7 +245,7 @@ let PageBlockField = function PageBlockField() {
 
         /** Dom stuff */
         domStuff = GUI.createDom(null, {x: 190, y: 10, pointer: GUI.POINTER_NONE});
-        domStuff.__dom.style.zIndex = 10000;
+        domStuff.zIndex = 10000;
 
         elTextShadow = GUI.createDom(undefined, {
             x: 0, y: 0, width: DataCross.app.width, height: DataCross.app.height,

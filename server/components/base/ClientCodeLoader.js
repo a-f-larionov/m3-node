@@ -279,6 +279,13 @@ ClientCodeLoader = function () {
             "width:" + DataCross.app.width + "px;" +
             "position:absolute;top:0px;' " +
             "id='appArea' ></div>\r\n";
+        /** Canvas Area */
+        code += "<canvas style='" +
+            "height:" + DataCross.app.height + "px;" +
+            "width:" + DataCross.app.width + "px;" +
+            "position:absolute;top:0px;z-index:100;" +
+            "display:none;' " +
+            "id='canvasArea' ></canvas>\r\n";
         /** Wizard canvas */
         code += "<canvas style='" +
             "height:" + DataCross.app.height + "px;" +

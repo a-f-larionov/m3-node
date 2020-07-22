@@ -51,10 +51,14 @@ DataStuff = function () {
             DB.query("UPDATE " + tableName + "" +
                 " SET `" + fieldName + "` = `" + fieldName + "` + " + parseInt(quantity) +
                 " WHERE `userId` = " + parseInt(userId), function (data) {
-                Logs.log("vk_stuff tid:" + tid + " uid:"
-                    + userId + " " + fieldName + " +" + quantity + " current:" + " OK",
-                    Logs.LEVEL_NOTIFY, undefined, Logs.CHANNEL_VK_STUFF);
+                DataStuff.getByUserId(userId, function (stuff) {
+                    Logs.log("vk_stuff tid:" + tid + " uid:"
+                        + userId + " "
+                        + fieldName + " +" + quantity +
+                        " current:" + stuff[fieldName] + " OK",
+                        Logs.LEVEL_NOTIFY, undefined, Logs.CHANNEL_VK_STUFF);
 
+                });
                 if (callback) callback();
                 done();
             });
