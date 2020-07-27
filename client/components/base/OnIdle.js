@@ -8,7 +8,7 @@ let OnIdle = function () {
     this.stack = [];
 
     this.init = function (callbackAfterInit) {
-        setTimeout(OnIdle.iterate, Config.OnIdle.animateInterval * 15);
+        setTimeout(OnIdle.iterate, Config.OnIdle.animateInterval);
         callbackAfterInit();
     };
 
@@ -17,10 +17,9 @@ let OnIdle = function () {
     };
 
     this.iterate = function () {
-
-        for (let i in self.stack) {
-            self.stack[i]();
-        }
+        self.stack.forEach(function (f) {
+            f();
+        });
         setTimeout(OnIdle.iterate, Config.OnIdle.animateInterval);
     };
 

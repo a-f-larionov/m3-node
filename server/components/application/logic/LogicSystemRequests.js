@@ -64,7 +64,7 @@ LogicSystemRequests = function () {
             return callback('online' + LogicUser.getOnlineUserIds().length + "\r\n<br> " +
                 "key=" + shutdownForceKey);
         }
-        Logs.log("Shutdown by user call.", Logs.LEVEL_ALERT);
+        Logs.log("Перезапуск сервера руками", Logs.LEVEL_ALERT);
         callback('<pre>' + "Shutdown executed!" + Date.now() + '</pre>');
         deInitBeforeShutdown(function () {
             process.exit();

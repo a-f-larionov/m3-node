@@ -166,6 +166,8 @@ let ElementText = function () {
         }
         dom.innerHTML = textHTML;
         dom.pointer = self.pointer;
+
+        dom.text = self.text;
     };
 
     /**

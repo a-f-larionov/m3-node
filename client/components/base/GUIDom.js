@@ -28,7 +28,6 @@
  * @property background {String}
  * @property transform {String}
  * @property title {String}
- * @property isItsepia {Bool}
  * @property alignText {String}
  * @property zIndex {Int}
  * @property fontWeight {String}
@@ -82,12 +81,12 @@ let GUIDom = function () {
         /** Добавим дом к родителю. */
         this.__dom = dom;
         dom.__dom = this;
-        if (!parent) {
-            parent = GUI.getCurrentParent();
-        } else {
-            parent = parent.__dom;
-        }
+        if (!parent) parent = GUI.getCurrentParent();
         parent.appendChild(dom);
+    };
+
+    this.appendChild = function (dom) {
+        this.__dom.appendChild(dom);
     };
 
     /**
@@ -275,18 +274,6 @@ let GUIDom = function () {
     let redrawTitle = function () {
         dom.setAttribute('title', self.title);
     };
-    let redrawIsItSepia = function () {
-        /*
-         filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'old-timey\'><feColorMatrix type=\'matrix\' values=\'0.14 0.45 0.05 0 0 0.12 0.39 0.04 0 0 0.08 0.28 0.03 0 0 0 0 0 1 0\'/></filter></svg>#old-timey");
-         -webkit-filter: sepia(0.5);
-         -webkit-filter: sepia(95%) grayscale(50%);
-         -moz-filter: sepia(80%);
-         -ms-filter: sepia(80%);
-         -o-filter: sepia(80%);
-         filter: sepia(80%);
-         */
-        dom.className += 'sepia';
-    };
     let redrawAlignText = function () {
         dom.style.textAlign = self.alignText;
     };
@@ -336,7 +323,6 @@ let GUIDom = function () {
         background: redrawBackground,
         transform: redrawTransform,
         title: redrawTitle,
-        isItsepia: redrawIsItSepia,
         alignText: redrawAlignText,
         zIndex: redrawZIndex,
         overflow: redrawOverflow,

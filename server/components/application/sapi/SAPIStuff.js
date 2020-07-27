@@ -18,7 +18,9 @@ SAPIStuff = function () {
 
         Statistic.write(cntx.userId, Statistic.ID_HUMMER_USE);
         let prid = pStart(Profiler.ID_SAPISTUFF_USED_HUMMER);
-        DataStuff.usedHummer(cntx.user.id, LogicTid.getOne(), function () {
+        DataStuff.usedHummer(cntx.user.id, LogicTid.getOne(), function (result, current) {
+            if (result) Logs.log("Игрок " + cntx.user.socNetUserId + " использовал молоток 🔨, теперь " + current, Logs.LEVEL_DETAIL, undefined, Logs.CHANNEL_TELEGRAM);
+
             pFinish(prid);
         });
     };
@@ -30,7 +32,8 @@ SAPIStuff = function () {
 
         Statistic.write(cntx.userId, Statistic.ID_LIGHTNING_USE);
         let prid = pStart(Profiler.ID_SAPISTUFF_USED_LIGHTNING);
-        DataStuff.usedLightning(cntx.user.id, LogicTid.getOne(), function () {
+        DataStuff.usedLightning(cntx.user.id, LogicTid.getOne(), function (result, current) {
+            if (result) Logs.log("Игрок " + cntx.user.socNetUserId + " использовал молнию ⚡, теперь " + current, Logs.LEVEL_DETAIL, undefined, Logs.CHANNEL_TELEGRAM);
             pFinish(prid);
         });
     };
@@ -42,7 +45,8 @@ SAPIStuff = function () {
 
         Statistic.write(cntx.userId, Statistic.ID_SHUFFLE_USE);
         let prid = pStart(Profiler.ID_SAPISTUFF_USED_SHUFFLE);
-        DataStuff.usedShuffle(cntx.user.id, LogicTid.getOne(), function () {
+        DataStuff.usedShuffle(cntx.user.id, LogicTid.getOne(), function (result, current) {
+            if (result) Logs.log("Игрок " + cntx.user.socNetUserId + " использовал вихрь 🌪, теперь " + current, Logs.LEVEL_DETAIL, undefined, Logs.CHANNEL_TELEGRAM);
             pFinish(prid);
         });
     };
@@ -55,10 +59,13 @@ SAPIStuff = function () {
         if (!DataShop.hummers[itemIndex]) return Logs.log("no item hummer " + itemIndex, Logs.LEVEL_WARNING, cntx);
         let tid;
         let prid = pStart(Profiler.ID_SAPISTUFF_BUY_HUMMER);
-        DataStuff.usedGold(cntx.user.id, DataShop.hummers[itemIndex].gold, tid = LogicTid.getOne(), function (success) {
+        DataStuff.usedGold(cntx.user.id, DataShop.hummers[itemIndex].gold, tid = LogicTid.getOne(), function (success, currentGold) {
             if (success)
-                DataStuff.giveAHummer(cntx.user.id, DataShop.hummers[itemIndex].quantity, tid, function () {
+                DataStuff.giveAHummer(cntx.user.id, DataShop.hummers[itemIndex].quantity, tid, function (result, currentStuff) {
                     Statistic.write(cntx.userId, Statistic.ID_BUY_HUMMER, DataShop.hummers[itemIndex].quantity);
+                    if (result) Logs.log("Игрок " + cntx.user.socNetUserId + " купил молоток 🔨, теперь: " + currentStuff +
+                        ", 💰 " + currentGold + "(-" + DataShop.hummers[itemIndex].gold + ")", Logs.LEVEL_DETAIL,
+                        undefined, Logs.CHANNEL_TELEGRAM);
                     pFinish(prid);
                 });
         });
@@ -75,10 +82,13 @@ SAPIStuff = function () {
 
         let prid = pStart(Profiler.ID_SAPISTUFF_BUY_LIGHTNING);
 
-        DataStuff.usedGold(cntx.user.id, DataShop.lightning[itemIndex].gold, tid = LogicTid.getOne(), function (success) {
+        DataStuff.usedGold(cntx.user.id, DataShop.lightning[itemIndex].gold, tid = LogicTid.getOne(), function (success, currentGold) {
             if (success)
-                DataStuff.giveALightning(cntx.user.id, DataShop.lightning[itemIndex].quantity, tid, function () {
+                DataStuff.giveALightning(cntx.user.id, DataShop.lightning[itemIndex].quantity, tid, function (result, currentStuff) {
                     Statistic.write(cntx.userId, Statistic.ID_BUY_LIGHTNING, DataShop.lightning[itemIndex].quantity);
+                    if (result) Logs.log("Игрок " + cntx.user.socNetUserId + " купил молнию ⚡, теперь: " + currentStuff +
+                        ", 💰 " + currentGold + "(-" + DataShop.lightning[itemIndex].gold + ")", Logs.LEVEL_DETAIL,
+                        undefined, Logs.CHANNEL_TELEGRAM);
                     pFinish(prid);
                 });
         });
@@ -94,10 +104,13 @@ SAPIStuff = function () {
 
         let prid = pStart(Profiler.ID_SAPISTUFF_BUY_SHUFFLE);
 
-        DataStuff.usedGold(cntx.user.id, DataShop.shuffle[itemIndex].gold, tid = LogicTid.getOne(), function (success) {
+        DataStuff.usedGold(cntx.user.id, DataShop.shuffle[itemIndex].gold, tid = LogicTid.getOne(), function (success, currentGold) {
             if (success)
-                DataStuff.giveAShuffle(cntx.user.id, DataShop.shuffle[itemIndex].quantity, tid, function () {
+                DataStuff.giveAShuffle(cntx.user.id, DataShop.shuffle[itemIndex].quantity, tid, function (result, currentStuff) {
                     Statistic.write(cntx.userId, Statistic.ID_BUY_SHUFFLE, DataShop.shuffle[itemIndex].quantity);
+                    if (result) Logs.log("Игрок " + cntx.user.socNetUserId + " купил вихрь 🌪, теперь: " + currentStuff +
+                        ", 💰 " + currentGold + "(-" + DataShop.lightning[itemIndex].gold + ")", Logs.LEVEL_DETAIL,
+                        undefined, Logs.CHANNEL_TELEGRAM);
                     pFinish(prid);
                 });
         });
@@ -116,18 +129,20 @@ SAPIStuff = function () {
                 setTimeout(done, 5 * 60 * 1000);
                 DataUser.getById(cntx.user.id, function (user) {
                     if (LogicHealth.getHealths(user) > 0) {
-                        Logs.log("buy health tid:" + tid + " uid:" + user.id + " NO ZERO", Logs.LEVEL_DETAIL, user, Logs.CHANNEL_VK_HEALTH);
+                        Logs.log("buy health tid:" + tid + " uid:" + user.id + " NO ZERO", Logs.LEVEL_ALERT, user, Logs.CHANNEL_VK_HEALTH);
                         done();
                         pFinish(prid);
                     } else {
                         Statistic.write(cntx.userId, Statistic.ID_BUY_HEALTH);
-                        DataStuff.usedGold(cntx.user.id, DataShop.healthGoldPrice, tid, function (success) {
+                        DataStuff.usedGold(cntx.user.id, DataShop.healthGoldPrice, tid, function (success, currentGold) {
                             if (!success) {
-                                Logs.log("buy health tid:" + tid + " uid:" + user.id + " CANCEL", Logs.LEVEL_DETAIL, user, Logs.CHANNEL_VK_HEALTH);
+                                Logs.log("buy health tid:" + tid + " uid:" + user.id + " CANCEL", Logs.LEVEL_ALERT, user, Logs.CHANNEL_VK_HEALTH);
                                 done();
                             } else {
-                                Logs.log("buy health tid:" + tid + " uid:" + user.id + " +" + LogicHealth.getMaxHealth() + " OK", Logs.LEVEL_DETAIL, user, Logs.CHANNEL_VK_HEALTH);
+                                Logs.log("buy health tid:" + tid + " uid:" + user.id + " +" + LogicHealth.getMaxHealth() + " OK", Logs.LEVEL_DETAIL, user, Logs.CHANNEL_VK_HEALTH, true);
                                 LogicHealth.setMaxHealth(user);
+                                Logs.log("Игрок " + cntx.user.socNetUserId + " купил жизней❤❤❤❤❤, 💰  " + currentGold + "(-" + DataShop.healthGoldPrice + ")", Logs.LEVEL_DETAIL,
+                                    undefined, Logs.CHANNEL_TELEGRAM);
                                 DataUser.updateHealthAndStartTime(user, function () {
                                         CAPIUser.updateUserInfo(cntx.user.id, user);
                                         done();

@@ -84,16 +84,15 @@ let Logs = function () {
             case Logs.CHANNEL_VK_STUFF:
                 FS.writeFile(CONST_DIR_SERVER + '/logs/vk_stuff.log', logText + details + "\r\n", {flag: 'a'}, function () {
                 });
-                telega = true;
                 break;
             case Logs.CHANNEL_VK_HEALTH:
                 FS.writeFile(CONST_DIR_SERVER + '/logs/vk_health.log', logText + details + "\r\n", {flag: 'a'}, function () {
                 });
-                telega = true;
                 break;
             case Logs.CHANNEL_CLIENT:
                 FS.writeFile(CONST_DIR_SERVER + '/logs/client.log', logText + details + "\r\n", {flag: 'a'}, function () {
                 });
+                telega = true;
                 break;
             case Logs.CHANNEL_TELEGRAM:
                 telega = true;
@@ -109,7 +108,7 @@ let Logs = function () {
         // если это фатальная ошибка - завершим работу программы.
 
         if (CONST_IS_SERVER_SIDE && telega) {
-            telegramSent(logText + details);
+            telegramSent(message + details);
         }
         if (level === Logs.LEVEL_FATAL_ERROR) {
             throw new Error("Vse polamalos'!");

@@ -44,9 +44,9 @@ let DialogMoneyShop = function () {
         GUI.popParent();
     };
 
-    this.showDialog = function (afterDialog) {
+    this.showDialog = function (afterDialog, from) {
         self.__proto__.showDialog(afterDialog);
-        SAPILogs.showMoneyDialog();
+        SAPILogs.showMoneyDialog(from);
     };
 
     this.closeDialog = function () {

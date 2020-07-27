@@ -129,10 +129,11 @@ let PageBlockField = function PageBlockField() {
             self.elements.push(elStar3);
             elProgressBar = GUI.createDom(null, {
                 x: oX + 21, y: oY + 59,
-                width: 71, height: 0,
-                //border: '2px solid ' + 'rgba(200, 200, 0, 0.7)',
-                border: '2px solid ' + 'rgba(68, 68, 0, 0.7)',
-                borderRadius: '8px'
+                width: 71, height: 1,
+                borderWidth: 2,
+                borderColor: 'rgba(68, 68, 0, 0.7)',
+                background: 'rgba(68, 68, 0, 0.7)',
+                borderRadius: 2
             });
             self.elements.push(elProgressBar);
         }

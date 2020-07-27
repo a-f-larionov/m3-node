@@ -56,7 +56,7 @@ Statistic = function () {
             query = query.substr(0, query.length - 1);
             Logs.log("Statistic insert start:" + cache.length + "query length:" + query.length, Logs.LEVEL_NOTIFY);
             DB.query(query, function (res) {
-                Logs.log("Statistic cache affectedRows:" + res.affectedRows, Logs.LEVEL_ALERT);
+                Logs.log("Statistic сбросил кэш:" + res.affectedRows  + " записи.", Logs.LEVEL_ALERT);
                 callback();
             });
             cache = [];

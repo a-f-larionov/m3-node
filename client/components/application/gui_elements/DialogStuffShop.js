@@ -106,7 +106,7 @@ let DialogStuffShop = function () {
         }
 
         if (userGold < shopItem.gold) {
-            PBZDialogs.dialogMoneyShop.showDialog();
+            PBZDialogs.dialogMoneyShop.showDialog(undefined, 'не хватило на магию, ' + stuffId);
             self.reset();
             self.showDialog(stuffId);
         } else {

@@ -64,6 +64,22 @@ let Images = function () {
         }
         return window.i_d[url];
     };
+
+    let images = {};
+
+    this.getImage = function (url, callback) {
+
+        let path = Images.getPath(url);
+        if (!images[path]) {
+            images[path] = new Image();
+            images[path].onload = function () {
+                callback(images[path], Images.getMeta(url));
+            };
+            images[path].src = path;
+            return;
+        }
+        callback(images[path], Images.getMeta(url));
+    };
 };
 
 /** @type {Images} */

@@ -130,7 +130,7 @@ let ElementPoint = function () {
         GUI.bind(dom, GUI.EVENT_MOUSE_OUT, onMouseOut, self);
 
         elText = GUI.createElement(ElementText, {
-            width: 33, height: 20,
+            width: 34, height: 20,
             fontSize: 15,
             pointer: GUI.POINTER_HAND
         }, dom);
@@ -146,18 +146,22 @@ let ElementPoint = function () {
 
         dPhoto1 = GUI.createDom(null, {
             height: photoSize, width: photoSize,
-            border: '1px solid #715f4b',
-            borderRadius: '2px', zIndex: 100
+            borderWidth: 1,
+            borderColor: '#715f4b',
+            borderRadius: 2,
+            zIndex: 100
         });
         dPhoto2 = GUI.createDom(null, {
             height: photoSize, width: photoSize,
-            border: '1px solid #715f4b',
-            borderRadius: '2px', zIndex: 100
+            borderWidth: 1,
+            borderColor: '#715f4b',
+            borderRadius: 2, zIndex: 100
         });
         dPhoto3 = GUI.createDom(null, {
             height: photoSize, width: photoSize,
-            border: '1px solid #715f4b',
-            borderRadius: '2px', zIndex: 100
+            borderWidth: 1,
+            borderColor: '#715f4b',
+            borderRadius: 2, zIndex: 100
         });
     };
 
@@ -219,7 +223,7 @@ let ElementPoint = function () {
         dom.x = self.x;
         dom.y = self.y;
 
-        elText.x = 9;
+        elText.x = 8;
         elText.y = 16.5;
         elText.text = self.pointId ? self.pointId.toString() : '';
 

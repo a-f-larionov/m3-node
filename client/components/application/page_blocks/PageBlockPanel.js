@@ -31,15 +31,16 @@ let PageBlockPanel = function PageBlockPanel() {
          * Панель внутрений валюты
          * @type {number}
          */
-        pMX = 110;//110 идеальный уентр
+        pMX = 110;/** 110 идеальный центр */
         el = GUI.createElement(ElementImage, {x: pMX, y: 0, src: 'panel-money.png'});
+
         self.elements.push(el);
 
         /** Деньги - монета */
         el = GUI.createElement(ElementButton, {
             x: pMX + 5, y: -3, srcRest: 'coin.png',
             onClick: function () {
-                PBZDialogs.dialogMoneyShop.showDialog();
+                PBZDialogs.dialogMoneyShop.showDialog(undefined, 'монета на панели');
             }
         });
         self.elements.push(el);
@@ -54,7 +55,7 @@ let PageBlockPanel = function PageBlockPanel() {
         el = GUI.createElement(ElementButton, {
             x: pMX + 122, y: -3, srcRest: 'button-add-rest.png',
             onClick: function () {
-                PBZDialogs.dialogMoneyShop.showDialog();
+                PBZDialogs.dialogMoneyShop.showDialog(undefined, 'кнопка плюс на панели');
             }
         });
         self.elements.push(el);

@@ -52,7 +52,9 @@ let ElementFriendsPanel = function () {
                 y: self.y,
                 width: self.cardWidth,
                 height: self.cardHeight,
-                border: '2px solid #715f4b', borderRadius: '8px',
+                borderWidth: 2,
+                borderColor: '#715f4b',
+                borderRadius: 8,
                 background: '#aaa'
             });
             GUI.bind(dom, GUI.EVENT_MOUSE_CLICK, function () {
@@ -63,9 +65,9 @@ let ElementFriendsPanel = function () {
                 {
                     x: self.x + i * (self.cardWidth + self.cardSpace) + 2,
                     y: self.y + 50 - 17,
-                    width: self.cardWidth, height: 30 / (100 / self.cardWidth), alignCenter: true,
+                    width: self.cardWidth - 4, height: 30 / (100 / self.cardWidth), alignCenter: true,
                     background: '#eee',
-                    opacity: 0.7,
+                    opacity: 0.5,
                     fontSize: 12
                 }));
         }

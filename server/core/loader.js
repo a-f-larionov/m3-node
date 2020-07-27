@@ -222,7 +222,7 @@ function Loader() {
             }
         }
         sequencedInit(function (afterInitCallback) {
-            Logs.log("Server is running full.", Logs.LEVEL_ALERT);
+            Logs.log("Сервер запущен.", Logs.LEVEL_ALERT);
             afterInitCallback();
             callback();
         });

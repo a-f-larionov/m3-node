@@ -450,7 +450,8 @@ let ElementField = function () {
             } else {
                 if (showAllGems && Config.Project.develop) {
                     gemDom.opacity = 0.5;
-                    gemDom.border = '1px solid red';
+                    gemDom.borderWidth = 1;
+                    gemDom.borderColor = 'red';
                     gemDom.show();
                     gemDom.redraw();
                 } else {

@@ -70,7 +70,7 @@ let DialogTurnLoose = function DialogTurnLoose() {
                 self.closeDialog();
 
                 if (LogicStuff.getStuff('goldQty') < DataShop.looseTurnsPrice) {
-                    PBZDialogs.dialogMoneyShop.showDialog();
+                    PBZDialogs.dialogMoneyShop.showDialog(undefined, 'не хватило на ходы');
                     self.showDialog(pointId);
                 } else {
                     SAPIUser.spendTurnsMoney();

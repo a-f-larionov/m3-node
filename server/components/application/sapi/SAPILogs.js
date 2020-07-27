@@ -20,20 +20,21 @@ SAPILogs = function () {
         pFinish(prid);
     };
 
-    this.showMoneyDialog = function (cntx) {
+    this.showMoneyDialog = function (cntx, message) {
 
-        Logs.log("uid:" + cntx.user.id + " Show money dialog", Logs.LEVEL_NOTIFY, null, null, true);
+        Logs.log("Игрок " + cntx.user.socNetUserId + " Открыл диалог покупки голосов: " + message,
+            Logs.LEVEL_NOTIFY, null, null, true);
     };
 
 
     this.closeMoneyDialog = function (cntx) {
 
-        Logs.log("uid:" + cntx.user.id + " Close money dialog", Logs.LEVEL_NOTIFY, null, null, true);
+        Logs.log("Игрок:" + cntx.user.socNetUserId + "  Закрыл диалог покупки голосов", Logs.LEVEL_NOTIFY, null, null, true);
     };
 
     this.showStuffShopDialog = function (cntx, stuffFieldName) {
 
-        Logs.log("uid:" + cntx.user.id + " Show Stuff shop dialog " + stuffFieldName, Logs.LEVEL_NOTIFY, null, null, true);
+        Logs.log("Игрок:" + cntx.user.socNetUserId + " открыл покупку магии " + stuffFieldName, Logs.LEVEL_NOTIFY, null, null, true);
     }
 };
 

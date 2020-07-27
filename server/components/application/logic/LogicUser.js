@@ -189,7 +189,8 @@ LogicUser = function () {
             userToCntx[user.id] = {
                 conns: {},
                 user: {
-                    id: user.id
+                    id: user.id,
+                    socNetUserId: user.socNetUserId
                 },
                 connsCount: 0
             };

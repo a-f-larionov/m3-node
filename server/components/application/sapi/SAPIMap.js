@@ -85,6 +85,8 @@ SAPIMap = function () {
 
                 Statistic.write(user.id, Statistic.ID_FINISH_PLAY, pointId, score);
 
+                Logs.log("Игрок " + cntx.user.socNetUserId + " прошёл уроень " + pointId + " очков " + score, Logs.LEVEL_DETAIL, undefined, Logs.CHANNEL_TELEGRAM);
+
                 if (user.nextPointId < pointId + 1) {
 
                     Statistic.write(user.id, Statistic.ID_LEVEL_UP, pointId + 1, score);

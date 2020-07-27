@@ -27,13 +27,13 @@ let ElementImage = function () {
      * Ширина картинки.
      * @type {number}
      */
-    this.width = 0;
+    this.width = undefined;
 
     /**
      * Высота картинки.
      * @type {number}
      */
-    this.height = 0;
+    this.height = undefined;
 
     /**
      * Ссылка на картинку.
@@ -69,8 +69,9 @@ let ElementImage = function () {
         dom = GUI.createDom();
         dom.backgroundImage = self.src;
         if (this.photoBorder) {
-            dom.border = '2px solid ' + 'rgba(68, 62, 0, 0.7)';
-            dom.borderRadius = '8px';
+            dom.borderWidth = 2;
+            dom.borderColor = 'rgba(68, 62, 0, 0.7)';
+            dom.borderRadius = 8;
         }
         self.dom = dom;
     };

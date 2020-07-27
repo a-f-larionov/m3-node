@@ -57,10 +57,9 @@ DataStuff = function () {
                         + fieldName + " +" + quantity +
                         " current:" + stuff[fieldName] + " OK",
                         Logs.LEVEL_NOTIFY, undefined, Logs.CHANNEL_VK_STUFF);
-
+                    if (callback) callback(true, stuff[fieldName]);
+                    done();
                 });
-                if (callback) callback();
-                done();
             });
         });
     };
@@ -80,7 +79,7 @@ DataStuff = function () {
                         goldQty: data[0][fieldName]
                     });
                     Logs.log("vk_stuff tid:" + tid + " uid:" + userId + " " + fieldName
-                        + " -" + quantity + " CANCEL", Logs.LEVEL_NOTIFY, data, Logs.CHANNEL_VK_STUFF);
+                        + " -" + quantity + " CANCEL", Logs.LEVEL_ALERT, data, Logs.CHANNEL_VK_STUFF);
                     done();
                     if (callback) callback(false);
                     return;
@@ -93,7 +92,7 @@ DataStuff = function () {
                         + fieldName + " -" + quantity + " current:" + (data[0][fieldName] - quantity) + " OK",
                         Logs.LEVEL_NOTIFY, undefined, Logs.CHANNEL_VK_STUFF);
                     done();
-                    if (callback) callback(true);
+                    if (callback) callback(true, (data[0][fieldName] - quantity));
                 });
             });
         });

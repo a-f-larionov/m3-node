@@ -12,6 +12,10 @@ let GUI = function () {
     this.appArea = false;
     let wizardArea = false;
 
+    this.canvasArea = false;
+    /** @type {CanvasRenderingContext2D} */
+    this.canvasCntx = null;
+
     /**
      * Событие нажатия мышы(левой), но не отпускания.
      * @type {number}
@@ -100,6 +104,21 @@ let GUI = function () {
 
     this.lockEventsExcept = null;
 
+    let canvasParent = {
+        x: 0, y: 0,
+        childs: [],
+        appendChild: function (gdom) {
+            this.childs.push(gdom);
+            gdom.__parent = this;
+        }, isShowed: function () {
+            return true;
+        }, getX: function () {
+            return this.x;
+        }, getY: function () {
+            return this.y;
+        }
+    };
+
     /**
      * Инициализация.
      * - установим родителя, это будет тело документа.
@@ -109,29 +128,21 @@ let GUI = function () {
         wizardArea = document.getElementById('wizardArea');
         parentsStack.push(GUI.appArea);
         //@todo canvas
-        /*  if (Config.Project.canvas) {
-              parentsStack.push(GUI.createDom({
-                  appendChild: function (dom) {
-
-                  }
-              }));
-          } else {
-              parentsStack.push(GUI.appArea);
-          }
-
-         */
+        if (Config.Project.canvas) {
+            OnIdle.register(GUI.redrawFrame);
+            parentsStack.push(canvasParent);
+            GUI.canvasArea = document.getElementById('canvasArea');
+            GUI.canvasArea.style.display = 'block';
+            GUI.canvasArea.width = DataCross.app.width * window.devicePixelRatio;
+            GUI.canvasArea.height = DataCross.app.height * window.devicePixelRatio;
+            GUI.canvasCntx = GUI.canvasArea.getContext('2d');
+            //GUI.canvasCntx.globalAlpha = null;
+        } else {
+            parentsStack.push(GUI.appArea);
+        }
 
         let style = document.createElement('style');
         style.type = 'text/css';
-        style.innerHTML = '.sepia { ' +
-            'filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'old-timey\'><feColorMatrix type=\'matrix\' values=\'0.14 0.45 0.05 0 0 0.12 0.39 0.04 0 0 0.08 0.28 0.03 0 0 0 0 0 1 0\'/></filter></svg>#old-timey");' +
-            '-webkit-filter: sepia(0.5);' +
-            '-webkit-filter: sepia(85%) grayscale(50%);' +
-            '-moz-filter: sepia(70%);' +
-            '-ms-filter: sepia(70%);' +
-            '-o-filter: sepia(70%);' +
-            'filter: sepia(70%);' +
-            '}';
         style.innerHTML += '.gui-dom { ' +
             ' position: absolute;' +
             ' overflow: hidden' +
@@ -255,7 +266,7 @@ let GUI = function () {
      * @return {Number} длина стэка родителей.
      */
     this.pushParent = function (parentDom) {
-        return parentsStack.push(parentDom.__dom);
+        return parentsStack.push(parentDom);
     };
 
     /**
@@ -282,21 +293,51 @@ let GUI = function () {
      */
     this.createDom = function (parent, params) {
         let dom;
-        dom = new GUIDom();
-        /** @todo canvas
-         /**
-         if (Config.Project.canvas) {
+
+        if (Config.Project.canvas) {
             dom = new GUIDomCanvas();
         } else {
             dom = new GUIDom();
-        }*/
-        dom.init(parent);
+        }
         if (params) {
             for (let name in params) {
                 dom[name] = params[name];
             }
         }
+        dom.init(parent);
         return dom;
+    };
+
+    this.redrawFrame = function () {
+        console.log('redraw frame');
+        GUI.canvasCntx.clearRect(0, 0,
+            DataCross.app.width * window.devicePixelRatio,
+            DataCross.app.height * window.devicePixelRatio
+        );
+        /*
+                canvasParent.childs.sort(function (l, r) {
+                    return l.__id < r.__id ? -1 : 1;
+                });
+                canvasParent.childs.sort(function (l, r) {
+                    return l.zIndex < r.zIndex ? -1 : 1;
+                });
+        */
+        let drawLayers = function (layerDom) {
+            layerDom.childs.forEach(function (dom) {
+                dom.draw();
+                if (dom.childs.length) {
+                    drawLayers(dom);
+                }
+            });
+        };
+
+        drawLayers(canvasParent);
+
+        window.cp = canvasParent;
+
+        /**
+         *
+         */
     };
 
     /**

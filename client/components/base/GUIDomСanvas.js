@@ -1,5 +1,5 @@
 /**
- * Адаптация для работы с гуёй. В данном случае это браузер.
+ * Адаптация для работы с гуёй. В данном случае это canvas.
  * Все запросы к гуи должны быть реализованы тут. и тут: GUIDom
  * @constructor
  * @property x {int}
@@ -28,7 +28,6 @@
  * @property background {String}
  * @property transform {String}
  * @property title {String}
- * @property isItsepia {Bool}
  * @property alignText {String}
  * @property zIndex {Int}
  * @property fontWeight {String}
@@ -40,6 +39,8 @@ let GUIDomCanvas = function () {
     let self = this;
 
     this.__id = ++GUIDom.lastId;
+
+    this.isNeedRedraw = false;
 
     /**
      * Старые свойства.
@@ -68,48 +69,44 @@ let GUIDomCanvas = function () {
      */
     this.init = function (parent) {
 
+        if (!parent) parent = GUI.getCurrentParent();
+        parent.appendChild(this);
+
         /** Начальное значение старых свойств */
         for (let i in props) {
             oldProps[i] = undefined;
         }
 
+        this.fontSize = 24;
 
         /** Создадим дом */
-        dom = {};
+        //dom = {};
         //dom = document.createElement(tagName);
         /** Значения по умолчанию для дом-ов. */
-        dom.className = 'gui-dom';
+        //dom.className = 'gui-dom';
         /** Does not dragable by default */
-        dom.ondragstart = function () {
+        /*dom.ondragstart = function () {
             return false;
-        };
+        };*/
+
         /** Добавим дом к родителю. */
-        this.__dom = dom;
-        dom.__dom = this;
-
-        if (!parent) parent = GUI.getCurrentParent();
-        else parent = parent.__dom;
-        console.log(parent);
-        parent.appendChild(dom);
-
+        //this.__dom = dom;
+        //dom.__dom = this;
     };
 
-    let childs = [];
+    this.childs = [];
 
-    this.appendChild = function (dom) {
-        childs.push(dom);
-        dom.__parent = this;
+    this.appendChild = function (gdom) {
+        this.childs.push(gdom);
+        gdom.__parent = this;
     };
 
     /**
      * Покажем дом.
      */
     this.show = function () {
-        if (showed) {
-            return;
-        }
+        if (showed) return;
         showed = true;
-        dom.style.display = '';
         self.redraw();
     };
 
@@ -117,11 +114,8 @@ let GUIDomCanvas = function () {
      * Спрячем дом.
      */
     this.hide = function () {
-        if (!showed) {
-            return;
-        }
+        if (!showed) return;
         showed = false;
-        dom.style.display = 'none';
     };
 
     /**
@@ -129,15 +123,151 @@ let GUIDomCanvas = function () {
      * Только те свойства, которые изменились.
      */
     this.redraw = function () {
-        if (!showed) {
-            return;
-        }
+        if (!showed) return;
+
+        if (!self.isNeedRedraw) self.isNeedRedraw = false;
         for (let name in props) {
             if (oldProps[name] !== self[name]) {
-                props[name].call();
+                //props[name].call();
+                self.isNeedRedraw = true;
                 oldProps[name] = self[name];
             }
         }
+    };
+
+    this.isShowed = function (log) {
+        return showed && self.__parent.isShowed(log);
+    };
+
+    this.draw = function () {
+        let dpr;
+        GUI.dpr = dpr = window.devicePixelRatio;
+        let cntx = GUI.canvasCntx;
+
+        if (!self.isShowed(self.text === 'КУПИТЬ')) return;
+
+        cntx.globalAlpha = self.opacity ? self.opacity : 1.0;
+
+        let drawBorders = function (fill) {
+            cntx.lineWidth = self.borderWidth * dpr;
+            cntx.strokeStyle = self.borderColor;
+            if (self.borderRadius) {
+                roundRect(cntx,
+                    self.getX() - self.borderWidth,
+                    self.getY() - self.borderWidth,
+                    self.width * dpr + self.borderWidth*2,
+                    self.height * dpr + self.borderWidth*2,
+                    self.borderRadius * dpr, fill ? self.background : undefined
+                )
+            } else {
+                cntx.fillRect(
+                    self.getY(), self.getY(),
+                    self.width * dpr, self.height * dpr
+                );
+            }
+        };
+
+        if (self.borderWidth && self.background) {
+            drawBorders(true)
+        }
+
+        if (self.background) {
+            cntx.fillStyle = self.background;
+            cntx.fillRect(self.getX(), self.getY(),
+                self.width * dpr, self.height * dpr
+            );
+        }
+
+        if (self.backgroundImage) {
+            Images.getImage(self.backgroundImage, function (img, meta) {
+                if (meta.w && meta.h) {
+                    cntx.drawImage(img,
+                        meta.x * dpr, meta.y * dpr,
+                        meta.w * dpr, meta.h * dpr,
+                        self.getX(), self.getY(),
+                        (self.width ? self.width : meta.w) * dpr,
+                        (self.height ? self.height : meta.h) * dpr);
+                } else {
+                    cntx.drawImage(img,
+                        self.getX(), self.getY(),
+                        self.width * dpr, self.height * dpr);
+                }
+            });
+        }
+
+        if (self.borderWidth) {
+            drawBorders(false)
+        }
+
+        if (self.text) {
+
+            //dom.textDecoration = self.textDecoration;
+
+            cntx.fillStyle = self.color;
+            if (self.alignText) cntx.textAlign = self.alignText;
+
+            cntx.font =
+                (self.fontWeight ? (self.fontWeight + ' ') : '') +
+                (self.fontSize * GUI.dpr) + 'px ' +
+                self.fontFamily;
+
+            cntx.fillText(self.text,
+                self.getX() + self.width + (self.alignText === 'right' ? self.width : 0),
+                self.getY() + (self.height ? self.height + 6 : self.fontSize * GUI.dpr)
+            );
+        }
+
+        //GUI.canvasCntx.globalAlpha = 1.0;
+        /*cntx.lineWidth = 1;
+        cntx.strokeStyle = 'red';
+        cntx.strokeRect(
+            self.getX(), self.getY(),
+            self.width * dpr, self.height * dpr
+        );
+         */
+    };
+
+    let roundRect = function (ctx, x, y, width, height, radius, fill, stroke) {
+        if (typeof stroke === 'undefined') {
+            stroke = true;
+        }
+        if (typeof radius === 'undefined') {
+            radius = 5;
+        }
+        if (typeof radius === 'number') {
+            radius = {tl: radius, tr: radius, br: radius, bl: radius};
+        } else {
+            var defaultRadius = {tl: 0, tr: 0, br: 0, bl: 0};
+            for (var side in defaultRadius) {
+                radius[side] = radius[side] || defaultRadius[side];
+            }
+        }
+        ctx.beginPath();
+        ctx.moveTo(x + radius.tl, y);
+        ctx.lineTo(x + width - radius.tr, y);
+        ctx.quadraticCurveTo(x + width, y, x + width, y + radius.tr);
+        ctx.lineTo(x + width, y + height - radius.br);
+        ctx.quadraticCurveTo(x + width, y + height, x + width - radius.br, y + height);
+        ctx.lineTo(x + radius.bl, y + height);
+        ctx.quadraticCurveTo(x, y + height, x, y + height - radius.bl);
+        ctx.lineTo(x, y + radius.tl);
+        ctx.quadraticCurveTo(x, y, x + radius.tl, y);
+        ctx.closePath();
+        if (fill) {
+            ctx.fill();
+        }
+        if (stroke) {
+            ctx.stroke();
+        }
+    };
+
+
+    this.getX = function () {
+        return self.x * GUI.dpr + self.__parent.getX();
+    };
+
+    this.getY = function () {
+        return self.y * GUI.dpr + self.__parent.getY();
     };
 
     /**
@@ -177,24 +307,21 @@ let GUIDomCanvas = function () {
         }, false);
     };
 
+    let f = function () {
+    };
+
     /** Далее идут методы перерисовки. */
-    let redrawX = function () {
-        ///??canvas.draw all
-        dom.style.left = self.x + 'px';
-    };
-    let redrawY = function () {
-        dom.style.top = self.y + 'px';
-    };
     let redrawWidth = function () {
-        dom.style.width = self.width + 'px';
-        if (self.backgroundImage) redrawBackgroundImage();
+        //dom.style.width = self.width + 'px';
+        // if (self.backgroundImage) redrawBackgroundImage();
     };
     let redrawHeight = function () {
-        dom.style.height = (!isNaN(self.visibleHeight) ? self.visibleHeight : self.height) + 'px';
+        // dom.style.height = (!isNaN(self.visibleHeight) ? self.visibleHeight : self.height) + 'px';
 
-        if (self.backgroundImage) redrawBackgroundImage();
+        // if (self.backgroundImage) redrawBackgroundImage();
     };
     let redrawBackgroundImage = function () {
+        return;
         let meta, kW, kH, s;
         meta = Images.getMeta(self.backgroundImage);
         /** Если размер не задан, пробуем задать его автоматически. */
@@ -233,94 +360,64 @@ let GUIDomCanvas = function () {
 
     };
     let redrawBackgroundSize = function () {
-        dom.style.backgroundSize = self.backgroundSize + 'px';
-    };
-    let redrawInnerHTML = function () {
-        dom.innerHTML = self.innerHTML;
+        //dom.style.backgroundSize = self.backgroundSize + 'px';
     };
     let redrawPointer = function () {
-        dom.style.cursor = self.pointer;
-    };
-    let redrawOpacity = function () {
-        dom.style.opacity = self.opacity;
-    };
-    let redrawFontWeight = function () {
-        dom.style.fontWeight = self.fontWeight;
-    };
-    let redrawFontSize = function () {
-        dom.style.fontSize = self.fontSize + 'px';
-    };
-    let redrawFontFamily = function () {
-        dom.style.fontFamily = self.fontFamily;
+        //dom.style.cursor = self.pointer;
     };
     let redrawColor = function () {
-        dom.style.color = self.color;
+        //dom.style.color = self.color;
     };
     let redrawTextShadow = function () {
-        dom.style.textShadow = self.textShadow;
+        //dom.style.textShadow = self.textShadow;
     };
     let redrawBorderRadius = function () {
-        dom.style.borderRadius = self.borderRadius;
+        //dom.style.borderRadius = self.borderRadius;
     };
     let redrawBorder = function () {
-        dom.style.border = self.border;
+        //dom.style.border = self.border;
     };
     let redrawBorderTop = function () {
-        dom.style.borderTop = self.borderTop;
+        //dom.style.borderTop = self.borderTop;
     };
     let redrawBorderRight = function () {
-        dom.style.borderRight = self.borderRight;
+        //dom.style.borderRight = self.borderRight;
     };
     let redrawBorderBottom = function () {
-        dom.style.borderBottom = self.borderBottom;
+        //dom.style.borderBottom = self.borderBottom;
     };
     let redrawBorderLeft = function () {
-        dom.style.borderLeft = self.borderLeft;
+        //dom.style.borderLeft = self.borderLeft;
     };
     let redrawPadding = function () {
-        dom.style.padding = self.padding;
+        //dom.style.padding = self.padding;
     };
     let redrawBoxShadow = function () {
-        dom.style.boxShadow = self.boxShadow;
+        //dom.style.boxShadow = self.boxShadow;
     };
     let redrawLineHeight = function () {
-        dom.style.lineHeight = self.lineHeight;
+        //dom.style.lineHeight = self.lineHeight;
     };
     let redrawBackground = function () {
-        dom.style.background = self.background;
+        //dom.style.background = self.background;
     };
     let redrawTransform = function () {
-        dom.style.transform = self.transform;
+        //dom.style.transform = self.transform;
     };
     let redrawTitle = function () {
-        dom.setAttribute('title', self.title);
-    };
-    let redrawIsItSepia = function () {
-        /*
-         filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'old-timey\'><feColorMatrix type=\'matrix\' values=\'0.14 0.45 0.05 0 0 0.12 0.39 0.04 0 0 0.08 0.28 0.03 0 0 0 0 0 1 0\'/></filter></svg>#old-timey");
-         -webkit-filter: sepia(0.5);
-         -webkit-filter: sepia(95%) grayscale(50%);
-         -moz-filter: sepia(80%);
-         -ms-filter: sepia(80%);
-         -o-filter: sepia(80%);
-         filter: sepia(80%);
-         */
-        dom.className += 'sepia';
-    };
-    let redrawAlignText = function () {
-        dom.style.textAlign = self.alignText;
+        //dom.setAttribute('title', self.title);
     };
     let redrawZIndex = function () {
-        dom.style.zIndex = self.zIndex;
+        //dom.style.zIndex = self.zIndex;
     };
     let redrawOverflow = function () {
-        dom.style.overflow = self.overflow;
+        //dom.style.overflow = self.overflow;
     };
     let redrawTextDecoration = function () {
-        dom.style.textDecoration = self.textDecoration;
+        //dom.style.textDecoration = self.textDecoration;
     };
     let redrawRotate = function () {
-        dom.style.transform = 'rotate(' + self.rotate + 'deg)';
+        //dom.style.transform = 'rotate(' + self.rotate + 'deg)';
     };
 
     /**
@@ -328,20 +425,20 @@ let GUIDomCanvas = function () {
      * @type {{x: Function, y: Function, width: Function, height: Function, backgroundImage: *, innerHTML: Function, pointer: Function, opacity: Function, fontWeight: *, fontSize: *, fontFamily: Function, color: Function, textShadow: Function, borderRadius: Function, border: Function, borderTop: Function, borderRight: Function, borderBottom: Function, borderLeft: Function, padding: Function, boxShadow: Function, lineHeight: Function, background: Function, transform: Function, title: *}}
      */
     let props = {
-        x: redrawX,
-        y: redrawY,
+        x: f,
+        y: f,
         width: redrawWidth,
         height: redrawHeight,
         visibleHeight: redrawHeight,
         backgroundPositionY: redrawBackgroundImage,
         backgroundImage: redrawBackgroundImage,
         backgroundSize: redrawBackgroundSize,
-        innerHTML: redrawInnerHTML,
+        innerHTML: f,
         pointer: redrawPointer,
-        opacity: redrawOpacity,
-        fontWeight: redrawFontWeight,
-        fontSize: redrawFontSize,
-        fontFamily: redrawFontFamily,
+        opacity: f,
+        fontWeight: f,
+        fontSize: f,
+        fontFamily: f,
         color: redrawColor,
         textShadow: redrawTextShadow,
         borderRadius: redrawBorderRadius,
@@ -356,8 +453,7 @@ let GUIDomCanvas = function () {
         background: redrawBackground,
         transform: redrawTransform,
         title: redrawTitle,
-        isItsepia: redrawIsItSepia,
-        alignText: redrawAlignText,
+        alignText: f,
         zIndex: redrawZIndex,
         overflow: redrawOverflow,
         textDecoration: redrawTextDecoration,
