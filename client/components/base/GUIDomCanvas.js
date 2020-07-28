@@ -155,8 +155,8 @@ let GUIDomCanvas = function () {
                 roundRect(cntx,
                     self.getX() - self.borderWidth,
                     self.getY() - self.borderWidth,
-                    self.width * dpr + self.borderWidth*2,
-                    self.height * dpr + self.borderWidth*2,
+                    self.width * dpr + self.borderWidth * 2,
+                    self.height * dpr + self.borderWidth * 2,
                     self.borderRadius * dpr, fill ? self.background : undefined
                 )
             } else {
@@ -179,18 +179,18 @@ let GUIDomCanvas = function () {
         }
 
         if (self.backgroundImage) {
-            Images.getImage(self.backgroundImage, function (img, meta) {
+            Images.getImage(    self.backgroundImage, function (img, meta) {
                 if (meta.w && meta.h) {
                     cntx.drawImage(img,
                         meta.x * dpr, meta.y * dpr,
-                        meta.w * dpr, meta.h * dpr,
+                        meta.w * dpr - 0.5, meta.h * dpr,
                         self.getX(), self.getY(),
-                        (self.width ? self.width : meta.w) * dpr,
+                        (self.width ? self.width : meta.w) * dpr - 0.5,
                         (self.height ? self.height : meta.h) * dpr);
                 } else {
                     cntx.drawImage(img,
                         self.getX(), self.getY(),
-                        self.width * dpr, self.height * dpr);
+                        self.width * dpr - 0.5, self.height * dpr);
                 }
             });
         }
