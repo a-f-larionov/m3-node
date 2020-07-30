@@ -137,7 +137,7 @@ let ElementText = function () {
         refreshText();
         dom.x = self.x;
         dom.y = self.y;
-        dom.fontSize = self.fontSize;
+        dom.fontSize = self.fontSize ? self.fontSize : 18;
         dom.opacity = self.opacity;
         dom.width = self.width;
         dom.textDecoration = self.textDecoration;

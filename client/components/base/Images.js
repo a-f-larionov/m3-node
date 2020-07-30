@@ -53,6 +53,11 @@ let Images = function () {
         if (url && url.indexOf('https://') === 0 || url.indexOf('http://') === 0) {
             notFoundImg.path = url;
             notFoundImg.absolute = true;
+            //@todo crunch fo soc net photos
+            notFoundImg.x = 0;
+            notFoundImg.y = 0;
+            notFoundImg.w = 50;
+            notFoundImg.h = 50;
             return notFoundImg;
         }
         if (!url || !window.i_d[url]) {
@@ -68,17 +73,35 @@ let Images = function () {
     let images = {};
 
     this.getImage = function (url, callback) {
+        let image, meta, path;
+        path = Images.getPath(url);
+        meta = Images.getMeta(url);
 
-        let path = Images.getPath(url);
-        if (!images[path]) {
-            images[path] = new Image();
-            images[path].onload = function () {
-                callback(images[path], Images.getMeta(url));
+        if (!images[url]) {
+            if (images[url] === false) return;
+            images[url] = false;
+
+            image = new Image();
+            image.onload = function () {
+                console.log(url + ' loaded image');
+                //images[url] = image;
+                //callback(images[url], meta);
+
+                Promise.all([
+                    createImageBitmap(image, meta.x * 2, meta.y * 2, meta.w * 2, meta.h * 2)
+                ]).then(function (sprites) {
+                    meta.x = 0;
+                    meta.y = 0;
+                    images[url] = sprites[0];
+                    callback(images[url], meta);
+                });
+
             };
-            images[path].src = path;
+            image.src = path;
             return;
+        } else {
+            callback(images[url], Images.getMeta(url));
         }
-        callback(images[path], Images.getMeta(url));
     };
 };
 

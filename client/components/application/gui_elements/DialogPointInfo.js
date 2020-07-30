@@ -57,6 +57,7 @@ let DialogPointInfo = function () {
             srcRest: 'button-red-rest.png',
             srcHover: 'button-red-hover.png',
             srcActive: 'button-red-active.png',
+            title: true,
             onClick: function () {
                 self.closeDialog();
 
@@ -77,8 +78,7 @@ let DialogPointInfo = function () {
                         PageController.showPage(PageField);
                     }
                 }
-            },
-            title: 'ИГРАТЬ'
+            }
         });
         elGeneralButton.show();
 

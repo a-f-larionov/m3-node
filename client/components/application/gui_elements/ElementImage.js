@@ -15,13 +15,13 @@ let ElementImage = function () {
      * Координата X картинки.
      * @type {number}
      */
-    this.x = 0;
+    this.x = undefined;
 
     /**
      * Координата Y картинки.
      * @type {number}
      */
-    this.y = 0;
+    this.y = undefined;
 
     /**
      * Ширина картинки.

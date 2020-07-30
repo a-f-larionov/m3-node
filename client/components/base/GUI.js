@@ -112,11 +112,99 @@ let GUI = function () {
             gdom.__parent = this;
         }, isShowed: function () {
             return true;
-        }, getX: function () {
+        }, calcX: function () {
             return this.x;
-        }, getY: function () {
+        }, calcY: function () {
             return this.y;
+        }, calcOpacity: function () {
+            return 1.0;
         }
+    };
+
+    this.initCanvas = function () {
+
+        parentsStack.push(canvasParent);
+        GUI.canvasArea = document.getElementById('canvasArea');
+        GUI.canvasArea.style.display = 'block';
+        GUI.canvasArea.width = DataCross.app.width * window.devicePixelRatio;
+        GUI.canvasArea.height = DataCross.app.height * window.devicePixelRatio;
+        GUI.canvasCntx = GUI.canvasArea.getContext('2d');
+
+        GUI.canvasArea.addEventListener('mousemove', function (e) {
+            self.canvasEvents(e, GUI.EVENT_MOUSE_MOVE)
+        });
+        GUI.canvasArea.addEventListener('click', function (e) {
+            self.canvasEvents(e, GUI.EVENT_MOUSE_CLICK)
+        });
+
+        setTimeout(GUI.redrawFrame, 3000);
+    };
+
+    this.canvasPointerDoms = [];
+
+    this.canvasEvents = function (e, eventId) {
+        /**
+         * mouse out/over
+         * if( intersect && !el.mouseIn){
+         *
+         * }
+         * if( !intersect && el.mouseIN
+         */
+        let intersect;
+
+        eventBinds[eventId].forEach(function (el) {
+            intersect = eventIntersectEl(e, el);
+
+            if (intersect) el.callback.call(el.context, e, el.dom);
+        });
+        if (eventId === GUI.EVENT_MOUSE_MOVE) {
+
+
+            let pointer = GUI.POINTER_ARROW;
+            self.canvasPointerDoms.forEach(function (dom) {
+                if (eventIntersectEl(e, {dom: dom})) {
+                    pointer = dom.pointer;
+                }
+            });
+            //console.log('m', e.clientX, e.clientY, pointer, e.timeStamp);
+            GUI.canvasArea.style.cursor = pointer;
+
+
+            eventBinds[GUI.EVENT_MOUSE_OUT].forEach(function (el) {
+                intersect = eventIntersectEl(e, el);
+
+                if (!intersect && el.dom.__mouseIn) {
+                    el.dom.__mouseIn = false;
+                    el.callback.call(el.context, e, el.dom);
+                    //GUI.canvasArea.style.cursor = 'none';
+                }
+            });
+
+            eventBinds[GUI.EVENT_MOUSE_OVER].forEach(function (el) {
+                intersect = eventIntersectEl(e, el);
+
+                if (intersect && !el.dom.__mouseIn) {
+                    el.dom.__mouseIn = true;
+                    el.callback.call(el.context, e, el.dom);
+                }
+            });
+
+        }
+    };
+
+    let eventIntersectEl = function (e, el) {
+        return el.dom.isShowed() &&
+            el.dom.calcX() < e.clientX * GUI.dpr &&
+            el.dom.calcX() + el.dom.calcWidth() > e.clientX * GUI.dpr &&
+            el.dom.calcY() < e.clientY * GUI.dpr &&
+            el.dom.calcY() + el.dom.calcHeight() > e.clientY * GUI.dpr;
+    };
+
+    let eventBinds = {};
+
+    this.canvasBind = function (eventId, callback, context, dom) {
+        if (!eventBinds[eventId]) eventBinds[eventId] = [];
+        eventBinds[eventId].push({dom: dom, callback: callback, context: context});
     };
 
     /**
@@ -129,14 +217,7 @@ let GUI = function () {
         parentsStack.push(GUI.appArea);
         //@todo canvas
         if (Config.Project.canvas) {
-            OnIdle.register(GUI.redrawFrame);
-            parentsStack.push(canvasParent);
-            GUI.canvasArea = document.getElementById('canvasArea');
-            GUI.canvasArea.style.display = 'block';
-            GUI.canvasArea.width = DataCross.app.width * window.devicePixelRatio;
-            GUI.canvasArea.height = DataCross.app.height * window.devicePixelRatio;
-            GUI.canvasCntx = GUI.canvasArea.getContext('2d');
-            //GUI.canvasCntx.globalAlpha = null;
+            GUI.initCanvas();
         } else {
             parentsStack.push(GUI.appArea);
         }
@@ -308,19 +389,23 @@ let GUI = function () {
         return dom;
     };
 
+    let lastFrameTime = null;
+
     this.redrawFrame = function () {
-        console.log('redraw frame');
-        GUI.canvasCntx.clearRect(0, 0,
-            DataCross.app.width * window.devicePixelRatio,
-            DataCross.app.height * window.devicePixelRatio
-        );
+        GUI.dpr = window.devicePixelRatio;
         /*
-                canvasParent.childs.sort(function (l, r) {
-                    return l.__id < r.__id ? -1 : 1;
-                });
-                canvasParent.childs.sort(function (l, r) {
-                    return l.zIndex < r.zIndex ? -1 : 1;
-                });
+        GUI.canvasCntx.clearRect(0, 0,
+            DataCross.app.width * GUI.dpr,
+            DataCross.app.height * GUI.dpr
+        );
+        */
+        /*
+        canvasParent.childs.sort(function (l, r) {
+            return l.__id < r.__id ? -1 : 1;
+        });
+        canvasParent.childs.sort(function (l, r) {
+            return l.zIndex < r.zIndex ? -1 : 1;
+        });
         */
         let drawLayers = function (layerDom) {
             layerDom.childs.forEach(function (dom) {
@@ -332,13 +417,35 @@ let GUI = function () {
         };
 
         drawLayers(canvasParent);
+        // сколько млсек уходит на отрисовку
+        if(lastFrameTime) {
+            let t = (Date.now() - lastFrameTime);
+            window.timer.push(t);
+        }
 
-        window.cp = canvasParent;
 
-        /**
-         *
-         */
+        let currentFrameTime = Date.now();
+        window.fpsList.push(1000 / (currentFrameTime - lastFrameTime));
+        lastFrameTime = currentFrameTime;
+
+        setTimeout(GUI.redrawFrame, 1);
+
+
+        if (window.timer.length % 250 === 0) {
+            let sum = 0;
+            for (let i = 0; i < window.timer.length; i++) sum += window.timer[i];
+
+            console.log('timer', sum / window.timer.length);
+        }
+        if (window.fpsList.length % 250 === 0) {
+            let sum = 0;
+            for (let i = 0; i < window.fpsList.length; i++) sum += window.fpsList[i];
+
+            console.log('fpsList', sum / window.fpsList.length);
+        }
     };
+    window.timer = [];
+    window.fpsList = [];
 
     /**
      * Првязываем событие к домЭлементы

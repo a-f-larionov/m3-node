@@ -285,7 +285,8 @@ ClientCodeLoader = function () {
             "width:" + DataCross.app.width + "px;" +
             "position:absolute;top:0px;z-index:100;" +
             "display:none;' " +
-            "id='canvasArea' ></canvas>\r\n";
+            "id='canvasArea' " +
+            "crossorigin='anonymous' ></canvas>\r\n";
         /** Wizard canvas */
         code += "<canvas style='" +
             "height:" + DataCross.app.height + "px;" +

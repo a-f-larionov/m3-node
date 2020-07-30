@@ -75,7 +75,7 @@ let Dialog = function (src) {
 
         /** Заголовок диалога */
         self.elHeader = GUI.createElement(ElementText,
-            {x: 135, y: 16, width: 230, height: 40},
+            {x: 135, y: 16, width: 230, height: 27},
             dom);
 
         /** Кнопка закрыть */

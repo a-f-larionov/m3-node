@@ -274,7 +274,7 @@ let PageBlockField = function PageBlockField() {
             /** Передаем только на поле */
             if (
                 (el.parentElement.__dom && el.parentElement.__dom.isFieldContainer) ||
-                el.__dom.isStuffButton) {
+                el.isStuffButton) {
                 el.dispatchEvent(new MouseEvent(event.type, event));
             }
             if (stuffMode) domStuff.show();

@@ -35,7 +35,7 @@ let ElementUserScorePhoto = function () {
      */
     this.init = function () {
         elTextName = GUI.createElement(ElementText, {
-            x: self.x - 25, y: self.y - 22, width: 100, height: 50,
+            x: self.x - 25, y: self.y - 22, width: 100, height: 15,
             fontSize: 12, alignCenter: true
         });
         elPhoto = GUI.createElement(ElementImage, {
@@ -45,7 +45,7 @@ let ElementUserScorePhoto = function () {
         elPhoto.dom.pointer = GUI.POINTER_HAND;
         GUI.bind(elPhoto.dom, GUI.EVENT_MOUSE_CLICK, self.onClick, self);
         elTextScore = GUI.createElement(ElementText, {
-            x: self.x - 25, y: self.y + 61, width: 100, height: 50,
+            x: self.x - 25, y: self.y + 61, width: 100, height: 15,
             fontSize: 12, alignCenter: true
         });
     };

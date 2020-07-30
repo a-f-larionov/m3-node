@@ -34,13 +34,13 @@ let ElementButton = function () {
      * Ширина кнопки.
      * @type {number}
      */
-    this.width = 0;
+    this.width = undefined;
 
     /**
      * Высота кноки.
      * @type {number}
      */
-    this.height = 0;
+    this.height = undefined;
 
     /**
      * Ссылка на картинку при наведении фокуса(мыши).
@@ -118,7 +118,6 @@ let ElementButton = function () {
                 height: 25,
                 alignCenter: true,
                 fontSize: self.fontSize,
-                //text: self.title,
                 pointer: GUI.POINTER_HAND
             });
             elText.show();

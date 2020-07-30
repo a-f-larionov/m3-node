@@ -17,7 +17,7 @@ let DialogMoneyShop = function () {
 
             el = GUI.createElement(ElementText, {
                 x: offsetX + stepX * i, y: offsetY + 15,
-                text: DataShop.gold[i].votes.toString() + ' <br>' + declination(
+                text: DataShop.gold[i].votes.toString() + ' \r\n' + declination(
                     DataShop.gold[i].votes,
                     ['ГОЛОС', 'ГОЛОСА', 'ГОЛОСОВ']
                 ),
