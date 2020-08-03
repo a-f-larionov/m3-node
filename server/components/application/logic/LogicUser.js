@@ -41,9 +41,14 @@ LogicUser = function () {
         if (!checkResult) return;
         let prid = Profiler.start(Profiler.ID_AUTH_VK);
         /** Get from db */
+        DataUser.getBySocNet(socNetTypeId, socNetUserId)
+            .then(function (user) {
+                authorizeOrCreate(user, socNetTypeId, socNetUserId, cntx, prid);
+            });
+        /*
         DataUser.getBySocNet(socNetTypeId, socNetUserId, function (user) {
             authorizeOrCreate(user, socNetTypeId, socNetUserId, cntx, prid);
-        });
+        });*/
     };
 
     /**
@@ -72,9 +77,10 @@ LogicUser = function () {
         if (!checkResult) return;
         let prid = Profiler.start(Profiler.ID_AUTH_STANDALONE);
         /* get from db */
-        DataUser.getBySocNet(socNetTypeId, socNetUserId, function (user) {
-            authorizeOrCreate(user, socNetTypeId, socNetUserId, cntx, prid);
-        });
+        DataUser.getBySocNet(socNetTypeId, socNetUserId)
+            .then(function (user) {
+                authorizeOrCreate(user, socNetTypeId, socNetUserId, cntx, prid);
+            });
     };
 
     let authorizeOrCreate = function (user, socNetTypeId, socNetUserId, cntx, prid) {

@@ -35,7 +35,8 @@ Statistic = function () {
 
     this.checkCache = function () {
         if (cache.length > Config.Statistic.cacheLimit) {
-            self.flushCache();
+            self.flushCache(function () {
+            });
         }
     };
 
@@ -56,12 +57,12 @@ Statistic = function () {
             query = query.substr(0, query.length - 1);
             Logs.log("Statistic insert start:" + cache.length + "query length:" + query.length, Logs.LEVEL_NOTIFY);
             DB.query(query, function (res) {
-                Logs.log("Statistic сбросил кэш:" + res.affectedRows  + " записи.", Logs.LEVEL_ALERT);
-                callback();
+                Logs.log("Statistic сбросил кэш:" + res.affectedRows + " записи.", Logs.LEVEL_ALERT);
+                if (callback) callback();
             });
             cache = [];
         } else {
-            callback();
+            if (callback) callback();
         }
     };
 

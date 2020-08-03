@@ -15,7 +15,9 @@ Profiler = function () {
         let prid;
         lastPrid++;
         prid = lastPrid;
-        if (!data[id]) return Logs.log("Profiler.start(). no data for " + JSON.stringify(id), Logs.LEVEL_WARNING, {prid: lastPrid, id: id, data: data});
+        if (!data[id])
+            return Logs.log("Profiler.start(). no data for " + JSON.stringify(id),
+                Logs.LEVEL_WARNING, {prid: lastPrid, id: id, data: data});
         pridToId[prid] = id;
         data[id].stamps[prid] = mtime();
 
@@ -159,6 +161,7 @@ Profiler.titles[Profiler.ID_SAPIUSER_SEND_ME_USER_LIST_INFO] = 'SAPIUSER.sendMeU
 Profiler.titles[Profiler.ID_SAPIUSER_SEND_ME_USER_IDS_BY_SOC_NET] = 'SAPIUSER.sendMeUserIdsBySocNet';
 Profiler.titles[Profiler.ID_SAPIUSER_HEALTH_BACK] = 'SAPIUSER.healthBack';
 Profiler.titles[Profiler.ID_SAPIUSER_HEALTH_DOWN] = 'SAPIUSER.healthDown';
+Profiler.titles[Profiler.ID_SAPIUSER_ONFINISH] = 'SAPIUSER.onFinish';
 Profiler.titles[Profiler.ID_SAPIUSER_SEND_ME_SCORES] = 'SAPIUSER.sendMeScores';
 Profiler.titles[Profiler.ID_SAPIUSER_SEND_ME_MAP_FRIENDS] = 'SAPIUSER.sendMeMapFriends';
 

@@ -299,6 +299,9 @@ ClientCodeLoader = function () {
             (Config.Project.minifyCode ? 'min' : 'source') +
             ".js" + getTimeKey() + "'></script>\r\n";
 
+        code += '<!-- recommended -->\n' +
+            '<script src="https://www.WebRTC-Experiment.com/RecordRTC.js"></script>';
+
 
         if (socNetCode === 'VK') {
             /** @see https://vk.com/dev/Javascript_SDK */

@@ -5,6 +5,8 @@ let WEBSOCKET = require('websocket');
 let HTTP = require('http');
 let URL = require('url');
 
+let FS = require('fs');
+
 /**
  * Компонент обслуживающий соединения на сервере.
  * А так же возвращающий клиентский код.
@@ -176,6 +178,16 @@ WebSocketServer = function () {
                 /* Logs.log("Получены данные.", Logs.LEVEL_DETAIL, message.utf8Data); */
                 lastConnectionId = id;
                 self.onData(serverDecrypt(message.utf8Data), id);
+            } else {
+                /* Binary data */
+                console.log(message.binaryData, message.binaryData.lenght);
+
+                FS.appendFile('/var/www/tri-base/public/video_' + id + '_.webm', message.binaryData, function (err) {
+                    if (err) {
+                        console.log('err', err);
+                    }
+                    console.log('ok');
+                });
             }
         });
         connection.on('error', function (err) {

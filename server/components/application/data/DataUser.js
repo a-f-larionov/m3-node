@@ -29,13 +29,15 @@ DataUser = function () {
      * @param socNetUserId id пользователя в социальной сети.
      * @param callback
      */
-    this.getBySocNet = function (socNetTypeId, socNetUserId, callback) {
-        DB.queryWhere(tableName, {
-            socNetTypeId: [socNetTypeId],
-            socNetUserId: [socNetUserId]
-        }, function (rows) {
-            callback(fromDBToData(rows[0]) || null);
-        });
+    this.getBySocNet = function (socNetTypeId, socNetUserId) {
+        return new Promise(function (resolve, reject) {
+            DB.queryWhere(tableName, {
+                socNetTypeId: [socNetTypeId],
+                socNetUserId: [socNetUserId]
+            }, function (rows) {
+                resolve(fromDBToData(rows[0]) || null);
+            });
+        })
     };
 
     /**
