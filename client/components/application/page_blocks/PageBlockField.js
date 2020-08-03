@@ -129,11 +129,11 @@ let PageBlockField = function PageBlockField() {
             self.elements.push(elStar3);
             elProgressBar = GUI.createDom(null, {
                 x: oX + 21, y: oY + 59,
-                width: 71, height: 1,
+                width: 71, height: 4,
+                borderRadius: 2,
                 borderWidth: 2,
                 borderColor: 'rgba(68, 68, 0, 0.7)',
                 background: 'rgba(68, 68, 0, 0.7)',
-                borderRadius: 2
             });
             self.elements.push(elProgressBar);
         }
@@ -202,7 +202,7 @@ let PageBlockField = function PageBlockField() {
         /** Кнопка обновить поле, для админов\adminov */
         buttonReloadField = GUI.createElement(ElementButton, {
             x: 312, y: 5, width: 25, height: 25,
-            srcRest: 'button-reload-field-rest.png',
+            srcRest: 'button-close-rest.png',
             onClick: function () {
                 AnimLocker.lock();
 
@@ -447,7 +447,7 @@ let PageBlockField = function PageBlockField() {
         if (noMoreGoals) {
             elementField.lock();
             noMoreGoals = false;
-            setTimeout(self.finishLevel, Config.OnIdle.animateInterval * 15);
+            setTimeout(self.finishLevel, Config.OnIdle.animateInterval * 1);
         } else if (turns === 0) {
             PBZDialogs.dialogTurnsLoose.showDialog(DataPoints.getPlayedId());
         }
@@ -458,7 +458,6 @@ let PageBlockField = function PageBlockField() {
         LogicWizard.finish(false);
         stuffMode = null;
         elementField.setStuffMode(stuffMode);
-
 
         user = LogicUser.getCurrent();
         pointId = DataPoints.getPlayedId();

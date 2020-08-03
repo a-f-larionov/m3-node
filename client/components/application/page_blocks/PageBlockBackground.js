@@ -22,8 +22,8 @@ let PageBlockBackground = function PageBlockBackground() {
         let el;
 
         /** Рамка для фулскрина */
-        el = GUI.createElement(ElementImage, {x: -15, y: -15, src: 'fs-frame.png'});
-        self.elements.push(el);
+        /*el = GUI.createElement(ElementImage, {x: -15, y: -15, src: 'fs-frame.png'});
+        self.elements.push(el);*/
 
         /** Задний фон */
         el = GUI.createElement(ElementImage, {x: 0, y: 0, src: 'old-paper.png'});
@@ -75,28 +75,9 @@ let PageBlockBackground = function PageBlockBackground() {
     };
 
     let setBackgroundImage = function () {
-        let elBody, backgroundImage, url, meta;
-
-        url = 'old-paper.png';
-        meta = Images.getMeta(url);
+        let elBody;
         elBody = document.getElementsByTagName('body')[0];
-
-        backgroundImage = "url('" + meta.path + "')";
-
-        if (window.useSprite) {
-            let koefW, koefH;
-            koefW = screen.availWidth / meta.w;
-            koefH = screen.availHeight / meta.h;
-            elBody.style.backgroundPositionX = '-' + meta.x * koefW + 'px';
-            elBody.style.backgroundPositionY = '-' + meta.y * koefH + 'px';
-            elBody.style.backgroundSize =
-                (
-                    window.spriteSize.width * koefW + 'px' +
-                    ' ' +
-                    window.spriteSize.height * koefH + 'px'
-                );
-        }
-        elBody.style.backgroundImage = backgroundImage;
+        GUI.setImageToElement(elBody, 'old-paper.png', screen.width,  screen.height);
     };
 };
 

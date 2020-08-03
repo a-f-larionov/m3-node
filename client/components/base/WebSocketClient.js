@@ -34,13 +34,15 @@ let WebSocketClient = function () {
 
     let url;
 
-    this.init = function (afterInitCallback) {
-        //port = window.document.location.protocol == 'https:' ? 443 : 80;
-        protocol = window.document.location.protocol == 'https:' ? 'wss' : 'ws';
-        host = Config.WebSocketClient.host;
-        port = Config.WebSocketClient.port;
-        url = Config.WebSocketClient.url;
-        afterInitCallback();
+    this.init = function () {
+        return new Promise(function (resolve, reject) {
+            //port = window.document.location.protocol == 'https:' ? 443 : 80;
+            protocol = window.document.location.protocol == 'https:' ? 'wss' : 'ws';
+            host = Config.WebSocketClient.host;
+            port = Config.WebSocketClient.port;
+            url = Config.WebSocketClient.url;
+            resolve();
+        });
     };
 
     this.onData = null;
@@ -209,6 +211,10 @@ let WebSocketClient = function () {
             setTimeout(trySend, 1500);
         }
     };
+
+    this.getSocket = function () {
+        return socket;
+    }
 };
 
 /**

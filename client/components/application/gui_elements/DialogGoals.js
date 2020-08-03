@@ -12,11 +12,10 @@ let DialogGoals = function DialogGoals() {
         this.__proto__.bottomPosition = 100 + 172 / 2;
 
         this.__proto__.init.call(this);
+        this.__proto__.elButtonClose.hide();
         this.__proto__.onShowComplete = this.onShowComplete;
 
         GUI.pushParent(self.dom);
-        /** Заголовок */
-        //GUI.createElement(ElementText, {x: 150, y: 13, width: 200, height: 40, text: 'ЦЕЛИ'}).show();
 
         /** Список целей */
         for (let i in DataObjects.images) {

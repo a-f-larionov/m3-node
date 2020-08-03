@@ -63,8 +63,7 @@ let LogicMain = (function () {
 
         /** WebSocket Client */
         webSocketClient = new WebSocketClient();
-        webSocketClient.init(function () {
-        });
+        webSocketClient.init();
 
         //@todo need be automate...
         /** ApiRouter */
@@ -89,8 +88,10 @@ let LogicMain = (function () {
         /** Running */
         webSocketClient.run();
 
-        OnIdle.init(function () {
-        });
+        //@todo remove it
+        window.wsc = webSocketClient;
+
+        OnIdle.init();
     };
 
     /**

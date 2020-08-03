@@ -192,8 +192,6 @@ let animFallGems = function () {
     this.init = function (list) {
         doms = [];
 
-        //console.log(list);
-
         list.forEach(function (data) {
             self.gemDoms[data.from.x][data.from.y].hide();
             dom = self.gemDoms[data.to.x][data.to.y];
@@ -217,8 +215,6 @@ let animFallGems = function () {
                 Field.isVisible({x: data.to.x, y: data.to.y})
             ) dom.fallMode = 'to-show';
 
-            //console.log(dom.fallMode, data);
-
             if (dom.fallMode === 'to-show') {
                 /** Спускаем его заранее  */
                 dom.y = (data.to.y) * DataPoints.BLOCK_HEIGHT;
@@ -230,29 +226,31 @@ let animFallGems = function () {
                 dom.backgroundPositionY = DataPoints.BLOCK_HEIGHT;
             }
             dom.redraw();
+            console.log(dom.fallMode);
         });
+        console.log(doms);
     };
 
-    this.iterate = function (position) {
+    this.iterate = function (t) {
         //if (Config.Project.develop) position = position / 5;
         let go;
         go = false;
         doms.forEach(function (dom) {
             switch (dom.fallMode) {
                 case 'to-hide':
-                    dom.y = dom.startY + velocity * position;
+                    dom.y = dom.startY + velocity * t;
                     dom.height = DataPoints.BLOCK_HEIGHT;
                     dom.visibleHeight = DataPoints.BLOCK_HEIGHT;
                     go |= (dom.y < dom.startY + DataPoints.BLOCK_HEIGHT);
                     break;
                 case 'to-show':
-                    dom.visibleHeight = velocity * position;
-                    dom.backgroundPositionY = DataPoints.BLOCK_HEIGHT - velocity * position;
+                    dom.visibleHeight = velocity * t;
+                    dom.backgroundPositionY = DataPoints.BLOCK_HEIGHT - velocity * t;
                     go |= (dom.height < DataPoints.BLOCK_HEIGHT);
                     break;
 
                 case 'just':
-                    dom.y = dom.startY + velocity * position;
+                    dom.y = dom.startY + velocity * t;
                     go |= (dom.y < dom.startY + DataPoints.BLOCK_HEIGHT);
                     break;
             }

@@ -41,15 +41,6 @@ let LogicChests = function () {
             number = 3;
         }
 
-        console.log({
-            number: number,
-            chestA: chestA,
-            chestB: chestB,
-            chestC: chestC,
-            oldMapStars: oldMapStars,
-            newMapStars: newMapStars
-        });
-
         if (number) {
             chestId = LogicChests.getChestId(number);
             LogicChests.open(chestId);

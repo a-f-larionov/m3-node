@@ -7,9 +7,8 @@ let OnIdle = function () {
 
     this.stack = [];
 
-    this.init = function (callbackAfterInit) {
+    this.init = function () {
         setTimeout(OnIdle.iterate, Config.OnIdle.animateInterval);
-        callbackAfterInit();
     };
 
     this.register = function (func) {

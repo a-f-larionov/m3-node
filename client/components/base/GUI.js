@@ -10,9 +10,10 @@ let GUI = function () {
     let isFSMode = false;
 
     this.appArea = false;
-    let wizardArea = false;
-
+    this.wizardArea = false;
     this.canvasArea = false;
+    this.fsFrame = false;
+
     /** @type {CanvasRenderingContext2D} */
     this.canvasCntx = null;
 
@@ -213,7 +214,19 @@ let GUI = function () {
      */
     this.init = function () {
         GUI.appArea = document.getElementById('appArea');
-        wizardArea = document.getElementById('wizardArea');
+        GUI.wizardArea = document.getElementById('wizardArea');
+        GUI.fsFrame = document.createElement('div');
+        window.document.body.appendChild(GUI.fsFrame);
+        {
+            GUI.fsFrame.style.position = 'absolute';
+            GUI.fsFrame.style.zIndex = -1000;
+            GUI.fsFrame.style.left = '-15px';
+            GUI.fsFrame.style.top = '-15px';
+            GUI.fsFrame.style.width = (Images.getMeta('fs-frame.png').w) + 'px';
+            GUI.fsFrame.style.height = (Images.getMeta('fs-frame.png').h) + 'px';
+            GUI.setImageToElement(GUI.fsFrame, 'fs-frame.png');
+        }
+
         parentsStack.push(GUI.appArea);
         //@todo canvas
         if (Config.Project.canvas) {
@@ -266,14 +279,27 @@ let GUI = function () {
                 if (vkWidgets) vkWidgets.style.display = 'none';
                 GUI.appArea.style.left = (screen.availWidth / 2 - parseInt(GUI.appArea.style.width) / 2) + 'px';
                 GUI.appArea.style.top = (screen.availHeight / 2 - parseInt(GUI.appArea.style.height) / 2) + 'px';
-                wizardArea.style.left = (screen.availWidth / 2 - parseInt(GUI.appArea.style.width) / 2) + 'px';
-                wizardArea.style.top = (screen.availHeight / 2 - parseInt(GUI.appArea.style.height) / 2) + 'px';
+                GUI.wizardArea.style.left = (screen.availWidth / 2 - parseInt(GUI.appArea.style.width) / 2) + 'px';
+                GUI.wizardArea.style.top = (screen.availHeight / 2 - parseInt(GUI.appArea.style.height) / 2) + 'px';
+                if (GUI.canvasArea) {
+                    GUI.canvasArea.style.left = (screen.availWidth / 2 - parseInt(GUI.appArea.style.width) / 2) + 'px';
+                    GUI.canvasArea.style.top = (screen.availHeight / 2 - parseInt(GUI.appArea.style.height) / 2) + 'px';
+                }
+                GUI.fsFrame.style.left = ((screen.availWidth / 2 - parseInt(GUI.appArea.style.width) / 2) - 15) + 'px';
+                GUI.fsFrame.style.top = ((screen.availHeight / 2 - parseInt(GUI.appArea.style.height) / 2) - 15) + 'px';
+
             } else {
                 if (vkWidgets) vkWidgets.style.display = '';
                 GUI.appArea.style.left = '';
                 GUI.appArea.style.top = '';
-                wizardArea.style.left = '';
-                wizardArea.style.top = '';
+                GUI.wizardArea.style.left = '';
+                GUI.wizardArea.style.top = '';
+                if (GUI.canvasArea) {
+                    GUI.canvasArea.style.left = '';
+                    GUI.canvasArea.style.top = '';
+                }
+                GUI.fsFrame.style.left = '-15px';
+                GUI.fsFrame.style.top = '-15px';
             }
         };
 
@@ -399,14 +425,13 @@ let GUI = function () {
             DataCross.app.height * GUI.dpr
         );
         */
-        /*
+
         canvasParent.childs.sort(function (l, r) {
             return l.__id < r.__id ? -1 : 1;
         });
         canvasParent.childs.sort(function (l, r) {
             return l.zIndex < r.zIndex ? -1 : 1;
         });
-        */
         let drawLayers = function (layerDom) {
             layerDom.childs.forEach(function (dom) {
                 dom.draw();
@@ -418,7 +443,7 @@ let GUI = function () {
 
         drawLayers(canvasParent);
         // сколько млсек уходит на отрисовку
-        if(lastFrameTime) {
+        if (lastFrameTime) {
             let t = (Date.now() - lastFrameTime);
             window.timer.push(t);
         }
@@ -487,6 +512,29 @@ let GUI = function () {
     this.isFullScreen = function () {
         return isFSMode;
     };
+
+    this.setImageToElement = function (el, url, toWidth, toHeight) {
+        let meta, backgroundImage;
+
+        meta = Images.getMeta(url);
+
+        backgroundImage = "url('" + meta.path + "')";
+
+        if (window.useSprite) {
+            let koefW, koefH;
+            koefW = (toWidth ? toWidth : parseInt(el.style.width)) / meta.w;
+            koefH = (toHeight ? toHeight : parseInt(el.style.height)) / meta.h;
+            el.style.backgroundPositionX = '-' + meta.x * koefW + 'px';
+            el.style.backgroundPositionY = '-' + meta.y * koefH + 'px';
+            el.style.backgroundSize =
+                (
+                    window.spriteSize.width * koefW + 'px' +
+                    ' ' +
+                    window.spriteSize.height * koefH + 'px'
+                );
+        }
+        el.style.backgroundImage = backgroundImage;
+    }
 };
 
 /**

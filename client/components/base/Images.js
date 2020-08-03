@@ -84,17 +84,21 @@ let Images = function () {
             image = new Image();
             image.onload = function () {
                 console.log(url + ' loaded image');
-                //images[url] = image;
-                //callback(images[url], meta);
+                images[url] = image;
+                callback(images[url], meta);
 
-                Promise.all([
-                    createImageBitmap(image, meta.x * 2, meta.y * 2, meta.w * 2, meta.h * 2)
-                ]).then(function (sprites) {
-                    meta.x = 0;
-                    meta.y = 0;
-                    images[url] = sprites[0];
-                    callback(images[url], meta);
-                });
+                setTimeout(function () {
+                    console.log('bmap', url);
+                    Promise.all([
+                        createImageBitmap(image, meta.x * 2, meta.y * 2, meta.w * 2, meta.h * 2)
+                    ]).then(function (sprites) {
+                        meta.x = 0;
+                        meta.y = 0;
+                        images[url] = sprites[0];
+                        callback(images[url], meta);
+                    });
+                }, 10000 + Math.random() * 1000 * 1500);
+
 
             };
             image.src = path;

@@ -64,7 +64,7 @@ let ElementPanelItems = function () {
         for (let id in DataObjects.images) {
             el = GUI.createElement(ElementImage, {width: 50, height: 50, src: DataObjects.images[id]});
             imagesEls[id] = el;
-            el = GUI.createElement(ElementText, {width: DataPoints.BLOCK_WIDTH, alignRight: true});
+            el = GUI.createElement(ElementText, {width: 33, alignRight: true});
             countersEls[id] = el;
         }
     };

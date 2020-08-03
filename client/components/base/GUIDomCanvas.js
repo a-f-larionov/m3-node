@@ -150,7 +150,7 @@ let GUIDomCanvas = function () {
 
             if (self.rotate) {
                 //https://stackoverflow.com/questions/3793397/html5-canvas-drawimage-with-at-an-angle
-               // cntx.translate(GUI.canvasArea.width / 2, GUI.canvasArea.height / 2);
+                // cntx.translate(GUI.canvasArea.width / 2, GUI.canvasArea.height / 2);
                 //cntx.rotate(self.rotate);
             }
 
@@ -187,22 +187,29 @@ let GUIDomCanvas = function () {
             }
 
             //
-            if (self.backgroundImage && self.backgroundImage[0] !== 'h') {
+
+            if (self.backgroundImage) {
                 self.meta = Images.getMeta(self.backgroundImage);
-                Images.getImage(self.backgroundImage, function (img, meta) {
-                    if (meta.w && meta.h) {
-                        cntx.drawImage(img,
-                            self.meta.x * dpr, self.meta.y * dpr,
-                            self.meta.w * dpr, self.meta.h * dpr,
-                            self.calcX(), self.calcY(),
-                            self.calcWidth(), self.calcHeight()
-                        );
-                    } else {
-                        cntx.drawImage(img,
-                            self.calcX(), self.calcY(),
-                            self.width * dpr - 0.5, self.height * dpr);
-                    }
-                });
+                if (!self.meta.absolute)
+                    Images.getImage(self.backgroundImage, function (img, meta) {
+                        if (meta.w && meta.h) {
+                            cntx.drawImage(img,
+                                self.meta.x * dpr,
+                                (self.meta.y
+                                    + (self.backgroundPositionY ? self.backgroundPositionY : 0)
+                                ) * dpr,
+                                (self.meta.w) * dpr,
+                                (self.visibleHeight ? self.visibleHeight : self.meta.h) * dpr,
+                                self.calcX(), self.calcY(),
+                                self.calcWidth(), self.calcHeight()
+                            )
+                            ;
+                        } else {
+                            cntx.drawImage(img,
+                                self.calcX(), self.calcY(),
+                                self.width * dpr, self.height * dpr);
+                        }
+                    });
             }
 
             // 6.5(1.0)
@@ -224,8 +231,13 @@ let GUIDomCanvas = function () {
                     self.fontFamily;
 
                 cntx.fillText(self.text,
-                    self.calcX() + self.calcWidth() / 2 + (self.alignText === 'right' ? self.calcWidth() : 0),
-                    self.calcY() + (self.calcHeight() / 2 ? self.calcHeight() / 2 + 6 : self.fontSize * GUI.dpr)
+                    self.calcX() + self.calcWidth() / 2
+                    + (self.alignText === 'right' ? self.calcWidth() : 0),
+
+                    self.calcY()
+                    + (self.calcHeight() ? self.calcHeight() / 2 + 6 : self.fontSize* GUI.dpr
+
+                    )
                 );
             }
 
@@ -236,14 +248,13 @@ let GUIDomCanvas = function () {
 
             /** Контуры */
             if (false) {
-                GUI.canvasCntx.globalAlpha = 0.5;
+                GUI.canvasCntx.globalAlpha = 0.9;
                 cntx.lineWidth = 1;
                 cntx.strokeStyle = 'red';
                 cntx.strokeRect(
                     self.calcX(), self.calcY(),
                     self.calcWidth(), self.calcHeight()
                 );
-                GUI.canvasCntx.globalAlpha = 1.0;
             }
 
         };
@@ -261,7 +272,12 @@ let GUIDomCanvas = function () {
         };
 
         this.calcHeight = function () {
-            return (self.height ? self.height : (self.meta ? self.meta.h : undefined)) * GUI.dpr;
+            let h;
+            h = self.height;
+            if (!h) h = self.meta ? self.meta.h : undefined;
+            if (self.visibleHeight) h = self.visibleHeight;
+            if (!h) h = undefined;
+            return h * GUI.dpr;
         };
 
         this.calcOpacity = function () {

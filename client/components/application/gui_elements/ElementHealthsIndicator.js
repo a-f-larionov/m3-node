@@ -32,14 +32,14 @@ let ElementHealthIndicator = function () {
      * Создадим дом и настроем его.
      */
     this.init = function () {
-        let dom, width = 50, height = 50;
+        let dom, width = 50;
         doms = [];
         let step = width - 15;
 
         for (let i = 0; i < 5; i++) {
             dom = GUI.createDom(null, {
                 x: this.x + i * step, y: this.y - 2,
-                width: width, height: height, backgroundImage: 'health-heart.png'
+                backgroundImage: 'health-heart.png'
             });
             doms.push(dom);
         }

@@ -159,17 +159,23 @@ let GUIDom = function () {
 
     /** Далее идут методы перерисовки. */
     let redrawX = function () {
-        dom.style.left = self.x + 'px';
+        dom.style.left = (self.x - (self.borderWidth ? self.borderWidth / 2 : 0)) + 'px';
     };
     let redrawY = function () {
-        dom.style.top = self.y + 'px';
+        dom.style.top = (self.y - (self.borderWidth ? self.borderWidth / 2 : 0)) + 'px';
     };
     let redrawWidth = function () {
-        dom.style.width = self.width + 'px';
+        dom.style.width = (self.width - (self.borderWidth ? self.borderWidth / 2 : 0)) + 'px';
         if (self.backgroundImage) redrawBackgroundImage();
     };
     let redrawHeight = function () {
-        dom.style.height = (!isNaN(self.visibleHeight) ? self.visibleHeight : self.height) + 'px';
+        dom.style.height =
+            (
+                (!isNaN(self.visibleHeight) ? self.visibleHeight : self.height) -
+                (self.borderWidth ? self.borderWidth / 2 : 0)
+            ) +
+            'px';
+
 
         if (self.backgroundImage) redrawBackgroundImage();
     };
@@ -239,10 +245,12 @@ let GUIDom = function () {
         dom.style.textShadow = self.textShadow;
     };
     let redrawBorderRadius = function () {
-        dom.style.borderRadius = self.borderRadius;
+        dom.style.borderRadius = self.borderRadius + 'px';
     };
     let redrawBorder = function () {
-        dom.style.border = self.border;
+        dom.style.border =
+            (self.borderWidth ? self.borderWidth + 'px solid' : ' ') +
+            (self.borderColor ? self.borderColor : ' ');
     };
     let redrawBorderTop = function () {
         dom.style.borderTop = self.borderTop;
@@ -313,6 +321,8 @@ let GUIDom = function () {
         textShadow: redrawTextShadow,
         borderRadius: redrawBorderRadius,
         border: redrawBorder,
+        borderColor: redrawBorder,
+        borderWidth: redrawBorder,
         borderTop: redrawBorderTop,
         borderRight: redrawBorderRight,
         borderBottom: redrawBorderBottom,

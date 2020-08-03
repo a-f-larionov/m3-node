@@ -20,7 +20,7 @@ let PageBlockWizard = function PageBlockWizard() {
      */
     this.elements = [];
 
-    let canvas = null;
+    let wizardArea = null;
     /** @type {CanvasRenderingContext2D} */
     let cntx = null;
 
@@ -33,13 +33,13 @@ let PageBlockWizard = function PageBlockWizard() {
     this.init = function () {
 
         /** Canvas */
-        canvas = document.getElementById('wizardArea');
+        wizardArea = GUI.wizardArea;
 
-        canvas.width = DataCross.app.width;
-        canvas.height = DataCross.app.height;
+        wizardArea.width = DataCross.app.width;
+        wizardArea.height = DataCross.app.height;
 
-        canvas.style.display = 'none';
-        cntx = canvas.getContext('2d');
+        wizardArea.style.display = 'none';
+        cntx = wizardArea.getContext('2d');
 
         //cntx.showByImg = showByImg;
         cntx.unlockByImg = unlockByImg;
@@ -51,10 +51,10 @@ let PageBlockWizard = function PageBlockWizard() {
             y = event.offsetY;
             pixelData = cntx.getImageData(x, y, 1, 1).data;
             if (pixelData[3] === 0) {
-                canvas.style.display = 'none';
+                wizardArea.style.display = 'none';
                 el = document.elementFromPoint(event.clientX, event.clientY);
                 if (el) el.dispatchEvent(new MouseEvent(event.type, event));
-                if (canvas.isActive) canvas.style.display = '';
+                if (wizardArea.isActive) wizardArea.style.display = '';
 
                 if (callback) callback(el);
             } else {
@@ -63,23 +63,23 @@ let PageBlockWizard = function PageBlockWizard() {
         };
 
         /** On Click */
-        canvas.onclick = function (event) {
+        wizardArea.onclick = function (event) {
             proccesEvent(event, LogicWizard.onClick)
         };
         /** On Click */
-        canvas.onmousedown = function (event) {
+        wizardArea.onmousedown = function (event) {
             proccesEvent(event, LogicWizard.onMouseDown)
         };
-        canvas.onmouseup = function (event) {
+        wizardArea.onmouseup = function (event) {
             proccesEvent(event, LogicWizard.onMouseUp)
         };
         /** On Mouse Move */
-        canvas.onmousemove = function (event) {
+        wizardArea.onmousemove = function (event) {
             proccesEvent(event, function (el) {
                 if (el) {
-                    canvas.style.cursor = el.style.cursor;
+                    wizardArea.style.cursor = el.style.cursor;
                 } else {
-                    canvas.style.cursor = '';
+                    wizardArea.style.cursor = '';
                 }
             });
         };
@@ -165,8 +165,8 @@ let PageBlockWizard = function PageBlockWizard() {
 
     this.begin = function () {
         PageBlockField.getElementField().lockHint();
-        canvas.style.display = '';
-        canvas.isActive = true;
+        wizardArea.style.display = '';
+        wizardArea.isActive = true;
         drawBackground();
     };
 
@@ -176,8 +176,8 @@ let PageBlockWizard = function PageBlockWizard() {
     };
 
     this.reset = function () {
-        canvas.isActive = false;
-        canvas.style.display = 'none';
+        wizardArea.isActive = false;
+        wizardArea.style.display = 'none';
         elDialog.hide();
         elWCat.hide();
         elText.hide();
