@@ -249,7 +249,8 @@ let PageBlockMaps = function PageBlockMaps() {
         out.map = DataMap.getCurrent();
         out.tUsers = LogicUser.getTopUsers();
 
-        if (!(out.map && out.tUsers)) out = null;
+        if (!out.tUsers) out.tUsers = [];
+        if (!(out.map)) out = null;
 
         return out;
     }

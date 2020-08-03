@@ -126,7 +126,6 @@ let GUI = function () {
 
         parentsStack.push(canvasParent);
         GUI.canvasArea = document.getElementById('canvasArea');
-        GUI.canvasArea.style.display = 'block';
         GUI.canvasArea.width = DataCross.app.width * window.devicePixelRatio;
         GUI.canvasArea.height = DataCross.app.height * window.devicePixelRatio;
         GUI.canvasCntx = GUI.canvasArea.getContext('2d');
@@ -167,9 +166,8 @@ let GUI = function () {
                     pointer = dom.pointer;
                 }
             });
-            //console.log('m', e.clientX, e.clientY, pointer, e.timeStamp);
-            GUI.canvasArea.style.cursor = pointer;
 
+            GUI.canvasArea.style.cursor = pointer;
 
             eventBinds[GUI.EVENT_MOUSE_OUT].forEach(function (el) {
                 intersect = eventIntersectEl(e, el);

@@ -191,24 +191,25 @@ let GUIDomCanvas = function () {
             if (self.backgroundImage) {
                 self.meta = Images.getMeta(self.backgroundImage);
                 if (!self.meta.absolute)
-                    Images.getImage(self.backgroundImage, function (img, meta) {
-                        if (meta.w && meta.h) {
-                            cntx.drawImage(img,
-                                self.meta.x * dpr,
-                                (self.meta.y
-                                    + (self.backgroundPositionY ? self.backgroundPositionY : 0)
-                                ) * dpr,
-                                (self.meta.w) * dpr,
-                                (self.visibleHeight ? self.visibleHeight : self.meta.h) * dpr,
-                                self.calcX(), self.calcY(),
-                                self.calcWidth(), self.calcHeight()
-                            )
-                            ;
-                        } else {
-                            cntx.drawImage(img,
-                                self.calcX(), self.calcY(),
-                                self.width * dpr, self.height * dpr);
-                        }
+                    Images.getImage(self.backgroundImage, function (img, meta, instant) {
+                        if (instant)
+                            if (meta.w && meta.h) {
+                                cntx.drawImage(img,
+                                    self.meta.x * dpr,
+                                    (self.meta.y
+                                        + (self.backgroundPositionY ? self.backgroundPositionY : 0)
+                                    ) * dpr,
+                                    (self.meta.w) * dpr,
+                                    (self.visibleHeight ? self.visibleHeight : self.meta.h) * dpr,
+                                    self.calcX(), self.calcY(),
+                                    self.calcWidth(), self.calcHeight()
+                                )
+                                ;
+                            } else {
+                                cntx.drawImage(img,
+                                    self.calcX(), self.calcY(),
+                                    self.width * dpr, self.height * dpr);
+                            }
                     });
             }
 
@@ -235,7 +236,7 @@ let GUIDomCanvas = function () {
                     + (self.alignText === 'right' ? self.calcWidth() : 0),
 
                     self.calcY()
-                    + (self.calcHeight() ? self.calcHeight() / 2 + 6 : self.fontSize* GUI.dpr
+                    + (self.calcHeight() ? self.calcHeight() / 2 + 6 : self.fontSize * GUI.dpr
 
                     )
                 );

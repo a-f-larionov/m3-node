@@ -262,17 +262,6 @@ ClientCodeLoader = function () {
             "  height:" + DataCross.app.height + "px;\n" +
             "'>Загрузка...</div>";
 
-        code += "<img id=\"img\" src='/images/oblojka.png" + getTimeKey() + "'" +
-            " style='display:none; " +
-            "height:" + DataCross.app.height + "px;" +
-            "' " +
-            "onload='" +
-            "document.getElementById(\"loading\").remove(); " +
-            "document.getElementById(\"img\").style.display=\"block\";" +
-            "' " +
-            "/>";
-
-
         /** Application div */
         code += "<div style='" +
             "height:" + DataCross.app.height + "px;" +
@@ -283,10 +272,10 @@ ClientCodeLoader = function () {
         code += "<canvas style='" +
             "height:" + DataCross.app.height + "px;" +
             "width:" + DataCross.app.width + "px;" +
-            "position:absolute;top:0px;z-index:100;" +
+            "position:absolute;top:0px;" +
             "display:none;' " +
             "id='canvasArea' " +
-            "crossorigin='anonymous' ></canvas>\r\n";
+            " ></canvas>\r\n";
         /** Wizard canvas */
         code += "<canvas style='" +
             "height:" + DataCross.app.height + "px;" +
@@ -295,13 +284,20 @@ ClientCodeLoader = function () {
             "id='wizardArea' ></canvas>\r\n";
         code += getClientImageCode();
 
+        code += "<img id=\"oblojka\" src='/images/oblojka.png" + getTimeKey() + "'" +
+            " style='display:none; " +
+            "height:" + DataCross.app.height + "px;" +
+            "' " +
+            "onload='" +
+            "document.getElementById(\"loading\").remove(); " +
+            "document.getElementById(\"oblojka\").style.display=\"block\";" +
+            "' " +
+            "/>";
+
+
         code += "<script type='text/javascript' src='/js/client." +
             (Config.Project.minifyCode ? 'min' : 'source') +
             ".js" + getTimeKey() + "'></script>\r\n";
-
-        code += '<!-- recommended -->\n' +
-            '<script src="https://www.WebRTC-Experiment.com/RecordRTC.js"></script>';
-
 
         if (socNetCode === 'VK') {
             /** @see https://vk.com/dev/Javascript_SDK */

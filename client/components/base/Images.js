@@ -83,12 +83,12 @@ let Images = function () {
 
             image = new Image();
             image.onload = function () {
-                console.log(url + ' loaded image');
+                //console.log(url + ' loaded image', false);
                 images[url] = image;
-                callback(images[url], meta);
+                callback(images[url], meta, false);
 
                 setTimeout(function () {
-                    console.log('bmap', url);
+                    //console.log('bmap', url);
                     Promise.all([
                         createImageBitmap(image, meta.x * 2, meta.y * 2, meta.w * 2, meta.h * 2)
                     ]).then(function (sprites) {
@@ -104,7 +104,7 @@ let Images = function () {
             image.src = path;
             return;
         } else {
-            callback(images[url], Images.getMeta(url));
+            callback(images[url], Images.getMeta(url), true);
         }
     };
 };

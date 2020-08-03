@@ -226,9 +226,7 @@ let animFallGems = function () {
                 dom.backgroundPositionY = DataPoints.BLOCK_HEIGHT;
             }
             dom.redraw();
-            console.log(dom.fallMode);
         });
-        console.log(doms);
     };
 
     this.iterate = function (t) {

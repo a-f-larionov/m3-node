@@ -54,7 +54,6 @@ let CAPIUser = function () {
     };
 
     this.gotTopUsers = function (cntx, users) {
-        console.log('got users', users);
         LogicUser.loadTopUsers(users);
     };
 

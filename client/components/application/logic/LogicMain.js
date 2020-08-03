@@ -42,7 +42,7 @@ let LogicMain = (function () {
         if (prid) {
             setTimeout(function () {
                 Sounds.loadSounds();
-            }, 2000);
+            }, 3000);
             SAPILogs.clientLoaded(prid);
             prid = null;
         }

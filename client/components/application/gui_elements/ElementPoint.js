@@ -225,7 +225,7 @@ let ElementPoint = function () {
 
         elText.x = 8;
         elText.y = 16.5;
-        elText.text = self.pointId ? self.pointId.toString() : '';
+        elText.text = self.pointId ? self.pointId.toString() : '-';
 
         redrawStars();
         redrawPhotos();

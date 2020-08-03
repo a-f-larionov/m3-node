@@ -46,8 +46,10 @@ let PageBlockZPreloader = function PageBlockZPreloader() {
     };
 
     this.onLoaded = function () {
-        let el = document.getElementById('img');
+        GUI.canvasArea.style.display = 'block';
+        let el = document.getElementById('oblojka');
         if (el) el.remove();
+        console.log('loaded----------------------');
     };
 };
 

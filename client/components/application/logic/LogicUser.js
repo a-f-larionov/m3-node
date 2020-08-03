@@ -234,7 +234,6 @@ let LogicUser = function () {
                 return a.nextPointId < b.nextPointId ? 1 : -1;
             });
             if (topUsers.length > DataCross.topUsersLimit) topUsers = topUsers.slice(0, DataCross.topUsersLimit);
-            console.log('topusers 4', topUsers);
             self.getTopUsers.socInfoCount = topUsers.length;
             //@todo for fast - got users by one request.
             topUsers.forEach(function (user) {
