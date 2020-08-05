@@ -46,7 +46,7 @@ let PageBlockZPreloader = function PageBlockZPreloader() {
     };
 
     this.onLoaded = function () {
-        GUI.canvasArea.style.display = 'block';
+        if (GUI.canvasArea) GUI.canvasArea.style.display = 'block';
         let el = document.getElementById('oblojka');
         if (el) el.remove();
         console.log('loaded----------------------');

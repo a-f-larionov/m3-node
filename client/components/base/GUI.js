@@ -128,6 +128,7 @@ let GUI = function () {
         GUI.canvasArea = document.getElementById('canvasArea');
         GUI.canvasArea.width = DataCross.app.width * window.devicePixelRatio;
         GUI.canvasArea.height = DataCross.app.height * window.devicePixelRatio;
+
         GUI.canvasCntx = GUI.canvasArea.getContext('2d');
 
         GUI.canvasArea.addEventListener('mousemove', function (e) {
@@ -152,11 +153,47 @@ let GUI = function () {
          */
         let intersect;
 
+        let els = [];
+
         eventBinds[eventId].forEach(function (el) {
             intersect = eventIntersectEl(e, el);
 
-            if (intersect) el.callback.call(el.context, e, el.dom);
+            if (GUI.lockEventsExcept) {
+                let dom, skip;
+                dom = el.dom;
+                skip = true;
+                while (dom) {
+                    if (GUI.lockEventsExcept === dom) {
+                        skip = false;
+                    }
+                    dom = dom.__parent;
+                }
+                if (skip) return;
+            }
+
+            if (intersect) els.push(el);
         });
+
+        if (els.length > 1) {
+            els.sort(function (l, r) {
+                return l.dom.__id < r.dom.__id ? -1 : 1;
+            });
+            els.sort(function (l, r) {
+                return l.dom.zIndex < r.dom.zIndex ? -1 : 1;
+            });
+            els.reverse();
+        }
+        let doEvent = function (index) {
+            let res;
+            res = false;
+            if (els[index]) res = els[index].callback.call(els[index].context, e, els[index].dom);
+            if (res) doEvent(++index);
+        };
+        doEvent(0);
+
+        if (els.length > 0) els[0].callback.call(els[0].context, e, els[0].dom);
+
+
         if (eventId === GUI.EVENT_MOUSE_MOVE) {
 
 
@@ -166,6 +203,7 @@ let GUI = function () {
                     pointer = dom.pointer;
                 }
             });
+
 
             GUI.canvasArea.style.cursor = pointer;
 
@@ -193,10 +231,11 @@ let GUI = function () {
 
     let eventIntersectEl = function (e, el) {
         return el.dom.isShowed() &&
-            el.dom.calcX() < e.clientX * GUI.dpr &&
-            el.dom.calcX() + el.dom.calcWidth() > e.clientX * GUI.dpr &&
-            el.dom.calcY() < e.clientY * GUI.dpr &&
-            el.dom.calcY() + el.dom.calcHeight() > e.clientY * GUI.dpr;
+            el.dom.calcX() < e.layerX * GUI.dpr &&
+            el.dom.calcX() + el.dom.calcWidth() > e.layerX * GUI.dpr &&
+
+            el.dom.calcY() < e.layerY * GUI.dpr &&
+            el.dom.calcY() + el.dom.calcHeight() > e.layerY * GUI.dpr;
     };
 
     let eventBinds = {};
@@ -321,6 +360,7 @@ let GUI = function () {
                 window.document.webkitCancelFullScreen();
             }
         };
+        updateFS();
     };
 
     /**
@@ -453,19 +493,19 @@ let GUI = function () {
 
         setTimeout(GUI.redrawFrame, 1);
 
+        let text = null, sum;
 
-        if (window.timer.length % 250 === 0) {
-            let sum = 0;
-            for (let i = 0; i < window.timer.length; i++) sum += window.timer[i];
-
-            console.log('timer', sum / window.timer.length);
-        }
-        if (window.fpsList.length % 250 === 0) {
-            let sum = 0;
+        if (window.fpsList.length % 10 === 0) {
+            sum = 0;
             for (let i = 0; i < window.fpsList.length; i++) sum += window.fpsList[i];
+            text = Math.round(sum / window.fpsList.length * 10) / 10;
 
-            console.log('fpsList', sum / window.fpsList.length);
+            if (window.fpsList.length > 300) window.fpsList = [];
+
+            PageBlockBackground.fpsText.setText(text);
+            PageBlockBackground.fpsText.redraw();
         }
+
     };
     window.timer = [];
     window.fpsList = [];

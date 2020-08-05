@@ -17,9 +17,10 @@ let DialogMoneyShop = function () {
 
             el = GUI.createElement(ElementText, {
                 x: offsetX + stepX * i, y: offsetY + 15,
-                text: DataShop.gold[i].votes.toString() + ' \r\n' + declination(
-                    DataShop.gold[i].votes,
-                    ['ГОЛОС', 'ГОЛОСА', 'ГОЛОСОВ']
+                text: (DataShop.gold[i].votes * 7).toString() + ' \r\n' + declination(
+                    DataShop.gold[i].votes * 7,
+                    //  ['ГОЛОС', 'ГОЛОСА', 'ГОЛОСОВ']
+                    ['РУБЛЬ', 'РУБЛЯ', 'РУБЛЕЙ']
                 ),
                 color: '#4680C2',
                 fontSize: 20, width: Images.getWidth('money_1.png')

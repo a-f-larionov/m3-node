@@ -117,10 +117,13 @@ let ElementStuffButton = function () {
         GUI.bind(dom, GUI.EVENT_MOUSE_OUT, onMouseOut, self);
 
         point = GUI.createDom(null, {backgroundImage: 'map-way-point-grey.png'});
-        counter = GUI.createElement(ElementText, {width: 20, height: 26 });
-        plusButton = GUI.createDom(null, {backgroundImage: 'button-add-rest.png', width: 25, height: 25});
+        counter = GUI.createElement(ElementText, {width: 20, height: 26});
+        plusButton = GUI.createElement(ElementButton, {
+            srcRest: 'button-add-rest.png', width: 25, height: 25,
+            onClick: onPlusButtonClick
+        });
         plusButton.pointer = GUI.POINTER_HAND;
-        GUI.bind(plusButton, GUI.EVENT_MOUSE_CLICK, onPlusButtonClick, self);
+        //GUI.bind(plusButton, GUI.EVENT_MOUSE_CLICK, onPlusButtonClick, self);
     };
 
     /**

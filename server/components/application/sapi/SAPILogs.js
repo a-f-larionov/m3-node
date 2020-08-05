@@ -20,6 +20,10 @@ SAPILogs = function () {
         pFinish(prid);
     };
 
+    this.sendUserAgent = function (cntx, userAgentString) {
+        DataUser.updateUserAgentString(cntx.user.id, userAgentString);
+    };
+
     this.showMoneyDialog = function (cntx, message) {
 
         Logs.log("Игрок " + cntx.user.socNetUserId + " Открыл диалог покупки голосов: " + message,

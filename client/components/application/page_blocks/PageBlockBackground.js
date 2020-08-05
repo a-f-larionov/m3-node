@@ -29,6 +29,18 @@ let PageBlockBackground = function PageBlockBackground() {
         el = GUI.createElement(ElementImage, {x: 0, y: 0, src: 'old-paper.png'});
         self.elements.push(el);
 
+        this.fpsText = GUI.createElement(ElementText, {
+            x: 50, y: 10, width: 30, height: 50, text: ''
+        });
+        if (SocNet.getType() === SocNet.TYPE_STANDALONE
+            || LogicUser.getCurrent().id === 1
+            || LogicUser.getCurrent().socNetUserId === 1
+        ) {
+            if (LogicUser.getCurrent().id !== 4) {
+                this.fpsText.show();
+            }
+        }
+
         setBackgroundImage();
     };
 
@@ -77,7 +89,7 @@ let PageBlockBackground = function PageBlockBackground() {
     let setBackgroundImage = function () {
         let elBody;
         elBody = document.getElementsByTagName('body')[0];
-        GUI.setImageToElement(elBody, 'old-paper.png', screen.width,  screen.height);
+        GUI.setImageToElement(elBody, 'old-paper.png', screen.width, screen.height);
     };
 };
 

@@ -245,8 +245,7 @@ let PageBlockField = function PageBlockField() {
         });
 
         /** Dom stuff */
-        domStuff = GUI.createDom(null, {x: 190, y: 10, pointer: GUI.POINTER_NONE});
-        domStuff.zIndex = 10000;
+        domStuff = GUI.createDom(null, {x: 190, y: 10, pointer: GUI.POINTER_NONE, zIndex: 10000});
 
         elTextShadow = GUI.createDom(undefined, {
             x: 0, y: 0, width: DataCross.app.width, height: DataCross.app.height,
@@ -268,6 +267,7 @@ let PageBlockField = function PageBlockField() {
 
         GUI.bind(domStuff, GUI.EVENT_MOUSE_CLICK, function (event, dom) {
             let el;
+            console.log(1);
             /** Передаем клик дальше, теоретически после анимации */
             domStuff.hide();
             el = document.elementFromPoint(event.clientX, event.clientY);
@@ -278,6 +278,7 @@ let PageBlockField = function PageBlockField() {
                 el.dispatchEvent(new MouseEvent(event.type, event));
             }
             if (stuffMode) domStuff.show();
+            return true;
         });
 
         GUI.onMouseMove(function (x, y) {

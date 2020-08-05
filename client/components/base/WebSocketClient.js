@@ -57,6 +57,7 @@ let WebSocketClient = function () {
     this.sendData = function (data) {
         packetBuffer.push(data);
         trySend();
+
         return true;
     };
 

@@ -242,6 +242,16 @@ DataUser = function () {
             callback(rows);
         });
     };
+
+    this.updateUserAgentString = function (userId, string) {
+        DB.query(
+            "INSERT INTO user_agents (`uid`, `agent`) VALUES " +
+            "( " + parseInt(userId) +
+            ", " + DB.escape(string) + "" +
+            " )", function () {
+            }
+        )
+    }
 };
 
 /**

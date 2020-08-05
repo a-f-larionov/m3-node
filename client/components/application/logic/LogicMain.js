@@ -39,11 +39,13 @@ let LogicMain = (function () {
             }, 10);
         }
 
+        /** Разная полезная информация */
         if (prid) {
             setTimeout(function () {
                 Sounds.loadSounds();
             }, 3000);
             SAPILogs.clientLoaded(prid);
+            SAPILogs.sendUserAgent(window.navigator.userAgent);
             prid = null;
         }
         firstAuth = false;

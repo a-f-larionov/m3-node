@@ -80,18 +80,12 @@ let GUIDomCanvas = function () {
             this.fontSize = 24;
 
             /** Создадим дом */
-            //dom = {};
-            //dom = document.createElement(tagName);
             /** Значения по умолчанию для дом-ов. */
             //dom.className = 'gui-dom';
             /** Does not dragable by default */
             /*dom.ondragstart = function () {
                 return false;
             };*/
-
-            /** Добавим дом к родителю. */
-            //this.__dom = dom;
-            //dom.__dom = this;
         };
 
         this.childs = [];
@@ -140,7 +134,7 @@ let GUIDomCanvas = function () {
         };
 
         this.draw = function () {
-
+            let oldX, oldY;
             let dpr = GUI.dpr;
             let cntx = GUI.canvasCntx;
 
@@ -149,9 +143,16 @@ let GUIDomCanvas = function () {
             cntx.globalAlpha = self.calcOpacity();
 
             if (self.rotate) {
+                // move canvas to self.x, self.y
                 //https://stackoverflow.com/questions/3793397/html5-canvas-drawimage-with-at-an-angle
                 // cntx.translate(GUI.canvasArea.width / 2, GUI.canvasArea.height / 2);
                 //cntx.rotate(self.rotate);
+                cntx.translate(
+                    self.calcX() + self.calcWidth() / 2,
+                    self.calcY() + self.calcHeight() / 2
+                );
+                self.rotateFlag = true;
+                cntx.rotate(self.rotate * Math.PI / 180);
             }
 
             let drawBorders = function (fill) {
@@ -186,9 +187,8 @@ let GUIDomCanvas = function () {
                 );
             }
 
-            //
-
             if (self.backgroundImage) {
+
                 self.meta = Images.getMeta(self.backgroundImage);
                 if (!self.meta.absolute)
                     Images.getImage(self.backgroundImage, function (img, meta, instant) {
@@ -219,7 +219,7 @@ let GUIDomCanvas = function () {
             }
 
             // 7.5(2.0)
-            if (self.text) {
+            if (self.text && typeof self.text === 'string') {
 
                 //dom.textDecoration = self.textDecoration;
 
@@ -231,20 +231,28 @@ let GUIDomCanvas = function () {
                     (self.fontSize * GUI.dpr) + 'px ' +
                     self.fontFamily;
 
-                cntx.fillText(self.text,
-                    self.calcX() + self.calcWidth() / 2
-                    + (self.alignText === 'right' ? self.calcWidth() : 0),
+                let lineY = 0;
+                self.text.split('\r\n').forEach(function (text) {
 
-                    self.calcY()
-                    + (self.calcHeight() ? self.calcHeight() / 2 + 6 : self.fontSize * GUI.dpr
+                    cntx.fillText(text,
+                        self.calcX() + self.calcWidth() / 2
+                        + (self.alignText === 'right' ? self.calcWidth() : 0),
 
-                    )
-                );
+                        self.calcY() + lineY
+                        + ( self.fontSize * GUI.dpr                        )-2
+                    );
+                    lineY += self.fontSize * GUI.dpr
+                });
+
             }
 
             if (self.rotate) {
-                //  cntx.translate(-GUI.canvasArea.width / 2, -GUI.canvasArea.height / 2);
-                //cntx.rotate(-self.rotate);
+                cntx.rotate(-self.rotate * Math.PI / 180);
+                self.rotateFlag = false;
+                cntx.translate(
+                    -(self.calcX() + self.calcWidth() / 2),
+                    -(self.calcY() + self.calcHeight() / 2)
+                );
             }
 
             /** Контуры */
@@ -261,10 +269,12 @@ let GUIDomCanvas = function () {
         };
 
         this.calcX = function () {
+            if (self.rotate && self.rotateFlag) return -self.calcWidth() / 2;
             return self.x * GUI.dpr + self.__parent.calcX();
         };
 
         this.calcY = function () {
+            if (self.rotate && self.rotateFlag) return -self.calcHeight() / 2;
             return self.y * GUI.dpr + self.__parent.calcY();
         };
 
@@ -308,18 +318,18 @@ let GUIDomCanvas = function () {
              *
              */
             dom.addEventListener(eventName, function (event) {
-                if (GUI.lockEventsExcept) {
-                    let dom, skip;
-                    dom = self.__dom;
-                    skip = true;
-                    while (dom) {
-                        if (GUI.lockEventsExcept.__dom === dom) {
-                            skip = false;
+                    if (GUI.lockEventsExcept) {
+                        let dom, skip;
+                        dom = self.__dom;
+                        skip = true;
+                        while (dom) {
+                            if (GUI.lockEventsExcept.__dom === dom) {
+                                skip = false;
+                            }
+                            dom = dom.parentElement;
                         }
-                        dom = dom.parentElement;
+                        if (skip) return;
                     }
-                    if (skip) return;
-                }
                 callback.call(context, event, dom);
             }, false);
         };

@@ -292,10 +292,10 @@ let animShuffle = function () {
         dom.show();
     };
 
-    this.iterate = function (position) {
-        dom.rotate = position * velocity;
+    this.iterate = function (t) {
+        dom.rotate = t * velocity;
         dom.redraw();
-        return position < 36 / 2;
+        return t < 360 / velocity;
     };
 
     this.finish = function () {
@@ -332,14 +332,10 @@ let animHint = function animHint() {
     this.iterate = function (position) {
         list.forEach(function (el) {
             el.dom.y = el.startY + Math.cos(Math.PI * position / 15) * 3;
-            el.dom.redraw();
-            if (el.dom.bindedDoms) {
+            if (el.dom.bindedDoms)
                 el.dom.bindedDoms.forEach(function (bindedDom) {
-                    bindedDom.x = el.x;
-                    bindedDom.y = el.y;
-                    bindedDom.redraw();
+                    bindedDom.y = el.dom.y;
                 });
-            }
         });
         return forEver || !AnimLocker.busy();
     };

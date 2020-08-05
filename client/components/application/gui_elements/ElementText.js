@@ -96,7 +96,7 @@ let ElementText = function () {
             fontFamily: 'arial,sans-serif,"Marvin",Tahoma,"Geneva CY",sans-serif',
         });
         dom.zIndex = this.zIndex;
-        GUI.bind(dom, GUI.EVENT_MOUSE_CLICK, onMouseClick, self);
+        if (self.onClick) GUI.bind(dom, GUI.EVENT_MOUSE_CLICK, onMouseClick, self);
     };
 
     /**
@@ -175,12 +175,12 @@ let ElementText = function () {
      * @param mouseEvent {MouseEvent}
      * @param dom {Element}
      */
-    let onMouseClick = function (mouseEvent, dom) {
+    let onMouseClick = function (dom) {
         if (!self.onClick) {
             return;
         }
         /** Да, тут мы останавливаем дальнейшие течение клика. */
-        mouseEvent.stopPropagation();
-        return self.onClick.call(this, mouseEvent, dom);
+        //mouseEvent.stopPropagation();
+        return self.onClick.call(this, dom);
     };
 };

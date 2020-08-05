@@ -51,9 +51,6 @@ let PageBlockMaps = function PageBlockMaps() {
     this.init = function () {
         let el;
 
-        elOldPaper = GUI.createElement(ElementImage, {x: 0, y: 0, width: 778, height: 500, src: 'old-paper.png'});
-        self.elements.push(elOldPaper);
-
         elMapWay = GUI.createElement(ElementImage, {x: 0, y: 0, width: 778, height: 500, src: 'way-line.png'});
         self.elements.push(elMapWay);
 
