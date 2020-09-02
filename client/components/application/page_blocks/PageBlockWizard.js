@@ -88,20 +88,24 @@ let PageBlockWizard = function PageBlockWizard() {
         //canvas.onmousemove = proccesEvent;
 
         elDialog = GUI.createElement(ElementImage, {src: 'w-dialog.png'});
-        elDialog.dom.zIndex = 20000;
+        elDialog.dom.zIndex = 50000;
+        elDialog.dom.borderWidth = 5;
+        elDialog.dom.borderColor = 'red';
+        console.log('jjjjjjjjjjj', elDialog, elDialog.dom);
+
         //elDialog.hide();
 
         elText = GUI.createElement(ElementText, {
             x: 400 + dialogBorder, y: 360 + dialogBorder,
             width: Images.getWidth('w-dialog.png') - dialogBorder * 2,
             height: Images.getHeight('w-dialog.png'),
-            alignCenter: true, zIndex: 20001,
+            alignCenter: true, zIndex: 50001,
             text: 'text'
         });
         //elText.hide();
 
         elWCat = GUI.createElement(ElementImage, {src: 'w-cat.png'});
-        elWCat.dom.zIndex = 20001;
+        elWCat.dom.zIndex = 50002;
     };
 
     let drawBackground = function () {

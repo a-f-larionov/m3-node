@@ -29,7 +29,8 @@ let ElementMoneyCount = function () {
     this.onClick = function () {
     };
 
-    this.counterOffset = 0;
+    this.counterOffsetY = 0;
+    this.imageOffsetX = 0;
     this.enabled = true;
 
     let domProduct = null;
@@ -45,7 +46,7 @@ let ElementMoneyCount = function () {
      */
     this.init = function () {
         domMoneyImage = GUI.createDom(null, {backgroundImage: 'coin.png', pointer: GUI.POINTER_HAND});
-        textCounter = GUI.createElement(ElementText, {onClick: self.onClick, width: 100, alignCenter: false, pointer: GUI.POINTER_HAND});
+        textCounter = GUI.createElement(ElementText, {onClick: self.onClick, width: 80, alignCenter: false, pointer: GUI.POINTER_HAND});
 
         domProduct = GUI.createDom(null, {pointer: GUI.POINTER_HAND});
         textProductCount = GUI.createElement(ElementText, {onClick: self.onClick, pointer: GUI.POINTER_HAND});
@@ -102,7 +103,7 @@ let ElementMoneyCount = function () {
 
     let redrawA = function () {
 
-        domProduct.x = self.x;
+        domProduct.x = self.x + self.imageOffsetX;
         domProduct.y = self.y;
         domProduct.backgroundImage = self.productImg;
 
@@ -122,10 +123,10 @@ let ElementMoneyCount = function () {
         if (self.goldCount > 999) offsetX = -20;
 
         domMoneyImage.x = self.x + 30 + offsetX;
-        domMoneyImage.y = self.y + Images.getHeight(self.productImg) + self.counterOffset;
+        domMoneyImage.y = self.y + Images.getHeight(self.productImg) + self.counterOffsetY;
 
         textCounter.x = self.x + 95 + offsetX * 2;
-        textCounter.y = self.y + Images.getHeight(self.productImg) + self.counterOffset;
+        textCounter.y = self.y + Images.getHeight(self.productImg) + self.counterOffsetY;
         textCounter.fontSize = 36;
         textCounter.text = self.goldCount.toString();
     };
@@ -152,10 +153,10 @@ let ElementMoneyCount = function () {
         }
 
         domMoneyImage.x = self.x + 50 + 30 + offsetX + Images.getWidth(self.productImg);
-        domMoneyImage.y = self.y + self.counterOffset + 20;
+        domMoneyImage.y = self.y + self.counterOffsetY + 20;
 
         textCounter.x = self.x + 50 + 95 + offsetX * 2 + Images.getWidth(self.productImg);
-        textCounter.y = self.y + self.counterOffset + 25;
+        textCounter.y = self.y + self.counterOffsetY + 25;
         textCounter.fontSize = 36;
         textCounter.text = self.goldCount.toString();
     }

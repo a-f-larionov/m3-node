@@ -158,7 +158,7 @@ let GUI = function () {
         eventBinds[eventId].forEach(function (el) {
             intersect = eventIntersectEl(e, el);
 
-            if (GUI.lockEventsExcept) {
+            if (intersect && GUI.lockEventsExcept) {
                 let dom, skip;
                 dom = el.dom;
                 skip = true;
@@ -191,11 +191,7 @@ let GUI = function () {
         };
         doEvent(0);
 
-        if (els.length > 0) els[0].callback.call(els[0].context, e, els[0].dom);
-
-
         if (eventId === GUI.EVENT_MOUSE_MOVE) {
-
 
             let pointer = GUI.POINTER_ARROW;
             self.canvasPointerDoms.forEach(function (dom) {

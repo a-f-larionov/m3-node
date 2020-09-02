@@ -67,13 +67,13 @@ let ElementImage = function () {
      */
     this.init = function () {
         dom = GUI.createDom();
+        self.dom = dom;
         dom.backgroundImage = self.src;
         if (this.photoBorder) {
             dom.borderWidth = 2;
             dom.borderColor = 'rgba(68, 62, 0, 0.7)';
             dom.borderRadius = 8;
         }
-        self.dom = dom;
     };
 
     /**

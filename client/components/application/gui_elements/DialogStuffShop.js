@@ -36,7 +36,8 @@ let DialogStuffShop = function () {
             el = GUI.createElement(ElementMoneyCount, {
                 x: offsetX + stepX * i, y: offsetY,
                 productImg: '', productCount: 0, goldCount: 0,
-                counterOffset: 20,
+                imageOffsetX: 20,
+                counterOffsetY: 20,
                 onClick: function () {
                     self.buyStuff(i);
                 }

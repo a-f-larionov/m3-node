@@ -6,7 +6,7 @@ let DialogMoneyShop = function () {
         let el, offsetX, stepX, offsetY;
         this.__proto__.init.call(this);
 
-        offsetX = 25;
+        offsetX = 20;
         offsetY = 60;
         stepX = 150;
 
