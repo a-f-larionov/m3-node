@@ -129,3 +129,9 @@ CREATE TABLE `users_stuff` (
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2020-06-15 13:46:02
+
+DROP TABLE IF EXISTS `user_agents`;
+CREATE TABLE `user_agents` (
+  `uid` int(11) NOT NULL,
+  `agent` VARCHAR(512) NOT NULL DEFAULT ""
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

@@ -5,10 +5,11 @@
 /hostingData
 /server/config.*.js
 /client/config.*.js
-!/client/config.hostname.foldername.js
-!/server/config.hostname.foldername.js
+!/client/config.ENV_NAME.tri-base.js
+!/server/config.ENV_NAME.tri-base.js
 /server/ssl/*
 /server/*.log
+/server/logs/*.log
 
 
 /public/js/MainClientCode.js

@@ -32,41 +32,41 @@ ClientCodeLoader = function () {
     };
 
     let obfuscateOptions =
-        {
-            compact: true,
-            controlFlowFlattening: false,
-            controlFlowFlatteningThreshold: 0.75,
-            deadCodeInjection: false,
-            deadCodeInjectionThreshold: 0.4,
-            debugProtection: false,
-            debugProtectionInterval: false,
-            disableConsoleOutput: false,
-            domainLock: [],
-            identifierNamesGenerator: 'mangled',
-            identifiersDictionary: [],
-            identifiersPrefix: '',
-            inputFileName: '',
-            log: false,
-            renameGlobals: true,
-            reservedNames: [],
-            reservedStrings: [],
-            rotateStringArray: true,
-            seed: 1,
-            selfDefending: false,
-            shuffleStringArray: true,
-            sourceMap: false,
-            sourceMapBaseUrl: '',
-            sourceMapFileName: '',
-            sourceMapMode: 'separate',
-            splitStrings: false,
-            splitStringsChunkLength: 10,
-            stringArray: true,
-            stringArrayEncoding: 'base64',
-            stringArrayThreshold: 0.75,
-            target: 'browser',
-            transformObjectKeys: false,
-            unicodeEscapeSequence: false,
-        };
+    {
+        compact: true,
+        controlFlowFlattening: false,
+        controlFlowFlatteningThreshold: 0.75,
+        deadCodeInjection: false,
+        deadCodeInjectionThreshold: 0.4,
+        debugProtection: false,
+        debugProtectionInterval: false,
+        disableConsoleOutput: false,
+        domainLock: [],
+        identifierNamesGenerator: 'mangled',
+        identifiersDictionary: [],
+        identifiersPrefix: '',
+        inputFileName: '',
+        log: false,
+        renameGlobals: true,
+        reservedNames: [],
+        reservedStrings: [],
+        rotateStringArray: true,
+        seed: 1,
+        selfDefending: false,
+        shuffleStringArray: true,
+        sourceMap: false,
+        sourceMapBaseUrl: '',
+        sourceMapFileName: '',
+        sourceMapMode: 'separate',
+        splitStrings: false,
+        splitStringsChunkLength: 10,
+        stringArray: true,
+        stringArrayEncoding: 'base64',
+        stringArrayThreshold: 0.75,
+        target: 'browser',
+        transformObjectKeys: false,
+        unicodeEscapeSequence: false,
+    };
 
     let self = this;
     /**
@@ -390,7 +390,7 @@ ClientCodeLoader = function () {
             ];
 
             sTime = mtime();
-            result = UGLIFYJS.minify({js: "{" + js + "}"}, JSON.parse(JSON.stringify(minifyOptions)));
+            result = UGLIFYJS.minify({ js: "{" + js + "}" }, JSON.parse(JSON.stringify(minifyOptions)));
             if (result.code) {
                 js = result.code;
                 FS.writeFileSync(CONST_DIR_ROOT + '/public/js/client.min.js', js);
@@ -436,7 +436,7 @@ ClientCodeLoader = function () {
         jsFiles = jsFiles.concat(getFileList(clientSource + 'core/'));
         jsFiles = jsFiles.concat(getFileList(clientSource + 'components/'));
         /** Include Config file. */
-        hostname = OS.hostname();
+        hostname = process.env.ENV_NAME;
         let parentFolderName = (function () {
             let cwd;
             cwd = process.cwd().split(PATH.sep);
@@ -484,7 +484,7 @@ ClientCodeLoader = function () {
                     "};";
             }
             imgData += "for(let i in i_d){ i_d[i].path = '/images/sprite.png" + getTimeKey() + "';};";
-//@todo auto it!
+            //@todo auto it!
             imgData += "\r\ni_d['oblojka.png']={" +
                 "path: '/images/oblojka.png" + getTimeKey() + "'" +
                 "};";
@@ -507,7 +507,7 @@ ClientCodeLoader = function () {
         let imageFiles, imageCode, path, demension;
         if (cacheImages && codeImages) return codeImages;
 
-        imageFiles = getFileList(imagesPath, Config.spriteSkip);
+        imageFiles = getFileList(imagesPath, Config.Project.spriteSkip);
         imageCode = "<script>";
         imageCode += "i_d = {};";
         imageFiles.forEach(function (image) {
@@ -577,9 +577,9 @@ ClientCodeLoader = function () {
          * Calculate hash, if no changes - skip it!
          */
 
-        list = getFileList(imagesPath, Config.spriteSkip);
+        list = getFileList(imagesPath, Config.Project.spriteSkip);
 
-        SPRITESMITH.run({src: list}, function handleResult(err, result) {
+        SPRITESMITH.run({ src: list }, function handleResult(err, result) {
             let fsResult;
             // result.image; // Buffer representation of image
             // result.coordinates; // Object mapping filename to {x, y, width, height} of image

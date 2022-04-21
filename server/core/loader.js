@@ -72,8 +72,8 @@ function Loader() {
     };
 
     this.includeConfig = function () {
-        let hostname = OS.hostname();
-        let configPath = './../config.' + hostname + '.' + CONST_PROJECT_FOLDER_NAME + '.js';
+        let envName = process.env.ENV_NAME;
+        let configPath = './../config.' + envName + '.' + CONST_PROJECT_FOLDER_NAME + '.js';
         log("Config file: " + configPath);
         require(configPath);
     };

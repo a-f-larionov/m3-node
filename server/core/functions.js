@@ -176,7 +176,6 @@ telegramSent = function (message) {
 
     /**
      * @see  https://50na50.net/ru/proxy/httplist
-     * token: 1194574646:AAFn2QK8b_9gR-h6FI-M6a4DCeuGmkDgMro
      * получить id чта https://api.telegram.org/bot[BOT:TOKEN]/getChat?chat_id=@mychannelname
      * отправить сообщение https://api.telegram.org/bot[BOT_API_KEY]/sendMessage?chat_id=[MY_CHANNEL_NAME]&text=[MY_MESSAGE_TEXT]
      */
@@ -184,10 +183,11 @@ telegramSent = function (message) {
         /**
          * -1001210466099 - tri_base_log_local
          * -1001416055228 - tri_base_log_prod
+         * @Todo remove key from git history
          */
         let req, agent, endpoint, options;
         endpoint = "https://api.telegram.org/" +
-            "bot1194574646:AAFn2QK8b_9gR-h6FI-M6a4DCeuGmkDgMro" +
+            Config.Telegramm.token +
             "/sendMessage?chat_id=" + Config.Telegramm.chatId +
             "&text=" + encodeURIComponent(message);
         options = URL.parse(endpoint);
