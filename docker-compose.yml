@@ -7,9 +7,9 @@ services:
       - 80:80
       - 443:443
     volumes:
-      - .\other\nginx\conf.d:/etc/nginx/conf.d
-      - .\keys:/var/keys
-      - .\public:/var/www/tri-base/public
+      - ./other/nginx/conf.d:/etc/nginx/conf.d
+      - ./keys:/var/keys
+      - ./public:/var/www/tri-base/public
 
   mysql:
     image: mysql:5.7
@@ -30,7 +30,7 @@ services:
       - ENV_NAME=local1
     working_dir: /var/www/tri-base/server
     volumes:
-      - .\:/var/www/tri-base
+      - ./:/var/www/tri-base
     command: node run.js
     depends_on:
       - mysql
