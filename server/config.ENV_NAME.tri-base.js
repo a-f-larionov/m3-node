@@ -40,7 +40,7 @@ Config = {
     },
     VKWidgetComments: {
         height: 100,
-        widht: 100
+        width: 600
     },
     Telegramm: {
         chatId: "-1000000000000",

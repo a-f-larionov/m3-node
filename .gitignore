@@ -8,6 +8,7 @@
 !/client/config.ENV_NAME.tri-base.js
 !/server/config.ENV_NAME.tri-base.js
 /server/ssl/*
+/keys/*
 /server/*.log
 /server/logs/*.log
 
@@ -18,3 +19,4 @@
 /server/package-lock.json
 /server/core/generated.js
 
+public/js/client.source.js

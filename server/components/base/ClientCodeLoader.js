@@ -225,7 +225,11 @@ ClientCodeLoader = function () {
     let getClientHTML = function (socNetCode) {
         let code = '';
 
-        let demension = IMAGE_SIZE(imagesPath + '/sprite.png');
+        if (FS.existsSync(imagesPath + '/sprite.png')) {
+            let demension = IMAGE_SIZE(imagesPath + '/sprite.png');
+        } else {
+            demension = { width: 100, height: 100 };
+        }
 
         code += "<!doctype html>";
         code += "<html style=\"background:white;\">\r\n";
