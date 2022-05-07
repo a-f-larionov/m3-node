@@ -22,9 +22,9 @@ services:
     volumes:
       - mysql-volume:/var/lib/mysql
 
-  service:
-    image: node
-    container_name: service
+  tri-base:
+    image: tribase
+    container_name: tribase
     build: ./server
     environment:
       - ENV_NAME=local1

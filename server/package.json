@@ -3,17 +3,17 @@
   "version": "1.0.0",
   "description": "node-framework",
   "dependencies": {
-    "md5": "*",
-    "image-size": "*",
-    "mysql": "*",
-    "spritesmith": "*",
-    "uglify-js": "*",
-    "uglify-es": "*",
+    "async-lock": "*",
     "https-proxy-agent": "*",
-    "websocket": "*",
+    "image-size": "^1.0.1",
+    "javascript-obfuscator": "*",
     "lock": "*",
     "locks": "*",
-    "async-lock": "*",
-    "javascript-obfuscator": "*"
+    "md5": "*",
+    "mysql": "^2.18.1",
+    "spritesmith": "^3.4.0",
+    "uglify-es": "*",
+    "uglify-js": "^3.15.4",
+    "websocket": "^1.0.34"
   }
 }
