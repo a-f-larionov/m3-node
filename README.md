@@ -26,7 +26,6 @@ https://docs.docker.com/engine/install/
     
     openssl req -x509 -outform PEM -sha256 -nodes -days 365 -newkey rsa:2048 -keyout priv.key -out cert.pem
 
-
 # Virtual Box 
 
  Настройки сети : NAT + Virtual Host Adapter 
