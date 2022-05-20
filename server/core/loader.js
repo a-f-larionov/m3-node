@@ -72,7 +72,7 @@ function Loader() {
     };
 
     this.includeConfig = function () {
-        let envName = process.env.ENV_NAME;
+        let envName = process.env.TRI_BASE_CONFIG_NAME;
         let configPath = './../config.' + envName + '.' + CONST_PROJECT_FOLDER_NAME + '.js';
         log("Config file: " + configPath);
         require(configPath);

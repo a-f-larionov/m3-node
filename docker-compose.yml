@@ -4,7 +4,7 @@ services:
     image: nginx
     container_name: nginx
     ports:
-      - 80:80
+      - 8080:80
       - 443:443
     volumes:
       - ./other/nginx/conf.d:/etc/nginx/conf.d
@@ -27,7 +27,7 @@ services:
     container_name: tribase
     build: ./server
     environment:
-      - ENV_NAME=local1
+      - TRI_BASE_CONFIG_NAME=local1
     working_dir: /var/www/tri-base/server
     volumes:
       - ./:/var/www/tri-base

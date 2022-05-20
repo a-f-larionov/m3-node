@@ -440,7 +440,7 @@ ClientCodeLoader = function () {
         jsFiles = jsFiles.concat(getFileList(clientSource + 'core/'));
         jsFiles = jsFiles.concat(getFileList(clientSource + 'components/'));
         /** Include Config file. */
-        hostname = process.env.ENV_NAME;
+        hostname = process.env.TRI_BASE_CONFIG_NAME;
         let parentFolderName = (function () {
             let cwd;
             cwd = process.cwd().split(PATH.sep);
