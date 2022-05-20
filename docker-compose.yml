@@ -4,11 +4,11 @@ services:
     image: nginx
     container_name: nginx
     ports:
-      - 8080:80
+      - 80:80
       - 443:443
     volumes:
       - ./other/nginx/conf.d:/etc/nginx/conf.d
-      - ./keys:/var/keys
+      - /etc/letsencrypt:/var/keys/letsencrypt
       - ./public:/var/www/tri-base/public
 
   mysql:
