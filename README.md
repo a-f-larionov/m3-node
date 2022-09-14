@@ -18,3 +18,4 @@ After install execute command:
 
     openssl req -x509 -outform PEM -sha256 -nodes -days 365 -newkey rsa:2048 -keyout priv.key -out cert.pem
 
+# Install https://certbot.eff.org

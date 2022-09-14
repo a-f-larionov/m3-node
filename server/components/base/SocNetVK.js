@@ -64,8 +64,12 @@ SocNetVK = function () {
      */
     this.checkAuth = function (socNetUserId, authParams) {
         /*	auth_key = md5(app_id+'_'+viewer_id+'_'+app_secret); */
-        if (self.calcSign(socNetUserId, authParams) !== authParams.authKey) {
-            Logs.log("auth key mismatch, generated: ...  given:" + authParams.authKey, Logs.LEVEL_WARNING);
+        var expectedAuthKey = self.calcSign(socNetUserId, authParams);
+        if (expectedAuthKey !== authParams.authKey) {
+            Logs.log("auth key mismatch, "+
+                    " generated: "+expectedAuthKey+
+                    " given:" + authParams.authKey,
+            Logs.LEVEL_WARNING);
             return false;
         }
         return true;
