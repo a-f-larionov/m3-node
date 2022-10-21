@@ -12,7 +12,8 @@ vkontakte: https://vk.com/a.f.larionov
 <a href="https://www.docker.com/products/docker-desktop">Install on Windows</a>.
 After install execute command:
 
-    docker-compose up
+    git clone https://github.com/a-f-larionov/tri-base.git
+    docker-compose -f docker-compose.yml -f docker-compose.prod.yml up
 
 ## Create SSL keys (self signed certificate)
 

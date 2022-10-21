@@ -14,6 +14,7 @@
 /server/logs/*.log
 /db/*
 !/db/.gitkeep
+cache.js
 
 
 /public/js/MainClientCode.js
