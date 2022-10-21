@@ -12,6 +12,8 @@
 /keys/*.pem
 /server/*.log
 /server/logs/*.log
+/db/*
+!/db/.gitkeep
 
 
 /public/js/MainClientCode.js
