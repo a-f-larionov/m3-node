@@ -16,6 +16,10 @@ After install execute command:
 
 ## Create SSL keys (self signed certificate)
 
+    linux:
     openssl req -x509 -outform PEM -sha256 -nodes -days 365 -newkey rsa:2048 -keyout priv.key -out cert.pem
 
-# Install https://certbot.eff.org
+# Install Certbot
+
+    According documentations
+    https://certbot.eff.org

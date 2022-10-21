@@ -1,19 +1,19 @@
 {
-  "name": "node-framework",
+  "name": "tri-base",
   "version": "1.0.0",
-  "description": "node-framework",
+  "description": "tri-base",
   "dependencies": {
     "async-lock": "*",
     "https-proxy-agent": "*",
-    "image-size": "^1.0.1",
+    "image-size": "*",
     "javascript-obfuscator": "*",
     "lock": "*",
     "locks": "*",
     "md5": "*",
-    "mysql": "^2.18.1",
-    "spritesmith": "^3.4.0",
+    "mysql": "*",
+    "spritesmith": "*",
     "uglify-es": "*",
-    "uglify-js": "^3.15.4",
-    "websocket": "^1.0.34"
+    "uglify-js": "*",
+    "websocket": "*"
   }
 }
