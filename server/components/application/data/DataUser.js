@@ -16,8 +16,11 @@ DataUser = function () {
         DB.query("SELECT MAX(id) as maxId FROM users",
 
             function (rows) {
-                autoIncrementValue = rows[0].maxId + 1;
-                if (autoIncrementValue === null) autoIncrementValue = 1;
+                if (rows[0] === undefined){
+                     autoIncrementValue = 1;
+                } else {
+                     autoIncrementValue = rows[0].maxId + 1;
+                }
                 Logs.log("users.autoincrementId:" + autoIncrementValue, Logs.LEVEL_NOTIFY, rows);
                 afterInitCallback();
             });
