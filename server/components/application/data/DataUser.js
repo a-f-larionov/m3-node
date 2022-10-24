@@ -16,8 +16,7 @@ DataUser = function () {
         DB.query("SELECT MAX(id) as maxId FROM users",
 
             function (rows) {
-
-                if (rows[0] === undefined){
+                if (rows === undefined){
                      autoIncrementValue = 1;
                 } else {
                      autoIncrementValue = rows[0].maxId + 1;
