@@ -150,10 +150,10 @@ LogicPayments = function () {
 
     this.doOrderChange = function (socNetUserId, order_id, item_price, tid, callback, socNetTypeId, buyPrefix) {
         let product;
-        socNetTypeId = Valid.DBUINT(socNetTypeId);
-        socNetUserId = Valid.DBUINT(socNetUserId);
-        item_price = Valid.DBUINT(item_price);
-        order_id = Valid.DBUINT(order_id);
+        socNetTypeId = Validator.DBUINT(socNetTypeId);
+        socNetUserId = Validator.DBUINT(socNetUserId);
+        item_price = Validator.DBUINT(item_price);
+        order_id = Validator.DBUINT(order_id);
         if (!socNetTypeId || !socNetUserId || !item_price || !order_id) {
             Logs.log(buyPrefix + " tid:" + tid + "CANCEL no data", Logs.LEVEL_ALERT, arguments);
             return callback(vkErrorItemPriceNotFound);

@@ -20,7 +20,7 @@ SAPIUser = function () {
             });
             return false;
         }
-        socNetUserId = Valid.DBUINT(socNetUserId);
+        socNetUserId = Validator.DBUINT(socNetUserId);
         if (!socNetUserId) {
             Logs.log("SAPIUser.auhthorizeValidateParams invalid socNetUserId" + socNetUserId, Logs.LEVEL_ALERT);
             return false;
@@ -72,7 +72,7 @@ SAPIUser = function () {
         if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
 
-        if (!(userId = Valid.DBUINT(userId))) return Logs.log("SAPIUser.sendMeUserInfo: must have userId", Logs.LEVEL_WARNING, userId);
+        if (!(userId = Validator.DBUINT(userId))) return Logs.log("SAPIUser.sendMeUserInfo: must have userId", Logs.LEVEL_WARNING, userId);
 
         LogicUser.sendUserInfo(userId, cntx.userId, pStart(Profiler.ID_SAPIUSER_SEND_ME_INFO));
     };
@@ -87,7 +87,7 @@ SAPIUser = function () {
         if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
 
-        if (!Valid.DBUINTArray(ids)) Logs.log(arguments.callee.name + ": must have ids", Logs.LEVEL_WARNING, ids);
+        if (!Validator.DBUINTArray(ids)) Logs.log(arguments.callee.name + ": must have ids", Logs.LEVEL_WARNING, ids);
 
         LogicUser.sendUserListInfo(ids, cntx.userId, pStart(Profiler.ID_SAPIUSER_SEND_ME_USER_LIST_INFO));
     };
@@ -116,7 +116,7 @@ SAPIUser = function () {
         if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
         //if (!limit) return Logs.log(arguments.callee.name + " limit not found", Logs.LEVEL_WARNING, cntx);
 
-        fids = Valid.DBUINTArray(fids);
+        fids = Validator.DBUINTArray(fids);
         if (!fids) return Logs.log(arguments.callee.name + " wrong params", Logs.LEVEL_WARNING, arguments);
 
         let prid = pStart(Profiler.ID_SAPIUSER_SEND_ME_USER_IDS_BY_SOC_NET);
@@ -137,7 +137,7 @@ SAPIUser = function () {
 
         //@todo profiler
         //@todo cache it at day
-        if (!Valid.DBUINTArray(fids)) return Logs.log("invalid data", Logs.LEVEL_ALERT, fids);
+        if (!Validator.DBUINTArray(fids)) return Logs.log("invalid data", Logs.LEVEL_ALERT, fids);
 
         let prid = pStart(Profiler.ID_SAPIUSER_SEND_ME_TOP_USER_SCORES);
 
@@ -155,8 +155,8 @@ SAPIUser = function () {
         if (!(pids instanceof Array)) pids = [pids];
         if (!(uids instanceof Array)) uids = [uids];
 
-        if (!(pids = Valid.DBUINTArray(pids))) return Logs.log("invalid data pids", Logs.LEVEL_ALERT, arguments);
-        if (!(uids = Valid.DBUINTArray(uids))) return Logs.log("invalid data uids", Logs.LEVEL_ALERT, arguments);
+        if (!(pids = Validator.DBUINTArray(pids))) return Logs.log("invalid data pids", Logs.LEVEL_ALERT, arguments);
+        if (!(uids = Validator.DBUINTArray(uids))) return Logs.log("invalid data uids", Logs.LEVEL_ALERT, arguments);
 
         let prid = pStart(Profiler.ID_SAPIUSER_SEND_ME_SCORES);
         //@todo prid

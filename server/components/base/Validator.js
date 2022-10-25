@@ -1,7 +1,7 @@
 /**
- * @type {{DBUINT: Valid.DBUINT}}
+ * @type {{DBUINT: Validator.DBUINT}}
  */
-let Valid = {
+let Validator = {
 
     DBUINT: function (value, mayZero) {
         value = parseInt(value);
@@ -20,7 +20,7 @@ let Valid = {
         let out;
         out = true;
         arr.forEach(function (val) {
-            out &= !!Valid.DBUINT(val);
+            out &= !!Validator.DBUINT(val);
         });
         if (!out) return false;
 
@@ -32,5 +32,5 @@ let Valid = {
 
 /** Для кросс-сайдных компонент */
 if (CONST_IS_SERVER_SIDE) {
-    global['Valid'] = Valid;
+    global['Validator'] = Validator;
 }

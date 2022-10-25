@@ -6,7 +6,7 @@ SAPIMap = function () {
         if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
 
-        if (!(mapId = Valid.DBUINT(mapId))) return Logs.log("no map id:" + mapId, Logs.LEVEL_WARNING, arguments);
+        if (!(mapId = Validator.DBUINT(mapId))) return Logs.log("no map id:" + mapId, Logs.LEVEL_WARNING, arguments);
 
         if (!DataMap.existsMap(mapId)) return Logs.log("no map found:" + mapId, Logs.LEVEL_WARNING, cntx);
 
@@ -26,9 +26,9 @@ SAPIMap = function () {
 
         if (chunks > 1) Logs.log("More then one chunk", Logs.LEVEL_ALERT, cntx);
 
-        if (Number.isNaN(score = Valid.DBUINT(score, true))) return Logs.log(arguments.callee.name + " not valid score", Logs.LEVEL_ALERT, arguments);
-        if (!(pointId = Valid.DBUINT(pointId))) return Logs.log(arguments.callee.name + " not valid pointId", Logs.LEVEL_ALERT, arguments);
-        if (!(fids = Valid.DBUINTArray(fids))) return Logs.log(arguments.callee.name + "not valid fids", Logs.LEVEL_ALERT, arguments);
+        if (Number.isNaN(score = Validator.DBUINT(score, true))) return Logs.log(arguments.callee.name + " not valid score", Logs.LEVEL_ALERT, arguments);
+        if (!(pointId = Validator.DBUINT(pointId))) return Logs.log(arguments.callee.name + " not valid pointId", Logs.LEVEL_ALERT, arguments);
+        if (!(fids = Validator.DBUINTArray(fids))) return Logs.log(arguments.callee.name + "not valid fids", Logs.LEVEL_ALERT, arguments);
 
         let pridNoCached = pStart(Profiler.ID_SAPIMAP_SEND_ME_POINT_TOP_SCORE);
         let pridCached = pStart(Profiler.ID_SAPIMAP_SEND_ME_POINT_TOP_SCORE_CACHED);
