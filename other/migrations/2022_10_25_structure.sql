@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.7.30, for Linux (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.40, for Linux (x86_64)
 --
 -- Host: localhost    Database: tri_base
 -- ------------------------------------------------------
--- Server version	5.7.30-0ubuntu0.18.04.1
+-- Server version       5.7.40
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -48,6 +48,35 @@ CREATE TABLE `payments` (
   `itemPrice` int(11) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `orderId` (`orderId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `statistic`
+--
+
+DROP TABLE IF EXISTS `statistic`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `statistic` (
+  `uid` int(11) unsigned NOT NULL,
+  `time` int(11) NOT NULL,
+  `statId` int(11) NOT NULL,
+  `paramA` int(11) DEFAULT NULL,
+  `paramB` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `user_agents`
+--
+
+DROP TABLE IF EXISTS `user_agents`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `user_agents` (
+  `uid` int(11) NOT NULL,
+  `agent` varchar(512) NOT NULL DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -128,10 +157,4 @@ CREATE TABLE `users_stuff` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-06-15 13:46:02
-
-DROP TABLE IF EXISTS `user_agents`;
-CREATE TABLE `user_agents` (
-  `uid` int(11) NOT NULL,
-  `agent` VARCHAR(512) NOT NULL DEFAULT ""
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+-- Dump completed on 2022-10-25 16:39:24
