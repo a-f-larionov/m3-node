@@ -43,12 +43,9 @@ LogicUser = function () {
         /** Get from db */
         DataUser.getBySocNet(socNetTypeId, socNetUserId)
             .then(function (user) {
+
                 authorizeOrCreate(user, socNetTypeId, socNetUserId, cntx, prid);
             });
-        /*
-        DataUser.getBySocNet(socNetTypeId, socNetUserId, function (user) {
-            authorizeOrCreate(user, socNetTypeId, socNetUserId, cntx, prid);
-        });*/
     };
 
     /**

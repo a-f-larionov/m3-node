@@ -38,7 +38,11 @@ DataUser = function () {
                 socNetTypeId: [socNetTypeId],
                 socNetUserId: [socNetUserId]
             }, function (rows) {
-                resolve(fromDBToData(rows[0]) || null);
+                if( rows === undefined ){
+                     return resolve(null);
+                } else {
+                    resolve(fromDBToData(rows[0]) || null);
+                }
             });
         })
     };
