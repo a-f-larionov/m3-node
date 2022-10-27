@@ -135,7 +135,7 @@ DataUser = function () {
         cache[user.id] = user;
         callback(user);
         //create user here
-        DataPoints.updateUsersPoints(user.id, 0, 0);
+        //DataPoints.updateUsersPoints(user.id, 0, 0);
         DB.insert(tableName, user, function (result) {
             if (result.insertId !== user.id) {
                 Logs.log("DataUser.createFromSocNet. result.insertId != user.id",
