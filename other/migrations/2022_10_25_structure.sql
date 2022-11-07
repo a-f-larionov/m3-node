@@ -4,6 +4,10 @@
 -- ------------------------------------------------------
 -- Server version       5.7.40
 
+--
+-- Current Database: `database_example`
+--
+
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
@@ -19,7 +23,6 @@
 -- Table structure for table `cache_top_score`
 --
 
-DROP TABLE IF EXISTS `cache_top_score`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `cache_top_score` (
@@ -37,7 +40,6 @@ CREATE TABLE `cache_top_score` (
 -- Table structure for table `payments`
 --
 
-DROP TABLE IF EXISTS `payments`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `payments` (
@@ -55,7 +57,6 @@ CREATE TABLE `payments` (
 -- Table structure for table `statistic`
 --
 
-DROP TABLE IF EXISTS `statistic`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `statistic` (
@@ -71,7 +72,6 @@ CREATE TABLE `statistic` (
 -- Table structure for table `user_agents`
 --
 
-DROP TABLE IF EXISTS `user_agents`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `user_agents` (
@@ -84,7 +84,6 @@ CREATE TABLE `user_agents` (
 -- Table structure for table `users`
 --
 
-DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `users` (
@@ -105,7 +104,6 @@ CREATE TABLE `users` (
 -- Table structure for table `users_chests`
 --
 
-DROP TABLE IF EXISTS `users_chests`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `users_chests` (
@@ -119,7 +117,6 @@ CREATE TABLE `users_chests` (
 -- Table structure for table `users_points`
 --
 
-DROP TABLE IF EXISTS `users_points`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `users_points` (
@@ -135,7 +132,6 @@ CREATE TABLE `users_points` (
 -- Table structure for table `users_stuff`
 --
 
-DROP TABLE IF EXISTS `users_stuff`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `users_stuff` (

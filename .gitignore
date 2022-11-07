@@ -5,8 +5,8 @@
 /hostingData
 /server/config.*.js
 /client/config.*.js
-!/client/config.TRI_BASE_CONFIG_NAME.tri-base.js
-!/server/config.TRI_BASE_CONFIG_NAME.tri-base.js
+!/client/config.PROFILE-TEMPLATE.js
+!/server/config.PROFILE-TEMPLATE.tri-base.js
 /server/ssl/*
 /keys/*.key
 /keys/*.pem

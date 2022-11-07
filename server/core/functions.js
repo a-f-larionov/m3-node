@@ -181,8 +181,6 @@ telegramSent = function (message) {
      */
     function exec(message) {
         /**
-         * -1001210466099 - tri_base_log_local
-         * -1001416055228 - tri_base_log_prod
          * @Todo remove key from git history
          */
         let req, agent, endpoint, options;

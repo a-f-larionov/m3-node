@@ -440,14 +440,14 @@ ClientCodeLoader = function () {
         jsFiles = jsFiles.concat(getFileList(clientSource + 'core/'));
         jsFiles = jsFiles.concat(getFileList(clientSource + 'components/'));
         /** Include Config file. */
-        hostname = process.env.TRI_BASE_CONFIG_NAME;
+        hostname = process.env.PROFILE;
         let parentFolderName = (function () {
             let cwd;
             cwd = process.cwd().split(PATH.sep);
             cwd.pop();
             return cwd.pop();
         })();
-        clientConfigPath = clientSource + 'config.' + hostname + '.' + parentFolderName + '.js';
+        clientConfigPath = clientSource + 'config.' + hostname + '.js';
         Logs.log("Generate client code(client). The config file: " + clientConfigPath, Logs.LEVEL_DETAIL);
         jsFiles.push(clientConfigPath);
 

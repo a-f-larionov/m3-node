@@ -38,7 +38,7 @@ For windows use PuTTY Key Generator
 ### 4 - Upload config
     upload config.prod1.tri-base to /server
     upload config.prod1.tri-base to /client and set ip for wss
-    see tempalte Config.TRI_BASE_CONFIG_NAME.tri-base.js
+    see tempalte Config.PROFILE-TEMPLATE.tri-base.js
 
 ### 5 - Run server
 

@@ -3,7 +3,6 @@
 let FS = require('fs');
 let PATH = require('path');
 
-CONST_PROJECT_FOLDER_NAME = FS.realpathSync('./..').split('/').pop();
 CONST_DIR_ROOT = FS.realpathSync('./..') + PATH.sep;
 CONST_DIR_SERVER = CONST_DIR_ROOT + 'server' + PATH.sep;
 CONST_DIR_COMPONENTS = CONST_DIR_SERVER + 'components' + PATH.sep;
