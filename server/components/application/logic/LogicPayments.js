@@ -127,12 +127,12 @@ LogicPayments = function () {
 
         /** Проверка id приложения */
         if (Config.SocNet.VK.appId !== app_id) {
-            Logs.log(buyPrefix + " tid:" + tid + " Не верный appId", Logs.LEVEL_ERROR, params, Logs.CHANNEL_VK_PAYMENTS);
+            Logs.log(buyPrefix + " tid:" + tid + " Не верный appId. Ожидался: " + Config.SocNet.VK.appId, Logs.LEVEL_ERROR, params, Logs.CHANNEL_VK_PAYMENTS);
             return callback(vkErrorCommon);
         }
         /** Проверка сигнатуры */
-        if (self.checkVKSign(sig, params)) {
-            Logs.log(buyPrefix + " tid:" + tid + " Не верная сигнатура подписи", Logs.LEVEL_ERROR, params, Logs.CHANNEL_VK_PAYMENTS);
+        if (!self.checkVKSign(sig, params)) {
+            Logs.log(buyPrefix + " tid:" + tid + " Не верная сигнатура подписи. ", Logs.LEVEL_ERROR, params, Logs.CHANNEL_VK_PAYMENTS);
             return callback(vkErrorSign);
         }
         /** Проверка типа запроса */
