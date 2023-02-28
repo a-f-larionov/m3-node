@@ -5,8 +5,8 @@
 /hostingData
 /server/config.*.js
 /client/config.*.js
-!/client/config.PROFILE-TEMPLATE.js
-!/server/config.PROFILE-TEMPLATE.js
+!/client/config.example.js
+!/server/config.example.js
 /server/ssl/*
 /keys/*.key
 /keys/*.pem
