@@ -6,7 +6,7 @@
 /server/config.*.js
 /client/config.*.js
 !/client/config.PROFILE-TEMPLATE.js
-!/server/config.PROFILE-TEMPLATE.tri-base.js
+!/server/config.PROFILE-TEMPLATE.js
 /server/ssl/*
 /keys/*.key
 /keys/*.pem
