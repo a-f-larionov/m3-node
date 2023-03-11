@@ -48,6 +48,9 @@ SocNetStandalone = function () {
         return true;
     };
 
+    this.getUserProfileUrl = function (socNetUserId) {
+            return 'Standalone: ' + socNetUserId;
+    };
 };
 
 /** @type {SocNetStandalone} */
