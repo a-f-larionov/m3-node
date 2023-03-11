@@ -12,18 +12,10 @@ const consumer = kafka.consumer({ groupId: 'test-group' })
 const run = async () => {
   // Producing
   await producer.connect()
-  await producer.send({
-    topic: 'test-topic',
-    messages: [
-      { value: 'Hello KafkaJS user!' },
-    ],
-  })
-
-
 
  // Consuming
   await consumer.connect()
-  await consumer.subscribe({ topic: 'topic4', fromBeginning: true })
+  await consumer.subscribe({ topic: 'topic5', fromBeginning: true })
 
   await consumer.run({
     eachMessage: async ({ topic, partition, message }) => {
@@ -37,8 +29,6 @@ const run = async () => {
         console.log("You do it!");
     },
   })
-
-
  }
 
 
