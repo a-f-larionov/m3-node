@@ -1,5 +1,5 @@
 {
-  "name": "tri-base",
+  "name": "node",
   "version": "1.0.0",
   "description": "tri-base",
   "dependencies": {
@@ -14,6 +14,7 @@
     "spritesmith": "*",
     "uglify-es": "*",
     "uglify-js": "*",
-    "websocket": "*"
+    "websocket": "*",
+    "kafkajs": "*"
   }
 }
