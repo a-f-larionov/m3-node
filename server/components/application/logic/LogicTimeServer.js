@@ -1,4 +1,7 @@
-LogicTimeServer = function () {
+/**
+ * @type {LogicTimeServer}
+ */
+var LogicTimeServer = function () {
 
     this.init = function (afterInitCallback) {
         afterInitCallback();
@@ -21,8 +24,6 @@ LogicTimeServer = function () {
     }
 };
 
-/**
- * Константный класс.
- * @type {LogicTimeServer}
- */
-LogicTimeServer = new LogicTimeServer();
+LogicTimeServer.depends = [];
+global["LogicTimeServer"] = LogicTimeServer;
+module.exports = { LogicTimeServer };

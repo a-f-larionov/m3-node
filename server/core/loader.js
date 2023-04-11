@@ -16,7 +16,7 @@ let FS = require('fs');
 let PATH = require('path');
 let OS = require('os');
 
-loader = new Loader();
+var loader = new Loader();
 console.log('step 1 - include constants');
 /* step 1 - include constants */
 loader.includeConstants();

@@ -1,8 +1,10 @@
+const { KafkaModule } = require("../../base/KafkaModule.js");
+
+const DataUser = require("../../application/data/DataUser.js").DataUser;
 /**
  * @type {LogicUser}
- * @constructor
  */
-LogicUser = function () {
+var LogicUser = function () {
     let self = this;
     let userToCntx = {};
     let userToCntxCount = 0;
@@ -24,14 +26,17 @@ LogicUser = function () {
         let socNetTypeId = SocNet.TYPE_VK;
         socNetUserId = parseInt(socNetUserId);
         if (isNaN(socNetUserId)) {
+            // log service
             Logs.log("LogicUser: cant auth, SocNet.checkAuth failed. (VK), socNetUserId is not a number", Logs.LEVEL_WARNING, {
                 socNeUserId: socNetUserId,
                 authParams: authParams
             });
             return;
         }
+        // user service
         let checkResult = SocNet(socNetTypeId).checkAuth(socNetUserId, authParams);
         if (!checkResult) {
+            // log service
             Logs.log("LogicUser: cant auth, SocNet.checkAuth failed. (VK)", Logs.LEVEL_WARNING, {
                 socNetUserId: socNetUserId,
                 authParams: authParams
@@ -39,11 +44,13 @@ LogicUser = function () {
             return;
         }
         if (!checkResult) return;
+        // profile remove
         let prid = Profiler.start(Profiler.ID_AUTH_VK);
         /** Get from db */
+        // user service
         DataUser.getBySocNet(socNetTypeId, socNetUserId)
             .then(function (user) {
-
+                // user service
                 authorizeOrCreate(user, socNetTypeId, socNetUserId, cntx, prid);
             });
     };
@@ -112,16 +119,26 @@ LogicUser = function () {
     let authorizeSendSuccess = function (user, cntx, prid) {
         /** Тут мы запомним его cid раз и на всегда */
 
-        var url = SocNet(user.socNetTypeId).getUserProfileUrl(user.socNetUserId);
-        Logs.log("🥰 ", Logs.LEVEL_NOTIFY, url, Logs.CHANNEL_TELEGRAM );
-        KafkaC.send("🥰" + url);
+        // internal suer conn cache
+        userAddConn(user, cntx);
+        DataUser.cacheUpdateLastLogin(user.id, cntx);
 
+        // update db
+        KafkaModule.updateLastLogin(user.id);
+
+
+        
+        // log service
+        var url = SocNet(user.socNetTypeId).getUserProfileUrl(user.socNetUserId);
+        Logs.log("🥰 ", Logs.LEVEL_NOTIFY, url, Logs.CHANNEL_TELEGRAM);
+
+        // statistic service
         if (user.socNetTypeId === SocNet.TYPE_VK) Statistic.write(user.id, Statistic.ID_AUTHORIZE_VK);
         if (user.socNetTypeId === SocNet.TYPE_STANDALONE) Statistic.write(user.id, Statistic.ID_AUTHORIZE_STANDALONE);
 
-        userAddConn(user, cntx);
-        DataUser.updateLastLogin(user.id, cntx);
+        // send to user
         CAPIUser.authorizeSuccess(user.id, user);
+        // remove it
         Profiler.finish(prid);
     };
 
@@ -310,10 +327,7 @@ LogicUser = function () {
     };
 };
 
-/**
- * Константный класс.
- * @type {LogicUser}
- */
 LogicUser = new LogicUser();
-
 LogicUser.depends = ['Logs', 'Profiler', 'DB', 'DataUser', 'Statistic', 'SocNet'];
+global["LogicUser"] = LogicUser;
+module.exports = { LogicUser }

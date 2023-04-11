@@ -2,7 +2,7 @@
  * @type {DataPoints}
  * @constructor
  */
-DataPoints = function ()    {
+var DataPoints = function ()    {
 
     this.FIELD_MAX_WIDTH = 10;
     this.FIELD_MAX_HEIGHT = 11;
@@ -2031,4 +2031,8 @@ DataPoints = function ()    {
 /**
  * @type {DataPoints}
  */
-DataPoints = new DataPoints;
+DataPoints = new DataPoints();
+DataPoints.depends = [];
+global["DataPoints"] = DataPoints;
+module.exports = { DataPoints };
+

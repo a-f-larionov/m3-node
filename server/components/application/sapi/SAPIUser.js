@@ -1,3 +1,8 @@
+const Logs = require("../../base/Logs.js").Logs
+const KafkaModule = require("../../base/KafkaModule.js").KafkaModule
+const LogicUser = require("../../application/logic/LogicUser.js").LogicUser
+const DataUser = require("../../application/data/DataUser.js").DataUser
+const DataPoints = require("../../application/data/DataPoints.js").DataPoints
 let FS = require('fs');
 var AsyncLock = require('async-lock');
 var LOCK = new AsyncLock();
@@ -55,26 +60,29 @@ SAPIUser = function () {
     };
 
     this.logout = function (cntx) {
-        if (cntx.userId) DataUser.updateLastLogout(cntx.userId);
+        if (cntx.userId) {
+            KafkaModule.updateLastLogout(cntx.userId);
+            DataUser.clearCache(cntx.userId);
+        }
+        // @todo clearContext
         cntx.userId = undefined;
         cntx.isAuthorized = undefined;
         cntx.user = undefined;
-
     };
 
     /**
      * Отправяел информацию о пользователи в текущие соединение.
      * @param cntx object
-     * @param userId number
+     * @param whoUserId number
      */
-    this.sendMeUserInfo = function (cntx, userId) {
+    this.sendMeUserInfo = function (cntx, whoUserId) {
         if (!cntx.isAuthorized) return Logs.log(arguments.callee.name + " not authorized", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
 
-        if (!(userId = Validator.DBUINT(userId))) return Logs.log("SAPIUser.sendMeUserInfo: must have userId", Logs.LEVEL_WARNING, userId);
+        if (!(whoUserId = Validator.DBUINT(whoUserId))) return Logs.log("SAPIUser.sendMeUserInfo: must have userId", Logs.LEVEL_WARNING, whoUserId);
 
-        LogicUser.sendUserInfo(userId, cntx.userId, pStart(Profiler.ID_SAPIUSER_SEND_ME_INFO));
+        LogicUser.sendUserInfo(whoUserId, cntx.userId, pStart(Profiler.ID_SAPIUSER_SEND_ME_INFO));
     };
 
     /**
@@ -89,7 +97,7 @@ SAPIUser = function () {
 
         if (!Validator.DBUINTArray(ids)) Logs.log(arguments.callee.name + ": must have ids", Logs.LEVEL_WARNING, ids);
 
-        LogicUser.sendUserListInfo(ids, cntx.userId, pStart(Profiler.ID_SAPIUSER_SEND_ME_USER_LIST_INFO));
+        KafkaModule.sendUserListInfo(ids, cntx.userId);
     };
 
     this.sendMeMapFriends = function (cntx, mapId, fids) {
@@ -122,11 +130,25 @@ SAPIUser = function () {
         let prid = pStart(Profiler.ID_SAPIUSER_SEND_ME_USER_IDS_BY_SOC_NET);
         //@todo add check ids and length no more 1000
         DataUser.getById(cntx.user.id, function (user) {
-            DataUser.getUserIdsBySocNet(user.socNetTypeId, fids, function (ids) {
+            if (user.socNetTypeId == SocNet.TYPE_STANDALONE) {
+                DataUser.getListWhere(" 1=1 ", function (rows) {
 
-                CAPIUser.gotFriendsIds(cntx.user.id, ids);
-                pFinish(prid);
-            });
+                    let ids = [];
+                    rows.forEach(function (row) {
+                        ids.push(row.id);
+                    });
+
+                    CAPIUser.gotFriendsIds(cntx.user.id, ids);
+                    pFinish(prid);
+                })
+
+            } else {
+                DataUser.getUserIdsBySocNet(user.socNetTypeId, fids, function (ids) {
+
+                    CAPIUser.gotFriendsIds(cntx.user.id, ids);
+                    pFinish(prid);
+                });
+            }
         });
     };
 
@@ -185,8 +207,8 @@ SAPIUser = function () {
                 if (!LogicHealth.isMaxHealths(user)) {
                     LogicHealth.decrementHealth(user, -1);
                     DataUser.updateHealthAndStartTime(user, function () {
-                            CAPIUser.setOneHealthHide(cntx.user.id, false, user.fullRecoveryTime);
-                        }
+                        CAPIUser.setOneHealthHide(cntx.user.id, false, user.fullRecoveryTime);
+                    }
                     );
                     done();
                     pFinish(prid);
@@ -213,8 +235,8 @@ SAPIUser = function () {
                 if (LogicHealth.getHealths(user) > 0) {
                     LogicHealth.decrementHealth(user, 1);
                     DataUser.updateHealthAndStartTime(user, function () {
-                            CAPIUser.setOneHealthHide(cntx.user.id, true, user.fullRecoveryTime);
-                        }
+                        CAPIUser.setOneHealthHide(cntx.user.id, true, user.fullRecoveryTime);
+                    }
                     );
                     done();
                     pFinish(prid);

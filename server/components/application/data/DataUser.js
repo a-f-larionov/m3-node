@@ -1,4 +1,8 @@
-DataUser = function () {
+const LogicTimeServer = require("../../application/logic/LogicTimeServer.js").LogicTimeServer
+/**
+ * @type {DataUser}
+ */
+var DataUser = function () {
 
     let tableName = 'users';
 
@@ -16,10 +20,10 @@ DataUser = function () {
         DB.query("SELECT MAX(id) as maxId FROM users",
 
             function (rows) {
-                if (rows === undefined){
-                     autoIncrementValue = 1;
+                if (rows === undefined) {
+                    autoIncrementValue = 1;
                 } else {
-                     autoIncrementValue = rows[0].maxId + 1;
+                    autoIncrementValue = rows[0].maxId + 1;
                 }
                 Logs.log("users.autoincrementId:" + autoIncrementValue, Logs.LEVEL_NOTIFY, rows);
                 afterInitCallback();
@@ -38,8 +42,8 @@ DataUser = function () {
                 socNetTypeId: [socNetTypeId],
                 socNetUserId: [socNetUserId]
             }, function (rows) {
-                if( rows === undefined ){
-                     return resolve(null);
+                if (rows === undefined) {
+                    return resolve(null);
                 } else {
                     resolve(fromDBToData(rows[0]) || null);
                 }
@@ -98,7 +102,7 @@ DataUser = function () {
      */
     this.getList = function (ids, callback, queryAdd) {
         if (!ids.length) return callback([]);
-//@todo no cache cheked?!
+        //@todo no cache cheked?!
         DB.queryWhere(tableName, {
             id: [ids, DB.WHERE_IN]
         }, function (rows) {
@@ -140,10 +144,10 @@ DataUser = function () {
             if (result.insertId !== user.id) {
                 Logs.log("DataUser.createFromSocNet. result.insertId != user.id",
                     Logs.LEVEL_FATAL_ERROR, {
-                        user: user,
-                        autoIncrementValue: autoIncrementValue,
-                        result: result
-                    }
+                    user: user,
+                    autoIncrementValue: autoIncrementValue,
+                    result: result
+                }
                 );
             }
             delete waitForCreateBySocNet[socNetUserId];
@@ -186,36 +190,29 @@ DataUser = function () {
      * Обновить данные о последнем выходе игрока.
      * @param userId {int} внутрений id пользователя.
      */
-    this.updateLastLogout = function (userId) {
+    this.clearCache = function (userId) {
         if (!userId) {
-            Logs.log("DataUser.udpateLastLogout. Must be userId", Logs.LEVEL_WARNING, userId);
+            Logs.log("DataUser.clearCache. Must be userId", Logs.LEVEL_WARNING, userId);
             return;
         }
         if (cache[userId]) {
             cache[userId] = null;
         }
-        DB.query("UPDATE " + tableName + " SET logout_tm = " + LogicTimeServer.getTime() + " WHERE id = " + userId, function () {
-        });
     };
 
     /**
      * Обновить данные о последнем входе игрока.
      * @param userId {int} внутрений id пользователя.
      */
-    this.updateLastLogin = function (userId) {
+    this.cacheUpdateLastLogin = function (userId) {
         let time;
         if (!userId) {
-            Logs.log("DataUser.udpateLastLogin. Must be userId", Logs.LEVEL_WARNING, userId);
+            Logs.log("DataUser.cacheUpdateLastLogin. Must be userId", Logs.LEVEL_WARNING, userId);
             return;
         }
-        time = LogicTimeServer.getTime();
         if (cache[userId]) {
             cache[userId].login_tm = time;
         }
-        DB.query("UPDATE " + tableName + " SET login_tm = " +
-            time + " WHERE id = " + userId, function () {
-            }
-        );
     };
 
     this.updateNextPointId = function (userId, pointId, callback) {
@@ -261,10 +258,7 @@ DataUser = function () {
     }
 };
 
-/**
- * Статичный класс.
- * @type {DataUser}
- */
 DataUser = new DataUser();
-
 DataUser.depends = ['Logs', 'Profiler', 'DB'];
+global["DataUser"] = DataUser;
+module.exports = { DataUser };

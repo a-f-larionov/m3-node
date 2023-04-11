@@ -1,5 +1,5 @@
 SAPITimeServer = function () {
-
+    
     /**
      * Send server time to client.
      * @param cntx

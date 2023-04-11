@@ -1,3 +1,4 @@
+const Logs = require("./Logs.js").Logs
 /**
  * @type {Profiler}
  * @constructor

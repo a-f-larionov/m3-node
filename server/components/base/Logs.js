@@ -1,6 +1,5 @@
-var FS;
 if (CONST_IS_SERVER_SIDE) {
-    FS = require('fs');
+    const FS = require('fs');
 }
 
 /**
@@ -8,7 +7,7 @@ if (CONST_IS_SERVER_SIDE) {
  * Клиент-серверный компонент!
  * @type {Logs}
  */
-let Logs = function () {
+ var Logs = function () {
     let self = this;
 
     /**
@@ -77,20 +76,20 @@ let Logs = function () {
                 }
                 break;
             case Logs.CHANNEL_VK_PAYMENTS:
-                FS.writeFile(CONST_DIR_SERVER + '/logs/vk_payments.log', logText + details + "\r\n", {flag: 'a'}, function () {
+                FS.writeFile(CONST_DIR_SERVER + '/logs/vk_payments.log', logText + details + "\r\n", { flag: 'a' }, function () {
                 });
                 telega = true;
                 break;
             case Logs.CHANNEL_VK_STUFF:
-                FS.writeFile(CONST_DIR_SERVER + '/logs/vk_stuff.log', logText + details + "\r\n", {flag: 'a'}, function () {
+                FS.writeFile(CONST_DIR_SERVER + '/logs/vk_stuff.log', logText + details + "\r\n", { flag: 'a' }, function () {
                 });
                 break;
             case Logs.CHANNEL_VK_HEALTH:
-                FS.writeFile(CONST_DIR_SERVER + '/logs/vk_health.log', logText + details + "\r\n", {flag: 'a'}, function () {
+                FS.writeFile(CONST_DIR_SERVER + '/logs/vk_health.log', logText + details + "\r\n", { flag: 'a' }, function () {
                 });
                 break;
             case Logs.CHANNEL_CLIENT:
-                FS.writeFile(CONST_DIR_SERVER + '/logs/client.log', logText + details + "\r\n", {flag: 'a'}, function () {
+                FS.writeFile(CONST_DIR_SERVER + '/logs/client.log', logText + details + "\r\n", { flag: 'a' }, function () {
                 });
                 telega = true;
                 break;
@@ -174,10 +173,7 @@ let Logs = function () {
     typeTitles[this.LEVEL_ERROR] = 'E';
     typeTitles[this.LEVEL_FATAL_ERROR] = 'FE';
 };
-/**
- * Статичный класс.
- * @type {Logs}
- */
+
 Logs = new Logs();
 
 Logs.CHANNEL_VK_PAYMENTS = 1;
@@ -187,8 +183,5 @@ Logs.CHANNEL_CLIENT = 4;
 Logs.CHANNEL_TELEGRAM = 5;
 
 Logs.depends = [];
-
-/** Для кросс-сайдных компонент */
-if (CONST_IS_SERVER_SIDE) {
-    global['Logs'] = Logs;
-}
+global['Logs'] = Logs
+module.exports = { Logs }

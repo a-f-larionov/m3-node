@@ -30,12 +30,7 @@ let CAPIUser = function () {
 
     this.updateUserListInfo = function (cntx, userList) {
         userList = userList.map(function (user) {
-            return {
-                id: user[0],
-                nextPointId: user[1],
-                socNetUserId: user[2],
-                fullRecoveryTime: user[3]
-            };
+            return user;
         });
         PageController.pendingData(true);
         userList.forEach(function (user) {
