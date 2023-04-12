@@ -24,6 +24,7 @@ var LogicTimeServer = function () {
     }
 };
 
+LogicTimeServer = new LogicTimeServer();
 LogicTimeServer.depends = [];
 global["LogicTimeServer"] = LogicTimeServer;
 module.exports = { LogicTimeServer };

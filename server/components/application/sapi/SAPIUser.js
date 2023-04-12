@@ -131,14 +131,16 @@ SAPIUser = function () {
         //@todo add check ids and length no more 1000
         DataUser.getById(cntx.user.id, function (user) {
             if (user.socNetTypeId == SocNet.TYPE_STANDALONE) {
-                DataUser.getListWhere(" 1=1 ", function (rows) {
+                DataUser.getListWhere({}, function (rows) {
 
                     let ids = [];
-                    rows.forEach(function (row) {
-                        ids.push(row.id);
-                    });
+                    if (rows) {
+                        rows.forEach(function (row) {
+                            ids.push(row.id);
+                        });
 
-                    CAPIUser.gotFriendsIds(cntx.user.id, ids);
+                        CAPIUser.gotFriendsIds(cntx.user.id, ids);
+                    }
                     pFinish(prid);
                 })
 
@@ -170,6 +172,7 @@ SAPIUser = function () {
     };
 
     this.sendMeScores = function (cntx, pids, uids) {
+        //@todo validate context method
         if (!cntx.isAuthorized) return Logs.log(arguments.callee.name + " not authorized", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);

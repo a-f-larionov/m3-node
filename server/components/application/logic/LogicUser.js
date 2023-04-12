@@ -255,7 +255,7 @@ var LogicUser = function () {
     let onLogout = function (userId) {
         Logs.log("User logout. user.id=" + userId, Logs.LEVEL_DETAIL);
         Statistic.write(userId, Statistic.ID_LOGOUT);
-        DataUser.updateLastLogout(userId);
+        KafkaModule.updateLastLogout(userId);
     };
 
     /**

@@ -1,3 +1,5 @@
+const LogicTimeServer = require("../logic/LogicTimeServer.js").LogicTimeServer;
+
 SAPITimeServer = function () {
     
     /**
@@ -5,7 +7,7 @@ SAPITimeServer = function () {
      * @param cntx
      */
     this.sendMeTime = function (cntx) {
-        let prid = pStart(Profiler.ID_SEND_ME_TIME);
+        let prid = pStart(Profiler.ID_SEND_ME_TIME)
         /** Единственный случай, когда оптравка идёт не по user.id */
         ApiRouter.executeRequest(
             'CAPITimeServer',

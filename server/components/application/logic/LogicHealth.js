@@ -1,3 +1,4 @@
+const LogicTimeServer = require("../../application/logic/LogicTimeServer.js").LogicTimeServer
 /**
  * @type {LogicHealth}
  * @constructor

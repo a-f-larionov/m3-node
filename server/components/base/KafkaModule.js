@@ -74,7 +74,7 @@ var KafkaModule = function () {
     };
 
     this.updateLastLogin = function (userId) {
-        this.setToT_Users({
+        this.sendToT_Users({
             userId: userId
         }, 'UpdateLastLoginRqDto');
     }
