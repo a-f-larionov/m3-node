@@ -13,25 +13,25 @@ var LOCK = new AsyncLock();
  */
 SAPIUser = function () {
 
-    let auhthorizeValidateParams = function (cntx, socNetUserId, authParams) {
-        if (!authParams || typeof authParams !== 'object') {
-            Logs.log("SAPIUser.auhthorizeValidateParams: must have authParams", Logs.LEVEL_WARNING);
-            return false;
-        }
-        if (cntx.isAuthorized) {
-            Logs.log("SAPIUser.auhthorizeValidateParams: user already authorized", Logs.LEVEL_WARNING, {
-                userId: cntx.userId,
-                socNetUserId: socNetUserId
-            });
-            return false;
-        }
-        socNetUserId = Validator.DBUINT(socNetUserId);
-        if (!socNetUserId) {
-            Logs.log("SAPIUser.auhthorizeValidateParams invalid socNetUserId" + socNetUserId, Logs.LEVEL_ALERT);
-            return false;
-        }
-        return true;
-    };
+    // let auhthorizeValidateParams = function (cntx, socNetUserId, authParams) {
+    //     if (!authParams || typeof authParams !== 'object') {
+    //         Logs.log("SAPIUser.auhthorizeValidateParams: must have authParams", Logs.LEVEL_WARNING);
+    //         return false;
+    //     }
+    //     if (cntx.isAuthorized) {
+    //         Logs.log("SAPIUser.auhthorizeValidateParams: user already authorized", Logs.LEVEL_WARNING, {
+    //             userId: cntx.userId,
+    //             socNetUserId: socNetUserId
+    //         });
+    //         return false;
+    //     }
+    //     socNetUserId = Validator.DBUINT(socNetUserId);
+    //     if (!socNetUserId) {
+    //         Logs.log("SAPIUser.auhthorizeValidateParams invalid socNetUserId" + socNetUserId, Logs.LEVEL_ALERT);
+    //         return false;
+    //     }
+    //     return true;
+    // };
 
     /**
      * Авторизация через вКонтакте.
@@ -40,10 +40,18 @@ SAPIUser = function () {
      * @param authParams параметры аутентифиакации.
      */
     this.authorizeByVK = function (cntx, socNetUserId, authParams) {
-        if (!auhthorizeValidateParams(cntx, socNetUserId, authParams)) {
-            return false;
-        }
-        LogicUser.authorizeByVK(socNetUserId, authParams, cntx);
+        // if (!auhthorizeValidateParams(cntx, socNetUserId, authParams)) {
+        //     return false;
+        // }
+        // LogicUser.authorizeByVK(socNetUserId, authParams, cntx);
+        console.log(cntx);
+        KafkaModule.auth({
+            socNetType: 'VK',
+            socNetUserId: socNetUserId,
+            appId: authParams.appId,
+            authKey: authParams.authKey,
+            connectionId: cntx.cid
+        });
     };
 
     /**
@@ -53,10 +61,18 @@ SAPIUser = function () {
      * @param authParams параметры аутентифиакации.
      */
     this.authorizeByStandalone = function (cntx, socNetUserId, authParams) {
-        if (!auhthorizeValidateParams(cntx, socNetUserId, authParams)) {
-            return false;
-        }
-        LogicUser.authorizeByStandalone(socNetUserId, authParams, cntx);
+        console.log(cntx);
+        KafkaModule.auth({
+            socNetType: 'Standalone',
+            socNetUserId: socNetUserId,
+            appId: authParams.appId,
+            authKey: authParams.authKey,
+            connectionId: cntx.cid
+        });
+        // if (!auhthorizeValidateParams(cntx, socNetUserId, authParams)) {
+        //     return false;
+        // }
+        // LogicUser.authorizeByStandalone(socNetUserId, authParams, cntx);
     };
 
     this.logout = function (cntx) {

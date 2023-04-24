@@ -81,6 +81,10 @@ let ApiRouter = new (function ApiRouter() {
         map[group][method].apply(self, args);
     };
 
+    this.getConnectContext  = function(cid){
+        return connections[cid];
+    }
+
     this.onConnect = function (id) {
         Logs.log("ApiRouter.onConnect: id=" + id, Logs.LEVEL_DETAIL);
         connections[id] = {cid: id};

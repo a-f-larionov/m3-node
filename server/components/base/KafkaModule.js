@@ -1,4 +1,7 @@
-const { Kafka } = require("kafkajs")
+const { Kafka } = require("kafkajs");
+//const { LogicUser } = require("../application/logic/LogicUser.js");
+
+//const CAPIUser = require("../generated/CAPIUser.js");
 
 const kafka = new Kafka({
     clientId: 'node',
@@ -26,26 +29,50 @@ const run = async () => {
             console.log("You do it!" + topic + " ");
 
             console.log({
+                topic,
                 partition,
-                offset: message.offset,
-                value: message.value.toString(),
-                headers: message.headers,
-                __TypeId__: message.headers.__TypeId__,
-                __TypeId__: message.headers.__TypeId__.toString(),
+                //offset: message.offset,
+                //  value: message.value.toString(),
+                //headers: message.headers,
+                //__TypeId__: message.headers.__TypeId__,
+                //__TypeId__: message.headers.__TypeId__.toString(),
                 message: message
             })
 
-            switch (message.headers.__TypeId__.toString()) {
-                case 'm3.users.dto.rs.UpdateUserListInfoRsDto':
-                    CAPIUser.updateUserListInfo(
-                        JSON.parse(message.value.toString()).toUserId,
-                        JSON.parse(message.value.toString()).list
-                    );
-                    break;
-                default:
-                    console.log("default---------);");
-            }
+            let msg = JSON.parse(message.value.toString());
 
+            console.log(msg);
+            console.log(msg.userId);
+
+            try {
+                switch (message.headers.__TypeId__.toString()) {
+
+                    case 'm3.users.dto.rs.UpdateUserListInfoRsDto':
+                        CAPIUser.updateUserListInfo(
+                            msg.toUserId,
+                            msg.list
+                        );
+                        break;
+                    case 'm3.users.dto.rs.AuthSuccessRsDto':
+                        // create context?
+
+                        let cntx = ApiRouter.getConnectContext(msg.connectionId);
+
+                        console.log("cnts");
+                        console.log(cntx);
+                        console.log(LogicUser);
+                        LogicUser.userAddConn(msg.userId, msg.socNetUserId, cntx);
+                        CAPIUser.authorizeSuccess(
+                            msg.userId,
+                            msg
+                        );
+                        break;
+                    default:
+                        console.log("default---------);");
+                }
+            } catch (e) {
+                console.log(e);
+            }
             console.log("You do it!");
         },
     })
@@ -63,27 +90,23 @@ var KafkaModule = function () {
     this.init = function (afterInitCallback) {
 
         Logs.log("Kafka Init create Pool.", Logs.LEVEL_NOTIFY);
-
         afterInitCallback();
     };
 
+    this.auth = function (authParams) {
+        this.sendToT_Users(authParams, 'AuthRqDto');
+    }
+
     this.updateLastLogout = function (userId) {
-        this.sendToT_Users({
-            userId: userId
-        }, 'UpdateLastLogoutRqDto');
+        this.sendToT_Users({ userId: userId }, 'UpdateLastLogoutRqDto');
     };
 
     this.updateLastLogin = function (userId) {
-        this.sendToT_Users({
-            userId: userId
-        }, 'UpdateLastLoginRqDto');
+        this.sendToT_Users({ userId: userId }, 'UpdateLastLoginRqDto');
     }
 
     this.sendUserListInfo = function (ids, toUserId) {
-        this.sendToT_Users({
-            toUserId: toUserId,
-            ids: ids
-        }, "SendMeUserInfoRqDto");
+        this.sendToT_Users({ toUserId: toUserId, ids: ids }, "SendMeUserInfoRqDto");
     }
 
     this.sendToT_Users = function (value, type) {
@@ -91,6 +114,7 @@ var KafkaModule = function () {
     }
 
     this.send = function (topic, value, type) {
+        console.log(topic, value, type);
         producer.send({
             topic: topic,
             messages: [

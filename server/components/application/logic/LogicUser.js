@@ -1,6 +1,5 @@
 const { KafkaModule } = require("../../base/KafkaModule.js");
-
-const DataUser = require("../../application/data/DataUser.js").DataUser;
+const { DataUser } = require("../data/DataUser.js");
 /**
  * @type {LogicUser}
  */
@@ -9,6 +8,8 @@ var LogicUser = function () {
     let userToCntx = {};
     let userToCntxCount = 0;
 
+    let cntxLastId = 1;
+
     this.init = function (afterInitCallback) {
         ApiRouter.addOnDisconnectCallback(onDisconnectOrFailedSend);
         ApiRouter.addOnFailedSendCallback(onDisconnectOrFailedSend);
@@ -16,131 +17,131 @@ var LogicUser = function () {
         afterInitCallback();
     };
 
-    /**
-     * Авторизация пользователя из соц сети вКонтакте.
-     * @param socNetUserId
-     * @param authParams
-     * @param cntx
-     */
-    this.authorizeByVK = function (socNetUserId, authParams, cntx) {
-        let socNetTypeId = SocNet.TYPE_VK;
-        socNetUserId = parseInt(socNetUserId);
-        if (isNaN(socNetUserId)) {
-            // log service
-            Logs.log("LogicUser: cant auth, SocNet.checkAuth failed. (VK), socNetUserId is not a number", Logs.LEVEL_WARNING, {
-                socNeUserId: socNetUserId,
-                authParams: authParams
-            });
-            return;
-        }
-        // user service
-        let checkResult = SocNet(socNetTypeId).checkAuth(socNetUserId, authParams);
-        if (!checkResult) {
-            // log service
-            Logs.log("LogicUser: cant auth, SocNet.checkAuth failed. (VK)", Logs.LEVEL_WARNING, {
-                socNetUserId: socNetUserId,
-                authParams: authParams
-            });
-            return;
-        }
-        if (!checkResult) return;
-        // profile remove
-        let prid = Profiler.start(Profiler.ID_AUTH_VK);
-        /** Get from db */
-        // user service
-        DataUser.getBySocNet(socNetTypeId, socNetUserId)
-            .then(function (user) {
-                // user service
-                authorizeOrCreate(user, socNetTypeId, socNetUserId, cntx, prid);
-            });
-    };
+    //     /**
+    //      * Авторизация пользователя из соц сети вКонтакте.
+    //      * @param socNetUserId
+    //      * @param authParams
+    //      * @param cntx
+    //      */
+    //     this.authorizeByVK = function (socNetUserId, authParams, cntx) {
+    //         let socNetTypeId = SocNet.TYPE_VK;
+    //         socNetUserId = parseInt(socNetUserId);
+    //         if (isNaN(socNetUserId)) {
+    //             // log service
+    //             Logs.log("LogicUser: cant auth, SocNet.checkAuth failed. (VK), socNetUserId is not a number", Logs.LEVEL_WARNING, {
+    //                 socNeUserId: socNetUserId,
+    //                 authParams: authParams
+    //             });
+    //             return;
+    //         }
+    //         // user service
+    //         let checkResult = SocNet(socNetTypeId).checkAuth(socNetUserId, authParams);
+    //         if (!checkResult) {
+    //             // log service
+    //             Logs.log("LogicUser: cant auth, SocNet.checkAuth failed. (VK)", Logs.LEVEL_WARNING, {
+    //                 socNetUserId: socNetUserId,
+    //                 authParams: authParams
+    //             });
+    //             return;
+    //         }
+    //         if (!checkResult) return;
+    //         // profile remove
+    //         let prid = Profiler.start(Profiler.ID_AUTH_VK);
+    //         /** Get from db */
+    //         // user service
+    //         DataUser.getBySocNet(socNetTypeId, socNetUserId)
+    //             .then(function (user) {
+    //                 // user service
+    //                 authorizeOrCreate(user, socNetTypeId, socNetUserId, cntx, prid);
+    //             });
+    //     };
 
-    /**
-     * @todo authorization is equal authorizeByVK! is it reusable code
-     * @param socNetUserId {int}
-     * @param authParams {Object}
-     * @param cntx {Object}
-     */
-    this.authorizeByStandalone = function (socNetUserId, authParams, cntx) {
-        let socNetTypeId = SocNet.TYPE_STANDALONE;
-        socNetUserId = parseInt(socNetUserId);
-        if (isNaN(socNetUserId)) {
-            Logs.log("LogicUser: cant auth, SocNet.checkAuth failed. (VK), socNetUserId is not a number", Logs.LEVEL_WARNING, {
-                socNeUserId: socNetUserId,
-                authParams: authParams
-            });
-            return;
-        }
-        let checkResult = SocNet(socNetTypeId).checkAuth(socNetUserId, authParams);
-        if (!checkResult) {
-            Logs.log("LogicUser: cant auth, SocNet.checkAuth failed.(Standalone)", Logs.LEVEL_WARNING, {
-                socNetUserId: socNetUserId,
-                authParams: authParams
-            });
-        }
-        if (!checkResult) return;
-        let prid = Profiler.start(Profiler.ID_AUTH_STANDALONE);
-        /* get from db */
-        DataUser.getBySocNet(socNetTypeId, socNetUserId)
-            .then(function (user) {
-                authorizeOrCreate(user, socNetTypeId, socNetUserId, cntx, prid);
-            });
-    };
+    //     /**
+    //      * @todo authorization is equal authorizeByVK! is it reusable code
+    //      * @param socNetUserId {int}
+    //      * @param authParams {Object}
+    //      * @param cntx {Object}
+    //      */
+    //     this.authorizeByStandalone = function (socNetUserId, authParams, cntx) {
+    //         let socNetTypeId = SocNet.TYPE_STANDALONE;
+    //         socNetUserId = parseInt(socNetUserId);
+    //         if (isNaN(socNetUserId)) {
+    //             Logs.log("LogicUser: cant auth, SocNet.checkAuth failed. (VK), socNetUserId is not a number", Logs.LEVEL_WARNING, {
+    //                 socNeUserId: socNetUserId,
+    //                 authParams: authParams
+    //             });
+    //             return;
+    //         }
+    //         let checkResult = SocNet(socNetTypeId).checkAuth(socNetUserId, authParams);
+    //         if (!checkResult) {
+    //             Logs.log("LogicUser: cant auth, SocNet.checkAuth failed.(Standalone)", Logs.LEVEL_WARNING, {
+    //                 socNetUserId: socNetUserId,
+    //                 authParams: authParams
+    //             });
+    //         }
+    // L        if (!checkResult) return;
+    //         let prid = Profiler.start(Profiler.ID_AUTH_STANDALONE);
+    //         /* get from db */
+    //         DataUser.getBySocNet(socNetTypeId, socNetUserId)
+    //             .then(function (user) {
+    //                 authorizeOrCreate(user, socNetTypeId, socNetUserId, cntx, prid);
+    //             });
+    //     };
 
-    let authorizeOrCreate = function (user, socNetTypeId, socNetUserId, cntx, prid) {
-        /** If not exists create user */
-        if (!user) {
-            createUser(socNetTypeId, socNetUserId, function (user) {
-                authorizeSendSuccess(user, cntx, prid);
-            })
-        } else {
-            authorizeSendSuccess(user, cntx, prid);
-        }
-    };
+    //     let authorizeOrCreate = function (user, socNetTypeId, socNetUserId, cntx, prid) {
+    //         /** If not exists create user */
+    //         if (!user) {
+    //             createUser(socNetTypeId, socNetUserId, function (user) {
+    //                 authorizeSendSuccess(user, cntx, prid);
+    //             })
+    //         } else {
+    //             authorizeSendSuccess(user, cntx, prid);
+    //         }
+    //     };
 
-    /**
-     * Создаёт юзера по данным социальной сети.
-     * @param socNetTypeId {Number} id социальной сети, LogicUser.SocNet.TYPE_*.
-     * @param socNetUserId {Number} id юзера в социальной сети.
-     * @param callback {Function} будет вызван после создания пользователя.
-     */
-    let createUser = function (socNetTypeId, socNetUserId, callback) {
-        DataUser.createFromSocNet(socNetTypeId, socNetUserId, function (user) {
-            callback(user);
-        });
-    };
+    //     /**
+    //      * Создаёт юзера по данным социальной сети.
+    //      * @param socNetTypeId {Number} id социальной сети, LogicUser.SocNet.TYPE_*.
+    //      * @param socNetUserId {Number} id юзера в социальной сети.
+    //      * @param callback {Function} будет вызван после создания пользователя.
+    //      */
+    //     let createUser = function (socNetTypeId, socNetUserId, callback) {
+    //         DataUser.createFromSocNet(socNetTypeId, socNetUserId, function (user) {
+    //             callback(user);
+    //         });
+    //     };
 
-    /**
-     * Отправить уведомомление клиенту, что авторизация прошла успешно.
-     * @param user {Object} инфо пользователя.
-     * @param cntx {Object} контекст соединения.
-     * @param prid {int} id профелируйщего таймера
-     */
-    let authorizeSendSuccess = function (user, cntx, prid) {
-        /** Тут мы запомним его cid раз и на всегда */
+    //     /**
+    //      * Отправить уведомомление клиенту, что авторизация прошла успешно.
+    //      * @param user {Object} инфо пользователя.
+    //      * @param cntx {Object} контекст соединения.
+    //      * @param prid {int} id профелируйщего таймера
+    //      */
+    //     let authorizeSendSuccess = function (user, cntx, prid) {
+    //         /** Тут мы запомним его cid раз и на всегда */
 
-        // internal suer conn cache
-        userAddConn(user, cntx);
-        DataUser.cacheUpdateLastLogin(user.id, cntx);
+    //         // internal suer conn cache
+    //         userAddConn(user, cntx);
+    //         DataUser.cacheUpdateLastLogin(user.id, cntx);
 
-        // update db
-        KafkaModule.updateLastLogin(user.id);
+    //         // update db
+    //         KafkaModule.updateLastLogin(user.id);
 
 
-        
-        // log service
-        var url = SocNet(user.socNetTypeId).getUserProfileUrl(user.socNetUserId);
-        Logs.log("🥰 ", Logs.LEVEL_NOTIFY, url, Logs.CHANNEL_TELEGRAM);
 
-        // statistic service
-        if (user.socNetTypeId === SocNet.TYPE_VK) Statistic.write(user.id, Statistic.ID_AUTHORIZE_VK);
-        if (user.socNetTypeId === SocNet.TYPE_STANDALONE) Statistic.write(user.id, Statistic.ID_AUTHORIZE_STANDALONE);
+    //         // log service
+    //         var url = SocNet(user.socNetTypeId).getUserProfileUrl(user.socNetUserId);
+    //         Logs.log("🥰 ", Logs.LEVEL_NOTIFY, url, Logs.CHANNEL_TELEGRAM);
 
-        // send to user
-        CAPIUser.authorizeSuccess(user.id, user);
-        // remove it
-        Profiler.finish(prid);
-    };
+    //         // statistic service
+    //         if (user.socNetTypeId === SocNet.TYPE_VK) Statistic.write(user.id, Statistic.ID_AUTHORIZE_VK);
+    //         if (user.socNetTypeId === SocNet.TYPE_STANDALONE) Statistic.write(user.id, Statistic.ID_AUTHORIZE_STANDALONE);
+
+    //         // send to user
+    //         CAPIUser.authorizeSuccess(user.id, user);
+    //         // remove it
+    //         Profiler.finish(prid);
+    //     };
 
     /**
      * Отправить пользователю данные
@@ -194,6 +195,13 @@ var LogicUser = function () {
     this.isUserOnline = function (userId) {
         return !!userGetConns(userId);
     };
+
+    this.userAddConn = function (userId, socNetUserId, cntx) {
+        userAddConn({
+            id: userId,
+            socNetUserId: socNetUserId
+        }, cntx);
+    }
 
     /**
      * Добавить пользователю контекст соединения.
