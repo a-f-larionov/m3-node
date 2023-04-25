@@ -156,32 +156,12 @@ var LogicUser = function () {
     /**
      * Отправка информации о пользователе.
      * @param toUserId {Number} кому отправляем.
-     * @param userId {Number} данные о каком пользователе.
-     * @param prid
-     */
-    this.sendUserInfo = function (userId, toUserId, prid) {
-        DataUser.getById(userId, function (user) {
-            if (user) {
-                user.online = self.isUserOnline(user.id);
-                CAPIUser.updateUserInfo(toUserId, prepareUserToClient(user));
-                pFinish(prid);
-            } else {
-                pClear(prid);
-                Logs.log("LogicUser.sendUserInfo. User not found: id=" + userId, Logs.LEVEL_WARNING);
-            }
-        });
-    };
-
-    /**
-     * Отправка информации о пользователе.
-     * @param toUserId {Number} кому отправляем.
      * @param ids {Number} данные о каком пользователе.
      * @param prid
      */
     this.sendUserListInfo = function (ids, toUserId, prid) {
         DataUser.getList(ids, function (list) {
             if (list) {
-                list = list.map(prepareUserToClient);
                 list = list.map(function (user) {
                     return [
                         user.id,
@@ -197,15 +177,6 @@ var LogicUser = function () {
                 pFinish(prid);
             }
         });
-    };
-
-    let prepareUserToClient = function (user) {
-        return {
-            id: user.id,
-            nextPointId: user.nextPointId,
-            socNetUserId: user.socNetUserId,
-            fullRecoveryTime: user.fullRecoveryTime,
-        };
     };
 };
 

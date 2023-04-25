@@ -42,21 +42,6 @@ SAPIUser = function () {
     /**
      * Отправяел информацию о пользователи в текущие соединение.
      * @param cntx object
-     * @param whoUserId number
-     */
-    this.sendMeUserInfo = function (cntx, whoUserId) {
-        if (!cntx.isAuthorized) return Logs.log(arguments.callee.name + " not authorized", Logs.LEVEL_WARNING, cntx);
-        if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
-        if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
-
-        if (!(whoUserId = Validator.DBUINT(whoUserId))) return Logs.log("SAPIUser.sendMeUserInfo: must have userId", Logs.LEVEL_WARNING, whoUserId);
-
-        LogicUser.sendUserInfo(whoUserId, cntx.userId, pStart(Profiler.ID_SAPIUSER_SEND_ME_INFO));
-    };
-
-    /**
-     * Отправяел информацию о пользователи в текущие соединение.
-     * @param cntx object
      * @param ids [number]
      */
     this.sendMeUserListInfo = function (cntx, ids) {

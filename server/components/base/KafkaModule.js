@@ -104,7 +104,7 @@ var KafkaModule = function () {
     }
 
     this.sendUserListInfo = function (ids, toUserId) {
-        this.sendToT_Users({ toUserId: toUserId, ids: ids }, "SendMeUserInfoRqDto");
+        this.sendToT_Users({ toUserId: toUserId, ids: ids }, "SendMeUserListInfoRqDto");
     }
 
     this.sendToT_Users = function (value, type) {

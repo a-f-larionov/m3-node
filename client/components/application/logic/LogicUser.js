@@ -118,7 +118,7 @@ let LogicUser = function () {
         }
         if (!pendingIds[userId]) {
             pendingIds[userId] = true;
-            SAPIUser.sendMeUserInfo(userId);
+            SAPIUser.sendMeUserListInfo([userId]);
         }
     };
 
@@ -155,7 +155,7 @@ let LogicUser = function () {
         let chunks;
         if (!getFriendIds()) return null;
         if (!mapId) return null;
-        if (!mapFriendIds[mapId]) mapFriendIds[mapId] = {ids: []};
+        if (!mapFriendIds[mapId]) mapFriendIds[mapId] = { ids: [] };
         if (!mapFriendIds[mapId].loading && (mapFriendIds[mapId].loading = true)) {
             chunks = chunkIt(getFriendIds());
             mapFriendIds[mapId].chunksCount = chunks.length;
@@ -281,7 +281,7 @@ let LogicUser = function () {
         let fids, chunks;
         if (!(fids = getFriendIds())) return undefined;
 
-        if (!pointTopScore[pointId]) pointTopScore[pointId] = {top: {pos: -Infinity}};
+        if (!pointTopScore[pointId]) pointTopScore[pointId] = { top: { pos: -Infinity } };
         if (!pointTopScore[pointId].loading && (pointTopScore[pointId].loading = true)) {
             chunks = chunkIt(fids);
             pointTopScore[pointId].chunksCount = chunks.length;
@@ -301,7 +301,7 @@ let LogicUser = function () {
             DataPoints.loadScores([pid], uids);
             LogicUser.getList(uids);
         }
-        if (!pointTopScore[pid]) pointTopScore[pid] = {top: {}};
+        if (!pointTopScore[pid]) pointTopScore[pid] = { top: {} };
         if (pointTopScore[pid].top.pos < top.pos) {
             pointTopScore[pid].top = top;
         }
