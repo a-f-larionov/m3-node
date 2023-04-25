@@ -112,7 +112,7 @@ var KafkaModule = function () {
     }
 
     this.send = function (topic, value, type) {
-        console.log(topic, value, type);
+        console.log("send to kafka",topic, value, type);
         producer.send({
             topic: topic,
             messages: [

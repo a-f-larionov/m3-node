@@ -20,7 +20,7 @@ SAPIUser = function () {
      */
     this.auth = function (cntx, authParams) {
         KafkaModule.auth({
-            socNetType: authParams.socNetTypeId,
+            socNetType: authParams.socNetType,
             socNetUserId: authParams.socNetUserId,
             appId: authParams.appId,
             authKey: authParams.authKey,
