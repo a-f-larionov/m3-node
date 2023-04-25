@@ -13,66 +13,19 @@ var LOCK = new AsyncLock();
  */
 SAPIUser = function () {
 
-    // let auhthorizeValidateParams = function (cntx, socNetUserId, authParams) {
-    //     if (!authParams || typeof authParams !== 'object') {
-    //         Logs.log("SAPIUser.auhthorizeValidateParams: must have authParams", Logs.LEVEL_WARNING);
-    //         return false;
-    //     }
-    //     if (cntx.isAuthorized) {
-    //         Logs.log("SAPIUser.auhthorizeValidateParams: user already authorized", Logs.LEVEL_WARNING, {
-    //             userId: cntx.userId,
-    //             socNetUserId: socNetUserId
-    //         });
-    //         return false;
-    //     }
-    //     socNetUserId = Validator.DBUINT(socNetUserId);
-    //     if (!socNetUserId) {
-    //         Logs.log("SAPIUser.auhthorizeValidateParams invalid socNetUserId" + socNetUserId, Logs.LEVEL_ALERT);
-    //         return false;
-    //     }
-    //     return true;
-    // };
-
     /**
      * Авторизация через вКонтакте.
      * @param cntx контекст соединения
-     * @param socNetUserId id юзера в соц сети
      * @param authParams параметры аутентифиакации.
      */
-    this.authorizeByVK = function (cntx, socNetUserId, authParams) {
-        // if (!auhthorizeValidateParams(cntx, socNetUserId, authParams)) {
-        //     return false;
-        // }
-        // LogicUser.authorizeByVK(socNetUserId, authParams, cntx);
-        console.log(cntx);
+    this.auth = function (cntx, authParams) {
         KafkaModule.auth({
-            socNetType: 'VK',
-            socNetUserId: socNetUserId,
+            socNetType: authParams.socNetTypeId,
+            socNetUserId: authParams.socNetUserId,
             appId: authParams.appId,
             authKey: authParams.authKey,
             connectionId: cntx.cid
         });
-    };
-
-    /**
-     * Авторизация через Сайт.
-     * @param cntx контекст соединения
-     * @param socNetUserId id юзера в соц сети
-     * @param authParams параметры аутентифиакации.
-     */
-    this.authorizeByStandalone = function (cntx, socNetUserId, authParams) {
-        console.log(cntx);
-        KafkaModule.auth({
-            socNetType: 'Standalone',
-            socNetUserId: socNetUserId,
-            appId: authParams.appId,
-            authKey: authParams.authKey,
-            connectionId: cntx.cid
-        });
-        // if (!auhthorizeValidateParams(cntx, socNetUserId, authParams)) {
-        //     return false;
-        // }
-        // LogicUser.authorizeByStandalone(socNetUserId, authParams, cntx);
     };
 
     this.logout = function (cntx) {

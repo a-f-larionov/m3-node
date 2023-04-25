@@ -12,7 +12,12 @@ let SocNetStandalone = function () {
     };
 
     this.getAuthParams = function () {
-        return {};
+        return {
+            socNetType: 'Standalone',
+            socNetUserId: this.getSocNetUserId(),
+            appId: '123',
+            authKey: 'auth-key',
+        };
     };
 
     this.getUserProfileUrl = function () {

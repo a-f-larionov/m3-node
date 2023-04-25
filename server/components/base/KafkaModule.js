@@ -54,8 +54,6 @@ const run = async () => {
                         );
                         break;
                     case 'm3.users.dto.rs.AuthSuccessRsDto':
-                        // create context?
-
                         let cntx = ApiRouter.getConnectContext(msg.connectionId);
 
                         console.log("cnts");
@@ -78,7 +76,7 @@ const run = async () => {
     })
 }
 
-
+     
 run().catch(console.error);
 
 /**
