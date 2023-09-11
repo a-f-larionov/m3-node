@@ -91,7 +91,6 @@ let PageBlockWizard = function PageBlockWizard() {
         elDialog.dom.zIndex = 50000;
         elDialog.dom.borderWidth = 5;
         elDialog.dom.borderColor = 'red';
-        console.log('jjjjjjjjjjj', elDialog, elDialog.dom);
 
         //elDialog.hide();
 

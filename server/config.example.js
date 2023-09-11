@@ -42,7 +42,7 @@ Config = {
         width: 777,
         height: 400,
     },
-    Telegramm: {
+    Telegram: {
         chatId: "-123",
         agent: "",
         token: "token"

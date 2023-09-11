@@ -40,7 +40,7 @@
 
     let openClient = function () {
 
-        let wnd = window.open('https://local.host/service/client-standalone?soc-net-user-id=' + Math.random() * 123456789);
+        let wnd = window.open('http://localhost:8080/service/client-standalone?soc-net-user-id=' + Math.random() * 123456789);
 
         wnd.addEventListener('DOMContentLoaded', function () {
             let intervalId;

@@ -12,7 +12,7 @@ const kafka = new Kafka({
 
 
 const producer = kafka.producer()
-const consumer = kafka.consumer({ groupId: '1' })
+const consumer = kafka.consumer({groupId: '1'})
 
 const run = async () => {
     // Producing
@@ -21,10 +21,10 @@ const run = async () => {
     // Consuming
     await consumer.connect()
 
-    await consumer.subscribe({ topic: 't-node', fromBeginning: true })
+    await consumer.subscribe({topic: 't-node', fromBeginning: true})
 
     await consumer.run({
-        eachMessage: async ({ topic, partition, message }) => {
+        eachMessage: async ({topic, partition, message}) => {
 
             console.log("You do it!" + topic + " ");
 
@@ -76,7 +76,7 @@ const run = async () => {
     })
 }
 
-     
+
 run().catch(console.error);
 
 /**
@@ -96,15 +96,15 @@ var KafkaModule = function () {
     }
 
     this.updateLastLogout = function (userId) {
-        this.sendToT_Users({ userId: userId }, 'UpdateLastLogoutRqDto');
+        this.sendToT_Users({userId: userId}, 'UpdateLastLogoutRqDto');
     };
 
     this.updateLastLogin = function (userId) {
-        this.sendToT_Users({ userId: userId }, 'UpdateLastLoginRqDto');
+        this.sendToT_Users({userId: userId}, 'UpdateLastLoginRqDto');
     }
 
     this.sendUserListInfo = function (ids, toUserId) {
-        this.sendToT_Users({ toUserId: toUserId, ids: ids }, "SendMeUserListInfoRqDto");
+        this.sendToT_Users({toUserId: toUserId, ids: ids}, "SendMeUserListInfoRqDto");
     }
 
     this.sendToT_Users = function (value, type) {
@@ -112,7 +112,7 @@ var KafkaModule = function () {
     }
 
     this.send = function (topic, value, type) {
-        console.log("send to kafka",topic, value, type);
+        console.log("send to kafka", topic, value, type);
         producer.send({
             topic: topic,
             messages: [
@@ -130,4 +130,4 @@ var KafkaModule = function () {
 KafkaModule = new KafkaModule();
 KafkaModule.depends = ['Logs'];
 global['KafkaModule'] = KafkaModule;
-module.exports = { KafkaModule }
+module.exports = {KafkaModule}

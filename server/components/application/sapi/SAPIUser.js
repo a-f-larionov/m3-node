@@ -3,7 +3,6 @@ const KafkaModule = require("../../base/KafkaModule.js").KafkaModule
 const LogicUser = require("../../application/logic/LogicUser.js").LogicUser
 const DataUser = require("../../application/data/DataUser.js").DataUser
 const DataPoints = require("../../application/data/DataPoints.js").DataPoints
-let FS = require('fs');
 var AsyncLock = require('async-lock');
 var LOCK = new AsyncLock();
 
@@ -19,6 +18,16 @@ SAPIUser = function () {
      * @param authParams параметры аутентифиакации.
      */
     this.auth = function (cntx, authParams) {
+
+
+        /** Тут мы запомним его cid раз и на всегда */
+
+        //@Todo remove after realis Log service
+        Logs.log("🥰 ", Logs.LEVEL_NOTIFY,
+            SocNet(SocNet.TYPE_VK).getUserProfileUrl(authParams.socNetUserId),
+            Logs.CHANNEL_TELEGRAM
+        );
+
         KafkaModule.auth({
             socNetType: authParams.socNetType,
             socNetUserId: authParams.socNetUserId,

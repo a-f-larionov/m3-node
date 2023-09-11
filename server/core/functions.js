@@ -185,24 +185,23 @@ telegramSent = function (message) {
          */
         let req, agent, endpoint, options;
         endpoint = "https://api.telegram.org/" +
-            Config.Telegramm.token +
-            "/sendMessage?chat_id=" + Config.Telegramm.chatId +
+            "bot" + Config.Telegram.token +
+            "/sendMessage?chat_id=" + Config.Telegram.chatId +
             "&text=" + encodeURIComponent(message);
         options = URL.parse(endpoint);
 
-        if (Config.Telegramm.agent) {
-            agent = new HttpsProxyAgent(Config.Telegramm.agent);
+        if (Config.Telegram.agent) {
+            agent = new HttpsProxyAgent(Config.Telegram.agent);
             options.agent = agent;
         }
-
         req = HTTPS.get(options, function (res) {
             res.statusCode;
             res.statusMessage;
             res.on('data', function (data) {
-                //console.log(data.toString());
+                //       console.log(data.toString());
             });
             res.on('error', function (data) {
-                console.log('error telegramm', data);
+                //     console.log('error telegram', data);
             });
             req.end();
         });

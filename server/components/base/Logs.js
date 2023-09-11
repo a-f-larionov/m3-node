@@ -1,13 +1,11 @@
-if (CONST_IS_SERVER_SIDE) {
-    const FS = require('fs');
-}
+const FS = require('fs');
 
 /**
  * Компонент логирования.
  * Клиент-серверный компонент!
  * @type {Logs}
  */
- var Logs = function () {
+var Logs = function () {
     let self = this;
 
     /**
@@ -76,20 +74,21 @@ if (CONST_IS_SERVER_SIDE) {
                 }
                 break;
             case Logs.CHANNEL_VK_PAYMENTS:
-                FS.writeFile(CONST_DIR_SERVER + '/logs/vk_payments.log', logText + details + "\r\n", { flag: 'a' }, function () {
+                console.log(FS);
+                FS.writeFile(CONST_DIR_SERVER + '/logs/vk_payments.log', logText + details + "\r\n", {flag: 'a'}, function () {
                 });
                 telega = true;
                 break;
             case Logs.CHANNEL_VK_STUFF:
-                FS.writeFile(CONST_DIR_SERVER + '/logs/vk_stuff.log', logText + details + "\r\n", { flag: 'a' }, function () {
+                FS.writeFile(CONST_DIR_SERVER + '/logs/vk_stuff.log', logText + details + "\r\n", {flag: 'a'}, function () {
                 });
                 break;
             case Logs.CHANNEL_VK_HEALTH:
-                FS.writeFile(CONST_DIR_SERVER + '/logs/vk_health.log', logText + details + "\r\n", { flag: 'a' }, function () {
+                FS.writeFile(CONST_DIR_SERVER + '/logs/vk_health.log', logText + details + "\r\n", {flag: 'a'}, function () {
                 });
                 break;
             case Logs.CHANNEL_CLIENT:
-                FS.writeFile(CONST_DIR_SERVER + '/logs/client.log', logText + details + "\r\n", { flag: 'a' }, function () {
+                FS.writeFile(CONST_DIR_SERVER + '/logs/client.log', logText + details + "\r\n", {flag: 'a'}, function () {
                 });
                 telega = true;
                 break;
@@ -184,4 +183,4 @@ Logs.CHANNEL_TELEGRAM = 5;
 
 Logs.depends = [];
 global['Logs'] = Logs
-module.exports = { Logs }
+module.exports = {Logs}

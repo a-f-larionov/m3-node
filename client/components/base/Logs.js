@@ -23,7 +23,7 @@ var Logs = function () {
      * @param [details] {*} необязательный параметр, детали.
      * @param channel
      */
-    this.log = function (message, level, details, channel, telega) {
+    this.log = function (message, level, details, channel) {
         let date, dateFormated, logText, levelTitle;
         /** Если не передан уровень, то считаем его детальным. */
         if (!level) level = Logs.LEVEL_DETAIL;
@@ -70,29 +70,7 @@ var Logs = function () {
                         break;
                 }
                 break;
-            case Logs.CHANNEL_VK_PAYMENTS:
-                FS.writeFile(CONST_DIR_SERVER + '/logs/vk_payments.log', logText + details + "\r\n", {flag: 'a'}, function () {
-                });
-                telega = true;
-                break;
-            case Logs.CHANNEL_VK_STUFF:
-                FS.writeFile(CONST_DIR_SERVER + '/logs/vk_stuff.log', logText + details + "\r\n", {flag: 'a'}, function () {
-                });
-                break;
-            case Logs.CHANNEL_VK_HEALTH:
-                FS.writeFile(CONST_DIR_SERVER + '/logs/vk_health.log', logText + details + "\r\n", {flag: 'a'}, function () {
-                });
-                break;
-            case Logs.CHANNEL_CLIENT:
-                FS.writeFile(CONST_DIR_SERVER + '/logs/client.log', logText + details + "\r\n", {flag: 'a'}, function () {
-                });
-                telega = true;
-                break;
-            case Logs.CHANNEL_TELEGRAM:
-                telega = true;
-                break;
         }
-        if (level >= Logs.LEVEL_ALERT) telega = true;
         if (level === Logs.LEVEL_ERROR || level === Logs.LEVEL_FATAL_ERROR) {
             if (CONST_IS_CLIENT_SIDE) {
                 //@todo client errors channel
@@ -101,9 +79,6 @@ var Logs = function () {
         }
         // если это фатальная ошибка - завершим работу программы.
 
-        if (CONST_IS_SERVER_SIDE && telega) {
-            telegramSent(message + details);
-        }
         if (level === Logs.LEVEL_FATAL_ERROR) {
             throw new Error("Vse polamalos'!");
         }
@@ -178,6 +153,5 @@ Logs.CHANNEL_VK_PAYMENTS = 1;
 Logs.CHANNEL_VK_STUFF = 2;
 Logs.CHANNEL_VK_HEALTH = 3;
 Logs.CHANNEL_CLIENT = 4;
-Logs.CHANNEL_TELEGRAM = 5;
 
 Logs.depends = [];
