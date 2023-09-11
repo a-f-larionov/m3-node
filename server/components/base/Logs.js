@@ -74,7 +74,6 @@ var Logs = function () {
                 }
                 break;
             case Logs.CHANNEL_VK_PAYMENTS:
-                console.log(FS);
                 FS.writeFile(CONST_DIR_SERVER + '/logs/vk_payments.log', logText + details + "\r\n", {flag: 'a'}, function () {
                 });
                 telega = true;
