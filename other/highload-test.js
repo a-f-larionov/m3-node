@@ -29,7 +29,7 @@
             uids
         );
         SAPIMap.sendMeMapInfo(Math.ceil(Math.random() * 3));
-        SAPIUser.sendMeUserInfo(getUid());
+        SAPIUser.sendMeUserListInfo(getUid());
 
         SAPIUser.sendMeUserIdsBySocNet(uids);
         if (prid) SAPILogs.clientLoaded(prid);

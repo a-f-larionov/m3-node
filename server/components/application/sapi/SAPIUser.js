@@ -68,11 +68,7 @@ SAPIUser = function () {
         if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
 
-        let prid = pStart(Profiler.ID_SAPIUSER_SEND_ME_MAP_FRIENDS);
-        DataUser.getMapFriendIds(mapId, fids, function (fids) {
-            CAPIUser.gotMapFriendIds(cntx.user.id, mapId, fids);
-            pFinish(prid);
-        });
+        KafkaModule.sendMeMapFriends(mapId, fids, cntx.userId);
     };
 
     /**
@@ -173,8 +169,8 @@ SAPIUser = function () {
                 if (!LogicHealth.isMaxHealths(user)) {
                     LogicHealth.decrementHealth(user, -1);
                     DataUser.updateHealthAndStartTime(user, function () {
-                        CAPIUser.setOneHealthHide(cntx.user.id, false, user.fullRecoveryTime);
-                    }
+                            CAPIUser.setOneHealthHide(cntx.user.id, false, user.fullRecoveryTime);
+                        }
                     );
                     done();
                     pFinish(prid);
@@ -201,8 +197,8 @@ SAPIUser = function () {
                 if (LogicHealth.getHealths(user) > 0) {
                     LogicHealth.decrementHealth(user, 1);
                     DataUser.updateHealthAndStartTime(user, function () {
-                        CAPIUser.setOneHealthHide(cntx.user.id, true, user.fullRecoveryTime);
-                    }
+                            CAPIUser.setOneHealthHide(cntx.user.id, true, user.fullRecoveryTime);
+                        }
                     );
                     done();
                     pFinish(prid);

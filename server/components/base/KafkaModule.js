@@ -1,4 +1,4 @@
-const { Kafka } = require("kafkajs");
+const {Kafka} = require("kafkajs");
 //const { LogicUser } = require("../application/logic/LogicUser.js");
 
 //const CAPIUser = require("../generated/CAPIUser.js");
@@ -26,23 +26,23 @@ const run = async () => {
     await consumer.run({
         eachMessage: async ({topic, partition, message}) => {
 
-            console.log("You do it!" + topic + " ");
+            console.log("_______ topic:" + topic + " ");
 
-            console.log({
-                topic,
-                partition,
-                //offset: message.offset,
-                //  value: message.value.toString(),
-                //headers: message.headers,
-                //__TypeId__: message.headers.__TypeId__,
-                //__TypeId__: message.headers.__TypeId__.toString(),
-                message: message
-            })
+            // console.log({
+            //     topic,
+            //     partition,
+            //     //offset: message.offset,
+            //     //  value: message.value.toString(),
+            //     //headers: message.headers,
+            //     //__TypeId__: message.headers.__TypeId__,
+            //     //__TypeId__: message.headers.__TypeId__.toString(),
+            //     message: message
+            // })
 
             let msg = JSON.parse(message.value.toString());
 
-            console.log(msg);
             console.log(msg.userId);
+            console.log(msg);
 
             try {
                 switch (message.headers.__TypeId__.toString()) {
@@ -56,14 +56,18 @@ const run = async () => {
                     case 'm3.users.dto.rs.AuthSuccessRsDto':
                         let cntx = ApiRouter.getConnectContext(msg.connectionId);
 
-                        console.log("cnts");
-                        console.log(cntx);
-                        console.log(LogicUser);
                         LogicUser.userAddConn(msg.userId, msg.socNetUserId, cntx);
                         CAPIUser.authorizeSuccess(
                             msg.userId,
                             msg
                         );
+                        break;
+                    case 'm3.users.dto.rs.GotMapFriendIdsRsDto':
+                        console.log(CAPIUser.gotMapFriendIds);
+                        CAPIUser.gotMapFriendIds(
+                            msg.toUserId,
+                            msg.mapId,
+                            msg.ids);
                         break;
                     default:
                         console.log("default---------);");
@@ -105,6 +109,10 @@ var KafkaModule = function () {
 
     this.sendUserListInfo = function (ids, toUserId) {
         this.sendToT_Users({toUserId: toUserId, ids: ids}, "SendMeUserListInfoRqDto");
+    }
+
+    this.sendMeMapFriends = function (mapId, fids, toUserId) {
+        this.sendToT_Users({toUserId: toUserId, mapId: mapId, fids: fids}, "SendMeMapFriendsRqDto");
     }
 
     this.sendToT_Users = function (value, type) {

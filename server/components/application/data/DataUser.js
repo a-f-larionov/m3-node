@@ -231,22 +231,6 @@ var DataUser = function () {
             " WHERE id = " + user.id, callback);
     };
 
-    this.getMapFriendIds = function (mapId, fids, callback) {
-        let query;
-        query = "SELECT id " +
-            " FROM users" +
-            " WHERE" +
-            "      nextPointId >= " + DataMap.getFirstPointId(mapId) +
-            " AND  nextPointId <= " + DataMap.getLastPointId(mapId) +
-            " AND id IN ( " + fids.join(',') + ")";
-        DB.query(query, function (rows) {
-            rows = rows.map(function (row) {
-                return row.id
-            });
-            callback(rows);
-        });
-    };
-
     this.updateUserAgentString = function (userId, string) {
         DB.query(
             "INSERT INTO user_agents (`uid`, `agent`) VALUES " +
