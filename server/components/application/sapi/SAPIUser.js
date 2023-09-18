@@ -165,6 +165,9 @@ SAPIUser = function () {
 
         Statistic.write(cntx.user.id, Statistic.ID_START_PLAY, pointId);
 
+//        LogicHealth.decrementHealth(user, 1);
+        console.log(Math.floor(Date.now() / 1000));
+
         // LOCK.acquire(Keys.health(cntx.user.id), function (done) {
         //     //@todo auto LOCK timeout(with keys!)
         //     setTimeout(done, 5 * 60 * 1000);

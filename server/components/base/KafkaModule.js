@@ -77,7 +77,7 @@ const run = async () => {
                     case 'm3.users.dto.rs.GotTopUsersRsDto':
                         CAPIUser.gotTopUsers(
                             msg.userId,
-                            msg.fids
+                            msg.users
                         );
                         break;
                     case 'm3.users.dto.rs.SendMeScoresRsDto':
