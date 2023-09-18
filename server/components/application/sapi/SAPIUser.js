@@ -60,7 +60,7 @@ SAPIUser = function () {
 
         if (!Validator.DBUINTArray(ids)) Logs.log(arguments.callee.name + ": must have ids", Logs.LEVEL_WARNING, ids);
 
-        KafkaModule.sendUserListInfo(ids, cntx.userId);
+        KafkaModule.sendUserListInfo(ids, cntx.user.id);
     };
 
     this.sendMeMapFriends = function (cntx, mapId, fids) {
@@ -68,7 +68,7 @@ SAPIUser = function () {
         if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
 
-        KafkaModule.sendMeMapFriends(mapId, fids, cntx.userId);
+        KafkaModule.sendMapFriends(mapId, fids, cntx.user.id);
     };
 
     /**
@@ -86,31 +86,7 @@ SAPIUser = function () {
         fids = Validator.DBUINTArray(fids);
         if (!fids) return Logs.log(arguments.callee.name + " wrong params", Logs.LEVEL_WARNING, arguments);
 
-        let prid = pStart(Profiler.ID_SAPIUSER_SEND_ME_USER_IDS_BY_SOC_NET);
-        //@todo add check ids and length no more 1000
-        DataUser.getById(cntx.user.id, function (user) {
-            if (user.socNetTypeId == SocNet.TYPE_STANDALONE) {
-                DataUser.getListWhere({}, function (rows) {
-
-                    let ids = [];
-                    if (rows) {
-                        rows.forEach(function (row) {
-                            ids.push(row.id);
-                        });
-
-                        CAPIUser.gotFriendsIds(cntx.user.id, ids);
-                    }
-                    pFinish(prid);
-                })
-
-            } else {
-                DataUser.getUserIdsBySocNet(user.socNetTypeId, fids, function (ids) {
-
-                    CAPIUser.gotFriendsIds(cntx.user.id, ids);
-                    pFinish(prid);
-                });
-            }
-        });
+        KafkaModule.sendFriendIdsBySocNet(fids, cntx.user.id);
     };
 
     this.sendMeTopUsers = function (cntx, fids) {
@@ -121,13 +97,12 @@ SAPIUser = function () {
         //@todo profiler
         //@todo cache it at day
         if (!Validator.DBUINTArray(fids)) return Logs.log("invalid data", Logs.LEVEL_ALERT, fids);
+        //
+        // DataUser.getList(fids, function (users) {
+        //     CAPIUser.gotTopUsers(cntx.user.id, users);
+        // }, ' ORDER BY nextPointId DESC LIMIT ' + DataCross.topUsersLimit);
 
-        let prid = pStart(Profiler.ID_SAPIUSER_SEND_ME_TOP_USER_SCORES);
-
-        DataUser.getList(fids, function (users) {
-            CAPIUser.gotTopUsers(cntx.user.id, users);
-            pFinish(prid);
-        }, ' ORDER BY nextPointId DESC LIMIT ' + DataCross.topUsersLimit);
+        KafkaModule.sendTopUsers(fids, cntx.user.id);
     };
 
     this.sendMeScores = function (cntx, pids, uids) {
@@ -148,6 +123,8 @@ SAPIUser = function () {
             CAPIUser.gotScores(cntx.user.id, rows);
             pFinish(prid);
         });
+        //@todo data points service
+        KafkaModule.sendScores(pids, uids, cntx.user.id);
     };
 
     /**
@@ -160,26 +137,25 @@ SAPIUser = function () {
         if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
 
-        let prid = pStart(Profiler.ID_SAPIUSER_HEALTH_BACK);
-
         /** Возвращаем жизнь */
-        LOCK.acquire(Keys.health(cntx.user.id), function (done) {
-            setTimeout(done, 5 * 60 * 1000);
-            DataUser.getById(cntx.user.id, function (user) {
-                if (!LogicHealth.isMaxHealths(user)) {
-                    LogicHealth.decrementHealth(user, -1);
-                    DataUser.updateHealthAndStartTime(user, function () {
-                            CAPIUser.setOneHealthHide(cntx.user.id, false, user.fullRecoveryTime);
-                        }
-                    );
-                    done();
-                    pFinish(prid);
-                } else {
-                    done();
-                    pClear(prid);
-                }
-            })
-        });
+        // LOCK.acquire(Keys.health(cntx.user.id), function (done) {
+        //     setTimeout(done, 5 * 60 * 1000);
+        //     DataUser.getById(cntx.user.id, function (user) {
+        //         if (!LogicHealth.isMaxHealths(user)) {
+        //             LogicHealth.decrementHealth(user, -1);
+        //             DataUser.updateHealthAndStartTime(user, function () {
+        //                     CAPIUser.setOneHealthHide(cntx.user.id, false, user.fullRecoveryTime);
+        //                 }
+        //             );
+        //             done();
+        //         } else {
+        //             done();
+        //         }
+        //     })
+        // });
+        // });
+
+        KafkaModule.healthBack(cntx.user.id);
     };
 
     this.healthDown = function (cntx, pointId) {
@@ -187,27 +163,25 @@ SAPIUser = function () {
         if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
 
-        let prid = pStart(Profiler.ID_SAPIUSER_HEALTH_DOWN);
-        Statistic.write(cntx.userId, Statistic.ID_START_PLAY, pointId);
+        Statistic.write(cntx.user.id, Statistic.ID_START_PLAY, pointId);
 
-        LOCK.acquire(Keys.health(cntx.user.id), function (done) {
-            //@todo auto LOCK timeout(with keys!)
-            setTimeout(done, 5 * 60 * 1000);
-            DataUser.getById(cntx.user.id, function (user) {
-                if (LogicHealth.getHealths(user) > 0) {
-                    LogicHealth.decrementHealth(user, 1);
-                    DataUser.updateHealthAndStartTime(user, function () {
-                            CAPIUser.setOneHealthHide(cntx.user.id, true, user.fullRecoveryTime);
-                        }
-                    );
-                    done();
-                    pFinish(prid);
-                } else {
-                    done();
-                    pClear(prid);
-                }
-            })
-        });
+        // LOCK.acquire(Keys.health(cntx.user.id), function (done) {
+        //     //@todo auto LOCK timeout(with keys!)
+        //     setTimeout(done, 5 * 60 * 1000);
+        //     DataUser.getById(cntx.user.id, function (user) {
+        //         if (LogicHealth.getHealths(user) > 0) {
+        //             LogicHealth.decrementHealth(user, 1);
+        //             DataUser.updateHealthAndStartTime(user, function () {
+        //                     CAPIUser.setOneHealthHide(cntx.user.id, true, user.fullRecoveryTime);
+        //                 }
+        //             );
+        //             done();
+        //         } else {
+        //             done();
+        //         }
+        //     })
+        // });
+        KafkaModule.healthDown(pointId, cntx.user.id);
     };
 
     this.spendTurnsMoney = function (cntx, pointId) {
@@ -216,7 +190,7 @@ SAPIUser = function () {
         if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
 
         let tid = LogicTid.getOne();
-        Statistic.write(cntx.userId, Statistic.ID_BUY_LOOSE_TURNS, DataShop.looseTurnsQuantity, DataShop.looseTurnsPrice);
+        Statistic.write(cntx.user.id, Statistic.ID_BUY_LOOSE_TURNS, DataShop.looseTurnsQuantity, DataShop.looseTurnsPrice);
 
         DataStuff.usedGold(cntx.user.id, DataShop.looseTurnsPrice, tid);
 
@@ -228,6 +202,8 @@ SAPIUser = function () {
             Logs.LEVEL_NOTIFY,
             null,
             null, true);
+
+        KafkaModule.spendTurnsMoney(pointId, cntx.user.id);
     };
 
     this.exitGame = function (cntx, pointId) {
@@ -250,18 +226,20 @@ SAPIUser = function () {
         if (!cntx.isAuthorized) return Logs.log(arguments.callee.name + " not authorized", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
+        //
+        // //@todo lock
+        // DataUser.getById(cntx.user.id, function (user) {
+        //
+        //     if (user.socNetTypeId !== SocNet.TYPE_STANDALONE) return;
+        //
+        //     LogicHealth.zeroLife(user);
+        //
+        //     DataUser.updateHealthAndStartTime(user, function () {
+        //         CAPIUser.updateUserInfo(user.id, user);
+        //     });
+        // });
 
-        //@todo lock
-        DataUser.getById(cntx.user.id, function (user) {
-
-            if (user.socNetTypeId !== SocNet.TYPE_STANDALONE) return;
-
-            LogicHealth.zeroLife(user);
-
-            DataUser.updateHealthAndStartTime(user, function () {
-                CAPIUser.updateUserInfo(user.id, user);
-            });
-        });
+        KafkaModule.zeroLife(cntx.user.id);
     };
 
 };
