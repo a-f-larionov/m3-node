@@ -11,13 +11,44 @@ var LOCK = new AsyncLock();
  */
 SAPIUser = function () {
 
+    this.sendMeScores = function (cntx, pids, uids) {
+
+        if (!(pids instanceof Array)) pids = [pids];
+        if (!(uids instanceof Array)) uids = [uids];
+
+        DataPoints.getScores(pids, uids, function (rows) {
+            CAPIUser.gotScores(cntx.user.id, rows);
+        });
+//sendToT_MapsAndPoints
+        KafkaModule.sendScores(pids, uids, cntx.user.id);
+    };
+
+    this.spendTurnsMoney = function (cntx, pointId) {
+
+        let tid = LogicTid.getOne();
+
+        Statistic.write(cntx.user.id, Statistic.ID_BUY_LOOSE_TURNS, DataShop.looseTurnsQuantity, DataShop.looseTurnsPrice);
+
+        DataStuff.usedGold(cntx.user.id, DataShop.looseTurnsPrice, tid);
+
+        Logs.log(
+            "tid:" + tid +
+            " uid:" + cntx.user.id + " купил " +
+            DataShop.looseTurnsQuantity + " ходов за " +
+            DataShop.looseTurnsPrice + " монет.",
+            Logs.LEVEL_NOTIFY,
+            null,
+            null, true);
+
+        KafkaModule.spendTurnsMoney(pointId, cntx.user.id);
+    };
+
     /**
      * Авторизация через вКонтакте.
      * @param cntx контекст соединения
      * @param authParams параметры аутентифиакации.
      */
     this.auth = function (cntx, authParams) {
-
 
         /** Тут мы запомним его cid раз и на всегда */
 
@@ -47,98 +78,41 @@ SAPIUser = function () {
         cntx.user = undefined;
     };
 
-    /**
-     * Отправяел информацию о пользователи в текущие соединение.
-     * @param cntx object
-     * @param ids [number]
-     */
     this.sendMeUserListInfo = function (cntx, ids) {
-
         KafkaModule.sendUserListInfo(ids, cntx.user.id);
     };
 
     this.sendMeMapFriends = function (cntx, mapId, fids) {
-
         KafkaModule.sendMapFriends(mapId, fids, cntx.user.id);
     };
 
-    /**
-     * Отправляет внутрение id пользователей по их socNetUserId.
-     * Тип социальной сети определяется по cntx.user
-     * @param cntx {Object}
-     * @param fids
-     */
     this.sendMeFriendIdsBySocNet = function (cntx, fids) {
-
         KafkaModule.sendFriendIdsBySocNet(fids, cntx.user.id);
     };
 
     this.sendMeTopUsers = function (cntx, fids) {
-
         KafkaModule.sendTopUsers(fids, cntx.user.id);
     };
 
-    this.sendMeScores = function (cntx, pids, uids) {
-
-        if (!(pids instanceof Array)) pids = [pids];
-        if (!(uids instanceof Array)) uids = [uids];
-
-        DataPoints.getScores(pids, uids, function (rows) {
-            CAPIUser.gotScores(cntx.user.id, rows);
-        });
-
-        KafkaModule.sendScores(pids, uids, cntx.user.id);
+    this.healthBack = function (cntx) {
+        KafkaModule.healthBack(cntx.user.id);
     };
 
-    /**
-     *
-     * @param cntx {Object}
-     * @returns {undefined}
-     */
-    this.healthBack = function (cntx) {
-
-        KafkaModule.healthBack(cntx.user.id);
+    this.zeroLife = function (cntx) {
+        KafkaModule.zeroLife(cntx.user.id);
     };
 
     this.healthDown = function (cntx, pointId) {
         Statistic.write(cntx.user.id, Statistic.ID_START_PLAY, pointId);
-
         KafkaModule.healthDown(pointId, cntx.user.id);
     };
 
-    this.spendTurnsMoney = function (cntx, pointId) {
-
-        let tid = LogicTid.getOne();
-
-        Statistic.write(cntx.user.id, Statistic.ID_BUY_LOOSE_TURNS, DataShop.looseTurnsQuantity, DataShop.looseTurnsPrice);
-
-        DataStuff.usedGold(cntx.user.id, DataShop.looseTurnsPrice, tid);
-
-        Logs.log(
-            "tid:" + tid +
-            " uid:" + cntx.user.id + " купил " +
-            DataShop.looseTurnsQuantity + " ходов за " +
-            DataShop.looseTurnsPrice + " монет.",
-            Logs.LEVEL_NOTIFY,
-            null,
-            null, true);
-
-        KafkaModule.spendTurnsMoney(pointId, cntx.user.id);
-    };
-
     this.exitGame = function (cntx, pointId) {
-
         Statistic.write(cntx.user.id, Statistic.ID_EXIT_GAME, pointId);
     };
 
     this.looseGame = function (cntx, pointId) {
-
         Statistic.write(cntx.user.id, Statistic.ID_LOOSE_GAME, pointId);
-    };
-
-    this.zeroLife = function (cntx) {
-
-        KafkaModule.zeroLife(cntx.user.id);
     };
 
 };

@@ -204,16 +204,16 @@ var DataUser = function () {
      * Обновить данные о последнем входе игрока.
      * @param userId {int} внутрений id пользователя.
      */
-    this.cacheUpdateLastLogin = function (userId) {
-        let time;
-        if (!userId) {
-            Logs.log("DataUser.cacheUpdateLastLogin. Must be userId", Logs.LEVEL_WARNING, userId);
-            return;
-        }
-        if (cache[userId]) {
-            cache[userId].login_tm = time;
-        }
-    };
+    // this.cacheUpdateLastLogin = function (userId) {
+    //     let time;
+    //     if (!userId) {
+    //         Logs.log("DataUser.cacheUpdateLastLogin. Must be userId", Logs.LEVEL_WARNING, userId);
+    //         return;
+    //     }
+    //     if (cache[userId]) {
+    //         cache[userId].login_tm = time;
+    //     }
+    // };
 
     this.updateNextPointId = function (userId, pointId, callback) {
         if (cache[userId]) {
