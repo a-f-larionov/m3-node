@@ -36,7 +36,7 @@ SocNet.init = function (afterInitCallBack) {
  */
 SocNet.TYPE_VK = 1;
 /**
- * Тип социальной сети(платформы), сайт http://krestiki-noliki.xyz/.
+ * Тип социальной сети(платформы), сайт http://no-site.xyz/.
  * @type {number}
  */
 SocNet.TYPE_STANDALONE = 2;

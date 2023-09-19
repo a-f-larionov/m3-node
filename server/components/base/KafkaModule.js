@@ -55,11 +55,27 @@ const run = async () => {
                     case 'm3.users.dto.rs.AuthSuccessRsDto':
                         let cntx = ApiRouter.getConnectContext(msg.connectionId);
 
-                        LogicUser.userAddConn(msg.userId, msg.socNetUserId, cntx);
+                        LogicUser.userAddConn(msg.id, msg.socNetUserId, cntx);
                         CAPIUser.authorizeSuccess(
                             msg.userId,
-                            msg
+                            {
+                                id: msg.id,
+                                connectionId: msg.connectionId,
+                                createTm: msg.createTm,
+                                firstName: msg.firstName,
+                                fullRecoveryTime: msg.fullRecoveryTime,
+                                lastName: msg.lastName,
+                                loginTm: msg.loginTm,
+                                logoutTm: msg.logoutTm,
+                                nextPointId: msg.nextPointId,
+                                online: msg.online,
+                                photo50: msg.photo50,
+                                photo100: msg.photo100,
+                                socNetTypeId: msg.socNetTypeId,
+                                socNetUserId: msg.socNetUserId,
+                            }
                         );
+
                         break;
                     case 'm3.users.dto.rs.GotMapFriendIdsRsDto':
                         console.log(CAPIUser.gotMapFriendIds);
@@ -92,6 +108,12 @@ const run = async () => {
                             msg.userId,
                             msg.oneHealthHide,
                             msg.fullRecoveryTime
+                        );
+                        break;
+                    case 'm3.users.dto.rs.UpdateUserInfoRsDto':
+                        CAPIUser.updateUserInfo(
+                            msg.userId,
+                            msg
                         );
                         break;
                     default:

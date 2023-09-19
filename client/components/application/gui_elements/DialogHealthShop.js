@@ -8,6 +8,8 @@ let DialogHealthShop = function () {
 
     let locked = false;
 
+    let elResetButton = null;
+
     /**
      * Чтобы пользователь на купил 2ыйнм кликом
      * @returns {boolean}
@@ -57,22 +59,20 @@ let DialogHealthShop = function () {
         });
         self.elements.push(elButton);
 
-        user = LogicUser.getCurrent();
 
-        if (SocNet.getType() === SocNet.TYPE_STANDALONE &&
-            (user && user.id > 1000)
-        ) {
+        elResetButton = GUI.createElement(ElementButton, {
+            x: offsetX + stepX * 2, y: offsetY,
+            srcRest: 'health-hearth.png',
+            srcHover: 'health-hearth.png',
+            srcActive: 'health-hearth.png',
+            title: 'сброс',
+            onClick: function () {
+                if (lock()) return;
+                SAPIUser.zeroLife();
+            }
+        });
 
-            el = GUI.createElement(ElementButton, {
-                x: offsetX + stepX * 2, y: offsetY,
-                srcRest: 'shop-health-2.png',
-                onClick: function () {
-                    if (lock()) return;
-                    SAPIUser.zeroLife();
-                }
-            });
-            self.elements.push(el);
-        }
+        self.elements.push(elResetButton);
 
         GUI.popParent();
     };
@@ -82,6 +82,13 @@ let DialogHealthShop = function () {
         user = LogicUser.getCurrent();
         elHealth5.enabled = LogicHealth.getHealths(user) === 0;
         elButton.enabled = LogicHealth.getHealths(user) === 0;
+        window.jkljkl = elResetButton;
+        console.log(user);
+        if (user && user.socNetTypeId === SocNet.TYPE_STANDALONE && user.socNetUserId > 10000) {
+            elResetButton.show();
+        } else {
+            elResetButton.hide();
+        }
         this.__proto__.redraw.call(this);
     };
 
