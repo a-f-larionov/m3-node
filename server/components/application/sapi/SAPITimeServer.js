@@ -1,7 +1,9 @@
+const Kafka = require("../../base/Kafka.js").Kafka
+
 const LogicTimeServer = require("../logic/LogicTimeServer.js").LogicTimeServer;
 
 SAPITimeServer = function () {
-    
+
     /**
      * Send server time to client.
      * @param cntx
@@ -16,6 +18,8 @@ SAPITimeServer = function () {
             [cntx]
         );
         pFinish(prid);
+        //@todo-method
+        Kafka.sendToCommon({}, cntx.user.id, "SendMeTimeRqDto");
     };
 };
 

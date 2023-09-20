@@ -135,8 +135,10 @@ var Kafka = function () {
     let self = this;
 
     this.TOPIC_USERS = "topic-users";
-    this.TOPIC_POINTS = "topic-points";
-    this.TOPIC_STUFF_AND_CHESTS = "topic-stuff-and-chests";
+    this.TOPIC_MAP_AND_POINTS = "topic-map-and-points";
+    this.TOPIC_STUFF = "topic-stufs";
+    this.TOPIC_COMMON = "topic-common";
+    this.TOPIC_PAYMENTS = "topic-payments";
 
     this.init = function (afterInitCallback) {
 
@@ -144,20 +146,29 @@ var Kafka = function () {
         afterInitCallback();
     };
 
-    this.sendToPoints = function (fields, userId, type) {
-        fields.userId = userId;
-        this.send(this.TOPIC_POINTS, fields, type);
-    }
-
     this.sendToUsers = function (fields, userId, type) {
         fields.userId = userId;
         this.send(this.TOPIC_USERS, fields, type);
     }
 
-    this.sendToStuffAndChests = function (fields, userId, type) {
+    this.sendToMapAndPoints = function (fields, userId, type) {
         fields.userId = userId;
-        this.send(this.TOPIC_STUFF_AND_CHESTS, fields, type);
+        this.send(this.TOPIC_MAP_AND_POINTS, fields, type);
     }
+
+    this.sendToStuff = function (fields, userId, type) {
+        fields.userId = userId;
+        this.send(this.TOPIC_STUFF, fields, type);
+    }
+
+    this.sendToPayment = function(fields, userId, type){
+        fielsd.userId = userId;
+        this.send(this.TOPIC_PAYMENTS, fields, type);
+    }
+
+    this.sendToCommon = function (fields, type) {
+        this.send(this.TOPIC_COMMON, fields, type);
+    };
 
     this.send = function (topic, value, type) {
         console.log("KAFKA>>> " + topic, type, JSON.stringify(value));

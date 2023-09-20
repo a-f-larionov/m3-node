@@ -1,3 +1,5 @@
+const Kafka = require("../../base/Kafka.js").Kafka
+
 var AsyncLock = require('async-lock');
 var LOCK = new AsyncLock();
 
@@ -9,6 +11,8 @@ SAPIStuff = function () {
         if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
 
         LogicStuff.sendStuffToUser(cntx.user.id, pStart(Profiler.ID_SAPISTUFF_SEND_ME_STUFF));
+        //@todo-method
+        Kafka.sendToStuff({}, cntx.user.id, "SendMeStuffRqDto");
     };
 
     this.usedHummer = function (cntx) {
@@ -23,6 +27,8 @@ SAPIStuff = function () {
 
             pFinish(prid);
         });
+        //@todo-method
+        Kafka.sendToStuff({}, cntx.user.id, "UsedHummerRqDto");
     };
 
     this.usedLightning = function (cntx) {
@@ -36,6 +42,8 @@ SAPIStuff = function () {
             if (result) Logs.log("Игрок " + cntx.user.socNetUserId + " использовал молнию ⚡, теперь " + current, Logs.LEVEL_DETAIL, undefined, Logs.CHANNEL_TELEGRAM);
             pFinish(prid);
         });
+        //@todo-method
+        Kafka.sendToStuff({}, cntx.user.id, "UsedLightningRqDto");
     };
 
     this.usedShuffle = function (cntx) {
@@ -49,6 +57,8 @@ SAPIStuff = function () {
             if (result) Logs.log("Игрок " + cntx.user.socNetUserId + " использовал вихрь 🌪, теперь " + current, Logs.LEVEL_DETAIL, undefined, Logs.CHANNEL_TELEGRAM);
             pFinish(prid);
         });
+        //@todo-method
+        Kafka.sendToStuff({}, cntx.user.id, "UsedShuffleRqDto");
     };
 
     this.buyHummer = function (cntx, itemIndex) {
@@ -69,6 +79,8 @@ SAPIStuff = function () {
                     pFinish(prid);
                 });
         });
+        //@todo-method
+        Kafka.sendToPayment({}, cntx.user.id, "BuyHummerRqDto");
     };
 
     this.buyLightning = function (cntx, itemIndex) {
@@ -92,6 +104,8 @@ SAPIStuff = function () {
                     pFinish(prid);
                 });
         });
+        //@todo-method
+        Kafka.sendToPayment({}, cntx.user.id, "BuyLightningRqDto");
     };
 
     this.buyShuffle = function (cntx, itemIndex) {
@@ -114,6 +128,8 @@ SAPIStuff = function () {
                     pFinish(prid);
                 });
         });
+        //@todo-method
+        Kafka.sendToPayment({}, cntx.user.id, "BuyShuffleRqDto");
     };
 
     this.buyHealth = function (cntx) {
@@ -124,6 +140,9 @@ SAPIStuff = function () {
         let tid = LogicTid.getOne();
 
         let prid = pStart(Profiler.ID_SAPISTUFF_BUY_HEALTH);
+
+        //@todo-method
+        Kafka.sendToPayment({}, cntx.user.id, "BuyHealthRqDto");
 
         LOCK.acquire(Keys.health(cntx.user.id), function (done) {
                 setTimeout(done, 5 * 60 * 1000);

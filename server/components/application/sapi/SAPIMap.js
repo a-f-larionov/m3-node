@@ -1,3 +1,8 @@
+const Logs = require("../../base/Logs.js").Logs
+const Kafka = require("../../base/Kafka.js").Kafka
+const DataUser = require("../../application/data/DataUser.js").DataUser
+const DataPoints = require("../../application/data/DataPoints.js").DataPoints
+
 SAPIMap = function () {
 
     this.sendMeMapInfo = function (cntx, mapId) {
@@ -17,6 +22,8 @@ SAPIMap = function () {
         CAPIMap.gotMapsInfo(cntx.userId, mapId, map, points);
 
         pFinish(prid);
+        //@todo-method
+        Kafka.sendToMapAndPoints({mapId: mapId}, cntx.user.id, "SendMeMapInfoRqDto");
     };
 
     this.sendMePointTopScore = function (cntx, score, pointId, fids, chunks) {
@@ -32,6 +39,14 @@ SAPIMap = function () {
 
         let pridNoCached = pStart(Profiler.ID_SAPIMAP_SEND_ME_POINT_TOP_SCORE);
         let pridCached = pStart(Profiler.ID_SAPIMAP_SEND_ME_POINT_TOP_SCORE_CACHED);
+
+        //@todo-method
+        Kafka.sendToMapAndPoints({
+            score: score,
+            pointId: pointId,
+            fids: fids,
+            chunks: chunks
+        }, cntx.user.id, "SendMePointTopScoreRqDto");
 
         TopScoreCache.get(cntx.user.id, pointId, function (data) {
             if (!data) {
@@ -72,6 +87,8 @@ SAPIMap = function () {
         if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
 
+        //@todo-method and move to users i think
+        Kafka.sendToMapAndPoints({pointId: pointId, score: score, chestId: chestId}, cntx.user.id, "OnFinishRqDto");
         //@todo this is no health back, is it finish, health back on sapiuser
         let prid = pStart(Profiler.ID_SAPIUSER_ONFINISH);
         let tid = LogicTid.getOne();
@@ -142,6 +159,9 @@ SAPIMap = function () {
         if (!cntx.isAuthorized) return Logs.log(arguments.callee.name + " not authorized", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
         if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
+
+        //@todo-method
+        Kafka.sendToMapAndPoints({}, cntx.user.id, "ReloadLevelsRqDto");
 
         DataUser.getById(cntx.user.id, function (user) {
             if (!

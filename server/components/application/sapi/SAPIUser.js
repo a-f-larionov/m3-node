@@ -14,8 +14,8 @@ SAPIUser = function () {
         DataPoints.getScores(pids, uids, function (rows) {
             CAPIUser.gotScores(cntx.user.id, rows);
         });
-        //@todo
-        Kafka.sendToPoints({pids: pids, uids: uids}, cntx.user.id, "SendMeScoresRqDto");
+        //@todo-method
+        Kafka.sendToMapAndPoints({pids: pids, uids: uids}, cntx.user.id, "SendMeScoresRqDto");
     };
 
     this.spendCoinsForTurns = function (cntx) {
@@ -35,7 +35,8 @@ SAPIUser = function () {
             null,
             null, true);
 
-        Kafka.sendToStuffAndChests({}, "SpendCoinsForTurnsRqDto")
+        //@todo-method
+        Kafka.sendToStuff({}, "SpendCoinsForTurnsRqDto")
     };
 
     /**
@@ -46,20 +47,20 @@ SAPIUser = function () {
     this.auth = function (cntx, authParams) {
 
         /** Тут мы запомним его cid раз и на всегда */
-
         //@Todo remove after realis Log service
         Logs.log("🥰 ", Logs.LEVEL_NOTIFY,
             SocNet(SocNet.TYPE_VK).getUserProfileUrl(authParams.socNetUserId),
             Logs.CHANNEL_TELEGRAM
         );
 
-        Kafka.sendToUsers({
-            socNetType: authParams.socNetType,
-            socNetUserId: authParams.socNetUserId,
-            appId: authParams.appId,
-            authKey: authParams.authKey,
-            connectionId: cntx.cid
-        }, undefined, "AuthRqDto");
+        //@todo-method and move to users service
+        Kafka.sendToCommon({
+            message: "🥰 ",
+            detail: SocNet(SocNet.TYPE_VK).getUserProfileUrl(authParams.socNetUserId)
+        }, "TelegramRqDTO");
+
+        authParams.connectionId = cntx.cid;
+        Kafka.sendToUsers(authParams, undefined, "AuthRqDto");
     };
 
     this.logout = function (cntx) {
@@ -100,14 +101,23 @@ SAPIUser = function () {
     this.healthDown = function (cntx, pointId) {
         Statistic.write(cntx.user.id, Statistic.ID_START_PLAY, pointId);
         Kafka.sendToUsers({pointId: pointId}, cntx.user.id, "HealthDownRqDto"); /* healthDown*/
+        //@todo-method
+        Kafka.sendToCommon(
+            {userId: cntx.user.id, id: Statistic.ID_START_PLAY, pointId: pointId}, "StatisticRqDto");
     };
 
     this.exitGame = function (cntx, pointId) {
         Statistic.write(cntx.user.id, Statistic.ID_EXIT_GAME, pointId);
+        //@todo-method
+        Kafka.sendToCommon(
+            {userId: cntx.user.id, id: Statistic.ID_EXIT_GAME, pointId: pointId}, "StatisticRqDto");
     };
 
     this.looseGame = function (cntx, pointId) {
         Statistic.write(cntx.user.id, Statistic.ID_LOOSE_GAME, pointId);
+        //@todo-method
+        Kafka.sendToCommon(
+            {userId: cntx.user.id, id: Statistic.ID_LOOSE_GAME, pointId: pointId}, "StatisticRqDto");
     };
 
 };
