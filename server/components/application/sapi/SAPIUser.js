@@ -3,7 +3,6 @@ const Kafka = require("../../base/Kafka.js").Kafka
 const DataUser = require("../../application/data/DataUser.js").DataUser
 const DataPoints = require("../../application/data/DataPoints.js").DataPoints
 var AsyncLock = require('async-lock');
-var LOCK = new AsyncLock();
 
 /**
  * @type {SAPIUser}
@@ -19,9 +18,7 @@ SAPIUser = function () {
         DataPoints.getScores(pids, uids, function (rows) {
             CAPIUser.gotScores(cntx.user.id, rows);
         });
-//sendToT_MapsAndPoints
-        //Kafka.send(Kafka.TOPIC_USERS, {userId: userId, pids: pids, uids: uids}, "SendScoresRqDto");
-        Kafka.sendScores(pids, uids, cntx.user.id);
+        // Kafka.sendToUsers({pids: pids, uids: uids}, cntx.user.id, "SendMeScoresRsDto");
     };
 
     this.spendTurnsMoney = function (cntx, pointId) {
@@ -41,7 +38,7 @@ SAPIUser = function () {
             null,
             null, true);
 
-        Kafka.spendTurnsMoney(pointId, cntx.user.id);
+        // Kafka.sendToUsers({pointId,}, cntx.user.id, Kafka.spendTurnsMoney); /* spendTurnsMoney*/
     };
 
     /**
@@ -59,18 +56,18 @@ SAPIUser = function () {
             Logs.CHANNEL_TELEGRAM
         );
 
-        Kafka.auth({
+        Kafka.sendToUsers({
             socNetType: authParams.socNetType,
             socNetUserId: authParams.socNetUserId,
             appId: authParams.appId,
             authKey: authParams.authKey,
             connectionId: cntx.cid
-        });
+        }, undefined, "AuthRqDto");
     };
 
     this.logout = function (cntx) {
         if (cntx.userId) {
-            Kafka.updateLastLogout(cntx.userId);
+            Kafka.sendToUsers({}, cntx.user.id, "UpdateLastLogoutRqDto"); /* updateLastLogout*/
             DataUser.clearCache(cntx.userId);
         }
         // @todo clearContext
@@ -80,32 +77,32 @@ SAPIUser = function () {
     };
 
     this.sendMeUserListInfo = function (cntx, ids) {
-        Kafka.sendUserListInfo(ids, cntx.user.id);
+        Kafka.sendToUsers({ids: ids}, cntx.user.id, "SendUserListInfoRqDto"); /* sendUserListInfo*/
     };
 
     this.sendMeMapFriends = function (cntx, mapId, fids) {
-        Kafka.sendMapFriends(mapId, fids, cntx.user.id);
+        Kafka.sendToUsers({mapId: mapId, fids: fids}, cntx.user.id, "SendMapFriendsRqDto"); /* sendMapFriends*/
     };
 
     this.sendMeFriendIdsBySocNet = function (cntx, fids) {
-        Kafka.sendFriendIdsBySocNet(fids, cntx.user.id);
+        Kafka.sendToUsers({fids: fids}, cntx.user.id, "SendFriendIdsBySocNetRqDto"); /* sendFriendIdsBySocNet*/
     };
 
     this.sendMeTopUsers = function (cntx, fids) {
-        Kafka.sendTopUsers(fids, cntx.user.id);
+        Kafka.sendToUsers({fids: fids}, cntx.user.id, "SendTopUsersRqDto"); /* sendTopUsers*/
     };
 
     this.healthBack = function (cntx) {
-        Kafka.healthBack(cntx.user.id);
+        Kafka.sendToUsers({}, cntx.user.id, "HealthBackRqDto"); /* healthBack*/
     };
 
     this.zeroLife = function (cntx) {
-        Kafka.zeroLife(cntx.user.id);
+        Kafka.sendToUsers({}, cntx.user.id, "ZeroLifeRqDto"); /* zeroLife*/
     };
 
     this.healthDown = function (cntx, pointId) {
         Statistic.write(cntx.user.id, Statistic.ID_START_PLAY, pointId);
-        Kafka.healthDown(pointId, cntx.user.id);
+        Kafka.sendToUsers({pointId: pointId}, cntx.user.id, "HealthDownRqDto"); /* healthDown*/
     };
 
     this.exitGame = function (cntx, pointId) {

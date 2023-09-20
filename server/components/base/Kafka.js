@@ -142,48 +142,14 @@ var Kafka = function () {
         afterInitCallback();
     };
 
+    this.sendToUsers = function (fields, userId, type) {
+        fields.userId = userId;
+        this.send(this.TOPIC_USERS, fields, type);
+    }
+
     this.auth = function (authParams) {
         this.sendToT_Users(authParams, 'AuthRqDto');
     }
-
-    this.updateLastLogout = function (userId) {
-        this.sendToT_Users({userId: userId}, 'UpdateLastLogoutRqDto');
-    };
-
-    this.updateLastLogin = function (userId) {
-        this.sendToT_Users({userId: userId}, 'UpdateLastLoginRqDto');
-    }
-
-    this.sendUserListInfo = function (ids, userId) {
-        this.sendToT_Users({userId: userId, ids: ids}, "SendUserListInfoRqDto");
-    }
-
-    this.sendMapFriends = function (mapId, fids, userId) {
-        this.sendToT_Users({userId: userId, mapId: mapId, fids: fids}, "SendMapFriendsRqDto");
-    }
-
-    this.sendFriendIdsBySocNet = function (fids, userId) {
-        this.sendToT_Users({userId: userId, friendSocNetIds: fids}, "SendFriendIdsBySocNetRqDto")
-    }
-    this.sendTopUsers = function (fids, userId) {
-        this.sendToT_Users({userId: userId, fids: fids}, "SendTopUsersRqDto")
-    }
-    this.sendScores = function (pids, uids, userId) {
-        this.sendToT_MapsAndPoints({userId: userId, pids: pids, uids: uids}, "SendScoresRqDto")
-    }
-    this.healthBack = function (userId) {
-        this.sendToT_Users({userId: userId}, "HealthBackRqDto")
-    }
-    this.healthDown = function (pointId, userId) {
-        this.sendToT_Users({userId: userId, pointId: pointId}, "HealthDownRqDto")
-    }
-    this.spendTurnsMoney = function (pointId, userId) {
-        this.sendToT_Users({userId: userId, pointId: pointId}, "SpendTurnsMoneyRqDto")
-    }
-    this.zeroLife = function (userId) {
-        this.sendToT_Users({userId: userId}, "ZeroLifeRqDto")
-    }
-
     this.sendToT_Users = function (value, type) {
         this.send("t-users", value, type);
     }

@@ -1,5 +1,5 @@
-const { KafkaModule } = require("../../base/Kafka.js");
-const { DataUser } = require("../data/DataUser.js");
+const {KafkaModule} = require("../../base/Kafka.js");
+const {DataUser} = require("../data/DataUser.js");
 /**
  * @type {LogicUser}
  */
@@ -137,7 +137,7 @@ var LogicUser = function () {
     let onLogout = function (userId) {
         Logs.log("User logout. user.id=" + userId, Logs.LEVEL_DETAIL);
         Statistic.write(userId, Statistic.ID_LOGOUT);
-        KafkaModule.updateLastLogout(userId);
+        Kafka.sendToUsers({userId: userId}, userId, "UpdateLastLogoutRqDto");
     };
 
     /**
@@ -183,4 +183,4 @@ var LogicUser = function () {
 LogicUser = new LogicUser();
 LogicUser.depends = ['Logs', 'Profiler', 'DB', 'DataUser', 'Statistic', 'SocNet'];
 global["LogicUser"] = LogicUser;
-module.exports = { LogicUser }
+module.exports = {LogicUser}
