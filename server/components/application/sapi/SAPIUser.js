@@ -14,10 +14,11 @@ SAPIUser = function () {
         DataPoints.getScores(pids, uids, function (rows) {
             CAPIUser.gotScores(cntx.user.id, rows);
         });
-        // Kafka.sendToUsers({pids: pids, uids: uids}, cntx.user.id, "SendMeScoresRsDto");
+        //@todo
+        Kafka.sendToPoints({pids: pids, uids: uids}, cntx.user.id, "SendMeScoresRqDto");
     };
 
-    this.spendTurnsMoney = function (cntx, pointId) {
+    this.spendCoinsForTurns = function (cntx) {
 
         let tid = LogicTid.getOne();
 
@@ -34,7 +35,7 @@ SAPIUser = function () {
             null,
             null, true);
 
-        // Kafka.sendToUsers({pointId,}, cntx.user.id, Kafka.spendTurnsMoney); /* spendTurnsMoney*/
+        Kafka.sendToStuffAndChests({}, "SpendCoinsForTurnsRqDto")
     };
 
     /**

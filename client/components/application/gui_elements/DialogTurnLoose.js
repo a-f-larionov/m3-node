@@ -73,7 +73,7 @@ let DialogTurnLoose = function DialogTurnLoose() {
                     PBZDialogs.dialogMoneyShop.showDialog(undefined, 'не хватило на ходы');
                     self.showDialog(pointId);
                 } else {
-                    SAPIUser.spendTurnsMoney();
+                    SAPIUser.spendCoinsForTurns();
                     PageBlockField.increaseTurns(DataShop.looseTurnsQuantity);
                     LogicStuff.usedGold(DataShop.looseTurnsPrice);
                     PageBlockField.unlockField();

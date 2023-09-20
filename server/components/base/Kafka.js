@@ -20,7 +20,7 @@ const run = async () => {
     // Consuming
     await consumer.connect()
 
-    await consumer.subscribe({topic: 't-node', fromBeginning: true})
+    await consumer.subscribe({topic: 'topic-client', fromBeginning: true})
 
     await consumer.run({
         eachMessage: async ({topic, partition, message}) => {
@@ -134,7 +134,9 @@ run().catch(console.error);
 var Kafka = function () {
     let self = this;
 
-    this.TOPIC_USERS = "t-users";
+    this.TOPIC_USERS = "topic-users";
+    this.TOPIC_POINTS = "topic-points";
+    this.TOPIC_STUFF_AND_CHESTS = "topic-stuff-and-chests";
 
     this.init = function (afterInitCallback) {
 
@@ -142,20 +144,19 @@ var Kafka = function () {
         afterInitCallback();
     };
 
+    this.sendToPoints = function (fields, userId, type) {
+        fields.userId = userId;
+        this.send(this.TOPIC_POINTS, fields, type);
+    }
+
     this.sendToUsers = function (fields, userId, type) {
         fields.userId = userId;
         this.send(this.TOPIC_USERS, fields, type);
     }
 
-    this.auth = function (authParams) {
-        this.sendToT_Users(authParams, 'AuthRqDto');
-    }
-    this.sendToT_Users = function (value, type) {
-        this.send("t-users", value, type);
-    }
-
-    this.sendToT_MapsAndPoints = function (value, type) {
-        this.send("t-map-and-points", value, type);
+    this.sendToStuffAndChests = function (fields, userId, type) {
+        fields.userId = userId;
+        this.send(this.TOPIC_STUFF_AND_CHESTS, fields, type);
     }
 
     this.send = function (topic, value, type) {
