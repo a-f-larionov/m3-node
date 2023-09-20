@@ -2,7 +2,6 @@ const Logs = require("../../base/Logs.js").Logs
 const Kafka = require("../../base/Kafka.js").Kafka
 const DataUser = require("../../application/data/DataUser.js").DataUser
 const DataPoints = require("../../application/data/DataPoints.js").DataPoints
-var AsyncLock = require('async-lock');
 
 /**
  * @type {SAPIUser}
