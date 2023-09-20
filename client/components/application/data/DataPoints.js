@@ -193,7 +193,7 @@ let DataPoints = function () {
         if (!pointUserScore[pid][uid]) pointUserScore[pid][uid] = {};
 
         if (!pointUserScore[pid][uid].loading && (pointUserScore[pid][uid].loading = true)) {
-            SAPIUser.sendMeScores(pid, uid);
+            SAPIUser.sendMeScores([pid], [uid]);
         }
 
         return pointUserScore[pid][uid].score;

@@ -12,9 +12,6 @@ SAPIUser = function () {
 
     this.sendMeScores = function (cntx, pids, uids) {
 
-        if (!(pids instanceof Array)) pids = [pids];
-        if (!(uids instanceof Array)) uids = [uids];
-
         DataPoints.getScores(pids, uids, function (rows) {
             CAPIUser.gotScores(cntx.user.id, rows);
         });
