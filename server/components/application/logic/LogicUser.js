@@ -1,4 +1,4 @@
-const { KafkaModule } = require("../../base/KafkaModule.js");
+const { KafkaModule } = require("../../base/Kafka.js");
 const { DataUser } = require("../data/DataUser.js");
 /**
  * @type {LogicUser}

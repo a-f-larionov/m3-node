@@ -13,9 +13,9 @@ Config = {
     },
     DB: {
         host: "mysql",
-        username: "username",
-        password: "password",
-        database: "database",
+        username: "local_user",
+        password: "local_password",
+        database: "local_database",
         charset: "UTF8",
     },
     Statistic: {

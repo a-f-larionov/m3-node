@@ -1,18 +1,17 @@
-const {Kafka} = require("kafkajs");
+const KafkaJS = require("kafkajs").Kafka;
 //const { LogicUser } = require("../application/logic/LogicUser.js");
 
 //const CAPIUser = require("../generated/CAPIUser.js");
 
-const kafka = new Kafka({
+const kafkaJs = new KafkaJS({
     clientId: 'node',
     brokers: [
         "kafka:9092",
     ]
 });
 
-
-const producer = kafka.producer()
-const consumer = kafka.consumer({groupId: '1'})
+const producer = kafkaJs.producer()
+const consumer = kafkaJs.consumer({groupId: '1'})
 
 const run = async () => {
     // Producing
@@ -130,10 +129,12 @@ const run = async () => {
 run().catch(console.error);
 
 /**
- * @type {KafkaModule}
+ * @type {Kafka}
  */
-var KafkaModule = function () {
+var Kafka = function () {
     let self = this;
+
+    this.TOPIC_USERS = "t-users";
 
     this.init = function (afterInitCallback) {
 
@@ -207,7 +208,7 @@ var KafkaModule = function () {
     }
 };
 
-KafkaModule = new KafkaModule();
-KafkaModule.depends = ['Logs'];
-global['KafkaModule'] = KafkaModule;
-module.exports = {KafkaModule}
+Kafka = new Kafka();
+Kafka.depends = ['Logs'];
+global['Kafka'] = Kafka;
+module.exports = {Kafka: Kafka}
