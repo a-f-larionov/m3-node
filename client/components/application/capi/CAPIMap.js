@@ -175,7 +175,7 @@ let CAPIMap = function () {
             layer.forEach(function (row, y) {
                 row.split('').forEach(function (ceil, x) {
                     if (!mapping[ceil]) {
-                        Logs.log("error", Logs.LEVEL_DETAIL, [layer]);
+                        Logs.log("error", Logs.LEVEL_TRACE, [layer]);
                         Logs.alert(Logs.LEVEL_ERROR, 'ERROR: Нет такого символа в мепинге.' + ceil);
                     }
 

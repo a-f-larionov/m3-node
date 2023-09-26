@@ -123,11 +123,11 @@ let SocNetVK = function () {
     this.init = function () {
         let onSuccess, onFail;
         onSuccess = function () {
-            Logs.log("VK client API inited.", Logs.LEVEL_NOTIFY);
+            Logs.log("VK client API inited.", Logs.LEVEL_DEBUG);
         };
         onFail = function () {
             alert('Произошла ошибка доступа к вКонтакте, обратитесь к автору приложения.');
-            Logs.log("SocNetVK Fail", Logs.LEVEL_FATAL_ERROR);
+            Logs.log("SocNetVK Fail", Logs.LEVEL_ERROR);
         };
         VK.init(onSuccess, onFail, '5.95');
         parseSocNetURL();

@@ -60,14 +60,14 @@ DB = function () {
         //console.log(connection);
         /*connection.connect(function (err) {
             if (err) {
-                Logs.log("Cant connect to DB.", Logs.LEVEL_FATAL_ERROR, {err: err, connectionData: connectionData});
+                Logs.log("Cant connect to DB.", Logs.LEVEL_ERROR, {err: err, connectionData: connectionData});
             }
             isConnected = true;
-            Logs.log("Connect to DB successful.", Logs.LEVEL_NOTIFY);
+            Logs.log("Connect to DB successful.", Logs.LEVEL_DEBUG);
             afterInitCallback();
         });*/
 
-        Logs.log("MySql create Pool.", Logs.LEVEL_NOTIFY);
+        Logs.log("MySql create Pool.", Logs.LEVEL_DEBUG);
         afterInitCallback();
     };
 
@@ -109,7 +109,7 @@ DB = function () {
                     query += " AND `" + name + "` IN(" + value + ")";
                     break;
                 default:
-                    Logs.log("DB.queryWhere: unknown condition:" + condition, Logs.LEVEL_FATAL_ERROR);
+                    Logs.log("DB.queryWhere: unknown condition:" + condition, Logs.LEVEL_ERROR);
                     break;
             }
         }

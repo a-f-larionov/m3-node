@@ -13,7 +13,7 @@ var LogicUser = function () {
     this.init = function (afterInitCallback) {
         ApiRouter.addOnDisconnectCallback(onDisconnectOrFailedSend);
         ApiRouter.addOnFailedSendCallback(onDisconnectOrFailedSend);
-        Logs.log("LogicUser inited.", Logs.LEVEL_NOTIFY);
+        Logs.log("LogicUser inited.", Logs.LEVEL_DEBUG);
         afterInitCallback();
     };
 
@@ -85,7 +85,7 @@ var LogicUser = function () {
      */
     let userAddConn = function (user, cntx) {
         if (!userToCntx[user.id]) {
-            Logs.log("CREATE user context. uid:" + user.id + ", cid:" + cntx.cid, Logs.LEVEL_DETAIL);
+            Logs.log("CREATE user context. uid:" + user.id + ", cid:" + cntx.cid, Logs.LEVEL_TRACE);
             userToCntx[user.id] = {
                 conns: {},
                 user: {
@@ -96,7 +96,7 @@ var LogicUser = function () {
             };
             userToCntxCount++;
         }
-        Logs.log("ADD user conn", Logs.LEVEL_DETAIL);
+        Logs.log("ADD user conn", Logs.LEVEL_TRACE);
         cntx.userId = user.id;
         cntx.isAuthorized = true;
         cntx.user = userToCntx[user.id].user;
@@ -120,11 +120,11 @@ var LogicUser = function () {
      */
     let userDeleteConn = function (cntx) {
         let userId = cntx.userId;
-        Logs.log("DELETE user conn", Logs.LEVEL_DETAIL);
+        Logs.log("DELETE user conn", Logs.LEVEL_TRACE);
         delete userToCntx[userId].conns[cntx.cid];
         userToCntx[userId].connsCount--;
         if (userToCntx[userId].connsCount == 0) {
-            Logs.log("DELETE user Context", Logs.LEVEL_DETAIL);
+            Logs.log("DELETE user Context", Logs.LEVEL_TRACE);
             delete userToCntx[userId];
             userToCntxCount--;
         }
@@ -135,7 +135,7 @@ var LogicUser = function () {
      * @param userId {Number} id пользователя.
      */
     let onLogout = function (userId) {
-        Logs.log("User logout. user.id=" + userId, Logs.LEVEL_DETAIL);
+        Logs.log("User logout. user.id=" + userId, Logs.LEVEL_TRACE);
         Statistic.write(userId, Statistic.ID_LOGOUT);
         Kafka.sendToUsers({userId: userId}, userId, "UpdateLastLogoutRqDto");
     };
@@ -173,7 +173,7 @@ var LogicUser = function () {
                 CAPIUser.updateUserListInfo(toUserId, list);
                 pFinish(prid);
             } else {
-                Logs.log(arguments.callee.name + " Users not found: id=" + ids, Logs.LEVEL_WARNING);
+                Logs.log(arguments.callee.name + " Users not found: id=" + ids, Logs.LEVEL_WARN);
                 pFinish(prid);
             }
         });

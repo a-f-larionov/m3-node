@@ -10,7 +10,7 @@ let SocNet = function () {
 
     this.init = function (afterInitCallBack) {
 
-        Logs.log("SocNet.Init()", Logs.LEVEL_NOTIFY);
+        Logs.log("SocNet.Init()", Logs.LEVEL_DEBUG);
         switch (self.getType()) {
             case SocNet.TYPE_VK:
                 self.__proto__ = SocNetVK;
@@ -19,7 +19,7 @@ let SocNet = function () {
                 self.__proto__ = SocNetStandalone;
                 break;
             default:
-                Logs.log("Wrong soc net type", Logs.LEVEL_FATAL_ERROR);
+                Logs.log("Wrong soc net type", Logs.LEVEL_ERROR);
                 break;
         }
         self.__proto__.init(afterInitCallBack);
@@ -40,7 +40,7 @@ let SocNet = function () {
                 socNetTypeId = SocNet.TYPE_STANDALONE;
             }
             if (!socNetTypeId) {
-                Logs.log("Не удалось определить тип социальной сети(платформы)", Logs.LEVEL_FATAL_ERROR);
+                Logs.log("Не удалось определить тип социальной сети(платформы)", Logs.LEVEL_ERROR);
             }
         }
 

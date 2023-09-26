@@ -21,12 +21,12 @@ let SocNetStandalone = function () {
     };
 
     this.getUserProfileUrl = function () {
-        Logs.log("TODO Me, SocNetStandalone.getUserProfileUrl", Logs.LEVEL_WARNING);
+        Logs.log("TODO Me, SocNetStandalone.getUserProfileUrl", Logs.LEVEL_WARN);
         return '';
     };
 
     this.openInviteFriendDialog = function () {
-        Logs.log("todo me SocNetStandalone.openIvniteFirendDialog", Logs.LEVEL_WARNING);
+        Logs.log("todo me SocNetStandalone.openIvniteFirendDialog", Logs.LEVEL_WARN);
         alert('Sorry, but functional is not realized!');
     };
 
@@ -34,7 +34,7 @@ let SocNetStandalone = function () {
         let socNetUserId;
         socNetUserId = parseInt(getQueryVariable('soc-net-user-id'));
         if (!socNetUserId) {
-            Logs.log("TODO Me. SocNetStandlaone.getSocNetUesrId and ... guset mode :)", Logs.LEVEL_WARNING);
+            Logs.log("TODO Me. SocNetStandlaone.getSocNetUesrId and ... guset mode :)", Logs.LEVEL_WARN);
             socNetUserId = 111; // is it guest!!!
         }
         return socNetUserId;

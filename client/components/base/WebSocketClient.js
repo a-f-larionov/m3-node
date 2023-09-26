@@ -72,13 +72,13 @@ let WebSocketClient = function () {
 
     let checkBeforeInit = function () {
         if (typeof self.onConnect != 'function') {
-            Logs.log("onConnect must be function", Logs.LEVEL_FATAL_ERROR, self.onConnect);
+            Logs.log("onConnect must be function", Logs.LEVEL_ERROR, self.onConnect);
         }
         if (typeof self.onDisconnect != 'function') {
-            Logs.log("onConnect must be function", Logs.LEVEL_FATAL_ERROR, self.onDisconnect);
+            Logs.log("onConnect must be function", Logs.LEVEL_ERROR, self.onDisconnect);
         }
         if (typeof self.onData != 'function') {
-            Logs.log("onConnect must be function", Logs.LEVEL_FATAL_ERROR, self.onData);
+            Logs.log("onConnect must be function", Logs.LEVEL_ERROR, self.onData);
         }
     };
 
@@ -120,7 +120,7 @@ let WebSocketClient = function () {
         let uri;
         connectCount++;
         uri = protocol + "://" + host + ":" + port + url;
-        Logs.log("WebSocket, connectCount:" + connectCount, Logs.LEVEL_NOTIFY, {uri: uri});
+        Logs.log("WebSocket, connectCount:" + connectCount, Logs.LEVEL_DEBUG, {uri: uri});
         socket = new WebSocket(uri);
         /** Установим обработчики. */
         socket.onopen = onOpen;
@@ -159,7 +159,7 @@ let WebSocketClient = function () {
 
     let tryReconnect = function () {
         if (isConnected === false) {
-            Logs.log('Try reconnect', Logs.LEVEL_NOTIFY);
+            Logs.log('Try reconnect', Logs.LEVEL_DEBUG);
             if (connectCount < 3) {
                 connect();
             }
@@ -171,7 +171,7 @@ let WebSocketClient = function () {
      * @param event
      */
     let onMessage = function (event) {
-        /* Logs.log("WebSocket: Получены данные.", Logs.LEVEL_DETAIL, event.data); */
+        /* Logs.log("WebSocket: Получены данные.", Logs.LEVEL_TRACE, event.data); */
         self.onData(clientDecrypt(event.data), connectionId);
     };
 
@@ -180,7 +180,7 @@ let WebSocketClient = function () {
      * @param error
      */
     let onError = function (error) {
-        Logs.log("WebSocket: Ошибка ", Logs.LEVEL_NOTIFY, error.timeStamp);
+        Logs.log("WebSocket: Ошибка ", Logs.LEVEL_DEBUG, error.timeStamp);
     };
 
     /**
@@ -206,7 +206,7 @@ let WebSocketClient = function () {
         data = packetBuffer.shift();
 
         socket.send(clientCrypt(data));
-        /* Logs.log("WebSocketClient.send data: length=" + data.length, Logs.LEVEL_DETAIL); */
+        /* Logs.log("WebSocketClient.send data: length=" + data.length, Logs.LEVEL_TRACE); */
         /* Остальные данные отправим позже. */
         if (packetBuffer.length) {
             setTimeout(trySend, 1500);

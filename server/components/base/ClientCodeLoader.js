@@ -144,16 +144,16 @@ ClientCodeLoader = function () {
         useSprite = Config.Project.useSprite;
         // check before after init
         if (typeof cacheCode !== 'boolean') {
-            Logs.log("cacheCode given by .setup, must be boolean", Logs.LEVEL_FATAL_ERROR, cacheCode);
+            Logs.log("cacheCode given by .setup, must be boolean", Logs.LEVEL_ERROR, cacheCode);
         }
         if (typeof clientSource !== 'string') {
-            Logs.log("clientSource given by .setup, must be string", Logs.LEVEL_FATAL_ERROR, clientSource);
+            Logs.log("clientSource given by .setup, must be string", Logs.LEVEL_ERROR, clientSource);
         }
         if (typeof imagesPath !== 'string') {
-            Logs.log("imagesPath given by .setup, must be string", Logs.LEVEL_FATAL_ERROR, imagesPath);
+            Logs.log("imagesPath given by .setup, must be string", Logs.LEVEL_ERROR, imagesPath);
         }
         if (typeof useSprite !== 'boolean') {
-            Logs.log("useSprite given by .setup, must be boolean", Logs.LEVEL_FATAL_ERROR, useSprite);
+            Logs.log("useSprite given by .setup, must be boolean", Logs.LEVEL_ERROR, useSprite);
         }
 
         /** Обновим клиентский код. */
@@ -167,7 +167,7 @@ ClientCodeLoader = function () {
 
     this.getClientVK = function (callback) {
         //@todo save ip on login
-        Logs.log("User request the client code.", Logs.LEVEL_DETAIL, null, null, false);
+        Logs.log("User request the client code.", Logs.LEVEL_TRACE, null, null, false);
         let prid = pStart(Profiler.ID_CLIENT_LOAD_VK);
         if (Config.Project.maintance) return callback(htmlMaintaince);
         if (!cacheCode) {
@@ -357,13 +357,13 @@ ClientCodeLoader = function () {
             .digest('hex');
 
         if (cache.jsHash && cache.jsHash == jsHash) {
-            Logs.log("Use cached js with hash:" + jsHash, Logs.LEVEL_NOTIFY);
+            Logs.log("Use cached js with hash:" + jsHash, Logs.LEVEL_DEBUG);
             return;
         }
         cache.jsHash = jsHash;
 
         FS.writeFileSync(CONST_DIR_ROOT + '/public/js/client.source.js', js);
-        Logs.log("ClientJS source code writed. Size: " + js.length, Logs.LEVEL_DETAIL);
+        Logs.log("ClientJS source code writed. Size: " + js.length, Logs.LEVEL_TRACE);
 
         if (Config.Project.obfuscate) {
             sTime = mtime();
@@ -373,7 +373,7 @@ ClientCodeLoader = function () {
             Logs.log("ClientJS obfuscated (writen)." +
                 " Size: " + js.length.toString() +
                 " Time: " + (mtime() - sTime).toString()
-                , Logs.LEVEL_DETAIL);
+                , Logs.LEVEL_TRACE);
         }
 
         FS.writeFileSync(CONST_DIR_ROOT + '/cache.js', JSON.stringify(cache));
@@ -401,11 +401,11 @@ ClientCodeLoader = function () {
                 Logs.log("ClientJS minified success(writen)." +
                     " Size: " + js.length.toString() +
                     " Time: " + (mtime() - sTime).toString()
-                    , Logs.LEVEL_DETAIL);
+                    , Logs.LEVEL_TRACE);
             } else {
                 Logs.log("ClientJS minified [FAILED], because some error.", Logs.LEVEL_ERROR, result);
             }
-            if (result.warnings) Logs.log("code minify warnings", Logs.LEVEL_WARNING, result.warnings);
+            if (result.warnings) Logs.log("code minify warnings", Logs.LEVEL_WARN, result.warnings);
         }
     };
 
@@ -448,7 +448,7 @@ ClientCodeLoader = function () {
             return cwd.pop();
         })();
         clientConfigPath = clientSource + 'config.' + hostname + '.js';
-        Logs.log("Generate client code(client). The config file: " + clientConfigPath, Logs.LEVEL_DETAIL);
+        Logs.log("Generate client code(client). The config file: " + clientConfigPath, Logs.LEVEL_TRACE);
         jsFiles.push(clientConfigPath);
 
         code = clientCodePrepareCode(jsFiles);
@@ -496,7 +496,7 @@ ClientCodeLoader = function () {
             imgData += "<div style='display:none;'>";
             imgData += "<img src='/images/sprite.png" + getTimeKey() + "'>";
             imgData += "</div>";
-            Logs.log("Write img data cache", Logs.LEVEL_DETAIL);
+            Logs.log("Write img data cache", Logs.LEVEL_TRACE);
             FS.writeFileSync(imgJsonPath, imgData);
             // cache it
             codeImages = imgData;
@@ -570,12 +570,12 @@ ClientCodeLoader = function () {
         let list;
 
         if (!useSprite) {
-            Logs.log("SPRITESMITH [SKIPPED]", Logs.LEVEL_NOTIFY);
+            Logs.log("SPRITESMITH [SKIPPED]", Logs.LEVEL_DEBUG);
             callback();
             return;
         }
 
-        Logs.log("SPRITESMITH BEGIN", Logs.LEVEL_NOTIFY);
+        Logs.log("SPRITESMITH BEGIN", Logs.LEVEL_DEBUG);
         /**
          *@todo
          * Calculate hash, if no changes - skip it!
@@ -595,18 +595,18 @@ ClientCodeLoader = function () {
                 if (FS.existsSync(spritePathPhysic)) FS.unlinkSync(spritePathPhysic);
                 fsResult = FS.writeFileSync(spritePathPhysic, result.image, 'binary');
             }
-            Logs.log("SPRITESMITH Complete `" + spritePathPhysic + "`" + result.image.length, Logs.LEVEL_NOTIFY);
+            Logs.log("SPRITESMITH Complete `" + spritePathPhysic + "`" + result.image.length, Logs.LEVEL_DEBUG);
             spriteMap = result;
 
             let sTime = mtime();
             if (Config.Project.usePngquant) {
-                Logs.log('Pngquant begin. Sprite size:' + FS.statSync("../public/images/sprite.png")['size'], Logs.LEVEL_ALERT);
+                Logs.log('Pngquant begin. Sprite size:' + FS.statSync("../public/images/sprite.png")['size'], Logs.LEVEL_INFO);
                 cp.exec(
                     "cd ../public/images/ && pngquant *.png  --ext '.png' --force --verbose  --speed 1",
                     function () {
                         Logs.log('Pngquant finish' +
                             " time: " + (mtime() - sTime).toString() +
-                            " size: " + FS.statSync("../public/images/sprite.png")['size'], Logs.LEVEL_ALERT);
+                            " size: " + FS.statSync("../public/images/sprite.png")['size'], Logs.LEVEL_INFO);
                         //@todo run service under www-data user
                         cp.exec(' cd ../public/images/ && chmod 777 *');
                         callback();

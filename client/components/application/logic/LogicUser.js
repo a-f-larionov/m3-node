@@ -172,7 +172,7 @@ let LogicUser = function () {
     };
 
     this.setMapFriendIds = function (mapId, fids) {
-        if (!mapFriendIds[mapId] || mapFriendIds[mapId].complete) return Logs.log("hm", Logs.LEVEL_WARNING, arguments);
+        if (!mapFriendIds[mapId] || mapFriendIds[mapId].complete) return Logs.log("hm", Logs.LEVEL_WARN, arguments);
         let toLoadIds = [];
         fids.forEach(function (id) {
             if (!pendingIds[id]) {

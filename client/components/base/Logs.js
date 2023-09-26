@@ -26,7 +26,7 @@ var Logs = function () {
     this.log = function (message, level, details, channel) {
         let date, dateFormated, logText, levelTitle;
         /** Если не передан уровень, то считаем его детальным. */
-        if (!level) level = Logs.LEVEL_DETAIL;
+        if (!level) level = Logs.LEVEL_TRACE;
 
         /** Если уровень лога ниже уровня срабатывания ничего не делаем. */
         if (!channel && level < trigger_level) return;
@@ -62,7 +62,7 @@ var Logs = function () {
                     case Logs.LEVEL_ERROR:
                         console.error(" > " + logText, details);
                         break;
-                    case Logs.LEVEL_WARNING:
+                    case Logs.LEVEL_WARN:
                         console.warn(" > " + logText, details);
                         break;
                     default:
@@ -71,7 +71,7 @@ var Logs = function () {
                 }
                 break;
         }
-        if (level === Logs.LEVEL_ERROR || level === Logs.LEVEL_FATAL_ERROR) {
+        if (level === Logs.LEVEL_ERROR || level === Logs.LEVEL_ERROR) {
             if (CONST_IS_CLIENT_SIDE) {
                 //@todo client errors channel
                 SAPILogs.log(message, level, details);
@@ -79,7 +79,7 @@ var Logs = function () {
         }
         // если это фатальная ошибка - завершим работу программы.
 
-        if (level === Logs.LEVEL_FATAL_ERROR) {
+        if (level === Logs.LEVEL_ERROR) {
             throw new Error("Vse polamalos'!");
         }
     };
@@ -102,32 +102,28 @@ var Logs = function () {
     /**
      * Детально.
      */
-    this.LEVEL_DETAIL = 1;
+    this.LEVEL_TRACE = 1;
 
     /**
      * Оповещение.
      */
-    this.LEVEL_NOTIFY = 2;
+    this.LEVEL_DEBUG = 2;
 
     /**
      * Оповещение.
      */
-    this.LEVEL_ALERT = 3;
+    this.LEVEL_INFO = 3;
 
     /**
      * Внимание.
      */
-    this.LEVEL_WARNING = 4;
+    this.LEVEL_WARN = 4;
 
     /**
      * Ошибка.
      */
     this.LEVEL_ERROR = 5;
 
-    /**
-     * Фатальная ошибка.
-     */
-    this.LEVEL_FATAL_ERROR = 6;
 
     this.alert = function (level, message) {
         if (level < trigger_level) return;
@@ -136,12 +132,11 @@ var Logs = function () {
 
     let typeTitles = {};
     /** Человеко-читаемые типы логов. */
-    typeTitles[this.LEVEL_DETAIL] = 'd';
-    typeTitles[this.LEVEL_NOTIFY] = 'N';
-    typeTitles[this.LEVEL_ALERT] = '!';
-    typeTitles[this.LEVEL_WARNING] = 'w';
+    typeTitles[this.LEVEL_TRACE] = 'd';
+    typeTitles[this.LEVEL_DEBUG] = 'N';
+    typeTitles[this.LEVEL_INFO] = '!';
+    typeTitles[this.LEVEL_WARN] = 'w';
     typeTitles[this.LEVEL_ERROR] = 'E';
-    typeTitles[this.LEVEL_FATAL_ERROR] = 'FE';
 };
 /**
  * Статичный класс.
@@ -149,9 +144,9 @@ var Logs = function () {
  */
 Logs = new Logs();
 
-Logs.CHANNEL_VK_PAYMENTS = 1;
-Logs.CHANNEL_VK_STUFF = 2;
-Logs.CHANNEL_VK_HEALTH = 3;
-Logs.CHANNEL_CLIENT = 4;
+Logs.TYPE_VK_PAYMENTS = 1;
+Logs.TYPE_VK_STUFF = 2;
+Logs.TYPE_VK_HEALTH = 3;
+Logs.TYPE_CLIENT_DEBUG_INFO = 4;
 
 Logs.depends = [];

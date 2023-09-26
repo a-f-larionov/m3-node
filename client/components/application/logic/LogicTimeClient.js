@@ -29,7 +29,7 @@ let LogicTimeClient = function () {
             //            timestamp +
             //          ' gotTime:' + gotTime +
             ' timeDiff:' + timeDiff
-            , Logs.LEVEL_DETAIL);
+            , Logs.LEVEL_TRACE);
     };
 
     this.getTime = function () {

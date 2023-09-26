@@ -69,7 +69,7 @@ SocNetVK = function () {
             Logs.log("auth key mismatch, "+
                     " generated: "+expectedAuthKey+
                     " given:" + authParams.authKey,
-            Logs.LEVEL_WARNING);
+            Logs.LEVEL_WARN);
             return false;
         }
         return true;
@@ -101,24 +101,24 @@ SocNetVK = function () {
         options.port = 443;
         options.path = url;
         options.method = 'GET';
-        Logs.log("https request: " + baseHost + url, Logs.LEVEL_DETAIL);
+        Logs.log("https request: " + baseHost + url, Logs.LEVEL_TRACE);
         key = baseHost + url;
         if (data = UrlCache.get(key)) {
-            Logs.log("https answer(cached): " + data, Logs.LEVEL_DETAIL);
+            Logs.log("https answer(cached): " + data, Logs.LEVEL_TRACE);
             callback(data);
             return;
         }
         /* Далее выполняем запрос */
         req = HTTPS.request(options, function (res) {
             res.on('data', function (data) {
-                Logs.log("https answer: " + data, Logs.LEVEL_DETAIL);
+                Logs.log("https answer: " + data, Logs.LEVEL_TRACE);
                 try {
                     data = JSON.parse(data);
                     data = data.response;
                     UrlCache.set(key, data);
                     callback(data);
                 } catch (e) {
-                    Logs.log("JSON.parse error", Logs.LEVEL_WARNING, {data: data, url: url});
+                    Logs.log("JSON.parse error", Logs.LEVEL_WARN, {data: data, url: url});
                 }
             });
         });
@@ -147,20 +147,20 @@ SocNetVK = function () {
         options.port = 443;
         options.path = url;
         options.method = 'GET';
-        Logs.log("https request(oAuth): " + host + url, Logs.LEVEL_NOTIFY);
+        Logs.log("https request(oAuth): " + host + url, Logs.LEVEL_DEBUG);
         /* Далее выполняем запрос */
         req = HTTPS.request(options, function (res) {
             res.on('data', function (data) {
-                Logs.log("https answer(oAuth): " + data, Logs.LEVEL_NOTIFY);
+                Logs.log("https answer(oAuth): " + data, Logs.LEVEL_DEBUG);
                 try {
                     data = JSON.parse(data.toString());
                     if (data.error) {
-                        Logs.log("error (oAuth)", Logs.LEVEL_WARNING, data);
+                        Logs.log("error (oAuth)", Logs.LEVEL_WARN, data);
                     }
                     accessToken = data.access_token;
                     callback();
                 } catch (e) {
-                    Logs.log("JSON.parse error(oAuth)", Logs.LEVEL_WARNING, data);
+                    Logs.log("JSON.parse error(oAuth)", Logs.LEVEL_WARN, data);
                 }
             });
         });

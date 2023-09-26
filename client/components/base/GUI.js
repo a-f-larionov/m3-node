@@ -372,20 +372,20 @@ let GUI = function () {
             params = {};
         }
         if (!name) {
-            Logs.log("GUI.createElement: не определен элемент:" + name, Logs.LEVEL_FATAL_ERROR);
+            Logs.log("GUI.createElement: не определен элемент:" + name, Logs.LEVEL_ERROR);
         }
         element = new name;
         if (!element.init || typeof element.init != 'function') {
-            Logs.log("GUI.craeteElement: элемент должен иметь функцию init().", Logs.LEVEL_FATAL_ERROR, arguments);
+            Logs.log("GUI.craeteElement: элемент должен иметь функцию init().", Logs.LEVEL_ERROR, arguments);
         }
         if (!element.show || typeof element.show != 'function') {
-            Logs.log("GUI.createElement: элемент должен иметь функцию show().", Logs.LEVEL_FATAL_ERROR, arguments);
+            Logs.log("GUI.createElement: элемент должен иметь функцию show().", Logs.LEVEL_ERROR, arguments);
         }
         if (!element.hide || typeof element.hide != 'function') {
-            Logs.log("GUI.createElement: элемент должен иметь функцию hide().", Logs.LEVEL_FATAL_ERROR, arguments);
+            Logs.log("GUI.createElement: элемент должен иметь функцию hide().", Logs.LEVEL_ERROR, arguments);
         }
         if (!element.redraw || typeof element.redraw != 'function') {
-            Logs.log("GUI.createElement: элемент должен иметь функцию redraw().", Logs.LEVEL_FATAL_ERROR, arguments);
+            Logs.log("GUI.createElement: элемент должен иметь функцию redraw().", Logs.LEVEL_ERROR, arguments);
         }
         for (let i in params) {
             element[i] = params[i];

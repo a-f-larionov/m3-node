@@ -21,7 +21,7 @@ let LogicStuff = function () {
     this.getStuff = function (fieldName) {
         if (fieldName) {
             if (stuff[fieldName] === undefined) {
-                Logs.log("No Stuff:", Logs.LEVEL_FATAL_ERROR, [fieldName, stuff]);
+                Logs.log("No Stuff:", Logs.LEVEL_ERROR, [fieldName, stuff]);
             }
             return stuff[fieldName];
         }

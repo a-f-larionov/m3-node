@@ -25,16 +25,16 @@ let PageController = function () {
                 showed: false
             });
             if (!block.init) {
-                Logs.log("PageController.addPage. block must have method init(). ", Logs.LEVEL_FATAL_ERROR, block);
+                Logs.log("PageController.addPage. block must have method init(). ", Logs.LEVEL_ERROR, block);
             }
             if (!block.show) {
-                Logs.log("PageController.addPage. block must have method show().", Logs.LEVEL_FATAL_ERROR, block);
+                Logs.log("PageController.addPage. block must have method show().", Logs.LEVEL_ERROR, block);
             }
             if (!block.hide) {
-                Logs.log("PageController.addPage. block must have method hide()", Logs.LEVEL_FATAL_ERROR, block);
+                Logs.log("PageController.addPage. block must have method hide()", Logs.LEVEL_ERROR, block);
             }
             if (!block.redraw) {
-                Logs.log("PageController.addPage. block must have method redraw()", Logs.LEVEL_FATAL_ERROR, block);
+                Logs.log("PageController.addPage. block must have method redraw()", Logs.LEVEL_ERROR, block);
             }
             block.init();
         });

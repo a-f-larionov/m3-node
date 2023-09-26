@@ -25,7 +25,7 @@ var DataUser = function () {
                 } else {
                     autoIncrementValue = rows[0].maxId + 1;
                 }
-                Logs.log("users.autoincrementId:" + autoIncrementValue, Logs.LEVEL_NOTIFY, rows);
+                Logs.log("users.autoincrementId:" + autoIncrementValue, Logs.LEVEL_DEBUG, rows);
                 afterInitCallback();
             });
     };
@@ -143,7 +143,7 @@ var DataUser = function () {
         DB.insert(tableName, user, function (result) {
             if (result.insertId !== user.id) {
                 Logs.log("DataUser.createFromSocNet. result.insertId != user.id",
-                    Logs.LEVEL_FATAL_ERROR, {
+                    Logs.LEVEL_ERROR, {
                     user: user,
                     autoIncrementValue: autoIncrementValue,
                     result: result
@@ -192,7 +192,7 @@ var DataUser = function () {
      */
     this.clearCache = function (userId) {
         if (!userId) {
-            Logs.log("DataUser.clearCache. Must be userId", Logs.LEVEL_WARNING, userId);
+            Logs.log("DataUser.clearCache. Must be userId", Logs.LEVEL_WARN, userId);
             return;
         }
         if (cache[userId]) {
@@ -207,7 +207,7 @@ var DataUser = function () {
     // this.cacheUpdateLastLogin = function (userId) {
     //     let time;
     //     if (!userId) {
-    //         Logs.log("DataUser.cacheUpdateLastLogin. Must be userId", Logs.LEVEL_WARNING, userId);
+    //         Logs.log("DataUser.cacheUpdateLastLogin. Must be userId", Logs.LEVEL_WARN, userId);
     //         return;
     //     }
     //     if (cache[userId]) {

@@ -142,7 +142,7 @@ var Kafka = function () {
 
     this.init = function (afterInitCallback) {
 
-        Logs.log("Kafka Init create Pool.", Logs.LEVEL_NOTIFY);
+        Logs.log("Kafka Init create Pool.", Logs.LEVEL_DEBUG);
         afterInitCallback();
     };
 

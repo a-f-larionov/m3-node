@@ -56,7 +56,7 @@ DataStuff = function () {
                         + userId + " "
                         + fieldName + " +" + quantity +
                         " current:" + stuff[fieldName] + " OK",
-                        Logs.LEVEL_NOTIFY, undefined, Logs.CHANNEL_VK_STUFF);
+                        Logs.LEVEL_DEBUG, undefined, Logs.TYPE_VK_STUFF);
                     if (callback) callback(true, stuff[fieldName]);
                     done();
                 });
@@ -73,13 +73,13 @@ DataStuff = function () {
                 " WHERE `userId` = " + parseInt(userId), function (data) {
 
                 if (data[0][fieldName] < quantity) {
-                    Logs.log("No more stuff `" + fieldName + "` !", Logs.LEVEL_WARNING, {
+                    Logs.log("No more stuff `" + fieldName + "` !", Logs.LEVEL_WARN, {
                         userId: userId,
                         quantity: quantity,
                         goldQty: data[0][fieldName]
                     });
                     Logs.log("vk_stuff tid:" + tid + " uid:" + userId + " " + fieldName
-                        + " -" + quantity + " CANCEL", Logs.LEVEL_ALERT, data, Logs.CHANNEL_VK_STUFF);
+                        + " -" + quantity + " CANCEL", Logs.LEVEL_INFO, data, Logs.TYPE_VK_STUFF);
                     done();
                     if (callback) callback(false);
                     return;
@@ -90,7 +90,7 @@ DataStuff = function () {
                     " WHERE `userId` = " + parseInt(userId), function () {
                     Logs.log("vk_stuff tid:" + tid + " uid:" + userId + " "
                         + fieldName + " -" + quantity + " current:" + (data[0][fieldName] - quantity) + " OK",
-                        Logs.LEVEL_NOTIFY, undefined, Logs.CHANNEL_VK_STUFF);
+                        Logs.LEVEL_DEBUG, undefined, Logs.TYPE_VK_STUFF);
                     done();
                     if (callback) callback(true, (data[0][fieldName] - quantity));
                 });

@@ -12,14 +12,14 @@ SocNet = function (socNetTypeId) {
             return SocNetStandalone;
             break;
         default:
-            Logs.log("Wrong soc net type", Logs.LEVEL_FATAL_ERROR);
+            Logs.log("Wrong soc net type", Logs.LEVEL_ERROR);
             break;
     }
 };
 
 SocNet.init = function (afterInitCallBack) {
 
-    Logs.log("SocNet inited", Logs.LEVEL_NOTIFY);
+    Logs.log("SocNet inited", Logs.LEVEL_DEBUG);
 
     SocNetVK.init(function () {
 

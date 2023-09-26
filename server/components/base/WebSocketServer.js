@@ -32,16 +32,16 @@ WebSocketServer = function () {
      */
     let checkBeforeRun = function () {
         if (typeof self.onConnect != 'function') {
-            Logs.log("onConnect must be function", Logs.LEVEL_FATAL_ERROR, self.onConnect);
+            Logs.log("onConnect must be function", Logs.LEVEL_ERROR, self.onConnect);
         }
         if (typeof self.onDisconnect != 'function') {
-            Logs.log("onDisconnect must be function", Logs.LEVEL_FATAL_ERROR, self.onDisconnect);
+            Logs.log("onDisconnect must be function", Logs.LEVEL_ERROR, self.onDisconnect);
         }
         if (typeof self.onData != 'function') {
-            Logs.log("onData must be function", Logs.LEVEL_FATAL_ERROR, self.onData);
+            Logs.log("onData must be function", Logs.LEVEL_ERROR, self.onData);
         }
         if (typeof port != 'number') {
-            Logs.log("port given by .setup, must be number", Logs.LEVEL_FATAL_ERROR, port);
+            Logs.log("port given by .setup, must be number", Logs.LEVEL_ERROR, port);
         }
     };
 
@@ -84,7 +84,7 @@ WebSocketServer = function () {
     this.sendData = function (data, id) {
         if (!connectionStack[id]) {
             //@todo set alert
-            Logs.log("undefined connection:" + id + " with data:" + data, Logs.LEVEL_DETAIL);
+            Logs.log("undefined connection:" + id + " with data:" + data, Logs.LEVEL_TRACE);
             return false;
         }
         //send here to client
@@ -133,7 +133,7 @@ WebSocketServer = function () {
         });
         server.on('request', onWebSocketRequest);
 
-        Logs.log("WebSocketServer running. port:" + port, Logs.LEVEL_NOTIFY);
+        Logs.log("WebSocketServer running. port:" + port, Logs.LEVEL_DEBUG);
         afterRunCallback();
     };
 
@@ -171,11 +171,11 @@ WebSocketServer = function () {
         connection = request.accept(null, request.origin);
         id = ++lastId;
         connectionStack[id] = connection;
-        Logs.log("WebSocketServer.onConnected: id=" + id, Logs.LEVEL_DETAIL);
+        Logs.log("WebSocketServer.onConnected: id=" + id, Logs.LEVEL_TRACE);
         self.onConnect(id);
         connection.on('message', function (message) {
             if (message.type === 'utf8') {
-                /* Logs.log("Получены данные.", Logs.LEVEL_DETAIL, message.utf8Data); */
+                /* Logs.log("Получены данные.", Logs.LEVEL_TRACE, message.utf8Data); */
                 lastConnectionId = id;
                 self.onData(serverDecrypt(message.utf8Data), id);
             } else {
@@ -191,7 +191,7 @@ WebSocketServer = function () {
             }
         });
         connection.on('error', function (err) {
-            Logs.log("con err", Logs.LEVEL_ALERT, err);
+            Logs.log("con err", Logs.LEVEL_INFO, err);
         });
         connection.on('close', function () {
             Logs.log("WebSocketServer.onDisconnected: id=" + id);

@@ -211,7 +211,7 @@ function Loader() {
             }
         }
         sequencedInit(function (afterInitCallback) {
-            Logs.log("Pre init finished.", Logs.LEVEL_NOTIFY);
+            Logs.log("Pre init finished.", Logs.LEVEL_DEBUG);
             afterInitCallback();
         });
         log('step 6.2 - call init');
@@ -222,7 +222,7 @@ function Loader() {
             }
         }
         sequencedInit(function (afterInitCallback) {
-            Logs.log("Сервер запущен.", Logs.LEVEL_ALERT);
+            Logs.log("Сервер запущен.", Logs.LEVEL_INFO);
             afterInitCallback();
             callback();
         });

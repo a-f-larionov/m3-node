@@ -68,7 +68,7 @@ LogicSystemRequests = function () {
             }
         }
 
-        Logs.log("Перезапуск сервера руками", Logs.LEVEL_ALERT);
+        Logs.log("Перезапуск сервера руками", Logs.LEVEL_INFO);
         callback('<pre>' + "Shutdown executed!" + Date.now() + '</pre>');
         deInitBeforeShutdown(function () {
             process.exit();
@@ -82,15 +82,15 @@ LogicSystemRequests = function () {
     };
 
     this.logsSetDetail = function (callback) {
-        Logs.setLevel(Logs.LEVEL_DETAIL);
+        Logs.setLevel(Logs.LEVEL_TRACE);
         setTimeout(function () {
-            Logs.setLevel(Logs.LEVEL_NOTIFY);
+            Logs.setLevel(Logs.LEVEL_DEBUG);
         }, 1000 * 60 * 10);
         callback("set detail log level by a time " + Date.now());
     };
 
     this.logsSetNotify = function (callback) {
-        Logs.setLevel(Logs.LEVEL_NOTIFY);
+        Logs.setLevel(Logs.LEVEL_DEBUG);
         callback("set detail log level " + Date.now());
     };
 };

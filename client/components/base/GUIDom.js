@@ -138,7 +138,7 @@ let GUIDom = function () {
         let eventName;
         eventName = GUI.eventNames[eventId];
         if (!eventName) {
-            Logs.log("undefined gui eventId:" + eventId, Logs.LEVEL_FATAL_ERROR);
+            Logs.log("undefined gui eventId:" + eventId, Logs.LEVEL_ERROR);
         }
         dom.addEventListener(eventName, function (event) {
             if (GUI.lockEventsExcept) {

@@ -29,7 +29,7 @@ var Logs = function () {
     this.log = function (message, level, details, channel, telega) {
         let date, dateFormated, logText, levelTitle;
         /** Если не передан уровень, то считаем его детальным. */
-        if (!level) level = Logs.LEVEL_DETAIL;
+        if (!level) level = Logs.LEVEL_TRACE;
 
         /** Если уровень лога ниже уровня срабатывания ничего не делаем. */
         if (!channel && level < trigger_level) return;
@@ -65,7 +65,7 @@ var Logs = function () {
                     case Logs.LEVEL_ERROR:
                         console.error(" > " + logText, details);
                         break;
-                    case Logs.LEVEL_WARNING:
+                    case Logs.LEVEL_WARN:
                         console.warn(" > " + logText, details);
                         break;
                     default:
@@ -73,20 +73,20 @@ var Logs = function () {
                         break;
                 }
                 break;
-            case Logs.CHANNEL_VK_PAYMENTS:
+            case Logs.TYPE_VK_PAYMENTS:
                 FS.writeFile(CONST_DIR_SERVER + '/logs/vk_payments.log', logText + details + "\r\n", {flag: 'a'}, function () {
                 });
                 telega = true;
                 break;
-            case Logs.CHANNEL_VK_STUFF:
+            case Logs.TYPE_VK_STUFF:
                 FS.writeFile(CONST_DIR_SERVER + '/logs/vk_stuff.log', logText + details + "\r\n", {flag: 'a'}, function () {
                 });
                 break;
-            case Logs.CHANNEL_VK_HEALTH:
+            case Logs.TYPE_VK_HEALTH:
                 FS.writeFile(CONST_DIR_SERVER + '/logs/vk_health.log', logText + details + "\r\n", {flag: 'a'}, function () {
                 });
                 break;
-            case Logs.CHANNEL_CLIENT:
+            case Logs.TYPE_CLIENT_DEBUG_INFO:
                 FS.writeFile(CONST_DIR_SERVER + '/logs/client.log', logText + details + "\r\n", {flag: 'a'}, function () {
                 });
                 telega = true;
@@ -95,8 +95,8 @@ var Logs = function () {
                 telega = true;
                 break;
         }
-        if (level >= Logs.LEVEL_ALERT) telega = true;
-        if (level === Logs.LEVEL_ERROR || level === Logs.LEVEL_FATAL_ERROR) {
+        if (level >= Logs.LEVEL_INFO) telega = true;
+        if (level === Logs.LEVEL_ERROR || level === Logs.LEVEL_ERROR) {
             if (CONST_IS_CLIENT_SIDE) {
                 //@todo client errors channel
                 SAPILogs.log(message, level, details);
@@ -107,8 +107,8 @@ var Logs = function () {
         if (CONST_IS_SERVER_SIDE && telega) {
             telegramSent(message + details);
         }
-        if (level === Logs.LEVEL_FATAL_ERROR) {
-            throw new Error("Vse polamalos'!");
+        if (level === Logs.LEVEL_ERROR) {
+           // throw new Error("Vse polamalos'!");
         }
     };
 
@@ -152,10 +152,6 @@ var Logs = function () {
      */
     this.LEVEL_ERROR = 5;
 
-    /**
-     * Фатальная ошибка.
-     */
-    this.LEVEL_FATAL_ERROR = 6;
 
     this.alert = function (level, message) {
         if (level < trigger_level) return;
@@ -164,12 +160,11 @@ var Logs = function () {
 
     let typeTitles = {};
     /** Человеко-читаемые типы логов. */
-    typeTitles[this.LEVEL_DETAIL] = 'd';
-    typeTitles[this.LEVEL_NOTIFY] = 'N';
-    typeTitles[this.LEVEL_ALERT] = '!';
-    typeTitles[this.LEVEL_WARNING] = 'w';
+    typeTitles[this.LEVEL_TRACE] = 'd';
+    typeTitles[this.LEVEL_DEBUG] = 'N';
+    typeTitles[this.LEVEL_INFO] = '!';
+    typeTitles[this.LEVEL_WARN] = 'w';
     typeTitles[this.LEVEL_ERROR] = 'E';
-    typeTitles[this.LEVEL_FATAL_ERROR] = 'FE';
 };
 
 Logs = new Logs();

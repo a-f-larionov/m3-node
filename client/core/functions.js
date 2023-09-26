@@ -26,7 +26,7 @@ let getQueryVariable = function (variable) {
             return pair[1];
         }
     }
-    Logs.log('Query Variable ' + variable + ' not found', Logs.LEVEL_WARNING);
+    Logs.log('Query Variable ' + variable + ' not found', Logs.LEVEL_WARN);
 };
 
 /**

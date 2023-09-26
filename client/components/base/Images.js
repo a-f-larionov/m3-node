@@ -63,7 +63,7 @@ let Images = function () {
         if (!url || !window.i_d[url]) {
             if (notfounds.indexOf(url) !== -1) return notFoundImg;
             notfounds.push(url);
-            Logs.log("Image url not found for: " + url, Logs.LEVEL_WARNING);
+            Logs.log("Image url not found for: " + url, Logs.LEVEL_WARN);
             notFoundImg.path = '';
             return notFoundImg;
         }
