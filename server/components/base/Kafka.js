@@ -41,22 +41,21 @@ const run = async () => {
             //     message: message
             // })
 
-
+            // to client
             try {
                 switch (message.headers.__TypeId__.toString()) {
 
+                    // USERS
                     case 'm3.users.dto.rs.UpdateUserListInfoRsDto':
-                        CAPIUser.updateUserListInfo(
-                            msg.userId,
+                        CAPIUser.updateUserListInfo(msg.userId,
                             msg.list
                         );
                         break;
                     case 'm3.users.dto.rs.AuthSuccessRsDto':
-                        let cntx = ApiRouter.getConnectContext(msg.connectionId);
+                        var cntx = ApiRouter.getConnectContext(msg.connectionId);
 
                         LogicUser.userAddConn(msg.id, msg.socNetUserId, cntx);
-                        CAPIUser.authorizeSuccess(
-                            msg.userId,
+                        CAPIUser.authorizeSuccess(msg.userId,
                             {
                                 id: msg.id,
                                 connectionId: msg.connectionId,
@@ -78,42 +77,39 @@ const run = async () => {
                         break;
                     case 'm3.users.dto.rs.GotMapFriendIdsRsDto':
                         console.log(CAPIUser.gotMapFriendIds);
-                        CAPIUser.gotMapFriendIds(
-                            msg.userId,
+                        CAPIUser.gotMapFriendIds(msg.userId,
                             msg.mapId,
                             msg.ids);
                         break;
                     case 'm3.users.dto.rs.GotFriendsIdsRsDto':
-                        CAPIUser.gotFriendsIds(
-                            msg.userId,
+                        CAPIUser.gotFriendsIds(msg.userId,
                             msg.fids
                         );
                         break;
                     case 'm3.users.dto.rs.GotTopUsersRsDto':
-                        CAPIUser.gotTopUsers(
-                            msg.userId,
+                        CAPIUser.gotTopUsers(msg.userId,
                             msg.users
                         );
                         break;
                     case 'm3.users.dto.rs.SendMeScoresRsDto':
-                        CAPIUser.gotScores(
-                            msg.userId,
+                        CAPIUser.gotScores(msg.userId,
                             msg.pids,
                             msg.uids
                         );
                         break;
                     case 'm3.users.dto.rs.SetOneHealthHideRsDto':
-                        CAPIUser.setOneHealthHide(
-                            msg.userId,
+                        CAPIUser.setOneHealthHide(msg.userId,
                             msg.oneHealthHide,
                             msg.fullRecoveryTime
                         );
                         break;
                     case 'm3.users.dto.rs.UpdateUserInfoRsDto':
-                        CAPIUser.updateUserInfo(
-                            msg.userId,
-                            msg
-                        );
+                        CAPIUser.updateUserInfo(msg.userId, msg);
+                        break;
+                    // COMMMON
+                    case 'm3.common.dto.rs.UpdateTimeRsDto':
+                        var cntx = ApiRouter.getConnectContext(msg.connectionId);
+                        CAPITimeServer.gotServerTime(cntx, msg);
                         break;
                     default:
                         console.log("Not found method");
@@ -161,12 +157,12 @@ var Kafka = function () {
         this.send(this.TOPIC_STUFF, fields, type);
     }
 
-    this.sendToPayment = function(fields, userId, type){
+    this.sendToPayment = function (fields, userId, type) {
         fielsd.userId = userId;
         this.send(this.TOPIC_PAYMENTS, fields, type);
     }
 
-    this.sendToCommon = function (fields, type) {
+    this.sendToCommon = function (fields, userId, type) {
         this.send(this.TOPIC_COMMON, fields, type);
     };
 

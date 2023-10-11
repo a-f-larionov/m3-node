@@ -91,7 +91,7 @@ var Logs = function () {
                 });
                 telega = true;
                 break;
-            case Logs.CHANNEL_TELEGRAM:
+            case Logs.TYPE_TELEGRAM:
                 telega = true;
                 break;
         }
@@ -169,11 +169,11 @@ var Logs = function () {
 
 Logs = new Logs();
 
-Logs.CHANNEL_VK_PAYMENTS = 1;
-Logs.CHANNEL_VK_STUFF = 2;
-Logs.CHANNEL_VK_HEALTH = 3;
-Logs.CHANNEL_CLIENT = 4;
-Logs.CHANNEL_TELEGRAM = 5;
+Logs.TYPE_VK_PAYMENTS = 1;
+Logs.TYPE_VK_STUFF = 2;
+Logs.TYPE_VK_HEALTH = 3;
+Logs.TYPE_CLIENT_DEBUG_INFO = 4;
+Logs.TYPE_TELEGRAM = 5;
 
 Logs.depends = [];
 global['Logs'] = Logs

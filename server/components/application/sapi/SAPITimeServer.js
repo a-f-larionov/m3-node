@@ -19,7 +19,7 @@ SAPITimeServer = function () {
         );
         pFinish(prid);
         //@todo-method
-        //Kafka.sendToCommon({}, cntx.user.id, "SendMeTimeRqDto");
+        Kafka.sendToCommon({connectionId : cntx.cid}, undefined, "SendMeTimeRqDto");
     };
 };
 

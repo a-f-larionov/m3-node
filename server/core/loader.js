@@ -223,6 +223,7 @@ function Loader() {
         }
         sequencedInit(function (afterInitCallback) {
             Logs.log("Сервер запущен.", Logs.LEVEL_INFO);
+            Logs.log("Api-Gate запущен.", Logs.LEVEL_INFO, null, null, true);
             afterInitCallback();
             callback();
         });
