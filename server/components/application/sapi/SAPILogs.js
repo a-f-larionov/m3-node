@@ -16,7 +16,7 @@ SAPILogs = function () {
     };
 
     this.sendUserAgent = function (cntx, userAgentString) {
-        DataUser.updateUserAgentString(cntx.user.id, userAgentString);
+      //  DataUser.updateUserAgentString(cntx.user.id, userAgentString);
         //@todo-method
         Kafka.sendToCommon({userAgentString: userAgentString}, cntx.user.id, "SendUserAgentRqDto")
     };

@@ -53,7 +53,6 @@ const run = async () => {
                         break;
                     case 'm3.users.dto.rs.AuthSuccessRsDto':
                         var cntx = ApiRouter.getConnectContext(msg.connectionId);
-
                         LogicUser.userAddConn(msg.id, msg.socNetUserId, cntx);
                         CAPIUser.authorizeSuccess(msg.userId,
                             {
@@ -109,7 +108,10 @@ const run = async () => {
                     // COMMMON
                     case 'm3.common.dto.rs.UpdateTimeRsDto':
                         var cntx = ApiRouter.getConnectContext(msg.connectionId);
-                        CAPITimeServer.gotServerTime(cntx, msg);
+                        ApiRouter.executeRequest("CAPITimeServer", "gotServerTime", [msg.timestamp], [cntx]);
+                        break;
+                    case 'm3.common.dto.rs.ErrorRsDto':
+                        CAPILog.log(msg.userId, msg);
                         break;
                     default:
                         console.log("Not found method");
@@ -128,7 +130,6 @@ run().catch(console.error);
  * @type {Kafka}
  */
 var Kafka = function () {
-    let self = this;
 
     this.TOPIC_USERS = "topic-users";
     this.TOPIC_MAP_AND_POINTS = "topic-map-and-points";
@@ -136,37 +137,43 @@ var Kafka = function () {
     this.TOPIC_COMMON = "topic-common";
     this.TOPIC_PAYMENTS = "topic-payments";
 
-    this.init = function (afterInitCallback) {
+    this.RQ_NAMESPACE_PREFIX_USERS = "m3.users.dto.rq";
+    this.RQ_NAMESPACE_PREFIX_MAP_AND_POINTS = "m3.map.and.points.dto.rq";
+    this.RQ_NAMESPACE_PREFIX_STUFF = "m3.stuff.dto.rq";
+    this.RQ_NAMESPACE_PREFIX_PAYMENTS = "m3.payments.dto.rq";
+    this.RQ_NAMESPACE_PREFIX_COMMON = "m3.common.dto.rq";
 
+    this.init = function (afterInitCallback) {
         Logs.log("Kafka Init create Pool.", Logs.LEVEL_DEBUG);
         afterInitCallback();
     };
 
     this.sendToUsers = function (fields, userId, type) {
         fields.userId = userId;
-        this.send(this.TOPIC_USERS, fields, type);
+        this.send(this.TOPIC_USERS, fields, type, this.RQ_NAMESPACE_PREFIX_USERS);
     }
 
     this.sendToMapAndPoints = function (fields, userId, type) {
         fields.userId = userId;
-        this.send(this.TOPIC_MAP_AND_POINTS, fields, type);
+        this.send(this.TOPIC_MAP_AND_POINTS, fields, type, this.RQ_NAMESPACE_PREFIX_MAP_AND_POINTS);
     }
 
     this.sendToStuff = function (fields, userId, type) {
         fields.userId = userId;
-        this.send(this.TOPIC_STUFF, fields, type);
+        this.send(this.TOPIC_STUFF, fields, type, this.RQ_NAMESPACE_PREFIX_STUFF);
     }
 
-    this.sendToPayment = function (fields, userId, type) {
-        fielsd.userId = userId;
-        this.send(this.TOPIC_PAYMENTS, fields, type);
+    this.sendToPayments = function (fields, userId, type) {
+        fields.userId = userId;
+        this.send(this.TOPIC_PAYMENTS, fields, type, this.RQ_NAMESPACE_PREFIX_PAYMENTS);
     }
 
     this.sendToCommon = function (fields, userId, type) {
-        this.send(this.TOPIC_COMMON, fields, type);
+        fields.userId = userId;
+        this.send(this.TOPIC_COMMON, fields, type, this.RQ_NAMESPACE_PREFIX_COMMON);
     };
 
-    this.send = function (topic, value, type) {
+    this.send = function (topic, value, type, rqNamespacePrefix) {
         console.log("KAFKA>>> " + topic, type, JSON.stringify(value));
         producer.send({
             topic: topic,
@@ -174,7 +181,7 @@ var Kafka = function () {
                 {
                     value: JSON.stringify(value),
                     headers: {
-                        '__TypeId__': "m3.users.dto.rq." + type
+                        '__TypeId__': rqNamespacePrefix + "." + type
                     }
                 }
             ]

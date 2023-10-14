@@ -14,7 +14,6 @@
 /* Include nodeJS modules. */
 let FS = require('fs');
 let PATH = require('path');
-let OS = require('os');
 
 var loader = new Loader();
 console.log('step 1 - include constants');
@@ -214,7 +213,7 @@ function Loader() {
             Logs.log("Pre init finished.", Logs.LEVEL_DEBUG);
             afterInitCallback();
         });
-        log('step 6.2 - call init');
+        log('step 6.2 - call init'); 
         // init
         for (name in componentsMap) {
             if (global[name].init) {
@@ -228,4 +227,4 @@ function Loader() {
             callback();
         });
     }
-};
+}

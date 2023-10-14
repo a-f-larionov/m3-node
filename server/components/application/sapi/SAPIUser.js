@@ -57,7 +57,7 @@ SAPIUser = function () {
         Kafka.sendToCommon({
             message: "🥰 ",
             detail: SocNet(SocNet.TYPE_VK).getUserProfileUrl(authParams.socNetUserId)
-        }, undefined, "TelegramRqDTO");
+        }, undefined, "TelegramRqDto");
 
         authParams.connectionId = cntx.cid;
         Kafka.sendToUsers(authParams, undefined, "AuthRqDto");
