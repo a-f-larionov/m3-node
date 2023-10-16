@@ -153,25 +153,25 @@ var Kafka = function () {
         this.send(this.TOPIC_USERS, fields, type, this.RQ_NAMESPACE_PREFIX_USERS);
     }
 
-    this.sendToMapAndPoints = function (fields, userId, type) {
-        fields.userId = userId;
-        this.send(this.TOPIC_MAP_AND_POINTS, fields, type, this.RQ_NAMESPACE_PREFIX_MAP_AND_POINTS);
-    }
-
-    this.sendToStuff = function (fields, userId, type) {
-        fields.userId = userId;
-        this.send(this.TOPIC_STUFF, fields, type, this.RQ_NAMESPACE_PREFIX_STUFF);
-    }
-
-    this.sendToPayments = function (fields, userId, type) {
-        fields.userId = userId;
-        this.send(this.TOPIC_PAYMENTS, fields, type, this.RQ_NAMESPACE_PREFIX_PAYMENTS);
-    }
-
     this.sendToCommon = function (fields, userId, type) {
         fields.userId = userId;
         this.send(this.TOPIC_COMMON, fields, type, this.RQ_NAMESPACE_PREFIX_COMMON);
     };
+
+    this.sendToMapAndPoints = function (fields, userId, type) {
+        fields.userId = userId;
+        //this.send(this.TOPIC_MAP_AND_POINTS, fields, type, this.RQ_NAMESPACE_PREFIX_MAP_AND_POINTS);
+    }
+
+    this.sendToStuff = function (fields, userId, type) {
+        fields.userId = userId;
+        //this.send(this.TOPIC_STUFF, fields, type, this.RQ_NAMESPACE_PREFIX_STUFF);
+    }
+
+    this.sendToPayments = function (fields, userId, type) {
+        fields.userId = userId;
+        //this.send(this.TOPIC_PAYMENTS, fields, type, this.RQ_NAMESPACE_PREFIX_PAYMENTS);
+    }
 
     this.send = function (topic, value, type, rqNamespacePrefix) {
         console.log("KAFKA>>> " + topic, type, JSON.stringify(value));

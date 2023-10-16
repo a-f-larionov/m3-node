@@ -99,7 +99,7 @@ var Logs = function () {
         if (level === Logs.LEVEL_ERROR || level === Logs.LEVEL_ERROR) {
             if (CONST_IS_CLIENT_SIDE) {
                 //@todo client errors channel
-                SAPILogs.log(message, level, details);
+                SAPILogs.log(undefined, message, level, details, true);
             }
         }
         // если это фатальная ошибка - завершим работу программы.

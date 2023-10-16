@@ -48,16 +48,11 @@ SAPIUser = function () {
 
         /** Тут мы запомним его cid раз и на всегда */
         //@Todo remove after realis Log service
-        Logs.log("🥰 ", Logs.LEVEL_NOTIFY,
-            SocNet(SocNet.TYPE_VK).getUserProfileUrl(authParams.socNetUserId),
-            Logs.CHANNEL_TELEGRAM
-        );
-
-        //@todo-method and move to users service
-        Kafka.sendToCommon({
-            message: "🥰 ",
-            detail: SocNet(SocNet.TYPE_VK).getUserProfileUrl(authParams.socNetUserId)
-        }, undefined, "TelegramRqDto");
+        // Logs.log("🥰 ", Logs.LEVEL_NOTIFY,
+        //     SocNet(SocNet.TYPE_VK).getUserProfileUrl(authParams.socNetUserId),
+        //     Logs.CHANNEL_TELEGRAM
+        // );
+        SAPILogs.log(cntx, "🥰 ", Logs.LEVEL_INFO, SocNet(SocNet.TYPE_VK).getUserProfileUrl(authParams.socNetUserId), true);
 
         authParams.connectionId = cntx.cid;
         Kafka.sendToUsers(authParams, undefined, "AuthRqDto");
