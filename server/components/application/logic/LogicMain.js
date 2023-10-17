@@ -34,7 +34,6 @@ LogicMain = function () {
             '/service/--counters': LogicSystemRequests.getCounters,
             '/service/--get-statistics': Statistic.getReport,
             '/service/--get-online': LogicSystemRequests.getOnline,
-            '/service/--reload-levels': LogicSystemRequests.reloadLevels,
             '/service/--logs-set-detail': LogicSystemRequests.logsSetDetail,
             '/service/--logs-set-notify': LogicSystemRequests.logsSetNotify,
             '/service/--shutdown___': LogicSystemRequests.shutdown,

@@ -6,30 +6,20 @@ const DataPoints = require("../../application/data/DataPoints.js").DataPoints
 SAPIMap = function () {
 
     this.sendMeMapInfo = function (cntx, mapId) {
-        let map, points, prid;
-        if (!cntx.isAuthorized) return Logs.log(arguments.callee.name + " not authorized", Logs.LEVEL_WARNING, cntx);
-        if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
-        if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
-
-        if (!(mapId = Validator.DBUINT(mapId))) return Logs.log("no map id:" + mapId, Logs.LEVEL_WARNING, arguments);
+        let map, points;
 
         if (!DataMap.existsMap(mapId)) return Logs.log("no map found:" + mapId, Logs.LEVEL_WARNING, cntx);
 
-        prid = pStart(Profiler.ID_SAPIMAP_SEND_ME_MAP_INFO);
         map = DataMap.getMap(mapId);
         points = DataPoints.getPointsByMapId(mapId);
 
         CAPIMap.gotMapsInfo(cntx.userId, mapId, map, points);
 
-        pFinish(prid);
         //@todo-method
         Kafka.sendToMapAndPoints({mapId: mapId}, cntx.user.id, "SendMeMapInfoRqDto");
     };
 
     this.sendMePointTopScore = function (cntx, score, pointId, fids, chunks) {
-        if (!cntx.isAuthorized) return Logs.log(arguments.callee.name + " not authorized", Logs.LEVEL_WARNING, cntx);
-        if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
-        if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
 
         if (chunks > 1) Logs.log("More then one chunk", Logs.LEVEL_ALERT, cntx);
 
@@ -37,8 +27,6 @@ SAPIMap = function () {
         if (!(pointId = Validator.DBUINT(pointId))) return Logs.log(arguments.callee.name + " not valid pointId", Logs.LEVEL_ALERT, arguments);
         if (!(fids = Validator.DBUINTArray(fids))) return Logs.log(arguments.callee.name + "not valid fids", Logs.LEVEL_ALERT, arguments);
 
-        let pridNoCached = pStart(Profiler.ID_SAPIMAP_SEND_ME_POINT_TOP_SCORE);
-        let pridCached = pStart(Profiler.ID_SAPIMAP_SEND_ME_POINT_TOP_SCORE_CACHED);
 
         //@todo-method
         Kafka.sendToMapAndPoints({
@@ -62,15 +50,12 @@ SAPIMap = function () {
                         };
                         TopScoreCache.set(cntx.user.id, pointId, out);
                         CAPIMap.gotPointTopScore(cntx.user.id, pointId, out);
-                        pFinish(pridNoCached);
-                        Profiler.clear(pridCached);
                     });
 
                 });
             } else {
                 CAPIMap.gotPointTopScore(cntx.user.id, pointId, data);
-                pFinish(pridCached);
-                Profiler.clear(pridNoCached);
+
             }
         });
     };
@@ -83,14 +68,9 @@ SAPIMap = function () {
      * @param chestId
      */
     this.onFinish = function (cntx, pointId, score, chestId) {
-        if (!cntx.isAuthorized) return Logs.log(arguments.callee.name + " not authorized", Logs.LEVEL_WARNING, cntx);
-        if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
-        if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
-
         //@todo-method and move to users i think
         Kafka.sendToMapAndPoints({pointId: pointId, score: score, chestId: chestId}, cntx.user.id, "OnFinishRqDto");
         //@todo this is no health back, is it finish, health back on sapiuser
-        let prid = pStart(Profiler.ID_SAPIUSER_ONFINISH);
         let tid = LogicTid.getOne();
         /** Обновляем номер точки и очки на ней */
         DataPoints.updateUsersPoints(cntx.userId, pointId, score, function () {
@@ -112,11 +92,9 @@ SAPIMap = function () {
                         /** Откроем сундук, если возможно */
                         //@todo check map stars
                         if (chestId) {
-                            let prid2 = pStart(Profiler.ID_SAPIMAP_OPEN_CHEST);
                             let chest = DataChests.getById(chestId);
 
                             if (!chest) {
-                                pClear(prid2);
                                 return Logs.log("no chest found for " + chestId, Logs.LEVEL_WARNING, arguments);
                             } else {
                                 Logs.log("Chest open uid:" + cntx.user.id + " cid:" + chestId, Logs.LEVEL_ALERT);
@@ -144,34 +122,11 @@ SAPIMap = function () {
                                 }
                             });
                             //@todo LOCK many hummer light shuffle and gold
-                            pFinish(prid2);
-                            pFinish(prid);
                         } else {
-                            pFinish(prid);
                         }
                     });
                 }
             });
-        });
-    };
-
-    this.reloadLevels = function (cntx) {
-        if (!cntx.isAuthorized) return Logs.log(arguments.callee.name + " not authorized", Logs.LEVEL_WARNING, cntx);
-        if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARNING, cntx);
-        if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARNING, cntx);
-
-        //@todo-method
-        Kafka.sendToMapAndPoints({}, cntx.user.id, "ReloadLevelsRqDto");
-
-        DataUser.getById(cntx.user.id, function (user) {
-            if (!
-                (user.id === 1 || user.socNetUserId === 1)
-            ) {
-                Logs.log("ERROR", Logs.LEVEL_ERROR);
-                return;
-            }
-
-            LogicSystemRequests.reloadLevels();
         });
     };
 };

@@ -160,7 +160,7 @@ var Kafka = function () {
 
     this.sendToMapAndPoints = function (fields, userId, type) {
         fields.userId = userId;
-        //this.send(this.TOPIC_MAP_AND_POINTS, fields, type, this.RQ_NAMESPACE_PREFIX_MAP_AND_POINTS);
+        this.send(this.TOPIC_MAP_AND_POINTS, fields, type, this.RQ_NAMESPACE_PREFIX_MAP_AND_POINTS);
     }
 
     this.sendToStuff = function (fields, userId, type) {
