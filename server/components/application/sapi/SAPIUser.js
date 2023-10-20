@@ -97,19 +97,19 @@ SAPIUser = function () {
         Statistic.write(cntx.user.id, Statistic.ID_START_PLAY, pointId);
         Kafka.sendToUsers({pointId: pointId}, cntx.user.id, "HealthDownRqDto"); /* healthDown*/
         //@todo-method
-        Kafka.sendToCommon({id: Statistic.ID_START_PLAY, pointId: pointId}, cntx.user.id, "StatisticRqDto");
+        Kafka.sendToCommon({statId: Statistic.ID_START_PLAY, pointId: pointId}, cntx.user.id, "StatisticRqDto");
     };
 
     this.exitGame = function (cntx, pointId) {
         Statistic.write(cntx.user.id, Statistic.ID_EXIT_GAME, pointId);
         //@todo-method
-        Kafka.sendToCommon({id: Statistic.ID_EXIT_GAME, pointId: pointId}, cntx.user.id, "StatisticRqDto");
+        Kafka.sendToCommon({statId: Statistic.ID_EXIT_GAME, pointId: pointId}, cntx.user.id, "StatisticRqDto");
     };
 
     this.looseGame = function (cntx, pointId) {
         Statistic.write(cntx.user.id, Statistic.ID_LOOSE_GAME, pointId);
         //@todo-method
-        Kafka.sendToCommon({id: Statistic.ID_LOOSE_GAME, pointId: pointId}, cntx.user.id, "StatisticRqDto");
+        Kafka.sendToCommon({statId: Statistic.ID_LOOSE_GAME, pointId: pointId}, cntx.user.id, "StatisticRqDto");
     };
 
 };
