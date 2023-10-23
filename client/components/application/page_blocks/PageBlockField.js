@@ -199,23 +199,23 @@ let PageBlockField = function PageBlockField() {
         });
         self.elements.push(el);
 
-        // /** Кнопка обновить поле, для админов\adminov */
-        // buttonReloadField = GUI.createElement(ElementButton, {
-        //     x: 312, y: 5, width: 25, height: 25,
-        //     srcRest: 'button-close-rest.png',
-        //     onClick: function () {
-        //         AnimLocker.lock();
-        //
-        //         CAPIMap.setCallbackOnMapsInfo(function () {
-        //             PageController.showPage(PageMain);
-        //             PageController.showPage(PageField);
-        //             AnimLocker.release();
-        //             PageController.redraw();
-        //         });
-        //         SAPIMap.reloadLevels();
-        //         SAPIMap.sendMeMapInfo(DataMap.getCurrent().id);
-        //     }
-        // });
+        /** Кнопка обновить поле, для админов\adminov */
+        buttonReloadField = GUI.createElement(ElementButton, {
+            x: 312, y: 5, width: 25, height: 25,
+            srcRest: 'button-close-rest.png',
+            onClick: function () {
+                AnimLocker.lock();
+
+                CAPIMap.setCallbackOnMapsInfo(function () {
+                    PageController.showPage(PageMain);
+                    PageController.showPage(PageField);
+                    AnimLocker.release();
+                    PageController.redraw();
+                });
+                SAPIMap.reloadLevels();
+                SAPIMap.sendMeMapInfo(DataMap.getCurrent().id);
+            }
+        });
 
         /** Кнопка обновить поле, для админов */
         buttonChangeSpeed = GUI.createElement(ElementButton, {
