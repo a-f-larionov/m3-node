@@ -7,7 +7,11 @@ const kafkaJs = new KafkaJS({
     clientId: "node-client",
     brokers: [
         "kafka:9092",
-    ]
+    ],
+    retry: {
+        initialRetryTime: 100,
+        retries: 888
+    }
 });
 
 const producer = kafkaJs.producer()
