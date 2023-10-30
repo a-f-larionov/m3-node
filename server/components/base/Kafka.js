@@ -4,7 +4,7 @@ const KafkaJS = require("kafkajs").Kafka;
 //const CAPIUser = require("../generated/CAPIUser.js");
 
 const kafkaJs = new KafkaJS({
-    clientId: 'node',
+    clientId: "node-client",
     brokers: [
         "kafka:9092",
     ]
