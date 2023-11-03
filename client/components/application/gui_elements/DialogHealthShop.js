@@ -24,7 +24,7 @@ let DialogHealthShop = function () {
     };
 
     this.init = function () {
-        let el, offsetX, stepX, offsetY, user;
+        let offsetX, stepX, offsetY;
         this.__proto__.init.call(this);
 
         offsetX = 30;
@@ -62,9 +62,9 @@ let DialogHealthShop = function () {
 
         elResetButton = GUI.createElement(ElementButton, {
             x: offsetX + stepX * 2, y: offsetY,
-            srcRest: 'health-hearth.png',
-            srcHover: 'health-hearth.png',
-            srcActive: 'health-hearth.png',
+            srcRest: 'anim-hd-1.png',
+            srcHover: 'anim-hd-1.png',
+            srcActive: 'anim-hd-1.png',
             title: 'сброс',
             onClick: function () {
                 if (lock()) return;

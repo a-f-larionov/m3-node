@@ -32,41 +32,41 @@ ClientCodeLoader = function () {
     };
 
     let obfuscateOptions =
-    {
-        compact: true,
-        controlFlowFlattening: false,
-        controlFlowFlatteningThreshold: 0.75,
-        deadCodeInjection: false,
-        deadCodeInjectionThreshold: 0.4,
-        debugProtection: false,
-        debugProtectionInterval: false,
-        disableConsoleOutput: false,
-        domainLock: [],
-        identifierNamesGenerator: 'mangled',
-        identifiersDictionary: [],
-        identifiersPrefix: '',
-        inputFileName: '',
-        log: false,
-        renameGlobals: true,
-        reservedNames: [],
-        reservedStrings: [],
-        rotateStringArray: true,
-        seed: 1,
-        selfDefending: false,
-        shuffleStringArray: true,
-        sourceMap: false,
-        sourceMapBaseUrl: '',
-        sourceMapFileName: '',
-        sourceMapMode: 'separate',
-        splitStrings: false,
-        splitStringsChunkLength: 10,
-        stringArray: true,
-        stringArrayEncoding: 'base64',
-        stringArrayThreshold: 0.75,
-        target: 'browser',
-        transformObjectKeys: false,
-        unicodeEscapeSequence: false,
-    };
+        {
+            compact: true,
+            controlFlowFlattening: false,
+            controlFlowFlatteningThreshold: 0.75,
+            deadCodeInjection: false,
+            deadCodeInjectionThreshold: 0.4,
+            debugProtection: false,
+            debugProtectionInterval: false,
+            disableConsoleOutput: false,
+            domainLock: [],
+            identifierNamesGenerator: 'mangled',
+            identifiersDictionary: [],
+            identifiersPrefix: '',
+            inputFileName: '',
+            log: false,
+            renameGlobals: true,
+            reservedNames: [],
+            reservedStrings: [],
+            rotateStringArray: true,
+            seed: 1,
+            selfDefending: false,
+            shuffleStringArray: true,
+            sourceMap: false,
+            sourceMapBaseUrl: '',
+            sourceMapFileName: '',
+            sourceMapMode: 'separate',
+            splitStrings: false,
+            splitStringsChunkLength: 10,
+            stringArray: true,
+            stringArrayEncoding: 'base64',
+            stringArrayThreshold: 0.75,
+            target: 'browser',
+            transformObjectKeys: false,
+            unicodeEscapeSequence: false,
+        };
 
     let self = this;
     /**
@@ -228,7 +228,7 @@ ClientCodeLoader = function () {
         if (FS.existsSync(imagesPath + '/sprite.png')) {
             let demension = IMAGE_SIZE(imagesPath + '/sprite.png');
         } else {
-            demension = { width: 100, height: 100 };
+            demension = {width: 100, height: 100};
         }
 
         code += "<!doctype html>";
@@ -344,7 +344,7 @@ ClientCodeLoader = function () {
     let reloadClientJS = function () {
         let cache, sTime, result, js, jsHash;
         cache = (FS.existsSync(CONST_DIR_ROOT + '/cache.js')
-            && JSON.parse(FS.readFileSync(CONST_DIR_ROOT + '/cache.js').toString()))
+                && JSON.parse(FS.readFileSync(CONST_DIR_ROOT + '/cache.js').toString()))
             || {};
 
         js = getClientJS();
@@ -394,7 +394,7 @@ ClientCodeLoader = function () {
             ];
 
             sTime = mtime();
-            result = UGLIFYJS.minify({ js: "{" + js + "}" }, JSON.parse(JSON.stringify(minifyOptions)));
+            result = UGLIFYJS.minify({js: "{" + js + "}"}, JSON.parse(JSON.stringify(minifyOptions)));
             if (result.code) {
                 js = result.code;
                 FS.writeFileSync(CONST_DIR_ROOT + '/public/js/client.min.js', js);
@@ -583,7 +583,7 @@ ClientCodeLoader = function () {
 
         list = getFileList(imagesPath, Config.Project.spriteSkip);
 
-        SPRITESMITH.run({ src: list }, function handleResult(err, result) {
+        SPRITESMITH.run({src: list}, function handleResult(err, result) {
             let fsResult;
             // result.image; // Buffer representation of image
             // result.coordinates; // Object mapping filename to {x, y, width, height} of image
@@ -652,7 +652,13 @@ ClientCodeLoader = function () {
             }
         });
 
-        return 'document.addEventListener("DOMContentLoaded", function() {' + guiCode + '});';
+        guiCode = " var waitAppAreaRendered = function() {" +
+            "if( document.getElementById('appArea').clientWidth === 0 ) {" +
+            "           setTimeout( waitAppAreaRendered, 10); " +
+            "       } else { " + guiCode + "}" +
+            "}; " +
+            "waitAppAreaRendered();";
+        return 'document.addEventListener("DOMContentLoaded", function() { ' + guiCode + '});';
     };
 
     let translate2X = function (value) {

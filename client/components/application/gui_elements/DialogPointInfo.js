@@ -162,10 +162,13 @@ let DialogPointInfo = function () {
         switch (DataPoints.countStars(point.id)) {
             case 3:
                 elStarThree.src = 'star-on-big.png';
+                break;
             case 2:
                 elStarTwo.src = 'star-on-big.png';
+                break;
             case 1:
                 elStarOne.src = 'star-on-big.png';
+                break;
         }
         elStarOne.redraw();
         elStarTwo.redraw();
@@ -190,6 +193,8 @@ let DialogPointInfo = function () {
     };
 
     this.showDialog = function (pId, scoreNew, isGoalsReachedValue) {
+        window.jkl = this;
+        console.log(this, this.x);
         pointId = pId;
         isGoalsReached = isGoalsReachedValue;
         LogicWizard.finish(false);
