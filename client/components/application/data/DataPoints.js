@@ -176,14 +176,15 @@ let DataPoints = function () {
                 if (!pointUserScore[pid][uid]) pointUserScore[pid][uid] = {};
                 if (!pointUserScore[pid][uid].loading && (pointUserScore[pid][uid].loading = true)) {
                     toLoadPids.push(pid);
-                    toLoadUids.push(uids);
+                    toLoadUids.push(uid);
                 }
             });
         });
         toLoadPids = toLoadPids.filter(onlyUnique);
         toLoadUids = toLoadUids.filter(onlyUnique);
-        if (toLoadUids.length && toLoadPids.length)
+        if (toLoadUids.length && toLoadPids.length) {
             SAPIUser.sendMeScores(toLoadPids, toLoadUids);
+        }
     };
 
     this.getScore = function (pid, uid) {

@@ -31,7 +31,7 @@ const run = async () => {
 
             let msg = JSON.parse(message.value.toString());
 
-            console.log("KAFKA<<< " + topic);
+            console.log("KAFKA." + topic + " > node");
             console.log(message.headers.__TypeId__.toString(), message.value.toString());
 
             // console.log({
@@ -114,6 +114,9 @@ const run = async () => {
                         var cntx = ApiRouter.getConnectContext(msg.connectionId);
                         ApiRouter.executeRequest("CAPITimeServer", "gotServerTime", [msg.timestamp], [cntx]);
                         break;
+                    case 'm3.map.and.points.dto.rs.GotMapInfoRsDto':
+                        CAPIMap.gotMapsInfo(msg.userId, msg.mapId, msg.map, msg.points);
+                        break;
                     case 'm3.common.dto.rs.ErrorRsDto':
                         CAPILog.log(msg.userId, msg);
                         break;
@@ -178,7 +181,7 @@ var Kafka = function () {
     }
 
     this.send = function (topic, value, type, rqNamespacePrefix) {
-        console.log("KAFKA>>> " + topic, type, JSON.stringify(value));
+        console.log("KAFKA." + topic + " < ", type, JSON.stringify(value));
         producer.send({
             topic: topic,
             messages: [

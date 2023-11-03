@@ -8,7 +8,7 @@ SAPIMap = function () {
     this.sendMeMapInfo = function (cntx, mapId) {
         let map, points;
 
-        if (true) {
+        if (false) {
 
             if (!DataMap.existsMap(mapId)) return Logs.log("no map found:" + mapId, Logs.LEVEL_WARNING, cntx);
 
@@ -17,7 +17,7 @@ SAPIMap = function () {
 
             CAPIMap.gotMapsInfo(cntx.userId, mapId, map, points);
         }
-
+        console.log("VERSION 2");
         //@todo-method
         Kafka.sendToMapAndPoints({mapId: mapId}, cntx.user.id, "SendMeMapInfoRqDto");
     };
