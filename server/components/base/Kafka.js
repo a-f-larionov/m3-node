@@ -114,7 +114,7 @@ const run = async () => {
                         var cntx = ApiRouter.getConnectContext(msg.connectionId);
                         ApiRouter.executeRequest("CAPITimeServer", "gotServerTime", [msg.timestamp], [cntx]);
                         break;
-                    case 'm3.map.and.points.dto.rs.GotMapInfoRsDto':
+                    case 'm3.map.dto.rs.GotMapInfoRsDto':
                         CAPIMap.gotMapsInfo(msg.userId, msg.mapId, msg.map, msg.points);
                         break;
                     case 'm3.common.dto.rs.ErrorRsDto':
@@ -139,13 +139,13 @@ run().catch(console.error);
 var Kafka = function () {
 
     this.TOPIC_USERS = "topic-users";
-    this.TOPIC_MAP_AND_POINTS = "topic-map-and-points";
+    this.TOPIC_MAP_AND_POINTS = "topic-map";
     this.TOPIC_STUFF = "topic-stufs";
     this.TOPIC_COMMON = "topic-common";
     this.TOPIC_PAYMENTS = "topic-payments";
 
     this.RQ_NAMESPACE_PREFIX_USERS = "m3.users.dto.rq";
-    this.RQ_NAMESPACE_PREFIX_MAP_AND_POINTS = "m3.map.and.points.dto.rq";
+    this.RQ_NAMESPACE_PREFIX_MAP_AND_POINTS = "m3.map.dto.rq";
     this.RQ_NAMESPACE_PREFIX_STUFF = "m3.stuff.dto.rq";
     this.RQ_NAMESPACE_PREFIX_PAYMENTS = "m3.payments.dto.rq";
     this.RQ_NAMESPACE_PREFIX_COMMON = "m3.common.dto.rq";
