@@ -77,8 +77,8 @@ SAPIUser = function () {
         Kafka.sendToUsers({mapId: mapId, fids: fids}, cntx.user.id, "SendMapFriendsRqDto"); /* sendMapFriends*/
     };
 
-    this.sendMeFriendIdsBySocNet = function (cntx, fsids) {
-        Kafka.sendToUsers({fsids: fsids}, cntx.user.id, "SendFriendIdsBySocNetRqDto"); /* sendFriendIdsBySocNet*/
+    this.sendMeFriendIdsBySocNet = function (cntx, friendSocNetIds) {
+        Kafka.sendToUsers({friendSocNetIds: friendSocNetIds}, cntx.user.id, "SendFriendIdsBySocNetRqDto"); /* sendFriendIdsBySocNet*/
     };
 
     this.sendMeTopUsers = function (cntx, fids) {
