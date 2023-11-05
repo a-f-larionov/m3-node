@@ -12,7 +12,7 @@ SAPIStuff = function () {
 
         LogicStuff.sendStuffToUser(cntx.user.id, pStart(Profiler.ID_SAPISTUFF_SEND_ME_STUFF));
         //@todo-method
-        Kafka.sendToStuff({}, cntx.user.id, "SendMeStuffRqDto");
+       // Kafka.sendToStuff({}, cntx.user.id, "SendMeStuffRqDto");
     };
 
     this.usedHummer = function (cntx) {
