@@ -179,43 +179,4 @@ telegramSent = function (message) {
         level: "INFO",
         sendToTelegram: true
     }, undefined, "LogRqDto");
-    //
-    // let HTTPS = require('https');
-    // let URL = require('url');
-    // var HttpsProxyAgent = require('https-proxy-agent');
-    //
-    // /**
-    //  * @see  https://50na50.net/ru/proxy/httplist
-    //  * получить id чта https://api.telegram.org/bot[BOT:TOKEN]/getChat?chat_id=@mychannelname
-    //  * отправить сообщение https://api.telegram.org/bot[BOT_API_KEY]/sendMessage?chat_id=[MY_CHANNEL_NAME]&text=[MY_MESSAGE_TEXT]
-    //  */
-    // function exec(message) {
-    //     /**
-    //      * @Todo remove key from git history
-    //      */
-    //     let req, agent, endpoint, options;
-    //     endpoint = "https://api.telegram.org/" +
-    //         "bot" + Config.Telegram.token +
-    //         "/sendMessage?chat_id=" + Config.Telegram.chatId +
-    //         "&text=" + encodeURIComponent(message);
-    //     options = URL.parse(endpoint);
-    //
-    //     if (Config.Telegram.agent) {
-    //         agent = new HttpsProxyAgent(Config.Telegram.agent);
-    //         options.agent = agent;
-    //     }
-    //     req = HTTPS.get(options, function (res) {
-    //         res.statusCode;
-    //         res.statusMessage;
-    //         res.on('data', function (data) {
-    //             //       console.log(data.toString());
-    //         });
-    //         res.on('error', function (data) {
-    //             //     console.log('error telegram', data);
-    //         });
-    //         req.end();
-    //     });
-    // }
-    //
-    // exec(message);
 };

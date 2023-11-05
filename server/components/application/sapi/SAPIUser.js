@@ -87,6 +87,7 @@ SAPIUser = function () {
 
     this.healthBack = function (cntx) {
         Kafka.sendToUsers({}, cntx.user.id, "HealthBackRqDto"); /* healthBack*/
+        Kafka.sendToCommon({statId: Statistic.ID_FINISH_PLAY}, cntx.user.id, "StatisticRqDto");
     };
 
     this.zeroLife = function (cntx) {
@@ -94,21 +95,15 @@ SAPIUser = function () {
     };
 
     this.healthDown = function (cntx, pointId) {
-        Statistic.write(cntx.user.id, Statistic.ID_START_PLAY, pointId);
         Kafka.sendToUsers({pointId: pointId}, cntx.user.id, "HealthDownRqDto"); /* healthDown*/
-        //@todo-method
         Kafka.sendToCommon({statId: Statistic.ID_START_PLAY, pointId: pointId}, cntx.user.id, "StatisticRqDto");
     };
 
     this.exitGame = function (cntx, pointId) {
-        Statistic.write(cntx.user.id, Statistic.ID_EXIT_GAME, pointId);
-        //@todo-method
         Kafka.sendToCommon({statId: Statistic.ID_EXIT_GAME, pointId: pointId}, cntx.user.id, "StatisticRqDto");
     };
 
     this.looseGame = function (cntx, pointId) {
-        Statistic.write(cntx.user.id, Statistic.ID_LOOSE_GAME, pointId);
-        //@todo-method
         Kafka.sendToCommon({statId: Statistic.ID_LOOSE_GAME, pointId: pointId}, cntx.user.id, "StatisticRqDto");
     };
 
