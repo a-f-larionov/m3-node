@@ -45,7 +45,7 @@ let SocNetVK = function () {
     this.getAuthParams = function () {
         /*	auth_key = md5(app_id+'_'+viewer_id+'_'+app_secret); */
         return {
-            socNetType: 'VK',
+            socNetType: SocNet.TYPE_VK,
             socNetUserId: this.getSocNetUserId(),
             appId: getParams.api_id,
             authKey: getParams.auth_key,

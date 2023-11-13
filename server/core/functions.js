@@ -175,7 +175,6 @@ telegramSent = function (message) {
 
     Kafka.sendToCommon({
         message: message,
-        details: "",
         level: "INFO",
         sendToTelegram: true
     }, undefined, "LogRqDto");

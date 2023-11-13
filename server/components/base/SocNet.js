@@ -7,12 +7,10 @@ SocNet = function (socNetTypeId) {
     switch (socNetTypeId) {
         case SocNet.TYPE_VK:
             return SocNetVK;
-            break;
         case SocNet.TYPE_STANDALONE:
             return SocNetStandalone;
-            break;
         default:
-            Logs.log("Wrong soc net type", Logs.LEVEL_ERROR);
+            Logs.log("Wrong soc net type " + socNetTypeId, Logs.LEVEL_ERROR);
             break;
     }
 };

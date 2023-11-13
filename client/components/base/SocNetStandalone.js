@@ -13,7 +13,7 @@ let SocNetStandalone = function () {
 
     this.getAuthParams = function () {
         return {
-            socNetType: 'Standalone',
+            socNetType: SocNet.TYPE_STANDALONE,
             socNetUserId: this.getSocNetUserId(),
             appId: '123',
             authKey: 'auth-key',
@@ -26,7 +26,7 @@ let SocNetStandalone = function () {
     };
 
     this.openInviteFriendDialog = function () {
-        Logs.log("todo me SocNetStandalone.openIvniteFirendDialog", Logs.LEVEL_WARN);
+        Logs.log("todo me SocNetStandalone.openInviteFriendDialog", Logs.LEVEL_WARN);
         alert('Sorry, but functional is not realized!');
     };
 
@@ -34,7 +34,7 @@ let SocNetStandalone = function () {
         let socNetUserId;
         socNetUserId = parseInt(getQueryVariable('soc-net-user-id'));
         if (!socNetUserId) {
-            Logs.log("TODO Me. SocNetStandlaone.getSocNetUesrId and ... guset mode :)", Logs.LEVEL_WARN);
+            Logs.log("TODO Me. SocNetStandlone.getSocNetUserId and ... guest mode :)", Logs.LEVEL_WARN);
             socNetUserId = 111; // is it guest!!!
         }
         return socNetUserId;

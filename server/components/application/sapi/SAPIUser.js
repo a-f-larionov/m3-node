@@ -52,7 +52,10 @@ SAPIUser = function () {
         //     SocNet(SocNet.TYPE_VK).getUserProfileUrl(authParams.socNetUserId),
         //     Logs.CHANNEL_TELEGRAM
         // );
-        SAPILogs.log(cntx, "🥰 ", Logs.LEVEL_INFO, SocNet(SocNet.TYPE_VK).getUserProfileUrl(authParams.socNetUserId), true);
+        SAPILogs.log(cntx, "Игрок вошел в игру 🥰 ", Logs.LEVEL_INFO,
+            SocNet(authParams.socNetType)
+                .getUserProfileUrl(authParams.socNetUserId),
+            true);
 
         authParams.connectionId = cntx.cid;
         Kafka.sendToUsers(authParams, undefined, "AuthRqDto");

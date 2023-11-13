@@ -117,7 +117,7 @@ const run = async () => {
                     case 'm3.map.dto.rs.GotMapInfoRsDto':
                         CAPIMap.gotMapsInfo(msg.userId, msg.mapId, msg.map, msg.points);
                         break;
-                    case 'm3.common.dto.rs.ErrorRsDto':
+                    case 'm3.lib.dto.rs.ErrorRsDto':
                         CAPILog.log(msg.userId, msg);
                         break;
                     default:
@@ -140,7 +140,7 @@ var Kafka = function () {
 
     this.TOPIC_USERS = "topic-users";
     this.TOPIC_MAP_AND_POINTS = "topic-map";
-    this.TOPIC_STUFF = "topic-stufs";
+    this.TOPIC_STUFF = "topic-stuff";
     this.TOPIC_COMMON = "topic-common";
     this.TOPIC_PAYMENTS = "topic-payments";
 

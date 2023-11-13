@@ -25,6 +25,7 @@ var Logs = function () {
      * @param level {int} тип Logs.LEVEL_*.
      * @param [details] {*} необязательный параметр, детали.
      * @param channel
+     * @param telega
      */
     this.log = function (message, level, details, channel, telega) {
         let date, dateFormated, logText, levelTitle;
