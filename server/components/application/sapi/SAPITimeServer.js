@@ -7,7 +7,7 @@ SAPITimeServer = function () {
      * @param cntx
      */
     this.sendMeTime = function (cntx) {
-        Kafka.sendToCommon({connectionId : cntx.cid}, undefined, "SendMeTimeRqDto");
+        Kafka.sendToCommon({connectionId : cntx.cid}, undefined, Kafka.TYPE_SENDMETIME_RQ_DTO);
     };
 };
 

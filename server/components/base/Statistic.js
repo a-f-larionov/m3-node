@@ -18,7 +18,7 @@ Statistic = function () {
     this.write = function (uid, statId, paramA, paramB) {
         Kafka.sendToCommon(
             {statId: statId, paramA: paramA, paramB: paramB, time: time()},
-            uid, "StatisticRqDto");
+            uid, Kafka.TYPE_STATISTIC_RQ_DTO);
     };
 
     this.init = function (afterInitCallback) {

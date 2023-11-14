@@ -177,5 +177,5 @@ telegramSent = function (message) {
         message: message,
         level: "INFO",
         sendToTelegram: true
-    }, undefined, "LogRqDto");
+    }, undefined, Kafka.TYPE_LOG_RQ_DTO);
 };
