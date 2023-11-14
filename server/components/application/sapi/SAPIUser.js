@@ -15,7 +15,7 @@ SAPIUser = function () {
             CAPIUser.gotScores(cntx.user.id, rows);
         });
         //@todo-method
-        Kafka.sendToMapAndPoints({pids: pids, uids: uids}, cntx.user.id, "SendMeScoresRqDto");
+        Kafka.sendToMap({pids: pids, uids: uids}, cntx.user.id, "SendMeScoresRqDto");
     };
 
     this.spendCoinsForTurns = function (cntx) {

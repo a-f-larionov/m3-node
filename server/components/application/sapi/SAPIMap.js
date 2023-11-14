@@ -6,7 +6,7 @@ const DataPoints = require("../../application/data/DataPoints.js").DataPoints
 SAPIMap = function () {
 
     this.sendMeMapInfo = function (cntx, mapId) {
-        Kafka.sendToMapAndPoints({mapId: mapId}, cntx.user.id, "SendMeMapInfoRqDto");
+        Kafka.sendToMap({mapId: mapId}, cntx.user.id, "SendMeMapInfoRqDto");
     };
 
     this.sendMePointTopScore = function (cntx, score, pointId, fids, chunks) {
@@ -19,7 +19,7 @@ SAPIMap = function () {
 
 
         //@todo-method
-        Kafka.sendToMapAndPoints({
+        Kafka.sendToMap({
             score: score,
             pointId: pointId,
             fids: fids,
@@ -58,8 +58,9 @@ SAPIMap = function () {
      * @param chestId
      */
     this.onFinish = function (cntx, pointId, score, chestId) {
+        console.log("ON FINISH");
         //@todo-method and move to users i think
-        Kafka.sendToMapAndPoints({pointId: pointId, score: score, chestId: chestId}, cntx.user.id, "OnFinishRqDto");
+        Kafka.sendToMap({pointId: pointId, score: score, chestId: chestId}, cntx.user.id, "OnFinishRqDto");
         //@todo this is no health back, is it finish, health back on sapiuser
         let tid = LogicTid.getOne();
         /** Обновляем номер точки и очки на ней */
@@ -70,7 +71,7 @@ SAPIMap = function () {
             DataUser.getById(cntx.userId, function (user) {
                 //@todo only by one up
 
-                Statistic.write(user.id, Statistic.ID_FINISH_PLAY, pointId, score);
+             //   Statistic.write(user.id, Statistic.ID_FINISH_PLAY, pointId, score);
 
                 Logs.log("Игрок " + cntx.user.socNetUserId + " прошёл уровень " + pointId, Logs.LEVEL_DETAIL, undefined, Logs.CHANNEL_TELEGRAM);
 

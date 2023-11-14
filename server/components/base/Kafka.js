@@ -171,7 +171,7 @@ var Kafka = function () {
         this.send(this.TOPIC_COMMON, fields, type, "");
     };
 
-    this.sendToMapAndPoints = function (fields, userId, type) {
+    this.sendToMap = function (fields, userId, type) {
         fields.userId = userId;
         this.send(this.TOPIC_MAP_AND_POINTS, fields, type, this.RQ_NS_MAP_AND_POINTS);
     }
