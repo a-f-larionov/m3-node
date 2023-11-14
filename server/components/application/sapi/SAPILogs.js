@@ -27,8 +27,9 @@ SAPILogs = function () {
         Kafka.sendToCommon({
             message: "Игрок " + cntx.user.socNetUserId + " Открыл диалог покупки голосов: " + message
         }, cntx.user.id, Kafka.TYPE_LOG_RQ_DTO);
-        Logs.log("Игрок " + cntx.user.socNetUserId + " Открыл диалог покупки голосов: " + message,
-            Logs.LEVEL_DEBUG, null, null, true);
+
+
+        //Logs.log("Проверка соощений об ошибках", Logs.LEVEL_DEBUG, null, null, true);
     };
 
 
