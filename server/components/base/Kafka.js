@@ -123,6 +123,9 @@ const run = async () => {
                     case 'm3.lib.dto.rs.ErrorRsDto':
                         CAPILog.log(msg.userId, msg);
                         break;
+                    case 'm3.map.dto.rs.GotPointTopScoreRsDto':
+                        CAPIMap.gotPointTopScore(msg.userId, msg.pointId, msg);
+                        break;
                     default:
                         console.log("Not found method");
                 }

@@ -12,11 +12,6 @@ SAPIMap = function () {
 
         if (chunks > 1) Logs.log("More then one chunk", Logs.LEVEL_ALERT, cntx);
 
-        if (Number.isNaN(score = Validator.DBUINT(score, true))) return Logs.log(arguments.callee.name + " not valid score", Logs.LEVEL_ALERT, arguments);
-        if (!(pointId = Validator.DBUINT(pointId))) return Logs.log(arguments.callee.name + " not valid pointId", Logs.LEVEL_ALERT, arguments);
-        if (!(fids = Validator.DBUINTArray(fids))) return Logs.log(arguments.callee.name + "not valid fids", Logs.LEVEL_ALERT, arguments);
-
-
         //@todo-method
         Kafka.sendToMap({
             score: score,
