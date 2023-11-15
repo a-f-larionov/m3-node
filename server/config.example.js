@@ -41,10 +41,5 @@ Config = {
     VKWidgetComments: {
         width: 777,
         height: 400,
-    },
-    Telegram: {
-        chatId: "-123",
-        agent: "",
-        token: "token"
     }
 };

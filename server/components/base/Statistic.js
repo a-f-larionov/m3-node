@@ -1,3 +1,4 @@
+const Kafka = require("../base/Kafka.js").Kafka;
 let QUERYSTRING = require('querystring');
 /**
  * @type {Statistic}
@@ -15,17 +16,9 @@ Statistic = function () {
      * @param paramB
      */
     this.write = function (uid, statId, paramA, paramB) {
-        if (!self.titles[statId]) {
-            Logs.log('Statistic with id: ' + statId + ' not found', Logs.LEVEL_INFO);
-            return;
-        }
-        cache.push({
-            uid: uid,
-            time: time(),
-            statId: statId,
-            paramA: paramA ? paramA : 0,
-            paramB: paramB ? paramB : 0
-        });
+        Kafka.sendToCommon(
+            {statId: statId, paramA: paramA, paramB: paramB, time: time()},
+            uid, Kafka.TYPE_STATISTIC_RQ_DTO);
     };
 
     this.init = function (afterInitCallback) {

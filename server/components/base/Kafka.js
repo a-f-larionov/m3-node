@@ -117,7 +117,7 @@ const run = async () => {
                     case 'm3.map.dto.rs.GotMapInfoRsDto':
                         CAPIMap.gotMapsInfo(msg.userId, msg.mapId, msg.map, msg.points);
                         break;
-                    case 'm3.common.dto.rs.ErrorRsDto':
+                    case 'm3.lib.dto.rs.ErrorRsDto':
                         CAPILog.log(msg.userId, msg);
                         break;
                     default:
@@ -140,15 +140,21 @@ var Kafka = function () {
 
     this.TOPIC_USERS = "topic-users";
     this.TOPIC_MAP_AND_POINTS = "topic-map";
-    this.TOPIC_STUFF = "topic-stufs";
+    this.TOPIC_STUFF = "topic-stuff";
     this.TOPIC_COMMON = "topic-common";
     this.TOPIC_PAYMENTS = "topic-payments";
 
-    this.RQ_NAMESPACE_PREFIX_USERS = "m3.users.dto.rq";
-    this.RQ_NAMESPACE_PREFIX_MAP_AND_POINTS = "m3.map.dto.rq";
-    this.RQ_NAMESPACE_PREFIX_STUFF = "m3.stuff.dto.rq";
-    this.RQ_NAMESPACE_PREFIX_PAYMENTS = "m3.payments.dto.rq";
-    this.RQ_NAMESPACE_PREFIX_COMMON = "m3.common.dto.rq";
+    this.RQ_NS_USERS = "m3.users.dto.rq";
+    this.RQ_NS_MAP_AND_POINTS = "m3.map.dto.rq";
+    this.RQ_NS_STUFF = "m3.stuff.dto.rq";
+    this.RQ_NS_PAYMENTS = "m3.payments.dto.rq";
+    this.RQ_NS_COMMON = "m3.common.dto.rq";
+    this.RQ_NS_LIB = "m3.lib.dto.rq";
+
+    this.TYPE_LOG_RQ_DTO = this.RQ_NS_COMMON + ".LogRqDto";
+    this.TYPE_STATISTIC_RQ_DTO = this.RQ_NS_LIB + ".StatisticRqDto";
+    this.TYPE_SENDMETIME_RQ_DTO = this.RQ_NS_COMMON + ".SendMeTimeRqDto";
+    this.TYPE_SENDUSERAGENT_RQ_DTO = this.RQ_NS_COMMON + ".SendUserAgentRqDto";
 
     this.init = function (afterInitCallback) {
         Logs.log("Kafka Init create Pool.", Logs.LEVEL_DEBUG);
@@ -157,27 +163,27 @@ var Kafka = function () {
 
     this.sendToUsers = function (fields, userId, type) {
         fields.userId = userId;
-        this.send(this.TOPIC_USERS, fields, type, this.RQ_NAMESPACE_PREFIX_USERS);
+        this.send(this.TOPIC_USERS, fields, type, this.RQ_NS_USERS);
     }
 
     this.sendToCommon = function (fields, userId, type) {
         fields.userId = userId;
-        this.send(this.TOPIC_COMMON, fields, type, this.RQ_NAMESPACE_PREFIX_COMMON);
+        this.send(this.TOPIC_COMMON, fields, type, "");
     };
 
-    this.sendToMapAndPoints = function (fields, userId, type) {
+    this.sendToMap = function (fields, userId, type) {
         fields.userId = userId;
-        this.send(this.TOPIC_MAP_AND_POINTS, fields, type, this.RQ_NAMESPACE_PREFIX_MAP_AND_POINTS);
+        this.send(this.TOPIC_MAP_AND_POINTS, fields, type, this.RQ_NS_MAP_AND_POINTS);
     }
 
     this.sendToStuff = function (fields, userId, type) {
         fields.userId = userId;
-        //this.send(this.TOPIC_STUFF, fields, type, this.RQ_NAMESPACE_PREFIX_STUFF);
+        //this.send(this.TOPIC_STUFF, fields, type, this.RQ_NS_STUFF);
     }
 
     this.sendToPayments = function (fields, userId, type) {
         fields.userId = userId;
-        //this.send(this.TOPIC_PAYMENTS, fields, type, this.RQ_NAMESPACE_PREFIX_PAYMENTS);
+        //this.send(this.TOPIC_PAYMENTS, fields, type, this.RQ_NS_PAYMENTS);
     }
 
     this.send = function (topic, value, type, rqNamespacePrefix) {
@@ -188,7 +194,7 @@ var Kafka = function () {
                 {
                     value: JSON.stringify(value),
                     headers: {
-                        '__TypeId__': rqNamespacePrefix + "." + type
+                        '__TypeId__': (rqNamespacePrefix === "" ? "" : rqNamespacePrefix + ".") + type
                     }
                 }
             ]
