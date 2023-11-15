@@ -1,14 +1,11 @@
-const {KafkaModule} = require("../../base/Kafka.js");
 const {DataUser} = require("../data/DataUser.js");
+const {Kafka} = require("../../base/Kafka");
 /**
  * @type {LogicUser}
  */
 var LogicUser = function () {
-    let self = this;
     let userToCntx = {};
     let userToCntxCount = 0;
-
-    let cntxLastId = 1;
 
     this.init = function (afterInitCallback) {
         ApiRouter.addOnDisconnectCallback(onDisconnectOrFailedSend);
@@ -123,7 +120,7 @@ var LogicUser = function () {
         Logs.log("DELETE user conn", Logs.LEVEL_TRACE);
         delete userToCntx[userId].conns[cntx.cid];
         userToCntx[userId].connsCount--;
-        if (userToCntx[userId].connsCount == 0) {
+        if (userToCntx[userId].connsCount === 0) {
             Logs.log("DELETE user Context", Logs.LEVEL_TRACE);
             delete userToCntx[userId];
             userToCntxCount--;
@@ -137,7 +134,7 @@ var LogicUser = function () {
     let onLogout = function (userId) {
         Logs.log("User logout. user.id=" + userId, Logs.LEVEL_TRACE);
         Statistic.write(userId, Statistic.ID_LOGOUT);
-        Kafka.sendToUsers({userId: userId}, userId, "UpdateLastLogoutRqDto");
+        Kafka.sendToUsers({userId: userId}, userId, Kafka.TYPE_UPDATE_LAST_LOGOUT_RQ_DTO);
     };
 
     /**

@@ -25,7 +25,8 @@ SAPILogs = function () {
     this.showMoneyDialog = function (cntx, message) {
         //@todo-method
         Kafka.sendToCommon({
-            message: "Игрок " + cntx.user.socNetUserId + " Открыл диалог покупки голосов: " + message
+            message: "Игрок " + cntx.user.socNetUserId + " Открыл диалог покупки голосов: " + message,
+            level: "INFO",
         }, cntx.user.id, Kafka.TYPE_LOG_RQ_DTO);
 
 
@@ -35,13 +36,19 @@ SAPILogs = function () {
 
     this.closeMoneyDialog = function (cntx) {
         //@todo-method
-        Kafka.sendToCommon({message: "Игрок:" + cntx.user.socNetUserId + "  Закрыл диалог покупки голосов"}, cntx.user.id, Kafka.TYPE_LOG_RQ_DTO);
+        Kafka.sendToCommon({
+            message: "Игрок:" + cntx.user.socNetUserId + "  Закрыл диалог покупки голосов",
+            level: "INFO"
+        }, cntx.user.id, Kafka.TYPE_LOG_RQ_DTO);
         Logs.log("Игрок:" + cntx.user.socNetUserId + "  Закрыл диалог покупки голосов", Logs.LEVEL_DEBUG, null, null, true);
     };
 
     this.showStuffShopDialog = function (cntx, stuffFieldName) {
         //@todo-method
-        Kafka.sendToCommon({message: "Игрок:" + cntx.user.socNetUserId + " открыл покупку магии " + stuffFieldName}, cntx.user.id, Kafka.TYPE_LOG_RQ_DTO);
+        Kafka.sendToCommon({
+            message: "Игрок:" + cntx.user.socNetUserId + " открыл покупку магии " + stuffFieldName,
+            level: "INFO"
+        }, cntx.user.id, Kafka.TYPE_LOG_RQ_DTO);
 
         Logs.log("Игрок:" + cntx.user.socNetUserId + " открыл покупку магии " + stuffFieldName, Logs.LEVEL_DEBUG, null, null, true);
     }

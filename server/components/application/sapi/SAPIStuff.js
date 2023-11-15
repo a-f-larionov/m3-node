@@ -12,7 +12,7 @@ SAPIStuff = function () {
 
         LogicStuff.sendStuffToUser(cntx.user.id, pStart(Profiler.ID_SAPISTUFF_SEND_ME_STUFF));
         //@todo-method
-       // Kafka.sendToStuff({}, cntx.user.id, "SendMeStuffRqDto");
+        Kafka.sendToStuff({}, cntx.user.id, Kafka.TYPE_SEND_ME_STUFF_RQ_DTO);
     };
 
     this.usedHummer = function (cntx) {
@@ -28,7 +28,7 @@ SAPIStuff = function () {
             pFinish(prid);
         });
         //@todo-method
-        Kafka.sendToStuff({}, cntx.user.id, "UsedHummerRqDto");
+        //Kafka.sendToStuff({}, cntx.user.id, Kafka.TYPE_USED_HUMMER_RQ_DTO);
     };
 
     this.usedLightning = function (cntx) {
@@ -43,7 +43,7 @@ SAPIStuff = function () {
             pFinish(prid);
         });
         //@todo-method
-        Kafka.sendToStuff({}, cntx.user.id, "UsedLightningRqDto");
+        //Kafka.sendToStuff({}, cntx.user.id, Kafka.TYPE_USED_LIGHTNING_RQ_DTO);
     };
 
     this.usedShuffle = function (cntx) {
@@ -58,7 +58,7 @@ SAPIStuff = function () {
             pFinish(prid);
         });
         //@todo-method
-        Kafka.sendToStuff({}, cntx.user.id, "UsedShuffleRqDto");
+        //Kafka.sendToStuff({}, cntx.user.id, Kafka.TYPE_USED_SHUFFLE_RQ_DTO);
     };
 
     this.buyHummer = function (cntx, itemIndex) {
@@ -80,7 +80,7 @@ SAPIStuff = function () {
                 });
         });
         //@todo-method
-        Kafka.sendToPayments({}, cntx.user.id, "BuyHummerRqDto");
+     //   Kafka.sendToPayments({}, cntx.user.id, Kafka.TYPE_BUY_HUMMER_RQ_DTO);
     };
 
     this.buyLightning = function (cntx, itemIndex) {
@@ -105,7 +105,7 @@ SAPIStuff = function () {
                 });
         });
         //@todo-method
-        Kafka.sendToPayments({}, cntx.user.id, "BuyLightningRqDto");
+        //Kafka.sendToPayments({}, cntx.user.id, Kafka.TYPE_BUY_LIGHTNING_RQ_DTO);
     };
 
     this.buyShuffle = function (cntx, itemIndex) {
@@ -129,7 +129,7 @@ SAPIStuff = function () {
                 });
         });
         //@todo-method
-        Kafka.sendToPayments({}, cntx.user.id, "BuyShuffleRqDto");
+    //    Kafka.sendToPayments({}, cntx.user.id, Kafka.TYPE_BUY_SHUFFLE_RQ_DTO);
     };
 
     this.buyHealth = function (cntx) {
@@ -142,7 +142,7 @@ SAPIStuff = function () {
         let prid = pStart(Profiler.ID_SAPISTUFF_BUY_HEALTH);
 
         //@todo-method
-        Kafka.sendToPayments({}, cntx.user.id, "BuyHealthRqDto");
+      //  Kafka.sendToPayments({}, cntx.user.id, Kafka.TYPE_BUY_HEALTH_RQ_DTO);
 
         LOCK.acquire(Keys.health(cntx.user.id), function (done) {
                 setTimeout(done, 5 * 60 * 1000);
