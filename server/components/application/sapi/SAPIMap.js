@@ -9,39 +9,10 @@ SAPIMap = function () {
     };
 
     this.sendMePointTopScore = function (cntx, score, pointId, fids, chunks) {
-
-        if (chunks > 1) Logs.log("More then one chunk", Logs.LEVEL_ALERT, cntx);
-
         //@todo-method
         Kafka.sendToMap({
-            score: score,
-            pointId: pointId,
-            fids: fids,
-            chunks: chunks
+            score: score, pointId: pointId, fids: fids, chunks: chunks
         }, cntx.user.id, Kafka.TYPE_SEND_ME_POINT_TOP_SCORE_RQ_DTO);
-
-        TopScoreCache.get(cntx.user.id, pointId, function (data) {
-            if (!data) {
-                DataPoints.getTopScore(cntx.user.id, score, pointId, fids, function (rows) {
-                    DataPoints.getTopScoreUserPosition(score, pointId, fids, cntx.user.id, function (pos) {
-                        /** {p1u: 123123, p2u:123213, up:123123 } */
-                        let out;
-                        out = {
-                            place1Uid: rows[0] ? rows[0].userId : null,
-                            place2Uid: rows[1] ? rows[1].userId : null,
-                            place3Uid: rows[2] ? rows[2].userId : null,
-                            pos: pos
-                        };
-                        TopScoreCache.set(cntx.user.id, pointId, out);
-                        CAPIMap.gotPointTopScore(cntx.user.id, pointId, out);
-                    });
-
-                });
-            } else {
-                CAPIMap.gotPointTopScore(cntx.user.id, pointId, data);
-
-            }
-        });
     };
 
     /**
@@ -58,7 +29,7 @@ SAPIMap = function () {
         //@todo this is no health back, is it finish, health back on sapiuser
         TopScoreCache.flush(cntx.user.id, pointId);
 
-       // let tid = LogicTid.getOne();
+        // let tid = LogicTid.getOne();
         /** Обновляем номер точки и очки на ней */
         // DataPoints.updateUsersPoints(cntx.userId, pointId, score, function () {
         //

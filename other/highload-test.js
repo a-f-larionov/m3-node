@@ -76,12 +76,11 @@
 
     let playOne = function () {
         //click on point
-        let score, pid, chunks;
+        let score, pid;
         score = 0;
         pid = getPid();
-        chunks = 1;
 
-        SAPIMap.sendMePointTopScore(score, pid, uids, chunks);
+        SAPIMap.sendMePointTopScore(score, pid, uids);
         SAPIUser.sendMeScores([getPid()], [
             LogicUser.getCurrent().id,
             Math.ceil(Math.random() * 1234567),
