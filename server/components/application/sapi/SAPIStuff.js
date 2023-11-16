@@ -12,7 +12,7 @@ SAPIStuff = function () {
 
         LogicStuff.sendStuffToUser(cntx.user.id, pStart(Profiler.ID_SAPISTUFF_SEND_ME_STUFF));
         //@todo-method
-        Kafka.sendToStuff({}, cntx.user.id, Kafka.TYPE_SEND_ME_STUFF_RQ_DTO);
+        Kafka.sendToGameplay({}, cntx.user.id, Kafka.TYPE_SEND_ME_STUFF_RQ_DTO);
     };
 
     this.usedHummer = function (cntx) {
@@ -28,7 +28,7 @@ SAPIStuff = function () {
             pFinish(prid);
         });
         //@todo-method
-        //Kafka.sendToStuff({}, cntx.user.id, Kafka.TYPE_USED_HUMMER_RQ_DTO);
+        //Kafka.sendToGameplay({}, cntx.user.id, Kafka.TYPE_USED_HUMMER_RQ_DTO);
     };
 
     this.usedLightning = function (cntx) {
@@ -43,7 +43,7 @@ SAPIStuff = function () {
             pFinish(prid);
         });
         //@todo-method
-        //Kafka.sendToStuff({}, cntx.user.id, Kafka.TYPE_USED_LIGHTNING_RQ_DTO);
+        //Kafka.sendToGameplay({}, cntx.user.id, Kafka.TYPE_USED_LIGHTNING_RQ_DTO);
     };
 
     this.usedShuffle = function (cntx) {
@@ -58,7 +58,7 @@ SAPIStuff = function () {
             pFinish(prid);
         });
         //@todo-method
-        //Kafka.sendToStuff({}, cntx.user.id, Kafka.TYPE_USED_SHUFFLE_RQ_DTO);
+        //Kafka.sendToGameplay({}, cntx.user.id, Kafka.TYPE_USED_SHUFFLE_RQ_DTO);
     };
 
     this.buyHummer = function (cntx, itemIndex) {

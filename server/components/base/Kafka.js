@@ -145,6 +145,7 @@ run().catch(console.error);
 var Kafka = function () {
 
     this.TOPIC_USERS = "topic-users";
+    this.TOPIC_COMMON = "topic-common";
     this.TOPIC_GAMEPLAY = "topic-gameplay";
 
     this.RQ_NS_LIB = "m3.lib.dto.rq";
@@ -154,10 +155,10 @@ var Kafka = function () {
 
     this.TYPE_STATISTIC_RQ_DTO = this.RQ_NS_LIB + ".StatisticRqDto";
 
-    this.TYPE_LOG_RQ_DTO = this.TOPIC_GAMEPLAY + ".LogRqDto";
+    this.TYPE_LOG_RQ_DTO = this.RQ_NS_COMMON + ".LogRqDto";
     this.TYPE_SENDMETIME_RQ_DTO = this.RQ_NS_COMMON + ".SendMeTimeRqDto";
     this.TYPE_SENDUSERAGENT_RQ_DTO = this.RQ_NS_COMMON + ".SendUserAgentRqDto";
-    this.TYPE_SEND_ME_STUFF_RQ_DTO = this.RQ_NS_COMMON + ".SendMeStuffRqDto";
+
 
     this.TYPE_UPDATE_LAST_LOGOUT_RQ_DTO = this.RQ_NS_USERS + ".UpdateLastLogoutRqDto";
     this.TYPE_AUTH_RQ_DTO = this.RQ_NS_USERS + ".AuthRqDto";
@@ -170,9 +171,10 @@ var Kafka = function () {
     this.TYPE_HEALTH_DOWN_RQ_DTO = this.RQ_NS_USERS + ".HealthDownRqDto";
 
     this.TYPE_SEND_ME_MAP_INFO_RQ_DTO = this.RQ_NS_GAMEPLAY + ".SendMeMapInfoRqDto";
-    this.TYPE_ON_FINISH_RQ_DTO = this.RQ_NS_GAMEPLAY + ".OnFinishRqDto";
     this.TYPE_SEND_ME_SCORES_RQ_DTO = this.RQ_NS_GAMEPLAY + ".SendMeScoresRqDto";
     this.TYPE_SEND_ME_POINT_TOP_SCORE_RQ_DTO = this.RQ_NS_GAMEPLAY + ".SendMePointTopScoreRqDto";
+    this.TYPE_SEND_ME_STUFF_RQ_DTO = this.RQ_NS_GAMEPLAY + ".SendMeStuffRqDto";
+    this.TYPE_ON_FINISH_RQ_DTO = this.RQ_NS_GAMEPLAY + ".OnFinishRqDto";
 
     this.TYPE_USED_HUMMER_RQ_DTO = this.RQ_NS_GAMEPLAY + ".UsedHummerRqDto";
     this.TYPE_USED_LIGHTNING_RQ_DTO = this.RQ_NS_GAMEPLAY + ".UsedLightningRqDto";
@@ -199,19 +201,9 @@ var Kafka = function () {
         this.send(this.TOPIC_COMMON, fields, type);
     };
 
-    this.sendToMap = function (fields, userId, type) {
+    this.sendToGameplay = function (fields, userId, type) {
         fields.userId = userId;
         this.send(this.TOPIC_GAMEPLAY, fields, type);
-    }
-
-    this.sendToStuff = function (fields, userId, type) {
-        fields.userId = userId;
-        this.send(this.TOPIC_COMMON, fields, type);
-    }
-
-    this.sendToPayments = function (fields, userId, type) {
-        fields.userId = userId;
-        this.send(this.TOPIC_COMMON, fields, type);
     }
 
     this.send = function (topic, value, type) {

@@ -5,12 +5,12 @@ const DataPoints = require("../../application/data/DataPoints.js").DataPoints
 SAPIMap = function () {
 
     this.sendMeMapInfo = function (cntx, mapId) {
-        Kafka.sendToMap({mapId: mapId}, cntx.user.id, Kafka.TYPE_SEND_ME_MAP_INFO_RQ_DTO);
+        Kafka.sendToGameplay({mapId: mapId}, cntx.user.id, Kafka.TYPE_SEND_ME_MAP_INFO_RQ_DTO);
     };
 
     this.sendMePointTopScore = function (cntx, score, pointId, fids, chunks) {
         //@todo-method
-        Kafka.sendToMap({
+        Kafka.sendToGameplay({
             score: score, pointId: pointId, fids: fids, chunks: chunks
         }, cntx.user.id, Kafka.TYPE_SEND_ME_POINT_TOP_SCORE_RQ_DTO);
     };
@@ -25,7 +25,7 @@ SAPIMap = function () {
     this.onFinish = function (cntx, pointId, score, chestId) {
         console.log("ON FINISH");
         //@todo-method and move to users i think
-        Kafka.sendToMap({pointId: pointId, score: score, chestId: chestId}, cntx.user.id, Kafka.TYPE_ON_FINISH_RQ_DTO);
+        Kafka.sendToGameplay({pointId: pointId, score: score, chestId: chestId}, cntx.user.id, Kafka.TYPE_ON_FINISH_RQ_DTO);
         //@todo this is no health back, is it finish, health back on sapiuser
         TopScoreCache.flush(cntx.user.id, pointId);
 

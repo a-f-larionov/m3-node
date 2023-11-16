@@ -15,7 +15,7 @@ SAPIUser = function () {
             CAPIUser.gotScores(cntx.user.id, rows);
         });
         //@todo-method
-        Kafka.sendToMap({pids: pids, uids: uids}, cntx.user.id, Kafka.TYPE_SEND_ME_SCORES_RQ_DTO);
+        Kafka.sendToGameplay({pids: pids, uids: uids}, cntx.user.id, Kafka.TYPE_SEND_ME_SCORES_RQ_DTO);
     };
 
     this.spendCoinsForTurns = function (cntx) {
@@ -27,7 +27,7 @@ SAPIUser = function () {
         DataStuff.usedGold(cntx.user.id, DataShop.looseTurnsPrice, tid);
 
         Logs.log(
-            "tid:" + tid +
+            " tid:" + tid +
             " uid:" + cntx.user.id + " купил " +
             DataShop.looseTurnsQuantity + " ходов за " +
             DataShop.looseTurnsPrice + " монет.",
@@ -36,7 +36,7 @@ SAPIUser = function () {
             null, true);
 
         //@todo-method
-        Kafka.sendToStuff({}, Kafka.TYPE_SPEND_COINS_FOR_TURNS_RQ_DTO)
+        //Kafka.sendToGameplay({}, Kafka.TYPE_SPEND_COINS_FOR_TURNS_RQ_DTO)
     };
 
     /**
