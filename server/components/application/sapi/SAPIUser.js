@@ -1,7 +1,6 @@
 const Logs = require("../../base/Logs.js").Logs
 const Kafka = require("../../base/Kafka.js").Kafka
 const DataUser = require("../../application/data/DataUser.js").DataUser
-const DataPoints = require("../../application/data/DataPoints.js").DataPoints
 
 /**
  * @type {SAPIUser}
@@ -10,11 +9,6 @@ const DataPoints = require("../../application/data/DataPoints.js").DataPoints
 SAPIUser = function () {
 
     this.sendMeScores = function (cntx, pids, uids) {
-
-        DataPoints.getScores(pids, uids, function (rows) {
-            CAPIUser.gotScores(cntx.user.id, rows);
-        });
-        //@todo-method
         Kafka.sendToGameplay({pids: pids, uids: uids}, cntx.user.id, Kafka.TYPE_SEND_ME_SCORES_RQ_DTO);
     };
 

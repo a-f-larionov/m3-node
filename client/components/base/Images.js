@@ -63,7 +63,7 @@ let Images = function () {
         if (!url || !window.i_d[url]) {
             if (notfounds.indexOf(url) !== -1) return notFoundImg;
             notfounds.push(url);
-            Logs.log("Image url not found for: " + url, Logs.LEVEL_WARN);
+            Logs.log("Image url not found for: `" + url + "`", Logs.LEVEL_WARN);
             notFoundImg.path = '';
             return notFoundImg;
         }
@@ -75,9 +75,11 @@ let Images = function () {
     if (window.Worker) {
         worker = new Worker('/js/w-images.js');
         worker.onmessage = function (e) {
-            let imgBtmp, path, url;
+            let imgBtmp;
+            let path;
+            let url;
             imgBtmp = e.data[0];
-            path = e.data[1];
+            //path = e.data[1];
             url = e.data[2];
             images[url] = imgBtmp;
             Images.getMeta(url).x = 0;

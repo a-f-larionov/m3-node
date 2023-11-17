@@ -82,8 +82,6 @@ let DialogHealthShop = function () {
         user = LogicUser.getCurrent();
         elHealth5.enabled = LogicHealth.getHealths(user) === 0;
         elButton.enabled = LogicHealth.getHealths(user) === 0;
-        window.jkljkl = elResetButton;
-        console.log(user);
         if (user && user.socNetTypeId === SocNet.TYPE_STANDALONE && user.socNetUserId > 10000) {
             elResetButton.show();
         } else {

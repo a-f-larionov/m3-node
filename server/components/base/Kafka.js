@@ -28,10 +28,9 @@ const run = async () => {
 
     await consumer.run({
         eachMessage: async ({topic, partition, message}) => {
-
             let msg = JSON.parse(message.value.toString());
 
-            console.log("KAFKA." + topic + " > node");
+            console.log("KAFKA." + topic + " > node" + " " + partition);
             console.log(message.headers.__TypeId__.toString(), message.value.toString());
 
             // console.log({
@@ -46,6 +45,7 @@ const run = async () => {
             // })
 
             // to client
+            var cntx;
             try {
                 switch (message.headers.__TypeId__.toString()) {
 
@@ -56,7 +56,7 @@ const run = async () => {
                         );
                         break;
                     case 'm3.users.dto.rs.AuthSuccessRsDto':
-                        var cntx = ApiRouter.getConnectContext(msg.connectionId);
+                        cntx = ApiRouter.getConnectContext(msg.connectionId);
                         LogicUser.userAddConn(msg.id, msg.socNetUserId, cntx);
                         CAPIUser.authorizeSuccess(msg.userId,
                             {
@@ -111,7 +111,7 @@ const run = async () => {
                         break;
                     // COMMMON
                     case 'm3.common.dto.rs.UpdateTimeRsDto':
-                        var cntx = ApiRouter.getConnectContext(msg.connectionId);
+                        cntx = ApiRouter.getConnectContext(msg.connectionId);
                         ApiRouter.executeRequest("CAPITimeServer", "gotServerTime", [msg.timestamp], [cntx]);
                         break;
                     case 'm3.gameplay.dto.rs.GotMapInfoRsDto':
@@ -125,6 +125,9 @@ const run = async () => {
                         break;
                     case 'm3.gameplay.dto.rs.GotPointTopScoreRsDto':
                         CAPIMap.gotPointTopScore(msg.userId, msg.pointId, msg);
+                        break;
+                    case 'm3.gameplay.dto.rs.GotScoresRsDto':
+                        CAPIUser.gotScores(msg.userId, msg.rows);
                         break;
                     default:
                         console.log("Not found method");

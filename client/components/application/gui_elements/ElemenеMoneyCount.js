@@ -46,9 +46,14 @@ let ElementMoneyCount = function () {
      */
     this.init = function () {
         domMoneyImage = GUI.createDom(null, {backgroundImage: 'coin.png', pointer: GUI.POINTER_HAND});
-        textCounter = GUI.createElement(ElementText, {onClick: self.onClick, width: 80, alignCenter: false, pointer: GUI.POINTER_HAND});
+        textCounter = GUI.createElement(ElementText, {
+            onClick: self.onClick,
+            width: 80,
+            alignCenter: false,
+            pointer: GUI.POINTER_HAND
+        });
 
-        domProduct = GUI.createDom(null, {pointer: GUI.POINTER_HAND});
+        domProduct = GUI.createDom(null, {backgroundImage: 'coin.png', pointer: GUI.POINTER_HAND});
         textProductCount = GUI.createElement(ElementText, {onClick: self.onClick, pointer: GUI.POINTER_HAND});
 
         GUI.bind(domMoneyImage, GUI.EVENT_MOUSE_CLICK, self.onClick, self);

@@ -6,11 +6,7 @@ var LOCK = new AsyncLock();
 SAPIStuff = function () {
 
     this.sendMeStuff = function (cntx) {
-        if (!cntx.isAuthorized) return Logs.log(arguments.callee.name + " not authorized", Logs.LEVEL_WARN, cntx);
-        if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARN, cntx);
-        if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARN, cntx);
-
-        LogicStuff.sendStuffToUser(cntx.user.id, pStart(Profiler.ID_SAPISTUFF_SEND_ME_STUFF));
+        //LogicStuff.sendStuffToUser(cntx.user.id, pStart(Profiler.ID_SAPISTUFF_SEND_ME_STUFF));
         //@todo-method
         Kafka.sendToGameplay({}, cntx.user.id, Kafka.TYPE_SEND_ME_STUFF_RQ_DTO);
     };
