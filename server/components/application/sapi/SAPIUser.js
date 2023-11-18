@@ -14,7 +14,6 @@ SAPIUser = function () {
 
     this.spendCoinsForTurns = function (cntx) {
 
-        let tid = LogicTid.getOne();
 
         Statistic.write(cntx.user.id, Statistic.ID_BUY_LOOSE_TURNS, DataShop.looseTurnsQuantity, DataShop.looseTurnsPrice);
 
@@ -30,7 +29,7 @@ SAPIUser = function () {
             null, true);
 
         //@todo-method
-        //Kafka.sendToGameplay({}, Kafka.TYPE_SPEND_COINS_FOR_TURNS_RQ_DTO)
+        Kafka.sendToGameplay({}, Kafka.TYPE_SPEND_COINS_FOR_TURNS_RQ_DTO)
     };
 
     /**
