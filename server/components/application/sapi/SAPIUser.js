@@ -13,22 +13,6 @@ SAPIUser = function () {
     };
 
     this.spendCoinsForTurns = function (cntx) {
-
-
-        Statistic.write(cntx.user.id, Statistic.ID_BUY_LOOSE_TURNS, DataShop.looseTurnsQuantity, DataShop.looseTurnsPrice);
-
-        DataStuff.usedGold(cntx.user.id, DataShop.looseTurnsPrice, tid);
-
-        Logs.log(
-            " tid:" + tid +
-            " uid:" + cntx.user.id + " купил " +
-            DataShop.looseTurnsQuantity + " ходов за " +
-            DataShop.looseTurnsPrice + " монет.",
-            Logs.LEVEL_NOTIFY,
-            null,
-            null, true);
-
-        //@todo-method
         Kafka.sendToGameplay({}, Kafka.TYPE_SPEND_COINS_FOR_TURNS_RQ_DTO)
     };
 
@@ -94,7 +78,8 @@ SAPIUser = function () {
         Kafka.sendToUsers({pointId: pointId}, cntx.user.id, Kafka.TYPE_HEALTH_DOWN_RQ_DTO); /* healthDown*/
         Kafka.sendToCommon({
             statId: Statistic.ID_START_PLAY,
-            pointId: pointId
+            paramA: pointId,
+            paramB: ""
         }, cntx.user.id, Kafka.TYPE_STATISTIC_RQ_DTO);
     };
 

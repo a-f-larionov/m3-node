@@ -158,7 +158,7 @@ var Kafka = function () {
 
     this.TYPE_STATISTIC_RQ_DTO = this.RQ_NS_LIB + ".StatisticRqDto";
 
-    this.TYPE_LOG_RQ_DTO = this.RQ_NS_COMMON + ".LogRqDto";
+    this.TYPE_LOG_RQ_DTO = this.RQ_NS_LIB + ".LogRqDto";
     this.TYPE_SENDMETIME_RQ_DTO = this.RQ_NS_COMMON + ".SendMeTimeRqDto";
     this.TYPE_SENDUSERAGENT_RQ_DTO = this.RQ_NS_COMMON + ".SendUserAgentRqDto";
 
@@ -184,10 +184,10 @@ var Kafka = function () {
     this.TYPE_USED_SHUFFLE_RQ_DTO = this.RQ_NS_GAMEPLAY + ".UsedShuffleRqDto";
     this.TYPE_SPEND_COINS_FOR_TURNS_RQ_DTO = this.RQ_NS_GAMEPLAY + ".SpendCoinsForTurnsRqDto";
 
-    this.TYPE_BUY_HUMMER_RQ_DTO = this.RQ_NS_COMMON + ".BuyHummerRqDto";
-    this.TYPE_BUY_SHUFFLE_RQ_DTO = this.RQ_NS_COMMON + ".BuyShuffleRqDto";
-    this.TYPE_BUY_LIGHTNING_RQ_DTO = this.RQ_NS_COMMON + ".BuyLightningRqDto";
-    this.TYPE_BUY_HEALTH_RQ_DTO = this.RQ_NS_COMMON + ".BuyHealthRqDto";
+    this.TYPE_BUY_HUMMER_RQ_DTO = this.RQ_NS_GAMEPLAY + ".BuyHummerRqDto";
+    this.TYPE_BUY_SHUFFLE_RQ_DTO = this.RQ_NS_GAMEPLAY + ".BuyShuffleRqDto";
+    this.TYPE_BUY_LIGHTNING_RQ_DTO = this.RQ_NS_GAMEPLAY + ".BuyLightningRqDto";
+    this.TYPE_BUY_HEALTH_RQ_DTO = this.RQ_NS_GAMEPLAY + ".BuyHealthRqDto";
 
     this.init = function (afterInitCallback) {
         Logs.log("Kafka Init create Pool.", Logs.LEVEL_DEBUG);

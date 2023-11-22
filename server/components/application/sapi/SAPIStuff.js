@@ -6,126 +6,52 @@ var LOCK = new AsyncLock();
 SAPIStuff = function () {
 
     this.sendMeStuff = function (cntx) {
-        //LogicStuff.sendStuffToUser(cntx.user.id, pStart(Profiler.ID_SAPISTUFF_SEND_ME_STUFF));
-        //@todo-method
         Kafka.sendToGameplay({}, cntx.user.id, Kafka.TYPE_SEND_ME_STUFF_RQ_DTO);
     };
 
     this.usedHummer = function (cntx) {
-        if (!cntx.isAuthorized) return Logs.log(arguments.callee.name + " not authorized", Logs.LEVEL_WARN, cntx);
-        if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARN, cntx);
-        if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARN, cntx);
 
-        Statistic.write(cntx.userId, Statistic.ID_HUMMER_USE);
-        let prid = pStart(Profiler.ID_SAPISTUFF_USED_HUMMER);
-        DataStuff.usedHummer(cntx.user.id, LogicTid.getOne(), function (result, current) {
-            if (result) Logs.log("Игрок " + cntx.user.socNetUserId + " использовал молоток 🔨, теперь " + current, Logs.LEVEL_TRACE, undefined, Logs.CHANNEL_TELEGRAM);
-
-            pFinish(prid);
-        });
-        //@todo-method
-        //Kafka.sendToGameplay({}, cntx.user.id, Kafka.TYPE_USED_HUMMER_RQ_DTO);
+        // Statistic.write(cntx.userId, Statistic.ID_HUMMER_USE);
+        // let prid = pStart(Profiler.ID_SAPISTUFF_USED_HUMMER);
+        // DataStuff.usedHummer(cntx.user.id, LogicTid.getOne(), function (result, current) {
+        //     if (result) Logs.log("Игрок " + cntx.user.socNetUserId + " использовал молоток 🔨, теперь " + current, Logs.LEVEL_TRACE, undefined, Logs.CHANNEL_TELEGRAM);
+        //
+        //     pFinish(prid);
+        // });
+        // //@todo-method
+        Kafka.sendToGameplay({}, cntx.user.id, Kafka.TYPE_USED_HUMMER_RQ_DTO);
     };
 
     this.usedLightning = function (cntx) {
-        if (!cntx.isAuthorized) return Logs.log(arguments.callee.name + " not authorized", Logs.LEVEL_WARN, cntx);
-        if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARN, cntx);
-        if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARN, cntx);
 
-        Statistic.write(cntx.userId, Statistic.ID_LIGHTNING_USE);
-        let prid = pStart(Profiler.ID_SAPISTUFF_USED_LIGHTNING);
-        DataStuff.usedLightning(cntx.user.id, LogicTid.getOne(), function (result, current) {
-            if (result) Logs.log("Игрок " + cntx.user.socNetUserId + " использовал молнию ⚡, теперь " + current, Logs.LEVEL_TRACE, undefined, Logs.CHANNEL_TELEGRAM);
-            pFinish(prid);
-        });
-        //@todo-method
-        //Kafka.sendToGameplay({}, cntx.user.id, Kafka.TYPE_USED_LIGHTNING_RQ_DTO);
+        Kafka.sendToGameplay({}, cntx.user.id, Kafka.TYPE_USED_LIGHTNING_RQ_DTO);
     };
 
     this.usedShuffle = function (cntx) {
-        if (!cntx.isAuthorized) return Logs.log(arguments.callee.name + " not authorized", Logs.LEVEL_WARN, cntx);
-        if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARN, cntx);
-        if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARN, cntx);
-
-        Statistic.write(cntx.userId, Statistic.ID_SHUFFLE_USE);
-        let prid = pStart(Profiler.ID_SAPISTUFF_USED_SHUFFLE);
-        DataStuff.usedShuffle(cntx.user.id, LogicTid.getOne(), function (result, current) {
-            if (result) Logs.log("Игрок " + cntx.user.socNetUserId + " использовал вихрь 🌪, теперь " + current, Logs.LEVEL_TRACE, undefined, Logs.CHANNEL_TELEGRAM);
-            pFinish(prid);
-        });
-        //@todo-method
-        //Kafka.sendToGameplay({}, cntx.user.id, Kafka.TYPE_USED_SHUFFLE_RQ_DTO);
+        // if (!cntx.isAuthorized) return Logs.log(arguments.callee.name + " not authorized", Logs.LEVEL_WARN, cntx);
+        // if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARN, cntx);
+        // if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARN, cntx);
+        //
+        // Statistic.write(cntx.userId, Statistic.ID_SHUFFLE_USE);
+        // let prid = pStart(Profiler.ID_SAPISTUFF_USED_SHUFFLE);
+        // DataStuff.usedShuffle(cntx.user.id, LogicTid.getOne(), function (result, current) {
+        //     if (result) Logs.log("Игрок " + cntx.user.socNetUserId + " использовал вихрь 🌪, теперь " + current, Logs.LEVEL_TRACE, undefined, Logs.CHANNEL_TELEGRAM);
+        //     pFinish(prid);
+        // });
+        // //@todo-method
+        Kafka.sendToGameplay({}, cntx.user.id, Kafka.TYPE_USED_SHUFFLE_RQ_DTO);
     };
 
     this.buyHummer = function (cntx, itemIndex) {
-        if (!cntx.isAuthorized) return Logs.log(arguments.callee.name + " not authorized", Logs.LEVEL_WARN, cntx);
-        if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARN, cntx);
-        if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARN, cntx);
-
-        if (!DataShop.hummers[itemIndex]) return Logs.log("no item hummer " + itemIndex, Logs.LEVEL_WARN, cntx);
-        let tid;
-        let prid = pStart(Profiler.ID_SAPISTUFF_BUY_HUMMER);
-        DataStuff.usedGold(cntx.user.id, DataShop.hummers[itemIndex].gold, tid = LogicTid.getOne(), function (success, currentGold) {
-            if (success)
-                DataStuff.giveAHummer(cntx.user.id, DataShop.hummers[itemIndex].quantity, tid, function (result, currentStuff) {
-                    Statistic.write(cntx.userId, Statistic.ID_BUY_HUMMER, DataShop.hummers[itemIndex].quantity);
-                    if (result) Logs.log("Игрок " + cntx.user.socNetUserId + " купил молоток 🔨, теперь: " + currentStuff +
-                        ", 💰 " + currentGold + "(-" + DataShop.hummers[itemIndex].gold + ")", Logs.LEVEL_TRACE,
-                        undefined, Logs.CHANNEL_TELEGRAM);
-                    pFinish(prid);
-                });
-        });
-        //@todo-method
-     //   Kafka.sendToPayments({}, cntx.user.id, Kafka.TYPE_BUY_HUMMER_RQ_DTO);
+        Kafka.sendToGameplay({index: itemIndex}, cntx.user.id, Kafka.TYPE_BUY_HUMMER_RQ_DTO);
     };
 
     this.buyLightning = function (cntx, itemIndex) {
-        if (!cntx.isAuthorized) return Logs.log(arguments.callee.name + " not authorized", Logs.LEVEL_WARN, cntx);
-        if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARN, cntx);
-        if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARN, cntx);
-
-        if (!DataShop.lightning[itemIndex]) return Logs.log("no item hummer " + itemIndex, Logs.LEVEL_WARN, cntx);
-
-        let tid;
-
-        let prid = pStart(Profiler.ID_SAPISTUFF_BUY_LIGHTNING);
-
-        DataStuff.usedGold(cntx.user.id, DataShop.lightning[itemIndex].gold, tid = LogicTid.getOne(), function (success, currentGold) {
-            if (success)
-                DataStuff.giveALightning(cntx.user.id, DataShop.lightning[itemIndex].quantity, tid, function (result, currentStuff) {
-                    Statistic.write(cntx.userId, Statistic.ID_BUY_LIGHTNING, DataShop.lightning[itemIndex].quantity);
-                    if (result) Logs.log("Игрок " + cntx.user.socNetUserId + " купил молнию ⚡, теперь: " + currentStuff +
-                        ", 💰 " + currentGold + "(-" + DataShop.lightning[itemIndex].gold + ")", Logs.LEVEL_TRACE,
-                        undefined, Logs.CHANNEL_TELEGRAM);
-                    pFinish(prid);
-                });
-        });
-        //@todo-method
-        //Kafka.sendToPayments({}, cntx.user.id, Kafka.TYPE_BUY_LIGHTNING_RQ_DTO);
+        Kafka.sendToGameplay({index: itemIndex}, cntx.user.id, Kafka.TYPE_BUY_LIGHTNING_RQ_DTO);
     };
 
     this.buyShuffle = function (cntx, itemIndex) {
-        if (!cntx.isAuthorized) return Logs.log(arguments.callee.name + " not authorized", Logs.LEVEL_WARN, cntx);
-        if (!cntx.user) return Logs.log(arguments.callee.name + " not user", Logs.LEVEL_WARN, cntx);
-        if (!cntx.user.id) return Logs.log(arguments.callee.name + " not user id", Logs.LEVEL_WARN, cntx);
-
-        if (!DataShop.shuffle[itemIndex]) return Logs.log("no item shuffle " + itemIndex, Logs.LEVEL_WARN, cntx);
-        let tid;
-
-        let prid = pStart(Profiler.ID_SAPISTUFF_BUY_SHUFFLE);
-
-        DataStuff.usedGold(cntx.user.id, DataShop.shuffle[itemIndex].gold, tid = LogicTid.getOne(), function (success, currentGold) {
-            if (success)
-                DataStuff.giveAShuffle(cntx.user.id, DataShop.shuffle[itemIndex].quantity, tid, function (result, currentStuff) {
-                    Statistic.write(cntx.userId, Statistic.ID_BUY_SHUFFLE, DataShop.shuffle[itemIndex].quantity);
-                    if (result) Logs.log("Игрок " + cntx.user.socNetUserId + " купил вихрь 🌪, теперь: " + currentStuff +
-                        ", 💰 " + currentGold + "(-" + DataShop.lightning[itemIndex].gold + ")", Logs.LEVEL_TRACE,
-                        undefined, Logs.CHANNEL_TELEGRAM);
-                    pFinish(prid);
-                });
-        });
-        //@todo-method
-    //    Kafka.sendToPayments({}, cntx.user.id, Kafka.TYPE_BUY_SHUFFLE_RQ_DTO);
+        Kafka.sendToGameplay({index: itemIndex}, cntx.user.id, Kafka.TYPE_BUY_SHUFFLE_RQ_DTO);
     };
 
     this.buyHealth = function (cntx) {
@@ -138,7 +64,7 @@ SAPIStuff = function () {
         let prid = pStart(Profiler.ID_SAPISTUFF_BUY_HEALTH);
 
         //@todo-method
-      //  Kafka.sendToPayments({}, cntx.user.id, Kafka.TYPE_BUY_HEALTH_RQ_DTO);
+        //  Kafka.sendToPayments({}, cntx.user.id, Kafka.TYPE_BUY_HEALTH_RQ_DTO);
 
         LOCK.acquire(Keys.health(cntx.user.id), function (done) {
                 setTimeout(done, 5 * 60 * 1000);
