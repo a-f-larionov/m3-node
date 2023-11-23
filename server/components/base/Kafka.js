@@ -107,6 +107,8 @@ const run = async () => {
                         );
                         break;
                     case 'm3.users.dto.rs.UpdateUserInfoRsDto':
+                    case 'm3.lib.dto.rs.UpdateUserInfoRsDto':
+                    case 'm3.common.dto.rs.UpdateUserInfoRsDto':
                         CAPIUser.updateUserInfo(msg.userId, msg);
                         break;
                     // COMMMON
