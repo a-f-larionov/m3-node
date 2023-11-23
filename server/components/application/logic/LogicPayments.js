@@ -186,7 +186,7 @@ LogicPayments = function () {
 
                         DataPayments.createOrder(
                             user.id,
-                            Math.floor(this.getMTime() / 1000),
+                            Math.floor(Date.now() / 1000),
                             order_id,
                             item_price, function (newOrder) {
 
