@@ -32,31 +32,31 @@ SAPIUser = function () {
     };
 
     this.sendMeUserListInfo = function (cntx, ids) {
-        Kafka.sendToUsers({ids: ids}, cntx.user.id, Kafka.TYPE_SEND_USER_LIST_INFO_RQ_DTO); /* sendUserListInfo*/
+        Kafka.sendToUsers({ids: ids}, cntx.user.id, Kafka.TYPE_SEND_USER_LIST_INFO_RQ_DTO);
     };
 
     this.sendMeMapFriends = function (cntx, mapId, fids) {
-        Kafka.sendToUsers({mapId: mapId, fids: fids}, cntx.user.id, Kafka.TYPE_SEND_MAP_FRIENDS_RQ_DTO); /* sendMapFriends*/
+        Kafka.sendToUsers({mapId: mapId, fids: fids}, cntx.user.id, Kafka.TYPE_SEND_MAP_FRIENDS_RQ_DTO);
     };
 
     this.sendMeFriendIdsBySocNet = function (cntx, friendSocNetIds) {
-        Kafka.sendToUsers({friendSocNetIds: friendSocNetIds}, cntx.user.id, Kafka.TYPE_SEND_FRIEND_IDS_BY_SOCNET_RQ_DTO); /* sendFriendIdsBySocNet*/
+        Kafka.sendToUsers({friendSocNetIds: friendSocNetIds}, cntx.user.id, Kafka.TYPE_SEND_FRIEND_IDS_BY_SOCNET_RQ_DTO);
     };
 
     this.sendMeTopUsers = function (cntx, fids) {
-        Kafka.sendToUsers({fids: fids}, cntx.user.id, Kafka.TYPE_SEND_TOP_USERS_RQ_DTO); /* sendTopUsers*/
+        Kafka.sendToUsers({fids: fids}, cntx.user.id, Kafka.TYPE_SEND_TOP_USERS_RQ_DTO);
     };
 
     this.healthBack = function (cntx) {
-        Kafka.sendToUsers({}, cntx.user.id, Kafka.TYPE_HEALTH_BACK_RQ_DTO); /* healthBack*/
+        Kafka.sendToUsers({}, cntx.user.id, Kafka.TYPE_HEALTH_BACK_RQ_DTO);
     };
 
     this.zeroLife = function (cntx) {
-        Kafka.sendToUsers({}, cntx.user.id, Kafka.TYPE_ZERO_LIFE_RQ_DTO); /* zeroLife*/
+        Kafka.sendToUsers({}, cntx.user.id, Kafka.TYPE_ZERO_LIFE_RQ_DTO);
     };
 
     this.healthDown = function (cntx, pointId) {
-        Kafka.sendToUsers({pointId: pointId}, cntx.user.id, Kafka.TYPE_HEALTH_DOWN_RQ_DTO); /* healthDown*/
+        Kafka.sendToUsers({pointId: pointId}, cntx.user.id, Kafka.TYPE_HEALTH_DOWN_RQ_DTO);
         Kafka.sendToCommon({
             statId: Statistic.ID_START_PLAY, paramA: pointId
         }, cntx.user.id, Kafka.TYPE_STATISTIC_RQ_DTO);

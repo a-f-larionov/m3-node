@@ -1,17 +1,5 @@
 LogicSystemRequests = function () {
 
-    this.getOnline = function (callback) {
-        let ids = LogicUser.getOnlineUserIds();
-        DataUser.getList(ids, function (list) {
-            callback(JSON.stringify(
-                {
-                    ids: ids,
-                    list: list
-                }
-            ));
-        });
-    };
-
     this.getProfiler = function (callback) {
         callback(
             '<pre>' + Profiler.getReport() + '</pre>' +

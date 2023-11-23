@@ -149,32 +149,6 @@ var LogicUser = function () {
             userDeleteConn(cntx);
         }
     };
-
-    /**
-     * Отправка информации о пользователе.
-     * @param toUserId {Number} кому отправляем.
-     * @param ids {Number} данные о каком пользователе.
-     * @param prid
-     */
-    this.sendUserListInfo = function (ids, toUserId, prid) {
-        DataUser.getList(ids, function (list) {
-            if (list) {
-                list = list.map(function (user) {
-                    return [
-                        user.id,
-                        user.nextPointId,
-                        user.socNetUserId,
-                        user.fullRecoveryTime,
-                    ];
-                });
-                CAPIUser.updateUserListInfo(toUserId, list);
-                pFinish(prid);
-            } else {
-                Logs.log(arguments.callee.name + " Users not found: id=" + ids, Logs.LEVEL_WARN);
-                pFinish(prid);
-            }
-        });
-    };
 };
 
 LogicUser = new LogicUser();

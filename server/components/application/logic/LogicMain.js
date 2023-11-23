@@ -33,7 +33,6 @@ LogicMain = function () {
             '/service/--profiler': LogicSystemRequests.getProfiler,
             '/service/--counters': LogicSystemRequests.getCounters,
             '/service/--get-statistics': Statistic.getReport,
-            '/service/--get-online': LogicSystemRequests.getOnline,
             '/service/--logs-set-detail': LogicSystemRequests.logsSetDetail,
             '/service/--logs-set-notify': LogicSystemRequests.logsSetNotify,
             '/service/--shutdown___': LogicSystemRequests.shutdown,
