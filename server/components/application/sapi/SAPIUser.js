@@ -70,7 +70,8 @@ SAPIUser = function () {
 
     this.looseGame = function (cntx, pointId) {
         Kafka.sendToCommon({
-            statId: Statistic.ID_LOOSE_GAME, paramA: pointId
+            statId: Statistic.ID_LOOSE_GAME,
+            paramA: pointId
         }, cntx.user.id, Kafka.TYPE_STATISTIC_RQ_DTO);
     };
 
