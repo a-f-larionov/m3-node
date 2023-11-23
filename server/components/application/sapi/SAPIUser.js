@@ -1,4 +1,3 @@
-const Logs = require("../../base/Logs.js").Logs
 const Kafka = require("../../base/Kafka.js").Kafka
 const DataUser = require("../../application/data/DataUser.js").DataUser
 
@@ -13,27 +12,10 @@ SAPIUser = function () {
     };
 
     this.spendCoinsForTurns = function (cntx) {
-        Kafka.sendToGameplay({}, Kafka.TYPE_SPEND_COINS_FOR_TURNS_RQ_DTO)
+        Kafka.sendToGameplay({}, cntx.user.id, Kafka.TYPE_SPEND_COINS_FOR_TURNS_RQ_DTO)
     };
 
-    /**
-     * Авторизация через вКонтакте.
-     * @param cntx контекст соединения
-     * @param authParams параметры аутентифиакации.
-     */
     this.auth = function (cntx, authParams) {
-
-        /** Тут мы запомним его cid раз и на всегда */
-        //@Todo remove after realis Log service
-        // Logs.log("🥰 ", Logs.LEVEL_NOTIFY,
-        //     SocNet(SocNet.TYPE_VK).getUserProfileUrl(authParams.socNetUserId),
-        //     Logs.CHANNEL_TELEGRAM
-        // );
-        SAPILogs.log(cntx, "Игрок вошел в игру 🥰 ", Logs.LEVEL_INFO,
-            SocNet(authParams.socNetType)
-                .getUserProfileUrl(authParams.socNetUserId),
-            true);
-
         authParams.connectionId = cntx.cid;
         Kafka.sendToUsers(authParams, undefined, Kafka.TYPE_AUTH_RQ_DTO);
     };
@@ -67,7 +49,6 @@ SAPIUser = function () {
 
     this.healthBack = function (cntx) {
         Kafka.sendToUsers({}, cntx.user.id, Kafka.TYPE_HEALTH_BACK_RQ_DTO); /* healthBack*/
-        Kafka.sendToCommon({statId: Statistic.ID_FINISH_PLAY}, cntx.user.id, Kafka.TYPE_STATISTIC_RQ_DTO);
     };
 
     this.zeroLife = function (cntx) {
@@ -77,23 +58,19 @@ SAPIUser = function () {
     this.healthDown = function (cntx, pointId) {
         Kafka.sendToUsers({pointId: pointId}, cntx.user.id, Kafka.TYPE_HEALTH_DOWN_RQ_DTO); /* healthDown*/
         Kafka.sendToCommon({
-            statId: Statistic.ID_START_PLAY,
-            paramA: pointId,
-            paramB: ""
+            statId: Statistic.ID_START_PLAY, paramA: pointId
         }, cntx.user.id, Kafka.TYPE_STATISTIC_RQ_DTO);
     };
 
     this.exitGame = function (cntx, pointId) {
         Kafka.sendToCommon({
-            statId: Statistic.ID_EXIT_GAME,
-            pointId: pointId
+            statId: Statistic.ID_EXIT_GAME, paramA: pointId
         }, cntx.user.id, Kafka.TYPE_STATISTIC_RQ_DTO);
     };
 
     this.looseGame = function (cntx, pointId) {
         Kafka.sendToCommon({
-            statId: Statistic.ID_LOOSE_GAME,
-            pointId: pointId
+            statId: Statistic.ID_LOOSE_GAME, paramA: pointId
         }, cntx.user.id, Kafka.TYPE_STATISTIC_RQ_DTO);
     };
 

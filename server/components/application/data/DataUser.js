@@ -1,4 +1,4 @@
-const LogicTimeServer = require("../../application/logic/LogicTimeServer.js").LogicTimeServer
+//const LogicTimeServer = require("../../application/logic/LogicTimeServer.js").LogicTimeServer
 /**
  * @type {DataUser}
  */
@@ -122,37 +122,37 @@ var DataUser = function () {
      * @param socNetUserId id в социальнйо сети.
      * @param callback
      */
-    this.createFromSocNet = function (socNetTypeId, socNetUserId, callback) {
-        /** Предотвращение двойной мгновенной регистрации. */
-        if (waitForCreateBySocNet[socNetUserId]) return;
-        waitForCreateBySocNet[socNetUserId] = true;
-        let user = {
-            id: autoIncrementValue++,
-            socNetTypeId: parseInt(socNetTypeId),
-            socNetUserId: parseInt(socNetUserId),
-            create_tm: LogicTimeServer.getTime(),
-            login_tm: LogicTimeServer.getTime(),
-            //@todo is not current, is it next point id
-            nextPointId: 1,
-        };
-        LogicHealth.setMaxHealth(user);
-        cache[user.id] = user;
-        callback(user);
-        //create user here
-        //DataPoints.updateUsersPoints(user.id, 0, 0);
-        DB.insert(tableName, user, function (result) {
-            if (result.insertId !== user.id) {
-                Logs.log("DataUser.createFromSocNet. result.insertId != user.id",
-                    Logs.LEVEL_ERROR, {
-                    user: user,
-                    autoIncrementValue: autoIncrementValue,
-                    result: result
-                }
-                );
-            }
-            delete waitForCreateBySocNet[socNetUserId];
-        });
-    };
+    // this.createFromSocNet = function (socNetTypeId, socNetUserId, callback) {
+    //     /** Предотвращение двойной мгновенной регистрации. */
+    //     if (waitForCreateBySocNet[socNetUserId]) return;
+    //     waitForCreateBySocNet[socNetUserId] = true;
+    //     let user = {
+    //         id: autoIncrementValue++,
+    //         socNetTypeId: parseInt(socNetTypeId),
+    //         socNetUserId: parseInt(socNetUserId),
+    //         create_tm: LogicTimeServer.getTime(),
+    //         login_tm: LogicTimeServer.getTime(),
+    //         //@todo is not current, is it next point id
+    //         nextPointId: 1,
+    //     };
+    //     LogicHealth.setMaxHealth(user);
+    //     cache[user.id] = user;
+    //     callback(user);
+    //     //create user here
+    //     //DataPoints.updateUsersPoints(user.id, 0, 0);
+    //     DB.insert(tableName, user, function (result) {
+    //         if (result.insertId !== user.id) {
+    //             Logs.log("DataUser.createFromSocNet. result.insertId != user.id",
+    //                 Logs.LEVEL_ERROR, {
+    //                 user: user,
+    //                 autoIncrementValue: autoIncrementValue,
+    //                 result: result
+    //             }
+    //             );
+    //         }
+    //         delete waitForCreateBySocNet[socNetUserId];
+    //     });
+    // };
 
     /**
      * Возвращает список юзеров по параметрам.

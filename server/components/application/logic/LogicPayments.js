@@ -42,7 +42,7 @@ LogicPayments = function () {
         let tid;
         tid = LogicTid.getOne();
 
-        Logs.log(buyPrefix + " tid:" + tid + " REQUEST", Logs.LEVEL_TRACE, undefined, Logs.TYPE_VK_PAYMENTS);
+        Logs.log(buyPrefix + " REQUEST", Logs.LEVEL_TRACE, undefined, Logs.TYPE_VK_PAYMENTS);
 
         /** Собираем тело */
         request.on('data', function (data) {
@@ -186,7 +186,7 @@ LogicPayments = function () {
 
                         DataPayments.createOrder(
                             user.id,
-                            LogicTimeServer.getTime(),
+                            Math.floor(this.getMTime() / 1000),
                             order_id,
                             item_price, function (newOrder) {
 

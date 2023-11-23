@@ -1,8 +1,5 @@
 const Kafka = require("../../base/Kafka.js").Kafka
 
-var AsyncLock = require('async-lock');
-var LOCK = new AsyncLock();
-
 SAPIStuff = function () {
 
     this.sendMeStuff = function (cntx) {
