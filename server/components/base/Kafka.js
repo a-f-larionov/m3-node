@@ -162,9 +162,9 @@ var Kafka = function () {
 
     this.TYPE_LOG_RQ_DTO = this.RQ_NS_LIB + ".LogRqDto";
     this.TYPE_SENDMETIME_RQ_DTO = this.RQ_NS_COMMON + ".SendMeTimeRqDto";
+    this.TYPE_DO_ORDER_CHANGE_RQ_DTO = this.RQ_NS_COMMON + '.DoOrderChangeRqDto';
+
     this.TYPE_SENDUSERAGENT_RQ_DTO = this.RQ_NS_COMMON + ".SendUserAgentRqDto";
-
-
     this.TYPE_UPDATE_LAST_LOGOUT_RQ_DTO = this.RQ_NS_USERS + ".UpdateLastLogoutRqDto";
     this.TYPE_AUTH_RQ_DTO = this.RQ_NS_USERS + ".AuthRqDto";
     this.TYPE_SEND_USER_LIST_INFO_RQ_DTO = this.RQ_NS_USERS + ".SendUserListInfoRqDto";
@@ -173,19 +173,19 @@ var Kafka = function () {
     this.TYPE_SEND_TOP_USERS_RQ_DTO = this.RQ_NS_USERS + ".SendTopUsersRqDto";
     this.TYPE_HEALTH_BACK_RQ_DTO = this.RQ_NS_USERS + ".HealthBackRqDto";
     this.TYPE_ZERO_LIFE_RQ_DTO = this.RQ_NS_USERS + ".ZeroLifeRqDto";
-    this.TYPE_HEALTH_DOWN_RQ_DTO = this.RQ_NS_USERS + ".HealthDownRqDto";
 
+    this.TYPE_HEALTH_DOWN_RQ_DTO = this.RQ_NS_USERS + ".HealthDownRqDto";
     this.TYPE_SEND_ME_MAP_INFO_RQ_DTO = this.RQ_NS_GAMEPLAY + ".SendMeMapInfoRqDto";
     this.TYPE_SEND_ME_SCORES_RQ_DTO = this.RQ_NS_GAMEPLAY + ".SendMeScoresRqDto";
     this.TYPE_SEND_ME_POINT_TOP_SCORE_RQ_DTO = this.RQ_NS_GAMEPLAY + ".SendMePointTopScoreRqDto";
     this.TYPE_SEND_ME_STUFF_RQ_DTO = this.RQ_NS_GAMEPLAY + ".SendMeStuffRqDto";
-    this.TYPE_ON_FINISH_RQ_DTO = this.RQ_NS_GAMEPLAY + ".OnFinishRqDto";
 
+    this.TYPE_ON_FINISH_RQ_DTO = this.RQ_NS_GAMEPLAY + ".OnFinishRqDto";
     this.TYPE_USED_HUMMER_RQ_DTO = this.RQ_NS_GAMEPLAY + ".UsedHummerRqDto";
     this.TYPE_USED_LIGHTNING_RQ_DTO = this.RQ_NS_GAMEPLAY + ".UsedLightningRqDto";
     this.TYPE_USED_SHUFFLE_RQ_DTO = this.RQ_NS_GAMEPLAY + ".UsedShuffleRqDto";
-    this.TYPE_SPEND_COINS_FOR_TURNS_RQ_DTO = this.RQ_NS_GAMEPLAY + ".SpendCoinsForTurnsRqDto";
 
+    this.TYPE_SPEND_COINS_FOR_TURNS_RQ_DTO = this.RQ_NS_GAMEPLAY + ".SpendCoinsForTurnsRqDto";
     this.TYPE_BUY_HUMMER_RQ_DTO = this.RQ_NS_GAMEPLAY + ".BuyHummerRqDto";
     this.TYPE_BUY_SHUFFLE_RQ_DTO = this.RQ_NS_GAMEPLAY + ".BuyShuffleRqDto";
     this.TYPE_BUY_LIGHTNING_RQ_DTO = this.RQ_NS_GAMEPLAY + ".BuyLightningRqDto";

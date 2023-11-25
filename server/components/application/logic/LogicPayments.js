@@ -1,9 +1,19 @@
+const Kafka = require("../../base/Kafka.js").Kafka
 let QUERYSTRING = require('querystring');
 let MD5 = require('md5');
 var AsyncLock = require('async-lock');
+const {and32} = require("mysql/lib/protocol/Auth");
 var LOCK = new AsyncLock();
 
 LogicPayments = function () {
+
+    let lastUniqTid = 1;
+
+    this.getOne = function () {
+        return lastUniqTid++;
+    }
+
+    let callbacks = {};
 
     let self = this;
 
@@ -40,7 +50,7 @@ LogicPayments = function () {
     this.VKbuy = function (callback, request) {
         let body = '', buyPrefix = 'vk_buy';
         let tid;
-        tid = LogicTid.getOne();
+        tid = this.getOne();
 
         Logs.log(buyPrefix + " REQUEST", Logs.LEVEL_TRACE, undefined, Logs.TYPE_VK_PAYMENTS);
 
@@ -63,9 +73,13 @@ LogicPayments = function () {
     };
 
     this.standaloneBuy = function (callback, request) {
-        let body = '', buyPrefix = 'standalone_buy';
+
         let tid, params;
-        tid = LogicTid.getOne();
+        tid = this.getOne();
+
+        callbacks[tid] = callback;
+
+        let body = '', buyPrefix = 'standalone_buy';
 
         Logs.log(buyPrefix + " tid:" + tid + " REQUEST", Logs.LEVEL_TRACE, undefined, Logs.TYPE_VK_PAYMENTS);
 
@@ -80,18 +94,32 @@ LogicPayments = function () {
 
             Logs.log(JSON.stringify(params));
 
-            self.doOrderChange(
-                parseInt(params.receiver_id),
-                parseInt(params.order_id),
-                parseInt(params.item_price),
-                tid,
-                function (answer) {
-                    callback(JSON.stringify(answer));
-                },
-                SocNet.TYPE_STANDALONE,
-                buyPrefix);
+            Kafka.sendToCommon({
+                receiver_id: parseInt(params.receiver_id),
+                order_id: parseInt(params.order_id),
+                item_price: parseInt(params.item_price),
+                tid: tid,
+                socNetType: SocNet.TYPE_STANDALONE,
+                buyPrefix: buyPrefix
+            }, null, Kafka.TYPE_DO_ORDER_CHANGE_RQ_DTO);
+
+            // self.doOrderChange(
+            //     parseInt(params.receiver_id),
+            //     parseInt(params.order_id),
+            //     parseInt(params.item_price),
+            //     tid,
+            //     function (answer) {
+            //         callback(JSON.stringify(answer));
+            //     },
+            //     SocNet.TYPE_STANDALONE,
+            //     buyPrefix);
         });
     };
+
+    this.doOrderChangeCallbackAnswer = function (answer) {
+        callbacks[answer.tid].apply(answer.body);
+        callbacks[answer.tid] = null;
+    }
 
     let onVKbuyReady = function (url, body, params, tid, callback, buyPrefix) {
 
@@ -141,7 +169,16 @@ LogicPayments = function () {
                 Logs.log(buyPrefix + " tid:" + tid + " Ошибка статуса", Logs.LEVEL_ERROR, params, Logs.TYPE_VK_PAYMENTS);
                 return callback(vkErrorCommon);
             }
-            return self.doOrderChange(receiver_id, order_id, item_price, tid, callback, SocNet.TYPE_VK, buyPrefix);
+            Kafka.sendToCommon({
+                receiver_id: parseInt(params.receiver_id),
+                order_id: parseInt(params.order_id),
+                item_price: parseInt(params.item_price),
+                tid: tid,
+                socNetType: SocNet.TYPE_VK,
+                buyPrefix: buyPrefix
+            }, null, Kafka.TYPE_DO_ORDER_CHANGE_RQ_DTO);
+
+//            return self.doOrderChange(receiver_id, order_id, item_price, tid, callback, SocNet.TYPE_VK, buyPrefix);
         } else {
             Logs.log(buyPrefix + " tid:" + tid + " Ошибка типа запроса `notification_type` ", Logs.LEVEL_ERROR, params, Logs.TYPE_VK_PAYMENTS);
             return callback(vkErrorCommon);
