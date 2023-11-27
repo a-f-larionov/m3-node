@@ -26,29 +26,6 @@ var LogicUser = function () {
         ApiRouter.executeRequest(group, method, arguments, cntxList);
     };
 
-    /**
-     * Отправить всем.
-     * @param capiFunction {Function} CAPI-функция, CAPI{groupName}.{functionName}.
-     * @param arg1 {*} любой параметр, будет передан в CAPI-функцию 1-ым.
-     * @param arg2 {*} любой параметр, будет передан в CAPI-функцию 2-ым.
-     * @param arg3 {*} любой параметр, будет передан в CAPI-функцию 3-ым.
-     * @param arg4 {*} любой параметр, будет передан в CAPI-функцию 4-ым.
-     * @param arg5 {*} любой параметр, будет передан в CAPI-функцию 5-ым.
-     * @param arg6 {*} любой параметр, будет передан в CAPI-функцию 6-ым.
-     * @param arg7 {*} любой параметр, будет передан в CAPI-функцию 7-ым
-     * @param arg8 {*} любой параметр, будет передан в CAPI-функцию 8-ым.
-     */
-    this.sendToAll = function () {
-        let args = [];
-        args = Array.prototype.slice.call(arguments);
-        capiFunction = args.shift();
-        args.unshift(0);
-        for (let userId in userToCntx) {
-            args[0] = userId;
-            capiFunction.apply(null, args);
-        }
-    };
-
     this.getOnlineUserIds = function () {
         let list;
         list = [];
@@ -56,15 +33,6 @@ var LogicUser = function () {
             list.push(userId);
         }
         return list;
-    };
-
-    /**
-     * Является ли пользователь онлайн.
-     * @param userId {int} id пользователя.
-     * @returns {boolean}
-     */
-    this.isUserOnline = function (userId) {
-        return !!userGetConns(userId);
     };
 
     this.userAddConn = function (userId, socNetUserId, cntx) {
