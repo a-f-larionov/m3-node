@@ -9,7 +9,7 @@ LogicPayments = function () {
 
     let lastUniqTid = 1;
 
-    this.getOne = function () {
+    let getOne = function () {
         return lastUniqTid++;
     }
 
@@ -50,7 +50,7 @@ LogicPayments = function () {
     this.VKbuy = function (callback, request) {
         let body = '', buyPrefix = 'vk_buy';
         let tid;
-        tid = this.getOne();
+        tid = getOne();
 
         Logs.log(buyPrefix + " REQUEST", Logs.LEVEL_TRACE, undefined, Logs.TYPE_VK_PAYMENTS);
 
@@ -75,7 +75,7 @@ LogicPayments = function () {
     this.standaloneBuy = function (callback, request) {
 
         let tid, params;
-        tid = this.getOne();
+        tid = getOne();
 
         callbacks[tid] = callback;
 
@@ -94,13 +94,14 @@ LogicPayments = function () {
 
             Logs.log(JSON.stringify(params));
 
-            Kafka.sendToCommon({
+            Kafka.sendToGameplay({
+                socNetType: SocNet.TYPE_STANDALONE,
+
                 receiver_id: parseInt(params.receiver_id),
                 order_id: parseInt(params.order_id),
                 item_price: parseInt(params.item_price),
-                tid: tid,
-                socNetType: SocNet.TYPE_STANDALONE,
-                buyPrefix: buyPrefix
+
+                tid: tid
             }, null, Kafka.TYPE_DO_ORDER_CHANGE_RQ_DTO);
 
             // self.doOrderChange(
@@ -117,7 +118,9 @@ LogicPayments = function () {
     };
 
     this.doOrderChangeCallbackAnswer = function (answer) {
-        callbacks[answer.tid].apply(answer.body);
+        console.log(answer);
+        console.log(callbacks);
+        callbacks[answer.tid].call(null, JSON.stringify(answer));
         callbacks[answer.tid] = null;
     }
 
@@ -169,7 +172,7 @@ LogicPayments = function () {
                 Logs.log(buyPrefix + " tid:" + tid + " Ошибка статуса", Logs.LEVEL_ERROR, params, Logs.TYPE_VK_PAYMENTS);
                 return callback(vkErrorCommon);
             }
-            Kafka.sendToCommon({
+            Kafka.sendToGameplay({
                 receiver_id: parseInt(params.receiver_id),
                 order_id: parseInt(params.order_id),
                 item_price: parseInt(params.item_price),
@@ -185,66 +188,66 @@ LogicPayments = function () {
         }
     };
 
-    this.doOrderChange = function (socNetUserId, order_id, item_price, tid, callback, socNetTypeId, buyPrefix) {
-        let product;
-        socNetTypeId = Validator.DBUINT(socNetTypeId);
-        socNetUserId = Validator.DBUINT(socNetUserId);
-        item_price = Validator.DBUINT(item_price);
-        order_id = Validator.DBUINT(order_id);
-        if (!socNetTypeId || !socNetUserId || !item_price || !order_id) {
-            Logs.log(buyPrefix + " tid:" + tid + "CANCEL no data", Logs.LEVEL_INFO, arguments);
-            return callback(vkErrorItemPriceNotFound);
-        }
-        product = DataShop.getGoldProductByPrice(item_price);
-        /** Существует ли такой товар */
-        if (!product) {
-            Logs.log(buyPrefix + " tid:" + tid + " product not found", Logs.LEVEL_ERROR, arguments, Logs.TYPE_VK_PAYMENTS);
-            return callback(vkErrorItemPriceNotFound);
-        }
-
-        LOCK.acquire(buyPrefix + order_id, function (done) {
-            setTimeout(done, 5 * 60 * 1000);
-            /** Проверка наличия пользователя */
-            DataUser.getBySocNet(socNetTypeId, socNetUserId)
-                .then(function (user) {
-                    if (!user || !user.id) {
-                        Logs.log(buyPrefix + " tid:" + tid + " no user found", Logs.LEVEL_ERROR, arguments, Logs.TYPE_VK_PAYMENTS);
-                        done();
-                        return callback(vkErrorCommon);
-                    }
-                    /** Проверка повторной обработки заказа. */
-                    DataPayments.getByOrderId(order_id, function (order) {
-                        if (order) {
-                            Logs.log(buyPrefix + " tid:" + tid + " order already exists", Logs.LEVEL_WARN, arguments, Logs.TYPE_VK_PAYMENTS);
-                            done();
-                            //
-                            return callback(vkErrorCommon);
-                        }
-
-                        DataPayments.createOrder(
-                            user.id,
-                            Math.floor(Date.now() / 1000),
-                            order_id,
-                            item_price, function (newOrder) {
-
-                                DataStuff.giveAGold(user.id, product.quantity, tid);
-
-                                CAPIStuff.incrementGold(user.id, product.quantity);
-
-                                Logs.log(buyPrefix + " tid:" + tid + " uid:" + user.id + " votes:" +
-                                    item_price + " gold:" + product.quantity + " order success", Logs.LEVEL_TRACE, {
-                                    order: order, itemPrice: item_price
-                                }, Logs.TYPE_VK_PAYMENTS);
-                                Statistic.write(user.id, Statistic.ID_BUY_VK_MONEY, order_id, item_price);
-                                done();
-                                return callback(
-                                    {"response": {"order_id": order_id, "app_order_id": newOrder.id}}
-                                );
-                            });
-                    });
-                });
-        });
-    };
+    // this.doOrderChange = function (socNetUserId, order_id, item_price, tid, callback, socNetTypeId, buyPrefix) {
+    //     let product;
+    //     socNetTypeId = Validator.DBUINT(socNetTypeId);
+    //     socNetUserId = Validator.DBUINT(socNetUserId);
+    //     item_price = Validator.DBUINT(item_price);
+    //     order_id = Validator.DBUINT(order_id);
+    //     if (!socNetTypeId || !socNetUserId || !item_price || !order_id) {
+    //         Logs.log(buyPrefix + " tid:" + tid + "CANCEL no data", Logs.LEVEL_INFO, arguments);
+    //         return callback(vkErrorItemPriceNotFound);
+    //     }
+    //     product = DataShop.getGoldProductByPrice(item_price);
+    //     /** Существует ли такой товар */
+    //     if (!product) {
+    //         Logs.log(buyPrefix + " tid:" + tid + " product not found", Logs.LEVEL_ERROR, arguments, Logs.TYPE_VK_PAYMENTS);
+    //         return callback(vkErrorItemPriceNotFound);
+    //     }
+    //
+    //     LOCK.acquire(buyPrefix + order_id, function (done) {
+    //         setTimeout(done, 5 * 60 * 1000);
+    //         /** Проверка наличия пользователя */
+    //         DataUser.getBySocNet(socNetTypeId, socNetUserId)
+    //             .then(function (user) {
+    //                 if (!user || !user.id) {
+    //                     Logs.log(buyPrefix + " tid:" + tid + " no user found", Logs.LEVEL_ERROR, arguments, Logs.TYPE_VK_PAYMENTS);
+    //                     done();
+    //                     return callback(vkErrorCommon);
+    //                 }
+    //                 /** Проверка повторной обработки заказа. */
+    //                 DataPayments.getByOrderId(order_id, function (order) {
+    //                     if (order) {
+    //                         Logs.log(buyPrefix + " tid:" + tid + " order already exists", Logs.LEVEL_WARN, arguments, Logs.TYPE_VK_PAYMENTS);
+    //                         done();
+    //                         //
+    //                         return callback(vkErrorCommon);
+    //                     }
+    //
+    //                     DataPayments.createOrder(
+    //                         user.id,
+    //                         Math.floor(Date.now() / 1000),
+    //                         order_id,
+    //                         item_price, function (newOrder) {
+    //
+    //                             DataStuff.giveAGold(user.id, product.quantity, tid);
+    //
+    //                             CAPIStuff.incrementGold(user.id, product.quantity);
+    //
+    //                             Logs.log(buyPrefix + " tid:" + tid + " uid:" + user.id + " votes:" +
+    //                                 item_price + " gold:" + product.quantity + " order success", Logs.LEVEL_TRACE, {
+    //                                 order: order, itemPrice: item_price
+    //                             }, Logs.TYPE_VK_PAYMENTS);
+    //                             Statistic.write(user.id, Statistic.ID_BUY_VK_MONEY, order_id, item_price);
+    //                             done();
+    //                             return callback(
+    //                                 {"response": {"order_id": order_id, "app_order_id": newOrder.id}}
+    //                             );
+    //                         });
+    //                 });
+    //             });
+    //     });
+    // };
 
     this.checkVKSign = function (sig, params) {
         return (sig === self.calcVKSign(params, 0)) ||

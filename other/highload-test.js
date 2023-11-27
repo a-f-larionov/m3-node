@@ -32,7 +32,6 @@
         SAPIUser.sendMeUserListInfo(getUid());
 
         SAPIUser.sendMeUserIdsBySocNet(uids);
-        if (prid) SAPILogs.clientLoaded(prid);
         SAPIUser.sendMeTopUsers(uids);
         SAPIUser.sendMeMapFriends(Math.ceil(Math.random() * 3), uids);
         SAPIUser.sendMeUserListInfo(uids);

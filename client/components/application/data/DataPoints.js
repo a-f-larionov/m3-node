@@ -166,8 +166,6 @@ let DataPoints = function () {
     };
 
     this.loadScores = function (pids, uids) {
-        console.log(pids,uids);
-        console.error("error")
         if (!uids && !(uids = LogicUser.getCurrent().id)) return null;
         if (!(uids instanceof Array)) uids = [uids];
 

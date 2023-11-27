@@ -44,7 +44,6 @@ let LogicMain = (function () {
             setTimeout(function () {
                 Sounds.loadSounds();
             }, 3000);
-            SAPILogs.clientLoaded(prid);
             SAPILogs.sendUserAgent(window.navigator.userAgent);
             prid = null;
         }

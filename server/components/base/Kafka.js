@@ -131,6 +131,9 @@ const run = async () => {
                     case 'm3.gameplay.dto.rs.GotScoresRsDto':
                         CAPIUser.gotScores(msg.userId, msg.rows);
                         break;
+                    case 'm3.gameplay.dto.rs.DoOrderChangeAnswerRsDto':
+                        LogicPayments.doOrderChangeCallbackAnswer(msg);
+                        break;
                     default:
                         console.log("Not found method");
                 }
@@ -162,7 +165,7 @@ var Kafka = function () {
 
     this.TYPE_LOG_RQ_DTO = this.RQ_NS_LIB + ".LogRqDto";
     this.TYPE_SENDMETIME_RQ_DTO = this.RQ_NS_COMMON + ".SendMeTimeRqDto";
-    this.TYPE_DO_ORDER_CHANGE_RQ_DTO = this.RQ_NS_COMMON + '.DoOrderChangeRqDto';
+    this.TYPE_DO_ORDER_CHANGE_RQ_DTO = this.RQ_NS_GAMEPLAY + '.DoOrderChangeRqDto';
 
     this.TYPE_SENDUSERAGENT_RQ_DTO = this.RQ_NS_COMMON + ".SendUserAgentRqDto";
     this.TYPE_UPDATE_LAST_LOGOUT_RQ_DTO = this.RQ_NS_USERS + ".UpdateLastLogoutRqDto";
