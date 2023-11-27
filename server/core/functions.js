@@ -109,13 +109,13 @@ let STR_PAD_BOTH = 3;
 
 str_pad = function (str, len, pad, dir) {
     if (typeof (len) == "undefined") {
-        let len = 0;
+        len = 0;
     }
     if (typeof (pad) == "undefined") {
-        let pad = ' ';
+        pad = ' ';
     }
     if (typeof (dir) == "undefined") {
-        let dir = STR_PAD_RIGHT;
+        dir = STR_PAD_RIGHT;
     }
     if (len + 1 >= str.length) {
 
@@ -150,22 +150,6 @@ time = function () {
  * Возвращает время в миллисекундах секундах.
  */
 mtime = Date.now;
-
-serverCrypt = function (str) {
-    return str.split('')
-        .map(function (s, i) {
-            return String.fromCharCode(s.charCodeAt() ^ DataCross.serverCryptKey + i)
-        })
-        .join('');
-};
-
-serverDecrypt = function (str) {
-    return str.split('')
-        .map(function (s, i) {
-            return String.fromCharCode(s.charCodeAt() ^ DataCross.clientCryptKey + i)
-        })
-        .join('');
-};
 
 /**
  *

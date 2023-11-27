@@ -1,5 +1,4 @@
 const Kafka = require("../../base/Kafka.js").Kafka
-const DataUser = require("../../application/data/DataUser.js").DataUser
 
 /**
  * @type {SAPIUser}
@@ -21,10 +20,7 @@ SAPIUser = function () {
     };
 
     this.logout = function (cntx) {
-        if (cntx.userId) {
-            Kafka.sendToUsers({}, cntx.user.id, Kafka.TYPE_UPDATE_LAST_LOGOUT_RQ_DTO); /* updateLastLogout*/
-            DataUser.clearCache(cntx.userId);
-        }
+        Kafka.sendToUsers({}, cntx.user.id, Kafka.TYPE_UPDATE_LAST_LOGOUT_RQ_DTO); /* updateLastLogout*/
         // @todo clearContext
         cntx.userId = undefined;
         cntx.isAuthorized = undefined;

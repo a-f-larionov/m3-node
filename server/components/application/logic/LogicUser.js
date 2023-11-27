@@ -1,4 +1,3 @@
-const {DataUser} = require("../data/DataUser.js");
 const {Kafka} = require("../../base/Kafka");
 /**
  * @type {LogicUser}
@@ -26,15 +25,6 @@ var LogicUser = function () {
         ApiRouter.executeRequest(group, method, arguments, cntxList);
     };
 
-    this.getOnlineUserIds = function () {
-        let list;
-        list = [];
-        for (let userId in userToCntx) {
-            list.push(userId);
-        }
-        return list;
-    };
-
     this.userAddConn = function (userId, socNetUserId, cntx) {
         userAddConn({
             id: userId,
@@ -42,12 +32,6 @@ var LogicUser = function () {
         }, cntx);
     }
 
-    /**
-     * Добавить пользователю контекст соединения.
-     * Так же создаст контекст пользователя, если его нет.
-     * @param user
-     * @param cntx
-     */
     let userAddConn = function (user, cntx) {
         if (!userToCntx[user.id]) {
             Logs.log("CREATE user context. uid:" + user.id + ", cid:" + cntx.cid, Logs.LEVEL_TRACE);
@@ -69,11 +53,6 @@ var LogicUser = function () {
         userToCntx[user.id].connsCount++;
     };
 
-    /**
-     * Возвращает массив контекстов соединения пользователя.
-     * @param userId
-     * @returns {*}
-     */
     let userGetConns = function (userId) {
         return userToCntx[userId] ? userToCntx[userId].conns : null;
     };
@@ -100,8 +79,6 @@ var LogicUser = function () {
      * @param userId {Number} id пользователя.
      */
     let onLogout = function (userId) {
-        Logs.log("User logout. user.id=" + userId, Logs.LEVEL_TRACE);
-        Statistic.write(userId, Statistic.ID_LOGOUT);
         Kafka.sendToUsers({userId: userId}, userId, Kafka.TYPE_UPDATE_LAST_LOGOUT_RQ_DTO);
     };
 
@@ -120,6 +97,6 @@ var LogicUser = function () {
 };
 
 LogicUser = new LogicUser();
-LogicUser.depends = ['Logs', 'Profiler', 'DB', 'DataUser', 'Statistic', 'SocNet'];
+LogicUser.depends = ['Logs', 'SocNet'];
 global["LogicUser"] = LogicUser;
 module.exports = {LogicUser}

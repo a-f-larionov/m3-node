@@ -1,112 +1,5 @@
-const Kafka = require("../base/Kafka.js").Kafka;
-let QUERYSTRING = require('querystring');
-/**
- * @type {Statistic}
- * @constructor
- */
 Statistic = function () {
-    let self = this;
 
-    let cache = [];
-
-    /**
-     * @param uid  int
-     * @param statId int
-     * @param paramA
-     * @param paramB
-     */
-    this.write = function (uid, statId, paramA, paramB) {
-        Kafka.sendToCommon(
-            {statId: statId, paramA: paramA, paramB: paramB, time: time()},
-            uid, Kafka.TYPE_STATISTIC_RQ_DTO);
-    };
-
-    this.init = function (afterInitCallback) {
-        setInterval(self.checkCache, Config.Statistic.checkInterval);
-        afterInitCallback();
-    };
-
-    this.checkCache = function () {
-        if (cache.length > Config.Statistic.cacheLimit) {
-            self.flushCache(function () {
-            });
-        }
-    };
-
-    this.flushCache = function (callback) {
-        let query, row;
-        if (cache.length) {
-            query = "INSERT INTO `statistic` (`uid`, `time`, `statId`, `paramA`, `paramB`) VALUES ";
-            for (let i in cache) {
-                row = cache[i];
-                query += "(" +
-                    row.uid + "," +
-                    row.time + "," +
-                    row.statId + "," +
-                    row.paramA + "," +
-                    row.paramB +
-                    "),";
-            }
-            query = query.substr(0, query.length - 1);
-            Logs.log("Statistic insert start:" + cache.length + "query length:" + query.length, Logs.LEVEL_DEBUG);
-            DB.query(query, function (res) {
-                Logs.log("Statistic сбросил кэш:" + res.affectedRows + " записи.", Logs.LEVEL_INFO);
-                if (callback) callback();
-            });
-            cache = [];
-        } else {
-            if (callback) callback();
-        }
-    };
-
-    this.getReport = function (callback, request) {
-        let params = QUERYSTRING.parse(request.url.substr(request.url.indexOf('?') + 1));
-
-        self.flushCache(function () {
-            let query;
-            query = "SELECT socNetUserId, uid, statId, time, paramA, paramB " +
-                "from users " +
-                "   inner join statistic " +
-                "       on users.id = statistic.uid " +
-                "  WHERE 1=1 " +
-                (params.sid ? " AND socNetUserId = " + params.sid : "") +
-                (params.statId ? " AND statId = " + params.statId : "") +
-                (params.paramA ? " AND paramA = " + params.paramA : "") +
-                (params.paramB ? " AND paramB = " + params.paramB : "") +
-                " ORDER BY statistic.time DESC LIMIT 1000";
-            DB.query(query, function (rows) {
-                let html, row, title, d;
-                html = "";
-                html += "<html><head><meta charset='utf8' ></head><body>";
-                html += "<table>";
-                for (let i in rows) {
-                    row = rows[i];
-                    d = new Date(row.time * 1000);
-                    let time =
-                        d.getDate() + " " +
-                        d.getHours() + ":" +
-                        d.getMinutes() + ":" +
-                        d.getSeconds();
-                    html += "<tr>";
-                    html += "<td><a href='" +
-                        SocNet(SocNet.TYPE_VK).getUserProfileUrl(row.socNetUserId) +
-                        "'>" +
-                        row.socNetUserId +
-                        "</a>" +
-                        "</td>";
-                    html += "<td>" + row.uid + "</td>";
-                    html += "<td>" + time + "</td>";
-                    html += "<td>" + self.titles[row.statId] + "(" + row.statId + ")" + "</td>";
-                    html += "<td>" + (row.paramA ? row.paramA : '') + "</td>";
-                    html += "<td>" + (row.paramB ? row.paramB : '') + "</td>";
-                    html += "</tr>";
-                }
-                html += "</table>";
-                html += "</body></html>";
-                callback(html);
-            });
-        });
-    };
 };
 
 /**
@@ -115,7 +8,7 @@ Statistic = function () {
  */
 Statistic = new Statistic();
 
-Statistic.depends = ['Logs', 'Profiler', 'DB'];
+Statistic.depends = [];
 
 
 Statistic.ID_AUTHORIZE_VK = 100;

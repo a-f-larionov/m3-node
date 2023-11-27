@@ -35,9 +35,9 @@ let WebSocketClient = function () {
     let url;
 
     this.init = function () {
-        return new Promise(function (resolve, reject) {
+        return new Promise(function (resolve) {
             //port = window.document.location.protocol == 'https:' ? 443 : 80;
-            protocol = window.document.location.protocol == 'https:' ? 'wss' : 'ws';
+            protocol = window.document.location.protocol === 'https:' ? 'wss' : 'ws';
             host = Config.WebSocketClient.host;
             port = Config.WebSocketClient.port;
             url = Config.WebSocketClient.url;
@@ -172,7 +172,7 @@ let WebSocketClient = function () {
      */
     let onMessage = function (event) {
         /* Logs.log("WebSocket: Получены данные.", Logs.LEVEL_TRACE, event.data); */
-        self.onData(clientDecrypt(event.data), connectionId);
+        self.onData(event.data, connectionId);
     };
 
     /**
@@ -205,7 +205,7 @@ let WebSocketClient = function () {
         /* Берем элемент из буфера. */
         data = packetBuffer.shift();
 
-        socket.send(clientCrypt(data));
+        socket.send(data);
         /* Logs.log("WebSocketClient.send data: length=" + data.length, Logs.LEVEL_TRACE); */
         /* Остальные данные отправим позже. */
         if (packetBuffer.length) {

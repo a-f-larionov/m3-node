@@ -184,9 +184,3 @@ let DataObjects = function () {
 
 /** @type {DataObjects} */
 DataObjects = new DataObjects();
-
-
-/** Для кросс-сайдных компонент */
-if (CONST_IS_SERVER_SIDE) {
-    global['DataObjects'] = DataObjects;
-}

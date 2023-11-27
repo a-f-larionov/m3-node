@@ -46,12 +46,6 @@ WebSocketServer = function () {
     };
 
     /**
-     * Путь откуда загружать картинки.
-     * @type {string}
-     */
-    let imagesPath = null;
-
-    /**
      * Каллбэек будет вызываться при коннекте.
      * @type function
      */
@@ -88,7 +82,7 @@ WebSocketServer = function () {
             return false;
         }
         //send here to client
-        connectionStack[id].sendUTF(serverCrypt(data));
+        connectionStack[id].sendUTF(data);
         return true;
     };
 
@@ -177,7 +171,7 @@ WebSocketServer = function () {
             if (message.type === 'utf8') {
                 /* Logs.log("Получены данные.", Logs.LEVEL_TRACE, message.utf8Data); */
                 lastConnectionId = id;
-                self.onData(serverDecrypt(message.utf8Data), id);
+                self.onData(message.utf8Data, id);
             } else {
                 /* Binary data */
                 console.log(message.binaryData, message.binaryData.lenght);
@@ -203,4 +197,4 @@ WebSocketServer = function () {
 
 WebSocketServer = new WebSocketServer;
 
-WebSocketServer.depends = ['Logs', 'Profiler', 'DB', 'Statistic', 'SocNet'];
+WebSocketServer.depends = ['Logs', 'Profiler', 'Statistic', 'SocNet'];

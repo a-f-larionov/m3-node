@@ -12,7 +12,6 @@ LogicMain = function () {
     this.main = function () {
         WebSocketServer.run(function () {
         });
-        this.setDeInitCallbacks();
     };
 
     this.setWebSocketServerMap = function () {
@@ -30,27 +29,14 @@ LogicMain = function () {
             '/service/--reload-sprite': ClientCodeLoader.reloadSprite,
             '/service/--reload-client-code': ClientCodeLoader.reloadClient,
 
-            '/service/--profiler': LogicSystemRequests.getProfiler,
-            '/service/--counters': LogicSystemRequests.getCounters,
-            '/service/--get-statistics': Statistic.getReport,
-            '/service/--logs-set-detail': LogicSystemRequests.logsSetDetail,
-            '/service/--logs-set-notify': LogicSystemRequests.logsSetNotify,
             '/service/--shutdown___': LogicSystemRequests.shutdown,
 
             '/service/--help': function (callback) {
                 callback("Project.name:" + Config.Project.name + "<br>" +
-                    "--profiler <br>" +
-                    "--counters <br>" +
-                    "--get-statistics<br>" +
-                    "--get-online<br>" +
-                    "--reload-levels<br>" +
-                    "--logs-set-detail<br>" +
-                    "--logs-set-notify<br>" +
                     "--reload-sprite<br>" +
                     "--reload-client-code<br>" +
                     "--help<br>" +
                     "<br>" +
-                   // "reloadClient<br>" +
                     "client-vk<br>" +
                     "client-standalone?soc-net-user-id={socNetUserId}<br>");
             }
@@ -65,14 +51,8 @@ LogicMain = function () {
         WebSocketServer.onDisconnect = ApiRouter.onDisconnect;
         WebSocketServer.onData = ApiRouter.onData;
     };
-
-    this.setDeInitCallbacks = function () {
-
-        /** Set deinit callbacks */
-        addDeInitCallback(Statistic.flushCache);
-    };
 };
 
 LogicMain = new LogicMain;
 
-LogicMain.depends = ['Logs', 'Statistic', 'WebSocketServer', 'ApiRouter'];
+LogicMain.depends = ['Logs', 'WebSocketServer', 'ApiRouter'];

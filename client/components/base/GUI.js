@@ -453,12 +453,6 @@ let GUI = function () {
 
     this.redrawFrame = function () {
         GUI.dpr = window.devicePixelRatio;
-        /*
-        GUI.canvasCntx.clearRect(0, 0,
-            DataCross.app.width * GUI.dpr,
-            DataCross.app.height * GUI.dpr
-        );
-        */
 
         canvasParent.childs.sort(function (l, r) {
             return l.__id < r.__id ? -1 : 1;

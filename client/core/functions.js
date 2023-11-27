@@ -41,7 +41,7 @@ if (!window.requestAnimationFrame) {
             window.mozRequestAnimationFrame ||
             window.oRequestAnimationFrame ||
             window.msRequestAnimationFrame ||
-            function ( /* function FrameRequestCallback */ callback, /* DOMElement Element */ element) {
+            function ( /* function FrameRequestCallback */ callback) {
                 return window.setTimeout(callback, 1000 / 60);
             };
 
@@ -63,22 +63,6 @@ function declination(number, titles) {
     let cases = [2, 0, 1, 1, 1, 2];
     return titles[(number % 100 > 4 && number % 100 < 20) ? 2 : cases[(number % 10 < 5) ? number % 10 : 5]];
 }
-
-let clientCrypt = function (str) {
-    return str.split('')
-        .map(function (s, i) {
-            return String.fromCharCode(s.charCodeAt() ^ DataCross.clientCryptKey + i)
-        })
-        .join('');
-};
-
-let clientDecrypt = function (str) {
-    return str.split('')
-        .map(function (s, i) {
-            return String.fromCharCode(s.charCodeAt() ^ DataCross.serverCryptKey + i)
-        })
-        .join('');
-};
 
 function chunkIt(arr) {
     let i, j, temparray, chunk = 1000, out = [];
@@ -102,7 +86,7 @@ function tlock(key, seconds) {
     setTimeout(function () {
         tlock.locks[key] = false;
     }, seconds);
-};
+}
 
 tlock.locks = [];
 tlock.STUFF_BUTTON = 1;

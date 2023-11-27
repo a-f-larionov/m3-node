@@ -31,16 +31,8 @@ let animClouds = function () {
                 sy = cloudfrom.y - cloud.y;
                 if (Math.abs(sx) < 10 || Math.abs(sy) < 10) return;
                 s = Math.sqrt(Math.pow(sx, 2) + Math.pow(sy, 2));
-                //cloud.vx += 1 / s / sx;
-                //cloud.vy += 1 / s / sy;
             });
 
-
-            //if (cloud.x + 200 > DataCross.app.width - 50) cloud.vx -= 3;
-            //if (cloud.x < 50) cloud.vx += 3;
-            //if (cloud.y + 100 > DataCross.app.height - 50) cloud.vy -= 3;
-            //if (cloud.y < 50) cloud.vy += 3;            cloud.vx += Math.random() - 0.5;
-            //             cloud.vy += Math.random() - 0.5;
 
             if (t % 1000 === 1) {
                 cloud.vx += rV.x;

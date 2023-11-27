@@ -11,17 +11,6 @@ Config = {
         useSprite: false,
         spriteSkip: ["oblojka.png"]
     },
-    DB: {
-        host: "mysql",
-        username: "local_user",
-        password: "local_password",
-        database: "local_database",
-        charset: "UTF8",
-    },
-    Statistic: {
-        checkInterval: 100,
-        cacheLimit: 1000
-    },
     Logs: {
         triggerLevel: 1,
     },

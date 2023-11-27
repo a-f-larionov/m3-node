@@ -14,8 +14,6 @@ SAPIMap = function () {
 
     this.onFinish = function (cntx, pointId, score, chestId) {
         Kafka.sendToGameplay({pointId: pointId, score: score, chestId: chestId}, cntx.user.id, Kafka.TYPE_ON_FINISH_RQ_DTO);
-        //@todo-method
-        TopScoreCache.flush(cntx.user.id, pointId);
     };
 };
 

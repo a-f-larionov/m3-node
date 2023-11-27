@@ -11,8 +11,6 @@ let ApiRouter = new (function ApiRouter() {
     let stats = {};
     this.stats = stats;
 
-    let connectionCount = 0;
-
     let connections = {};
     let onDisconnectCallbacks = [];
     let onFailedSendCallbacks = [];
@@ -42,7 +40,7 @@ let ApiRouter = new (function ApiRouter() {
         try {
             packet = JSON.parse(packet);
         } catch (e) {
-            log("Wrong data:parse error", Logs.LEVEL_WARN, packet);
+            log("Wrong data: parse error", Logs.LEVEL_WARN, packet);
             return;
         }
         if (typeof packet !== 'object') return Logs.log("Wrong data: packet must be 'object'", Logs.LEVEL_WARN, packet);
