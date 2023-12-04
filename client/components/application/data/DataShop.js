@@ -38,8 +38,3 @@ DataShop.lightning = [
     {gold: 1000, quantity: 6, imageSrc: 'lightning-big.png',},
     {gold: 1500, quantity: 9, imageSrc: 'lightning-big.png',}
 ];
-
-/** Для кросс-сайдных компонент */
-if (CONST_IS_SERVER_SIDE) {
-    global['DataShop'] = DataShop;
-}

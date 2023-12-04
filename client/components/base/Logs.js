@@ -50,11 +50,6 @@ var Logs = function () {
         // соединим время, текст уровня лога и сообщение лога в одну строку
         logText = dateFormated + ' [' + levelTitle + '] ' + message;
         if (!details) details = '';
-        // добавим к тексту лога детали, если они были переданы
-        if (CONST_IS_SERVER_SIDE) {
-            // превратим в строку переданные детали лога.
-            if (details) details = JSON.stringify(details);
-        }
         // выведем на экран
         switch (channel) {
             default:

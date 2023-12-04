@@ -81,8 +81,3 @@ let DataChests = function () {
 DataChests = new DataChests();
 
 DataChests.depends = ['Logs'];
-
-/** Для кросс-сайдных компонент */
-if (CONST_IS_SERVER_SIDE) {
-    global['DataChests'] = DataChests;
-}
