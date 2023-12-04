@@ -1,5 +1,5 @@
 const KafkaJS = require("kafkajs").Kafka;
-//const { LogicUser } = require("../application/logic/LogicUser.js");
+//const { LogicConnection } = require("../application/logic/LogicConnection.js");
 
 //const CAPIUser = require("../generated/CAPIUser.js");
 
@@ -57,7 +57,7 @@ const run = async () => {
                         break;
                     case 'm3.users.dto.rs.AuthSuccessRsDto':
                         cntx = ApiRouter.getConnectContext(msg.connectionId);
-                        LogicUser.userAddConn(msg.id, msg.socNetUserId, cntx);
+                        LogicConnection.userAddConn(msg.id, msg.socNetUserId, cntx);
                         CAPIUser.authorizeSuccess(msg.userId,
                             {
                                 id: msg.id,

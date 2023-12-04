@@ -1,15 +1,15 @@
 const {Kafka} = require("../../base/Kafka");
 /**
- * @type {LogicUser}
+ * @type {LogicConnection}
  */
-var LogicUser = function () {
+var LogicConnection = function () {
     let userToCntx = {};
     let userToCntxCount = 0;
 
     this.init = function (afterInitCallback) {
         ApiRouter.addOnDisconnectCallback(onDisconnectOrFailedSend);
         ApiRouter.addOnFailedSendCallback(onDisconnectOrFailedSend);
-        Logs.log("LogicUser inited.", Logs.LEVEL_DEBUG);
+        Logs.log("LogicConnection inited.", Logs.LEVEL_DEBUG);
         afterInitCallback();
     };
 
@@ -96,7 +96,7 @@ var LogicUser = function () {
     };
 };
 
-LogicUser = new LogicUser();
-LogicUser.depends = ['Logs'];
-global["LogicUser"] = LogicUser;
-module.exports = {LogicUser}
+LogicConnection = new LogicConnection();
+LogicConnection.depends = ['Logs'];
+global["LogicConnection"] = LogicConnection;
+module.exports = {LogicConnection}

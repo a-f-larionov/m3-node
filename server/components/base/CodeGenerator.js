@@ -62,7 +62,7 @@ CodeGenerator = function () {
                 code += '\t\tlet args, toUserId;\r\n';
                 code += '\t\targs = Array.prototype.slice.call(arguments);\r\n';
                 code += '\t\ttoUserId = args.shift();\r\n';
-                code += '\t\tLogicUser.sendToUser(toUserId, "' + groupName + '", "' + methodName + '", args);\r\n';
+                code += '\t\tLogicConnection.sendToUser(toUserId, "' + groupName + '", "' + methodName + '", args);\r\n';
                 code += '\t};\r\n\r\n';
             }
             code += '};\r\n';
