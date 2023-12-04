@@ -167,7 +167,7 @@ ClientCodeLoader = function () {
         if (Config.Project.maintance) return callback(htmlMaintaince);
         if (!cacheCode) {
             reloadHTMLVK();
-            reloadClienstJS();
+            reloadClientJS();
         }
         callback(codeVK);
     };

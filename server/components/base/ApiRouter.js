@@ -127,7 +127,12 @@ let ApiRouter = new (function ApiRouter() {
         if (!cntxList) cntxList = [{cid: null}];
 
         connectionsKey = '';
-        for (i in cntxList) connectionsKey += cntxList[i].cid;
+        for (i in cntxList) {
+            if (cntxList[i] === undefined) {
+                console.log(cntxList, i, group, method);
+            }
+            connectionsKey += cntxList[i].cid;
+        }
 
         let packet = {
             group: group,
