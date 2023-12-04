@@ -197,4 +197,4 @@ WebSocketServer = function () {
 
 WebSocketServer = new WebSocketServer;
 
-WebSocketServer.depends = ['Logs', 'Profiler', 'Statistic', 'SocNet'];
+WebSocketServer.depends = ['Logs'];

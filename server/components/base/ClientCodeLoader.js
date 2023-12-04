@@ -1,11 +1,7 @@
 let FS = require('fs');
 let OS = require('os');
 let PATH = require('path');
-let IMAGE_SIZE = require('image-size');
-let UGLIFYJS = require('uglify-es');
-let SPRITESMITH = require('spritesmith');
 let CRYPTO = require('crypto');
-let JavaScriptObfuscator = require('javascript-obfuscator');
 let cp = require('child_process');
 
 ClientCodeLoader = function () {
@@ -168,23 +164,21 @@ ClientCodeLoader = function () {
     this.getClientVK = function (callback) {
         //@todo save ip on login
         Logs.log("User request the client code.", Logs.LEVEL_TRACE, null, null, false);
-        let prid = pStart(Profiler.ID_CLIENT_LOAD_VK);
         if (Config.Project.maintance) return callback(htmlMaintaince);
         if (!cacheCode) {
             reloadHTMLVK();
-            reloadClientJS();
+            reloadClienstJS();
         }
-        callback(codeVK + '<script>prid=' + prid + '</script>');
+        callback(codeVK);
     };
 
     this.getClientStandalone = function (callback) {
-        let prid = pStart(Profiler.ID_CLIENT_LOAD_STANDALONE);
         if (Config.Project.maintance) return callback(htmlMaintaince);
         if (!cacheCode) {
             reloadHTMLStandalone();
             reloadClientJS();
         }
-        callback(codeStandalone + '<script>prid=' + prid + '</script>');
+        callback(codeStandalone);
     };
 
     this.getVKWidgetComments = function (callback) {
@@ -224,6 +218,7 @@ ClientCodeLoader = function () {
 
     let getClientHTML = function (socNetCode) {
         let code = '';
+        let IMAGE_SIZE = require('image-size');
 
         if (FS.existsSync(imagesPath + '/sprite.png')) {
             let demension = IMAGE_SIZE(imagesPath + '/sprite.png');
@@ -367,6 +362,8 @@ ClientCodeLoader = function () {
 
         if (Config.Project.obfuscate) {
             sTime = mtime();
+
+            let JavaScriptObfuscator = require('javascript-obfuscator');
             js = JavaScriptObfuscator.obfuscate(js, obfuscateOptions).getObfuscatedCode();
 
             FS.writeFileSync(CONST_DIR_ROOT + '/public/js/client.source.obfuscated.js', js);
@@ -394,6 +391,7 @@ ClientCodeLoader = function () {
             ];
 
             sTime = mtime();
+            let UGLIFYJS = require('uglify-es');
             result = UGLIFYJS.minify({js: "{" + js + "}"}, JSON.parse(JSON.stringify(minifyOptions)));
             if (result.code) {
                 js = result.code;
@@ -508,6 +506,8 @@ ClientCodeLoader = function () {
      * Формирует Js-код картинок.
      */
     let getImageCodeList = function () {
+        let IMAGE_SIZE = require('image-size');
+
         let imageFiles, imageCode, path, demension;
         if (cacheImages && codeImages) return codeImages;
 
@@ -583,6 +583,7 @@ ClientCodeLoader = function () {
 
         list = getFileList(imagesPath, Config.Project.spriteSkip);
 
+        let SPRITESMITH = require('spritesmith');
         SPRITESMITH.run({src: list}, function handleResult(err, result) {
             let fsResult;
             // result.image; // Buffer representation of image
@@ -668,4 +669,4 @@ ClientCodeLoader = function () {
 
 ClientCodeLoader = new ClientCodeLoader();
 
-ClientCodeLoader.depends = ['Logs', 'Profiler', 'SocNet', 'WebSocketServer'];
+ClientCodeLoader.depends = ['Logs', 'WebSocketServer'];

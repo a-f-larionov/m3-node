@@ -4,7 +4,6 @@ Statistic = function () {
 
 /**
  * Статичный класс.
- * @type {Statistic}
  */
 Statistic = new Statistic();
 

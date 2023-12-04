@@ -18,7 +18,9 @@ LogicMain = function () {
 
         WebSocketServer.setMap({
 
+            /*Deprecated*/
             '/service/vk_buy': LogicPayments.VKbuy,
+            /*Deprecated*/
             '/service/standalone_buy': LogicPayments.standaloneBuy,
 
             '/service/client-vk': ClientCodeLoader.getClientVK,

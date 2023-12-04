@@ -78,8 +78,12 @@ function Loader() {
     };
 
     this.includeComponents = function () {
+        let t = Date.now();
+        console.log("1 " + (Date.now() - t));
         let componentsMap = loader.getComponentsMap();
-        loader.includeComponentsByMap(componentsMap);
+        console.log("2 " + (Date.now() - t));
+        loader.includeComponentsByMap(componentsMap, t);
+        console.log("3 " + (Date.now() - t));
     };
 
     this.callGenerators = function () {
@@ -129,12 +133,12 @@ function Loader() {
         return map;
     };
 
-    this.includeComponentsByMap = function (map) {
+    this.includeComponentsByMap = function (map, t) {
         let name;
         let mapLength = 0, newMapLength = 0;
         for (name in map) {
             mapLength++;
-            this.includeComponentByPath(map[name]);
+            this.includeComponentByPath(map[name], t);
         }
         // sort by depends
         let dependsMap = [];
@@ -190,7 +194,6 @@ function Loader() {
                     "\r\nкомпонент: " + name);
             }
         };
-
         path = PATH.resolve(path);
         //@todo is it detail level
         //log("Include component:" + /*getComponentNameFromPath(path) +*/ '(' + path + ')');
@@ -213,7 +216,7 @@ function Loader() {
             Logs.log("Pre init finished.", Logs.LEVEL_DEBUG);
             afterInitCallback();
         });
-        log('step 6.2 - call init'); 
+        log('step 6.2 - call init');
         // init
         for (name in componentsMap) {
             if (global[name].init) {

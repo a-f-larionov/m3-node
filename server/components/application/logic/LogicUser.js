@@ -97,6 +97,6 @@ var LogicUser = function () {
 };
 
 LogicUser = new LogicUser();
-LogicUser.depends = ['Logs', 'SocNet'];
+LogicUser.depends = ['Logs'];
 global["LogicUser"] = LogicUser;
 module.exports = {LogicUser}
