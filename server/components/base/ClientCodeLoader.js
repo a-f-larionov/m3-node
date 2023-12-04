@@ -258,34 +258,34 @@ ClientCodeLoader = function () {
             "  background-color:rgba(103, 77, 56, 1.0);" +
             //"  background-color: grey;" +
             " background-size:contain;" +
-            "  height:" + DataCross.app.height + "px;\n" +
+            "  height:" + Config.AppFrame.height + "px;\n" +
             "'>Загрузка...</div>";
 
         /** Application div */
         code += "<div style='" +
-            "height:" + DataCross.app.height + "px;" +
-            "width:" + DataCross.app.width + "px;" +
+            "height:" + Config.AppFrame.height + "px;" +
+            "width:" + Config.AppFrame.width + "px;" +
             "position:absolute;top:0px;' " +
             "id='appArea' ></div>\r\n";
         /** Canvas Area */
         code += "<canvas style='" +
-            "height:" + DataCross.app.height + "px;" +
-            "width:" + DataCross.app.width + "px;" +
+            "height:" + Config.AppFrame.height + "px;" +
+            "width:" + Config.AppFrame.width + "px;" +
             "position:absolute;top:0px;" +
             "display:none;' " +
             "id='canvasArea' " +
             " ></canvas>\r\n";
         /** Wizard canvas */
         code += "<canvas style='" +
-            "height:" + DataCross.app.height + "px;" +
-            "width:" + DataCross.app.width + "px;" +
+            "height:" + Config.AppFrame.height + "px;" +
+            "width:" + Config.AppFrame.width + "px;" +
             "position:absolute;top:0px;z-index:2000;' " +
             "id='wizardArea' ></canvas>\r\n";
         code += getClientImageCode();
 
         code += "<img id=\"oblojka\" src='/images/oblojka.png" + getTimeKey() + "'" +
             " style='display:none; " +
-            "height:" + DataCross.app.height + "px;" +
+            "height:" + Config.AppFrame.height + "px;" +
             "' " +
             "onload='" +
             "document.getElementById(\"loading\").remove(); " +
@@ -304,7 +304,7 @@ ClientCodeLoader = function () {
 
             /** Сomments div */
             code += "<div id='vk_comments' style='" +
-                "top:" + DataCross.app.height + "px;position:absolute;'>";
+                "top:" + Config.AppFrame.height + "px;position:absolute;'>";
             code += "<iframe src='/service/vk-widget-comments' style='border:none; " +
                 "width:" + Config.VKWidgetComments.width + "px;" +
                 "height: " + (Config.VKWidgetComments.height) + "px;" +
