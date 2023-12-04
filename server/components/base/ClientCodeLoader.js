@@ -213,7 +213,7 @@ ClientCodeLoader = function () {
     let time = Date.now().toString();
 
     let getTimeKey = function () {
-        return Config.Project.develop ? "t=1" : "?t=" + time;
+        return Config.Project.develop ? "?t=" + time : "?t=" + time;
     };
 
     let getClientHTML = function (socNetCode) {
