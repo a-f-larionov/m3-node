@@ -74,27 +74,6 @@ var Logs = function () {
                         break;
                 }
                 break;
-            case Logs.TYPE_VK_PAYMENTS:
-                FS.writeFile(CONST_DIR_SERVER + '/logs/vk_payments.log', logText + details + "\r\n", {flag: 'a'}, function () {
-                });
-                telega = true;
-                break;
-            case Logs.TYPE_VK_STUFF:
-                FS.writeFile(CONST_DIR_SERVER + '/logs/vk_stuff.log', logText + details + "\r\n", {flag: 'a'}, function () {
-                });
-                break;
-            case Logs.TYPE_VK_HEALTH:
-                FS.writeFile(CONST_DIR_SERVER + '/logs/vk_health.log', logText + details + "\r\n", {flag: 'a'}, function () {
-                });
-                break;
-            case Logs.TYPE_CLIENT_DEBUG_INFO:
-                FS.writeFile(CONST_DIR_SERVER + '/logs/client.log', logText + details + "\r\n", {flag: 'a'}, function () {
-                });
-                telega = true;
-                break;
-            case Logs.TYPE_TELEGRAM:
-                telega = true;
-                break;
         }
         if (level >= Logs.LEVEL_INFO) telega = true;
         if (level === Logs.LEVEL_ERROR || level === Logs.LEVEL_ERROR) {
