@@ -23,31 +23,27 @@ var Logs = function () {
      * @param [details] {*} необязательный параметр, детали.
      * @param channel
      */
-    this.log = function (message, level, details, channel) {
+    this.log = function (message, level, details) {
         let dateFormated, logText, levelTitle;
         if (!level) level = Logs.LEVEL_TRACE;
         if (!channel && level < trigger_level) return;
-        /** Сформируем сообщение лога. */
         dateFormated = getFormatedDate();
         levelTitle = typeTitles[level];
         logText = dateFormated + ' [' + levelTitle + '] ' + message;
         if (!details) details = '';
         // выведем на экран
-        switch (channel) {
+        switch (level) {
+            case Logs.LEVEL_ERROR:
+                console.error(" > " + logText, details);
+                break;
+            case Logs.LEVEL_WARN:
+                console.warn(" > " + logText, details);
+                break;
             default:
-                switch (level) {
-                    case Logs.LEVEL_ERROR:
-                        console.error(" > " + logText, details);
-                        break;
-                    case Logs.LEVEL_WARN:
-                        console.warn(" > " + logText, details);
-                        break;
-                    default:
-                        console.log(" > " + logText, details);
-                        break;
-                }
+                console.log(" > " + logText, details);
                 break;
         }
+
         if (level === Logs.LEVEL_ERROR || level === Logs.LEVEL_ERROR) {
             if (CONST_IS_CLIENT_SIDE) {
                 //@todo client errors channel
@@ -55,7 +51,6 @@ var Logs = function () {
             }
         }
         // если это фатальная ошибка - завершим работу программы.
-
         if (level === Logs.LEVEL_ERROR) {
             throw new Error("Vse polamalos'!");
         }
@@ -125,12 +120,8 @@ var Logs = function () {
 /**
  * Статичный класс.
  * @type {Logs}
+ *
  */
 Logs = new Logs();
-
-Logs.TYPE_VK_PAYMENTS = 1;
-Logs.TYPE_VK_STUFF = 2;
-Logs.TYPE_VK_HEALTH = 3;
-Logs.TYPE_CLIENT_DEBUG_INFO = 4;
 
 Logs.depends = [];
