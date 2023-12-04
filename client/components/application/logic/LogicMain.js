@@ -40,12 +40,12 @@ let LogicMain = (function () {
         }
 
         /** Разная полезная информация */
-        if (prid) {
+        if (firstAuth) {
             setTimeout(function () {
                 Sounds.loadSounds();
             }, 3000);
             SAPILogs.sendUserAgent(window.navigator.userAgent);
-            prid = null;
+            //prid = null;
         }
         firstAuth = false;
     };

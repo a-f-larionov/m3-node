@@ -61,7 +61,7 @@ var Logs = function () {
         let minutes, seconds;
         minutes = str_pad(date.getMinutes());
         seconds = str_pad(date.getSeconds());
-        return dateFormated = minutes + ':' + seconds;
+        return minutes + ':' + seconds;
     }
     /**
      * Дополним нулями значение и вернёт строку
