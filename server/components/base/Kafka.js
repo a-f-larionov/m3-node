@@ -187,6 +187,8 @@ var Kafka = function () {
     this.TYPE_USED_HUMMER_RQ_DTO = this.RQ_NS_GAMEPLAY + ".UsedHummerRqDto";
     this.TYPE_USED_LIGHTNING_RQ_DTO = this.RQ_NS_GAMEPLAY + ".UsedLightningRqDto";
     this.TYPE_USED_SHUFFLE_RQ_DTO = this.RQ_NS_GAMEPLAY + ".UsedShuffleRqDto";
+    this.TYPE_EXIT_GAME_RQ_DTO = this.RQ_NS_GAMEPLAY + ".ExitGameRqDto";
+    this.TYPE_LOOSE_GAME_RQ_DTO = this.RQ_NS_GAMEPLAY + ".LooseGameRqDto";
 
     this.TYPE_SPEND_COINS_FOR_TURNS_RQ_DTO = this.RQ_NS_GAMEPLAY + ".SpendCoinsForTurnsRqDto";
     this.TYPE_BUY_HUMMER_RQ_DTO = this.RQ_NS_GAMEPLAY + ".BuyHummerRqDto";

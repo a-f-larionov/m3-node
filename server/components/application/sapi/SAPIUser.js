@@ -53,22 +53,14 @@ SAPIUser = function () {
 
     this.healthDown = function (cntx, pointId) {
         Kafka.sendToUsers({pointId: pointId}, cntx.user.id, Kafka.TYPE_HEALTH_DOWN_RQ_DTO);
-        Kafka.sendToCommon({
-            statId: Statistic.ID_START_PLAY, paramA: pointId
-        }, cntx.user.id, Kafka.TYPE_STATISTIC_RQ_DTO);
     };
 
     this.exitGame = function (cntx, pointId) {
-        Kafka.sendToCommon({
-            statId: Statistic.ID_EXIT_GAME, paramA: pointId
-        }, cntx.user.id, Kafka.TYPE_STATISTIC_RQ_DTO);
+        Kafka.sendToGameplay({pointId:pointId}, cntx.user.id, Kafka.TYPE_EXIT_GAME_RQ_DTO);
     };
 
     this.looseGame = function (cntx, pointId) {
-        Kafka.sendToCommon({
-            statId: Statistic.ID_LOOSE_GAME,
-            paramA: pointId
-        }, cntx.user.id, Kafka.TYPE_STATISTIC_RQ_DTO);
+        Kafka.sendToGameplay({pointId:pointId}, cntx.user.id, Kafka.TYPE_LOOSE_GAME_RQ_DTO);
     };
 
 };
