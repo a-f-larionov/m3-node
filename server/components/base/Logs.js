@@ -112,7 +112,7 @@ var Logs = function () {
      * @param message
      */
     let telegramSent = function (message) {
-        if (message.includes("KafkaKs")) {
+        if (message.includes("KafkaJS")) {
             return;
         }
         Kafka.sendToCommon({
