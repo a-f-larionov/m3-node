@@ -26,7 +26,7 @@ var Logs = function () {
     this.log = function (message, level, details) {
         let dateFormated, logText, levelTitle;
         if (!level) level = Logs.LEVEL_TRACE;
-        if (!channel && level < trigger_level) return;
+        if (level < trigger_level) return;
         dateFormated = getFormatedDate();
         levelTitle = typeTitles[level];
         logText = dateFormated + ' [' + levelTitle + '] ' + message;
