@@ -83,14 +83,14 @@ process.on('uncaughtException', function (err) {
     }
 
     if (err.code === 'ECONNRESET') {
-        return Logs.log("Skip process.exit()", Logs.LEVEL_TRACE, err);
+        return Logs.log("Skip process.exit()" + JSON.stringify(err), Logs.LEVEL_TRACE);
     }
     if (err.code === 'PROTOCOL_CONNECTION_LOST') {
-        return Logs.log("Skip process.exit()", Logs.LEVEL_TRACE, err);
+        return Logs.log("Skip process.exit()" + JSON.stringify(err), Logs.LEVEL_TRACE);
     }
 
-    Logs.log("!!! ERROR HAPPENDZ !!!.", Logs.LEVEL_ERROR, err, Logs.CHANNEL_TELEGRAM);
-    Logs.log("!!! ERROR HAPPENDZ !!!!.", Logs.LEVEL_ERROR, err);
+    Logs.log("!!! ERROR HAPPENDZ !!!." + JSON.stringify(err), Logs.LEVEL_ERROR, true);
+    Logs.log("!!! ERROR HAPPENDZ !!!!." + JSON.stringify(err), Logs.LEVEL_ERROR);
 
     log('!!! ERROR HAPPENDZ !!!!', err, Date.now());
     // process.exit();
@@ -150,16 +150,3 @@ time = function () {
  * Возвращает время в миллисекундах секундах.
  */
 mtime = Date.now;
-
-/**
- *
- * @param message
- */
-telegramSent = function (message) {
-
-    Kafka.sendToCommon({
-        message: message,
-        level: "INFO",
-        sendToTelegram: true
-    }, undefined, Kafka.TYPE_LOG_RQ_DTO);
-};

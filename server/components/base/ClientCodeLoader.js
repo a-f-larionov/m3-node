@@ -140,16 +140,16 @@ ClientCodeLoader = function () {
         useSprite = Config.Project.useSprite;
         // check before after init
         if (typeof cacheCode !== 'boolean') {
-            Logs.log("cacheCode given by .setup, must be boolean", Logs.LEVEL_ERROR, cacheCode);
+            Logs.log("cacheCode given by .setup, must be boolean" + cacheCode, Logs.LEVEL_ERROR);
         }
         if (typeof clientSource !== 'string') {
-            Logs.log("clientSource given by .setup, must be string", Logs.LEVEL_ERROR, clientSource);
+            Logs.log("clientSource given by .setup, must be string" + clientSource, Logs.LEVEL_ERROR);
         }
         if (typeof imagesPath !== 'string') {
-            Logs.log("imagesPath given by .setup, must be string", Logs.LEVEL_ERROR, imagesPath);
+            Logs.log("imagesPath given by .setup, must be string" + imagesPath, Logs.LEVEL_ERROR);
         }
         if (typeof useSprite !== 'boolean') {
-            Logs.log("useSprite given by .setup, must be boolean", Logs.LEVEL_ERROR, useSprite);
+            Logs.log("useSprite given by .setup, must be boolean" + useSprite, Logs.LEVEL_ERROR);
         }
 
         /** Обновим клиентский код. */
@@ -163,7 +163,7 @@ ClientCodeLoader = function () {
 
     this.getClientVK = function (callback) {
         //@todo save ip on login
-        Logs.log("User request the client code.", Logs.LEVEL_TRACE, null, null, false);
+        Logs.log("User request the client code.", Logs.LEVEL_TRACE);
         if (Config.Project.maintance) return callback(htmlMaintaince);
         if (!cacheCode) {
             reloadHTMLVK();
@@ -401,9 +401,9 @@ ClientCodeLoader = function () {
                     " Time: " + (mtime() - sTime).toString()
                     , Logs.LEVEL_TRACE);
             } else {
-                Logs.log("ClientJS minified [FAILED], because some error.", Logs.LEVEL_ERROR, result);
+                Logs.log("ClientJS minified [FAILED], because some error." + result, Logs.LEVEL_ERROR);
             }
-            if (result.warnings) Logs.log("code minify warnings", Logs.LEVEL_WARN, result.warnings);
+            if (result.warnings) Logs.log("code minify warnings" + result.warnings, Logs.LEVEL_WARN);
         }
     };
 

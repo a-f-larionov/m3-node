@@ -43,32 +43,33 @@ let ApiRouter = new (function ApiRouter() {
             log("Wrong data: parse error", Logs.LEVEL_WARN, packet);
             return;
         }
-        if (typeof packet !== 'object') return Logs.log("Wrong data: packet must be 'object'", Logs.LEVEL_WARN, packet);
+        if (typeof packet !== 'object') return Logs.log("Wrong data: packet must be 'object'" + packet, Logs.LEVEL_WARN);
 
-        if (packet.group === undefined) return Logs.log("Wrong data: packet must have .group", Logs.LEVEL_WARN, packet);
+        if (packet.group === undefined) return Logs.log("Wrong data: packet must have .group" + packet, Logs.LEVEL_WARN);
 
-        if (typeof packet.group !== 'string') return Logs.log("Wrong data: packet.group must have type 'string'", Logs.LEVEL_WARN, packet);
+        if (typeof packet.group !== 'string') return Logs.log("Wrong data: packet.group must have type 'string'" + packet, Logs.LEVEL_WARN);
 
-        if (packet.method === undefined) return Logs.log("Wrong data: packet must have .method", Logs.LEVEL_WARN, packet);
+        if (packet.method === undefined) return Logs.log("Wrong data: packet must have .method" + packet, Logs.LEVEL_WARN);
 
-        if (typeof packet.method !== 'string') return Logs.log("Wrong data: packet.method must have type 'string'", Logs.LEVEL_WARN, packet);
+        if (typeof packet.method !== 'string') return Logs.log("Wrong data: packet.method must have type 'string'" + packet, Logs.LEVEL_WARN);
 
-        if (packet.args === undefined) return Logs.log("Wrong data: packet must have .args", Logs.LEVEL_WARN, packet);
+        if (packet.args === undefined) return Logs.log("Wrong data: packet must have .args" + packet, Logs.LEVEL_WARN);
 
-        if (typeof packet.args !== 'object') return Logs.log("Wrong data: packet.args must have type 'object'", Logs.LEVEL_WARN, packet);
+        if (typeof packet.args !== 'object') return Logs.log("Wrong data: packet.args must have type 'object'" + packet, Logs.LEVEL_WARN);
 
         group = packet.group;
         method = packet.method;
         args = packet.args;
 
-        if (map[group] === undefined) return Logs.log("Wrong data: group not found " + group, Logs.LEVEL_WARN, packet);
+        if (map[group] === undefined) return Logs.log("Wrong data: group not found " + group + " " + packet, Logs.LEVEL_WARN);
 
-        if (map[group][method] === undefined) return Logs.log("Wrong data: method not found " + method, Logs.LEVEL_WARN, packet);
+        if (map[group][method] === undefined) return Logs.log("Wrong data: method not found " + method + " " + packet, Logs.LEVEL_WARN);
 
 
-        Logs.log((CONST_IS_SERVER_SIDE ? id + " " + ">> " : '') +
-            group + "." + method + (l > 500 ? "(" + l + ")" : ""),
-            Logs.LEVEL_TRACE, args);
+        Logs.log((CONST_IS_SERVER_SIDE ?
+            id + " " + ">> " : '') + group + "." + method + (l > 500 ? "(" + l + ")"
+            : "") + args,
+            Logs.LEVEL_TRACE);
 
         /** Добавим к аргументам контекст соединения. */
         args.unshift(connections[id]);
@@ -79,7 +80,7 @@ let ApiRouter = new (function ApiRouter() {
         map[group][method].apply(self, args);
     };
 
-    this.getConnectContext  = function(cid){
+    this.getConnectContext = function (cid) {
         return connections[cid];
     }
 
@@ -140,14 +141,18 @@ let ApiRouter = new (function ApiRouter() {
             Logs.log(connectionsKey + " " + "<< " + group + "." + method + ':' + args.join(','), Logs.LEVEL_TRACE);
         } else {
             /** Client */
-            Logs.log(group + "." + method +
-                (packet.length > 500 ? "(" + packet.length + ")" : ""), Logs.LEVEL_TRACE, args);
+            Logs.log(
+                group + "." + method +
+                (packet.length > 500 ? "(" + packet.length + ")" : "")
+                + args.join(",")
+                , Logs.LEVEL_TRACE);
         }
 
         let cntxListLength = 0;
         for (i in cntxList) {
             if (!this.sendData(packet, cntxList[i].cid)) {
-                Logs.log("ApiRouter.failedToSend", Logs.LEVEL_WARN, {packet: packet, cntx: cntxList[i]});
+                Logs.log("ApiRouter.failedToSend" + {packet: packet, cntx: cntxList[i]},
+                    Logs.LEVEL_WARN);
                 for (let j in onFailedSendCallbacks) {
                     onFailedSendCallbacks[j].call(self, cntxList[j]);
                 }
@@ -155,10 +160,12 @@ let ApiRouter = new (function ApiRouter() {
             cntxListLength++;
         }
         if (cntxListLength === 0) {
-            Logs.log("ApiRouter. Try send to empty contextlist.", Logs.LEVEL_WARN, {
-                packet: packet,
-                cntxList: cntxList
-            });
+            Logs.log("ApiRouter. Try send to empty contextlist."
+                + JSON.stringify({
+                    packet: packet,
+                    cntxList: cntxList
+                }),
+                Logs.LEVEL_WARN);
         }
     };
 

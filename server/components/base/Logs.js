@@ -1,4 +1,5 @@
 const FS = require('fs');
+const {Kafka} = require("./Kafka");
 
 /**
  * Компонент логирования.
@@ -27,71 +28,39 @@ var Logs = function () {
      * @param channel
      * @param telega
      */
-    this.log = function (message, level, details, channel, telega) {
-        let date, dateFormated, logText, levelTitle;
-        /** Если не передан уровень, то считаем его детальным. */
+    this.log = function (message, level, telega) {
+        let dateFormated, logText, levelTitle;
         if (!level) level = Logs.LEVEL_TRACE;
-
-        /** Если уровень лога ниже уровня срабатывания ничего не делаем. */
-        if (!channel && level < trigger_level) return;
-        /** Сформируем сообщение лога. */
-        date = new Date();
-        /** Тут мы получим "01-01-2014 15:55:55" */
-        let day, month, year, hour, minutes, seconds;
-        //year = date.getFullYear().toString().substr(2, 2);
-        day = str_pad(date.getDate());
-        month = str_pad(date.getMonth() + 1);
-        hour = str_pad(date.getHours());
-        minutes = str_pad(date.getMinutes());
-        seconds = str_pad(date.getSeconds());
-        if (CONST_IS_CLIENT_SIDE) {
-            dateFormated = minutes + ':' + seconds;
-        } else {
-            dateFormated = day + '.' + month + ' ' + hour + ':' + minutes + ':' + seconds;
-        }
-        // превратим уровень лога из константы в человеко-читаемый текст.
+        if (level < trigger_level) return;
+        dateFormated = formatDate();
         levelTitle = typeTitles[level];
-        // соединим время, текст уровня лога и сообщение лога в одну строку
-        logText = dateFormated + ' [' + levelTitle + '] ' + message;
-        if (!details) details = '';
-        // добавим к тексту лога детали, если они были переданы
-        if (CONST_IS_SERVER_SIDE) {
-            // превратим в строку переданные детали лога.
-            if (details) details = JSON.stringify(details);
-        }
-        // выведем на экран
-        switch (channel) {
+        logText = dateFormated + ' [' + levelTitle + (telega ? '+' : ' ') + '] ' + message;
+        switch (level) {
+            case Logs.LEVEL_ERROR:
+                console.error(" > " + logText);
+                break;
+            case Logs.LEVEL_WARN:
+                console.warn(" > " + logText);
+                break;
             default:
-                switch (level) {
-                    case Logs.LEVEL_ERROR:
-                        console.error(" > " + logText, details);
-                        break;
-                    case Logs.LEVEL_WARN:
-                        console.warn(" > " + logText, details);
-                        break;
-                    default:
-                        console.log(" > " + logText, details);
-                        break;
-                }
+                console.log(" > " + logText);
                 break;
         }
-        if (level >= Logs.LEVEL_INFO) telega = true;
-        if (level === Logs.LEVEL_ERROR || level === Logs.LEVEL_ERROR) {
-            if (CONST_IS_CLIENT_SIDE) {
-                //@todo client errors channel
-                SAPILogs.log(undefined, message, level, details, true);
-            }
-        }
-        // если это фатальная ошибка - завершим работу программы.
-
-        if (CONST_IS_SERVER_SIDE && telega) {
-            telegramSent(message + details);
-        }
-        if (level === Logs.LEVEL_ERROR) {
-           // throw new Error("Vse polamalos'!");
+        if (level >= Logs.LEVEL_INFO || telega) {
+            telegramSent(message);
         }
     };
 
+    let formatDate = function () {
+        var date = new Date();
+        /** Тут мы получим "01-01-2014 15:55:55" */
+        let day, month, year, hour, minutes, seconds;
+        day = str_pad(date.getDate());
+        hour = str_pad(date.getHours());
+        minutes = str_pad(date.getMinutes());
+        seconds = str_pad(date.getSeconds());
+        return day + '.' + ' ' + hour + ':' + minutes + ':' + seconds;
+    }
     /**
      * Дополним нулями значение и вернёт строку
      * Тут это специфичная функция, дополнит нулями число спереди до 2ух знаков.
@@ -136,6 +105,21 @@ var Logs = function () {
     this.alert = function (level, message) {
         if (level < trigger_level) return;
         alert(message);
+    };
+
+    /**
+     *
+     * @param message
+     */
+    let telegramSent = function (message) {
+        if (message.includes("KafkaKs")) {
+            return;
+        }
+        Kafka.sendToCommon({
+            message: message,
+            level: "INFO",
+            sendToTelegram: true
+        }, undefined, Kafka.TYPE_LOG_RQ_DTO);
     };
 
     let typeTitles = {};

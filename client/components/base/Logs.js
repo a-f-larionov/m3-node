@@ -24,30 +24,12 @@ var Logs = function () {
      * @param channel
      */
     this.log = function (message, level, details, channel) {
-        let date, dateFormated, logText, levelTitle;
-        /** Если не передан уровень, то считаем его детальным. */
+        let dateFormated, logText, levelTitle;
         if (!level) level = Logs.LEVEL_TRACE;
-
-        /** Если уровень лога ниже уровня срабатывания ничего не делаем. */
         if (!channel && level < trigger_level) return;
         /** Сформируем сообщение лога. */
-        date = new Date();
-        /** Тут мы получим "01-01-2014 15:55:55" */
-        let day, month, year, hour, minutes, seconds;
-        //year = date.getFullYear().toString().substr(2, 2);
-        day = str_pad(date.getDate());
-        month = str_pad(date.getMonth() + 1);
-        hour = str_pad(date.getHours());
-        minutes = str_pad(date.getMinutes());
-        seconds = str_pad(date.getSeconds());
-        if (CONST_IS_CLIENT_SIDE) {
-            dateFormated = minutes + ':' + seconds;
-        } else {
-            dateFormated = day + '.' + month + ' ' + hour + ':' + minutes + ':' + seconds;
-        }
-        // превратим уровень лога из константы в человеко-читаемый текст.
+        dateFormated = getFormatedDate();
         levelTitle = typeTitles[level];
-        // соединим время, текст уровня лога и сообщение лога в одну строку
         logText = dateFormated + ' [' + levelTitle + '] ' + message;
         if (!details) details = '';
         // выведем на экран
@@ -78,7 +60,14 @@ var Logs = function () {
             throw new Error("Vse polamalos'!");
         }
     };
-
+    let getFormatedDate = function () {
+        var date = new Date();
+        /** Тут мы получим "01-01-2014 15:55:55" */
+        let minutes, seconds;
+        minutes = str_pad(date.getMinutes());
+        seconds = str_pad(date.getSeconds());
+        return dateFormated = minutes + ':' + seconds;
+    }
     /**
      * Дополним нулями значение и вернёт строку
      * Тут это специфичная функция, дополнит нулями число спереди до 2ух знаков.

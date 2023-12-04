@@ -33,17 +33,6 @@ const run = async () => {
             console.log("KAFKA." + topic + " > node" + " " + partition);
             console.log(message.headers.__TypeId__.toString(), message.value.toString());
 
-            // console.log({
-            //     topic,
-            //     partition,
-            //     //offset: message.offset,
-            //     //  value: message.value.toString(),
-            //     //headers: message.headers,
-            //     //__TypeId__: message.headers.__TypeId__,
-            //     //__TypeId__: message.headers.__TypeId__.toString(),
-            //     message: message
-            // })
-
             // to client
             var cntx;
             try {

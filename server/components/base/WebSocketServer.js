@@ -32,16 +32,16 @@ WebSocketServer = function () {
      */
     let checkBeforeRun = function () {
         if (typeof self.onConnect != 'function') {
-            Logs.log("onConnect must be function", Logs.LEVEL_ERROR, self.onConnect);
+            Logs.log("onConnect must be function" + self.onConnect, Logs.LEVEL_ERROR);
         }
         if (typeof self.onDisconnect != 'function') {
-            Logs.log("onDisconnect must be function", Logs.LEVEL_ERROR, self.onDisconnect);
+            Logs.log("onDisconnect must be function" + self.onDisconnect, Logs.LEVEL_ERROR);
         }
         if (typeof self.onData != 'function') {
-            Logs.log("onData must be function", Logs.LEVEL_ERROR, self.onData);
+            Logs.log("onData must be function" + self.onData, Logs.LEVEL_ERROR, self.onData);
         }
         if (typeof port != 'number') {
-            Logs.log("port given by .setup, must be number", Logs.LEVEL_ERROR, port);
+            Logs.log("port given by .setup, must be number" + port, Logs.LEVEL_ERROR);
         }
     };
 
@@ -169,7 +169,6 @@ WebSocketServer = function () {
         self.onConnect(id);
         connection.on('message', function (message) {
             if (message.type === 'utf8') {
-                /* Logs.log("Получены данные.", Logs.LEVEL_TRACE, message.utf8Data); */
                 lastConnectionId = id;
                 self.onData(message.utf8Data, id);
             } else {
@@ -185,7 +184,7 @@ WebSocketServer = function () {
             }
         });
         connection.on('error', function (err) {
-            Logs.log("con err", Logs.LEVEL_INFO, err);
+            Logs.log("con err" + err, Logs.LEVEL_INFO);
         });
         connection.on('close', function () {
             Logs.log("WebSocketServer.onDisconnected: id=" + id);
