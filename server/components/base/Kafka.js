@@ -116,22 +116,22 @@ const run = async () => {
                         cntx = ApiRouter.getConnectContext(msg.connectionId);
                         ApiRouter.executeRequest("CAPITimeServer", "gotServerTime", [msg.timestamp], [cntx]);
                         break;
-                    case 'm3.gameplay.dto.rs.GotMapInfoRsDto':
+                    case 'm3.game.dto.rs.GotMapInfoRsDto':
                         CAPIMap.gotMapsInfo(msg.userId, msg.mapId, msg.map, msg.points);
                         break;
-                    case 'm3.gameplay.dto.rs.GotStuffRsDto':
+                    case 'm3.game.dto.rs.GotStuffRsDto':
                         CAPIStuff.gotStuff(msg.userId, msg);
                         break;
                     case 'm3.lib.dto.rs.ErrorRsDto':
                         CAPILog.log(msg.userId, msg);
                         break;
-                    case 'm3.gameplay.dto.rs.GotPointTopScoreRsDto':
+                    case 'm3.game.dto.rs.GotPointTopScoreRsDto':
                         CAPIMap.gotPointTopScore(msg.userId, msg.pointId, msg);
                         break;
-                    case 'm3.gameplay.dto.rs.GotScoresRsDto':
+                    case 'm3.game.dto.rs.GotScoresRsDto':
                         CAPIUser.gotScores(msg.userId, msg.rows);
                         break;
-                    case 'm3.gameplay.dto.rs.DoOrderChangeAnswerRsDto':
+                    case 'm3.game.dto.rs.DoOrderChangeAnswerRsDto':
                         LogicPayments.doOrderChangeCallbackAnswer(msg);
                         break;
                     default:
@@ -154,18 +154,18 @@ var Kafka = function () {
 
     this.TOPIC_USERS = "topic-users";
     this.TOPIC_COMMON = "topic-common";
-    this.TOPIC_GAMEPLAY = "topic-gameplay";
+    this.TOPIC_GAME = "topic-game";
 
     this.RQ_NS_LIB = "m3.lib.dto.rq";
     this.RQ_NS_USERS = "m3.users.dto.rq";
     this.RQ_NS_COMMON = "m3.common.dto.rq";
-    this.RQ_NS_GAMEPLAY = "m3.gameplay.dto.rq";
+    this.RQ_NS_GAME = "m3.game.dto.rq";
 
     this.TYPE_STATISTIC_RQ_DTO = this.RQ_NS_LIB + ".StatisticRqDto";
 
     this.TYPE_LOG_RQ_DTO = this.RQ_NS_LIB + ".LogRqDto";
     this.TYPE_SENDMETIME_RQ_DTO = this.RQ_NS_COMMON + ".SendMeTimeRqDto";
-    this.TYPE_DO_ORDER_CHANGE_RQ_DTO = this.RQ_NS_GAMEPLAY + '.DoOrderChangeRqDto';
+    this.TYPE_DO_ORDER_CHANGE_RQ_DTO = this.RQ_NS_GAME + '.DoOrderChangeRqDto';
 
     this.TYPE_SENDUSERAGENT_RQ_DTO = this.RQ_NS_COMMON + ".SendUserAgentRqDto";
     this.TYPE_UPDATE_LAST_LOGOUT_RQ_DTO = this.RQ_NS_USERS + ".UpdateLastLogoutRqDto";
@@ -178,23 +178,23 @@ var Kafka = function () {
     this.TYPE_ZERO_LIFE_RQ_DTO = this.RQ_NS_USERS + ".ZeroLifeRqDto";
 
     this.TYPE_HEALTH_DOWN_RQ_DTO = this.RQ_NS_USERS + ".HealthDownRqDto";
-    this.TYPE_SEND_ME_MAP_INFO_RQ_DTO = this.RQ_NS_GAMEPLAY + ".SendMeMapInfoRqDto";
-    this.TYPE_SEND_ME_SCORES_RQ_DTO = this.RQ_NS_GAMEPLAY + ".SendMeScoresRqDto";
-    this.TYPE_SEND_ME_POINT_TOP_SCORE_RQ_DTO = this.RQ_NS_GAMEPLAY + ".SendMePointTopScoreRqDto";
-    this.TYPE_SEND_ME_STUFF_RQ_DTO = this.RQ_NS_GAMEPLAY + ".SendMeStuffRqDto";
+    this.TYPE_SEND_ME_MAP_INFO_RQ_DTO = this.RQ_NS_GAME + ".SendMeMapInfoRqDto";
+    this.TYPE_SEND_ME_SCORES_RQ_DTO = this.RQ_NS_GAME + ".SendMeScoresRqDto";
+    this.TYPE_SEND_ME_POINT_TOP_SCORE_RQ_DTO = this.RQ_NS_GAME + ".SendMePointTopScoreRqDto";
+    this.TYPE_SEND_ME_STUFF_RQ_DTO = this.RQ_NS_GAME + ".SendMeStuffRqDto";
 
-    this.TYPE_ON_FINISH_RQ_DTO = this.RQ_NS_GAMEPLAY + ".OnFinishRqDto";
-    this.TYPE_USED_HUMMER_RQ_DTO = this.RQ_NS_GAMEPLAY + ".UsedHummerRqDto";
-    this.TYPE_USED_LIGHTNING_RQ_DTO = this.RQ_NS_GAMEPLAY + ".UsedLightningRqDto";
-    this.TYPE_USED_SHUFFLE_RQ_DTO = this.RQ_NS_GAMEPLAY + ".UsedShuffleRqDto";
-    this.TYPE_EXIT_GAME_RQ_DTO = this.RQ_NS_GAMEPLAY + ".ExitGameRqDto";
-    this.TYPE_LOOSE_GAME_RQ_DTO = this.RQ_NS_GAMEPLAY + ".LooseGameRqDto";
+    this.TYPE_ON_FINISH_RQ_DTO = this.RQ_NS_GAME + ".OnFinishRqDto";
+    this.TYPE_USED_HUMMER_RQ_DTO = this.RQ_NS_GAME + ".UsedHummerRqDto";
+    this.TYPE_USED_LIGHTNING_RQ_DTO = this.RQ_NS_GAME + ".UsedLightningRqDto";
+    this.TYPE_USED_SHUFFLE_RQ_DTO = this.RQ_NS_GAME + ".UsedShuffleRqDto";
+    this.TYPE_EXIT_GAME_RQ_DTO = this.RQ_NS_GAME + ".ExitGameRqDto";
+    this.TYPE_LOOSE_GAME_RQ_DTO = this.RQ_NS_GAME + ".LooseGameRqDto";
 
-    this.TYPE_SPEND_COINS_FOR_TURNS_RQ_DTO = this.RQ_NS_GAMEPLAY + ".SpendCoinsForTurnsRqDto";
-    this.TYPE_BUY_HUMMER_RQ_DTO = this.RQ_NS_GAMEPLAY + ".BuyHummerRqDto";
-    this.TYPE_BUY_SHUFFLE_RQ_DTO = this.RQ_NS_GAMEPLAY + ".BuyShuffleRqDto";
-    this.TYPE_BUY_LIGHTNING_RQ_DTO = this.RQ_NS_GAMEPLAY + ".BuyLightningRqDto";
-    this.TYPE_BUY_HEALTH_RQ_DTO = this.RQ_NS_GAMEPLAY + ".BuyHealthRqDto";
+    this.TYPE_SPEND_COINS_FOR_TURNS_RQ_DTO = this.RQ_NS_GAME + ".SpendCoinsForTurnsRqDto";
+    this.TYPE_BUY_HUMMER_RQ_DTO = this.RQ_NS_GAME + ".BuyHummerRqDto";
+    this.TYPE_BUY_SHUFFLE_RQ_DTO = this.RQ_NS_GAME + ".BuyShuffleRqDto";
+    this.TYPE_BUY_LIGHTNING_RQ_DTO = this.RQ_NS_GAME + ".BuyLightningRqDto";
+    this.TYPE_BUY_HEALTH_RQ_DTO = this.RQ_NS_GAME + ".BuyHealthRqDto";
 
     this.init = function (afterInitCallback) {
         Logs.log("Kafka Init create Pool.", Logs.LEVEL_DEBUG);
@@ -211,9 +211,9 @@ var Kafka = function () {
         this.send(this.TOPIC_COMMON, fields, type);
     };
 
-    this.sendToGameplay = function (fields, userId, type) {
+    this.sendToGame = function (fields, userId, type) {
         fields.userId = userId;
-        this.send(this.TOPIC_GAMEPLAY, fields, type);
+        this.send(this.TOPIC_GAME, fields, type);
     }
 
     this.send = function (topic, value, type) {

@@ -7,11 +7,11 @@ const Kafka = require("../../base/Kafka.js").Kafka
 SAPIUser = function () {
 
     this.sendMeScores = function (cntx, pids, uids) {
-        Kafka.sendToGameplay({pids: pids, uids: uids}, cntx.user.id, Kafka.TYPE_SEND_ME_SCORES_RQ_DTO);
+        Kafka.sendToGame({pids: pids, uids: uids}, cntx.user.id, Kafka.TYPE_SEND_ME_SCORES_RQ_DTO);
     };
 
     this.spendCoinsForTurns = function (cntx) {
-        Kafka.sendToGameplay({}, cntx.user.id, Kafka.TYPE_SPEND_COINS_FOR_TURNS_RQ_DTO)
+        Kafka.sendToGame({}, cntx.user.id, Kafka.TYPE_SPEND_COINS_FOR_TURNS_RQ_DTO)
     };
 
     this.auth = function (cntx, authParams) {
@@ -56,11 +56,11 @@ SAPIUser = function () {
     };
 
     this.exitGame = function (cntx, pointId) {
-        Kafka.sendToGameplay({pointId:pointId}, cntx.user.id, Kafka.TYPE_EXIT_GAME_RQ_DTO);
+        Kafka.sendToGame({pointId:pointId}, cntx.user.id, Kafka.TYPE_EXIT_GAME_RQ_DTO);
     };
 
     this.looseGame = function (cntx, pointId) {
-        Kafka.sendToGameplay({pointId:pointId}, cntx.user.id, Kafka.TYPE_LOOSE_GAME_RQ_DTO);
+        Kafka.sendToGame({pointId:pointId}, cntx.user.id, Kafka.TYPE_LOOSE_GAME_RQ_DTO);
     };
 
 };
