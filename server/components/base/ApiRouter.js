@@ -65,10 +65,9 @@ let ApiRouter = new (function ApiRouter() {
 
         if (map[group][method] === undefined) return Logs.log("Wrong data: method not found " + method + " " + packet, Logs.LEVEL_WARN);
 
-
         Logs.log((CONST_IS_SERVER_SIDE ?
             id + " " + ">> " : '') + group + "." + method + (l > 500 ? "(" + l + ")"
-            : "") + args,
+            : "") + args.join(","),
             Logs.LEVEL_TRACE);
 
         /** Добавим к аргументам контекст соединения. */
