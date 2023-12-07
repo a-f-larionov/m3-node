@@ -15,7 +15,7 @@ const kafkaJs = new KafkaJS({
 });
 
 const producer = kafkaJs.producer()
-const consumer = kafkaJs.consumer({groupId: '1'})
+const consumer = kafkaJs.consumer({groupId: 'group_id_1'})
 
 const run = async () => {
     // Producing
