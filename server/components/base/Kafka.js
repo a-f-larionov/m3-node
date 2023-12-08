@@ -9,13 +9,13 @@ const kafkaJs = new KafkaJS({
         "kafka:9092",
     ],
     retry: {
-        initialRetryTime: 100,
+        initialRetryTime: 1000,
         retries: 888
     }
 });
 
 const producer = kafkaJs.producer()
-const consumer = kafkaJs.consumer({groupId: 'group_id_1'})
+const consumer = kafkaJs.consumer({groupId: '1'})
 
 const run = async () => {
     // Producing
@@ -23,7 +23,6 @@ const run = async () => {
 
     // Consuming
     await consumer.connect()
-
     await consumer.subscribe({topic: 'topic-client', fromBeginning: true})
 
     await consumer.run({
