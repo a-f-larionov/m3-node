@@ -68,7 +68,7 @@ ClientCodeLoader = function () {
     /**
      * @type {string}
      */
-    let imagesPrefix = '/images/';
+    let imagesPrefix = '/images/v1/';
 
     /**
      * @type {boolean}
@@ -102,7 +102,7 @@ ClientCodeLoader = function () {
      * Sprite.PNG image path
      * @type {string}
      */
-    let spritePathPublic = '/images/sprite.png';
+    let spritePathPublic = '/images/v1/sprite.png';
     let spritePathPhysic = '../public/' + spritePathPublic;
     /**
      * Client code VK.
@@ -283,7 +283,7 @@ ClientCodeLoader = function () {
             "id='wizardArea' ></canvas>\r\n";
         code += getClientImageCode();
 
-        code += "<img id=\"oblojka\" src='/images/oblojka.png" + getTimeKey() + "'" +
+        code += "<img id=\"oblojka\" src='/images/v1/oblojka.png" + getTimeKey() + "'" +
             " style='display:none; " +
             "height:" + Config.AppFrame.height + "px;" +
             "' " +
@@ -477,7 +477,7 @@ ClientCodeLoader = function () {
             imgData = "<script>";
             imgData += "i_d = {};";
             for (let i in spriteMap.coordinates) {
-                path = i.replace('../public/images/', '');
+                path = i.replace('../public/images/v1/', '');
                 imgData += "\r\ni_d['" + path + "']={" + "" +
                     "w:" + translate2X(spriteMap.coordinates[i].width) + "," +
                     "h:" + translate2X(spriteMap.coordinates[i].height) + "," +
@@ -485,14 +485,14 @@ ClientCodeLoader = function () {
                     "y:" + translate2X(spriteMap.coordinates[i].y) + "" +
                     "};";
             }
-            imgData += "for(let i in i_d){ i_d[i].path = '/images/sprite.png" + getTimeKey() + "';};";
+            imgData += "for(let i in i_d){ i_d[i].path = '/images/v1/sprite.png" + getTimeKey() + "';};";
             //@todo auto it!
             imgData += "\r\ni_d['oblojka.png']={" +
-                "path: '/images/oblojka.png" + getTimeKey() + "'" +
+                "path: '/images/v1/oblojka.png" + getTimeKey() + "'" +
                 "};";
             imgData += "</script>";
             imgData += "<div style='display:none;'>";
-            imgData += "<img src='/images/sprite.png" + getTimeKey() + "'>";
+            imgData += "<img src='/images/v1/sprite.png" + getTimeKey() + "'>";
             imgData += "</div>";
             Logs.log("Write img data cache", Logs.LEVEL_TRACE);
             FS.writeFileSync(imgJsonPath, imgData);
@@ -516,7 +516,7 @@ ClientCodeLoader = function () {
         imageCode += "i_d = {};";
         imageFiles.forEach(function (image) {
             path = imagesPrefix + image.substr(imagesPath.length);
-            path = path.replace('/images/', '');
+            path = path.replace('/images/v1/', '');
 
             demension = IMAGE_SIZE(image);
             imageCode += "\r\ni_d['" + path + "']=" +
@@ -525,7 +525,7 @@ ClientCodeLoader = function () {
         });
 
         imageCode += "for(let i in i_d){ " +
-            "   i_d[i].path = '/images/' + i + '" + getTimeKey() + "';" +
+            "   i_d[i].path = '/images/v1/' + i + '" + getTimeKey() + "';" +
             "   i_d[i].x = 0;" +
             "   i_d[i].y = 0;" +
             "};";
@@ -601,15 +601,15 @@ ClientCodeLoader = function () {
 
             let sTime = mtime();
             if (Config.Project.usePngquant) {
-                Logs.log('Pngquant begin. Sprite size:' + FS.statSync("../public/images/sprite.png")['size'], Logs.LEVEL_INFO);
+                Logs.log('Pngquant begin. Sprite size:' + FS.statSync("../public/images/v1/sprite.png")['size'], Logs.LEVEL_INFO);
                 cp.exec(
-                    "cd ../public/images/ && pngquant *.png  --ext '.png' --force --verbose  --speed 1",
+                    "cd ../public/images/v1/ && pngquant *.png  --ext '.png' --force --verbose  --speed 1",
                     function () {
                         Logs.log('Pngquant finish' +
                             " time: " + (mtime() - sTime).toString() +
-                            " size: " + FS.statSync("../public/images/sprite.png")['size'], Logs.LEVEL_INFO);
+                            " size: " + FS.statSync("../public/images/v1/sprite.png")['size'], Logs.LEVEL_INFO);
                         //@todo run service under www-data user
-                        cp.exec(' cd ../public/images/ && chmod 777 *');
+                        cp.exec(' cd ../public/images/v1/ && chmod 777 *');
                         callback();
                     });
             } else {

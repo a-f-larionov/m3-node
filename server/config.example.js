@@ -18,7 +18,7 @@ Config = {
         cacheCode: false,
         cacheImages: false,
         clientSource: "../client/",
-        imagesPath: "../public/images/",
+        imagesPath: "../public/images/v1/",
         port: 3200
     },
     SocNet: {

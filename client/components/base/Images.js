@@ -14,7 +14,7 @@ let Images = function () {
     };
 
     this.getRealPath = function (url) {
-        return '/images/' + url;
+        return '/images/v1/' + url;
     };
 
     this.getHeight = function (url) {
