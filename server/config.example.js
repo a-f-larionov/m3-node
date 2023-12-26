@@ -27,8 +27,12 @@ Config = {
             secretKey: ["secretKey"]
         }
     },
+    AppFrame: {
+        height: 500,
+        width: 777
+    },
     VKWidgetComments: {
-        width: 777,
         height: 400,
+        width: 777,
     }
 };
