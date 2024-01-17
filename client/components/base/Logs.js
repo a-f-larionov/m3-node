@@ -3,7 +3,6 @@
  * @type {Logs}
  */
 var Logs = function () {
-    let self = this;
 
     /**
      * Уровень срабатывания.
@@ -21,7 +20,6 @@ var Logs = function () {
      * @param message {string} сообщение.
      * @param level {int} тип Logs.LEVEL_*.
      * @param [details] {*} необязательный параметр, детали.
-     * @param channel
      */
     this.log = function (message, level, details) {
         let dateFormated, logText, levelTitle;
@@ -29,6 +27,7 @@ var Logs = function () {
         if (level < trigger_level) return;
         dateFormated = getFormatedDate();
         levelTitle = typeTitles[level];
+        if (message instanceof Object) message = JSON.stringify(message);
         logText = dateFormated + ' [' + levelTitle + '] ' + message;
         if (!details) details = '';
         // выведем на экран
